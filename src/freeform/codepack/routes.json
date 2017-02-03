@@ -1,0 +1,32 @@
+[
+  {
+    "urlParts": ["bootstrap\\/", ["slug","[^\\\\\\/]+"], "\\/submissions\\/", ["number","\\\\d+"], "\\/success"],
+    "urlPattern": "bootstrap/{slug}/submissions/{id}/success",
+    "template": "/bootstrap/view_submission.html"
+  },
+  {
+    "urlParts": ["bootstrap\\/", ["slug","[^\\\\\\/]+"], "\\/submissions\\/", ["number","\\\\d+"]],
+    "urlPattern": "bootstrap/{slug}/submissions/{id}",
+    "template": "/bootstrap/view_submission.html"
+  },
+  {
+    "urlParts": ["bootstrap\\/", ["slug","[^\\\\\\/]+"], "\\/submissions"],
+    "urlPattern": "bootstrap/{slug}/submissions",
+    "template": "/bootstrap/submissions.html"
+  },
+  {
+    "urlParts": ["bootstrap\\/",["slug","[^\\\\\\/]+"]],
+    "urlPattern": "bootstrap/{slug}",
+    "template": "/bootstrap/view.html"
+  },
+  {
+    "urlParts": ["bootstrap\\/",["slug","[^\\\\\\/]+"], "\\/success"],
+    "urlPattern": "bootstrap/{slug}/success",
+    "template": "/bootstrap/view.html"
+  },
+  {
+    "urlParts": ["foundation\\/",["slug","[^\\\\\\/]+"]],
+    "urlPattern": "foundation/{slug}",
+    "template": "/foundation/view.html"
+  }
+]

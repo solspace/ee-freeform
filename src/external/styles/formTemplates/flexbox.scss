@@ -1,0 +1,121 @@
+/*!
+ * Freeform for Craft
+ *
+ * @package       Solspace:Freeform
+ * @author        Solspace, Inc.
+ * @copyright     Copyright (c) 2008-2016, Solspace, Inc.
+ * @link          https://solspace.com/craft/freeform
+ * @license       https://solspace.com/software/license-agreement
+ */
+
+.freeform-pages {
+  display: flex;
+
+  padding: 0;
+  margin: 0 0 10px;
+
+  list-style: none;
+
+  li {
+    margin: 0 10px 0 0;
+  }
+}
+
+$gutter: 15px;
+.freeform-row {
+  display: flex;
+  justify-content: space-between;
+
+  margin: 0 (-$gutter);
+
+  .freeform-column {
+    flex: 1 0 0;
+    padding: 10px 0;
+    margin: 0 $gutter;
+
+    box-sizing: border-box;
+
+    label {
+      display: block;
+    }
+
+    .freeform-label {
+      font-weight: bold;
+
+      &.freeform-required {
+        &:after {
+          content: "*";
+          margin-left: 5px;
+
+          color: red;
+        }
+      }
+    }
+
+    .freeform-input {
+      width: 100%;
+      display: block;
+
+      box-sizing: border-box;
+
+      &[type=checkbox], &[type=radio] {
+        width: auto;
+        display: inline;
+
+        margin-right: 5px;
+      }
+    }
+
+    .freeform-input-only-label {
+      font-weight: normal;
+
+      > .freeform-input {
+        display: inline-block;
+        width: auto;
+        margin-right: 5px;
+      }
+    }
+
+    .freeform-errors {
+      list-style: none;
+      padding: 0;
+      margin: 5px 0 0;
+
+      > li {
+        color: red;
+      }
+    }
+
+    .freeform-instructions {
+      margin:  0 0 5px;
+      font-size: 13px;
+      color: #ABA7A7;
+    }
+
+    $alignments: left, center, right, spread;
+    @each $alignment in $alignments {
+      &.freeform-column-content-align-#{$alignment} {
+        display: flex;
+
+        > button:not(:first-of-type) {
+          margin-left: 5px;
+        }
+
+        @if $alignment == left {
+          justify-content: flex-start;
+        } @else if $alignment == right {
+          justify-content: flex-end;
+        } @else if $alignment == spread {
+          justify-content: space-between;
+        } @else {
+          justify-content: $alignment;
+        }
+      }
+    }
+  }
+}
+
+.freeform-form-has-errors {
+  color: red;
+}
+

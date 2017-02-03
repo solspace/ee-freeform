@@ -1,0 +1,18 @@
+{
+    "name": "solspace/craft-freeform",
+    "description": "FreeForm plugin for Craft",
+    "type": "library",
+    "require": {
+        "swiftmailer/swiftmailer": "^5.4",
+        "symfony/property-access": "^2.8",
+        "hashids/hashids": "^1.0",
+        "pixel418/markdownify": "2.1.11",
+        "egulias/email-validator": "^1.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8"
+    },
+    "autoload": {
+        "psr-4": {"Solspace\\Freeform\\Library\\": "Library/"}
+    }
+}

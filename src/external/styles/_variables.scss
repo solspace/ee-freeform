@@ -1,0 +1,70 @@
+/*!
+ * Freeform for Craft
+ *
+ * @package       Solspace:Freeform
+ * @author        Solspace, Inc.
+ * @copyright     Copyright (c) 2008-2016, Solspace, Inc.
+ * @link          https://solspace.com/craft/freeform
+ * @license       https://solspace.com/software/license-agreement
+ */
+
+// COLORS
+
+$color-cp-bg-gray: #FAFAFA;
+$color-cp-bg-white: #FFFFFF;
+$color-bg-tabs: #F4F4F6;
+
+$color-white: #FFFFFF;
+
+$color-field-text: #000000;
+$color-field-border: #DDDDDD;
+$color-column-label: #576574;
+$color-column-instructions: #8f98a3;
+$color-row-border: #EDEDED;
+$color-tab-border: #E6E7EA;
+$color-tab-text: #555555;
+$color-input-text: #29323d;
+$color-select-text: $color-input-text;
+$color-input-border: #e3e5e8;
+$color-input-readonly-text: #555555;
+$color-input-readonly: #ECECEC;
+$color-input-readonly-border: #CCCCCC;
+$color-input-disabled-text: #ABA7A7;
+
+$color-placeholder: #F3F4F7;
+$color-placeholder-border: #BBBDBE;
+
+$color-row-bg: $color-placeholder;
+$color-row-border: #DBDCDF;
+$color-row-actions-bg: #EBECEF;
+$color-row-actions-text: #BBBDBE;
+
+$color-headings: #b9bfc6;
+
+$color-droppable: #EBF4F9;
+$color-action-button: #BCBEBF;
+$color-action-background: #ebedef;
+
+$color-error: #da5a47;
+$color-preview: rgba(#f8ff0e, 0.5);
+
+// Shadows
+$shadow-readonly-input: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+$shadow-select: 0 0 2px rgba(51, 170, 255, 0), inset 0 0 0 1px rgba(51, 170, 255, 0);
+
+// ANIMATION
+
+$anim-speed: .2s;
+$anim-ease: ease-out;
+
+// Sizes
+
+$spacing: 10px;
+$spacing-short: 5px;
+$spacing-wide: 15px;
+$font-size: 14px;
+
+
+$builderFlex: 1 1 60%;
+$fieldListFlex: 0 2 200px;
+$propertyEditorFlex: 0 2 325px;

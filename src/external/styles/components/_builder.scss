@@ -1,0 +1,241 @@
+/*!
+ * Freeform for Craft
+ *
+ * @package       Solspace:Freeform
+ * @author        Solspace, Inc.
+ * @copyright     Copyright (c) 2008-2016, Solspace, Inc.
+ * @link          https://solspace.com/craft/freeform
+ * @license       https://solspace.com/software/license-agreement
+ */
+
+$minRowHeight: 60px;
+
+.builder {
+  position: relative;
+  background: $color-cp-bg-white;
+  flex: $builderFlex;
+
+  overflow: hidden;
+
+  > div {
+    height: 100%;
+  }
+
+  .layout {
+    padding: 7px 0 0;
+  }
+
+  .composer-row-placeholder {
+    padding: 10px 10px;
+    opacity: 0;
+
+    > div {
+      overflow: hidden;
+      height: 1px;
+
+      border-top: 2px dashed $color-placeholder-border;
+    }
+
+    &.active {
+      opacity: 1;
+    }
+  }
+
+  .composer-form-actions {
+    position: absolute;
+    top: 11px;
+    right: 8px;
+
+    display: inline-flex;
+  }
+
+  .composer-row {
+    position: relative;
+
+    min-height: $minRowHeight;
+    padding: 0;
+
+    background: $color-white;
+
+    .composer-row-placeholder {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+
+      padding: 0 10px;
+    }
+
+    .composer-column-container {
+      position: relative;
+
+      display: flex;
+      justify-content: space-around;
+      align-items: stretch;
+
+      padding: 0 10px;
+
+      .composer-column {
+        position: relative;
+        flex: 0 1 100%;
+        padding: 7px 8px;
+
+        border: 2px dashed transparent;
+
+        &.composer-column-active {
+          background: rgba($color-placeholder, 0.4);
+          border-color: rgba($color-placeholder-border, 0.2);
+        }
+
+        &:hover {
+          background: rgba($color-placeholder, 0.4);
+        }
+
+        transition: background $anim-speed $anim-ease;
+
+        &.composer-column-placeholder {
+          > div {
+            height: 100%;
+            min-height: 30px;
+
+            border: 2px dashed $color-placeholder-border;
+            background: $color-placeholder;
+            box-sizing: border-box;
+
+            transition: all 0.15s $anim-ease;
+          }
+        }
+
+        .composer-column-actions {
+          left: auto;
+          right: 8px;
+          top: 12px;
+        }
+
+        &, & * {
+          cursor: pointer;
+        }
+
+        & input:focus {
+          border-color: $color-input-border;
+          box-shadow: none;
+        }
+
+        &.can-receive {
+          background: $color-droppable;
+        }
+
+        input, textarea, select, button {
+          pointer-events: none;
+        }
+
+        label.composer-field-required {
+          > span {
+            position: relative;
+            top: -3px;
+            left: 0;
+            height: $spacing;
+
+            color: $color-error;
+            font-family: Craft, sans-serif;
+            font-size: 7px;
+            font-weight: bold;
+            line-height: $spacing;
+          }
+        }
+
+        .composer-field-checkbox-single {
+          span {
+            left: 4px !important;
+          }
+        }
+
+        .composer-column-instructions {
+          position: relative;
+          top: -5px;
+
+          color: #8f98a3;
+          font-family: HelveticaNeue;
+          font-size: 11px;
+        }
+
+        label {
+          display: block;
+          margin-bottom: 8px;
+          color: $color-column-label;
+
+          > input[type=checkbox], > input[type=radio] {
+            margin-right: $spacing-short;
+          }
+
+          &.badge-only {
+            .composer-label-badge {
+              padding: 0;
+              margin: 0 5px 0 0;
+            }
+          }
+
+          &.composer-field-label {
+            font-weight: 700;
+          }
+        }
+
+        &:hover .composer-actions {
+          display: inline-flex;
+        }
+      }
+    }
+  }
+}
+
+.composer-label-badge {
+  display: inline-block;
+  padding: 0 7px;
+  margin: 0 0 0 5px;
+
+  color: #BBBDBE;
+
+  border-radius: 4px;
+
+  font-size: 12px;
+  font-weight: normal;
+
+  &.composer-label-badge-warning,
+  &.composer-label-badge-visibility,
+  &.composer-label-badge-template {
+    &:before {
+      position: relative;
+
+      margin-right: $spacing-short;
+
+      font-family: Craft, sans-serif;
+    }
+  }
+
+  &.composer-label-badge-warning {
+    color: #e69647;
+    top: 1px;
+
+    &:before {
+      content: "\61";
+    }
+  }
+
+  &.composer-label-badge-visibility {
+    color: $color-column-label;
+
+    &:before {
+      font-family: solspace-freeform-craft;
+      content: "\e801";
+    }
+  }
+
+  &.composer-label-badge-template {
+    color: $color-column-label;
+
+    &:before {
+      font-family: solspace-freeform-craft;
+      content: "\f121";
+    }
+  }
+}

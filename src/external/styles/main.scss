@@ -1,0 +1,26 @@
+/*!
+ * Freeform for Craft
+ *
+ * @package       Solspace:Freeform
+ * @author        Solspace, Inc.
+ * @copyright     Copyright (c) 2008-2016, Solspace, Inc.
+ * @link          https://solspace.com/craft/freeform
+ * @license       https://solspace.com/software/license-agreement
+ */
+
+@import "variables";
+@import "bootstrap-grid";
+
+.color-indicator {
+  $size: 10px;
+
+  display: inline-block;
+  width: $size;
+  height: $size;
+
+  margin-right: 5px;
+
+  box-shadow: inset 0 0 1px rgba(#000000, 0.6);
+
+  border-radius: ($size / 2);
+}
