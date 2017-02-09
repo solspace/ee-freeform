@@ -1,4 +1,13 @@
 <?php
+/**
+ * Freeform Next for Expression Engine
+ *
+ * @package       Solspace:Freeform
+ * @author        Solspace, Inc.
+ * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
+ * @link          https://solspace.com/expressionengine/freeform-next
+ * @license       https://solspace.com/software/license-agreement
+ */
 
 namespace Solspace\Addons\FreeformNext\Utilities\ControlPanel;
 
@@ -20,6 +29,9 @@ class CpView
 
     /** @var array */
     private $javascriptList;
+
+    /** @var bool */
+    private $sidebarDisabled;
 
     /**
      * CpView constructor.
@@ -109,6 +121,26 @@ class CpView
     public function setHeading($heading)
     {
         $this->heading = $heading;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSidebarDisabled()
+    {
+        return (bool) $this->sidebarDisabled;
+    }
+
+    /**
+     * @param bool $sidebarDisabled
+     *
+     * @return $this
+     */
+    public function setSidebarDisabled($sidebarDisabled)
+    {
+        $this->sidebarDisabled = (bool) $sidebarDisabled;
 
         return $this;
     }

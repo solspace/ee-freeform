@@ -1,10 +1,10 @@
 /*!
- * Freeform for Craft
+ * Freeform Next for Expression Engine
  *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
- * @copyright     Copyright (c) 2008-2016, Solspace, Inc.
- * @link          https://solspace.com/craft/freeform
+ * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
+ * @link          https://solspace.com/expressionengine/freeform-next
  * @license       https://solspace.com/software/license-agreement
  */
 
@@ -30,7 +30,7 @@
 }
 */
 
-[class^="icon-"]:before, [class*=" icon-"]:before {
+[class^="icon-solspace-"]:before, [class*=" icon-solspace-"]:before {
   font-family: "solspace-freeform-craft";
   font-style: normal;
   font-weight: normal;
@@ -65,22 +65,22 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
-.icon-email:before { content: '\e800'; } /* '' */
-.icon-dynamic_recipients:before { content: '\e800'; } /* '' */
-.icon-hidden:before { content: '\e801'; } /* '' */
-.icon-file:before { content: '\e802'; } /* '' */
-.icon-checkbox:before { content: '\e803'; } /* '' */
-.icon-checkbox_group:before { content: '\e803'; } /* '' */
-.icon-select:before { content: '\e804'; } /* '' */
-.icon-submit:before { content: '\e805'; } /* '' */
-.icon-mailing_list:before { content: '\e806'; } /* '' */
-.icon-textarea:before { content: '\e808'; } /* '' */
-.icon-radio-empty:before { content: '\f10c'; } /* '' */
-.icon-html:before { content: '\f121'; } /* '' */
-.icon-radio:before { content: '\f192'; } /* '' */
-.icon-radio_group:before { content: '\f192'; } /* '' */
-.icon-input:before { content: '\f246'; } /* '' */
-.icon-text:before { content: '\f246'; } /* '' */
+.icon-solspace-email:before { content: '\e800'; } /* '' */
+.icon-solspace-dynamic_recipients:before { content: '\e800'; } /* '' */
+.icon-solspace-hidden:before { content: '\e801'; } /* '' */
+.icon-solspace-file:before { content: '\e802'; } /* '' */
+.icon-solspace-checkbox:before { content: '\e803'; } /* '' */
+.icon-solspace-checkbox_group:before { content: '\e803'; } /* '' */
+.icon-solspace-select:before { content: '\e804'; } /* '' */
+.icon-solspace-submit:before { content: '\e805'; } /* '' */
+.icon-solspace-mailing_list:before { content: '\e806'; } /* '' */
+.icon-solspace-textarea:before { content: '\e808'; } /* '' */
+.icon-solspace-radio-empty:before { content: '\f10c'; } /* '' */
+.icon-solspace-html:before { content: '\f121'; } /* '' */
+.icon-solspace-radio:before { content: '\f192'; } /* '' */
+.icon-solspace-radio_group:before { content: '\f192'; } /* '' */
+.icon-solspace-input:before { content: '\f246'; } /* '' */
+.icon-solspace-text:before { content: '\f246'; } /* '' */
 
 
 

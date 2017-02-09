@@ -2,20 +2,20 @@ module.exports = {
   src: "src/",
   scripts: {
     src: ["src/external/scripts/cp/**/*.js"],
-    dest: "src/freeform_next/javascript/cp/",
-    deleteList: ["src/freeform_next/javascript/cp/**/*.js"]
+    dest: "src/themes/freeform_next/javascript/cp/",
+    deleteList: ["src/themes/freeform_next/javascript/cp/**/*.js"]
   },
   react: {
     src: ["src/external/scripts/composer/**/*.js"],
-    dest: "src/freeform_next/javascript/composer/"
+    dest: "src/themes/freeform_next/javascript/composer/"
   },
   styles: {
     src: ["src/external/styles/**/*.scss"],
-    dest: "src/freeform_next/css/"
+    dest: "src/themes/freeform_next/css/"
   },
   fonts: {
     src: ["src/external/font/**/*.*"],
-    dest: "src/freeform_next/font/"
+    dest: "src/themes/freeform_next/font/"
   },
   vendors: {
     dist: "dist/freeform_next/vendor/",

@@ -1,11 +1,11 @@
 <?php
 /**
- * Freeform for Craft
+ * Freeform Next for Expression Engine
  *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
- * @copyright     Copyright (c) 2008-2016, Solspace, Inc.
- * @link          https://solspace.com/craft/freeform
+ * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
+ * @link          https://solspace.com/expressionengine/freeform-next
  * @license       https://solspace.com/software/license-agreement
  */
 
@@ -24,8 +24,8 @@ use Solspace\Addons\FreeformNext\Library\Database\SubmissionHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
 use Solspace\Addons\FreeformNext\Library\FileUploads\FileUploadHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Mailing\MailHandlerInterface;
-use Solspace\Addons\FreeformNext\Library\Session\CraftRequest;
-use Solspace\Addons\FreeformNext\Library\Session\CraftSession;
+use Solspace\Addons\FreeformNext\Library\Session\EERequest;
+use Solspace\Addons\FreeformNext\Library\Session\EESession;
 use Solspace\Addons\FreeformNext\Library\Translations\TranslatorInterface;
 
 class Composer
@@ -218,6 +218,7 @@ class Composer
     /**
      * This method sets defaults for all composer items
      * It happens if a new Form Model is created
+     * @throws \Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException
      */
     private function setDefaults()
     {
@@ -252,7 +253,7 @@ class Composer
             $this->translator
         );
 
-        $formAttributes = new FormAttributes(null, new CraftSession(), new CraftRequest());
+        $formAttributes = new FormAttributes(null, new EESession(), new EERequest());
 
         $this->context = new Context([]);
         $this->form    = new Form(

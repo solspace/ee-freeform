@@ -24,7 +24,7 @@
     "gulp-mocha": "^2.2.0",
     "gulp-notify": "^2.2.0",
     "gulp-ref-hash": "0.0.2",
-    "gulp-require-tasks": "^1.0.3",
+    "gulp-require-tasks": "^1.0.5",
     "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.5.4",
@@ -62,5 +62,8 @@
     "url": "git@solspace.git.beanstalkapp.com:/solspace/craft-freeform.git"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "gulp-require-tasks": "^1.0.5"
+  }
 }

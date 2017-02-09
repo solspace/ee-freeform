@@ -1,8 +1,29 @@
 <?php
+/**
+ * Freeform Next for Expression Engine
+ *
+ * @package       Solspace:Freeform
+ * @author        Solspace, Inc.
+ * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
+ * @link          https://solspace.com/expressionengine/freeform-next
+ * @license       https://solspace.com/software/license-agreement
+ */
 
 namespace Solspace\Addons\FreeformNext\Model;
 
 use EllisLab\ExpressionEngine\Service\Model\Model;
+use Solspace\Addons\FreeformNext\Library\Composer\Attributes\FormAttributes;
+use Solspace\Addons\FreeformNext\Library\Composer\Composer;
+use Solspace\Addons\FreeformNext\Library\Session\EERequest;
+use Solspace\Addons\FreeformNext\Library\Session\EESession;
+use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
+use Solspace\Addons\FreeformNext\Services\CrmService;
+use Solspace\Addons\FreeformNext\Services\FilesService;
+use Solspace\Addons\FreeformNext\Services\FormsService;
+use Solspace\Addons\FreeformNext\Services\MailerService;
+use Solspace\Addons\FreeformNext\Services\MailingListsService;
+use Solspace\Addons\FreeformNext\Services\StatusesService;
+use Solspace\Addons\FreeformNext\Services\SubmissionsService;
 
 /**
  * @property int    $id
@@ -34,6 +55,9 @@ class FormModel extends Model
     protected $dateCreated;
     protected $dateUpdated;
 
+    /** @var Composer */
+    private $composer;
+
     /**
      * Creates a Form object with default settings
      *
@@ -62,5 +86,61 @@ class FormModel extends Model
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * Sets names, handles, descriptions
+     * And updates the layout JSON
+     *
+     * @param Composer $composer
+     */
+    public function setLayout(Composer $composer)
+    {
+        $form                        = $composer->getForm();
+        $this->name                  = $form->getName();
+        $this->handle                = $form->getHandle();
+        $this->description           = $form->getDescription();
+        $this->defaultStatus         = $form->getDefaultStatus();
+        $this->returnUrl             = $form->getReturnUrl();
+        $this->layoutJson            = $composer->getComposerStateJSON();
+    }
+
+    /**
+     * Assembles the composer object and returns it
+     *
+     * @return Composer
+     */
+    public function getComposer()
+    {
+        $composerState = json_decode($this->layoutJson, true);
+        $formAttributes = $this->getFormAttributes();
+
+        return $this->composer = new Composer(
+            $composerState,
+            $formAttributes,
+            new FormsService(),
+            new SubmissionsService(),
+            new MailerService(),
+            new FilesService(),
+            new MailingListsService(),
+            new CrmService(),
+            new StatusesService(),
+            new EETranslator()
+        );
+    }
+
+    /**
+     * @return FormAttributes
+     */
+    private function getFormAttributes()
+    {
+        $attributes = new FormAttributes($this->id, new EESession(), new EERequest());
+        $attributes
+            ->setActionUrl("index.php?/form/save")
+            ->setCsrfEnabled(false)
+            ->setCsrfToken(null)
+            ->setCsrfTokenName(null);
+
+        return $attributes;
     }
 }

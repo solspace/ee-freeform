@@ -1,4 +1,13 @@
 <?php
+/**
+ * Freeform Next for Expression Engine
+ *
+ * @package       Solspace:Freeform
+ * @author        Solspace, Inc.
+ * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
+ * @link          https://solspace.com/expressionengine/freeform-next
+ * @license       https://solspace.com/software/license-agreement
+ */
 
 namespace Solspace\Addons\FreeformNext\Controllers;
 
@@ -60,9 +69,16 @@ class FormController extends Controller
     public function editForm(FormModel $form)
     {
         $view = new CpView('form/edit');
-        $view->setHeading('Freeform');
-        $view->addJavascript('composer/app.js');
-        $view->addJavascript('composer/vendor.js');
+        $view
+            ->setHeading('Freeform')
+            ->setSidebarDisabled(true)
+            ->addJavascript('composer/vendors.js')
+            ->addJavascript('composer/app.js')
+            ->setTemplateVariables(
+                [
+                    'form' => $form,
+                ]
+            );
 
         return $view;
     }

@@ -1,10 +1,10 @@
 /*
- * Freeform for Craft
+ * Freeform Next for Expression Engine
  *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
- * @copyright     Copyright (c) 2008-2016, Solspace, Inc.
- * @link          https://solspace.com/craft/freeform
+ * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
+ * @link          https://solspace.com/expressionengine/freeform-next
  * @license       https://solspace.com/software/license-agreement
  */
 
@@ -73,26 +73,26 @@ let store = createStore(
 );
 
 const rootElement = document.getElementById("freeform-builder");
-export const notificator = (type, message) => (Craft.cp.displayNotification(type, message));
-export const urlBuilder = (url) => (Craft.getCpUrl(url));
+export const notificator = (type, message) => (alert(type + " " + message));
+export const urlBuilder = (url) => (url);
 
 ReactDOM.render(
   <Provider store={store}>
     <ComposerApp
-      saveUrl={Craft.getCpUrl('freeform/forms/save')}
-      formUrl={Craft.getCpUrl('freeform/forms/{id}')}
-      createFieldUrl={Craft.getCpUrl('freeform/api/quickCreateField')}
-      createNotificationUrl={Craft.getCpUrl('freeform/api/quickCreateNotification')}
-      createTemplateUrl={Craft.getCpUrl('freeform/settings/addDemoTemplate')}
-      finishTutorialUrl={Craft.getCpUrl('freeform/api/finish-tutorial')}
+      saveUrl={saveUrl}
+      formUrl={formUrl}
+      createFieldUrl={createFieldUrl}
+      createNotificationUrl={createNotificationUrl}
+      createTemplateUrl={createTemplateUrl}
+      finishTutorialUrl={finishTutorialUrl}
       showTutorial={showTutorial}
       notificator={notificator}
       canManageFields={canManageFields}
       canManageNotifications={canManageNotifications}
       canManageSettings={canManageSettings}
       csrf={{
-        name: Craft.csrfTokenName ? Craft.csrfTokenName : "csrfToken",
-        token: Craft.csrfTokenValue ? Craft.csrfTokenValue : "",
+        name: "csrfToken",
+        token: "",
       }}
     />
   </Provider>,

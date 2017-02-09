@@ -1,10 +1,10 @@
 /*
- * Freeform for Craft
+ * Freeform Next for Expression Engine
  *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
- * @copyright     Copyright (c) 2008-2016, Solspace, Inc.
- * @link          https://solspace.com/craft/freeform
+ * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
+ * @link          https://solspace.com/expressionengine/freeform-next
  * @license       https://solspace.com/software/license-agreement
  */
 
@@ -31,7 +31,7 @@ export default class AddNewNotification extends Component {
     return (
       <div className={className}>
         {!showForm &&
-        <button className="btn add icon" onClick={this.toggleForm}>
+        <button className="btn" data-icon="add" onClick={this.toggleForm}>
           Add new template
         </button>
         }

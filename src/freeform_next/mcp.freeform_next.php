@@ -1,10 +1,21 @@
 <?php
+/**
+ * Freeform Next for Expression Engine
+ *
+ * @package       Solspace:Freeform
+ * @author        Solspace, Inc.
+ * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
+ * @link          https://solspace.com/expressionengine/freeform-next
+ * @license       https://solspace.com/software/license-agreement
+ */
 
 use Solspace\Addons\FreeformNext\Controllers\FormController;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\Navigation;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanelView;
+
+require_once __DIR__ . '/vendor/autoload.php';
 
 class Freeform_next_mcp extends ControlPanelView
 {
@@ -16,9 +27,14 @@ class Freeform_next_mcp extends ControlPanelView
         return $this->renderView($this->getFormController()->index());
     }
 
+    /**
+     * @return array
+     */
     public function new_form()
     {
-        $form = FormRepository::getInstance()->getOrCreateForm();
+        $form     = FormRepository::getInstance()->getOrCreateForm();
+        $composer = $form->getComposer();
+        $test     = $composer->getComposerStateJSON();
 
         return $this->renderView($this->getFormController()->editForm($form));
     }

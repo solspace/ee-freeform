@@ -1,4 +1,13 @@
 <?php
+/**
+ * Freeform Next for Expression Engine
+ *
+ * @package       Solspace:Freeform
+ * @author        Solspace, Inc.
+ * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
+ * @link          https://solspace.com/expressionengine/freeform-next
+ * @license       https://solspace.com/software/license-agreement
+ */
 
 namespace Solspace\Addons\FreeformNext\Utilities;
 
@@ -26,7 +35,7 @@ class ControlPanelView
     protected final function renderView(CpView $view)
     {
         $viewData = [
-            'sidebar' => $this->buildNavigation()->buildNavigationView(),
+            'sidebar' => $view->isSidebarDisabled() ? null : $this->buildNavigation()->buildNavigationView(),
             'body'    => $view->renderBody(),
         ];
 
