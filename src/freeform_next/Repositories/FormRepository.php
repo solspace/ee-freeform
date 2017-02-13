@@ -16,6 +16,14 @@ use Solspace\Addons\FreeformNext\Model\FormModel;
 class FormRepository extends Repository
 {
     /**
+     * @return FormRepository
+     */
+    public static function getInstance()
+    {
+        return parent::getInstance();
+    }
+
+    /**
      * @param int $id
      *
      * @return FormModel|null
@@ -28,7 +36,7 @@ class FormRepository extends Repository
         }
 
         if (!$model) {
-            return FormModel::create(ee()->config->item('site_id'));
+            return FormModel::create();
         }
 
         return $model;
@@ -42,7 +50,7 @@ class FormRepository extends Repository
     public function getFormById($id)
     {
         return ee('Model')
-            ->get('freeform_next:FormModel')
+            ->get(FormModel::MODEL)
             ->filter('id', $id)
             ->first();
     }

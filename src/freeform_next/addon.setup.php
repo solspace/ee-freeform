@@ -20,6 +20,7 @@ return [
     'namespace'      => 'Solspace\Addons\FreeformNext',
     'settings_exist' => true,
     'models'         => [
-        'FormModel' => 'Model\FormModel',
+        'FormModel'  => 'Model\FormModel',
+        'FieldModel' => 'Model\FieldModel',
     ],
 ];

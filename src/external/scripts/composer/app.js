@@ -73,8 +73,8 @@ let store = createStore(
 );
 
 const rootElement = document.getElementById("freeform-builder");
-export const notificator = (type, message) => (alert(type + " " + message));
-export const urlBuilder = (url) => (url);
+export const notificator = (type, message) => (console.log(type, message));
+export const urlBuilder = (url) => (baseUrl + '/' + url);
 
 ReactDOM.render(
   <Provider store={store}>
@@ -91,8 +91,8 @@ ReactDOM.render(
       canManageNotifications={canManageNotifications}
       canManageSettings={canManageSettings}
       csrf={{
-        name: "csrfToken",
-        token: "",
+        name: "csrf_token",
+        token: csrfToken,
       }}
     />
   </Provider>,

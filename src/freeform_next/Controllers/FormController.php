@@ -12,7 +12,23 @@
 namespace Solspace\Addons\FreeformNext\Controllers;
 
 use EllisLab\ExpressionEngine\Library\CP\Table;
+use Solspace\Addons\FreeformNext\Library\Composer\Attributes\FormAttributes;
+use Solspace\Addons\FreeformNext\Library\Composer\Composer;
+use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
+use Solspace\Addons\FreeformNext\Library\Session\EERequest;
+use Solspace\Addons\FreeformNext\Library\Session\EESession;
+use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
 use Solspace\Addons\FreeformNext\Model\FormModel;
+use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
+use Solspace\Addons\FreeformNext\Repositories\FormRepository;
+use Solspace\Addons\FreeformNext\Services\CrmService;
+use Solspace\Addons\FreeformNext\Services\FilesService;
+use Solspace\Addons\FreeformNext\Services\FormsService;
+use Solspace\Addons\FreeformNext\Services\MailerService;
+use Solspace\Addons\FreeformNext\Services\MailingListsService;
+use Solspace\Addons\FreeformNext\Services\StatusesService;
+use Solspace\Addons\FreeformNext\Services\SubmissionsService;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 
 class FormController extends Controller
@@ -39,17 +55,17 @@ class FormController extends Controller
             [
                 [
                     1,
-                    "test",
-                    "schmest",
-                    "asd",
+                    'test',
+                    'schmest',
+                    'asd',
                     [
                         'name'  => 'selections[]',
                         'value' => 1,
                         'data'  => [
-                            'confirm' => lang('form') . ': <b>' . htmlentities("test", ENT_QUOTES) . '</b>'
-                        ]
-                    ]
-                ]
+                            'confirm' => lang('form') . ': <b>' . htmlentities("test", ENT_QUOTES) . '</b>',
+                        ],
+                    ],
+                ],
             ]
         );
 
@@ -76,9 +92,76 @@ class FormController extends Controller
             ->addJavascript('composer/app.js')
             ->setTemplateVariables(
                 [
-                    'form' => $form,
+                    'form'   => $form,
+                    'fields' => FieldRepository::getInstance()->getAllFields(false),
                 ]
             );
+
+        return $view;
+    }
+
+    /**
+     * @return AjaxView
+     * @throws \Exception
+     */
+    public function saveForm()
+    {
+        $view = new AjaxView();
+        $post = $_POST;
+
+        if (!isset($post['formId'])) {
+            throw new \Exception('No form ID specified');
+        }
+
+        if (!isset($post['composerState'])) {
+            throw new \Exception('No composer data present');
+        }
+
+        $formId        = $post['formId'];
+        $form          = FormRepository::getInstance()->getOrCreateForm($formId);
+        $composerState = json_decode($post['composerState'], true);
+
+        if ($this->getPost('duplicate', false)) {
+            $oldHandle = $composerState['composer']['properties']['form']['handle'];
+
+            if (preg_match('/^([a-zA-Z0-9]*[a-zA-Z]+)(\d+)$/', $oldHandle, $matches)) {
+                list($string, $mainPart, $iterator) = $matches;
+
+                $newHandle = $mainPart . ((int) $iterator + 1);
+            } else {
+                $newHandle = $oldHandle . '1';
+            }
+
+            $composerState['composer']['properties']['form']['handle'] = $newHandle;
+        }
+
+        $formsService = new FormsService();
+
+        try {
+            $formAttributes = new FormAttributes($formId, new EESession(), new EERequest());
+            $composer       = new Composer(
+                $composerState,
+                $formAttributes,
+                $formsService,
+                new SubmissionsService(),
+                new MailerService(),
+                new FilesService(),
+                new MailingListsService(),
+                new CrmService(),
+                new StatusesService(),
+                new EETranslator()
+            );
+        } catch (ComposerException $exception) {
+            $view->addError($exception->getMessage());
+
+            return $view;
+        }
+
+        $form->setLayout($composer);
+        $form->save();
+
+        $view->addVariable('id', $form->id);
+        $view->addVariable('handle', $form->handle);
 
         return $view;
     }

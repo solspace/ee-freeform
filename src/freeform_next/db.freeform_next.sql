@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_forms` (
     `name`                  VARCHAR(255) NOT NULL,
     `handle`                VARCHAR(255) NOT NULL,
     `spamBlockCount`        INT(10)                DEFAULT '0',
-    `submissionTitleFormat` VARCHAR(255) NOT NULL,
     `description`           TEXT,
     `layoutJson`            TEXT         NOT NULL,
     `returnUrl`             VARCHAR(255)           DEFAULT NULL,

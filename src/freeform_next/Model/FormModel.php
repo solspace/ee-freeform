@@ -27,10 +27,10 @@ use Solspace\Addons\FreeformNext\Services\SubmissionsService;
 
 /**
  * @property int    $id
- * @property int    $site_id
+ * @property int    $siteId
  * @property string $name
  * @property string $handle
- * @property int $spamBlockCount
+ * @property int    $spamBlockCount
  * @property string $description
  * @property string $layoutJson
  * @property string $returnUrl
@@ -40,11 +40,13 @@ use Solspace\Addons\FreeformNext\Services\SubmissionsService;
  */
 class FormModel extends Model
 {
+    const MODEL = 'freeform_next:FormModel';
+
     protected static $_primary_key = 'id';
     protected static $_table_name  = 'freeform_next_forms';
 
     protected $id;
-    protected $site_id;
+    protected $siteId;
     protected $name;
     protected $handle;
     protected $spamBlockCount;
@@ -61,17 +63,15 @@ class FormModel extends Model
     /**
      * Creates a Form object with default settings
      *
-     * @param int $siteId
-     *
      * @return FormModel
      */
-    public static function create($siteId)
+    public static function create()
     {
         /** @var FormModel $form */
         $form = ee('Model')->make(
-            'freeform_next:FormModel',
+            self::MODEL,
             [
-                'site_id' => $siteId,
+                'siteId' => ee()->config->item('site_id'),
             ]
         );
 
@@ -96,13 +96,17 @@ class FormModel extends Model
      */
     public function setLayout(Composer $composer)
     {
-        $form                        = $composer->getForm();
-        $this->name                  = $form->getName();
-        $this->handle                = $form->getHandle();
-        $this->description           = $form->getDescription();
-        $this->defaultStatus         = $form->getDefaultStatus();
-        $this->returnUrl             = $form->getReturnUrl();
-        $this->layoutJson            = $composer->getComposerStateJSON();
+        $form = $composer->getForm();
+        $this->set(
+            [
+                'name'          => $form->getName(),
+                'handle'        => $form->getHandle(),
+                'description'   => $form->getDescription(),
+                'defaultStatus' => $form->getDefaultStatus(),
+                'returnUrl'     => $form->getReturnUrl(),
+                'layoutJson'    => $composer->getComposerStateJSON(),
+            ]
+        );
     }
 
     /**
@@ -112,7 +116,7 @@ class FormModel extends Model
      */
     public function getComposer()
     {
-        $composerState = json_decode($this->layoutJson, true);
+        $composerState  = json_decode($this->layoutJson, true);
         $formAttributes = $this->getFormAttributes();
 
         return $this->composer = new Composer(

@@ -13,7 +13,7 @@ namespace Solspace\Addons\FreeformNext\Utilities\ControlPanel;
 
 use Solspace\Addons\FreeformNext\Utilities\AddonInfo;
 
-class CpView
+class CpView extends View
 {
     /** @var string */
     private $template;
@@ -50,7 +50,7 @@ class CpView
     /**
      * @return string
      */
-    public function renderBody()
+    public function compile()
     {
         foreach ($this->javascriptList as $path) {
             ee()->cp->load_package_js(preg_replace('/\.js$/is', '', $path));

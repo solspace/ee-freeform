@@ -31,7 +31,7 @@ abstract class Repository
     }
 
     /**
-     * @return Repository|FormRepository
+     * @return Repository|mixed
      */
     public static function getInstance()
     {

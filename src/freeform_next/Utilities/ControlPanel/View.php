@@ -9,24 +9,18 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-namespace Solspace\Addons\FreeformNext\Controllers;
+/**
+ * Created by PhpStorm.
+ * User: gustavs
+ * Date: 17.13.2
+ * Time: 11:24
+ */
+namespace Solspace\Addons\FreeformNext\Utilities\ControlPanel;
 
-abstract class Controller
+abstract class View
 {
     /**
-     * @param string $key
-     * @param mixed  $defaultValue
-     *
      * @return mixed
      */
-    protected function getPost($key, $defaultValue = null)
-    {
-        $value = ee()->input->post($key);
-
-        if ($value === false) {
-            return $defaultValue;
-        }
-
-        return $value;
-    }
+    abstract public function compile();
 }

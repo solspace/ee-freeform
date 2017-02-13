@@ -41,6 +41,10 @@ class Freeform_FieldsService extends BaseApplicationComponent
             self::$allFieldsLoaded = true;
         }
 
+        if (!$indexById) {
+            return array_values(self::$fieldCache);
+        }
+
         return self::$fieldCache;
     }
 

@@ -9,8 +9,13 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
+use Solspace\Addons\FreeformNext\Controllers\FieldController;
 use Solspace\Addons\FreeformNext\Controllers\FormController;
+use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
+use Solspace\Addons\FreeformNext\Model\FormModel;
+use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\Navigation;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanelView;
@@ -28,25 +33,60 @@ class Freeform_next_mcp extends ControlPanelView
     }
 
     /**
+     * @param int|string|null $formId
+     *
      * @return array
+     * @throws \Exception
+     * @throws FreeformException
      */
-    public function new_form()
+    public function forms($formId = null)
     {
-        $form     = FormRepository::getInstance()->getOrCreateForm();
-        $composer = $form->getComposer();
-        $test     = $composer->getComposerStateJSON();
+        if (isset($_POST['composerState'])) {
+            $this->renderAjaxView($this->getFormController()->saveForm());
+        }
 
-        return $this->renderView($this->getFormController()->editForm($form));
+        if (null !== $formId) {
+            if (strtolower($formId) === 'new') {
+                $form = FormModel::create();
+            } else {
+                $form = FormRepository::getInstance()->getFormById($formId);
+            }
+
+            if (!$form) {
+                throw new FreeformException("Form doesn't exist");
+            }
+
+            return $this->renderView($this->getFormController()->editForm($form));
+        }
+
+        return $this->renderView($this->getFormController()->index());
     }
 
-    public function edit_form()
+    /**
+     * @return array
+     */
+    public function fields()
     {
+        if (!empty($_POST)) {
+            $this->renderAjaxView($this->getFieldController()->saveField());
+        }
 
+        $view = new AjaxView();
+        $view->setVariables(FieldRepository::getInstance()->getAllFields());
+
+        $this->renderAjaxView($view);
     }
 
     public function notifications()
     {
-        return $this->renderView();
+    }
+
+    public function templates()
+    {
+    }
+
+    public function finish_tutorial()
+    {
     }
 
     /**
@@ -55,7 +95,7 @@ class Freeform_next_mcp extends ControlPanelView
     protected function buildNavigation()
     {
         $forms = new NavigationLink('Forms');
-        $forms->setButtonLink(new NavigationLink('New', 'new_form'));
+        $forms->setButtonLink(new NavigationLink('New', 'forms/new'));
 
         $nav = new Navigation();
         $nav
@@ -73,8 +113,22 @@ class Freeform_next_mcp extends ControlPanelView
     {
         static $instance;
 
-        if (is_null($instance)) {
+        if (null === $instance) {
             $instance = new FormController();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @return FieldController
+     */
+    private function getFieldController()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new FieldController();
         }
 
         return $instance;
