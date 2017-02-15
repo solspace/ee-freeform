@@ -9,12 +9,6 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-/**
- * Created by PhpStorm.
- * User: gustavs
- * Date: 17.10.2
- * Time: 11:20
- */
 namespace Solspace\Addons\FreeformNext\Controllers;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;

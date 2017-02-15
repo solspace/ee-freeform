@@ -9,12 +9,6 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-/**
- * Created by PhpStorm.
- * User: gustavs
- * Date: 17.9.2
- * Time: 16:45
- */
 namespace Solspace\Addons\FreeformNext\Repositories;
 
 use Solspace\Addons\FreeformNext\Model\FieldModel;

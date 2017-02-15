@@ -9,15 +9,7 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-/**
- * Created by PhpStorm.
- * User: gustavs
- * Date: 17.8.2
- * Time: 17:12
- */
-
 namespace Solspace\Addons\FreeformNext\Services;
-
 
 use Solspace\Addons\FreeformNext\Library\Database\MailingListHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\ListNotFoundException;

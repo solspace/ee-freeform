@@ -9,12 +9,6 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-/**
- * Created by PhpStorm.
- * User: gustavs
- * Date: 17.13.2
- * Time: 16:34
- */
 namespace Solspace\Addons\FreeformNext\Repositories;
 
 class NotificationRepository extends Repository
@@ -25,5 +19,11 @@ class NotificationRepository extends Repository
     public static function getInstance()
     {
         return parent::getInstance();
+    }
+
+    public function getAllNotifications()
+    {
+        ee('Model')
+            ->get()
     }
 }

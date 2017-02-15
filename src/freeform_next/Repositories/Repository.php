@@ -19,7 +19,7 @@ abstract class Repository
     /**
      * Repository constructor.
      */
-    protected function __construct()
+    private final function __construct()
     {
     }
 

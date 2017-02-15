@@ -9,13 +9,6 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-/**
- * Created by PhpStorm.
- * User: gustavs
- * Date: 17.8.2
- * Time: 17:09
- */
-
 namespace Solspace\Addons\FreeformNext\Library\Session;
 
 class EERequest implements RequestInterface

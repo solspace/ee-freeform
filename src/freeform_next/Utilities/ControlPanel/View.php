@@ -9,12 +9,6 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-/**
- * Created by PhpStorm.
- * User: gustavs
- * Date: 17.13.2
- * Time: 11:24
- */
 namespace Solspace\Addons\FreeformNext\Utilities\ControlPanel;
 
 abstract class View
