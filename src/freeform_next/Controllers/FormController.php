@@ -51,24 +51,25 @@ class FormController extends Controller
             ]
         );
 
-        $table->setData(
-            [
+        $forms = FormRepository::getInstance()->getAllForms();
+
+        $tableData = [];
+        foreach ($forms as $form) {
+            $tableData[] = [
+                $form->id,
+                $form->name,
+                0,
+                0,
                 [
-                    1,
-                    'test',
-                    'schmest',
-                    'asd',
-                    [
-                        'name'  => 'selections[]',
-                        'value' => 1,
-                        'data'  => [
-                            'confirm' => lang('form') . ': <b>' . htmlentities("test", ENT_QUOTES) . '</b>',
-                        ],
+                    'name'  => 'selections[]',
+                    'value' => $form->id,
+                    'data'  => [
+                        'confirm' => lang('form') . ': <b>' . htmlentities("test", ENT_QUOTES) . '</b>',
                     ],
                 ],
-            ]
-        );
-
+            ];
+        }
+        $table->setData($tableData);
         $table->setNoResultsText('No reults');
 
         $view = new CpView('form/listing', ['table' => $table->viewData()]);

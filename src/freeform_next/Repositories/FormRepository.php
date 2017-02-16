@@ -43,6 +43,17 @@ class FormRepository extends Repository
     }
 
     /**
+     * @return FormModel[]
+     */
+    public function getAllForms()
+    {
+        return ee('Model')
+            ->get(FormModel::MODEL)
+            ->all()
+            ->asArray();
+    }
+
+    /**
      * @param int $id
      *
      * @return FormModel|null
