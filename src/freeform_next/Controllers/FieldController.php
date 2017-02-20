@@ -66,20 +66,3 @@ class FieldController extends Controller
         return $view;
     }
 }
-
-//$field->label          = $this->getPost('label');
-//$field->notificationId = $this->getPost('notificationId');
-//$field->assetSourceId  = $this->getPost('assetSourceId');
-//$field->type           = $this->getPost('type');
-//$field->handle         = $this->getPost('handle');
-//$field->label          = $this->getPost('label');
-//$field->required       = $this->getPost('required');
-//$field->value          = $this->getPost('value');
-//$field->placeholder    = $this->getPost('placeholder');
-//$field->instructions   = $this->getPost('instructions');
-//$field->values         = $this->getPost('values');
-//$field->options        = $this->getPost('options');
-//$field->checked        = $this->getPost('checked');
-//$field->rows           = $this->getPost('rows');
-//$field->fileKinds      = $this->getPost('fileKinds');
-//$field->maxFileSizeKB  = $this->getPost('maxFileSizeKB');

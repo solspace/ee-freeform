@@ -65,4 +65,18 @@ class FormRepository extends Repository
             ->filter('id', $id)
             ->first();
     }
+
+    /**
+     * @param string $idOrHandle
+     *
+     * @return FormModel|null
+     */
+    public function getFormByIdOrHandle($idOrHandle)
+    {
+        return ee('Model')
+            ->get(FormModel::MODEL)
+            ->filter('id', $idOrHandle)
+            ->orFilter('handle', $idOrHandle)
+            ->first();
+    }
 }

@@ -13,6 +13,7 @@ namespace Solspace\Addons\FreeformNext\Model;
 
 use EllisLab\ExpressionEngine\Service\Model\Model;
 use Solspace\Addons\FreeformNext\Library\Composer\Attributes\FormAttributes;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Composer\Composer;
 use Solspace\Addons\FreeformNext\Library\Session\EERequest;
 use Solspace\Addons\FreeformNext\Library\Session\EESession;
@@ -131,6 +132,14 @@ class FormModel extends Model
             new StatusesService(),
             new EETranslator()
         );
+    }
+
+    /**
+     * @return Form
+     */
+    public function getForm()
+    {
+        return $this->getComposer()->getForm();
     }
 
     /**

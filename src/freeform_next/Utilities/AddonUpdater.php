@@ -12,7 +12,9 @@
 namespace Solspace\Addons\FreeformNext\Utilities;
 
 
-class AddonUpdater
+use Solspace\Addons\FreeformNext\Utilities\AddonUpdater\PluginAction;
+
+abstract class AddonUpdater
 {
     /**
      * has to be public, because EE..
@@ -42,6 +44,7 @@ class AddonUpdater
     {
         $this->insertSqlTables();
         $this->installModule();
+        $this->installActions();
 
         return true;
     }
@@ -67,6 +70,8 @@ class AddonUpdater
                 'module_name' => $this->getAddonInfo()->getModuleName(),
             ]
         );
+
+        $this->deleteActions();
 
         return true;
     }
@@ -112,6 +117,13 @@ class AddonUpdater
     }
 
     /**
+     * Get an array of PluginAction objects
+     *
+     * @return PluginAction[]
+     */
+    protected abstract function getInstallableActions();
+
+    /**
      * @return AddonInfo
      */
     protected function getAddonInfo()
@@ -137,6 +149,23 @@ class AddonUpdater
     }
 
     /**
+     * Installs the module actions if any provided
+     */
+    private function installActions()
+    {
+        foreach ($this->getInstallableActions() as $action) {
+            ee()->db->insert(
+                'actions',
+                [
+                    'method'      => $action->getMethodName(),
+                    'class'       => $action->getClassName(),
+                    'csrf_exempt' => $action->isCsrfExempt(),
+                ]
+            );
+        }
+    }
+
+    /**
      * Iterates through all statements found in db.__module__.sql file
      * And executes them
      */
@@ -145,7 +174,7 @@ class AddonUpdater
         $addonInfo = $this->getAddonInfo();
 
         $sqlFileContents = file_get_contents(__DIR__ . "/../db." . $addonInfo->getLowerName() . ".sql");
-        $statements = explode(";", $sqlFileContents);
+        $statements      = explode(";", $sqlFileContents);
 
         foreach ($statements as $statement) {
             $statement = trim($statement);
@@ -173,6 +202,22 @@ class AddonUpdater
             foreach ($matches[1] as $tableName) {
                 ee()->db->query("DROP TABLE `$tableName`");
             }
+        }
+    }
+
+    /**
+     * Uninstall any actions that were installed with this plugin
+     */
+    private function deleteActions()
+    {
+        foreach ($this->getInstallableActions() as $action) {
+            ee()->db->delete(
+                'actions',
+                [
+                    'method' => $action->getMethodName(),
+                    'class'  => $action->getClassName(),
+                ]
+            );
         }
     }
 }

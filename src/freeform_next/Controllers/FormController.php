@@ -15,6 +15,7 @@ use EllisLab\ExpressionEngine\Library\CP\Table;
 use Solspace\Addons\FreeformNext\Library\Composer\Attributes\FormAttributes;
 use Solspace\Addons\FreeformNext\Library\Composer\Composer;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
+use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Session\EERequest;
 use Solspace\Addons\FreeformNext\Library\Session\EESession;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
@@ -122,11 +123,11 @@ class FormController extends Controller
         $post = $_POST;
 
         if (!isset($post['formId'])) {
-            throw new \Exception('No form ID specified');
+            throw new FreeformException('No form ID specified');
         }
 
         if (!isset($post['composerState'])) {
-            throw new \Exception('No composer data present');
+            throw new FreeformException('No composer data present');
         }
 
         $formId        = $post['formId'];

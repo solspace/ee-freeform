@@ -10,7 +10,17 @@
  */
 
 use Solspace\Addons\FreeformNext\Utilities\AddonUpdater;
+use Solspace\Addons\FreeformNext\Utilities\AddonUpdater\PluginAction;
 
 class Freeform_next_upd extends AddonUpdater
 {
+    /**
+     * @return array
+     */
+    protected function getInstallableActions()
+    {
+        return [
+            new PluginAction('submitForm', 'Freeform_next', true),
+        ];
+    }
 }

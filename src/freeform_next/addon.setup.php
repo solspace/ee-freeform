@@ -9,6 +9,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
+require_once __DIR__ . '/vendor/autoload.php';
+
 return [
     'author'         => 'Solspace',
     'author_url'     => 'https://solspace.com/expressionengine',

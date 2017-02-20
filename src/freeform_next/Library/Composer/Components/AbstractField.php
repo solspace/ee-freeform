@@ -19,6 +19,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\N
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\ObscureValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\StaticValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Properties\FieldProperties;
+use Solspace\Addons\FreeformNext\Library\Helpers\TwigHelper;
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -599,7 +600,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
      */
     private function renderRaw($output)
     {
-        return TemplateHelper::getRaw($output);
+        return TwigHelper::getRaw($output);
     }
 
     /**

@@ -40,7 +40,8 @@ use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
  */
 class FieldModel extends Model implements \JsonSerializable
 {
-    const MODEL = 'freeform_next:FieldModel';
+    const MODEL               = 'freeform_next:FieldModel';
+    const FIELD_COLUMN_PREFIX = 'field_';
 
     protected static $_primary_key = 'id';
     protected static $_table_name  = 'freeform_next_fields';
@@ -62,6 +63,20 @@ class FieldModel extends Model implements \JsonSerializable
     protected $rows;
     protected $fileKinds;
     protected $maxFileSizeKB;
+
+    protected static $_events = ['afterSave', 'afterDelete'];
+
+    /**
+     * Get the submission table field column name
+     *
+     * @param int $fieldId
+     *
+     * @return string
+     */
+    public static function getColumnName($fieldId)
+    {
+        return self::FIELD_COLUMN_PREFIX . $fieldId;
+    }
 
     /**
      * Creates a Field object with default settings
@@ -262,17 +277,38 @@ class FieldModel extends Model implements \JsonSerializable
      */
     public function getColumnType()
     {
-        $columnType = 'varchar';
+        $columnType = 'VARCHAR(255)';
 
         switch ($this->type) {
             case FieldInterface::TYPE_CHECKBOX_GROUP:
             case FieldInterface::TYPE_EMAIL:
             case FieldInterface::TYPE_TEXTAREA:
-                $columnType = 'text';
+                $columnType = 'TEXT';
 
                 break;
         }
 
         return $columnType;
+    }
+
+    /**
+     * Add a new column in the submissions table for this field
+     */
+    public function onAfterSave()
+    {
+        $columnName = self::getColumnName($this->id);
+        $type       = $this->getColumnType();
+
+        ee()->db->query("ALTER TABLE exp_freeform_next_submissions ADD COLUMN $columnName $type NULL DEFAULT NULL");
+    }
+
+    /**
+     * Drop the associated field column in submissions
+     */
+    public function onAfterDelete()
+    {
+        $columnName = self::getColumnName($this->id);
+
+        ee()->db->query("ALTER TABLE exp_freeform_next_submissions DROP COLUMN $columnName");
     }
 }

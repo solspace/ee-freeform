@@ -11,8 +11,6 @@
 
 namespace Solspace\Addons\FreeformNext\Library\Composer\Components;
 
-use Craft\Freeform_SubmissionModel;
-use Craft\TemplateHelper;
 use Solspace\Addons\FreeformNext\Library\Composer\Attributes\FormAttributes;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Attributes\CustomFormAttributes;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\FileUploadInterface;
@@ -24,9 +22,11 @@ use Solspace\Addons\FreeformNext\Library\Database\CRMHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Database\FormHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Database\MailingListHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Database\SubmissionHandlerInterface;
+use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FieldExceptions\FileUploadException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\FileUploads\FileUploadHandlerInterface;
+use Solspace\Addons\FreeformNext\Library\Helpers\TwigHelper;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
 use Solspace\Addons\FreeformNext\Library\Mailing\MailHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
@@ -190,7 +190,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      */
     public function getId()
     {
-        return (int)$this->id;
+        return (int) $this->id;
     }
 
     /**
@@ -278,7 +278,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      */
     public function isValid()
     {
-        if (!is_null($this->valid)) {
+        if (null !== $this->valid) {
             return $this->valid;
         }
 
@@ -397,7 +397,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
             if ($this->storeData) {
                 $submission = $this->saveStoredStateToDatabase();
             } else {
-                $submission = null;
+                $submission      = null;
                 $this->formSaved = true;
             }
             $this->sendOutEmailNotifications($submission);
@@ -421,6 +421,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      * @param array $customFormAttributes
      *
      * @return string
+     * @throws FreeformException
      */
     public function render(array $customFormAttributes = null)
     {
@@ -433,6 +434,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      * @param array $customFormAttributes
      *
      * @return string
+     * @throws FreeformException
      */
     public function renderTag(array $customFormAttributes = null)
     {
@@ -454,8 +456,14 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         $classAttribute = $customAttributes->getClass();
         $classAttribute = $classAttribute ? ' class="' . $classAttribute . '"' : '';
 
-        $actionAttribute = $customAttributes->getAction();
-        $actionAttribute = $actionAttribute ? ' action="' . $actionAttribute . '"' : "";
+        if ($customAttributes->getAction()) {
+            $actionAttribute = $customAttributes->getAction();
+        } else {
+            $actionId        = ee()->functions->fetch_action_id('Freeform_next', 'submitForm');
+            $actionAttribute = ee()->functions->fetch_site_index(0, 0) . QUERY_MARKER . 'ACT=' . $actionId;
+        }
+
+        $actionAttribute = ' action="' . $actionAttribute . '"';
 
         $output = sprintf(
                 '<form %s%s%s%s%s%s%s>',
@@ -468,13 +476,15 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
                 $customAttributes->getFormAttributesAsString()
             ) . PHP_EOL;
 
-        if (!$customAttributes->getAction()) {
-            $output .= '<input type="hidden" name="action" value="' . $this->formAttributes->getActionUrl() . '" />';
-        }
-
         if ($customAttributes->getReturnUrl()) {
             $output .= '<input type="hidden" name="' . self::RETURN_URI_KEY . '" value="' . $customAttributes->getReturnUrl() . '" />';
         }
+
+        $output .= '<input '
+            . 'type="hidden" '
+            . 'name="csrf_token" '
+            . 'value="' . CSRF_TOKEN . '" '
+            . '/>';
 
         $output .= '<input '
             . 'type="hidden" '
@@ -500,7 +510,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
             }
         }
 
-        return TemplateHelper::getRaw($output);
+        return TwigHelper::getRaw($output);
     }
 
     /**
@@ -508,7 +518,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      */
     public function renderClosingTag()
     {
-        return TemplateHelper::getRaw('</form>');
+        return TwigHelper::getRaw('</form>');
     }
 
     /**
@@ -555,6 +565,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      * @param array|null $attributes
      *
      * @return $this
+     * @throws FreeformException
      */
     public function setAttributes(array $attributes = null)
     {
@@ -584,7 +595,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
             throw new FreeformException(
                 $this->getTranslator()->translate(
                     "The provided page index '{pageIndex}' does not exist in form '{formName}'",
-                    ["pageIndex" => $index, "formName" => $this->getName()]
+                    ['pageIndex' => $index, 'formName' => $this->getName()]
                 )
             );
         }
@@ -647,8 +658,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
             . "<label>Leave this field blank</label>"
             . $output
             . '</div>'
-            . '<script type="text/javascript">document.getElementById("' . $honeypot->getName(
-            ) . '").value = "' . $honeypot->getHash() . '";</script>';
+            . '<script type="text/javascript">document.getElementById("' . $honeypot->getName() . '").value = "' . $honeypot->getHash() . '";</script>';
 
         return $output;
     }
@@ -752,6 +762,8 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
 
     /**
      * Push the submitted data to the mapped fields of a CRM integration
+     *
+     * @throws ComposerException
      */
     private function pushToCRM()
     {
@@ -769,16 +781,16 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      *
      * @return mixed data which can be serialized by <b>json_encode</b>,
      */
-    function jsonSerialize()
+    public function jsonSerialize()
     {
         return [
-            "name"          => $this->name,
-            "handle"        => $this->handle,
-            "description"   => $this->description,
-            "returnUrl"     => $this->returnUrl,
-            "storeData"     => (bool)$this->storeData,
-            "defaultStatus" => $this->defaultStatus,
-            "formTemplate"  => $this->formTemplate,
+            'name'          => $this->name,
+            'handle'        => $this->handle,
+            'description'   => $this->description,
+            'returnUrl'     => $this->returnUrl,
+            'storeData'     => (bool) $this->storeData,
+            'defaultStatus' => $this->defaultStatus,
+            'formTemplate'  => $this->formTemplate,
         ];
     }
 
@@ -819,7 +831,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      */
     public function valid()
     {
-        return !is_null($this->key()) && $this->key() !== false;
+        return null !== $this->key() && $this->key() !== false;
     }
 
     /**
@@ -867,7 +879,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        throw new FreeformException("Form ArrayAccess does not allow for setting values");
+        throw new FreeformException('Form ArrayAccess does not allow for setting values');
     }
 
     /**
@@ -880,6 +892,6 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      */
     public function offsetUnset($offset)
     {
-        throw new FreeformException("Form ArrayAccess does not allow unsetting values");
+        throw new FreeformException('Form ArrayAccess does not allow unsetting values');
     }
 }
