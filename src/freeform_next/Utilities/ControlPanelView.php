@@ -14,6 +14,7 @@ namespace Solspace\Addons\FreeformNext\Utilities;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\Navigation;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 
 class ControlPanelView
 {
@@ -29,15 +30,24 @@ class ControlPanelView
     }
 
     /**
-     * @param CpView $view
+     * @param View $view
      *
      * @return array
      */
-    protected final function renderView(CpView $view)
+    protected final function renderView(View $view)
     {
+        if ($view instanceof AjaxView) {
+            header('Content-Type: application/json');
+            echo json_encode($view->compile());
+            die();
+        }
+
         $viewData = [
             'sidebar' => $view->isSidebarDisabled() ? null : $this->buildNavigation()->buildNavigationView(),
             'body'    => $view->compile(),
+            'breadcrumb' => array(
+                ee('CP/URL')->make('addons/settings/freeform_next')->compile() => lang('Freeform Next'),
+            ),
         ];
 
         if ($view->getHeading()) {
@@ -45,15 +55,5 @@ class ControlPanelView
         }
 
         return $viewData;
-    }
-
-    /**
-     * @param AjaxView $view
-     */
-    protected final function renderAjaxView(AjaxView $view)
-    {
-        header('Content-Type: application/json');
-        echo json_encode($view->compile());
-        die();
     }
 }

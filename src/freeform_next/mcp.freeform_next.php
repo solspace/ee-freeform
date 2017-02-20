@@ -11,10 +11,13 @@
 
 use Solspace\Addons\FreeformNext\Controllers\FieldController;
 use Solspace\Addons\FreeformNext\Controllers\FormController;
+use Solspace\Addons\FreeformNext\Controllers\NotificationController;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Model\FormModel;
+use Solspace\Addons\FreeformNext\Model\NotificationModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
+use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\Navigation;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
@@ -42,7 +45,7 @@ class Freeform_next_mcp extends ControlPanelView
     public function forms($formId = null)
     {
         if (isset($_POST['composerState'])) {
-            $this->renderAjaxView($this->getFormController()->saveForm());
+            $this->renderView($this->getFormController()->saveForm());
         }
 
         if (null !== $formId) {
@@ -68,17 +71,42 @@ class Freeform_next_mcp extends ControlPanelView
     public function fields()
     {
         if (!empty($_POST)) {
-            $this->renderAjaxView($this->getFieldController()->saveField());
+            $this->renderView($this->getFieldController()->saveField());
         }
 
         $view = new AjaxView();
         $view->setVariables(FieldRepository::getInstance()->getAllFields());
 
-        $this->renderAjaxView($view);
+        $this->renderView($view);
     }
 
-    public function notifications()
+    /**
+     * @param null $notificationId
+     *
+     * @return array
+     * @throws FreeformException
+     */
+    public function notifications($notificationId = null)
     {
+        if (isset($_POST['name'])) {
+            $this->renderView($this->getNotificationController()->createNotification());
+        }
+
+        if (null !== $notificationId) {
+            if (strtolower($notificationId) === 'new') {
+                $notification = NotificationModel::create();
+            } else {
+                $notification = NotificationRepository::getInstance()->getNotificationById($notificationId);
+            }
+
+            if (!$notification) {
+                throw new FreeformException("Notification doesn't exist");
+            }
+
+            return $this->renderView($this->getNotificationController()->editForm($notification));
+        }
+
+        return $this->renderView($this->getNotificationController()->index());
     }
 
     public function templates()
@@ -115,6 +143,20 @@ class Freeform_next_mcp extends ControlPanelView
 
         if (null === $instance) {
             $instance = new FormController();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @return NotificationController
+     */
+    private function getNotificationController()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new NotificationController();
         }
 
         return $instance;

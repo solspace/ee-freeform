@@ -11,12 +11,12 @@
 
 namespace Solspace\Addons\FreeformNext\Repositories;
 
-use Solspace\Addons\FreeformNext\Model\NotificationModel;
+use Solspace\Addons\FreeformNext\Model\StatusModel;
 
-class NotificationRepository extends Repository
+class StatusRepository extends Repository
 {
     /**
-     * @return NotificationRepository
+     * @return StatusRepository
      */
     public static function getInstance()
     {
@@ -24,12 +24,12 @@ class NotificationRepository extends Repository
     }
 
     /**
-     * @return NotificationModel[]
+     * @return StatusModel[]
      */
-    public function getAllNotifications()
+    public function getAllStatuses()
     {
         return ee('Model')
-            ->get(NotificationModel::MODEL)
+            ->get(StatusModel::MODEL)
             ->all()
             ->asArray();
     }
@@ -37,12 +37,12 @@ class NotificationRepository extends Repository
     /**
      * @param int $id
      *
-     * @return NotificationModel|null
+     * @return StatusModel|null
      */
     public function getNotificationById($id)
     {
         return ee('Model')
-            ->get(NotificationModel::MODEL)
+            ->get(StatusModel::MODEL)
             ->filter('id', $id)
             ->first();
     }

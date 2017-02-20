@@ -1,35 +1,39 @@
-<?php /** @var \Solspace\Addons\FreeformNext\Library\Composer\Components\Form $form */ ?>
+<?php
+/** @var \Solspace\Addons\FreeformNext\Model\FormModel $form */
+/** @var \Solspace\Addons\FreeformNext\Model\FieldModel[] $fields */
+/** @var \Solspace\Addons\FreeformNext\Model\NotificationModel[] $notifications */
+?>
 <div id="freeform-builder"></div>
 
 <script>
-    var formId = <?= $form->getId() ?: 'null' ?>;
-    var fieldList = <?= json_encode($fields) ?>;
+    var formId = <?php echo $form->getId() ?: 'null' ?>;
+    var fieldList = <?php echo json_encode($fields) ?>;
     var mailingList = [];
     var crmIntegrations = [];
-    var notificationList = [];
+    var notificationList = <?php echo json_encode($notifications) ?>;
     var solspaceFormTemplates = [];
     var formTemplateList = [];
-    var formStatuses = [];
+    var formStatuses = <?php echo json_encode($statuses) ?>;
     var assetSources = [];
     var fileKinds = [];
-    var composerState = <?= $form->getComposer()->getComposerStateJSON() ?>;
+    var composerState = <?php echo $form->getComposer()->getComposerStateJSON() ?>;
 
-    var baseUrl = "<?= ee('CP/URL', 'addons/settings/') ?>";
-    var saveUrl = "<?= ee('CP/URL', 'addons/settings/freeform_next/forms') ?>";
-    var formUrl = "<?= ee('CP/URL', 'addons/settings/freeform_next/forms/{id}') ?>";
-    var createFieldUrl = "<?= ee('CP/URL', 'addons/settings/freeform_next/fields') ?>";
-    var createNotificationUrl = "<?= ee('CP/URL', 'addons/settings/freeform_next/notifications') ?>";
-    var createTemplateUrl = "<?= ee('CP/URL', 'addons/settings/freeform_next/templates') ?>";
-    var finishTutorialUrl = "<?= ee('CP/URL', 'addons/settings/freeform_next/finish_tutorial') ?>";
+    var baseUrl = "<?php echo ee('CP/URL', 'addons/settings/') ?>";
+    var saveUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/forms') ?>";
+    var formUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/forms/{id}') ?>";
+    var createFieldUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/fields') ?>";
+    var createNotificationUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/notifications') ?>";
+    var createTemplateUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/templates') ?>";
+    var finishTutorialUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/finish_tutorial') ?>";
 
     var showTutorial = true;
     var canManageFields = true;
     var canManageNotifications = true;
     var canManageSettings = true;
 
-    var csrfToken = "<?= CSRF_TOKEN ?>";
+    var csrfToken = "<?php echo CSRF_TOKEN ?>";
 </script>
 
-<script src="<?= URL_THIRD_THEMES ?>freeform_next/javascript/composer/vendors.js"></script>
-<script src="<?= URL_THIRD_THEMES ?>freeform_next/javascript/composer/app.js"></script>
-<link rel="stylesheet" href="<?= URL_THIRD_THEMES ?>freeform_next/css/builder.css" />
+<script src="<?php echo URL_THIRD_THEMES ?>freeform_next/javascript/composer/vendors.js"></script>
+<script src="<?php echo URL_THIRD_THEMES ?>freeform_next/javascript/composer/app.js"></script>
+<link rel="stylesheet" href="<?php echo URL_THIRD_THEMES ?>freeform_next/css/builder.css" />

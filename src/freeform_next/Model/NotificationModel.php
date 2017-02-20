@@ -13,7 +13,24 @@ namespace Solspace\Addons\FreeformNext\Model;
 
 use EllisLab\ExpressionEngine\Service\Model\Model;
 
-class NotificationModel extends Model
+/**
+ * Class NotificationModel
+ *
+ * @property int    $id
+ * @property int    $siteId
+ * @property string $name
+ * @property string $handle
+ * @property string $description
+ * @property string $fromName
+ * @property string $fromEmail
+ * @property string $replyToEmail
+ * @property bool   $includeAttachments
+ * @property string $subject
+ * @property string $bodyHtml
+ * @property string $bodyText
+ * @property int    $sortOrder
+ */
+class NotificationModel extends Model implements \JsonSerializable
 {
     const MODEL = 'freeform_next:NotificationModel';
 
@@ -22,38 +39,65 @@ class NotificationModel extends Model
 
     protected $id;
     protected $siteId;
-    protected $type;
+    protected $name;
     protected $handle;
-    protected $label;
-    protected $required;
-    protected $value;
-    protected $checked;
-    protected $placeholder;
-    protected $instructions;
-    protected $values;
-    protected $options;
-    protected $notificationId;
-    protected $assetSourceId;
-    protected $rows;
-    protected $fileKinds;
-    protected $maxFileSizeKB;
+    protected $description;
+    protected $fromName;
+    protected $fromEmail;
+    protected $replyToEmail;
+    protected $includeAttachments;
+    protected $subject;
+    protected $bodyHtml;
+    protected $bodyText;
+    protected $sortOrder;
 
     /**
      * Creates a Field object with default settings
      *
-     * @return FieldModel
+     * @return NotificationModel
      */
     public static function create()
     {
+        $body = <<<EOT
+<p>Submitted on: {{ dateCreated|date('Y-m-d H:i:s') }}</p>
+<ul>
+{% for field in allFields %}
+    <li>{{ field.label }}: {{ field.getValueAsString() }}</li>
+{% endfor %}
+</ul>
+EOT;
+
         /** @var FieldModel $field */
-        $field = ee('Model')->make(
+        $model = ee('Model')->make(
             self::MODEL,
             [
-                'siteId'   => ee()->config->item('site_id'),
-                'required' => false,
+                'siteId'    => ee()->config->item('site_id'),
+                'fromName'  => ee()->config->item('webmaster_name'),
+                'fromEmail' => ee()->config->item('webmaster_email'),
+                'subject'   => 'New submission from {{ form.name }}',
+                'bodyHtml'  => $body,
+                'bodyText'  => $body,
             ]
         );
 
-        return $field;
+        return $model;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     *
+     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     *        which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'id'          => (int) $this->id,
+            'name'        => $this->name,
+            'handle'      => $this->handle,
+            'description' => $this->description,
+        ];
     }
 }

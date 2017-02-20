@@ -21,6 +21,8 @@ use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
 use Solspace\Addons\FreeformNext\Model\FormModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
+use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
+use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Services\CrmService;
 use Solspace\Addons\FreeformNext\Services\FilesService;
 use Solspace\Addons\FreeformNext\Services\FormsService;
@@ -46,7 +48,7 @@ class FormController extends Controller
                 'id'          => ['type' => Table::COL_ID],
                 'form'        => ['type' => 'html'],
                 'submissions' => ['type' => 'html'],
-                'manage'      => ['type' => 'html'],
+                'manage'      => ['type' => Table::COL_TOOLBAR],
                 ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
             ]
         );
@@ -59,7 +61,14 @@ class FormController extends Controller
                 $form->id,
                 $form->name,
                 0,
-                0,
+                [
+                    'toolbar_items' => [
+                        'edit' => [
+                            'href'  => ee('CP/URL', 'addons/settings/freeform_next/forms/' . $form->id),
+                            'title' => lang('edit'),
+                        ],
+                    ],
+                ],
                 [
                     'name'  => 'selections[]',
                     'value' => $form->id,
@@ -70,7 +79,7 @@ class FormController extends Controller
             ];
         }
         $table->setData($tableData);
-        $table->setNoResultsText('No reults');
+        $table->setNoResultsText('No results');
 
         $view = new CpView('form/listing', ['table' => $table->viewData()]);
         $view->setHeading(lang('Forms'));
@@ -93,8 +102,10 @@ class FormController extends Controller
             ->addJavascript('composer/app.js')
             ->setTemplateVariables(
                 [
-                    'form'   => $form,
-                    'fields' => FieldRepository::getInstance()->getAllFields(false),
+                    'form'          => $form,
+                    'fields'        => FieldRepository::getInstance()->getAllFields(false),
+                    'notifications' => NotificationRepository::getInstance()->getAllNotifications(),
+                    'statuses'      => StatusRepository::getInstance()->getAllStatuses(),
                 ]
             );
 
