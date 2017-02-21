@@ -40,11 +40,11 @@ use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
  */
 class FieldModel extends Model implements \JsonSerializable
 {
-    const MODEL               = 'freeform_next:FieldModel';
-    const FIELD_COLUMN_PREFIX = 'field_';
+    const MODEL = 'freeform_next:FieldModel';
+    const TABLE = 'freeform_next_fields';
 
     protected static $_primary_key = 'id';
-    protected static $_table_name  = 'freeform_next_fields';
+    protected static $_table_name  = self::TABLE;
 
     protected $id;
     protected $siteId;
@@ -65,18 +65,6 @@ class FieldModel extends Model implements \JsonSerializable
     protected $maxFileSizeKB;
 
     protected static $_events = ['afterSave', 'afterDelete'];
-
-    /**
-     * Get the submission table field column name
-     *
-     * @param int $fieldId
-     *
-     * @return string
-     */
-    public static function getColumnName($fieldId)
-    {
-        return self::FIELD_COLUMN_PREFIX . $fieldId;
-    }
 
     /**
      * Creates a Field object with default settings
@@ -292,11 +280,31 @@ class FieldModel extends Model implements \JsonSerializable
     }
 
     /**
+     * @return string
+     */
+    public function getEEColumnType()
+    {
+        $columnType = 'string';
+
+        switch ($this->type) {
+            case FieldInterface::TYPE_CHECKBOX_GROUP:
+            case FieldInterface::TYPE_DYNAMIC_RECIPIENTS:
+            case FieldInterface::TYPE_EMAIL:
+            case FieldInterface::TYPE_RADIO_GROUP:
+                $columnType = 'json';
+
+                break;
+        }
+
+        return $columnType;
+    }
+
+    /**
      * Add a new column in the submissions table for this field
      */
     public function onAfterSave()
     {
-        $columnName = self::getColumnName($this->id);
+        $columnName = SubmissionModel::getFieldColumnName($this->id);
         $type       = $this->getColumnType();
 
         ee()->db->query("ALTER TABLE exp_freeform_next_submissions ADD COLUMN $columnName $type NULL DEFAULT NULL");
@@ -307,7 +315,7 @@ class FieldModel extends Model implements \JsonSerializable
      */
     public function onAfterDelete()
     {
-        $columnName = self::getColumnName($this->id);
+        $columnName = SubmissionModel::getFieldColumnName($this->id);
 
         ee()->db->query("ALTER TABLE exp_freeform_next_submissions DROP COLUMN $columnName");
     }

@@ -33,9 +33,10 @@ use EllisLab\ExpressionEngine\Service\Model\Model;
 class NotificationModel extends Model implements \JsonSerializable
 {
     const MODEL = 'freeform_next:NotificationModel';
+    const TABLE = 'freeform_next_notifications';
 
     protected static $_primary_key = 'id';
-    protected static $_table_name  = 'freeform_next_notifications';
+    protected static $_table_name  = self::TABLE;
 
     protected $id;
     protected $siteId;

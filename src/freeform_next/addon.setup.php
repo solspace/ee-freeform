@@ -26,5 +26,6 @@ return [
         'FieldModel'        => 'Model\FieldModel',
         'NotificationModel' => 'Model\NotificationModel',
         'StatusModel'       => 'Model\StatusModel',
+        'SubmissionModel'   => 'Model\SubmissionModel',
     ],
 ];

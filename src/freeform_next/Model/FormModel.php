@@ -42,9 +42,10 @@ use Solspace\Addons\FreeformNext\Services\SubmissionsService;
 class FormModel extends Model
 {
     const MODEL = 'freeform_next:FormModel';
+    const TABLE = 'freeform_next_forms';
 
     protected static $_primary_key = 'id';
-    protected static $_table_name  = 'freeform_next_forms';
+    protected static $_table_name  = self::TABLE;
 
     protected $id;
     protected $siteId;

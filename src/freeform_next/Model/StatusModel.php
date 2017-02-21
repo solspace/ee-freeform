@@ -27,9 +27,10 @@ use EllisLab\ExpressionEngine\Service\Model\Model;
 class StatusModel extends Model implements \JsonSerializable
 {
     const MODEL = 'freeform_next:StatusModel';
+    const TABLE = 'freeform_next_statuses';
 
     protected static $_primary_key = 'id';
-    protected static $_table_name  = 'freeform_next_statuses';
+    protected static $_table_name  = self::TABLE;
 
     protected $id;
     protected $siteId;
