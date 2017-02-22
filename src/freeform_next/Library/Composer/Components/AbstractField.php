@@ -14,6 +14,7 @@ namespace Solspace\Addons\FreeformNext\Library\Composer\Components;
 use Craft\TemplateHelper;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Attributes\CustomFieldAttributes;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\InputOnlyInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoRenderInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\ObscureValueInterface;
@@ -263,6 +264,14 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
         $this->errors = $this->validate();
 
         return empty($this->errors);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isArrayValue()
+    {
+        return $this instanceof MultipleValueInterface;
     }
 
     /**

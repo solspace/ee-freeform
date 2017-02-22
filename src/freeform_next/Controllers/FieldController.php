@@ -17,7 +17,12 @@ use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 
 class FieldController extends Controller
 {
-    public function saveField($fieldId = null)
+    /**
+     * @param int|null $fieldId
+     *
+     * @return AjaxView
+     */
+    public function save($fieldId = null)
     {
         $view = new AjaxView();
         $field = FieldRepository::getInstance()->getOrCreateField($fieldId);

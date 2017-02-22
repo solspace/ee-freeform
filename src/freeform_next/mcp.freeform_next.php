@@ -12,12 +12,14 @@
 use Solspace\Addons\FreeformNext\Controllers\FieldController;
 use Solspace\Addons\FreeformNext\Controllers\FormController;
 use Solspace\Addons\FreeformNext\Controllers\NotificationController;
+use Solspace\Addons\FreeformNext\Controllers\SubmissionController;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Model\FormModel;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
+use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\Navigation;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
@@ -45,7 +47,7 @@ class Freeform_next_mcp extends ControlPanelView
     public function forms($formId = null)
     {
         if (isset($_POST['composerState'])) {
-            $this->renderView($this->getFormController()->saveForm());
+            $this->renderView($this->getFormController()->save());
         }
 
         if (null !== $formId) {
@@ -59,7 +61,7 @@ class Freeform_next_mcp extends ControlPanelView
                 throw new FreeformException("Form doesn't exist");
             }
 
-            return $this->renderView($this->getFormController()->editForm($form));
+            return $this->renderView($this->getFormController()->edit($form));
         }
 
         return $this->renderView($this->getFormController()->index());
@@ -71,7 +73,7 @@ class Freeform_next_mcp extends ControlPanelView
     public function fields()
     {
         if (!empty($_POST)) {
-            $this->renderView($this->getFieldController()->saveField());
+            $this->renderView($this->getFieldController()->save());
         }
 
         $view = new AjaxView();
@@ -89,7 +91,7 @@ class Freeform_next_mcp extends ControlPanelView
     public function notifications($notificationId = null)
     {
         if (isset($_POST['name'])) {
-            $this->renderView($this->getNotificationController()->createNotification());
+            $this->renderView($this->getNotificationController()->create());
         }
 
         if (null !== $notificationId) {
@@ -107,6 +109,29 @@ class Freeform_next_mcp extends ControlPanelView
         }
 
         return $this->renderView($this->getNotificationController()->index());
+    }
+
+    /**
+     * @param string   $formHandle
+     * @param int|null $submissionId
+     *
+     * @return array
+     */
+    public function submissions($formHandle, $submissionId = null)
+    {
+        $formModel = FormRepository::getInstance()->getFormByIdOrHandle($formHandle);
+        $form      = $formModel->getForm();
+
+        if ($submissionId) {
+            $submission = SubmissionRepository::getInstance()->getSubmission($form, $submissionId);
+
+            if ($submission) {
+                echo $submission->title;
+                die();
+            }
+        }
+
+        return $this->renderView($this->getSubmissionController()->index($form));
     }
 
     public function templates()
@@ -143,6 +168,20 @@ class Freeform_next_mcp extends ControlPanelView
 
         if (null === $instance) {
             $instance = new FormController();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @return SubmissionController
+     */
+    private function getSubmissionController()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new SubmissionController();
         }
 
         return $instance;

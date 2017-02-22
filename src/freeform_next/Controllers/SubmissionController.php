@@ -13,6 +13,9 @@ namespace Solspace\Addons\FreeformNext\Controllers;
 
 use EllisLab\ExpressionEngine\Library\CP\Table;
 use Solspace\Addons\FreeformNext\Library\Composer\Attributes\FormAttributes;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Composer\Composer;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
@@ -35,55 +38,81 @@ use Solspace\Addons\FreeformNext\Services\SubmissionsService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 
-class FormController extends Controller
+class SubmissionController extends Controller
 {
     /**
      * @return CpView
      */
-    public function index()
+    public function index(Form $form)
     {
-        /** @var Table $table */
-        $table = ee('CP/Table', ['sortable' => false, 'searchable' => false]);
+        $submissions = SubmissionRepository::getInstance()->getAllSubmissionsFor($form);
 
-        $table->setColumns(
+        /** @var AbstractField[] $showableFields */
+        $showableFields = [];
+        foreach ($form->getLayout()->getFields() as $field) {
+            if ($field instanceof NoStorageInterface) {
+                continue;
+            }
+
+            $showableFields[] = $field;
+        }
+
+        /** @var Table $table */
+        $table = ee('CP/Table', ['sortable' => true, 'searchable' => true]);
+
+        $columns = [
+            'id'    => ['type' => Table::COL_ID],
+            'title' => ['type' => Table::COL_TEXT],
+        ];
+
+        foreach ($showableFields as $field) {
+            $columns[$field->getLabel()] = ['type' => Table::COL_TEXT];
+        }
+
+        $columns = array_merge(
+            $columns,
             [
-                'id'          => ['type' => Table::COL_ID],
-                'form'        => ['type' => 'html'],
-                'submissions' => ['type' => Table::COL_TEXT],
-                'manage'      => ['type' => Table::COL_TOOLBAR],
+                'manage' => ['type' => Table::COL_TOOLBAR],
                 ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
             ]
         );
 
-        $forms = FormRepository::getInstance()->getAllForms();
-        $submissionTotals = SubmissionRepository::getInstance()->getSubmissionTotalsPerForm();
+        $table->setColumns($columns);
 
         $tableData = [];
-        foreach ($forms as $form) {
-            $tableData[] = [
-                $form->id,
-                $form->name,
-                [
-                    'content' => isset($submissionTotals[$form->id]) ? $submissionTotals[$form->id] : 0,
-                    'href'    => ee('CP/URL', 'addons/settings/freeform_next/submissions/' . $form->handle),
-                ],
-                [
-                    'toolbar_items' => [
-                        'edit' => [
-                            'href'  => ee('CP/URL', 'addons/settings/freeform_next/forms/' . $form->id),
-                            'title' => lang('edit'),
-                        ],
-                    ],
-                ],
-                [
-                    'name'  => 'selections[]',
-                    'value' => $form->id,
-                    'data'  => [
-                        'confirm' => lang('form') . ': <b>' . htmlentities("test", ENT_QUOTES) . '</b>',
+        foreach ($submissions as $submission) {
+            $data = [
+                $submission->id,
+                $submission->title,
+            ];
+
+            foreach ($showableFields as $field) {
+                $data[] = $submission->getFieldValueAsString($field->getHandle());
+            }
+
+            $data[] = [
+                'toolbar_items' => [
+                    'edit' => [
+                        'href'  => ee(
+                            'CP/URL',
+                            'addons/settings/freeform_next/submissions/' . $form->getHandle() . '/' . $submission->id
+                        ),
+                        'title' => lang('edit'),
                     ],
                 ],
             ];
+
+            $data[] = [
+                'name'  => 'selections[]',
+                'value' => $submission->id,
+                'data'  => [
+                    'confirm' => lang('form') . ': <b>' . htmlentities("test", ENT_QUOTES) . '</b>',
+                ],
+            ];
+
+            $tableData[] = $data;
         }
+
         $table->setData($tableData);
         $table->setNoResultsText('No results');
 

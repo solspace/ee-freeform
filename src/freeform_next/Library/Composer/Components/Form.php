@@ -31,6 +31,7 @@ use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
 use Solspace\Addons\FreeformNext\Library\Mailing\MailHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
 use Solspace\Addons\FreeformNext\Library\Translations\TranslatorInterface;
+use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 
 class Form implements \JsonSerializable, \Iterator, \ArrayAccess
 {
@@ -682,9 +683,11 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
     /**
      * Send out any email notifications
      *
-     * @param Freeform_SubmissionModel $submission
+     * @param SubmissionModel $submission
+     *
+     * @throws ComposerException
      */
-    private function sendOutEmailNotifications(Freeform_SubmissionModel $submission = null)
+    private function sendOutEmailNotifications(SubmissionModel $submission = null)
     {
         $adminNotifications = $this->properties->getAdminNotificationProperties();
         if ($adminNotifications->getNotificationId()) {

@@ -12,10 +12,14 @@
 namespace Solspace\Addons\FreeformNext\Model;
 
 use EllisLab\ExpressionEngine\Service\Model\Model;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
+use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
+use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 
 /**
  * Class FieldModel
@@ -33,6 +37,12 @@ class SubmissionModel extends Model
 
     const FIELD_COLUMN_PREFIX = 'field_';
 
+    /** @var AbstractField[] */
+    private static $fieldMetadata = [];
+
+    /** @var array */
+    private static $handleToFieldIdMap = [];
+
     protected static $_primary_key = 'id';
     protected static $_table_name  = self::TABLE;
 
@@ -41,6 +51,9 @@ class SubmissionModel extends Model
     protected $statusId;
     protected $formId;
     protected $title;
+
+    /** @var array */
+    private $fieldValues;
 
     /**
      * Get the submission table field column name
@@ -57,19 +70,108 @@ class SubmissionModel extends Model
     /**
      * Creates a Field object with default settings
      *
+     * @param Form  $form
+     * @param array $fetchedValues
+     *
      * @return SubmissionModel
      */
-    public static function create()
+    public static function create(Form $form, array $fetchedValues)
     {
-        /** @var SubmissionModel $field */
-        $field = ee('Model')->make(
+        /** @var SubmissionModel $submission */
+        $submission = ee('Model')->make(
             self::MODEL,
             [
-                'siteId' => ee()->config->item('site_id'),
+                'siteId'   => ee()->config->item('site_id'),
+                'formId'   => $form->getId(),
+                'statusId' => $form->getDefaultStatus(),
             ]
         );
 
-        return $field;
+        foreach ($fetchedValues as $key => $value) {
+            if (property_exists(__CLASS__, $key)) {
+                $submission->{$key} = $value;
+            } else if (preg_match('/^' . SubmissionModel::FIELD_COLUMN_PREFIX . '(\d+)$/', $key, $matches)) {
+                $fieldId = (int) $matches[1];
+                $submission->setFieldColumnValue($fieldId, $value);
+            } else {
+                $submission->setFieldValue($key, $value);
+            }
+        }
+
+        return $submission;
+    }
+
+    /**
+     * Creates a Field object with default settings
+     *
+     * @param Form  $form
+     * @param array $fetchedValues
+     *
+     * @return SubmissionModel
+     */
+    public static function createFromDatabase(Form $form, array $fetchedValues)
+    {
+        /** @var SubmissionModel $submission */
+        $submission = ee('Model')->make(
+            self::MODEL,
+            [
+                'id'       => $fetchedValues['id'],
+                'siteId'   => $fetchedValues['siteId'],
+                'formId'   => $fetchedValues['formId'],
+                'statusId' => $fetchedValues['statusId'],
+                'title'    => $fetchedValues['title'],
+            ]
+        );
+
+        foreach ($fetchedValues as $key => $value) {
+            if (preg_match('/^' . SubmissionModel::FIELD_COLUMN_PREFIX . '(\d+)$/', $key, $matches)) {
+                $fieldId = (int) $matches[1];
+                $submission->setFieldColumnValue($fieldId, $value);
+            }
+        }
+
+        return $submission;
+    }
+
+    /**
+     * @param int $formId
+     *
+     * @return AbstractField
+     */
+    private static function getFieldMetadataByFormId($formId)
+    {
+        if (!isset(self::$fieldMetadata[$formId])) {
+            $form   = FormRepository::getInstance()->getFormById($formId);
+            $fields = $form->getComposer()->getForm()->getLayout()->getFieldsByHandle();
+
+            $metadataArray      = [];
+            $handleToFieldIdMap = [];
+            foreach ($fields as $field) {
+                $id     = $field->getId();
+                $handle = $field->getHandle();
+
+                $metadataArray[$id]          = $field;
+                $handleToFieldIdMap[$handle] = $id;
+            }
+
+            self::$fieldMetadata[$formId]      = $metadataArray;
+            self::$handleToFieldIdMap[$formId] = $handleToFieldIdMap;
+        }
+
+        return self::$fieldMetadata[$formId];
+    }
+
+    /**
+     * @param int $formId
+     * @param int $fieldId
+     *
+     * @return AbstractField
+     */
+    private static function getFieldMetadataById($formId, $fieldId)
+    {
+        $metadata = self::getFieldMetadataByFormId($formId);
+
+        return $metadata[$fieldId];
     }
 
     /**
@@ -78,5 +180,131 @@ class SubmissionModel extends Model
     public function getHash()
     {
         return HashHelper::hash($this->id);
+    }
+
+    /**
+     * @param string $handle
+     *
+     * @return string
+     * @throws FreeformException
+     */
+    public function getFieldValue($handle)
+    {
+        if (!$this->fieldValues[$handle]) {
+            throw new FreeformException(sprintf('Field "%s" not in found in form', $handle));
+        }
+
+        return $this->fieldValues[$handle];
+    }
+
+    /**
+     * @param string $handle
+     *
+     * @return string
+     * @throws FreeformException
+     */
+    public function getFieldValueAsString($handle)
+    {
+        if (!$this->fieldValues[$handle]) {
+            throw new FreeformException(sprintf('Field "%s" not in found in form', $handle));
+        }
+
+        $value = $this->fieldValues[$handle];
+
+        if (is_array($value)) {
+            $value = implode(', ', $value);
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param string $handle
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public function setFieldValue($handle, $value)
+    {
+        $this->fieldValues[$handle] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Overriding the SAVE method
+     */
+    public function save()
+    {
+        $insertData = [
+            'siteId'   => $this->siteId,
+            'formId'   => $this->formId,
+            'statusId' => $this->statusId,
+            'title'    => $this->title,
+        ];
+
+        $insertData = array_merge($insertData, $this->assembleInsertData());
+
+        if ($this->id) {
+            ee()->db
+                ->where(['id' => $this->id])
+                ->update(
+                    self::TABLE,
+                    $insertData
+                );
+        } else {
+            ee()->db
+                ->insert(
+                    self::TABLE,
+                    $insertData
+                );
+
+            $this->id = ee()->db->insert_id();
+        }
+    }
+
+    /**
+     * @param int   $fieldId
+     * @param mixed $value
+     *
+     * @return $this
+     */
+    private function setFieldColumnValue($fieldId, $value)
+    {
+        $field = self::getFieldMetadataById($this->formId, $fieldId);
+
+        if ($field->isArrayValue()) {
+            $value = json_decode($value, true);
+        }
+
+        $this->fieldValues[$field->getHandle()] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    private function assembleInsertData()
+    {
+        if (!isset(self::$handleToFieldIdMap[$this->formId])) {
+            self::getFieldMetadataByFormId($this->formId);
+        }
+
+        $insertData = [];
+        foreach ($this->fieldValues as $key => $value) {
+            $id         = self::$handleToFieldIdMap[$this->formId][$key];
+            $columnName = self::getFieldColumnName($id);
+
+            $field = self::getFieldMetadataById($this->formId, $id);
+
+            if ($field->isArrayValue()) {
+                $value = json_encode($value);
+            }
+
+            $insertData[$columnName] = $value;
+        }
+
+        return $insertData;
     }
 }

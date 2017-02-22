@@ -81,9 +81,9 @@ class NotificationController extends Controller
     }
 
     /**
-     *
+     * @return AjaxView
      */
-    public function createNotification()
+    public function create()
     {
         $view = new AjaxView();
         $notification = NotificationModel::create();
@@ -101,7 +101,7 @@ class NotificationController extends Controller
      *
      * @return CpView
      */
-    public function editNotification(NotificationModel $notification)
+    public function edit(NotificationModel $notification)
     {
         $view = new CpView('form/edit');
         $view
@@ -119,7 +119,7 @@ class NotificationController extends Controller
      * @return AjaxView
      * @throws \Exception
      */
-    public function saveNotification()
+    public function save()
     {
         $post = $_POST;
 

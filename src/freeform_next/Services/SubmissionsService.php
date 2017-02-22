@@ -11,7 +11,7 @@
 
 namespace Solspace\Addons\FreeformNext\Services;
 
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\ObscureValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\StaticValueInterface;
@@ -22,6 +22,14 @@ use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 
 class SubmissionsService implements SubmissionHandlerInterface
 {
+    /**
+     * @param Form            $form
+     * @param AbstractField[] $fields
+     *
+     * @return SubmissionModel|null
+     * @throws \Twig_Error_Syntax
+     * @throws \Twig_Error_Loader
+     */
     public function storeSubmission(Form $form, array $fields)
     {
         $savableFields = [];
@@ -30,8 +38,7 @@ class SubmissionsService implements SubmissionHandlerInterface
                 continue;
             }
 
-            $columnName = SubmissionModel::getFieldColumnName($field->getId());
-            $value      = $field->getValue();
+            $value = $field->getValue();
 
             // Since the value is obfuscated, we have to get the real value
             if ($field instanceof ObscureValueInterface) {
@@ -42,21 +49,13 @@ class SubmissionsService implements SubmissionHandlerInterface
                 }
             }
 
-            if ($field instanceof MultipleValueInterface) {
-                $value = json_encode($value);
-            }
-
-            $savableFields[$columnName] = $value;
+            $savableFields[$field->getHandle()] = $value;
         }
 
-        $insertData = [
-            'siteId'   => ee()->config->item('site_id'),
-            'formId'   => $form->getId(),
-            'statusId' => $form->getDefaultStatus(),
-        ];
+        $submission = SubmissionModel::create($form, $savableFields);
 
-        $fieldsByHandle      = $form->getLayout()->getFieldsByHandle();
-        $insertData['title'] = TwigHelper::renderString(
+        $fieldsByHandle = $form->getLayout()->getFieldsByHandle();
+        $submission->title = TwigHelper::renderString(
             $form->getSubmissionTitleFormat(),
             array_merge(
                 $fieldsByHandle,
@@ -67,22 +66,16 @@ class SubmissionsService implements SubmissionHandlerInterface
             )
         );
 
-        foreach ($savableFields as $fieldName => $value) {
-            $insertData[$fieldName] = $value;
+        foreach ($savableFields as $handle => $value) {
+            $submission->setFieldValue($handle, $value);
         }
 
-        ee()->db
-            ->insert(
-                SubmissionModel::TABLE,
-                $insertData
-            );
+        $submission->save();
 
-        $submissionId = ee()->db->insert_id();
-
-        if ($submissionId) {
+        if ($submission->id) {
             $this->finalizeFormFiles($form);
 
-            return $submissionId;
+            return $submission;
         }
 
         return null;

@@ -117,18 +117,4 @@ class Freeform_Next extends Plugin
             }
         }
     }
-
-    /**
-     * @return FormsService
-     */
-    private function getFormService()
-    {
-        static $service;
-
-        if (null === $service) {
-            $service = new FormsService();
-        }
-
-        return $service;
-    }
 }

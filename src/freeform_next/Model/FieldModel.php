@@ -280,23 +280,18 @@ class FieldModel extends Model implements \JsonSerializable
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getEEColumnType()
+    public function isSerializable()
     {
-        $columnType = 'string';
-
         switch ($this->type) {
             case FieldInterface::TYPE_CHECKBOX_GROUP:
             case FieldInterface::TYPE_DYNAMIC_RECIPIENTS:
             case FieldInterface::TYPE_EMAIL:
-            case FieldInterface::TYPE_RADIO_GROUP:
-                $columnType = 'json';
-
-                break;
+                return true;
         }
 
-        return $columnType;
+        return false;
     }
 
     /**
