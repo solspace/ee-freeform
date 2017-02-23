@@ -36,7 +36,7 @@ export function fetchFormTemplatesIfNeeded() {
     if (shouldFetchFormTemplates(getState())) {
       dispatch(requestFormTemplates());
 
-      const url = urlBuilder("freeform/api/formTemplates");
+      const url = urlBuilder("freeform_next/form_templates");
       return fetch(url, {credentials: 'same-origin'})
         .then(response => response.json())
         .then(json => {

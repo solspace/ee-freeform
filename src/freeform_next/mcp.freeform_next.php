@@ -97,6 +97,11 @@ class Freeform_next_mcp extends ControlPanelView
         if (null !== $notificationId) {
             if (strtolower($notificationId) === 'new') {
                 $notification = NotificationModel::create();
+            } else if (strtolower($notificationId) === 'list') {
+                $ajaxView = new AjaxView();
+                $ajaxView->setVariables(NotificationRepository::getInstance()->getAllNotifications());
+
+                $this->renderView($ajaxView);
             } else {
                 $notification = NotificationRepository::getInstance()->getNotificationById($notificationId);
             }
@@ -126,7 +131,7 @@ class Freeform_next_mcp extends ControlPanelView
             $submission = SubmissionRepository::getInstance()->getSubmission($form, $submissionId);
 
             if ($submission) {
-                echo $submission->title;
+                echo $submission->firstName;
                 die();
             }
         }

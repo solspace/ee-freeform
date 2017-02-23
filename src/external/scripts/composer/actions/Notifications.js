@@ -37,7 +37,7 @@ export function fetchNotificationsIfNeeded(hash = null, autoselectId = null) {
     if (shouldFetchNotifications(getState())) {
       dispatch(requestNotifications());
 
-      const url = urlBuilder("freeform/api/notifications");
+      const url = urlBuilder("freeform_next/notifications/list");
       return fetch(url, {credentials: 'same-origin'})
         .then(response => response.json())
         .then(json => {

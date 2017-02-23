@@ -171,7 +171,21 @@ class SubmissionModel extends Model
     {
         $metadata = self::getFieldMetadataByFormId($formId);
 
-        return $metadata[$fieldId];
+        return isset($metadata[$fieldId]) ? $metadata[$fieldId] : null;
+    }
+
+    /**
+     * @param String $key
+     *
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        if (isset($this->fieldValues[$key])) {
+            return $this->fieldValues[$key];
+        }
+
+        return parent::__get($key);
     }
 
     /**
@@ -205,7 +219,7 @@ class SubmissionModel extends Model
      */
     public function getFieldValueAsString($handle)
     {
-        if (!$this->fieldValues[$handle]) {
+        if (!array_key_exists($handle, $this->fieldValues)) {
             throw new FreeformException(sprintf('Field "%s" not in found in form', $handle));
         }
 
@@ -272,6 +286,10 @@ class SubmissionModel extends Model
     private function setFieldColumnValue($fieldId, $value)
     {
         $field = self::getFieldMetadataById($this->formId, $fieldId);
+
+        if (!$field) {
+            return $this;
+        }
 
         if ($field->isArrayValue()) {
             $value = json_decode($value, true);
