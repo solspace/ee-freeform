@@ -156,7 +156,7 @@ class FormValueContext implements \JsonSerializable
      */
     public function getStoredValue($fieldName, $default = null)
     {
-        if (is_null($fieldName)) {
+        if (null === $fieldName) {
             return null;
         }
 
@@ -164,7 +164,7 @@ class FormValueContext implements \JsonSerializable
             if ($this->hasPageBeenPosted()) {
                 $value = $this->request->getPost($fieldName);
 
-                if (!is_null($value)) {
+                if (null !== $value) {
                     return $value;
                 } else if (isset($this->storedValues[$fieldName])) {
                     return $this->storedValues[$fieldName];
@@ -204,6 +204,7 @@ class FormValueContext implements \JsonSerializable
      */
     public function isHoneypotValid()
     {
+        /** @var array $postValues */
         $postValues = $this->request->getPost(null);
 
         foreach ($postValues as $key => $value) {
@@ -298,8 +299,8 @@ class FormValueContext implements \JsonSerializable
         if ($sessionHash && $sessionState) {
             $sessionState = json_decode($sessionState, true);
 
-            $this->currentPageIndex = $sessionState["currentPageIndex"];
-            $this->storedValues     = $sessionState["storedValues"];
+            $this->currentPageIndex = $sessionState['currentPageIndex'];
+            $this->storedValues     = $sessionState['storedValues'];
         } else {
             $this->currentPageIndex = self::DEFAULT_PAGE_INDEX;
             $this->storedValues     = [];
@@ -313,10 +314,10 @@ class FormValueContext implements \JsonSerializable
      */
     public function hasFormBeenPosted()
     {
-        if (is_null($this->formIsPosted)) {
+        if (null === $this->formIsPosted) {
             $postedHash = $this->getPostedHash();
 
-            if (is_null($postedHash)) {
+            if (null === $postedHash) {
                 return false;
             }
 
@@ -336,10 +337,10 @@ class FormValueContext implements \JsonSerializable
      */
     public function hasPageBeenPosted()
     {
-        if (is_null($this->pageIsPosted)) {
+        if (null === $this->pageIsPosted) {
             $postedHash = $this->getPostedHash();
 
-            if (is_null($postedHash) || !$this->hasFormBeenPosted()) {
+            if (null === $postedHash || !$this->hasFormBeenPosted()) {
                 return false;
             }
 
@@ -367,7 +368,7 @@ class FormValueContext implements \JsonSerializable
      */
     private function getSessionHash($hash = null)
     {
-        if (is_null($hash)) {
+        if (null === $hash) {
             $hash = $this->getPostedHash();
         }
 
@@ -375,7 +376,7 @@ class FormValueContext implements \JsonSerializable
 
         if ($formIdHash === $this->hashFormId()) {
             return sprintf(
-                "%s%s%s",
+                '%s%s%s',
                 $formIdHash,
                 self::FORM_HASH_DELIMITER,
                 $payload
@@ -395,14 +396,17 @@ class FormValueContext implements \JsonSerializable
         // Attempt to fetch hashes from POST data
         list($formIdHash, $_, $payload) = self::getHashParts($this->getPostedHash());
 
+        $formId = self::getFormIdFromHash($this->getPostedHash());
+        $isFormIdMatching = $formId === $this->formId;
+
         // Only generate a new hash if the content indexes don' match with the posted hash
         // Or if there is no posted hash
-        $generateNew = !($formIdHash && $payload);
+        $generateNew = !$isFormIdMatching || !($formIdHash && $payload);
 
         if ($generateNew) {
-            $random  = time() . rand(111, 999);
+            $random  = time() . mt_rand(111, 999);
             $hash    = sha1($random);
-            $payload = uniqid($hash);
+            $payload = uniqid($hash, false);
 
             $formIdHash = HashHelper::hash($this->formId);
         }
@@ -410,7 +414,7 @@ class FormValueContext implements \JsonSerializable
         $hashedPageIndex = $this->hashPageIndex();
 
         return sprintf(
-            "%s%s%s%s%s",
+            '%s%s%s%s%s',
             $formIdHash,
             self::FORM_HASH_DELIMITER,
             $hashedPageIndex,
@@ -440,7 +444,8 @@ class FormValueContext implements \JsonSerializable
      */
     private function getHoneypotList()
     {
-        $sessionHoneypotList = json_decode($this->session->get(self::FORM_HONEYPOT_KEY, "[]"), true);
+        /** @var array $sessionHoneypotList */
+        $sessionHoneypotList = json_decode($this->session->get(self::FORM_HONEYPOT_KEY, '[]'), true);
         if (!empty($sessionHoneypotList)) {
             foreach ($sessionHoneypotList as $index => $unserialized) {
                 $sessionHoneypotList[$index] = Honeypot::createFromUnserializedData($unserialized);
@@ -543,8 +548,8 @@ class FormValueContext implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            "currentPageIndex" => $this->currentPageIndex,
-            "storedValues"     => $this->storedValues,
+            'currentPageIndex' => $this->currentPageIndex,
+            'storedValues'     => $this->storedValues,
         ];
     }
 }

@@ -150,7 +150,7 @@ class FormModel extends Model
     {
         $attributes = new FormAttributes($this->id, new EESession(), new EERequest());
         $attributes
-            ->setActionUrl("index.php?/form/save")
+            ->setActionUrl(null)
             ->setCsrfEnabled(false)
             ->setCsrfToken(null)
             ->setCsrfTokenName(null);

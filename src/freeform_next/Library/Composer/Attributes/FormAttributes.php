@@ -49,7 +49,7 @@ class FormAttributes
     public function __construct($formId, SessionInterface $session, RequestInterface $request)
     {
         $this->id     = $formId;
-        $this->method = "POST";
+        $this->method = 'POST';
         $this->setFormValueContext($session, $request);
     }
 
@@ -180,7 +180,7 @@ class FormAttributes
         $hashPrefix = HashHelper::hash($this->id);
 
         $this->formValueContext = $session->get(
-            $hashPrefix . "_form_context",
+            $hashPrefix . '_form_context',
             new FormValueContext($this->getId(), $session, $request)
         );
     }
