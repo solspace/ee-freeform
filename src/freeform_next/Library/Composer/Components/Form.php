@@ -124,6 +124,8 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      * @param MailingListHandlerInterface $mailingListHandler
      * @param CRMHandlerInterface         $crmHandler
      * @param TranslatorInterface         $translator
+     *
+     * @throws FreeformException
      */
     public function __construct(
         Properties $properties,
@@ -413,6 +415,9 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         $formValueContext->advanceToNextPage();
         $formValueContext->saveState();
 
+        $this->setCurrentPage($this->getPageIndexFromContext());
+        $this->currentPageRows = $this->currentPage->getRows();
+
         return true;
     }
 
@@ -457,14 +462,8 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         $classAttribute = $customAttributes->getClass();
         $classAttribute = $classAttribute ? ' class="' . $classAttribute . '"' : '';
 
-        if ($customAttributes->getAction()) {
-            $actionAttribute = $customAttributes->getAction();
-        } else {
-            $actionId        = ee()->functions->fetch_action_id('Freeform_next', 'submitForm');
-            $actionAttribute = ee()->functions->fetch_site_index(0, 0) . QUERY_MARKER . 'ACT=' . $actionId;
-        }
-
-        $actionAttribute = ' action="' . $actionAttribute . '"';
+        $actionAttribute = $customAttributes->getAction();
+        $actionAttribute = $actionAttribute ? ' action="' . $actionAttribute . '"' : '';
 
         $output = sprintf(
                 '<form %s%s%s%s%s%s%s>',
@@ -644,7 +643,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      */
     private function getHoneyPotInput()
     {
-        $random = time() . rand(111, 999) . (time() + 999);
+        $random = time() . mt_rand(111, 999) . (time() + 999);
         $hash   = substr(sha1($random), 0, 6);
 
         $honeypot = $this->getFormValueContext()->getNewHoneypot();
@@ -656,7 +655,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
             . '/>';
 
         $output = '<div style="position: absolute !important; width: 0 !important; height: 0 !important; overflow: hidden !important;">'
-            . "<label>Leave this field blank</label>"
+            . '<label>Leave this field blank</label>'
             . $output
             . '</div>'
             . '<script type="text/javascript">document.getElementById("' . $honeypot->getName() . '").value = "' . $honeypot->getHash() . '";</script>';

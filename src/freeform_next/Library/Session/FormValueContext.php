@@ -232,7 +232,7 @@ class FormValueContext implements \JsonSerializable
     public function shouldFormWalkToPreviousPage()
     {
         if ($this->hasPageBeenPosted()) {
-            return !is_null($this->request->getPost(SubmitField::PREVIOUS_PAGE_INPUT_NAME));
+            return isset($_POST[SubmitField::PREVIOUS_PAGE_INPUT_NAME]);
         }
 
         return false;

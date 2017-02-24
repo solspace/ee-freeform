@@ -24,32 +24,37 @@ class Freeform_Next extends Plugin
      */
     public function render()
     {
-        $idOrHandle = $this->getParam('form');
-        $form       = FormRepository::getInstance()->getFormByIdOrHandle($idOrHandle);
+        $handle = $this->getParam('form');
+        $id     = $this->getParam('form_id');
+
+        $hash       = $this->getPost(FormValueContext::FORM_HASH_KEY, null);
+        $form       = null;
+        if (null !== $hash) {
+            $this->submitForm();
+        }
+
+        $formModel = FormRepository::getInstance()->getFormByIdOrHandle($id ? $id : $handle);
+        $form = $formModel->getForm();
 
         if (!$form) {
             throw new FreeformException('Form not found');
         }
 
-        $form = $form->getComposer()->getForm();
-
         $loader = new Twig_Loader_Filesystem(__DIR__ . '/Templates/form');
-        $twig = new Twig_Environment($loader);
+        $twig   = new Twig_Environment($loader);
 
-        $test = ee()->functions->fetch_action_id('Freeform_next', 'submitForm');
-
-        return $twig->render("test.html", ['form' => $form]);
+        return $twig->render('test.html', ['form' => $form]);
 
         return "Form: {$form->getName()}";
     }
 
     /**
-     * @return mixed
+     * @return Form|null
      * @throws \Twig_Error_Syntax
      * @throws \Twig_Error_Loader
-     * @throws \Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException
+     * @throws FreeformException
      */
-    public function submitForm()
+    private function submitForm()
     {
         $hash   = $this->getPost(FormValueContext::FORM_HASH_KEY, null);
         $formId = FormValueContext::getFormIdFromHash($hash);
@@ -57,7 +62,7 @@ class Freeform_Next extends Plugin
         $formModel = FormRepository::getInstance()->getFormById($formId);
 
         if (!$formModel) {
-            throw new FreeformException(lang('Form with ID {id} not found', ['id' => $formId]));
+            return null;
         }
 
         $form          = $formModel->getForm();

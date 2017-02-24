@@ -11,6 +11,10 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+if (!session_id()) {
+    session_start();
+}
+
 return [
     'author'         => 'Solspace',
     'author_url'     => 'https://solspace.com/expressionengine',

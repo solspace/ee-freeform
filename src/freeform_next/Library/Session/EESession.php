@@ -27,10 +27,14 @@ class EESession implements SessionInterface
     /**
      * @param string $key
      * @param mixed  $value
+     *
+     * @return $this
      */
     public function set($key, $value)
     {
         $_SESSION[$key] = $value;
+
+        return $this;
     }
 
     /**
