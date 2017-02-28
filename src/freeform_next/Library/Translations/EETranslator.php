@@ -30,6 +30,12 @@ class EETranslator implements TranslatorInterface
      */
     public function translate($string, array $variables = [])
     {
-        return lang($string);//, $variables);
+        $string = lang($string);
+
+        foreach ($variables as $key => $val) {
+            $string = str_replace('{' . $key . '}', $val, $string);
+        }
+
+        return $string;
     }
 }
