@@ -2,6 +2,9 @@
 /** @var \Solspace\Addons\FreeformNext\Model\FormModel $form */
 /** @var \Solspace\Addons\FreeformNext\Model\FieldModel[] $fields */
 /** @var \Solspace\Addons\FreeformNext\Model\NotificationModel[] $notifications */
+/** @var \Solspace\Addons\FreeformNext\Model\StatusModel[] $statuses */
+/** @var array $assetSources */
+/** @var array $fileKinds */
 ?>
 <div id="freeform-builder"></div>
 
@@ -14,8 +17,8 @@
     var solspaceFormTemplates = [];
     var formTemplateList = [];
     var formStatuses = <?php echo json_encode($statuses) ?>;
-    var assetSources = [];
-    var fileKinds = [];
+    var assetSources = <?php echo json_encode($assetSources) ?>;
+    var fileKinds = <?php echo json_encode($fileKinds) ?>;
     var composerState = <?php echo $form->getComposer()->getComposerStateJSON() ?>;
 
     var baseUrl = "<?php echo ee('CP/URL', 'addons/settings/') ?>";

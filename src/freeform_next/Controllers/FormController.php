@@ -21,6 +21,7 @@ use Solspace\Addons\FreeformNext\Library\Session\EESession;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
 use Solspace\Addons\FreeformNext\Model\FormModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
+use Solspace\Addons\FreeformNext\Repositories\FileRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
@@ -100,6 +101,8 @@ class FormController extends Controller
      */
     public function edit(FormModel $form)
     {
+        $fileService = new FilesService();
+
         $view = new CpView('form/edit');
         $view
             ->setHeading('Freeform')
@@ -112,6 +115,8 @@ class FormController extends Controller
                     'fields'        => FieldRepository::getInstance()->getAllFields(false),
                     'notifications' => NotificationRepository::getInstance()->getAllNotifications(),
                     'statuses'      => StatusRepository::getInstance()->getAllStatuses(),
+                    'assetSources'  => FileRepository::getInstance()->getAllAssetSources(),
+                    'fileKinds'     => $fileService->getFileKinds(),
                 ]
             );
 

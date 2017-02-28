@@ -116,6 +116,8 @@ export default class SaveButton extends Component {
       })
     };
 
+    let count = 0;
+
     const shouldGotoFormList = event.target.className.match(/gotoFormList/);
     const shouldGotoNewForm  = event.target.className.match(/gotoNewForm/);
     const duplicateForm      = event.target.className.match(/duplicateForm/);
@@ -131,8 +133,8 @@ export default class SaveButton extends Component {
       .then((xhr, response) => {
         this.setState({isSaving: false});
 
-        if (response.success) {
-          var url = formUrl.replace('{id}', response.id);
+        if (!response.errors) {
+          let url = formUrl.replace('{id}', response.id);
           history.pushState(response.id, '', url);
 
           updateFormId(response.id);

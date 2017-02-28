@@ -31,7 +31,6 @@ export default class File extends BasePropertyEditor {
       PropTypes.shape({
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
       })
     ).isRequired,
     allFileKinds: PropTypes.object.isRequired,

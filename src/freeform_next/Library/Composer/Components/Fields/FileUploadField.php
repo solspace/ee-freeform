@@ -80,10 +80,10 @@ class FileUploadField extends AbstractField implements SingleValueInterface, Fil
         $attributes = $this->getCustomAttributes();
 
         return '<input '
-            . $this->getAttributeString("name", $this->getHandle())
-            . $this->getAttributeString("type", $this->getType())
-            . $this->getAttributeString("id", $this->getIdAttribute())
-            . $this->getAttributeString("class", $attributes->getClass())
+            . $this->getAttributeString('name', $this->getHandle())
+            . $this->getAttributeString('type', $this->getType())
+            . $this->getAttributeString('id', $this->getIdAttribute())
+            . $this->getAttributeString('class', $attributes->getClass())
             . $this->getRequiredAttribute()
             . $attributes->getInputAttributesAsString()
             . '/>';
@@ -99,43 +99,43 @@ class FileUploadField extends AbstractField implements SingleValueInterface, Fil
         $uploadErrors = [];
 
         if (!array_key_exists($this->handle, self::$filesUploaded)) {
-            if (isset($_FILES[$this->handle]) && !empty($_FILES[$this->handle]["name"])) {
-                $extension       = pathinfo($_FILES[$this->handle]["name"], PATHINFO_EXTENSION);
+            if (isset($_FILES[$this->handle]) && !empty($_FILES[$this->handle]['name'])) {
+                $extension       = pathinfo($_FILES[$this->handle]['name'], PATHINFO_EXTENSION);
                 $validExtensions = $this->getValidExtensions();
 
-                if (empty($_FILES[$this->handle]["tmp_name"])) {
-                    $errorCode = $_FILES[$this->handle]["error"];
+                if (empty($_FILES[$this->handle]['tmp_name'])) {
+                    $errorCode = $_FILES[$this->handle]['error'];
 
                     switch ($errorCode) {
                         case UPLOAD_ERR_INI_SIZE:
                         case UPLOAD_ERR_FORM_SIZE:
-                            $uploadErrors[] = $this->translate("File size too large");
+                            $uploadErrors[] = $this->translate('File size too large');
                             break;
 
                         case UPLOAD_ERR_PARTIAL:
-                            $uploadErrors[] = $this->translate("The file was only partially uploaded");
+                            $uploadErrors[] = $this->translate('The file was only partially uploaded');
                             break;
                     }
-                    $uploadErrors[] = $this->translate("Could not upload file");
+                    $uploadErrors[] = $this->translate('Could not upload file');
                 }
 
                 // Check for the correct file extension
                 if (!in_array(strtolower($extension), $validExtensions)) {
                     $uploadErrors[] = $this->translate(
-                        "'{extension}' is not an allowed file extension",
-                        ["extension" => $extension]
+                        '"{extension}" is not an allowed file extension',
+                        ['extension' => $extension]
                     );
                 }
 
-                $fileSizeKB = ceil($_FILES[$this->handle]["size"] / 1024);
+                $fileSizeKB = ceil($_FILES[$this->handle]['size'] / 1024);
                 if ($fileSizeKB > $this->getMaxFileSizeKB()) {
                     $uploadErrors[] = $this->translate(
-                        "You tried uploading {fileSize}KB, but the maximum file upload size is {maxFileSize}KB",
-                        ["fileSize" => $fileSizeKB, "maxFileSize" => $this->getMaxFileSizeKB()]
+                        'You tried uploading {fileSize}KB, but the maximum file upload size is {maxFileSize}KB',
+                        ['fileSize' => $fileSizeKB, 'maxFileSize' => $this->getMaxFileSizeKB()]
                     );
                 }
             } else if ($this->isRequired()) {
-                $uploadErrors[] = $this->translate("This field is required");
+                $uploadErrors[] = $this->translate('This field is required');
             }
 
             // if there are errors - prevent the file from being uploaded
@@ -174,12 +174,12 @@ class FileUploadField extends AbstractField implements SingleValueInterface, Fil
                 } else if ($response->getErrors()) {
                     $this->errors = array_merge($errors, $response->getErrors());
                     self::$filesUploadedErrors[$this->handle] = $this->errors;
-                    throw new FileUploadException(implode(". ", $response->getErrors()));
+                    throw new FileUploadException(implode('. ', $response->getErrors()));
                 }
 
                 $this->errors = array_merge($errors, $response->getErrors());
                 self::$filesUploadedErrors[$this->handle] = $this->errors;
-                throw new FileUploadException($this->translate("Could not upload file"));
+                throw new FileUploadException($this->translate('Could not upload file'));
             }
 
             return null;
@@ -207,12 +207,12 @@ class FileUploadField extends AbstractField implements SingleValueInterface, Fil
         if ($selectedFileKinds) {
             foreach ($selectedFileKinds as $kind) {
                 if (array_key_exists($kind, $allFileKinds)) {
-                    $allowedExtensions = array_merge($allowedExtensions, $allFileKinds[$kind]);
+                    $allowedExtensions = array_merge($allowedExtensions, $allFileKinds[$kind]['extensions']);
                 }
             }
         } else {
             foreach ($allFileKinds as $kind => $extensions) {
-                $allowedExtensions = array_merge($allowedExtensions, $extensions);
+                $allowedExtensions = array_merge($allowedExtensions, $extensions['extensions']);
             }
         }
 
