@@ -81,8 +81,23 @@ class SubmissionsService implements SubmissionHandlerInterface
         return null;
     }
 
+    /**
+     * @param Form $form
+     */
     public function finalizeFormFiles(Form $form)
     {
-        // TODO: Implement finalizeFormFiles() method.
+        $assetIds = [];
+
+        foreach ($form->getLayout()->getFileUploadFields() as $field) {
+            $assetIds[] = $field->getValue();
+        }
+
+        if (empty($assetIds)) {
+            return;
+        }
+
+        ee()->db
+            ->where_in('assetId', $assetIds)
+            ->delete('freeform_next_unfinalized_files');
     }
 }

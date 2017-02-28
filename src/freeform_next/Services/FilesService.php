@@ -63,19 +63,65 @@ class FilesService implements FileUploadHandlerInterface
             ]
         );
 
+        $this->markAssetUnfinalized($fileId);
+
         return new FileUploadResponse($fileId);
     }
 
+    /**
+     * Stores the unfinalized assetId in the database
+     * So that it can be deleted later if the form hasn't been finalized
+     *
+     * @param int $assetId
+     */
     public function markAssetUnfinalized($assetId)
     {
-        // TODO: Implement markAssetUnfinalized() method.
+        $date = new \DateTime();
+
+        ee()->db
+            ->insert(
+                'freeform_next_unfinalized_files',
+                [
+                    'assetId' => $assetId,
+                    'dateCreated' => $date->format('Y-m-d H:i:s'),
+                    'dateUpdated' => $date->format('Y-m-d H:i:s'),
+                ]
+            );
     }
 
+    /**
+     * Remove all unfinalized assets which are older than the TTL
+     * specified in settings
+     */
     public function cleanUpUnfinalizedAssets()
     {
-        // TODO: Implement cleanUpUnfinalizedAssets() method.
+        $date = new \DateTime('-180 minutes');
+
+        $results = ee()->db
+            ->select('id, assetId')
+            ->from('freeform_next_unfinalized_files')
+            ->where(['dateCreated <' => $date->format('Y-m-d H:i:s')])
+            ->get()
+            ->result_array();
+
+        $fileIds = [];
+        foreach ($results as $row) {
+            $fileIds[$row['id']] = $row['assetId'];
+        }
+
+        if ($fileIds) {
+            ee()->load->model('file_model');
+            ee()->file_model->delete_files($fileIds);
+
+            ee()->db
+                ->where_in('id', array_keys($fileIds))
+                ->delete('freeform_next_unfinalized_files');
+        }
     }
 
+    /**
+     * @return array
+     */
     public function getFileKinds()
     {
         if (null === self::$fileKinds) {

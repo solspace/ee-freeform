@@ -18,6 +18,12 @@ use Solspace\Addons\FreeformNext\Utilities\Plugin;
  */
 class Freeform_Next extends Plugin
 {
+    public function __construct()
+    {
+        $fileService = new \Solspace\Addons\FreeformNext\Services\FilesService();
+        $fileService->cleanUpUnfinalizedAssets();
+    }
+
     /**
      * @return string
      * @throws \Exception
