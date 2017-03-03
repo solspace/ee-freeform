@@ -14,6 +14,7 @@ namespace Solspace\Addons\FreeformNext\Controllers;
 use EllisLab\ExpressionEngine\Library\CP\Table;
 use Solspace\Addons\FreeformNext\Library\Composer\Attributes\FormAttributes;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Composer\Composer;
@@ -58,7 +59,12 @@ class SubmissionController extends Controller
         }
 
         /** @var Table $table */
-        $table = ee('CP/Table', ['sortable' => true, 'searchable' => true]);
+        $table = ee(
+            'CP/Table', [
+                'sortable'   => true,
+                'searchable' => true,
+            ]
+        );
 
         $columns = [
             'id'    => ['type' => Table::COL_ID],
@@ -66,7 +72,11 @@ class SubmissionController extends Controller
         ];
 
         foreach ($showableFields as $field) {
-            $columns[$field->getLabel()] = ['type' => Table::COL_TEXT];
+            if ($field instanceof FileUploadField) {
+                $columns[$field->getLabel()] = ['type' => Table::COL_TOOLBAR];
+            } else {
+                $columns[$field->getLabel()] = ['type' => Table::COL_TEXT];
+            }
         }
 
         $columns = array_merge(
@@ -79,6 +89,8 @@ class SubmissionController extends Controller
 
         $table->setColumns($columns);
 
+        ee()->javascript->set_global('file_view_url', ee('CP/URL')->make('files/file/view/###')->compile());
+
         $tableData = [];
         foreach ($submissions as $submission) {
             $data = [
@@ -87,7 +99,28 @@ class SubmissionController extends Controller
             ];
 
             foreach ($showableFields as $field) {
-                $data[] = $submission->getFieldValueAsString($field->getHandle());
+                $value = $submission->getFieldValueAsString($field->getHandle());
+
+                if ($field instanceof FileUploadField) {
+                    if ($value) {
+                        $data[] = [
+                            'toolbar_items' => [
+                                'edit'     => [
+                                    'href'  => ee('CP/URL', 'cp/files/file/edit/' . $value),
+                                    'title' => lang('edit'),
+                                ],
+                                'download' => [
+                                    'href'  => ee('CP/URL')->make('files/file/download/' . $value),
+                                    'title' => lang('download'),
+                                ],
+                            ],
+                        ];
+                    } else {
+                        $data[] = ['toolbar_items' => []];
+                    }
+                } else {
+                    $data[] = $value;
+                }
             }
 
             $data[] = [

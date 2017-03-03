@@ -23,7 +23,7 @@ class FormsService implements FormHandlerInterface
 
     public function isSpamProtectionEnabled()
     {
-        // TODO: Implement isSpamProtectionEnabled() method.
+        return true;
     }
 
     public function incrementSpamBlockCount(Form $form)

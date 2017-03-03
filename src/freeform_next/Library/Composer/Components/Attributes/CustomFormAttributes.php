@@ -226,7 +226,7 @@ class CustomFormAttributes extends AbstractAttributes
      */
     public function getInputAttributes()
     {
-        if (is_null($this->inputAttributes)) {
+        if (null === $this->inputAttributes) {
             return $this->inputAttributes;
         }
 
@@ -235,5 +235,21 @@ class CustomFormAttributes extends AbstractAttributes
         }
 
         return $this->inputAttributes;
+    }
+
+    /**
+     * @return array
+     */
+    public function getManifest()
+    {
+        $manifest = array_keys(get_object_vars($this));
+
+        return array_diff(
+            $manifest, [
+                'overrideValues',
+                'inputAttributes',
+                'formAttributes',
+            ]
+        );
     }
 }

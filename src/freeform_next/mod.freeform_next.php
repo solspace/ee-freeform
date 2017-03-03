@@ -1,12 +1,4 @@
 <?php
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
-use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
-use Solspace\Addons\FreeformNext\Library\Helpers\TwigHelper;
-use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
-use Solspace\Addons\FreeformNext\Repositories\FormRepository;
-use Solspace\Addons\FreeformNext\Services\FormsService;
-use Solspace\Addons\FreeformNext\Utilities\Plugin;
-
 /**
  * Freeform Next for Expression Engine
  *
@@ -16,6 +8,17 @@ use Solspace\Addons\FreeformNext\Utilities\Plugin;
  * @link          https://solspace.com/expressionengine/freeform-next
  * @license       https://solspace.com/software/license-agreement
  */
+
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
+use Solspace\Addons\FreeformNext\Library\EETags\FormTagParamUtilities;
+use Solspace\Addons\FreeformNext\Library\EETags\FormToTagDataTransformer;
+use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
+use Solspace\Addons\FreeformNext\Library\Helpers\TwigHelper;
+use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
+use Solspace\Addons\FreeformNext\Repositories\FormRepository;
+use Solspace\Addons\FreeformNext\Services\FormsService;
+use Solspace\Addons\FreeformNext\Utilities\Plugin;
+
 class Freeform_Next extends Plugin
 {
     public function __construct()
@@ -30,28 +33,57 @@ class Freeform_Next extends Plugin
      */
     public function render()
     {
-        $handle = $this->getParam('form');
-        $id     = $this->getParam('form_id');
-
-        $hash       = $this->getPost(FormValueContext::FORM_HASH_KEY, null);
-        $form       = null;
-        if (null !== $hash) {
-            $this->submitForm();
-        }
-
-        $formModel = FormRepository::getInstance()->getFormByIdOrHandle($id ? $id : $handle);
-        $form = $formModel->getForm();
-
-        if (!$form) {
-            throw new FreeformException('Form not found');
-        }
+        $form = $this->assembleFormFromTag();
 
         $loader = new Twig_Loader_Filesystem(__DIR__ . '/Templates/form');
         $twig   = new Twig_Environment($loader);
 
         return $twig->render('test.html', ['form' => $form]);
+    }
 
-        return "Form: {$form->getName()}";
+    /**
+     * @return mixed
+     */
+    public function form()
+    {
+        $form = $this->assembleFormFromTag();
+
+        $transformer = new FormToTagDataTransformer($form);
+
+        $tagdata = ee()->TMPL->tagdata;
+        $tagdata = ee()->TMPL->parse_variables($tagdata, [$transformer->transform()]);
+
+        $tagdata = $transformer->parseFieldTags($tagdata);
+
+        $tagdata = $form->renderTag() . $tagdata . $form->renderClosingTag();
+
+        return $tagdata;
+    }
+
+    /**
+     * @return Form
+     * @throws FreeformException
+     */
+    private function assembleFormFromTag()
+    {
+        $handle = $this->getParam('form');
+        $id     = $this->getParam('form_id');
+
+        $hash = $this->getPost(FormValueContext::FORM_HASH_KEY, null);
+        if (null !== $hash) {
+            $this->submitForm();
+        }
+
+        $formModel = FormRepository::getInstance()->getFormByIdOrHandle($id ? $id : $handle);
+        $form      = $formModel->getForm();
+
+        FormTagParamUtilities::setFormCustomAttributes($form);
+
+        if (!$form) {
+            throw new FreeformException('Form not found');
+        }
+
+        return $form;
     }
 
     /**

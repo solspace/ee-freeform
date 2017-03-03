@@ -569,7 +569,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      */
     public function setAttributes(array $attributes = null)
     {
-        if (!is_null($attributes)) {
+        if (null !== $attributes) {
             $this->customAttributes->mergeAttributes($attributes);
         }
 

@@ -205,7 +205,7 @@ class FormValueContext implements \JsonSerializable
     public function isHoneypotValid()
     {
         /** @var array $postValues */
-        $postValues = $this->request->getPost(null);
+        $postValues = $_POST;
 
         foreach ($postValues as $key => $value) {
             if (strpos($key, Honeypot::NAME_PREFIX) === 0) {

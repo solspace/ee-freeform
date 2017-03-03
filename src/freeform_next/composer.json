@@ -8,7 +8,8 @@
         "pixel418/markdownify": "2.1.11",
         "egulias/email-validator": "^1.2",
         "twig/twig": "^1.31",
-        "swiftmailer/swiftmailer": "^5.4"
+        "swiftmailer/swiftmailer": "^5.4",
+        "danielstjules/stringy": "~2.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8"
