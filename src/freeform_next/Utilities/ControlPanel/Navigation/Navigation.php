@@ -21,9 +21,8 @@ class Navigation
 
     /**
      * @param NavigationLink $link
-
      *
-*@return $this
+     * @return $this
      */
     public function addLink(NavigationLink $link)
     {
@@ -47,6 +46,14 @@ class Navigation
             $button = $item->getButtonLink();
             if ($button) {
                 $header->withButton($button->getTitle(), $button->getLink());
+            }
+
+            $subNav = $item->getSubNav();
+            if ($subNav) {
+                $basicList = $header->addBasicList();
+                foreach ($subNav as $subItem) {
+                    $basicList->addItem($subItem->getTitle(), $subItem->getLink());
+                }
             }
         }
 

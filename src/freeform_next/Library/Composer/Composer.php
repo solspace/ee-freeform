@@ -224,30 +224,30 @@ class Composer
     {
         $this->properties = new Properties(
             [
-                Properties::PAGE_PREFIX . "0"        => [
-                    "type"  => Properties::PAGE_PREFIX,
-                    "label" => "Page 1",
+                Properties::PAGE_PREFIX . '0'        => [
+                    'type'  => Properties::PAGE_PREFIX,
+                    'label' => 'Page 1',
                 ],
                 Properties::FORM_HASH                => [
-                    "type"                  => Properties::FORM_HASH,
-                    "name"                  => "Composer Form",
-                    "handle"                => "composerForm",
-                    "submissionTitleFormat" => "{{ dateCreated|date(\"Y-m-d H:i:s\") }}",
-                    "description"           => "",
-                    "formTemplate"          => "flexbox.html",
-                    "returnUrl"             => "/",
-                    "storeData"             => true,
-                    "defaultStatus"         => $this->statusHandler->getDefaultStatusId(),
+                    'type'                  => Properties::FORM_HASH,
+                    'name'                  => 'Composer Form',
+                    'handle'                => 'composerForm',
+                    'submissionTitleFormat' => '{{ dateCreated|date("Y-m-d H:i:s") }}',
+                    'description'           => '',
+                    'formTemplate'          => 'flexbox.html',
+                    'returnUrl'             => '/',
+                    'storeData'             => true,
+                    'defaultStatus'         => $this->statusHandler->getDefaultStatusId(),
                 ],
                 Properties::INTEGRATION_HASH         => [
-                    "type"          => Properties::INTEGRATION_HASH,
-                    "integrationId" => 0,
-                    "mapping"       => new \stdClass(),
+                    'type'          => Properties::INTEGRATION_HASH,
+                    'integrationId' => 0,
+                    'mapping'       => new \stdClass(),
                 ],
                 Properties::ADMIN_NOTIFICATIONS_HASH => [
-                    "type"           => Properties::ADMIN_NOTIFICATIONS_HASH,
-                    "notificationId" => 0,
-                    "recipients"     => "",
+                    'type'           => Properties::ADMIN_NOTIFICATIONS_HASH,
+                    'notificationId' => 0,
+                    'recipients'     => '',
                 ],
             ],
             $this->translator

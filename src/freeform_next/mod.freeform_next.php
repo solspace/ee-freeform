@@ -35,10 +35,7 @@ class Freeform_Next extends Plugin
     {
         $form = $this->assembleFormFromTag();
 
-        $loader = new Twig_Loader_Filesystem(__DIR__ . '/Templates/form');
-        $twig   = new Twig_Environment($loader);
-
-        return $twig->render('test.html', ['form' => $form]);
+        return $form->render();
     }
 
     /**
@@ -48,16 +45,10 @@ class Freeform_Next extends Plugin
     {
         $form = $this->assembleFormFromTag();
 
-        $transformer = new FormToTagDataTransformer($form);
-
         $tagdata = ee()->TMPL->tagdata;
-        $tagdata = ee()->TMPL->parse_variables($tagdata, [$transformer->transform()]);
+        $transformer = new FormToTagDataTransformer($form, $tagdata);
 
-        $tagdata = $transformer->parseFieldTags($tagdata);
-
-        $tagdata = $form->renderTag() . $tagdata . $form->renderClosingTag();
-
-        return $tagdata;
+        return $transformer->getOutput();
     }
 
     /**

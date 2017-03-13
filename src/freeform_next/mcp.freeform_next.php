@@ -12,6 +12,7 @@
 use Solspace\Addons\FreeformNext\Controllers\FieldController;
 use Solspace\Addons\FreeformNext\Controllers\FormController;
 use Solspace\Addons\FreeformNext\Controllers\NotificationController;
+use Solspace\Addons\FreeformNext\Controllers\SettingsController;
 use Solspace\Addons\FreeformNext\Controllers\SubmissionController;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Model\FormModel;
@@ -19,7 +20,9 @@ use Solspace\Addons\FreeformNext\Model\NotificationModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
+use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
+use Solspace\Addons\FreeformNext\Services\SettingsService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\Navigation;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
@@ -139,12 +142,74 @@ class Freeform_next_mcp extends ControlPanelView
         return $this->renderView($this->getSubmissionController()->index($form));
     }
 
+    /**
+     * @return array
+     */
     public function templates()
     {
+        $ajaxView = new AjaxView();
+        $ajaxView->addVariable('success', true);
+
+        if (isset($_POST['templateName'])) {
+            $settings = SettingsRepository::getInstance()->getOrCreate();
+            if ($settings->getFormattingTemplatePath()) {
+                $templateName = ee()->input->post('templateName');
+                $templateName = (string) \Stringy\Stringy::create($templateName)->underscored()->toAscii();
+                $templateName .= '.html';
+
+                $filePath = $settings->getFormattingTemplatePath() . '/' . $templateName;
+                $handle = fopen($filePath, 'w');
+
+                if (false === $handle) {
+                    $ajaxView->addError('');
+                } else {
+                    $content = $settings->getDemoTemplateContent();
+                    fwrite($handle, $content);
+                    fclose($handle);
+
+                    $ajaxView->addVariable('templateName', $templateName);
+                }
+            } else {
+                $ajaxView->addError('No custom template directory specified in settings');
+            }
+        } else {
+            $ajaxView->addError('No template name specified');
+        }
+
+        return $this->renderView($ajaxView);
     }
 
+    /**
+     * @return array
+     */
+    public function formTemplates()
+    {
+        $settings = new SettingsService();
+        $ajaxView = new AjaxView();
+        $ajaxView->setShowErrorsIfEmpty(false);
+        $ajaxView->setVariables($settings->getCustomFormTemplates());
+
+        return $this->renderView($ajaxView);
+    }
+
+    /**
+     * @return array
+     */
     public function finish_tutorial()
     {
+        $service = new SettingsService();
+        $service->finishTutorial();
+
+        $ajaxView = new AjaxView();
+        $ajaxView->setShowErrorsIfEmpty(false);
+        $ajaxView->addVariable('success', true);
+
+        return $this->renderView($ajaxView);
+    }
+
+    public function settings($type)
+    {
+        return $this->renderView($this->getSettingsController()->index($type));
     }
 
     /**
@@ -152,14 +217,24 @@ class Freeform_next_mcp extends ControlPanelView
      */
     protected function buildNavigation()
     {
-        $forms = new NavigationLink('Forms');
+        $forms = new NavigationLink('Forms', '');
         $forms->setButtonLink(new NavigationLink('New', 'forms/new'));
+
+        $settings = new NavigationLink('Settings');
+        $settings
+            ->addSubNavItem(new NavigationLink('General', 'settings/general'))
+            ->addSubNavItem(new NavigationLink('Formatting Templates', 'settings/formatting_templates'))
+            ->addSubNavItem(new NavigationLink('Email Templates', 'settings/email_templates'))
+            ->addSubNavItem(new NavigationLink('Statuses', 'settings/statuses'))
+            ->addSubNavItem(new NavigationLink('Demo Templates', 'settings/demo_templates'))
+        ;
 
         $nav = new Navigation();
         $nav
             ->addLink($forms)
             ->addLink(new NavigationLink('Notifications', 'notifications'))
-            ->addLink(new NavigationLink('Settings', 'settings'));
+            ->addLink($settings)
+        ;
 
         return $nav;
     }
@@ -215,6 +290,20 @@ class Freeform_next_mcp extends ControlPanelView
 
         if (null === $instance) {
             $instance = new FieldController();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @return SettingsController
+     */
+    private function getSettingsController()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new SettingsController();
         }
 
         return $instance;

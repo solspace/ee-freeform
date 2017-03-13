@@ -25,7 +25,7 @@ class NavigationLink
     /** @var string */
     private $method;
 
-    /** @var string */
+    /** @var NavigationLink[] */
     private $subNav;
 
     /** @var NavigationLink */
@@ -33,7 +33,8 @@ class NavigationLink
 
     public function __construct($title, $method = null)
     {
-        $this->title = $title;
+        $this->title  = $title;
+        $this->subNav = [];
 
         if (!is_null($method)) {
             $this->method = $method;
@@ -53,6 +54,10 @@ class NavigationLink
      */
     public function getLink()
     {
+        if (null === $this->method) {
+            return null;
+        }
+
         $addonInfo = AddonInfo::getInstance();
 
         $link = '';
@@ -89,14 +94,33 @@ class NavigationLink
 
     /**
      * @param NavigationLink|null $link
-
      *
-*@return $this
+     * @return $this
      */
     public function setButtonLink(NavigationLink $link = null)
     {
         $this->buttonLink = $link;
 
         return $this;
+    }
+
+    /**
+     * @param NavigationLink $link
+     *
+     * @return $this
+     */
+    public function addSubNavItem(NavigationLink $link)
+    {
+        $this->subNav[] = $link;
+
+        return $this;
+    }
+
+    /**
+     * @return array|NavigationLink[]
+     */
+    public function getSubNav()
+    {
+        return $this->subNav;
     }
 }

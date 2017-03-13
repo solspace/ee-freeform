@@ -18,6 +18,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Composer;
 use Solspace\Addons\FreeformNext\Library\Session\EERequest;
 use Solspace\Addons\FreeformNext\Library\Session\EESession;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
+use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Services\CrmService;
 use Solspace\Addons\FreeformNext\Services\FilesService;
 use Solspace\Addons\FreeformNext\Services\FormsService;
@@ -69,11 +70,14 @@ class FormModel extends Model
      */
     public static function create()
     {
+        $defaultStatusId = StatusRepository::getInstance()->getDefaultStatusId();
+
         /** @var FormModel $form */
         $form = ee('Model')->make(
             self::MODEL,
             [
-                'siteId' => ee()->config->item('site_id'),
+                'siteId'        => ee()->config->item('site_id'),
+                'defaultStatus' => $defaultStatusId,
             ]
         );
 

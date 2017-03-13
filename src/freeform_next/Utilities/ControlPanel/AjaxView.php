@@ -19,13 +19,17 @@ class AjaxView extends View
     /** @var array */
     private $errors;
 
+    /** @var bool */
+    private $showErrorsIfEmpty;
+
     /**
      * AjaxView constructor.
      */
     public function __construct()
     {
-        $this->errors    = [];
-        $this->variables = [];
+        $this->errors            = [];
+        $this->variables         = [];
+        $this->showErrorsIfEmpty = true;
     }
 
     /**
@@ -33,12 +37,11 @@ class AjaxView extends View
      */
     public function compile()
     {
-        $returnData = [];
-        if ($this->hasErrors()) {
+        $returnData = $this->variables;
+
+        if (!empty($this->errors) || $this->showErrorsIfEmpty) {
             $returnData['errors'] = $this->errors;
         }
-
-        $returnData = array_merge($returnData, $this->variables);
 
         return $returnData;
     }
@@ -108,5 +111,13 @@ class AjaxView extends View
         }
 
         return $this;
+    }
+
+    /**
+     * @param bool $showErrorsIfEmpty
+     */
+    public function setShowErrorsIfEmpty($showErrorsIfEmpty)
+    {
+        $this->showErrorsIfEmpty = (bool) $showErrorsIfEmpty;
     }
 }

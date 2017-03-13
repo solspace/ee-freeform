@@ -12,11 +12,15 @@
 namespace Solspace\Addons\FreeformNext\Services;
 
 use Solspace\Addons\FreeformNext\Library\Database\StatusHandlerInterface;
+use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 
 class StatusesService implements StatusHandlerInterface
 {
+    /**
+     * @return int
+     */
     public function getDefaultStatusId()
     {
-        // TODO: Implement getDefaultStatusId() method.
+        return StatusRepository::getInstance()->getDefaultStatusId();
     }
 }

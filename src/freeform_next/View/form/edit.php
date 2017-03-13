@@ -5,6 +5,9 @@
 /** @var \Solspace\Addons\FreeformNext\Model\StatusModel[] $statuses */
 /** @var array $assetSources */
 /** @var array $fileKinds */
+/** @var array $formTemplates */
+/** @var array $solspaceFormTemplates */
+/** @var bool $showTutorial */
 ?>
 <div id="freeform-builder"></div>
 
@@ -14,8 +17,8 @@
     var mailingList = [];
     var crmIntegrations = [];
     var notificationList = <?php echo json_encode($notifications) ?>;
-    var solspaceFormTemplates = [];
-    var formTemplateList = [];
+    var solspaceFormTemplates = <?php echo json_encode($solspaceFormTemplates) ?>;
+    var formTemplateList = <?php echo json_encode($formTemplates) ?>;
     var formStatuses = <?php echo json_encode($statuses) ?>;
     var assetSources = <?php echo json_encode($assetSources) ?>;
     var fileKinds = <?php echo json_encode($fileKinds) ?>;
@@ -29,7 +32,7 @@
     var createTemplateUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/templates') ?>";
     var finishTutorialUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/finish_tutorial') ?>";
 
-    var showTutorial = true;
+    var showTutorial = <?php echo $showTutorial ? 'true' : 'false' ?>;
     var canManageFields = true;
     var canManageNotifications = true;
     var canManageSettings = true;

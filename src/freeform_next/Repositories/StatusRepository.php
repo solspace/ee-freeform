@@ -35,6 +35,42 @@ class StatusRepository extends Repository
     }
 
     /**
+     * @return StatusModel
+     */
+    public function getDefaultStatus()
+    {
+        $defaultStatus = ee('Model')
+            ->get(StatusModel::MODEL)
+            ->filter('isDefault', true)
+            ->filter('siteId', ee()->config->item('site_id'))
+            ->first();
+
+        if (!$defaultStatus) {
+            $statuses      = $this->getAllStatuses();
+            $defaultStatus = reset($statuses);
+
+            if (!$defaultStatus) {
+                $defaultStatus            = StatusModel::create();
+                $defaultStatus->color     = 'gray';
+                $defaultStatus->name      = 'Open';
+                $defaultStatus->handle    = 'open';
+                $defaultStatus->isDefault = true;
+                $defaultStatus->save();
+            }
+        }
+
+        return $defaultStatus;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDefaultStatusId()
+    {
+        return $this->getDefaultStatus()->id;
+    }
+
+    /**
      * @param int $id
      *
      * @return StatusModel|null

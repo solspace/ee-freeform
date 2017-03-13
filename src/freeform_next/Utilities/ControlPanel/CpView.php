@@ -33,6 +33,9 @@ class CpView extends View
     /** @var bool */
     private $sidebarDisabled;
 
+    /** @var array */
+    private $sections;
+
     /**
      * CpView constructor.
      *
@@ -167,5 +170,21 @@ class CpView extends View
         $this->cssList[] = $cssPath;
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSections()
+    {
+        return $this->sections;
+    }
+
+    /**
+     * @param array $sections
+     */
+    public function setSections($sections)
+    {
+        $this->sections = $sections;
     }
 }

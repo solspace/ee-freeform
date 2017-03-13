@@ -20,6 +20,7 @@ use Solspace\Addons\FreeformNext\Library\Session\EERequest;
 use Solspace\Addons\FreeformNext\Library\Session\EESession;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
 use Solspace\Addons\FreeformNext\Model\FormModel;
+use Solspace\Addons\FreeformNext\Model\SettingsModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FileRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
@@ -31,6 +32,7 @@ use Solspace\Addons\FreeformNext\Services\FilesService;
 use Solspace\Addons\FreeformNext\Services\FormsService;
 use Solspace\Addons\FreeformNext\Services\MailerService;
 use Solspace\Addons\FreeformNext\Services\MailingListsService;
+use Solspace\Addons\FreeformNext\Services\SettingsService;
 use Solspace\Addons\FreeformNext\Services\StatusesService;
 use Solspace\Addons\FreeformNext\Services\SubmissionsService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
@@ -56,7 +58,7 @@ class FormController extends Controller
             ]
         );
 
-        $forms = FormRepository::getInstance()->getAllForms();
+        $forms            = FormRepository::getInstance()->getAllForms();
         $submissionTotals = SubmissionRepository::getInstance()->getSubmissionTotalsPerForm();
 
         $tableData = [];
@@ -101,7 +103,8 @@ class FormController extends Controller
      */
     public function edit(FormModel $form)
     {
-        $fileService = new FilesService();
+        $fileService     = new FilesService();
+        $settingsService = new SettingsService();
 
         $view = new CpView('form/edit');
         $view
@@ -111,12 +114,15 @@ class FormController extends Controller
             ->addJavascript('composer/app.js')
             ->setTemplateVariables(
                 [
-                    'form'          => $form,
-                    'fields'        => FieldRepository::getInstance()->getAllFields(false),
-                    'notifications' => NotificationRepository::getInstance()->getAllNotifications(),
-                    'statuses'      => StatusRepository::getInstance()->getAllStatuses(),
-                    'assetSources'  => FileRepository::getInstance()->getAllAssetSources(),
-                    'fileKinds'     => $fileService->getFileKinds(),
+                    'form'                  => $form,
+                    'fields'                => FieldRepository::getInstance()->getAllFields(false),
+                    'notifications'         => NotificationRepository::getInstance()->getAllNotifications(),
+                    'statuses'              => StatusRepository::getInstance()->getAllStatuses(),
+                    'assetSources'          => FileRepository::getInstance()->getAllAssetSources(),
+                    'fileKinds'             => $fileService->getFileKinds(),
+                    'formTemplates'         => $settingsService->getCustomFormTemplates(),
+                    'solspaceFormTemplates' => $settingsService->getSolspaceFormTemplates(),
+                    'showTutorial'          => $settingsService->getSettingsModel()->isShowTutorial(),
                 ]
             );
 

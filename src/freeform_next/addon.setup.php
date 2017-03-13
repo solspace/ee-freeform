@@ -31,5 +31,6 @@ return [
         'NotificationModel' => 'Model\NotificationModel',
         'StatusModel'       => 'Model\StatusModel',
         'SubmissionModel'   => 'Model\SubmissionModel',
+        'SettingsModel'     => 'Model\SettingsModel',
     ],
 ];
