@@ -72,29 +72,22 @@ class MailerService implements MailHandlerInterface
 
             if ($notification->includeAttachments) {
                 foreach ($fields as $field) {
-                    // TODO: implement EE file attaching to emails
+                    if ($field instanceof FileUploadInterface) {
+                        $assetId = $field->getValue();
 
-                    //if ($field instanceof FileUploadInterface) {
-                    //    $asset = craft()->assets->getFileById($field->getValue());
-                    //    if ($asset) {
-                    //        $source = $asset->getSource();
-                    //
-                    //        if ($source->type != 'Local') {
-                    //            // We do not email remote files
-                    //            continue;
-                    //        } else {
-                    //            $sourcePath = $source->settings['path'];
-                    //            $folderPath = $asset->getFolder()->path;
-                    //
-                    //            $sourcePath = craft()->templates->renderObjectTemplate($sourcePath, $fieldValues);
-                    //            $folderPath = craft()->templates->renderObjectTemplate($folderPath, $fieldValues);
-                    //
-                    //            $path = $sourcePath . $folderPath . $asset->filename;
-                    //        }
-                    //
-                    //        $email->addAttachment($path);
-                    //    }
-                    //}
+                        if ($assetId) {
+                            $file = ee('Model')
+                                ->get('File')
+                                ->filter('file_id', $assetId)
+                                ->first();
+
+                            if ($file) {
+                                $filePath = $file->getAbsolutePath();
+
+                                $message->attach(\Swift_Attachment::fromPath($filePath));
+                            }
+                        }
+                    }
                 }
             }
 

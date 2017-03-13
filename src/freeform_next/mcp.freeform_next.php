@@ -186,7 +186,6 @@ class Freeform_next_mcp extends ControlPanelView
     {
         $settings = new SettingsService();
         $ajaxView = new AjaxView();
-        $ajaxView->setShowErrorsIfEmpty(false);
         $ajaxView->setVariables($settings->getCustomFormTemplates());
 
         return $this->renderView($ajaxView);
@@ -201,7 +200,6 @@ class Freeform_next_mcp extends ControlPanelView
         $service->finishTutorial();
 
         $ajaxView = new AjaxView();
-        $ajaxView->setShowErrorsIfEmpty(false);
         $ajaxView->addVariable('success', true);
 
         return $this->renderView($ajaxView);

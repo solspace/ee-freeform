@@ -29,7 +29,7 @@ class AjaxView extends View
     {
         $this->errors            = [];
         $this->variables         = [];
-        $this->showErrorsIfEmpty = true;
+        $this->showErrorsIfEmpty = false;
     }
 
     /**
