@@ -67,6 +67,24 @@ class FormRepository extends Repository
     }
 
     /**
+     * @param array $ids
+     *
+     * @return FormModel[]
+     */
+    public function getFormByIdList(array $ids)
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        return ee('Model')
+            ->get(FormModel::MODEL)
+            ->filter('id', 'IN', $ids)
+            ->all()
+            ->asArray();
+    }
+
+    /**
      * @param string $idOrHandle
      *
      * @return FormModel|null

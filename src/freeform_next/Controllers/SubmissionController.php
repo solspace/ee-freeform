@@ -38,6 +38,8 @@ use Solspace\Addons\FreeformNext\Services\StatusesService;
 use Solspace\Addons\FreeformNext\Services\SubmissionsService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\ConfirmRemoveModal;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 
 class SubmissionController extends Controller
 {
@@ -136,10 +138,10 @@ class SubmissionController extends Controller
             ];
 
             $data[] = [
-                'name'  => 'selections[]',
+                'name'  => 'id_list[]',
                 'value' => $submission->id,
                 'data'  => [
-                    'confirm' => lang('form') . ': <b>' . htmlentities("test", ENT_QUOTES) . '</b>',
+                    'confirm' => lang('Submission') . ': <b>' . htmlentities($submission->title, ENT_QUOTES) . '</b>',
                 ],
             ];
 
@@ -149,8 +151,12 @@ class SubmissionController extends Controller
         $table->setData($tableData);
         $table->setNoResultsText('No results');
 
+        $modal = new ConfirmRemoveModal($this->getLink('submissions/' . $form->getHandle() . '/delete'));
+        $modal->setKind('Submissions');
+
         $view = new CpView('form/listing', ['table' => $table->viewData()]);
-        $view->setHeading(lang('Forms'));
+        $view->setHeading(lang('Submissions'));
+        $view->addModal($modal);
 
         return $view;
     }
@@ -244,5 +250,28 @@ class SubmissionController extends Controller
         $view->addVariable('handle', $form->handle);
 
         return $view;
+    }
+
+    /**
+     * @param Form $form
+     *
+     * @return RedirectView
+     */
+    public function batchDelete(Form $form)
+    {
+        if (isset($_POST['id_list'])) {
+            $ids = [];
+            foreach ($_POST['id_list'] as $id) {
+                $ids[] = (int) $id;
+            }
+
+            $models = SubmissionRepository::getInstance()->getSubmissionsByIdList($ids);
+
+            foreach ($models as $model) {
+                $model->delete();
+            }
+        }
+
+        return new RedirectView($this->getLink('submissions/' . $form->getHandle()));
     }
 }

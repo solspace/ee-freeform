@@ -42,6 +42,24 @@ class SubmissionRepository extends Repository
     }
 
     /**
+     * @param array $ids
+     *
+     * @return SubmissionModel[]
+     */
+    public function getSubmissionsByIdList(array $ids)
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        return ee('Model')
+            ->get(SubmissionModel::MODEL)
+            ->filter('id', 'IN', $ids)
+            ->all()
+            ->asArray();
+    }
+
+    /**
      * @param Form $form
      *
      * @return SubmissionModel[]

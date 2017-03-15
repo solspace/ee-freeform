@@ -56,6 +56,8 @@ class Freeform_next_mcp extends ControlPanelView
         if (null !== $formId) {
             if (strtolower($formId) === 'new') {
                 $form = FormModel::create();
+            } else if (strtolower($formId) === 'delete') {
+                return $this->renderView($this->getFormController()->batchDelete());
             } else {
                 $form = FormRepository::getInstance()->getFormById($formId);
             }
@@ -100,6 +102,8 @@ class Freeform_next_mcp extends ControlPanelView
         if (null !== $notificationId) {
             if (strtolower($notificationId) === 'new') {
                 $notification = NotificationModel::create();
+            } else if (strtolower($notificationId) === 'delete') {
+                return $this->renderView($this->getNotificationController()->batchDelete());
             } else if (strtolower($notificationId) === 'list') {
                 $ajaxView = new AjaxView();
                 $ajaxView->setVariables(NotificationRepository::getInstance()->getAllNotifications());
@@ -129,6 +133,10 @@ class Freeform_next_mcp extends ControlPanelView
     {
         $formModel = FormRepository::getInstance()->getFormByIdOrHandle($formHandle);
         $form      = $formModel->getForm();
+
+        if (strtolower($submissionId) === 'delete') {
+            return $this->renderView($this->getSubmissionController()->batchDelete($form));
+        }
 
         if ($submissionId) {
             $submission = SubmissionRepository::getInstance()->getSubmission($form, $submissionId);

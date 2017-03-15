@@ -32,6 +32,8 @@ use Solspace\Addons\FreeformNext\Services\StatusesService;
 use Solspace\Addons\FreeformNext\Services\SubmissionsService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\ConfirmRemoveModal;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 
 class NotificationController extends Controller
 {
@@ -63,10 +65,10 @@ class NotificationController extends Controller
                 $notification->handle,
                 0,
                 [
-                    'name'  => 'selections[]',
+                    'name'  => 'id_list[]',
                     'value' => $notification->id,
                     'data'  => [
-                        'confirm' => lang('notification') . ': <b>' . htmlentities("test", ENT_QUOTES) . '</b>',
+                        'confirm' => lang('Notification') . ': <b>' . htmlentities($notification->name, ENT_QUOTES) . '</b>',
                     ],
                 ],
             ];
@@ -76,6 +78,7 @@ class NotificationController extends Controller
 
         $view = new CpView('notifications/listing', ['table' => $table->viewData()]);
         $view->setHeading(lang('Notifications'));
+        $view->addModal((new ConfirmRemoveModal($this->getLink('notifications/delete')))->setKind('Notifications'));
 
         return $view;
     }
@@ -123,8 +126,27 @@ class NotificationController extends Controller
     {
         $post = $_POST;
 
-
-
         return $view;
+    }
+
+    /**
+     * @return RedirectView
+     */
+    public function batchDelete()
+    {
+        if (isset($_POST['id_list'])) {
+            $ids = [];
+            foreach ($_POST['id_list'] as $id) {
+                $ids[] = (int) $id;
+            }
+
+            $models = NotificationRepository::getInstance()->getNotificationsByIdList($ids);
+
+            foreach ($models as $model) {
+                $model->delete();
+            }
+        }
+
+        return new RedirectView($this->getLink('notifications'));
     }
 }

@@ -46,4 +46,22 @@ class NotificationRepository extends Repository
             ->filter('id', $id)
             ->first();
     }
+
+    /**
+     * @param array $ids
+     *
+     * @return NotificationModel[]
+     */
+    public function getNotificationsByIdList(array $ids)
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        return ee('Model')
+            ->get(NotificationModel::MODEL)
+            ->filter('id', 'IN', $ids)
+            ->all()
+            ->asArray();
+    }
 }

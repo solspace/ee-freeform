@@ -14,6 +14,7 @@ namespace Solspace\Addons\FreeformNext\Utilities;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\Navigation;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 
 class ControlPanelView
@@ -42,13 +43,19 @@ class ControlPanelView
             die();
         }
 
-        $viewData = [
-            'sidebar' => $view->isSidebarDisabled() ? null : $this->buildNavigation()->buildNavigationView(),
-            'body'    => $view->compile(),
-            'breadcrumb' => array(
-                ee('CP/URL')->make('addons/settings/freeform_next')->compile() => lang('Freeform Next'),
-            ),
-        ];
+        if ($view instanceof RedirectView) {
+            $view->compile();
+        }
+
+        if ($view instanceof CpView) {
+            $viewData = [
+                'sidebar'    => $view->isSidebarDisabled() ? null : $this->buildNavigation()->buildNavigationView(),
+                'body'       => $view->compile(),
+                'breadcrumb' => [
+                    ee('CP/URL')->make('addons/settings/freeform_next')->compile() => lang('Freeform Next'),
+                ],
+            ];
+        }
 
         if ($view->getHeading()) {
             $viewData['heading'] = $view->getHeading();

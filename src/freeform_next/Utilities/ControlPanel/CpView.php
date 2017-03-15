@@ -12,6 +12,7 @@
 namespace Solspace\Addons\FreeformNext\Utilities\ControlPanel;
 
 use Solspace\Addons\FreeformNext\Utilities\AddonInfo;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\Modal;
 
 class CpView extends View
 {
@@ -36,6 +37,9 @@ class CpView extends View
     /** @var array */
     private $sections;
 
+    /** @var Modal[] */
+    private $modals;
+
     /**
      * CpView constructor.
      *
@@ -48,6 +52,7 @@ class CpView extends View
         $this->templateVariables = $templateVariables;
         $this->cssList           = [];
         $this->javascriptList    = [];
+        $this->modals            = [];
     }
 
     /**
@@ -61,6 +66,10 @@ class CpView extends View
 
         foreach ($this->cssList as $path) {
             ee()->cp->load_package_css(preg_replace('/\.css$/is', '', $path));
+        }
+
+        foreach ($this->modals as $modal) {
+            $modal->compile();
         }
 
         return ee('View')
@@ -186,5 +195,17 @@ class CpView extends View
     public function setSections($sections)
     {
         $this->sections = $sections;
+    }
+
+    /**
+     * @param Modal $modal
+     *
+     * @return $this
+     */
+    public function addModal(Modal $modal)
+    {
+        $this->modals[] = $modal;
+
+        return $this;
     }
 }

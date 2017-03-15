@@ -37,6 +37,8 @@ use Solspace\Addons\FreeformNext\Services\StatusesService;
 use Solspace\Addons\FreeformNext\Services\SubmissionsService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\ConfirmRemoveModal;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 
 class FormController extends Controller
 {
@@ -79,10 +81,10 @@ class FormController extends Controller
                     ],
                 ],
                 [
-                    'name'  => 'selections[]',
+                    'name'  => 'id_list[]',
                     'value' => $form->id,
                     'data'  => [
-                        'confirm' => lang('form') . ': <b>' . htmlentities("test", ENT_QUOTES) . '</b>',
+                        'confirm' => lang('Form') . ': <b>' . htmlentities($form->getForm()->getName(), ENT_QUOTES) . '</b>',
                     ],
                 ],
             ];
@@ -92,6 +94,7 @@ class FormController extends Controller
 
         $view = new CpView('form/listing', ['table' => $table->viewData()]);
         $view->setHeading(lang('Forms'));
+        $view->addModal((new ConfirmRemoveModal($this->getLink('forms/delete')))->setKind('Forms'));
 
         return $view;
     }
@@ -193,5 +196,26 @@ class FormController extends Controller
         $view->addVariable('handle', $form->handle);
 
         return $view;
+    }
+
+    /**
+     * @return RedirectView
+     */
+    public function batchDelete()
+    {
+        if (isset($_POST['id_list'])) {
+            $ids = [];
+            foreach ($_POST['id_list'] as $id) {
+                $ids[] = (int) $id;
+            }
+
+            $models = FormRepository::getInstance()->getFormByIdList($ids);
+
+            foreach ($models as $model) {
+                $model->delete();
+            }
+        }
+
+        return new RedirectView($this->getLink(''));
     }
 }
