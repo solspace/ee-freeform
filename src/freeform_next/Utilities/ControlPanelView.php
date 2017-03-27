@@ -63,4 +63,14 @@ class ControlPanelView
 
         return $viewData;
     }
+
+    /**
+     * @param string $target
+     *
+     * @return mixed
+     */
+    protected function getLink($target)
+    {
+        return ee('CP/URL', 'addons/settings/freeform_next/' . $target);
+    }
 }

@@ -204,7 +204,7 @@ class SubmissionModel extends Model
      */
     public function getFieldValue($handle)
     {
-        if (!$this->fieldValues[$handle]) {
+        if (!array_key_exists($handle, $this->fieldValues)) {
             throw new FreeformException(sprintf('Field "%s" not in found in form', $handle));
         }
 

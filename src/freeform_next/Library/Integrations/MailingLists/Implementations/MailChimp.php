@@ -23,8 +23,8 @@ use Solspace\Addons\FreeformNext\Library\Logging\LoggerInterface;
 
 class MailChimp extends AbstractMailingListIntegration
 {
-    const SETTING_API_KEY     = "api_key";
-    const SETTING_DATA_CENTER = "data_center";
+    const SETTING_API_KEY     = 'api_key';
+    const SETTING_DATA_CENTER = 'data_center';
 
     /**
      * Returns a list of additional settings for this integration
@@ -38,15 +38,15 @@ class MailChimp extends AbstractMailingListIntegration
             new SettingBlueprint(
                 SettingBlueprint::TYPE_TEXT,
                 self::SETTING_API_KEY,
-                "API Key",
-                "Enter your MailChimp API key here.",
+                'API Key',
+                'Enter your MailChimp API key here.',
                 true
             ),
             new SettingBlueprint(
                 SettingBlueprint::TYPE_INTERNAL,
                 self::SETTING_DATA_CENTER,
-                "Data Center",
-                "This will be fetched automatically upon authorizing your credentials.",
+                'Data Center',
+                'This will be fetched automatically upon authorizing your credentials.',
                 false
             ),
         ];
@@ -62,8 +62,8 @@ class MailChimp extends AbstractMailingListIntegration
         $client = new Client();
 
         try {
-            $request = $client->get($this->getEndpoint("/"));
-            $request->setAuth("mailchimp", $this->getAccessToken());
+            $request = $client->get($this->getEndpoint('/'));
+            $request->setAuth('mailchimp', $this->getAccessToken());
             $response = $request->send();
 
             $json = json_decode($response->getBody(true));
@@ -93,39 +93,39 @@ class MailChimp extends AbstractMailingListIntegration
     public function pushEmails(ListObject $mailingList, array $emails, array $mappedValues)
     {
         $client   = new Client();
-        $endpoint = $this->getEndpoint("lists/{$mailingList->getId()}");
+        $endpoint = $this->getEndpoint('lists/' . $mailingList->getId());
 
         try {
             $members = [];
             foreach ($emails as $email) {
                 $members[] = [
-                    "email_address" => $email,
-                    "status"        => "subscribed",
-                    "merge_fields"  => $mappedValues,
+                    'email_address' => $email,
+                    'status'        => 'subscribed',
+                    'merge_fields'  => $mappedValues,
                 ];
             }
 
-            $data = ["members" => $members, "update_existing" => true];
+            $data = ['members' => $members, 'update_existing' => true];
 
             $request = $client->post($endpoint);
-            $request->setAuth("mailchimp", $this->getAccessToken());
-            $request->setHeader("Content-Type", "application/json");
+            $request->setAuth('mailchimp', $this->getAccessToken());
+            $request->setHeader('Content-Type', 'application/json');
             $request->setBody(json_encode($data));
             $response = $request->send();
         } catch (BadResponseException $e) {
             $this->getLogger()->log(LoggerInterface::LEVEL_ERROR, $e->getMessage());
 
             throw new IntegrationException(
-                $this->getTranslator()->translate("Could not connect to API endpoint")
+                $this->getTranslator()->translate('Could not connect to API endpoint')
             );
         }
 
         $status = $response->getStatusCode();
         if ($status !== 200) {
-            $this->getLogger()->log(LoggerInterface::LEVEL_ERROR, "Could not add emails to lists");
+            $this->getLogger()->log(LoggerInterface::LEVEL_ERROR, 'Could not add emails to lists');
 
             throw new IntegrationException(
-                $this->getTranslator()->translate("Could not add emails to lists")
+                $this->getTranslator()->translate('Could not add emails to lists')
             );
         }
 
@@ -160,11 +160,11 @@ class MailChimp extends AbstractMailingListIntegration
      */
     public function onBeforeSave(IntegrationStorageInterface $model)
     {
-        if (preg_match("/([a-zA-Z]+[0-9]+)$/", $this->getSetting(self::SETTING_API_KEY), $matches)) {
+        if (preg_match('/([a-zA-Z]+\d+)$/', $this->getSetting(self::SETTING_API_KEY), $matches)) {
             $dataCenter = $matches[1];
             $this->setSetting(self::SETTING_DATA_CENTER, $dataCenter);
         } else {
-            throw new IntegrationException("Could not detect data center for MailChimp");
+            throw new IntegrationException('Could not detect data center for MailChimp');
         }
 
         $model->updateAccessToken($this->getSetting(self::SETTING_API_KEY));
@@ -181,19 +181,25 @@ class MailChimp extends AbstractMailingListIntegration
      */
     protected function fetchLists()
     {
-        $client   = new Client();
-        $client->setDefaultOption("query", ["fields" => "lists.id,lists.name,lists.stats.member_count"]);
-        $endpoint = $this->getEndpoint("/lists");
+        $client = new Client();
+        $client->setDefaultOption(
+            'query',
+            [
+                'fields' => 'lists.id,lists.name,lists.stats.member_count',
+                'count'  => 999,
+            ]
+        );
+        $endpoint = $this->getEndpoint('/lists');
 
         try {
             $request = $client->get($endpoint);
-            $request->setAuth("mailchimp", $this->getAccessToken());
+            $request->setAuth('mailchimp', $this->getAccessToken());
             $response = $request->send();
         } catch (BadResponseException $e) {
             $this->getLogger()->log(LoggerInterface::LEVEL_ERROR, $e->getMessage());
 
             throw new IntegrationException(
-                $this->getTranslator()->translate("Could not connect to API endpoint")
+                $this->getTranslator()->translate('Could not connect to API endpoint')
             );
         }
 
@@ -201,8 +207,8 @@ class MailChimp extends AbstractMailingListIntegration
         if ($status !== 200) {
             throw new IntegrationException(
                 $this->getTranslator()->translate(
-                    "Could not fetch {serviceProvider} lists",
-                    ["serviceProvider" => $this->getServiceProvider()]
+                    'Could not fetch {serviceProvider} lists',
+                    ['serviceProvider' => $this->getServiceProvider()]
                 )
             );
         }
@@ -212,7 +218,7 @@ class MailChimp extends AbstractMailingListIntegration
         $lists = [];
         if (isset($json->lists)) {
             foreach ($json->lists as $list) {
-                if (isset($list->id) && isset($list->name)) {
+                if (isset($list->id, $list->name)) {
                     $lists[] = new ListObject(
                         $this,
                         $list->id,
@@ -242,13 +248,13 @@ class MailChimp extends AbstractMailingListIntegration
 
         try {
             $request = $client->get($endpoint);
-            $request->setAuth("mailchimp", $this->getAccessToken());
+            $request->setAuth('mailchimp', $this->getAccessToken());
             $response = $request->send();
         } catch (BadResponseException $e) {
             $this->getLogger()->log(LoggerInterface::LEVEL_ERROR, $e->getMessage());
 
             throw new IntegrationException(
-                $this->getTranslator()->translate("Could not connect to API endpoint")
+                $this->getTranslator()->translate('Could not connect to API endpoint')
             );
         }
 
@@ -258,13 +264,13 @@ class MailChimp extends AbstractMailingListIntegration
             $fieldList = [];
             foreach ($json->merge_fields as $field) {
                 switch ($field->type) {
-                    case "text":
-                    case "website":
+                    case 'text':
+                    case 'website':
                         $type = FieldObject::TYPE_STRING;
                         break;
 
-                    case "number":
-                    case "phone":
+                    case 'number':
+                    case 'phone':
                         $type = FieldObject::TYPE_NUMERIC;
                         break;
 
@@ -303,7 +309,7 @@ class MailChimp extends AbstractMailingListIntegration
 
         if (empty($dataCenter)) {
             throw new IntegrationException(
-                $this->getTranslator()->translate("Could not detect data center for MailChimp")
+                $this->getTranslator()->translate('Could not detect data center for MailChimp')
             );
         }
 

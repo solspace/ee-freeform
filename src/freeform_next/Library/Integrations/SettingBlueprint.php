@@ -13,10 +13,10 @@ namespace Solspace\Addons\FreeformNext\Library\Integrations;
 
 class SettingBlueprint
 {
-    const TYPE_INTERNAL = "internal";
-    const TYPE_CONFIG   = "config";
-    const TYPE_TEXT     = "text";
-    const TYPE_PASSWORD = "password";
+    const TYPE_INTERNAL = 'internal';
+    const TYPE_CONFIG   = 'config';
+    const TYPE_TEXT     = 'text';
+    const TYPE_PASSWORD = 'password';
 
     /** @var string */
     private $type;
@@ -32,6 +32,17 @@ class SettingBlueprint
 
     /** @var bool */
     private $required;
+
+    /**
+     * @return array
+     */
+    public static function getEditableTypes()
+    {
+        return [
+            self::TYPE_TEXT,
+            self::TYPE_PASSWORD,
+        ];
+    }
 
     /**
      * SettingObject constructor.
@@ -94,5 +105,13 @@ class SettingBlueprint
     public function isRequired()
     {
         return $this->required;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEditable()
+    {
+        return in_array($this->getType(), self::getEditableTypes(), true);
     }
 }

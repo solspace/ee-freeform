@@ -124,14 +124,14 @@ abstract class AbstractMailingListIntegration extends AbstractIntegration implem
         }
 
         return [
-            "integrationId"  => $this->getId(),
-            "resourceId"     => "",
-            "type"           => self::TYPE,
-            "source"         => $this->getServiceProvider(),
-            "name"           => $this->getName(),
-            "label"          => 'Opt-in mailing list "' . $this->getName() . '"',
-            "emailFieldHash" => "",
-            "lists"          => $lists,
+            'integrationId'  => $this->getId(),
+            'resourceId'     => '',
+            'type'           => self::TYPE,
+            'source'         => $this->getServiceProvider(),
+            'name'           => $this->getName(),
+            'label'          => 'Opt-in mailing list "' . $this->getName() . '"',
+            'emailFieldHash' => '',
+            'lists'          => $lists,
         ];
     }
 }

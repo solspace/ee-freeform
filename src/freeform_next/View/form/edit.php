@@ -3,6 +3,8 @@
 /** @var \Solspace\Addons\FreeformNext\Model\FieldModel[] $fields */
 /** @var \Solspace\Addons\FreeformNext\Model\NotificationModel[] $notifications */
 /** @var \Solspace\Addons\FreeformNext\Model\StatusModel[] $statuses */
+/** @var \Solspace\Addons\FreeformNext\Model\IntegrationModel[] $mailingLists */
+/** @var \Solspace\Addons\FreeformNext\Model\IntegrationModel[] $statuses */
 /** @var array $assetSources */
 /** @var array $fileKinds */
 /** @var array $formTemplates */
@@ -14,8 +16,8 @@
 <script>
     var formId = <?php echo $form->getId() ?: 'null' ?>;
     var fieldList = <?php echo json_encode($fields) ?>;
-    var mailingList = [];
-    var crmIntegrations = [];
+    var mailingList = <?php echo json_encode($mailingLists) ?>;
+    var crmIntegrations = <?php echo json_encode($crmIntegrations) ?>;
     var notificationList = <?php echo json_encode($notifications) ?>;
     var solspaceFormTemplates = <?php echo json_encode($solspaceFormTemplates) ?>;
     var formTemplateList = <?php echo json_encode($formTemplates) ?>;

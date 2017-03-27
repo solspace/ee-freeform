@@ -11,6 +11,8 @@
 
 namespace Solspace\Addons\FreeformNext\Controllers;
 
+use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
+
 abstract class Controller
 {
     /**
@@ -37,6 +39,6 @@ abstract class Controller
      */
     protected function getLink($target)
     {
-        return ee('CP/URL', 'addons/settings/freeform_next/' . $target);
+        return UrlHelper::getLink($target);
     }
 }

@@ -12,11 +12,22 @@
 namespace Solspace\Addons\FreeformNext\Controllers;
 
 use EllisLab\ExpressionEngine\Library\CP\Table;
+use EllisLab\ExpressionEngine\Model\File\File;
 use Solspace\Addons\FreeformNext\Library\Composer\Attributes\FormAttributes;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxGroupField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecipientField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\EmailField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\RadioGroupField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SelectField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\TextareaField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Page;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Row;
 use Solspace\Addons\FreeformNext\Library\Composer\Composer;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
@@ -24,6 +35,7 @@ use Solspace\Addons\FreeformNext\Library\Session\EERequest;
 use Solspace\Addons\FreeformNext\Library\Session\EESession;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
 use Solspace\Addons\FreeformNext\Model\FormModel;
+use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
@@ -162,24 +174,158 @@ class SubmissionController extends Controller
     }
 
     /**
-     * @param FormModel $form
+     * @param Form            $form
+     * @param SubmissionModel $submission
      *
      * @return CpView
      */
-    public function edit(FormModel $form)
+    public function edit(Form $form, SubmissionModel $submission)
     {
-        $view = new CpView('form/edit');
+        $view = new CpView('submissions/edit');
+
+        $sectionData = [
+            [
+                [
+                    'title'  => lang('Title'),
+                    'fields' => [
+                        'title' => [
+                            'type'     => 'text',
+                            'value'    => $submission->title,
+                            'required' => true,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        /** @var Page $page */
+        foreach ($form->getPages() as $page) {
+            $data = [];
+
+            /** @var Row $row */
+            foreach ($page as $row) {
+                /** @var AbstractField $field */
+                foreach ($row as $field) {
+                    if ($field instanceof NoStorageInterface) {
+                        continue;
+                    }
+
+                    $handle     = $field->getHandle();
+                    $value      = $submission->getFieldValue($handle);
+                    $isRequired = $field->isRequired();
+
+                    if ($field instanceof CheckboxGroupField) {
+                        $fields = [
+                            $handle => [
+                                'type'     => 'checkbox',
+                                'value'    => $value,
+                                'required' => $isRequired,
+                                'choices'  => $field->getOptionsAsArray(),
+                            ],
+                        ];
+                    } else if ($field instanceof CheckboxField) {
+                        $fields = [
+                            $handle => [
+                                'type'     => 'checkbox',
+                                'value'    => $value,
+                                'required' => $isRequired,
+                                'choices'  => [$field->getValue() => $field->getLabel()],
+                            ],
+                        ];
+                    } else if ($field instanceof SelectField || ($field instanceof DynamicRecipientField && !$field->isShowAsRadio())) {
+                        $fields = [
+                            $handle => [
+                                'type'     => 'select',
+                                'value'    => $value,
+                                'required' => $isRequired,
+                                'choices'  => $field->getOptionsAsArray(),
+                            ],
+                        ];
+                    } else if ($field instanceof RadioGroupField || ($field instanceof DynamicRecipientField && $field->isShowAsRadio())) {
+                        $fields = [
+                            $handle => [
+                                'type'     => 'radio',
+                                'value'    => $value,
+                                'required' => $isRequired,
+                                'choices'  => $field->getOptionsAsArray(),
+                            ],
+                        ];
+                    } else if ($field instanceof TextareaField) {
+                        $fields = [
+                            $handle => [
+                                'type'     => 'textarea',
+                                'value'    => $value,
+                                'required' => $isRequired,
+                            ],
+                        ];
+                    } else if ($field instanceof FileUploadField) {
+                        $assetId = $submission->getFieldValue($field->getHandle());
+
+                        $content = '';
+                        if ($assetId) {
+                            /** @var File $asset */
+                            $asset = ee('Model')
+                                ->get('File')
+                                ->filter('file_id', $assetId)
+                                ->first();
+
+                            $content .= '<div style="margin: 5px 0;">' . $asset->file_name . '</div>';
+                            $content .= '<div class="toolbar-wrap"><ul class="toolbar">';
+                            $content .= '<li class="edit"><a href="' . ee('CP/URL', 'cp/files/file/edit/' . $value)->compile() . '"></a></li>';
+                            $content .= '<li class="download"><a href="' . ee('CP/URL', 'files/file/download/' . $value)->compile() . '"></a></li>';
+                            $content .= '</ul></div>';
+
+                            if ($asset->isImage()) {
+                                $content .= '<img style="border: 1px solid black; padding: 1px;" width="100" src="' . $asset->getAbsoluteURL() . '" />';
+                            }
+                        }
+
+                        $fields = [
+                            [
+                                'type'    => 'html',
+                                'content' => $content,
+                            ],
+                        ];
+                    } else if ($field instanceof EmailField) {
+                        $fields = [];
+
+                        /** @var array $value */
+                        foreach ($value as $val) {
+                            $fields[$handle . '[]'] = [
+                                'type'  => 'text',
+                                'value' => $val,
+                            ];
+                        }
+                    } else {
+                        $fields = [
+                            $handle => [
+                                'type'     => 'text',
+                                'value'    => $value,
+                                'required' => $isRequired,
+                            ],
+                        ];
+                    }
+
+
+                    $data[] = [
+                        'title'  => $field->getLabel(),
+                        'fields' => $fields,
+                    ];
+                }
+            }
+
+            $sectionData[$page->getLabel()] = $data;
+        }
+
         $view
-            ->setHeading('Freeform')
-            ->setSidebarDisabled(true)
-            ->addJavascript('composer/vendors.js')
-            ->addJavascript('composer/app.js')
+            ->setHeading('Submission: ' . $submission->title)
             ->setTemplateVariables(
                 [
-                    'form'          => $form,
-                    'fields'        => FieldRepository::getInstance()->getAllFields(false),
-                    'notifications' => NotificationRepository::getInstance()->getAllNotifications(),
-                    'statuses'      => StatusRepository::getInstance()->getAllStatuses(),
+                    'base_url'              => $this->getLink('submissions/' . $form->getHandle() . '/' . $submission->id),
+                    'cp_page_title'         => $submission->title,
+                    'save_btn_text'         => 'Save',
+                    'save_btn_text_working' => 'Saving...',
+                    'sections'              => $sectionData,
                 ]
             );
 
@@ -187,69 +333,32 @@ class SubmissionController extends Controller
     }
 
     /**
-     * @return AjaxView
-     * @throws \Exception
+     * @param Form            $form
+     * @param SubmissionModel $submission
+     *
+     * @return bool
      */
-    public function save()
+    public function save(Form $form, SubmissionModel $submission)
     {
-        $view = new AjaxView();
-        $post = $_POST;
+        $submission->title = ee()->input->post('title', true);
 
-        if (!isset($post['formId'])) {
-            throw new FreeformException('No form ID specified');
-        }
-
-        if (!isset($post['composerState'])) {
-            throw new FreeformException('No composer data present');
-        }
-
-        $formId        = $post['formId'];
-        $form          = FormRepository::getInstance()->getOrCreateForm($formId);
-        $composerState = json_decode($post['composerState'], true);
-
-        if ($this->getPost('duplicate', false)) {
-            $oldHandle = $composerState['composer']['properties']['form']['handle'];
-
-            if (preg_match('/^([a-zA-Z0-9]*[a-zA-Z]+)(\d+)$/', $oldHandle, $matches)) {
-                list($string, $mainPart, $iterator) = $matches;
-
-                $newHandle = $mainPart . ((int) $iterator + 1);
-            } else {
-                $newHandle = $oldHandle . '1';
+        foreach ($form->getLayout()->getFields() as $field) {
+            if ($field instanceof NoStorageInterface || $field instanceof FileUploadField) {
+                continue;
             }
 
-            $composerState['composer']['properties']['form']['handle'] = $newHandle;
+            $value = ee()->input->post($field->getHandle(), true);
+
+            if ($field instanceof CheckboxField && is_array($value)) {
+                $value = reset($value);
+            }
+
+            $submission->setFieldValue($field->getHandle(), $value);
         }
 
-        $formsService = new FormsService();
+        $submission->save();
 
-        try {
-            $formAttributes = new FormAttributes($formId, new EESession(), new EERequest());
-            $composer       = new Composer(
-                $composerState,
-                $formAttributes,
-                $formsService,
-                new SubmissionsService(),
-                new MailerService(),
-                new FilesService(),
-                new MailingListsService(),
-                new CrmService(),
-                new StatusesService(),
-                new EETranslator()
-            );
-        } catch (ComposerException $exception) {
-            $view->addError($exception->getMessage());
-
-            return $view;
-        }
-
-        $form->setLayout($composer);
-        $form->save();
-
-        $view->addVariable('id', $form->id);
-        $view->addVariable('handle', $form->handle);
-
-        return $view;
+        return true;
     }
 
     /**

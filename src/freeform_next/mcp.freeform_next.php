@@ -9,12 +9,15 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
+use Solspace\Addons\FreeformNext\Controllers\CrmController;
 use Solspace\Addons\FreeformNext\Controllers\FieldController;
 use Solspace\Addons\FreeformNext\Controllers\FormController;
+use Solspace\Addons\FreeformNext\Controllers\MailingListsController;
 use Solspace\Addons\FreeformNext\Controllers\NotificationController;
 use Solspace\Addons\FreeformNext\Controllers\SettingsController;
 use Solspace\Addons\FreeformNext\Controllers\SubmissionController;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
+use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
 use Solspace\Addons\FreeformNext\Model\FormModel;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
@@ -26,6 +29,7 @@ use Solspace\Addons\FreeformNext\Services\SettingsService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\Navigation;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanelView;
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -108,7 +112,7 @@ class Freeform_next_mcp extends ControlPanelView
                 $ajaxView = new AjaxView();
                 $ajaxView->setVariables(NotificationRepository::getInstance()->getAllNotifications());
 
-                $this->renderView($ajaxView);
+                return $this->renderView($ajaxView);
             } else {
                 $notification = NotificationRepository::getInstance()->getNotificationById($notificationId);
             }
@@ -128,22 +132,34 @@ class Freeform_next_mcp extends ControlPanelView
      * @param int|null $submissionId
      *
      * @return array
+     * @throws FreeformException
      */
     public function submissions($formHandle, $submissionId = null)
     {
         $formModel = FormRepository::getInstance()->getFormByIdOrHandle($formHandle);
         $form      = $formModel->getForm();
 
-        if (strtolower($submissionId) === 'delete') {
-            return $this->renderView($this->getSubmissionController()->batchDelete($form));
-        }
+        if (null !== $submissionId) {
+            if (strtolower($submissionId) === 'delete') {
+                return $this->renderView($this->getSubmissionController()->batchDelete($form));
+            } else {
+                $submission = SubmissionRepository::getInstance()->getSubmission($form, $submissionId);
 
-        if ($submissionId) {
-            $submission = SubmissionRepository::getInstance()->getSubmission($form, $submissionId);
+                if ($submission) {
+                    if (isset($_POST['title'])) {
+                        $this->getSubmissionController()->save($form, $submission);
 
-            if ($submission) {
-                echo $submission->firstName;
-                die();
+                        return $this->renderView(
+                            new RedirectView(
+                                UrlHelper::getLink('submissions/' . $formHandle . '/' . $submissionId)
+                            )
+                        );
+                    }
+
+                    return $this->renderView($this->getSubmissionController()->edit($form, $submission));
+                } else {
+                    throw new FreeformException(lang('Submission not found'));
+                }
             }
         }
 
@@ -213,9 +229,31 @@ class Freeform_next_mcp extends ControlPanelView
         return $this->renderView($ajaxView);
     }
 
+    /**
+     * @param string $type
+     *
+     * @return array
+     */
     public function settings($type)
     {
         return $this->renderView($this->getSettingsController()->index($type));
+    }
+
+    /**
+     * @param string $type
+     * @param null   $id
+     *
+     * @return array
+     */
+    public function integrations($type, $id = null)
+    {
+        switch (strtolower($type)) {
+            case 'mailing_lists':
+                return $this->renderView($this->getMailingListsController()->handle($id));
+
+            case 'crm':
+                return $this->renderView($this->getCrmController()->handle($id));
+        }
     }
 
     /**
@@ -225,6 +263,12 @@ class Freeform_next_mcp extends ControlPanelView
     {
         $forms = new NavigationLink('Forms', '');
         $forms->setButtonLink(new NavigationLink('New', 'forms/new'));
+
+        $integrations = new NavigationLink('Integrations');
+        $integrations
+            ->addSubNavItem(new NavigationLink('Mailing Lists', 'integrations/mailing_lists'))
+            ->addSubNavItem(new NavigationLink('CRM', 'integrations/crm'))
+        ;
 
         $settings = new NavigationLink('Settings');
         $settings
@@ -240,6 +284,7 @@ class Freeform_next_mcp extends ControlPanelView
             ->addLink($forms)
             ->addLink(new NavigationLink('Notifications', 'notifications'))
             ->addLink($settings)
+            ->addLink($integrations)
         ;
 
         return $nav;
@@ -310,6 +355,34 @@ class Freeform_next_mcp extends ControlPanelView
 
         if (null === $instance) {
             $instance = new SettingsController();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @return CrmController
+     */
+    public function getCrmController()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new CrmController();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @return MailingListsController
+     */
+    private function getMailingListsController()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new MailingListsController();
         }
 
         return $instance;

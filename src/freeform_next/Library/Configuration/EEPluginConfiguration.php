@@ -11,10 +11,8 @@
 
 namespace Solspace\Addons\FreeformNext\Library\Configuration;
 
-class CraftPluginConfiguration implements ConfigurationInterface
+class EEPluginConfiguration implements ConfigurationInterface
 {
-    const CONTEXT = "freeform";
-
     /**
      * @param string $key
      *
@@ -22,6 +20,6 @@ class CraftPluginConfiguration implements ConfigurationInterface
      */
     public function get($key)
     {
-        return \Craft\craft()->config->get($key, self::CONTEXT);
+        return ee()->config->item($key);
     }
 }

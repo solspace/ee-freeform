@@ -25,4 +25,17 @@ trait OptionsTrait
     {
         return $this->options;
     }
+
+    /**
+     * @return array
+     */
+    public function getOptionsAsArray()
+    {
+        $data = [];
+        foreach ($this->options as $option) {
+            $data[$option->getValue()] = $option->getLabel();
+        }
+
+        return $data;
+    }
 }

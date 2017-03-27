@@ -277,8 +277,8 @@ abstract class AbstractIntegration implements IntegrationInterface
         if ($blueprint->isRequired()) {
             throw new IntegrationException(
                 $this->getTranslator()->translate(
-                    "{setting} setting not specified",
-                    ["setting" => $blueprint->getLabel()]
+                    '{setting} setting not specified',
+                    ['setting' => $blueprint->getLabel()]
                 )
             );
         }
@@ -318,8 +318,8 @@ abstract class AbstractIntegration implements IntegrationInterface
 
         throw new IntegrationException(
             $this->getTranslator()->translate(
-                "Could not find setting blueprints for {handle}",
-                ["handle" => $handle]
+                'Could not find setting blueprints for {handle}',
+                ['handle' => $handle]
             )
         );
     }

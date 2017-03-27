@@ -68,6 +68,23 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_integrations` (
   DEFAULT CHARSET = `utf8`
   COLLATE = `utf8_unicode_ci`;
 
+CREATE TABLE IF NOT EXISTS `exp_freeform_next_crm_fields` (
+  `id`            INT(11)                                        NOT NULL AUTO_INCREMENT,
+  `siteId`        INT(11)                                        NOT NULL DEFAULT '1',
+  `integrationId` INT(11)                                        NOT NULL,
+  `handle`        VARCHAR(255)                                   NOT NULL,
+  `label`         VARCHAR(255)                                   NOT NULL,
+  `type`          ENUM ('string', 'numeric', 'boolean', 'array') NOT NULL DEFAULT 'string',
+  `required`      INT(1) UNSIGNED                                NOT NULL DEFAULT '0',
+  `dateCreated`   DATETIME                                                DEFAULT CURRENT_TIMESTAMP,
+  `dateUpdated`   DATETIME                                                DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `exp_freeform_next_crm_fields_integrationId_handle_unq_idx` (`integrationId`, `handle`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_mailing_list_fields` (
   `id`            INT(11)         NOT NULL  AUTO_INCREMENT,
   `siteId`        INT(11)         NOT NULL  DEFAULT '1',

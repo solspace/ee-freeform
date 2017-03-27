@@ -1,17 +1,18 @@
 {
-    "name": "solspace/ee-freeform-next",
-    "description": "Freeform Next plugin for EE3.x",
-    "type": "library",
-    "require": {
-        "symfony/property-access": "^2.8",
-        "hashids/hashids": "^1.0",
-        "pixel418/markdownify": "2.1.11",
-        "egulias/email-validator": "^1.2",
-        "twig/twig": "^1.31",
-        "swiftmailer/swiftmailer": "^5.4",
-        "danielstjules/stringy": "~2.3"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^4.8"
-    }
+  "name": "solspace/ee-freeform-next",
+  "description": "Freeform Next plugin for EE3.x",
+  "type": "library",
+  "require": {
+    "symfony/property-access": "^2.8",
+    "hashids/hashids": "^1.0",
+    "pixel418/markdownify": "2.1.11",
+    "egulias/email-validator": "^1.2",
+    "twig/twig": "^1.31",
+    "swiftmailer/swiftmailer": "^5.4",
+    "danielstjules/stringy": "~2.3",
+    "guzzle/guzzle": "^3.9"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^4.8"
+  }
 }

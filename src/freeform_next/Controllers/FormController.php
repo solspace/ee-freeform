@@ -24,6 +24,7 @@ use Solspace\Addons\FreeformNext\Model\SettingsModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FileRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
+use Solspace\Addons\FreeformNext\Repositories\MailingListRepository;
 use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
@@ -126,6 +127,8 @@ class FormController extends Controller
                     'formTemplates'         => $settingsService->getCustomFormTemplates(),
                     'solspaceFormTemplates' => $settingsService->getSolspaceFormTemplates(),
                     'showTutorial'          => $settingsService->getSettingsModel()->isShowTutorial(),
+                    'mailingLists'          => MailingListRepository::getInstance()->getAllIntegrationObjects(),
+                    'crmIntegrations'       => [],
                 ]
             );
 

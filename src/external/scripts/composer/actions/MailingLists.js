@@ -30,7 +30,7 @@ export function fetchMailingListsIfNeeded() {
     if (shouldFetchMailingLists(getState())) {
       dispatch(requestMailingLists());
 
-      const url = urlBuilder("freeform_next/mailing_lists");
+      const url = urlBuilder("freeform_next/integrations/mailing_lists/get");
       return fetch(url, {credentials: 'same-origin'})
         .then(response => response.json())
         .then(json => dispatch(receiveMailingLists(json)));
