@@ -1,7 +1,6 @@
 <?php
 /**
  * Freeform Next for Expression Engine
- *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
@@ -15,7 +14,6 @@ use EllisLab\ExpressionEngine\Service\Model\Model;
 
 /**
  * Class NotificationModel
- *
  * @property int    $id
  * @property int    $siteId
  * @property string $name
@@ -53,8 +51,20 @@ class NotificationModel extends Model implements \JsonSerializable
     protected $sortOrder;
 
     /**
+     * @return array
+     */
+    public static function createValidationRules()
+    {
+        return [
+            'name'      => 'required',
+            'handle'    => 'required',
+            'fromEmail' => 'required',
+            'subject'   => 'required',
+        ];
+    }
+
+    /**
      * Creates a Field object with default settings
-     *
      * @return NotificationModel
      */
     public static function create()
@@ -86,7 +96,6 @@ EOT;
 
     /**
      * Specify data which should be serialized to JSON
-     *
      * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
      * @return mixed data which can be serialized by <b>json_encode</b>,
      *        which is a value of any type other than a resource.

@@ -24,6 +24,25 @@ class NotificationRepository extends Repository
     }
 
     /**
+     * @param int|null $id
+     *
+     * @return NotificationModel
+     */
+    public function getOrCreateNotification($id)
+    {
+        $notification = null;
+        if ($id) {
+            $notification = $this->getNotificationById($id);
+        }
+
+        if (!$notification) {
+            $notification = NotificationModel::create();
+        }
+
+        return $notification;
+    }
+
+    /**
      * @return NotificationModel[]
      */
     public function getAllNotifications()

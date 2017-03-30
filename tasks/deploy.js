@@ -5,7 +5,7 @@ var zipFolder = require('zip-folder');
 var helpers   = require("./_helpers");
 
 module.exports = {
-  dep: ["build:scripts", "build:styles", "build:react", "build:fonts", "composer", "clean:deploy"],
+  dep: ["build:scripts", "build:styles", "build:react", "build:fonts", "build:themes", "composer", "clean:deploy"],
   fn: function (gulp, callback) {
     if (!helpers.isProd()) {
       console.log("!!! Deployment must be run with '--env prod' environment variable !!!");

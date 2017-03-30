@@ -1,7 +1,6 @@
 <?php
 /**
  * Freeform Next for Expression Engine
- *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
@@ -85,8 +84,9 @@ class Freeform_next_mcp extends ControlPanelView
     public function api($type)
     {
         $apiController = new ApiController();
+        $args = func_get_args();
 
-        return $this->renderView($apiController->handle($type));
+        return $this->renderView($apiController->handle($type, $args));
     }
 
     /**
@@ -96,13 +96,15 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function fields($id = null)
     {
-        if (null !== $id) {
+        if (strtolower($id) === 'delete') {
+            return $this->renderView($this->getFieldController()->batchDelete($id));
+        } else if (null !== $id) {
             if (isset($_POST['label'])) {
-                $this->getFieldController()->save($id);
+                $field = $this->getFieldController()->save($id);
 
                 return $this->renderView(
                     new RedirectView(
-                        UrlHelper::getLink('fields/' . $id)
+                        UrlHelper::getLink('fields/' . $field->id)
                     )
                 );
             }
@@ -121,29 +123,25 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function notifications($notificationId = null)
     {
-        if (isset($_POST['name'])) {
-            $this->renderView($this->getNotificationController()->create());
-        }
 
-        if (null !== $notificationId) {
-            if (strtolower($notificationId) === 'new') {
-                $notification = NotificationModel::create();
-            } else if (strtolower($notificationId) === 'delete') {
-                return $this->renderView($this->getNotificationController()->batchDelete());
-            } else if (strtolower($notificationId) === 'list') {
-                $ajaxView = new AjaxView();
-                $ajaxView->setVariables(NotificationRepository::getInstance()->getAllNotifications());
+        if (strtolower($notificationId) === 'delete') {
+            return $this->renderView($this->getNotificationController()->batchDelete());
+        } else if (null !== $notificationId) {
+            $validation = null;
+            if (isset($_POST['name'])) {
+                $validation = ee('Validation')->make(NotificationModel::createValidationRules())->validate($_POST);
+                if ($validation->isValid()) {
+                    $notification = $this->getNotificationController()->save($notificationId);
 
-                return $this->renderView($ajaxView);
-            } else {
-                $notification = NotificationRepository::getInstance()->getNotificationById($notificationId);
+                    return $this->renderView(
+                        new RedirectView(
+                            UrlHelper::getLink('notifications/' . $notification->id)
+                        )
+                    );
+                }
             }
 
-            if (!$notification) {
-                throw new FreeformException("Notification doesn't exist");
-            }
-
-            return $this->renderView($this->getNotificationController()->editForm($notification));
+            return $this->renderView($this->getNotificationController()->edit($notificationId, $validation));
         }
 
         return $this->renderView($this->getNotificationController()->index());
@@ -204,7 +202,7 @@ class Freeform_next_mcp extends ControlPanelView
                 $templateName .= '.html';
 
                 $filePath = $settings->getFormattingTemplatePath() . '/' . $templateName;
-                $handle = fopen($filePath, 'w');
+                $handle   = fopen($filePath, 'w');
 
                 if (false === $handle) {
                     $ajaxView->addError('');
@@ -286,14 +284,16 @@ class Freeform_next_mcp extends ControlPanelView
         $forms = new NavigationLink('Forms', '');
         $forms->setButtonLink(new NavigationLink('New', 'forms/new'));
 
+        $notifications = new NavigationLink('Notifications', 'notifications');
+        $notifications->setButtonLink(new NavigationLink('New', 'notifications/new'));
+
         $fields = new NavigationLink('Fields', 'fields');
         $fields->setButtonLink(new NavigationLink('New', 'fields/new'));
 
         $integrations = new NavigationLink('Integrations');
         $integrations
             ->addSubNavItem(new NavigationLink('Mailing Lists', 'integrations/mailing_lists'))
-            ->addSubNavItem(new NavigationLink('CRM', 'integrations/crm'))
-        ;
+            ->addSubNavItem(new NavigationLink('CRM', 'integrations/crm'));
 
         $settings = new NavigationLink('Settings');
         $settings
@@ -301,17 +301,15 @@ class Freeform_next_mcp extends ControlPanelView
             ->addSubNavItem(new NavigationLink('Formatting Templates', 'settings/formatting_templates'))
             ->addSubNavItem(new NavigationLink('Email Templates', 'settings/email_templates'))
             ->addSubNavItem(new NavigationLink('Statuses', 'settings/statuses'))
-            ->addSubNavItem(new NavigationLink('Demo Templates', 'settings/demo_templates'))
-        ;
+            ->addSubNavItem(new NavigationLink('Demo Templates', 'settings/demo_templates'));
 
         $nav = new Navigation();
         $nav
             ->addLink($forms)
             ->addLink($fields)
-            ->addLink(new NavigationLink('Notifications', 'notifications'))
+            ->addLink($notifications)
             ->addLink($settings)
-            ->addLink($integrations)
-        ;
+            ->addLink($integrations);
 
         return $nav;
     }

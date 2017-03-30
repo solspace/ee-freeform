@@ -17,6 +17,10 @@ module.exports = {
     src: ["src/external/font/**/*.*"],
     dest: "src/themes/freeform_next/font/"
   },
+  themes: {
+    src: ["src/external/themes/**/*.*"],
+    dest: "src/themes/freeform_next/lib/",
+  },
   vendors: {
     dist: "dist/freeform_next/vendor/",
     deleteList: [

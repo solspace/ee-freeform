@@ -62,6 +62,24 @@ class FieldRepository extends Repository
     }
 
     /**
+     * @param array $ids
+     *
+     * @return FieldModel[]
+     */
+    public function getFieldsByIdList(array $ids)
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        return ee('Model')
+            ->get(FieldModel::MODEL)
+            ->filter('id', 'IN', $ids)
+            ->all()
+            ->asArray();
+    }
+
+    /**
      * @param bool $indexById
      *
      * @return FieldModel[]

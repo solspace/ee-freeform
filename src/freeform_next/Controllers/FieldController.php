@@ -21,6 +21,7 @@ use Solspace\Addons\FreeformNext\Services\FilesService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\ConfirmRemoveModal;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 
 class FieldController extends Controller
 {
@@ -175,7 +176,6 @@ class FieldController extends Controller
         );
         $view
             ->setHeading(lang('Field'))
-            ->addJavascript('require')
             ->addJavascript('fieldEditor')
         ;
 
@@ -185,11 +185,10 @@ class FieldController extends Controller
     /**
      * @param int|null $fieldId
      *
-     * @return AjaxView
+     * @return FieldModel
      */
     public function save($fieldId = null)
     {
-        $view  = new AjaxView();
         $field = FieldRepository::getInstance()->getOrCreateField($fieldId);
 
         $post        = $_POST;
@@ -240,9 +239,28 @@ class FieldController extends Controller
         $field->set($validValues);
         $field->save();
 
-        $view->addVariable('success', true);
+        return $field;
+    }
 
-        return $view;
+    /**
+     * @return RedirectView
+     */
+    public function batchDelete()
+    {
+        if (isset($_POST['id_list'])) {
+            $ids = [];
+            foreach ($_POST['id_list'] as $id) {
+                $ids[] = (int) $id;
+            }
+
+            $models = FieldRepository::getInstance()->getFieldsByIdList($ids);
+
+            foreach ($models as $model) {
+                $model->delete();
+            }
+        }
+
+        return new RedirectView($this->getLink('fields'));
     }
 
     /**
