@@ -31,6 +31,12 @@ class NavigationLink
     /** @var NavigationLink */
     private $buttonLink;
 
+    /**
+     * NavigationLink constructor.
+     *
+     * @param string $title
+     * @param string $method
+     */
     public function __construct($title, $method = null)
     {
         $this->title  = $title;
@@ -47,6 +53,14 @@ class NavigationLink
     public function getTitle()
     {
         return lang($this->title);
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethod()
+    {
+        return $this->method;
     }
 
     /**
@@ -70,6 +84,13 @@ class NavigationLink
         }
 
         return $link;
+    }
+
+    public function isActive()
+    {
+        $link = $this->getLink();
+
+        return true;
     }
 
     /**

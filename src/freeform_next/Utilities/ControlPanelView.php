@@ -47,6 +47,7 @@ class ControlPanelView
             $view->compile();
         }
 
+        $viewData = [];
         if ($view instanceof CpView) {
             $viewData = [
                 'sidebar'    => $view->isSidebarDisabled() ? null : $this->buildNavigation()->buildNavigationView(),

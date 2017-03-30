@@ -1,7 +1,6 @@
 <?php
 /**
  * Freeform Next for Expression Engine
- *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
@@ -36,12 +35,19 @@ class Navigation
      */
     public function buildNavigationView()
     {
+        $currentUrl = ltrim($_SERVER['REQUEST_URI'], '/');
+
         /** @var Sidebar $sidebar */
         $sidebar = ee('CP/Sidebar')->make();
 
         foreach ($this->stack as $item) {
+            $link = $item->getLink();
+
             /** @var Header $header */
-            $header = $sidebar->addHeader($item->getTitle(), $item->getLink());
+            $header = $sidebar->addHeader($item->getTitle(), $link);
+            if ($item->getMethod() !== '' && $link && strpos($currentUrl, $link->compile()) === 0) {
+                $header->isActive();
+            }
 
             $button = $item->getButtonLink();
             if ($button) {
