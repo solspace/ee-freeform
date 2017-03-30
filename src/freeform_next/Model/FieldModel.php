@@ -1,7 +1,6 @@
 <?php
 /**
  * Freeform Next for Expression Engine
- *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
@@ -18,7 +17,6 @@ use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
 
 /**
  * Class FieldModel
- *
  * @property int    $id
  * @property int    $siteId
  * @property string $type
@@ -66,9 +64,14 @@ class FieldModel extends Model implements \JsonSerializable
 
     protected static $_events = ['afterSave', 'afterDelete'];
 
+    protected static $_typed_columns = [
+        'values'    => 'json',
+        'options'   => 'json',
+        'fileKinds' => 'json',
+    ];
+
     /**
      * Creates a Field object with default settings
-     *
      * @return FieldModel
      */
     public static function create()
@@ -95,7 +98,6 @@ class FieldModel extends Model implements \JsonSerializable
 
     /**
      * Specify data which should be serialized to JSON
-     *
      * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
      * @return mixed data which can be serialized by <b>json_encode</b>,
      *        which is a value of any type other than a resource.
@@ -184,7 +186,7 @@ class FieldModel extends Model implements \JsonSerializable
     {
         $labels           = $postValues['labels'];
         $values           = $postValues['values'];
-        $checkedByDefault = $postValues['checked'];
+        $checkedByDefault = $postValues['checked_by_default'];
 
         $savableValue   = null;
         $savableValues  = [];
@@ -230,7 +232,6 @@ class FieldModel extends Model implements \JsonSerializable
                 'options' => !empty($savableOptions) ? $savableOptions : null,
                 'values'  => !empty($savableValues) ? $savableValues : null,
                 'value'   => !empty($savableValue) ? $savableValue : null,
-                'checked' => null,
             ]
         );
     }
@@ -260,7 +261,6 @@ class FieldModel extends Model implements \JsonSerializable
 
     /**
      * Depending on the field type - return its column type for the database
-     *
      * @return string
      */
     public function getColumnType()
@@ -302,7 +302,10 @@ class FieldModel extends Model implements \JsonSerializable
         $columnName = SubmissionModel::getFieldColumnName($this->id);
         $type       = $this->getColumnType();
 
-        ee()->db->query("ALTER TABLE exp_freeform_next_submissions ADD COLUMN $columnName $type NULL DEFAULT NULL");
+        try {
+            ee()->db->query("ALTER TABLE exp_freeform_next_submissions ADD COLUMN $columnName $type NULL DEFAULT NULL");
+        } catch (\Exception $e) {
+        }
     }
 
     /**

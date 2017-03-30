@@ -9,6 +9,7 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
+use Solspace\Addons\FreeformNext\Controllers\ApiController;
 use Solspace\Addons\FreeformNext\Controllers\CrmController;
 use Solspace\Addons\FreeformNext\Controllers\FieldController;
 use Solspace\Addons\FreeformNext\Controllers\FormController;
@@ -77,18 +78,39 @@ class Freeform_next_mcp extends ControlPanelView
     }
 
     /**
+     * @param string $type
+     *
      * @return array
      */
-    public function fields()
+    public function api($type)
     {
-        if (!empty($_POST)) {
-            $this->renderView($this->getFieldController()->save());
+        $apiController = new ApiController();
+
+        return $this->renderView($apiController->handle($type));
+    }
+
+    /**
+     * @param int|null $id
+     *
+     * @return array
+     */
+    public function fields($id = null)
+    {
+        if (null !== $id) {
+            if (isset($_POST['label'])) {
+                $this->getFieldController()->save($id);
+
+                return $this->renderView(
+                    new RedirectView(
+                        UrlHelper::getLink('fields/' . $id)
+                    )
+                );
+            }
+
+            return $this->renderView($this->getFieldController()->edit($id));
         }
 
-        $view = new AjaxView();
-        $view->setVariables(FieldRepository::getInstance()->getAllFields());
-
-        $this->renderView($view);
+        return $this->renderView($this->getFieldController()->index());
     }
 
     /**
@@ -264,6 +286,9 @@ class Freeform_next_mcp extends ControlPanelView
         $forms = new NavigationLink('Forms', '');
         $forms->setButtonLink(new NavigationLink('New', 'forms/new'));
 
+        $fields = new NavigationLink('Fields', 'fields');
+        $fields->setButtonLink(new NavigationLink('New', 'fields/new'));
+
         $integrations = new NavigationLink('Integrations');
         $integrations
             ->addSubNavItem(new NavigationLink('Mailing Lists', 'integrations/mailing_lists'))
@@ -282,6 +307,7 @@ class Freeform_next_mcp extends ControlPanelView
         $nav = new Navigation();
         $nav
             ->addLink($forms)
+            ->addLink($fields)
             ->addLink(new NavigationLink('Notifications', 'notifications'))
             ->addLink($settings)
             ->addLink($integrations)

@@ -8,141 +8,122 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-$(function () {
-  var $typeSelect = $("select#type");
+$(() => {
+  let wrappers = $('.option-editor-wrapper');
 
-  $typeSelect.on({
-    change: function () {
-      var type = $(this).val();
+  let label  = $('input:text[name=label]');
+  let handle = $('input:text[name=handle]');
 
-      $(".field-settings[data-type=" + type + "]")
-        .show()
-        .siblings()
-        .hide();
-    }
+  const camelize = (str) => {
+    return str
+        .replace(/(?:^\w|[A-Z]|\b\w)/g, (letter, index) => (
+        index === 0 ? letter.toLowerCase() : letter.toUpperCase()
+      ))
+      .replace(/\s+/g, '')
+      .replace(/[^a-zA-Z0-9_]/g, '')
+  };
+
+  label.on({
+    keyup: () => {
+      let val = label.val();
+
+      val = camelize(val);
+      handle.val(val);
+    },
+    change: (event) => $(event.target).trigger('keypress'),
   });
-  $typeSelect.trigger("change");
 
+  wrappers.each((i, wrapper) => {
+    const self = $(wrapper);
 
-  var $table = $("table.value-group");
-  $table.each(function () {
-    var $sorter = new Craft.DataTableSorter($(this), {
-      helperClass: 'editabletablesorthelper',
-      copyDraggeeInputValuesToHelper: true
+    const editor        = $('.option-editor', self);
+    const itemList      = $('.items', editor);
+    const valueToggler  = $('.value-toggler', self);
+    const buttonRow     = $('.button-row', self);
+    const noValuesBlock = $('.no-values', self);
+
+    /**
+     * Shows or hides VALUE column based on showValues variable
+     */
+    self.showValues = (showValues) => {
+      showValues ? self.addClass('show-values') : self.removeClass('show-values');
+    };
+
+    self.checkValueCount = () => {
+      const valueCount = $("> ul", itemList).length;
+
+      if (valueCount) {
+        noValuesBlock.hide();
+        editor.show();
+        buttonRow.show();
+      } else {
+        noValuesBlock.show();
+        editor.hide();
+        buttonRow.hide();
+      }
+    };
+
+    editor
+    // REMOVE button click handler
+      .on({
+        click: (event) => {
+          $(event.target).parents('ul:first').remove();
+          self.checkValueCount();
+        }
+      }, '[data-action=remove] a')
+      // IS CHECKED BY DEFAULT click handler
+      .on({
+        click: (event) => {
+          $(event.target).prev().val($(event.target).is(':checked') ? 1 : 0);
+
+          if (typeof editor.data('single-value') !== 'undefined') {
+            const siblings = $(event.target).parents('ul:first').siblings();
+            $('input[type=hidden]', siblings).val(0);
+            $('input[type=checkbox]', siblings).prop('checked', false);
+          }
+
+        }
+      }, '[data-checked] input[type=checkbox]')
+      .on({
+        keyup: (event) => {
+          const labelInput = $(event.target);
+          const valueInput = labelInput.parent().siblings('[data-value]').find('input:text');
+
+          valueInput.val(labelInput.val());
+        },
+        change: (event) => {
+          $(event.target).trigger('keypress');
+        }
+      }, '[data-label] input:text')
+    ;
+
+    // ADD ROW button click handler
+    self.on({
+      click: () => {
+        const templateContents = $("template", editor).html().trim();
+
+        itemList.append(templateContents);
+        self.checkValueCount();
+      }
+    }, 'a[data-add-row]');
+
+    valueToggler.on({
+      click: (event) => {
+        const element = $(event.target);
+        self.showValues(element.val() === "1");
+
+        element.parent().addClass('chosen').siblings().removeClass('chosen');
+      }
+    }, 'input[type=radio]');
+
+    itemList.sortable({
+      handle: 'li[data-action=reorder] > a',
     });
 
-    $(this).data("sorter", $sorter);
+    $('input:checked', valueToggler).trigger('click');
+    self.showValues($('.value-toggler input:checked').val() === "1");
+    self.checkValueCount();
   });
 
-  var $customValueSwitch = $("input[name$='[customValues]']").parents(".lightswitch");
-  $customValueSwitch.on({
-    change: function () {
-      var isOn = $('input', this).val();
-      if (isOn) {
-        $table.removeClass("hide-custom-values");
-      } else {
-        $table.addClass("hide-custom-values");
-      }
-    }
-  });
-  $customValueSwitch.trigger("change");
 
-  $(".value-group + .btn.add").on({
-    click: function () {
-      var $parentTable = $(this).prev("table.value-group");
-      var type         = $parentTable.data("type");
-
-      var $tr = $("<tr>")
-        .append(
-          $("<td>", {class: "textual field-label"})
-            .append(
-              $("<textarea>", {
-                val: "",
-                rows: 1,
-                name: "types[" + type + "][labels][]",
-              })
-            )
-        )
-        .append(
-          $("<td>", {class: "textual field-value"})
-            .append(
-              $("<textarea>", {
-                val: "",
-                rows: 1,
-                class: "code",
-                name: "types[" + type + "][values][]",
-              })
-            )
-        )
-        .append(
-          $("<td>")
-            .append(
-              $("<input>", {
-                type: "hidden",
-                value: 0,
-                class: "code",
-                name: "types[" + type + "][checked][]",
-              })
-            )
-            .append(
-              $("<input>", {
-                type: type == "checkbox_group" ? "checkbox" : "radio",
-                name: type + "_is_checked",
-                checked: false,
-              })
-            )
-        )
-        .append(
-          $("<td>", {class: "thin action"})
-            .append(
-              $("<a>", {
-                class: "move icon",
-                title: Craft.t("Reorder"),
-              })
-            )
-        )
-        .append(
-          $("<td>", {class: "thin action"})
-            .append(
-              $("<a>", {
-                class: "delete icon",
-                title: Craft.t("Delete"),
-              })
-            )
-        );
-
-      $("tbody", $parentTable).append($tr);
-      $parentTable.find("tbody > tr:last > td:first textarea:first").focus();
-
-      $parentTable.data("sorter").addItems($tr);
-    }
-  });
-
-  $table
-    .on({
-      click: function () {
-        $(this).parents("tr:first").remove();
-      }
-    }, "tr td.action .icon.delete")
-    .on({
-      keyup: function () {
-        var $val = $(this).val();
-        var $tr  = $(this).parents("tr:first");
-
-        $("td.field-value > textarea", $tr).val($val);
-      }
-    }, "td.field-label > textarea")
-    .on({
-      click: function () {
-        var $tbody    = $(this).parents("tbody:first");
-        var isChecked = $(this).is(":checked");
-        var isRadio   = $(this).is(":radio");
-
-        if (isRadio && isChecked) {
-          $("input:hidden", $tbody).val(0);
-        }
-
-        $(this).siblings("input:hidden").val(isChecked ? 1 : 0);
-      }
-    }, "input:checkbox, input:radio");
 });

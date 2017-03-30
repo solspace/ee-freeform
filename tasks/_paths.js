@@ -2,8 +2,8 @@ module.exports = {
   src: "src/",
   scripts: {
     src: ["src/external/scripts/cp/**/*.js"],
-    dest: "src/themes/freeform_next/javascript/cp/",
-    deleteList: ["src/themes/freeform_next/javascript/cp/**/*.js"]
+    dest: "src/freeform_next/javascript/",
+    deleteList: ["src/freeform_next/javascript/**/*.js"]
   },
   react: {
     src: ["src/external/scripts/composer/**/*.js"],

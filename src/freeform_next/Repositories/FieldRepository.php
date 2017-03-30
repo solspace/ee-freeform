@@ -38,10 +38,7 @@ class FieldRepository extends Repository
     {
         $field = null;
         if ($fieldId) {
-            $field = ee('Model')
-                ->get(FieldModel::MODEL)
-                ->filter('id', $fieldId)
-                ->first();
+            $field = $this->getFieldById($fieldId);
         }
 
         if (!$field) {
@@ -49,6 +46,19 @@ class FieldRepository extends Repository
         }
 
         return $field;
+    }
+
+    /**
+     * @param int $fieldId
+     *
+     * @return FieldModel|null
+     */
+    public function getFieldById($fieldId)
+    {
+        return ee('Model')
+            ->get(FieldModel::MODEL)
+            ->filter('id', $fieldId)
+            ->first();
     }
 
     /**

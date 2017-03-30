@@ -29,7 +29,7 @@
     var baseUrl = "<?php echo ee('CP/URL', 'addons/settings/') ?>";
     var saveUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/forms') ?>";
     var formUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/forms/{id}') ?>";
-    var createFieldUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/fields') ?>";
+    var createFieldUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/api/fields') ?>";
     var createNotificationUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/notifications') ?>";
     var createTemplateUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/templates') ?>";
     var finishTutorialUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/finish_tutorial') ?>";

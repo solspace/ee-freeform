@@ -7,17 +7,156 @@
  * @link          https://solspace.com/expressionengine/freeform-next
  * @license       https://solspace.com/software/license-agreement
  */
+@import "mixins";
 
-.field-type {
-  display: none;
+.value-toggler {
+  @include clearfix;
 }
 
-.field-settings {
-  display: none;
-}
+.option-editor-wrapper {
+  ul {
+    display: block;
+    padding: 0;
+    margin: 0;
 
-table.value-group {
-  &.hide-custom-values .field-value {
+    width: 100%;
+    list-style: none;
+  }
+
+  .option-editor {
+    .items > ul, ul.headers {
+      display: flex;
+      margin: 0 -5px;
+
+      > li {
+        flex: 1 0 auto;
+        padding: 0 5px;
+
+        box-sizing: border-box;
+
+        &[data-action] {
+          flex: 0 0 22px;
+        }
+
+        &[data-checked] {
+          flex: 0 0 30px;
+          text-align: center;
+
+          input {
+            margin-right: 0;
+            margin-bottom: 0;
+            padding-right: 0;
+          }
+        }
+      }
+    }
+
+    ul.headers {
+      > li {
+        font-size: 12px;
+        font-weight: 700;
+        padding: 0 5px 3px;
+      }
+    }
+
+    .items > ul {
+      > li {
+        $spacing: 8px;
+        padding-bottom: $spacing;
+        margin-bottom: $spacing;
+        border-bottom: 1px solid #f1f1f1;
+
+        input {
+          margin-bottom: 0;
+        }
+      }
+
+      &:last-child > li {
+        border-bottom: none;
+      }
+    }
+
+    li[data-action] {
+      padding: 3px 5px 0 !important;
+
+      > a {
+        font-family: FontAwesome;
+        font-weight: 400;
+        -webkit-font-smoothing: antialiased;
+
+        text-decoration: none;
+      }
+
+      &[data-action=reorder] > a {
+        cursor: move;
+
+        &:before {
+          content: '\f0c9';
+        }
+      }
+
+      &[data-action=remove] > a:before {
+        content: '\f1f8';
+        color: #bc4848;
+      }
+    }
+  }
+
+  .button-row {
+    @include clearfix;
+
+    > a {
+      display: block;
+      float: left;
+      box-sizing: border-box;
+
+      width: 28px;
+      height: 26px;
+      padding: 4px 8px;
+
+      background: #f9f9f9;
+      border: 1px solid #cfcfcf;
+      border-radius: 5px;
+
+      text-decoration: none;
+
+      &:hover {
+        background: #FFFFFF;
+      }
+
+      &:before {
+        font-family: FontAwesome;
+      }
+
+      &[data-add-row]:before {
+        content: '\f067';
+        color: #7baf55;
+      }
+    }
+  }
+
+  .no-values {
+    background: #fffcee;
+    border: 1px solid #ffd30e;
+    color: #745f00;
+    margin-bottom: 10px;
+    padding: 10px;
+    text-align: center;
+  }
+
+  *[data-value] {
     display: none;
+  }
+
+  &.show-values {
+    *[data-value] {
+      display: block;
+    }
+  }
+
+  &.always-show-values {
+    *[data-value] {
+      display: block !important;
+    }
   }
 }

@@ -36,8 +36,7 @@ export function fetchFieldsIfNeeded() {
     if (shouldFetchFields(getState())) {
       dispatch(requestFields());
 
-      const url = urlBuilder("freeform_next/fields");
-      console.log(url);
+      const url = urlBuilder("freeform_next/api/fields");
       return fetch(url, {credentials: 'same-origin'})
         .then(response => response.json())
         .then(json => dispatch(receiveFields(json)));
