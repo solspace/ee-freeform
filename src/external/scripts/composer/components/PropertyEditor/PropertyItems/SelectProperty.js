@@ -35,7 +35,7 @@ export default class SelectProperty extends BasePropertyItem {
   };
 
   renderInput() {
-    const {name, readOnly, disabled, onChangeHandler, value, className, isNumeric, emptyOption, options, optionGroups} = this.props;
+    const {name, readOnly, disabled, onChangeHandler, value, className, isNumeric, couldBeNumeric, emptyOption, options, optionGroups} = this.props;
 
     return (
       <div className="select">
@@ -46,6 +46,7 @@ export default class SelectProperty extends BasePropertyItem {
           readOnly={readOnly}
           disabled={disabled}
           data-is-numeric={!!isNumeric}
+          data-could-be-numeric={!!couldBeNumeric}
           onChange={onChangeHandler}
         >
           {emptyOption && <option value={isNumeric ? 0 : ""}>{emptyOption}</option>}

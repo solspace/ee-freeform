@@ -15,6 +15,10 @@ use Solspace\Addons\FreeformNext\Model\NotificationModel;
 
 class NotificationRepository extends Repository
 {
+    /** @var NotificationModel[] */
+    private static $notificationCache;
+    private static $allNotificationsLoaded;
+
     /**
      * @return NotificationRepository
      */
@@ -43,14 +47,35 @@ class NotificationRepository extends Repository
     }
 
     /**
+     * @param bool $indexById
+     *
      * @return NotificationModel[]
      */
-    public function getAllNotifications()
+    public function getAllNotifications($indexById = true)
     {
-        return ee('Model')
-            ->get(NotificationModel::MODEL)
-            ->all()
-            ->asArray();
+        if (null === self::$notificationCache || !self::$allNotificationsLoaded) {
+            $notificationRecords = ee('Model')
+                ->get(NotificationModel::MODEL)
+                ->order('name', 'asc')
+                ->all()
+                ->asArray();
+
+            if (!$indexById) {
+                $notificationRecords = array_values($notificationRecords);
+            }
+
+            self::$notificationCache = $notificationRecords;
+
+            $settings = SettingsRepository::getInstance()->getOrCreate();
+            foreach ($settings->listTemplatesInEmailTemplateDirectory() as $filePath => $name) {
+                $model = NotificationModel::createFromTemplate($filePath);
+                self::$notificationCache[$model->id] = $model;
+            }
+
+            self::$allNotificationsLoaded = true;
+        }
+
+        return self::$notificationCache;
     }
 
     /**
@@ -60,10 +85,36 @@ class NotificationRepository extends Repository
      */
     public function getNotificationById($id)
     {
-        return ee('Model')
-            ->get(NotificationModel::MODEL)
-            ->filter('id', $id)
-            ->first();
+        if (null === self::$notificationCache || !isset(self::$notificationCache[$id])) {
+            if (is_numeric($id)) {
+                $notification = ee('Model')
+                    ->get(NotificationModel::MODEL)
+                    ->filter('id', $id)
+                    ->first();
+            } else {
+                $notification = ee('Model')
+                    ->get(NotificationModel::MODEL)
+                    ->filter('handle', $id)
+                    ->first();
+            }
+
+            self::$notificationCache[$id] = null;
+
+            if ($notification) {
+                self::$notificationCache[$id] = $notification;
+            } else {
+                $settings = SettingsRepository::getInstance()->getOrCreate();
+
+                foreach ($settings->listTemplatesInEmailTemplateDirectory() as $filePath => $name) {
+                    if ($id === $name) {
+                        $model = NotificationModel::createFromTemplate($filePath);
+                        self::$notificationCache[$id] = $model;
+                    }
+                }
+            }
+        }
+
+        return self::$notificationCache[$id];
     }
 
     /**

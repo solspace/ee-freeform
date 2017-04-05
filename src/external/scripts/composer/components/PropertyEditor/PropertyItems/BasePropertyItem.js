@@ -22,6 +22,7 @@ export default class BasePropertyItem extends Component {
     className: PropTypes.string,
     placeholder: PropTypes.string,
     isNumeric: PropTypes.bool,
+    couldBeNumeric: PropTypes.bool,
     required: PropTypes.bool,
   };
 

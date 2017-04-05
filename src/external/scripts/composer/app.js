@@ -90,6 +90,8 @@ ReactDOM.render(
       canManageFields={canManageFields}
       canManageNotifications={canManageNotifications}
       canManageSettings={canManageSettings}
+      isDbEmailTemplateStorage={isDbEmailTemplateStorage}
+      isWidgetsInstalled={isWidgetsInstalled}
       csrf={{
         name: "csrf_token",
         token: csrfToken,

@@ -13,6 +13,7 @@ import BasePropertyEditor from "./BasePropertyEditor";
 import TextareaProperty from "./PropertyItems/TextareaProperty";
 import SelectProperty from "./PropertyItems/SelectProperty";
 import AddNewNotification from "./Components/AddNewNotification";
+import PropertyHelper from "../../helpers/PropertyHelper";
 import {connect} from "react-redux";
 
 @connect(
@@ -25,21 +26,20 @@ import {connect} from "react-redux";
 export default class AdminNotifications extends BasePropertyEditor {
   static propTypes = {
     globalProperties: PropTypes.object.isRequired,
-    notifications: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-        handle: PropTypes.string.isRequired,
-        description: PropTypes.string,
-      })
-    ).isRequired,
+    notifications: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.object,
+    ]).isRequired,
   };
 
   static contextTypes = {
     ...BasePropertyEditor.contextTypes,
     properties: PropTypes.shape({
       type: PropTypes.string.isRequired,
-      notificationId: PropTypes.number.isRequired,
+      notificationId: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]),
       recipients: PropTypes.string.isRequired,
     }).isRequired,
     canManageNotifications: PropTypes.bool.isRequired,
@@ -51,13 +51,6 @@ export default class AdminNotifications extends BasePropertyEditor {
     const {canManageNotifications} = this.context;
 
     const {notifications}  = this.props;
-    const notificationList = [];
-    notifications.map((notification) => {
-      notificationList.push({
-        key: notification.id,
-        value: notification.name,
-      });
-    });
 
     return (
       <div>
@@ -66,10 +59,10 @@ export default class AdminNotifications extends BasePropertyEditor {
           instructions="The notification template used to send an email to the email value entered into this field (optional)."
           name="notificationId"
           value={notificationId}
-          isNumeric={true}
+          couldBeNumeric={true}
           onChangeHandler={this.update}
           emptyOption="Select a template..."
-          options={notificationList}
+          optionGroups={PropertyHelper.getNotificationList(notifications)}
         >
           {canManageNotifications && <AddNewNotification />}
         </SelectProperty>

@@ -35,6 +35,8 @@ export default class ComposerApp extends Component {
     canManageFields: PropTypes.bool.isRequired,
     canManageNotifications: PropTypes.bool.isRequired,
     canManageSettings: PropTypes.bool.isRequired,
+    isDbEmailTemplateStorage: PropTypes.bool.isRequired,
+    isWidgetsInstalled: PropTypes.bool.isRequired,
   };
 
   static childContextTypes = {
@@ -49,6 +51,8 @@ export default class ComposerApp extends Component {
     canManageFields: PropTypes.bool.isRequired,
     canManageNotifications: PropTypes.bool.isRequired,
     canManageSettings: PropTypes.bool.isRequired,
+    isDbEmailTemplateStorage: PropTypes.bool.isRequired,
+    isWidgetsInstalled: PropTypes.bool.isRequired,
   };
 
   getChildContext = () => ({
@@ -60,6 +64,8 @@ export default class ComposerApp extends Component {
     canManageFields: this.props.canManageFields,
     canManageNotifications: this.props.canManageNotifications,
     canManageSettings: this.props.canManageSettings,
+    isDbEmailTemplateStorage: this.props.isDbEmailTemplateStorage,
+    isWidgetsInstalled: this.props.isWidgetsInstalled,
   });
 
   render() {

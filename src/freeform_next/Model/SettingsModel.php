@@ -104,6 +104,22 @@ class SettingsModel extends Model
     }
 
     /**
+     * If an email template directory has been set and it exists - return its absolute path
+     *
+     * @return null|string
+     */
+    public function getAbsoluteEmailTemplateDirectory()
+    {
+        if ($this->notificationTemplatePath) {
+            $absolutePath = $this->getAbsolutePath($this->notificationTemplatePath);
+
+            return file_exists($absolutePath) ? $absolutePath : null;
+        }
+
+        return null;
+    }
+
+    /**
      * Gets the demo template content
      *
      * @param string $name
@@ -141,6 +157,46 @@ class SettingsModel extends Model
         }
 
         return $files;
+    }
+
+    /**
+     * @return array|bool
+     */
+    public function listTemplatesInEmailTemplateDirectory()
+    {
+        $templateDirectoryPath = $this->getAbsoluteEmailTemplateDirectory();
+
+        if (!$templateDirectoryPath) {
+            return [];
+        }
+
+        $files = [];
+        $dir = new \DirectoryIterator($templateDirectoryPath);
+        foreach ($dir as $fileInfo) {
+            if (!$fileInfo->isDot() && !$fileInfo->isDir() && $fileInfo->getFilename() !== '.htaccess') {
+                $files[$fileInfo->getPathname()] = $fileInfo->getBasename();
+            }
+        }
+
+        return $files;
+    }
+
+    /**
+     * Gets the default email template content
+     *
+     * @return string
+     * @throws FreeformException
+     */
+    public function getEmailTemplateContent()
+    {
+        $path = PATH_THIRD . 'freeform_next/Templates/notifications/default.html';
+        if (!file_exists($path)) {
+            throw new FreeformException(
+                lang('Could not get email template content. Please contact Solspace.')
+            );
+        }
+
+        return file_get_contents($path);
     }
 
     /**
@@ -205,6 +261,14 @@ class SettingsModel extends Model
     public function getNotificationCreationMethod()
     {
         return $this->notificationCreationMethod;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDbEmailTemplateStorage()
+    {
+        return $this->notificationCreationMethod === self::NOTIFICATION_CREATION_METHOD_DATABASE;
     }
 
     /**

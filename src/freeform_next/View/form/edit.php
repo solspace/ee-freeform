@@ -39,6 +39,9 @@
     var canManageNotifications = true;
     var canManageSettings = true;
 
+    var isDbEmailTemplateStorage = <?php echo $isDbEmailTemplateStorage ? 'true' : 'false' ?>;
+    var isWidgetsInstalled       = <?php echo $isWidgetsInstalled ? 'true' : 'false' ?>;
+
     var csrfToken = "<?php echo CSRF_TOKEN ?>";
 </script>
 

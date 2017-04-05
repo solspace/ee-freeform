@@ -20,7 +20,10 @@ export default class IntegrationMappingTable extends Component {
       }).isRequired,
     ).isRequired,
     fields: PropTypes.array.isRequired,
-    mapping: PropTypes.object,
+    mapping: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.object,
+    ]),
   };
 
   static contextTypes = {

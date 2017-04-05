@@ -32,6 +32,6 @@ trait RecipientTrait
      */
     public function shouldReceiveEmail()
     {
-        return (bool)$this->getNotificationId();
+        return $this->getNotificationId();
     }
 }

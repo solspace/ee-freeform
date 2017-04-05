@@ -11,7 +11,6 @@
 
 namespace Solspace\Addons\FreeformNext\Library\Composer\Components;
 
-use Craft\TemplateHelper;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Attributes\CustomFieldAttributes;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\InputOnlyInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
@@ -20,7 +19,6 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\N
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\ObscureValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\StaticValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Properties\FieldProperties;
-use Solspace\Addons\FreeformNext\Library\Helpers\TwigHelper;
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -80,7 +78,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
         $field->pageIndex = $pageIndex;
 
         foreach ($objectProperties as $fieldName => $type) {
-            if ($fieldName === "errors") {
+            if ($fieldName === 'errors') {
                 continue;
             }
             try {
@@ -106,16 +104,16 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
     public static function getFieldTypes()
     {
         return [
-            self::TYPE_TEXT               => "Text",
-            self::TYPE_TEXTAREA           => "Textarea",
-            self::TYPE_EMAIL              => "Email",
-            self::TYPE_HIDDEN             => "Hidden",
-            self::TYPE_SELECT             => "Select",
-            self::TYPE_CHECKBOX           => "Checkbox",
-            self::TYPE_CHECKBOX_GROUP     => "Checkbox group",
-            self::TYPE_RADIO_GROUP        => "Radio group",
-            self::TYPE_FILE               => "File upload",
-            self::TYPE_DYNAMIC_RECIPIENTS => "Dynamic Recipients",
+            self::TYPE_TEXT               => 'Text',
+            self::TYPE_TEXTAREA           => 'Textarea',
+            self::TYPE_EMAIL              => 'Email',
+            self::TYPE_HIDDEN             => 'Hidden',
+            self::TYPE_SELECT             => 'Select',
+            self::TYPE_CHECKBOX           => 'Checkbox',
+            self::TYPE_CHECKBOX_GROUP     => 'Checkbox group',
+            self::TYPE_RADIO_GROUP        => 'Radio group',
+            self::TYPE_FILE               => 'File upload',
+            self::TYPE_DYNAMIC_RECIPIENTS => 'Dynamic Recipients',
         ];
     }
 
@@ -370,7 +368,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
 
         if (!is_string($value)) {
             if (is_array($value)) {
-                return implode(", ", $value);
+                return implode(', ', $value);
             }
 
             return (string)$value;
@@ -381,7 +379,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
 
     /**
      * Either gets the ID attribute specified in custom attributes
-     * or generates a new one: "form-input-{handle}"
+     * or generates a new one: 'form-input-{handle}'
      *
      * @return string
      */
@@ -391,7 +389,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
             return $this->getCustomAttributes()->getId();
         }
 
-        return sprintf("form-input-%s", $this->getHandle());
+        return sprintf('form-input-%s', $this->getHandle());
     }
 
     /**
@@ -465,10 +463,10 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
     {
         $errors = $this->getErrors();
         if (empty($errors)) {
-            return "";
+            return '';
         }
 
-        $class = "errors ";
+        $class = 'errors ';
         $class .= $this->getCustomAttributes()->getErrorClass();
 
         $output = '<ul class="' . $class . '">';
@@ -521,7 +519,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
         $attribute = "";
 
         if ($this->getCustomAttributes()->getUseRequiredAttribute() && $this->isRequired()) {
-            $attribute = " required";
+            $attribute = ' required';
         }
 
         return $attribute;
@@ -571,10 +569,10 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
                 $value = array_filter($value);
 
                 if (empty($value)) {
-                    $errors[] = $this->translate("This field is required");
+                    $errors[] = $this->translate('This field is required');
                 }
             } else if (!strlen($value)) {
-                $errors[] = $this->translate("This field is required");
+                $errors[] = $this->translate('This field is required');
             }
         }
 
@@ -605,11 +603,11 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
     /**
      * @param string $output
      *
-     * @return \Twig_Markup
+     * @return string
      */
     private function renderRaw($output)
     {
-        return TwigHelper::getRaw($output);
+        return $output;
     }
 
     /**
@@ -619,7 +617,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
      */
     private function setCustomAttributes(array $attributes = null)
     {
-        if (!is_null($attributes)) {
+        if (null !== $attributes) {
             $this->customAttributes->mergeAttributes($attributes);
         }
     }

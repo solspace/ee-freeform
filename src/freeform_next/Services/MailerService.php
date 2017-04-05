@@ -1,7 +1,6 @@
 <?php
 /**
  * Freeform Next for Expression Engine
- *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
@@ -11,15 +10,13 @@
 
 namespace Solspace\Addons\FreeformNext\Services;
 
-use Craft\Freeform_SubmissionModel;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\FileUploadInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
-use Solspace\Addons\FreeformNext\Library\Helpers\TwigHelper;
+use Solspace\Addons\FreeformNext\Library\Helpers\TemplateHelper;
 use Solspace\Addons\FreeformNext\Library\Mailing\MailHandlerInterface;
-use Solspace\Addons\FreeformNext\Library\Mailing\NotificationInterface;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
@@ -55,18 +52,23 @@ class MailerService implements MailHandlerInterface
         }
 
         $fieldValues = $this->getFieldValues($fields, $form, $submission);
-
         foreach ($recipients as $recipientName => $emailAddress) {
-            $fromEmail = TwigHelper::renderString($notification->fromEmail, $fieldValues);
-            $fromName  = TwigHelper::renderString($notification->fromName, $fieldValues);
-            $replyTo   = TwigHelper::renderString($notification->replyToEmail ?: $notification->fromEmail, $fieldValues);
-            $subject   = TwigHelper::renderString($notification->subject, $fieldValues);
-            $bodyHtml  = TwigHelper::renderString($notification->bodyHtml, $fieldValues);
+
+
+            $fromEmail = TemplateHelper::renderStringWithForm($notification->fromEmail, $form, $submission);
+            $fromName  = TemplateHelper::renderStringWithForm($notification->fromName, $form, $submission);
+            $replyTo   = TemplateHelper::renderStringWithForm(
+                $notification->replyToEmail ?: $notification->fromEmail,
+                $form,
+                $submission
+            );
+            $subject   = TemplateHelper::renderStringWithForm($notification->subject, $form, $submission);
+            $bodyHtml  = TemplateHelper::renderStringWithForm($notification->bodyHtml, $form, $submission);
 
             $message = \Swift_Message::newInstance()
                 ->setFrom([$fromEmail => $fromName])
                 ->setReplyTo([$replyTo => $fromName])
-                ->setTo([$emailAddress => $recipientName])
+                ->setTo([$emailAddress => $emailAddress])
                 ->setSubject($subject)
                 ->setBody($bodyHtml, 'text/html');
 
@@ -93,13 +95,17 @@ class MailerService implements MailHandlerInterface
 
             try {
                 ee()->extensions->call('freeform_next_before_send_email', $message);
-                if (ee()->extensions->end_script === TRUE) return $sentMailCount;
+                if (ee()->extensions->end_script === true) {
+                    return $sentMailCount;
+                }
 
-                $mailer = $this->getSwiftMailer();
+                $mailer        = $this->getSwiftMailer();
                 $sentMailCount += $mailer->send($message);
 
                 ee()->extensions->call('freeform_next_after_send_email', $message);
-                if (ee()->extensions->end_script === TRUE) return $sentMailCount;
+                if (ee()->extensions->end_script === true) {
+                    return $sentMailCount;
+                }
             } catch (\Exception $e) {
             }
         }
@@ -135,7 +141,7 @@ class MailerService implements MailHandlerInterface
             $postedValues[$field->getHandle()] = $field;
         }
 
-        $postedValues['allFields'] = $postedValues;
+        $postedValues['allFields']   = $postedValues;
         $postedValues['form']        = $form;
         $postedValues['submission']  = $submission;
         $postedValues['dateCreated'] = new \DateTime();

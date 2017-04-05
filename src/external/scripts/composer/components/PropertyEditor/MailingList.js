@@ -61,7 +61,10 @@ export default class MailingList extends BasePropertyEditor {
       integrationId: PropTypes.number.isRequired,
       resourceId: PropTypes.node,
       emailFieldHash: PropTypes.string,
-      mapping: PropTypes.object,
+      mapping: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object,
+      ]),
     }).isRequired
   };
 

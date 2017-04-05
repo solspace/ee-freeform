@@ -1,7 +1,6 @@
 <?php
 /**
  * Freeform Next for Expression Engine
- *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
@@ -17,7 +16,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\O
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\StaticValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Database\SubmissionHandlerInterface;
-use Solspace\Addons\FreeformNext\Library\Helpers\TwigHelper;
+use Solspace\Addons\FreeformNext\Library\Helpers\TemplateHelper;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 
 class SubmissionsService implements SubmissionHandlerInterface
@@ -54,17 +53,7 @@ class SubmissionsService implements SubmissionHandlerInterface
 
         $submission = SubmissionModel::create($form, $savableFields);
 
-        $fieldsByHandle = $form->getLayout()->getFieldsByHandle();
-        $submission->title = TwigHelper::renderString(
-            $form->getSubmissionTitleFormat(),
-            array_merge(
-                $fieldsByHandle,
-                [
-                    'dateCreated' => new \DateTime(),
-                    'form'        => $form,
-                ]
-            )
-        );
+        $submission->title = TemplateHelper::renderStringWithForm($form->getSubmissionTitleFormat(), $form);
 
         foreach ($savableFields as $handle => $value) {
             $submission->setFieldValue($handle, $value);

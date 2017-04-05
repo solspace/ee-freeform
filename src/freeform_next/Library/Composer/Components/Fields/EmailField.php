@@ -48,23 +48,23 @@ class EmailField extends AbstractField implements RecipientInterface, MultipleVa
 
         $values = $this->getValue();
         if (empty($values)) {
-            $values = [""];
+            $values = [''];
         }
 
-        $output = "";
+        $output = '';
         foreach ($values as $value) {
             $output .= '<input '
-                . $this->getAttributeString("name", $this->getHandle())
-                . $this->getAttributeString("type", $this->getType())
-                . $this->getAttributeString("id", $this->getIdAttribute())
-                . $this->getAttributeString("class", $attributes->getClass())
+                . $this->getAttributeString('name', $this->getHandle())
+                . $this->getAttributeString('type', $this->getType())
+                . $this->getAttributeString('id', $this->getIdAttribute())
+                . $this->getAttributeString('class', $attributes->getClass())
                 . $this->getAttributeString(
-                    "placeholder",
+                    'placeholder',
                     $this->getForm()->getTranslator()->translate(
                         $attributes->getPlaceholder() ?: $this->getPlaceholder()
                     )
                 )
-                . $this->getAttributeString("value", $value, false)
+                . $this->getAttributeString('value', $value, false)
                 . $this->getRequiredAttribute()
                 . $attributes->getInputAttributesAsString()
                 . '/>';
@@ -102,7 +102,7 @@ class EmailField extends AbstractField implements RecipientInterface, MultipleVa
             }
 
             if (!$validator->isValid($email)) {
-                $errors[] = $this->translate("{email} is not a valid email address", ["email" => $email]);
+                $errors[] = $this->translate('{email} is not a valid email address', ['email' => $email]);
             }
         }
 

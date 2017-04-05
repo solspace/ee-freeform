@@ -46,8 +46,8 @@ class IntegrationProperties extends AbstractProperties
     protected function getPropertyManifest()
     {
         return [
-            "integrationId" => self::TYPE_INTEGER,
-            "mapping"       => self::TYPE_ARRAY,
+            'integrationId' => self::TYPE_INTEGER,
+            'mapping'       => self::TYPE_ARRAY,
         ];
     }
 }

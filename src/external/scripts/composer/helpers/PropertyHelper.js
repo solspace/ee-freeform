@@ -64,4 +64,60 @@ export default class PropertyHelper {
 
     return cleanProps;
   }
+
+  /**
+   * Parses notifications and generates an option list
+   *
+   * @param notifications
+   * @returns {Array}
+   */
+  static getNotificationList(notifications) {
+    const dbNotificationList = [];
+    const templateNotificationList = [];
+    const notificationList = [];
+
+    // If notifications is an array - it contains only DB notifications
+    if (notifications.constructor === Array) {
+      notifications.map((notification) => {
+        dbNotificationList.push({
+          key: notification.id,
+          value: notification.name,
+        });
+      });
+
+      // If it is an object - it might have mixed values
+    } else if (typeof notifications === "object") {
+      for (let key in notifications) {
+        if (!notifications.hasOwnProperty(key)) continue;
+        let notification = notifications[key];
+
+        const data = {
+          key: notification.id,
+          value: notification.name,
+        };
+
+        if (/^[0-9]+$/.test(notification.id)) {
+          dbNotificationList.push(data);
+        } else {
+          templateNotificationList.push(data);
+        }
+      }
+    }
+
+    if (dbNotificationList.length) {
+      notificationList.push({
+        label: "DB Notifications",
+        options: dbNotificationList,
+      });
+    }
+
+    if (templateNotificationList.length) {
+      notificationList.push({
+        label: "Template Notifications",
+        options: templateNotificationList,
+      });
+    }
+
+    return notificationList;
+  }
 }

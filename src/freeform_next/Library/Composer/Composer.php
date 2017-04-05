@@ -30,11 +30,11 @@ use Solspace\Addons\FreeformNext\Library\Translations\TranslatorInterface;
 
 class Composer
 {
-    const KEY_COMPOSER   = "composer";
-    const KEY_FORM       = "form";
-    const KEY_PROPERTIES = "properties";
-    const KEY_LAYOUT     = "layout";
-    const KEY_CONTEXT    = "context";
+    const KEY_COMPOSER   = 'composer';
+    const KEY_FORM       = 'form';
+    const KEY_PROPERTIES = 'properties';
+    const KEY_LAYOUT     = 'layout';
+    const KEY_CONTEXT    = 'context';
 
     /** @var Form */
     private $form;
@@ -165,7 +165,7 @@ class Composer
 
         if (!isset($composerState[self::KEY_COMPOSER])) {
             throw new ComposerException(
-                $this->translator->translate("No composer data present")
+                $this->translator->translate('No composer data present')
             );
         }
 
@@ -173,7 +173,7 @@ class Composer
 
         if (!isset($composer[self::KEY_PROPERTIES])) {
             throw new ComposerException(
-                $this->translator->translate("Composer has no properties")
+                $this->translator->translate('Composer has no properties')
             );
         }
 
@@ -185,20 +185,20 @@ class Composer
 
         if (!isset($composerState[self::KEY_CONTEXT])) {
             throw new ComposerException(
-                $this->translator->translate("No context specified")
+                $this->translator->translate('No context specified')
             );
         }
 
         $this->context = new Context($composerState[self::KEY_CONTEXT]);
 
         if (!isset($composer[self::KEY_PROPERTIES])) {
-            throw new ComposerException($this->translator->translate("No properties available"));
+            throw new ComposerException($this->translator->translate('No properties available'));
         }
 
         $properties = $composer[self::KEY_PROPERTIES];
 
         if (!isset($properties[self::KEY_FORM])) {
-            throw new ComposerException($this->translator->translate("No form settings specified"));
+            throw new ComposerException($this->translator->translate('No form settings specified'));
         }
 
         $this->form = new Form(
@@ -232,7 +232,7 @@ class Composer
                     'type'                  => Properties::FORM_HASH,
                     'name'                  => 'Composer Form',
                     'handle'                => 'composerForm',
-                    'submissionTitleFormat' => '{{ dateCreated|date("Y-m-d H:i:s") }}',
+                    'submissionTitleFormat' => '{current_time format="%D, %F %d, %Y - %g:%i:%s"}',
                     'description'           => '',
                     'formTemplate'          => 'flexbox.html',
                     'returnUrl'             => '/',

@@ -1,0 +1,19 @@
+{!-- subject: Submitted on: {current_time format="%D, %F %d, %Y - %g:%i:%s"} --}
+{!-- fromEmail: {webmaster_email} --}
+{!-- fromName: {webmaster_email} --}
+{!-- replyToEmail: {webmaster_email} --}
+{!-- includeAttachments: y --}
+{!-- description: New submission sample email template --}
+
+<h2>New submission from {form:name}</h2>
+
+<p>Submitted on: {current_time format="%D, %F %d, %Y - %g:%i:%s"}</p>
+<ul>
+    {rows}
+        {columns}
+            {if field:type != "submit" AND field:type != "file_upload"}
+                <li>{field:label}: {field:value}</li>
+            {/if}
+        {/columns}
+    {/rows}
+</ul>

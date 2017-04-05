@@ -11,6 +11,7 @@
 namespace Solspace\Addons\FreeformNext\Model;
 
 use EllisLab\ExpressionEngine\Service\Model\Model;
+use Solspace\Addons\FreeformNext\Library\DataObjects\EmailTemplate;
 
 /**
  * Class NotificationModel
@@ -70,12 +71,15 @@ class NotificationModel extends Model implements \JsonSerializable
     public static function create()
     {
         $body = <<<EOT
-<p>Submitted on: {{ dateCreated|date('Y-m-d H:i:s') }}</p>
+<p>Submitted on: {current_time format="%D, %F %d, %Y - %g:%i:%s"}</p>
 <ul>
-{% for field in allFields %}
-    <li>{{ field.label }}: {{ field.getValueAsString() }}</li>
-{% endfor %}
-</ul>
+    {rows}
+        {columns}
+            {if field:type != "submit" AND field:type != "file_upload"}
+                <li>{field:label}: {field:value}</li>
+            {/if}
+        {/columns}
+    {/rows}
 EOT;
 
         /** @var FieldModel $field */
@@ -83,11 +87,40 @@ EOT;
             self::MODEL,
             [
                 'siteId'    => ee()->config->item('site_id'),
-                'fromName'  => ee()->config->item('webmaster_name'),
+                'fromName'  => ee()->config->item('webmaster_email'),
                 'fromEmail' => ee()->config->item('webmaster_email'),
-                'subject'   => 'New submission from {{ form.name }}',
+                'subject'   => 'Submitted on: {current_time format="%D, %F %d, %Y - %g:%i:%s"}',
                 'bodyHtml'  => $body,
                 'bodyText'  => $body,
+            ]
+        );
+
+        return $model;
+    }
+
+    /**
+     * @param string $filePath
+     *
+     * @return NotificationModel
+     */
+    public static function createFromTemplate($filePath)
+    {
+        $template = new EmailTemplate($filePath);
+
+        $model                     = ee('Model')->make(
+            self::MODEL,
+            [
+                'id'                 => pathinfo($filePath, PATHINFO_BASENAME),
+                'name'               => $template->getName(),
+                'handle'             => $template->getHandle(),
+                'description'        => $template->getDescription(),
+                'fromEmail'          => $template->getFromEmail(),
+                'fromName'           => $template->getFromName(),
+                'subject'            => $template->getSubject(),
+                'replyToEmail'       => $template->getReplyToEmail(),
+                'bodyHtml'           => $template->getBody(),
+                'bodyText'           => $template->getBody(),
+                'includeAttachments' => $template->isIncludeAttachments(),
             ]
         );
 
@@ -104,7 +137,7 @@ EOT;
     public function jsonSerialize()
     {
         return [
-            'id'          => (int) $this->id,
+            'id'          => is_numeric($this->id) ? (int) $this->id : $this->id,
             'name'        => $this->name,
             'handle'      => $this->handle,
             'description' => $this->description,

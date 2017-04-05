@@ -15,6 +15,7 @@ import TextareaProperty from "./PropertyItems/TextareaProperty";
 import SelectProperty from "./PropertyItems/SelectProperty";
 import CheckboxProperty from "./PropertyItems/CheckboxProperty";
 import AddNewNotification from "./Components/AddNewNotification";
+import PropertyHelper from "../../helpers/PropertyHelper";
 import {connect} from "react-redux";
 
 @connect(
@@ -27,14 +28,10 @@ import {connect} from "react-redux";
 export default class Email extends BasePropertyEditor {
   static propTypes = {
     globalProperties: PropTypes.object.isRequired,
-    notifications: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-        handle: PropTypes.string.isRequired,
-        description: PropTypes.string,
-      })
-    ).isRequired,
+    notifications: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.object,
+    ]).isRequired,
   };
 
   static contextTypes = {
@@ -47,7 +44,10 @@ export default class Email extends BasePropertyEditor {
       value: PropTypes.string,
       placeholder: PropTypes.string,
       required: PropTypes.bool,
-      notificationId: PropTypes.number.isRequired,
+      notificationId: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]),
     }).isRequired,
     canManageNotifications: PropTypes.bool.isRequired,
   };
@@ -56,15 +56,7 @@ export default class Email extends BasePropertyEditor {
     const {properties: {label, handle, placeholder, required, notificationId, instructions}} = this.context;
 
     const {canManageNotifications} = this.context;
-
-    const {notifications} = this.props;
-    const notificationList = [];
-    notifications.map((notification) => {
-      notificationList.push({
-        key: notification.id,
-        value: notification.name,
-      });
-    });
+    const {notifications}          = this.props;
 
     return (
       <div>
@@ -92,10 +84,10 @@ export default class Email extends BasePropertyEditor {
           instructions="The notification template used to send an email to the email value entered into this field (optional). Leave empty to just store the email address without sending anything."
           name="notificationId"
           value={notificationId}
-          isNumeric={true}
+          couldBeNumeric={true}
           onChangeHandler={this.update}
           emptyOption="Select a template..."
-          options={notificationList}
+          optionGroups={PropertyHelper.getNotificationList(notifications)}
         >
           {canManageNotifications && <AddNewNotification />}
         </SelectProperty>

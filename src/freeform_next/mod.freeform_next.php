@@ -13,10 +13,9 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\EETags\FormTagParamUtilities;
 use Solspace\Addons\FreeformNext\Library\EETags\FormToTagDataTransformer;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
-use Solspace\Addons\FreeformNext\Library\Helpers\TwigHelper;
+use Solspace\Addons\FreeformNext\Library\Helpers\TemplateHelper;
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
-use Solspace\Addons\FreeformNext\Services\FormsService;
 use Solspace\Addons\FreeformNext\Utilities\Plugin;
 
 class Freeform_Next extends Plugin
@@ -103,13 +102,7 @@ class Freeform_Next extends Plugin
                 $postedReturnUrl = $this->getPost(Form::RETURN_URI_KEY);
 
                 $returnUrl = $postedReturnUrl ?: $form->getReturnUrl();
-                $returnUrl = TwigHelper::renderString(
-                    $returnUrl,
-                    [
-                        'form'       => $form,
-                        'submission' => $submissionModel,
-                    ]
-                );
+                $returnUrl = TemplateHelper::renderStringWithForm($returnUrl, $form, $submissionModel);
 
                 if ($isAjaxRequest) {
                     $this->returnJson(

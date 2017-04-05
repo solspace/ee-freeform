@@ -13,14 +13,14 @@ namespace Solspace\Addons\FreeformNext\Library\Composer\Components\Properties;
 
 class AdminNotificationProperties extends AbstractProperties
 {
-    /** @var int */
+    /** @var string */
     protected $notificationId;
 
     /** @var string */
     protected $recipients;
 
     /**
-     * @return int
+     * @return string
      */
     public function getNotificationId()
     {
@@ -49,7 +49,7 @@ class AdminNotificationProperties extends AbstractProperties
         }
 
         $list = explode("\n", $recipients);
-        $list = array_map("trim", $list);
+        $list = array_map('trim', $list);
         $list = array_unique($list);
         $list = array_filter($list);
 
@@ -67,8 +67,8 @@ class AdminNotificationProperties extends AbstractProperties
     protected function getPropertyManifest()
     {
         return [
-            "notificationId" => self::TYPE_INTEGER,
-            "recipients"     => self::TYPE_STRING,
+            'notificationId' => self::TYPE_STRING,
+            'recipients'     => self::TYPE_STRING,
         ];
     }
 }

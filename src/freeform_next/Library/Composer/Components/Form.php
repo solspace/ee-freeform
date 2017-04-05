@@ -26,7 +26,6 @@ use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FieldExceptions\FileUploadException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\FileUploads\FileUploadHandlerInterface;
-use Solspace\Addons\FreeformNext\Library\Helpers\TwigHelper;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
 use Solspace\Addons\FreeformNext\Library\Mailing\MailHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
@@ -510,7 +509,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
             }
         }
 
-        return TwigHelper::getRaw($output);
+        return $output;
     }
 
     /**
@@ -518,7 +517,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      */
     public function renderClosingTag()
     {
-        return TwigHelper::getRaw('</form>');
+        return '</form>';
     }
 
     /**

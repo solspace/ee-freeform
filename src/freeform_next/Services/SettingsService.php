@@ -75,6 +75,14 @@ class SettingsService
     }
 
     /**
+     * @return bool
+     */
+    public function isDbEmailTemplateStorage()
+    {
+        return $this->getSettingsModel()->isDbEmailTemplateStorage();
+    }
+
+    /**
      * @return SettingsModel
      */
     public function getSettingsModel()

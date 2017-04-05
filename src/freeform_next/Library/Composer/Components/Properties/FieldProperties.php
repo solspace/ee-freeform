@@ -51,7 +51,7 @@ class FieldProperties extends AbstractProperties
     /** @var bool */
     protected $showAsRadio;
 
-    /** @var int */
+    /** @var string */
     protected $notificationId;
 
     /** @var int */
@@ -194,7 +194,7 @@ class FieldProperties extends AbstractProperties
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getNotificationId()
     {
@@ -308,31 +308,31 @@ class FieldProperties extends AbstractProperties
     protected function getPropertyManifest()
     {
         return [
-            "hash"           => self::TYPE_STRING,
-            "id"             => self::TYPE_INTEGER,
-            "handle"         => self::TYPE_STRING,
-            "label"          => self::TYPE_STRING,
-            "required"       => self::TYPE_BOOLEAN,
-            "placeholder"    => self::TYPE_STRING,
-            "instructions"   => self::TYPE_STRING,
-            "value"          => self::TYPE_STRING,
-            "values"         => self::TYPE_ARRAY,
-            "options"        => self::TYPE_ARRAY,
-            "checked"        => self::TYPE_BOOLEAN,
-            "showAsRadio"    => self::TYPE_BOOLEAN,
-            "notificationId" => self::TYPE_INTEGER,
-            "assetSourceId"  => self::TYPE_INTEGER,
-            "integrationId"  => self::TYPE_INTEGER,
-            "resourceId"     => self::TYPE_STRING,
-            "emailFieldHash" => self::TYPE_STRING,
-            "position"       => self::TYPE_STRING,
-            "labelNext"      => self::TYPE_STRING,
-            "labelPrev"      => self::TYPE_STRING,
-            "disablePrev"    => self::TYPE_BOOLEAN,
-            "mapping"        => self::TYPE_ARRAY,
-            "fileKinds"      => self::TYPE_ARRAY,
-            "maxFileSizeKB"  => self::TYPE_INTEGER,
-            "rows"           => self::TYPE_INTEGER,
+            'hash'           => self::TYPE_STRING,
+            'id'             => self::TYPE_INTEGER,
+            'handle'         => self::TYPE_STRING,
+            'label'          => self::TYPE_STRING,
+            'required'       => self::TYPE_BOOLEAN,
+            'placeholder'    => self::TYPE_STRING,
+            'instructions'   => self::TYPE_STRING,
+            'value'          => self::TYPE_STRING,
+            'values'         => self::TYPE_ARRAY,
+            'options'        => self::TYPE_ARRAY,
+            'checked'        => self::TYPE_BOOLEAN,
+            'showAsRadio'    => self::TYPE_BOOLEAN,
+            'notificationId' => self::TYPE_STRING,
+            'assetSourceId'  => self::TYPE_INTEGER,
+            'integrationId'  => self::TYPE_INTEGER,
+            'resourceId'     => self::TYPE_STRING,
+            'emailFieldHash' => self::TYPE_STRING,
+            'position'       => self::TYPE_STRING,
+            'labelNext'      => self::TYPE_STRING,
+            'labelPrev'      => self::TYPE_STRING,
+            'disablePrev'    => self::TYPE_BOOLEAN,
+            'mapping'        => self::TYPE_ARRAY,
+            'fileKinds'      => self::TYPE_ARRAY,
+            'maxFileSizeKB'  => self::TYPE_INTEGER,
+            'rows'           => self::TYPE_INTEGER,
         ];
     }
 }

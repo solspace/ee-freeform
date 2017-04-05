@@ -40,13 +40,22 @@ class FormToTagDataTransformer
      */
     public function getOutput()
     {
+        $output = $this->form->renderTag() . $this->getOutputWithoutWrappingFormTags() . $this->form->renderClosingTag(
+            );
+
+        return $output;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOutputWithoutWrappingFormTags()
+    {
         $output = $this->content;
 
         $output = $this->markFieldTags($output);
         $output = ee()->TMPL->parse_variables($output, [$this->transform()]);
         $output = $this->parseFieldTags($output);
-
-        $output = $this->form->renderTag() . $output . $this->form->renderClosingTag();
 
         return $output;
     }
@@ -252,6 +261,7 @@ class FormToTagDataTransformer
             $prefix . 'hash'                => $field->getHash(),
             $prefix . 'type'                => $field->getType(),
             $prefix . 'label'               => $field->getLabel(),
+            $prefix . 'value'               => $field->getValueAsString(),
             $prefix . 'instructions'        => $field->getInstructions(),
             $prefix . 'errors'              => $field->getErrors(),
             $prefix . 'render_input'        => $field->renderInput(),
@@ -268,7 +278,8 @@ class FormToTagDataTransformer
             $prefix . 'position'            => $field instanceof SubmitField ? $field->getPosition() : '',
             $prefix . 'marker:open'         => '##FFN:' . $field->getHash() . ':FFN##',
             $prefix . 'options'             => $this->getOptions($field),
-            $prefix . 'show_as_radio'       => $field instanceof DynamicRecipientField ? $field->isShowAsRadio() : false,
+            $prefix . 'show_as_radio'       => $field instanceof DynamicRecipientField ? $field->isShowAsRadio(
+            ) : false,
             'column:index'                  => $columnIndex,
             'column:count'                  => $columnCount,
             'column:grid_width'             => 12 / ($columnCount ?: 1),

@@ -3,11 +3,15 @@
 namespace Solspace\Addons\FreeformNext\Controllers;
 
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
+use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
+use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
+use Solspace\Addons\FreeformNext\Services\SettingsService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
+use Stringy\Stringy;
 
 class ApiController extends Controller
 {
@@ -64,12 +68,55 @@ class ApiController extends Controller
         $view = new AjaxView();
 
         if (isset($args[1]) && $args[1] === 'create') {
-            $notification         = NotificationModel::create();
-            $notification->name   = ee()->input->post('name', true);
-            $notification->handle = ee()->input->post('handle', true);
-            $notification->save();
+            $settings    = SettingsRepository::getInstance()->getOrCreate();
+            $isDbStorage = $settings->isDbEmailTemplateStorage();
 
-            $view->addVariable('success', true);
+            $errors  = [];
+
+            $name   = ee()->input->post('name');
+            $handle = ee()->input->post('handle');
+
+            if (!$name) {
+                $errors[] = lang('Name is required');
+            }
+
+            if (!$handle && $isDbStorage) {
+                $errors[] = lang('Handle is required');
+            }
+
+            if (empty($errors)) {
+                if ($isDbStorage) {
+                    $notification         = NotificationModel::create();
+                    $notification->name   = $name;
+                    $notification->handle = $handle;
+                    $notification->save();
+                } else {
+                    $templateDirectory = $settings->getAbsoluteEmailTemplateDirectory();
+                    $templateName      = (string) Stringy::create($name)->underscored();
+                    $extension         = '.html';
+
+                    $templatePath = $templateDirectory . '/' . $templateName . $extension;
+                    if (file_exists($templatePath)) {
+                        $errors[] = (new EETranslator())->translate(
+                            "Template '{name}' already exists",
+                            ['name' => $templateName . $extension]
+                        );
+                    } else {
+                        try {
+                            file_put_contents($templatePath, $settings->getEmailTemplateContent());
+                        } catch (FreeformException $exception) {
+                            $errors[] = $exception->getMessage();
+                        }
+                    }
+                }
+            }
+
+            if (empty($errors)) {
+                $view->addVariable('success', true);
+            } else {
+                $view->addVariable('success', false);
+                $view->addVariable('errors', $errors);
+            }
 
             return $view;
         }

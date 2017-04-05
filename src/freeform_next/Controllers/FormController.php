@@ -1,7 +1,6 @@
 <?php
 /**
  * Freeform Next for Expression Engine
- *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
@@ -85,7 +84,10 @@ class FormController extends Controller
                     'name'  => 'id_list[]',
                     'value' => $form->id,
                     'data'  => [
-                        'confirm' => lang('Form') . ': <b>' . htmlentities($form->getForm()->getName(), ENT_QUOTES) . '</b>',
+                        'confirm' => lang('Form') . ': <b>' . htmlentities(
+                                $form->getForm()->getName(),
+                                ENT_QUOTES
+                            ) . '</b>',
                     ],
                 ],
             ];
@@ -118,17 +120,21 @@ class FormController extends Controller
             ->addJavascript('composer/app.js')
             ->setTemplateVariables(
                 [
-                    'form'                  => $form,
-                    'fields'                => FieldRepository::getInstance()->getAllFields(false),
-                    'notifications'         => NotificationRepository::getInstance()->getAllNotifications(),
-                    'statuses'              => StatusRepository::getInstance()->getAllStatuses(),
-                    'assetSources'          => FileRepository::getInstance()->getAllAssetSources(),
-                    'fileKinds'             => $fileService->getFileKinds(),
-                    'formTemplates'         => $settingsService->getCustomFormTemplates(),
-                    'solspaceFormTemplates' => $settingsService->getSolspaceFormTemplates(),
-                    'showTutorial'          => $settingsService->getSettingsModel()->isShowTutorial(),
-                    'mailingLists'          => MailingListRepository::getInstance()->getAllIntegrationObjects(),
-                    'crmIntegrations'       => [],
+                    'form'                     => $form,
+                    'fields'                   => FieldRepository::getInstance()->getAllFields(false),
+                    'notifications'            => NotificationRepository::getInstance()->getAllNotifications(),
+                    'statuses'                 => StatusRepository::getInstance()->getAllStatuses(),
+                    'assetSources'             => FileRepository::getInstance()->getAllAssetSources(),
+                    'fileKinds'                => $fileService->getFileKinds(),
+                    'formTemplates'            => $settingsService->getCustomFormTemplates(),
+                    'solspaceFormTemplates'    => $settingsService->getSolspaceFormTemplates(),
+                    'showTutorial'             => $settingsService->getSettingsModel()->isShowTutorial(),
+                    'mailingLists'             => MailingListRepository::getInstance()->getAllIntegrationObjects(),
+                    'crmIntegrations'          => [],
+                    'isDbEmailTemplateStorage' => $settingsService
+                        ->getSettingsModel()
+                        ->isDbEmailTemplateStorage(),
+                    'isWidgetsInstalled'       => false,
                 ]
             );
 

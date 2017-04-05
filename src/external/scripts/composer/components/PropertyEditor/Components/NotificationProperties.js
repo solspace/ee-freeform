@@ -43,6 +43,7 @@ export default class NotificationProperties extends Component {
     }).isRequired,
     notificator: PropTypes.func.isRequired,
     createNotificationUrl: PropTypes.string.isRequired,
+    isDbEmailTemplateStorage: PropTypes.bool.isRequired,
     hash: PropTypes.string.isRequired,
   };
 
@@ -66,6 +67,7 @@ export default class NotificationProperties extends Component {
   render() {
     const {name, handle, errors} = this.state;
     const {toggleForm}           = this.props;
+    const {isDbEmailTemplateStorage} = this.context;
 
     return (
       <div className="composer-new-field-form">
@@ -84,6 +86,7 @@ export default class NotificationProperties extends Component {
             />
           </div>
         </div>
+        {isDbEmailTemplateStorage &&
         <div className="field">
           <div className="heading">
             <label>Handle</label>
@@ -99,6 +102,7 @@ export default class NotificationProperties extends Component {
             />
           </div>
         </div>
+        }
 
         {errors.length > 0 &&
         <div className="errors">
@@ -158,12 +162,12 @@ export default class NotificationProperties extends Component {
    * @returns {boolean}
    */
   addNotification() {
-    const {name, handle}                                   = this.refs;
-    const {toggleForm, fetchNotifications}                 = this.props;
-    const {csrf, notificator, createNotificationUrl, hash} = this.context;
+    const {name, handle}                                                         = this.refs;
+    const {toggleForm, fetchNotifications}                                       = this.props;
+    const {csrf, notificator, createNotificationUrl, hash, isDbEmailTemplateStorage} = this.context;
 
     const nameValue   = ReactDOM.findDOMNode(name).value;
-    const handleValue = ReactDOM.findDOMNode(handle).value;
+    const handleValue = isDbEmailTemplateStorage ? ReactDOM.findDOMNode(handle).value : null;
 
     const errors = [];
 
@@ -171,7 +175,7 @@ export default class NotificationProperties extends Component {
       errors.push("Name must not be empty");
     }
 
-    if (!handleValue) {
+    if (!handleValue && isDbEmailTemplateStorage) {
       errors.push("Handle must not be empty");
     }
 

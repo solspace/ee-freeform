@@ -27,8 +27,9 @@ export default class BasePropertyEditor extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.update       = this.update.bind(this);
+    this.update = this.update.bind(this);
     this.updateHandle = this.updateHandle.bind(this);
+    this.updateKeyValue = this.updateKeyValue.bind(this);
   }
 
   /**
@@ -55,13 +56,24 @@ export default class BasePropertyEditor extends Component {
     }
 
     if (isNumeric) {
-      postValue = (postValue+"").replace(/[^0-9\.]/, "");
+      postValue = (postValue + "").replace(/[^0-9\.]/, "");
       postValue = postValue ? parseInt(postValue) : 0;
     }
 
-    updateField({
-      [name]: postValue,
-    });
+    let couldBeNumeric = false;
+    if (event.target.dataset.couldBeNumeric) {
+      if (event.target.dataset.couldBeNumeric != "false") {
+        couldBeNumeric = true;
+      }
+    }
+
+    if (couldBeNumeric) {
+      if (/^[0-9]+$/.test(postValue)) {
+        postValue = postValue ? parseInt(postValue) : 0;
+      }
+    }
+
+    updateField({[name]: postValue});
   }
 
   /**
@@ -76,5 +88,17 @@ export default class BasePropertyEditor extends Component {
     const handleValue = getHandleValue(value);
 
     updateField({[name]: handleValue});
+  }
+
+  /**
+   * Updates key and value manually
+   *
+   * @param key
+   * @param value
+   */
+  updateKeyValue(key, value) {
+    const {updateField} = this.context;
+
+    updateField({[key]: value});
   }
 }
