@@ -44,8 +44,8 @@ export default class Checkbox extends HtmlInput {
             checked={isChecked}
             {...this.getCleanProperties()}
           />
-          {label}
-          {isRequired ? <span>*</span> : ""}
+          <span dangerouslySetInnerHTML={{__html: label}} />
+          {isRequired ? <span className="required" /> : ""}
         </label>
       </div>
     );

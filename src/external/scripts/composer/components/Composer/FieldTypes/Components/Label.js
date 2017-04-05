@@ -33,9 +33,9 @@ export default class Label extends Component {
     return (
       <label className={labelClass.join(" ")}>
         <span dangerouslySetInnerHTML={{__html: label}} /> {type == HIDDEN ? " (Hidden field)" : ""}
-        {label && isRequired ? <span>*</span> : ""}
+        {label && isRequired ? <span className="required" /> : ""}
         {this.props.children}
-        {!label && isRequired ? <span>*</span> : ""}
+        {!label && isRequired ? <span className="required" /> : ""}
       </label>
     );
   }
