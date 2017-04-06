@@ -13,6 +13,8 @@ namespace Solspace\Addons\FreeformNext\Library\Configuration;
 
 class EEPluginConfiguration implements ConfigurationInterface
 {
+    const CONFIG_INDEX = 'freeform_next';
+
     /**
      * @param string $key
      *
@@ -20,6 +22,6 @@ class EEPluginConfiguration implements ConfigurationInterface
      */
     public function get($key)
     {
-        return ee()->config->item($key);
+        return ee()->config->item($key, self::CONFIG_INDEX);
     }
 }

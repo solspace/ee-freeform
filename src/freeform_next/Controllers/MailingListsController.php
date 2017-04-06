@@ -13,6 +13,7 @@ use Solspace\Addons\FreeformNext\Services\MailingListsService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\ConfirmRemoveModal;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 
 class MailingListsController extends Controller
@@ -26,11 +27,13 @@ class MailingListsController extends Controller
     {
         if (null === $id) {
             return $this->index();
-        } else if ($id === 'get') {
-            return $this->getIntegrationsAjax();
-        } else {
-            return $this->edit($id);
         }
+
+        if ($id === 'get') {
+            return $this->getIntegrationsAjax();
+        }
+
+        return $this->edit($id);
     }
 
     public function index()
@@ -122,6 +125,12 @@ class MailingListsController extends Controller
         $errors = null;
         if (isset($_POST['class'])) {
             $errors = $this->save($model);
+
+            if (empty($errors)) {
+                $view = new RedirectView($this->getLink('integrations/mailing_lists/' . $model->id));
+
+                return $view;
+            }
         }
 
         if (ee()->input->get('code')) {
@@ -172,6 +181,7 @@ class MailingListsController extends Controller
                     'fields' => [
                         'class' => [
                             'type'         => 'select',
+                            'value'        => $model->class,
                             'choices'      => $types,
                             'group_toggle' => $targets,
                         ],

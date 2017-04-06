@@ -34,7 +34,7 @@ export function fetchCrmIntegrationsIfNeeded() {
     if (shouldFetchCrmIntegrations(getState())) {
       dispatch(requestCrmIntegrations());
 
-      const url = urlBuilder("freeform_next/crm_integrations");
+      const url = urlBuilder("freeform_next/integrations/crm/get");
       return fetch(url, {credentials: 'same-origin'})
         .then(response => response.json())
         .then(json => {

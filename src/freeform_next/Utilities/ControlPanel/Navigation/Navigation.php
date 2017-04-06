@@ -58,7 +58,12 @@ class Navigation
             if ($subNav) {
                 $basicList = $header->addBasicList();
                 foreach ($subNav as $subItem) {
-                    $basicList->addItem($subItem->getTitle(), $subItem->getLink());
+                    $subLink = $subItem->getLink();
+                    $subHeader = $basicList->addItem($subItem->getTitle(), $subItem->getLink());
+
+                    if ($subLink && $subItem->getMethod() !== '' && strpos($currentUrl, $subLink->compile()) === 0) {
+                        $subHeader->isActive();
+                    }
                 }
             }
         }

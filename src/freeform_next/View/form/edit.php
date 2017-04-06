@@ -4,7 +4,8 @@
 /** @var \Solspace\Addons\FreeformNext\Model\NotificationModel[] $notifications */
 /** @var \Solspace\Addons\FreeformNext\Model\StatusModel[] $statuses */
 /** @var \Solspace\Addons\FreeformNext\Model\IntegrationModel[] $mailingLists */
-/** @var \Solspace\Addons\FreeformNext\Model\IntegrationModel[] $statuses */
+/** @var \Solspace\Addons\FreeformNext\Model\IntegrationModel[] $crmIntegrations */
+/** @var \Solspace\Addons\FreeformNext\Model\StatusModel[] $statuses */
 /** @var array $assetSources */
 /** @var array $fileKinds */
 /** @var array $formTemplates */

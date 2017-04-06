@@ -20,6 +20,7 @@ use Solspace\Addons\FreeformNext\Library\Session\EESession;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
 use Solspace\Addons\FreeformNext\Model\FormModel;
 use Solspace\Addons\FreeformNext\Model\SettingsModel;
+use Solspace\Addons\FreeformNext\Repositories\CrmRepository;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FileRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
@@ -130,7 +131,7 @@ class FormController extends Controller
                     'solspaceFormTemplates'    => $settingsService->getSolspaceFormTemplates(),
                     'showTutorial'             => $settingsService->getSettingsModel()->isShowTutorial(),
                     'mailingLists'             => MailingListRepository::getInstance()->getAllIntegrationObjects(),
-                    'crmIntegrations'          => [],
+                    'crmIntegrations'          => CrmRepository::getInstance()->getAllIntegrationObjects(),
                     'isDbEmailTemplateStorage' => $settingsService
                         ->getSettingsModel()
                         ->isDbEmailTemplateStorage(),

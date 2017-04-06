@@ -32,4 +32,18 @@ class CrmFieldModel extends Model
     protected $required;
     protected $dateCreated;
     protected $dateUpdated;
+
+    /**
+     * @return CrmFieldModel
+     */
+    public static function create()
+    {
+        return ee('Model')
+            ->make(
+                self::MODEL,
+                [
+                    'siteId' => ee()->config->item('site_id'),
+                ]
+            );
+    }
 }
