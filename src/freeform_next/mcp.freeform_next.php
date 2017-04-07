@@ -15,11 +15,13 @@ use Solspace\Addons\FreeformNext\Controllers\FormController;
 use Solspace\Addons\FreeformNext\Controllers\MailingListsController;
 use Solspace\Addons\FreeformNext\Controllers\NotificationController;
 use Solspace\Addons\FreeformNext\Controllers\SettingsController;
+use Solspace\Addons\FreeformNext\Controllers\StatusController;
 use Solspace\Addons\FreeformNext\Controllers\SubmissionController;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
 use Solspace\Addons\FreeformNext\Model\FormModel;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
+use Solspace\Addons\FreeformNext\Model\StatusModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
@@ -84,7 +86,7 @@ class Freeform_next_mcp extends ControlPanelView
     public function api($type)
     {
         $apiController = new ApiController();
-        $args = func_get_args();
+        $args          = func_get_args();
 
         return $this->renderView($apiController->handle($type, $args));
     }
@@ -98,7 +100,9 @@ class Freeform_next_mcp extends ControlPanelView
     {
         if (strtolower($id) === 'delete') {
             return $this->renderView($this->getFieldController()->batchDelete($id));
-        } else if (null !== $id) {
+        }
+
+        if (null !== $id) {
             if (isset($_POST['label'])) {
                 $field = $this->getFieldController()->save($id);
 
@@ -123,10 +127,11 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function notifications($notificationId = null)
     {
-
         if (strtolower($notificationId) === 'delete') {
             return $this->renderView($this->getNotificationController()->batchDelete());
-        } else if (null !== $notificationId) {
+        }
+
+        if (null !== $notificationId) {
             $validation = null;
             if (isset($_POST['name'])) {
                 $validation = ee('Validation')->make(NotificationModel::createValidationRules())->validate($_POST);
@@ -148,6 +153,39 @@ class Freeform_next_mcp extends ControlPanelView
     }
 
     /**
+     * @param null|string|int $id
+     *
+     * @return array
+     * @throws FreeformException
+     */
+    public function statuses($id = null)
+    {
+        if (strtolower($id) === 'delete') {
+            return $this->renderView($this->getStatusController()->batchDelete());
+        }
+
+        if (null !== $id) {
+            $validation = null;
+            if (isset($_POST['name'])) {
+                $validation = ee('Validation')->make(StatusModel::createValidationRules())->validate($_POST);
+                if ($validation->isValid()) {
+                    $status = $this->getStatusController()->save($id);
+
+                    return $this->renderView(
+                        new RedirectView(
+                            UrlHelper::getLink('statuses/' . $status->id)
+                        )
+                    );
+                }
+            }
+
+            return $this->renderView($this->getStatusController()->edit($id, $validation));
+        }
+
+        return $this->renderView($this->getStatusController()->index());
+    }
+
+    /**
      * @param string   $formHandle
      * @param int|null $submissionId
      *
@@ -162,25 +200,25 @@ class Freeform_next_mcp extends ControlPanelView
         if (null !== $submissionId) {
             if (strtolower($submissionId) === 'delete') {
                 return $this->renderView($this->getSubmissionController()->batchDelete($form));
-            } else {
-                $submission = SubmissionRepository::getInstance()->getSubmission($form, $submissionId);
-
-                if ($submission) {
-                    if (isset($_POST['title'])) {
-                        $this->getSubmissionController()->save($form, $submission);
-
-                        return $this->renderView(
-                            new RedirectView(
-                                UrlHelper::getLink('submissions/' . $formHandle . '/' . $submissionId)
-                            )
-                        );
-                    }
-
-                    return $this->renderView($this->getSubmissionController()->edit($form, $submission));
-                } else {
-                    throw new FreeformException(lang('Submission not found'));
-                }
             }
+
+            $submission = SubmissionRepository::getInstance()->getSubmission($form, $submissionId);
+
+            if ($submission) {
+                if (isset($_POST['title'])) {
+                    $this->getSubmissionController()->save($form, $submission);
+
+                    return $this->renderView(
+                        new RedirectView(
+                            UrlHelper::getLink('submissions/' . $formHandle . '/' . $submissionId)
+                        )
+                    );
+                }
+
+                return $this->renderView($this->getSubmissionController()->edit($form, $submission));
+            }
+
+            throw new FreeformException(lang('Submission not found'));
         }
 
         return $this->renderView($this->getSubmissionController()->index($form));
@@ -250,13 +288,14 @@ class Freeform_next_mcp extends ControlPanelView
     }
 
     /**
-     * @param string $type
+     * @param string          $type
+     * @param null|string|int $id
      *
      * @return array
      */
-    public function settings($type)
+    public function settings($type, $id = null)
     {
-        return $this->renderView($this->getSettingsController()->index($type));
+        return $this->renderView($this->getSettingsController()->index($type, $id));
     }
 
     /**
@@ -290,6 +329,9 @@ class Freeform_next_mcp extends ControlPanelView
         $fields = new NavigationLink('Fields', 'fields');
         $fields->setButtonLink(new NavigationLink('New', 'fields/new'));
 
+        $statuses = new NavigationLink('Statuses', 'statuses');
+        $statuses->setButtonLink(new NavigationLink('New', 'statuses/new'));
+
         $integrations = new NavigationLink('Integrations');
         $integrations
             ->addSubNavItem(new NavigationLink('Mailing Lists', 'integrations/mailing_lists'))
@@ -300,7 +342,6 @@ class Freeform_next_mcp extends ControlPanelView
             ->addSubNavItem(new NavigationLink('General', 'settings/general'))
             ->addSubNavItem(new NavigationLink('Formatting Templates', 'settings/formatting_templates'))
             ->addSubNavItem(new NavigationLink('Email Templates', 'settings/email_templates'))
-            ->addSubNavItem(new NavigationLink('Statuses', 'settings/statuses'))
             ->addSubNavItem(new NavigationLink('Demo Templates', 'settings/demo_templates'));
 
         $nav = new Navigation();
@@ -308,6 +349,7 @@ class Freeform_next_mcp extends ControlPanelView
             ->addLink($forms)
             ->addLink($fields)
             ->addLink($notifications)
+            ->addLink($statuses)
             ->addLink($settings)
             ->addLink($integrations);
 
@@ -407,6 +449,20 @@ class Freeform_next_mcp extends ControlPanelView
 
         if (null === $instance) {
             $instance = new MailingListsController();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @return StatusController
+     */
+    private function getStatusController()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new StatusController();
         }
 
         return $instance;

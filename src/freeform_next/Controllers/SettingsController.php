@@ -9,6 +9,7 @@ use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Utilities\AddonInfo;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 use Stringy\Stringy;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -30,12 +31,13 @@ class SettingsController extends Controller
     ];
 
     /**
-     * @param $type
+     * @param string     $type
+     * @param int|string $id
      *
-     * @return CpView
+     * @return View
      * @throws FreeformException
      */
-    public function index($type)
+    public function index($type, $id = null)
     {
         if (!in_array($type, self::$allowedTypes, true)) {
             throw new FreeformException('Page does not exist');
@@ -51,7 +53,7 @@ class SettingsController extends Controller
                 return $this->emailTemplatesAction();
 
             case self::TYPE_STATUSES:
-                return $this->statusesAction();
+                return $this->statusesAction($id);
 
             case self::TYPE_DEMO_TEMPLATES:
                 return $this->demoTemplatesAction();
@@ -211,59 +213,6 @@ class SettingsController extends Controller
         return $view;
     }
 
-    /**
-     * @return CpView
-     */
-    private function statusesAction()
-    {
-        $statuses = StatusRepository::getInstance()->getAllStatuses();
-
-        /** @var Table $table */
-        $table = ee('CP/Table', ['sortable' => false, 'searchable' => false]);
-
-        $table->setColumns(
-            [
-                'id'          => ['type' => Table::COL_ID],
-                'name'        => ['type' => Table::COL_TEXT],
-                'handle'      => ['type' => Table::COL_TEXT],
-                'manage'      => ['type' => Table::COL_TOOLBAR],
-                ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
-            ]
-        );
-
-        $tableData = [];
-        foreach ($statuses as $status) {
-            $tableData[] = [
-                $status->id,
-                $status->name,
-                $status->handle,
-                [
-                    'toolbar_items' => [
-                        'edit' => [
-                            'href'  => ee('CP/URL', 'addons/settings/freeform_next/forms/' . $status->id),
-                            'title' => lang('edit'),
-                        ],
-                    ],
-                ],
-                [
-                    'name'  => 'selections[]',
-                    'value' => $status->id,
-                    'data'  => [
-                        'confirm' => lang('status') . ': <b>' . htmlentities('test', ENT_QUOTES) . '</b>',
-                    ],
-                ],
-            ];
-        }
-        $table->setData($tableData);
-        $table->setNoResultsText('No results');
-
-        $view = new CpView('settings/table', []);
-        $view->setHeading(lang('Statuses'));
-        $view->setTemplateVariables(['table' => $table->viewData()]);
-
-        return $view;
-    }
-
     private function demoTemplatesAction()
     {
 
@@ -271,11 +220,9 @@ class SettingsController extends Controller
 
     /**
      * Handles a POST request and returns one of the following
-     *
      * TRUE  - if it was handled
      * FALSE - if there were errors
      * NULL  - if nothing was posted
-     *
      * @return bool
      */
     private function handlePost()

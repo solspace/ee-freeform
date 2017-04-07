@@ -1,7 +1,6 @@
 <?php
 /**
  * Freeform Next for Expression Engine
- *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
@@ -61,6 +60,7 @@ class SubmissionController extends Controller
     public function index(Form $form)
     {
         $submissions = SubmissionRepository::getInstance()->getAllSubmissionsFor($form);
+        $colors      = StatusRepository::getInstance()->getColorsById();
 
         /** @var AbstractField[] $showableFields */
         $showableFields = [];
@@ -74,7 +74,8 @@ class SubmissionController extends Controller
 
         /** @var Table $table */
         $table = ee(
-            'CP/Table', [
+            'CP/Table',
+            [
                 'sortable'   => true,
                 'searchable' => true,
             ]
@@ -82,7 +83,7 @@ class SubmissionController extends Controller
 
         $columns = [
             'id'    => ['type' => Table::COL_ID],
-            'title' => ['type' => Table::COL_TEXT],
+            'title' => ['type' => Table::COL_TEXT, 'encode' => false],
         ];
 
         foreach ($showableFields as $field) {
@@ -109,7 +110,7 @@ class SubmissionController extends Controller
         foreach ($submissions as $submission) {
             $data = [
                 $submission->id,
-                $submission->title,
+                '<span class="color-indicator" style="background: ' . @$colors[$submission->statusId] . ';"></span>' . $submission->title,
             ];
 
             foreach ($showableFields as $field) {
@@ -195,6 +196,17 @@ class SubmissionController extends Controller
                         ],
                     ],
                 ],
+                [
+                    'title'  => lang('Status'),
+                    'fields' => [
+                        'statusId' => [
+                            'type'     => 'select',
+                            'value'    => $submission->statusId,
+                            'required' => true,
+                            'choices'  => StatusRepository::getInstance()->getStatusNamesById(),
+                        ],
+                    ],
+                ],
             ],
         ];
 
@@ -232,7 +244,9 @@ class SubmissionController extends Controller
                                 'choices'  => [$field->getValue() => $field->getLabel()],
                             ],
                         ];
-                    } else if ($field instanceof SelectField || ($field instanceof DynamicRecipientField && !$field->isShowAsRadio())) {
+                    } else if ($field instanceof SelectField || ($field instanceof DynamicRecipientField && !$field->isShowAsRadio(
+                            ))
+                    ) {
                         $fields = [
                             $handle => [
                                 'type'     => 'select',
@@ -241,7 +255,9 @@ class SubmissionController extends Controller
                                 'choices'  => $field->getOptionsAsArray(),
                             ],
                         ];
-                    } else if ($field instanceof RadioGroupField || ($field instanceof DynamicRecipientField && $field->isShowAsRadio())) {
+                    } else if ($field instanceof RadioGroupField || ($field instanceof DynamicRecipientField && $field->isShowAsRadio(
+                            ))
+                    ) {
                         $fields = [
                             $handle => [
                                 'type'     => 'radio',
@@ -271,12 +287,19 @@ class SubmissionController extends Controller
 
                             $content .= '<div style="margin: 5px 0;">' . $asset->file_name . '</div>';
                             $content .= '<div class="toolbar-wrap"><ul class="toolbar">';
-                            $content .= '<li class="edit"><a href="' . ee('CP/URL', 'cp/files/file/edit/' . $value)->compile() . '"></a></li>';
-                            $content .= '<li class="download"><a href="' . ee('CP/URL', 'files/file/download/' . $value)->compile() . '"></a></li>';
+                            $content .= '<li class="edit"><a href="' . ee(
+                                    'CP/URL',
+                                    'cp/files/file/edit/' . $value
+                                )->compile() . '"></a></li>';
+                            $content .= '<li class="download"><a href="' . ee(
+                                    'CP/URL',
+                                    'files/file/download/' . $value
+                                )->compile() . '"></a></li>';
                             $content .= '</ul></div>';
 
                             if ($asset->isImage()) {
-                                $content .= '<img style="border: 1px solid black; padding: 1px;" width="100" src="' . $asset->getAbsoluteURL() . '" />';
+                                $content .= '<img style="border: 1px solid black; padding: 1px;" width="100" src="' . $asset->getAbsoluteURL(
+                                    ) . '" />';
                             }
                         }
 
@@ -321,7 +344,9 @@ class SubmissionController extends Controller
             ->setHeading('Submission: ' . $submission->title)
             ->setTemplateVariables(
                 [
-                    'base_url'              => $this->getLink('submissions/' . $form->getHandle() . '/' . $submission->id),
+                    'base_url'              => $this->getLink(
+                        'submissions/' . $form->getHandle() . '/' . $submission->id
+                    ),
                     'cp_page_title'         => $submission->title,
                     'save_btn_text'         => 'Save',
                     'save_btn_text_working' => 'Saving...',
@@ -340,7 +365,8 @@ class SubmissionController extends Controller
      */
     public function save(Form $form, SubmissionModel $submission)
     {
-        $submission->title = ee()->input->post('title', true);
+        $submission->title    = ee()->input->post('title', true);
+        $submission->statusId = ee()->input->post('statusId', StatusRepository::getInstance()->getDefaultStatusId());
 
         foreach ($form->getLayout()->getFields() as $field) {
             if ($field instanceof NoStorageInterface || $field instanceof FileUploadField) {

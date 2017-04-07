@@ -35,6 +35,32 @@ class StatusRepository extends Repository
     }
 
     /**
+     * @return array
+     */
+    public function getStatusNamesById()
+    {
+        $names = [];
+        foreach ($this->getAllStatuses() as $status) {
+            $names[$status->id] = $status->name;
+        }
+
+        return $names;
+    }
+
+    /**
+     * @return array
+     */
+    public function getColorsById()
+    {
+        $colors = [];
+        foreach ($this->getAllStatuses() as $status) {
+            $colors[$status->id] = $status->color;
+        }
+
+        return $colors;
+    }
+
+    /**
      * @return StatusModel
      */
     public function getDefaultStatus()
@@ -75,11 +101,29 @@ class StatusRepository extends Repository
      *
      * @return StatusModel|null
      */
-    public function getNotificationById($id)
+    public function getStatusById($id)
     {
         return ee('Model')
             ->get(StatusModel::MODEL)
             ->filter('id', $id)
             ->first();
+    }
+
+    /**
+     * @param array $ids
+     *
+     * @return StatusModel[]
+     */
+    public function getStatusesByIdList(array $ids)
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        return ee('Model')
+            ->get(StatusModel::MODEL)
+            ->filter('id', 'IN', $ids)
+            ->all()
+            ->asArray();
     }
 }

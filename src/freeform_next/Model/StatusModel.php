@@ -41,6 +41,17 @@ class StatusModel extends Model implements \JsonSerializable
     protected $sortOrder;
 
     /**
+     * @return array
+     */
+    public static function createValidationRules()
+    {
+        return [
+            'name'      => 'required',
+            'handle'    => 'required',
+        ];
+    }
+
+    /**
      * Creates a Status object with default settings
      *
      * @return StatusModel

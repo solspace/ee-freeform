@@ -14,4 +14,5 @@ gulp.task("watch", ["build:scripts", "build:styles", "build:fonts", "build:react
   gulp.watch(paths.scripts.src, ["build:scripts"]);
   gulp.watch(paths.react.src, ["build:react"]);
   gulp.watch(paths.styles.src, ["build:styles"]);
+  gulp.watch(paths.themes.src, ["build:themes"]);
 });
