@@ -70,10 +70,21 @@ class StatusController extends Controller
         $removeModal = new ConfirmRemoveModal($this->getLink('statuses/delete'));
         $removeModal->setKind('Statuses');
 
-        $view = new CpView('statuses/listing', []);
+        $view = new CpView(
+            'statuses/listing',
+            [
+                'table'            => $table->viewData(),
+                'cp_page_title'    => lang('Statuses'),
+                'form_right_links' => [
+                    [
+                        'title' => lang('New Status'),
+                        'link'  => $this->getLink('statuses/new'),
+                    ],
+                ],
+            ]
+        );
         $view
             ->setHeading(lang('Statuses'))
-            ->setTemplateVariables(['table' => $table->viewData()])
             ->addCss('')
             ->addModal($removeModal);
 

@@ -73,7 +73,19 @@ class FieldController extends Controller
         $table->setData($tableData);
         $table->setNoResultsText('No results');
 
-        $view = new CpView('fields/listing', ['table' => $table->viewData()]);
+        $view = new CpView(
+            'fields/listing',
+            [
+                'table' => $table->viewData(),
+                'cp_page_title'    => lang('Fields'),
+                'form_right_links' => [
+                    [
+                        'title' => lang('New Field'),
+                        'link'  => $this->getLink('fields/new'),
+                    ],
+                ],
+            ]
+        );
         $view->setHeading(lang('Fields'));
         $view->addModal((new ConfirmRemoveModal($this->getLink('fields/delete')))->setKind('Fields'));
 
@@ -179,8 +191,7 @@ class FieldController extends Controller
         $view
             ->setHeading(lang('Field'))
             ->addJavascript('fieldEditor')
-            ->addJavascript('handleGenerator')
-        ;
+            ->addJavascript('handleGenerator');
 
         return $view;
     }

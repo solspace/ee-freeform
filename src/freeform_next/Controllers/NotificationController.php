@@ -87,7 +87,19 @@ class NotificationController extends Controller
         $table->setData($tableData);
         $table->setNoResultsText('No results');
 
-        $view = new CpView('notifications/listing', ['table' => $table->viewData()]);
+        $view = new CpView(
+            'notifications/listing',
+            [
+                'table' => $table->viewData(),
+                'cp_page_title'    => lang('Notifications'),
+                'form_right_links' => [
+                    [
+                        'title' => lang('New Notification'),
+                        'link'  => $this->getLink('notifications/new'),
+                    ],
+                ],
+            ]
+        );
         $view->setHeading(lang('Notifications'));
         $view->addModal((new ConfirmRemoveModal($this->getLink('notifications/delete')))->setKind('Notifications'));
 
