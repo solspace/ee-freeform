@@ -54,8 +54,8 @@ class FormController extends Controller
         $table->setColumns(
             [
                 'id'          => ['type' => Table::COL_ID],
-                'form'        => ['type' => 'html'],
-                'submissions' => ['type' => Table::COL_TEXT],
+                'Form'        => ['type' => Table::COL_TEXT],
+                'Submissions' => ['type' => Table::COL_TEXT],
                 'manage'      => ['type' => Table::COL_TOOLBAR],
                 ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
             ]
@@ -68,15 +68,18 @@ class FormController extends Controller
         foreach ($forms as $form) {
             $tableData[] = [
                 $form->id,
-                $form->name,
+                [
+                    'content' => $form->name,
+                    'href'    => $this->getLink('forms/' . $form->id),
+                ],
                 [
                     'content' => isset($submissionTotals[$form->id]) ? $submissionTotals[$form->id] : 0,
-                    'href'    => ee('CP/URL', 'addons/settings/freeform_next/submissions/' . $form->handle),
+                    'href'    => $this->getLink('submissions/' . $form->handle),
                 ],
                 [
                     'toolbar_items' => [
                         'edit' => [
-                            'href'  => ee('CP/URL', 'addons/settings/freeform_next/forms/' . $form->id),
+                            'href'  => $this->getLink('forms/' . $form->id),
                             'title' => lang('edit'),
                         ],
                     ],
