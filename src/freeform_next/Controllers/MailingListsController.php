@@ -58,7 +58,10 @@ class MailingListsController extends Controller
         foreach ($integrations as $integration) {
             $tableData[] = [
                 $integration->id,
-                $integration->name,
+                [
+                    'content' => $integration->name,
+                    'href'    => $this->getLink('integrations/mailing_lists/' . $integration->id),
+                ],
                 $integration->handle,
                 $integration->getIntegrationObject()->getServiceProvider(),
                 [

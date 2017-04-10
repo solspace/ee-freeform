@@ -48,9 +48,13 @@ class StatusController extends Controller
                 $checkbox['disabled'] = true;
             }
 
+            $link = $this->getLink('statuses/' . $status->id);
+
             $tableData[] = [
                 $status->id,
-                '<span class="color-indicator" style="background: ' . $status->color . '"></span>' . $status->name,
+                [
+                    'content' => '<a href="' . $link . '"><span class="color-indicator" style="background: ' . $status->color . '"></span>' . $status->name . '</a>',
+                ],
                 $status->handle,
                 $status->isDefault ? 'Yes' : '',
                 [

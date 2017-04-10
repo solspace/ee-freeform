@@ -50,7 +50,10 @@ class FieldController extends Controller
         foreach ($fields as $field) {
             $tableData[] = [
                 $field->id,
-                $field->label,
+                [
+                    'content' => $field->label,
+                    'href'    => $this->getLink('fields/' . $field->id),
+                ],
                 $field->handle,
                 $field->type,
                 [

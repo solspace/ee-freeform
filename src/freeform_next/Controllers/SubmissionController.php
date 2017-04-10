@@ -108,9 +108,12 @@ class SubmissionController extends Controller
 
         $tableData = [];
         foreach ($submissions as $submission) {
+            $link = $this->getLink('submissions/' . $form->getHandle() . '/' . $submission->id);
             $data = [
                 $submission->id,
-                '<span class="color-indicator" style="background: ' . @$colors[$submission->statusId] . ';"></span>' . $submission->title,
+                [
+                    'content' => '<a href="' . $link . '"><span class="color-indicator" style="background: ' . @$colors[$submission->statusId] . ';"></span>' . $submission->title . '</a>',
+                ],
             ];
 
             foreach ($showableFields as $field) {
@@ -141,10 +144,7 @@ class SubmissionController extends Controller
             $data[] = [
                 'toolbar_items' => [
                     'edit' => [
-                        'href'  => ee(
-                            'CP/URL',
-                            'addons/settings/freeform_next/submissions/' . $form->getHandle() . '/' . $submission->id
-                        ),
+                        'href'  => $this->getLink('submissions/' . $form->getHandle() . '/' . $submission->id),
                         'title' => lang('edit'),
                     ],
                 ],

@@ -61,7 +61,10 @@ class CrmController extends Controller
         foreach ($integrations as $integration) {
             $tableData[] = [
                 $integration->id,
-                $integration->name,
+                [
+                    'content' => $integration->name,
+                    'href'    => $this->getLink('integrations/crm/' . $integration->id),
+                ],
                 $integration->handle,
                 $integration->getIntegrationObject()->getServiceProvider(),
                 [

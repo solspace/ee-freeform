@@ -62,7 +62,10 @@ class NotificationController extends Controller
         foreach ($notifications as $notification) {
             $tableData[] = [
                 $notification->id,
-                $notification->name,
+                [
+                    'content' => $notification->name,
+                    'href'    => $this->getLink('notifications/' . $notification->id),
+                ],
                 $notification->handle,
                 [
                     'toolbar_items' => [
