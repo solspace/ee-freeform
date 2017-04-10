@@ -71,7 +71,7 @@ class NotificationModel extends Model implements \JsonSerializable
     public static function create()
     {
         $body = <<<EOT
-<p>Submitted on: {current_time format="%D, %F %d, %Y - %g:%i:%s"}</p>
+<p>Submitted on: {current_time format="%l, %F %j, %Y at %g:%i%a"}</p>
 <ul>
     {rows}
         {columns}
@@ -80,6 +80,7 @@ class NotificationModel extends Model implements \JsonSerializable
             {/if}
         {/columns}
     {/rows}
+</ul>
 EOT;
 
         /** @var FieldModel $field */
