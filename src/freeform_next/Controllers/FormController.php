@@ -99,7 +99,19 @@ class FormController extends Controller
         $table->setData($tableData);
         $table->setNoResultsText('No results');
 
-        $view = new CpView('form/listing', ['table' => $table->viewData()]);
+        $view = new CpView(
+            'form/listing',
+            [
+                'table' => $table->viewData(),
+                'cp_page_title'    => lang('Forms'),
+                'form_right_links' => [
+                    [
+                        'title' => lang('New Form'),
+                        'link'  => $this->getLink('forms/new'),
+                    ],
+                ],
+            ]
+        );
         $view->setHeading(lang('Forms'));
         $view->addModal((new ConfirmRemoveModal($this->getLink('forms/delete')))->setKind('Forms'));
 

@@ -195,7 +195,7 @@ export default class MailingList extends BasePropertyEditor {
         />
 
         <button
-          className="btn download icon"
+          className="btn action download icon"
           onClick={fetchMailingLists}
           disabled={isFetching}
         >

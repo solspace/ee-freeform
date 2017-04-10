@@ -101,7 +101,7 @@ export default class OptionTable extends Component {
           {this.renderRows()}
           </tbody>
         </table>
-        <button className="btn add icon" onClick={this.addNewValues}>
+        <button className="btn action add icon" onClick={this.addNewValues}>
           Add an option
         </button>
       </div>

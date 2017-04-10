@@ -155,17 +155,17 @@ export default class PropertyEditor extends Component {
     return (
       <div>
         <div className="composer-form-settings">
-          <a onClick={editForm} className={"btn small form-settings" + (hash === FieldTypes.FORM ? " active" : "")} data-icon="settings">
+          <a onClick={editForm} className={"btn action form-settings" + (hash === FieldTypes.FORM ? " active" : "")} data-icon="settings">
             Form Settings
           </a>
 
-          <a onClick={editAdminNotifications} className={"btn small notification-settings" + (hash === FieldTypes.ADMIN_NOTIFICATIONS ? " active" : "")} data-icon="mail">
+          <a onClick={editAdminNotifications} className={"btn action notification-settings" + (hash === FieldTypes.ADMIN_NOTIFICATIONS ? " active" : "")} data-icon="mail">
             Notify
           </a>
 
           {integrationCount ?
             (
-              <a onClick={editIntegrations} className={"btn small crm-settings" + (hash === FieldTypes.INTEGRATION ? " active" : "")} data-icon="settings">
+              <a onClick={editIntegrations} className={"btn action crm-settings" + (hash === FieldTypes.INTEGRATION ? " active" : "")} data-icon="settings">
                 CRM
               </a>
             )

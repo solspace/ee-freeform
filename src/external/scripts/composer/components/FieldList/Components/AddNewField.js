@@ -32,7 +32,7 @@ export default class AddNewField extends Component {
         return (
             <div className={className}>
                 {!showFieldForm &&
-                <button className="btn" data-icon="add" onClick={this.toggleFieldForm}>
+                <button className="btn action" data-icon="add" onClick={this.toggleFieldForm}>
                     Add New Field
                 </button>
                 }

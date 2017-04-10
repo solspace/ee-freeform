@@ -119,7 +119,7 @@ export default class Integrations extends BasePropertyEditor {
         />
 
         <button
-          className="btn refresh icon"
+          className="btn action refresh icon"
           onClick={fetchCrmIntegrations}
           disabled={isFetching}
         >
