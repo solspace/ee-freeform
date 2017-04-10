@@ -132,7 +132,7 @@ class CrmController extends Controller
             $errors = $this->save($model);
 
             if (empty($errors)) {
-                $view = new RedirectView($this->getLink('integrations/crm/' . $model->id));
+                $view = new RedirectView($this->getLink('integrations/crm/'));
 
                 return $view;
             }

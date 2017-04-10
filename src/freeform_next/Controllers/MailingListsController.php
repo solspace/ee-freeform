@@ -106,7 +106,7 @@ class MailingListsController extends Controller
     /**
      * @param int|string $id
      *
-     * @return CpView
+     * @return View
      * @throws IntegrationException
      */
     public function edit($id)
@@ -127,7 +127,7 @@ class MailingListsController extends Controller
             $errors = $this->save($model);
 
             if (empty($errors)) {
-                $view = new RedirectView($this->getLink('integrations/mailing_lists/' . $model->id));
+                $view = new RedirectView($this->getLink('integrations/mailing_lists/'));
 
                 return $view;
             }

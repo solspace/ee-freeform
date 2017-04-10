@@ -99,7 +99,7 @@ class Freeform_next_mcp extends ControlPanelView
     public function fields($id = null)
     {
         if (strtolower($id) === 'delete') {
-            return $this->renderView($this->getFieldController()->batchDelete($id));
+            return $this->renderView($this->getFieldController()->batchDelete());
         }
 
         if (null !== $id) {
@@ -108,7 +108,7 @@ class Freeform_next_mcp extends ControlPanelView
 
                 return $this->renderView(
                     new RedirectView(
-                        UrlHelper::getLink('fields/' . $field->id)
+                        UrlHelper::getLink('fields/')
                     )
                 );
             }
@@ -140,7 +140,7 @@ class Freeform_next_mcp extends ControlPanelView
 
                     return $this->renderView(
                         new RedirectView(
-                            UrlHelper::getLink('notifications/' . $notification->id)
+                            UrlHelper::getLink('notifications/')
                         )
                     );
                 }
@@ -173,7 +173,7 @@ class Freeform_next_mcp extends ControlPanelView
 
                     return $this->renderView(
                         new RedirectView(
-                            UrlHelper::getLink('statuses/' . $status->id)
+                            UrlHelper::getLink('statuses/')
                         )
                     );
                 }
@@ -210,7 +210,7 @@ class Freeform_next_mcp extends ControlPanelView
 
                     return $this->renderView(
                         new RedirectView(
-                            UrlHelper::getLink('submissions/' . $formHandle . '/' . $submissionId)
+                            UrlHelper::getLink('submissions/' . $formHandle . '/')
                         )
                     );
                 }
