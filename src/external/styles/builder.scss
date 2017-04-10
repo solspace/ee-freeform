@@ -227,11 +227,11 @@ $sidebarMinWidth: 18%;
             }
 
             &:after {
-              content: "\2b";
+              content: "\f067";
               position: relative;
               top: 1px;
 
-              font-family: Craft, sans-serif;
+              font-family: FontAwesome;
             }
           }
         }
