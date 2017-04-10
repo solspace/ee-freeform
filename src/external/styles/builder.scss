@@ -303,15 +303,10 @@ $sidebarMinWidth: 18%;
 
     > a {
       margin-right: $spacing-short;
-      padding-top: 3px !important;
-
-      font-size: 12px;
 
       &:before {
         position: relative;
-        top: -1px;
-
-        font-size: 11px !important;
+        top: 0 !important;
       }
     }
   }
@@ -388,8 +383,6 @@ $sidebarMinWidth: 18%;
 
   > button {
     margin: 0 auto;
-
-    font-size: 13px;
   }
 }
 
