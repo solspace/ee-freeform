@@ -109,6 +109,7 @@ $sidebarMinWidth: 18%;
 .composer-html-content {
   @extend %reset-lists;
   @extend %reset-headings;
+  @extend %primp-submit-buttons;
 }
 
 .builder-interface {
