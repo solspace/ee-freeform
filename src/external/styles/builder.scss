@@ -112,6 +112,8 @@ $sidebarMinWidth: 18%;
 }
 
 .builder-interface {
+  position: relative;
+
   .builder-blocks {
     display: flex;
     min-height: 500px;
@@ -337,9 +339,13 @@ $sidebarMinWidth: 18%;
 
 .composer-save {
   position: absolute;
-  top: 98px;
+  top: -40px;
   right: 0;
   z-index: 2;
+
+  input:first-child {
+    margin-right: 5px;
+  }
 }
 
 .composer-group-values {

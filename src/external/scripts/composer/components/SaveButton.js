@@ -62,7 +62,7 @@ export default class SaveButton extends Component {
   render() {
     const {isSaving} = this.state;
 
-    const originalTitle = "Save and continue editing ⌘S";
+    const originalTitle = "Save ⌘S";
     const progressTitle = "Saving...";
 
     let currentTitle = isSaving ? progressTitle : originalTitle;
@@ -77,26 +77,12 @@ export default class SaveButton extends Component {
             className="btn submit"
           />
 
-          <div className="btn submit menubtn"></div>
-          <div className="menu">
-            <ul>
-              <li>
-                <a className="formsubmit gotoFormList" onClick={this.save}>
-                  Save and finish
-                </a>
-              </li>
-              <li>
-                <a className="formsubmit gotoNewForm" onClick={this.save}>
-                  Save and add another
-                </a>
-              </li>
-              <li>
-                <a className="formsubmit duplicateForm" onClick={this.save}>
-                  Save as a new form
-                </a>
-              </li>
-            </ul>
-          </div>
+          <input
+            type="submit"
+            value="Save and close"
+            onClick={this.save}
+            className="btn submit formsubmit gotoFormList"
+          />
         </div>
       </div>
     );
