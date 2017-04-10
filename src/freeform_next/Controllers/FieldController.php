@@ -108,6 +108,7 @@ class FieldController extends Controller
                             'type'     => 'text',
                             'value'    => $model->label,
                             'required' => true,
+                            'attrs'    => 'data-generator-base',
                         ],
                     ],
                 ],
@@ -119,6 +120,7 @@ class FieldController extends Controller
                             'type'     => 'text',
                             'value'    => $model->handle,
                             'required' => true,
+                            'attrs'    => 'data-generator-target',
                         ],
                     ],
                 ],
@@ -177,6 +179,7 @@ class FieldController extends Controller
         $view
             ->setHeading(lang('Field'))
             ->addJavascript('fieldEditor')
+            ->addJavascript('handleGenerator')
         ;
 
         return $view;

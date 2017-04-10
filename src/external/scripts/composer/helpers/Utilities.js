@@ -9,7 +9,7 @@
  */
 
 import Hashids from "hashids";
-import {camelize} from "underscore.string";
+import {underscored} from "underscore.string";
 
 const minHashLength = 9;
 const hashids       = new Hashids("composer", minHashLength);
@@ -56,8 +56,8 @@ export function deHashId(hash) {
  * @returns {*}
  */
 export function getHandleValue(value) {
-  let handleValue = camelize(value, true);
-  handleValue = handleValue.replace(/[^a-zA-Z0-9]/g, '');
+  let handleValue = underscored(value, true);
+  handleValue = handleValue.replace(/[^a-zA-Z0-9_]/g, '');
 
   return handleValue;
 }

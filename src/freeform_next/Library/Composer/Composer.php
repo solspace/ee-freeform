@@ -231,7 +231,7 @@ class Composer
                 Properties::FORM_HASH                => [
                     'type'                  => Properties::FORM_HASH,
                     'name'                  => 'Composer Form',
-                    'handle'                => 'composerForm',
+                    'handle'                => 'composer_form',
                     'submissionTitleFormat' => '{current_time format="%D, %F %d, %Y - %g:%i:%s"}',
                     'description'           => '',
                     'formTemplate'          => 'flexbox.html',

@@ -11,28 +11,6 @@
 $(() => {
   let wrappers = $('.option-editor-wrapper');
 
-  let label  = $('input:text[name=label]');
-  let handle = $('input:text[name=handle]');
-
-  const camelize = (str) => {
-    return str
-        .replace(/(?:^\w|[A-Z]|\b\w)/g, (letter, index) => (
-        index === 0 ? letter.toLowerCase() : letter.toUpperCase()
-      ))
-      .replace(/\s+/g, '')
-      .replace(/[^a-zA-Z0-9_]/g, '')
-  };
-
-  label.on({
-    keyup: () => {
-      let val = label.val();
-
-      val = camelize(val);
-      handle.val(val);
-    },
-    change: (event) => $(event.target).trigger('keypress'),
-  });
-
   wrappers.each((i, wrapper) => {
     const self = $(wrapper);
 

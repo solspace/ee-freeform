@@ -108,6 +108,7 @@ class StatusController extends Controller
                             'type'     => 'text',
                             'value'    => $status->name,
                             'required' => true,
+                            'attrs'    => 'data-generator-base',
                         ],
                     ],
                 ],
@@ -119,6 +120,7 @@ class StatusController extends Controller
                             'type'     => 'text',
                             'value'    => $status->handle,
                             'required' => true,
+                            'attrs'    => 'data-generator-target',
                         ],
                     ],
                 ],
@@ -151,6 +153,7 @@ class StatusController extends Controller
         $view
             ->setHeading(lang('Statuses'))
             ->addJavascript('statuses')
+            ->addJavascript('handleGenerator')
             ->setTemplateVariables(
                 [
                     'cp_page_title'         => 'Statuses',

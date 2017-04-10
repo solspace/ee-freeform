@@ -198,6 +198,7 @@ class CrmController extends Controller
                         'name' => [
                             'type'  => 'text',
                             'value' => $model->name,
+                            'attrs'    => 'data-generator-base',
                         ],
                     ],
                 ],
@@ -208,6 +209,7 @@ class CrmController extends Controller
                         'handle' => [
                             'type'  => 'text',
                             'value' => $model->handle,
+                            'attrs'    => 'data-generator-target',
                         ],
                     ],
                 ],
@@ -232,6 +234,7 @@ class CrmController extends Controller
                 'errors'                => $errors,
             ]
         );
+        $view->addJavascript('handleGenerator');
 
         return $view;
     }

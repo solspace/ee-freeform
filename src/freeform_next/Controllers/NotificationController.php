@@ -117,6 +117,7 @@ class NotificationController extends Controller
         $view
             ->setHeading('Notification')
             ->addJavascript('notifications')
+            ->addJavascript('handleGenerator')
             ->setTemplateVariables(
                 [
                     'errors'                => $validation,
@@ -134,6 +135,7 @@ class NotificationController extends Controller
                                         'type'     => 'text',
                                         'value'    => $notification->name,
                                         'required' => true,
+                                        'attrs'    => 'data-generator-base',
                                     ],
                                 ],
                             ],
@@ -145,6 +147,7 @@ class NotificationController extends Controller
                                         'type'     => 'text',
                                         'value'    => $notification->handle,
                                         'required' => true,
+                                        'attrs'    => 'data-generator-target',
                                     ],
                                 ],
                             ],

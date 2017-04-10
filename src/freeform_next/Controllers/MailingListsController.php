@@ -194,6 +194,7 @@ class MailingListsController extends Controller
                         'name' => [
                             'type'  => 'text',
                             'value' => $model->name,
+                            'attrs'    => 'data-generator-base',
                         ],
                     ],
                 ],
@@ -204,6 +205,7 @@ class MailingListsController extends Controller
                         'handle' => [
                             'type'  => 'text',
                             'value' => $model->handle,
+                            'attrs'    => 'data-generator-target',
                         ],
                     ],
                 ],
@@ -228,6 +230,7 @@ class MailingListsController extends Controller
                 'errors'                => $errors,
             ]
         );
+        $view->addJavascript('handleGenerator');
 
         return $view;
     }
