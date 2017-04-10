@@ -132,10 +132,12 @@ $sidebarMinWidth: 18%;
       }
     }
 
-    h3 {
-      margin: 0 0 $spacing !important;
-      font-size: 1.15rem;
-      font-weight: 500;
+    .field-list, .property-editor {
+      h3 {
+        margin: 0 0 $spacing !important;
+        font-size: 1.15rem;
+        font-weight: 500;
+      }
     }
 
     .tabs {
