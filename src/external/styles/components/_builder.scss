@@ -132,15 +132,19 @@ $minRowHeight: 60px;
         label.composer-field-required {
           > span.required {
             position: relative;
-            top: -3px;
+            top: -6px;
             left: 0;
             height: $spacing;
 
             color: $color-error;
-            font-family: Craft, sans-serif;
+            font-family: FontAwesome;
             font-size: 7px;
             font-weight: bold;
             line-height: $spacing;
+
+            &:before {
+              content: '\f069';
+            }
           }
         }
 
