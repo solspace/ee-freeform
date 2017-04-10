@@ -55,6 +55,7 @@ class FormController extends Controller
             [
                 'id'          => ['type' => Table::COL_ID],
                 'Form'        => ['type' => Table::COL_TEXT],
+                'Handle'      => ['type' => Table::COL_TEXT],
                 'Submissions' => ['type' => Table::COL_TEXT],
                 'manage'      => ['type' => Table::COL_TOOLBAR],
                 ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
@@ -72,6 +73,7 @@ class FormController extends Controller
                     'content' => $form->name,
                     'href'    => $this->getLink('forms/' . $form->id),
                 ],
+                $form->handle,
                 [
                     'content' => isset($submissionTotals[$form->id]) ? $submissionTotals[$form->id] : 0,
                     'href'    => $this->getLink('submissions/' . $form->handle),
@@ -102,7 +104,7 @@ class FormController extends Controller
         $view = new CpView(
             'form/listing',
             [
-                'table' => $table->viewData(),
+                'table'            => $table->viewData(),
                 'cp_page_title'    => lang('Forms'),
                 'form_right_links' => [
                     [
