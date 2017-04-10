@@ -11,6 +11,7 @@
 .composer-option-table {
   > table {
     width: 100%;
+    margin: 0;
     overflow: hidden;
 
     border-radius: 4px;
@@ -23,19 +24,14 @@
     thead {
       tr {
         th {
-          border-radius: 4px 4px 0 0;
+          background-color: #f1f1f1;
+          border-bottom: 2px solid #cdcdcd;
+          color: gray;
+          font-size: 12px;
+          position: relative;
+          z-index: 1;
 
-          padding: 4px 10px;
-
-          background-image: linear-gradient(white, #f9fafa);
-          border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-          box-shadow: 0 2px 1px -2px rgba(0, 0, 0, 0.2);
-
-          font-weight: bold;
-          vertical-align: top;
-          font-size: 11px;
-          color: rgba(0, 0, 0, 0.5);
-          text-align: left;
+          padding: 6px !important;
         }
       }
     }
@@ -43,20 +39,9 @@
     tbody {
       tr {
         td {
-          background: $color-white;
-          //box-shadow: 0 0 0 1px #e3e5e8;
-
-          border: {
-            top: 1px solid rgba(0, 0, 0, 0.07);
-            left: 1px solid rgba(0, 0, 0, 0.07);
-          }
-
-          vertical-align: middle;
-          text-align: center;
-
-          &:first-child {
-            border-left: none;
-          }
+          background-color: #fff;
+          border-bottom: 1px solid #e6e6e6;
+          padding: 0 !important;
 
           input {
             display: block;
@@ -82,7 +67,7 @@
           }
 
           &.composer-option-row-checkbox {
-            padding: 0 10px;
+            width: 13px;
 
             > input {
               margin: 0 !important;
@@ -90,29 +75,36 @@
           }
 
           &.action {
-            background: $color-action-background;
-            padding: 0 5px;
+            width: 13px;
+            padding: 0 0 0 5px !important;
+
+            &:last-child {
+              padding: 0 5px !important;
+            }
 
             & + .action {
               border-left: none;
             }
 
             > a {
+              position: relative;
+              top: -2px;
+
               &:after {
                 position: relative;
                 top: 1px;
 
-                font-family: Craft, sans-serif;
+                font-family: FontAwesome;
                 font-size: 13px;
                 color: rgba(0, 0, 0, 0.2);
               }
 
               &.delete:after {
-                content: "\72";
+                content: "\f00d";
               }
 
               &.move:after {
-                content: "\e617";
+                content: "\f047";
               }
 
               &:hover {
@@ -145,10 +137,14 @@
           }
         }
 
-        &:first-child {
+        &:last-child {
           td {
-            border-top: none;
+            border-bottom: 0;
           }
+        }
+
+        &:nth-child(2n) > td {
+          background-color: #fcfcfc !important;
         }
       }
     }
