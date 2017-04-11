@@ -33,6 +33,10 @@ class CrmController extends Controller
             return $this->getIntegrationsAjax();
         }
 
+        if ($id === 'delete') {
+            return $this->batchDelete();
+        }
+
         return $this->edit($id);
     }
 
@@ -79,7 +83,10 @@ class CrmController extends Controller
                     'name'  => 'id_list[]',
                     'value' => $integration->id,
                     'data'  => [
-                        'confirm' => lang('Integration') . ': <b>' . htmlentities($integration->name, ENT_QUOTES) . '</b>',
+                        'confirm' => lang('Integration') . ': <b>' . htmlentities(
+                                $integration->name,
+                                ENT_QUOTES
+                            ) . '</b>',
                     ],
                 ],
             ];
@@ -90,21 +97,35 @@ class CrmController extends Controller
         $removeModal = new ConfirmRemoveModal($this->getLink('integrations/crm/delete'));
         $removeModal->setKind('CRM Integrations');
 
+        $serviceProviderTypes = $this->getCrmService()->getAllCrmServiceProviders();
+
+        if (count($serviceProviderTypes)) {
+            $formRightLinks = [
+                [
+                    'title' => lang('New Integration'),
+                    'link'  => $this->getLink('integrations/crm/new'),
+                ],
+            ];
+        } else {
+            $formRightLinks = [
+                [
+                    'title' => lang('Purchase integrations'),
+                    'link'  => 'https://solspace.com/',
+                ],
+            ];
+        }
+
         $view = new CpView(
             'integrations/table',
             [
                 'table'            => $table->viewData(),
                 'cp_page_title'    => lang('CRM Integrations'),
-                'form_right_links' => [
-                    [
-                        'title' => lang('New Integration'),
-                        'link'  => $this->getLink('integrations/crm/new'),
-                    ],
-                ],
+                'form_right_links' => $formRightLinks,
             ]
         );
-        $view->setHeading(lang('CRM Integrations'));
-        $view->addModal($removeModal);
+        $view
+            ->setHeading(lang('CRM Integrations'))
+            ->addModal($removeModal);
 
         return $view;
     }
@@ -148,7 +169,7 @@ class CrmController extends Controller
         $integration = $model->getIntegrationObject();
         $settings    = $integration->getSettings();
 
-        $blueprints           = $this->getCrmService()->getAllCrmSettingBlueprints();
+        $blueprints = $this->getCrmService()->getAllCrmSettingBlueprints();
 
         $types = $targets = $settingGroups = [];
         foreach ($serviceProviderTypes as $className => $name) {
@@ -201,7 +222,7 @@ class CrmController extends Controller
                         'name' => [
                             'type'  => 'text',
                             'value' => $model->name,
-                            'attrs'    => 'data-generator-base',
+                            'attrs' => 'data-generator-base',
                         ],
                     ],
                 ],
@@ -212,7 +233,7 @@ class CrmController extends Controller
                         'handle' => [
                             'type'  => 'text',
                             'value' => $model->handle,
-                            'attrs'    => 'data-generator-target',
+                            'attrs' => 'data-generator-target',
                         ],
                     ],
                 ],
@@ -370,5 +391,26 @@ class CrmController extends Controller
         }
 
         return $instance;
+    }
+
+    /**
+     * @return RedirectView
+     */
+    public function batchDelete()
+    {
+        if (isset($_POST['id_list'])) {
+            $ids = [];
+            foreach ($_POST['id_list'] as $id) {
+                $ids[] = (int) $id;
+            }
+
+            $models = CrmRepository::getInstance()->getIntegrationsByIdList($ids);
+
+            foreach ($models as $model) {
+                $model->delete();
+            }
+        }
+
+        return new RedirectView($this->getLink('integrations/crm/'));
     }
 }

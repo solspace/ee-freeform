@@ -71,4 +71,23 @@ class CrmRepository extends Repository
 
         return null;
     }
+
+    /**
+     * @param array $ids
+     *
+     * @return IntegrationModel[]
+     */
+    public function getIntegrationsByIdList(array $ids)
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        return ee('Model')
+            ->get(IntegrationModel::MODEL)
+            ->filter('type', IntegrationModel::TYPE_CRM)
+            ->filter('id', 'IN', $ids)
+            ->all()
+            ->asArray();
+    }
 }

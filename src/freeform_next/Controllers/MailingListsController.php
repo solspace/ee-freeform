@@ -33,6 +33,10 @@ class MailingListsController extends Controller
             return $this->getIntegrationsAjax();
         }
 
+        if ($id === 'delete') {
+            return $this->batchDelete();
+        }
+
         return $this->edit($id);
     }
 
@@ -320,6 +324,27 @@ class MailingListsController extends Controller
         $ajaxView->setVariables($integrations);
 
         return $ajaxView;
+    }
+
+    /**
+     * @return RedirectView
+     */
+    public function batchDelete()
+    {
+        if (isset($_POST['id_list'])) {
+            $ids = [];
+            foreach ($_POST['id_list'] as $id) {
+                $ids[] = (int) $id;
+            }
+
+            $models = MailingListRepository::getInstance()->getIntegrationsByIdList($ids);
+
+            foreach ($models as $model) {
+                $model->delete();
+            }
+        }
+
+        return new RedirectView($this->getLink('integrations/mailing_lists/'));
     }
 
     /**
