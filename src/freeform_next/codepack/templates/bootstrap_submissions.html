@@ -1,0 +1,52 @@
+<div class="container">
+
+    {if logged_in_group_id == "1"}
+
+        {exp:freeform_next:form form="{segment_3}" no_form_tags="true"}
+
+            <h3>{form:name}</h3>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    {form:fields}
+                        {if field:can_store_values}
+                        <th>{field:label}</th>
+                        {/if}
+                    {/form:fields}
+                </tr>
+                </thead>
+                <tbody>
+                {exp:freeform_next:submissions form="{segment_3}"}
+                    {if freeform_next:no_results}
+                        <div>There are no submissions</div>
+                    {/if}
+
+                    <tr>
+                        <td>{submission:id}</td>
+                        <td>
+                            <a href="{path='demo/bootstrap/{form:handle}/submissions/{submission:id}'}">
+                                {submission:title}
+                            </a>
+                        </td>
+                        {submission:fields}
+                            {if field:can_store_values}
+                                <td>{field:value}</td>
+                            {/if}
+                        {/submission:fields}
+                    </tr>
+                {/exp:freeform_next:submissions}
+            </table>
+
+        {/exp:freeform_next:form}
+
+    {if:else}
+        <div class="alert alert-danger" role="alert">
+            <p class="lead">
+                Sorry, we couldn't find what you're looking for
+            </p>
+        </div>
+    {/if}
+</div>

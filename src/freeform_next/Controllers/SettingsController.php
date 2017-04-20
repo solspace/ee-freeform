@@ -18,7 +18,6 @@ class SettingsController extends Controller
     const TYPE_GENERAL              = 'general';
     const TYPE_FORMATTING_TEMPLATES = 'formatting_templates';
     const TYPE_EMAIL_TEMPLATES      = 'email_templates';
-    const TYPE_STATUSES             = 'statuses';
     const TYPE_DEMO_TEMPLATES       = 'demo_templates';
 
     /** @var array */
@@ -26,7 +25,6 @@ class SettingsController extends Controller
         self::TYPE_GENERAL,
         self::TYPE_FORMATTING_TEMPLATES,
         self::TYPE_EMAIL_TEMPLATES,
-        self::TYPE_STATUSES,
         self::TYPE_DEMO_TEMPLATES,
     ];
 
@@ -51,9 +49,6 @@ class SettingsController extends Controller
 
             case self::TYPE_EMAIL_TEMPLATES:
                 return $this->emailTemplatesAction();
-
-            case self::TYPE_STATUSES:
-                return $this->statusesAction($id);
 
             case self::TYPE_DEMO_TEMPLATES:
                 return $this->demoTemplatesAction();
@@ -213,9 +208,14 @@ class SettingsController extends Controller
         return $view;
     }
 
+    /**
+     * @return View
+     */
     private function demoTemplatesAction()
     {
+        $controller = new DemoTemplatesController();
 
+        return $controller->index();
     }
 
     /**
@@ -229,7 +229,7 @@ class SettingsController extends Controller
     {
         $settings = $this->getSettings();
 
-        if (!empty($_POST)) {
+        if (!empty($_POST) && !isset($_POST['prefix'])) {
             $accessor = PropertyAccess::createPropertyAccessor();
 
             foreach ($_POST as $key => $value) {

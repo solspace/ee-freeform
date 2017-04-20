@@ -11,6 +11,9 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SubmitField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Page;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Row;
+use Solspace\Addons\FreeformNext\Library\EETags\Transformers\FieldTransformer;
+use Solspace\Addons\FreeformNext\Library\EETags\Transformers\FormTransformer;
+use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Stringy\Stringy;
 
 class FormToTagDataTransformer
@@ -40,8 +43,9 @@ class FormToTagDataTransformer
      */
     public function getOutput()
     {
-        $output = $this->form->renderTag() . $this->getOutputWithoutWrappingFormTags() . $this->form->renderClosingTag(
-            );
+        $output = $this->form->renderTag()
+            . $this->getOutputWithoutWrappingFormTags()
+            . $this->form->renderClosingTag();
 
         return $output;
     }
@@ -65,27 +69,23 @@ class FormToTagDataTransformer
      */
     private function transform()
     {
-        $form = $this->form;
+        $formTransformer = new FormTransformer();
 
         $data = [
-            'form:id'           => $form->getId(),
-            'form:name'         => $form->getName(),
-            'form:handle'       => $form->getHandle(),
-            'form:description'  => $form->getDescription(),
-            'form:return_url'   => $form->getReturnUrl(),
-            'form:action'       => $form->getCustomAttributes()->getAction(),
-            'form:method'       => $form->getCustomAttributes()->getMethod(),
-            'form:class'        => $form->getCustomAttributes()->getClass(),
-            'form:page_count'   => count($form->getPages()),
-            'form:has_errors'   => $form->hasErrors(),
-            'form:row_class'    => $form->getCustomAttributes()->getRowClass(),
-            'form:column_class' => $form->getCustomAttributes()->getColumnClass(),
             'rows'              => $this->rowData(),
             'pages'             => $this->pages(),
         ];
 
+        $submissionCount = FormRepository::getInstance()->getFormSubmissionCount([$this->form->getId()]);
+        if (!empty($submissionCount)) {
+            $submissionCount = reset($submissionCount);
+        } else {
+            $submissionCount = 0;
+        }
+
+        $data = array_merge($data, $formTransformer->transformForm($this->form, $submissionCount));
         $data = array_merge($data, $this->getFields());
-        $data = array_merge($data, $this->pageData($form->getCurrentPage(), 'current_page:'));
+        $data = array_merge($data, $this->pageData($this->form->getCurrentPage(), 'current_page:'));
 
         return $data;
     }
@@ -255,35 +255,13 @@ class FormToTagDataTransformer
      */
     private function getFieldData(AbstractField $field, $prefix = 'field:', $columnIndex = null, $columnCount = null)
     {
-        return [
-            $prefix . 'id'                  => $field->getId(),
-            $prefix . 'handle'              => $field->getHandle(),
-            $prefix . 'hash'                => $field->getHash(),
-            $prefix . 'type'                => $field->getType(),
-            $prefix . 'label'               => $field->getLabel(),
-            $prefix . 'value'               => $field->getValueAsString(),
-            $prefix . 'instructions'        => $field->getInstructions(),
-            $prefix . 'errors'              => $field->getErrors(),
-            $prefix . 'render_input'        => $field->renderInput(),
-            $prefix . 'render_label'        => $field->renderLabel(),
-            $prefix . 'render_instructions' => $field->renderInstructions(),
-            $prefix . 'render_errors'       => $field->renderErrors(),
-            $prefix . 'render'              => $field->render(),
-            $prefix . 'id_attribute'        => $field->getIdAttribute(),
-            $prefix . 'required'            => $field->isRequired(),
-            $prefix . 'input_only'          => $field->isInputOnly(),
-            $prefix . 'page_index'          => $field->getPageIndex(),
-            $prefix . 'has_errors'          => $field->hasErrors(),
-            $prefix . 'errors'              => $field->getErrors(),
-            $prefix . 'position'            => $field instanceof SubmitField ? $field->getPosition() : '',
-            $prefix . 'marker:open'         => '##FFN:' . $field->getHash() . ':FFN##',
-            $prefix . 'options'             => $this->getOptions($field),
-            $prefix . 'show_as_radio'       => $field instanceof DynamicRecipientField ? $field->isShowAsRadio(
-            ) : false,
-            'column:index'                  => $columnIndex,
-            'column:count'                  => $columnCount,
-            'column:grid_width'             => 12 / ($columnCount ?: 1),
-        ];
+        static $transformer;
+
+        if (null === $transformer) {
+            $transformer = new FieldTransformer();
+        }
+
+        return $transformer->transformField($field, $prefix, $columnIndex, $columnCount);
     }
 
     /**
@@ -313,34 +291,5 @@ class FormToTagDataTransformer
             $prefix . 'label' => $page->getLabel(),
             $prefix . 'index' => $page->getIndex(),
         ];
-    }
-
-    /**
-     * @param AbstractField $field
-     *
-     * @return array|null
-     */
-    private function getOptions(AbstractField $field)
-    {
-        if (!$field instanceof OptionsInterface) {
-            return null;
-        }
-
-        $options = [];
-        foreach ($field->getOptions() as $option) {
-            if ($field instanceof MultipleValueInterface) {
-                $isChecked = in_array($option->getValue(), $field->getValue(), false);
-            } else {
-                $isChecked = $option->getValue() == $field->getValue();
-            }
-
-            $options[] = [
-                'option:label'   => $option->getLabel(),
-                'option:value'   => $option->getValue(),
-                'option:checked' => $isChecked,
-            ];
-        }
-
-        return $options;
     }
 }

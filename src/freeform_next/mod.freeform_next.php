@@ -12,10 +12,13 @@
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\EETags\FormTagParamUtilities;
 use Solspace\Addons\FreeformNext\Library\EETags\FormToTagDataTransformer;
+use Solspace\Addons\FreeformNext\Library\EETags\SubmissionToTagDataTransformer;
+use Solspace\Addons\FreeformNext\Library\EETags\Transformers\FormTransformer;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\TemplateHelper;
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
+use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
 use Solspace\Addons\FreeformNext\Utilities\Plugin;
 
 class Freeform_Next extends Plugin
@@ -44,15 +47,92 @@ class Freeform_Next extends Plugin
     {
         $form = $this->assembleFormFromTag();
 
-        $tagdata = ee()->TMPL->tagdata;
+        if (!$form) {
+            return $this->returnNoResults();
+        }
+
+        $tagdata     = ee()->TMPL->tagdata;
         $transformer = new FormToTagDataTransformer($form, $tagdata);
+
+        $renderTags = !$this->getParam('no_form_tags', false);
+
+        return $renderTags ? $transformer->getOutput() : $transformer->getOutputWithoutWrappingFormTags();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function forms()
+    {
+        $transformer      = new FormTransformer();
+        $forms            = FormRepository::getInstance()->getAllForms();
+        $submissionCounts = FormRepository::getInstance()->getFormSubmissionCount(array_keys($forms));
+
+        if (empty($forms)) {
+            return $this->returnNoResults();
+        }
+
+        $data = [];
+        foreach ($forms as $formModel) {
+            $submissionCount = isset($submissionCounts[$formModel->id]) ? $submissionCounts[$formModel->id] : 0;
+            $data[]          = $transformer->transformForm($formModel->getForm(), $submissionCount);
+        }
+
+        $output = ee()->TMPL->tagdata;
+        $output = ee()->TMPL->parse_variables($output, $data);
+
+        return $output;
+    }
+
+    /**
+     * @return string
+     */
+    public function submissions()
+    {
+        $form = $this->assembleFormFromTag();
+
+        if (!$form) {
+            return $this->returnNoResults();
+        }
+
+        $submissions = SubmissionRepository::getInstance()->getAllSubmissionsFor($form);
+
+        if (empty($submissions)) {
+            return $this->returnNoResults();
+        }
+
+        $output = ee()->TMPL->tagdata;
+        $transformer = new SubmissionToTagDataTransformer($form, $output, $submissions);
 
         return $transformer->getOutput();
     }
 
     /**
-     * @return Form
-     * @throws FreeformException
+     * @return string
+     */
+    public function submission()
+    {
+        $form = $this->assembleFormFromTag();
+        $submissionId = $this->getParam('submission_id', null);
+
+        if (!$form) {
+            return $this->returnNoResults();
+        }
+
+        $submission = SubmissionRepository::getInstance()->getSubmission($form, $submissionId);
+
+        if (!$submission) {
+            return $this->returnNoResults();
+        }
+
+        $output = ee()->TMPL->tagdata;
+        $transformer = new SubmissionToTagDataTransformer($form, $output, [$submission]);
+
+        return $transformer->getOutput();
+    }
+
+    /**
+     * @return Form|null
      */
     private function assembleFormFromTag()
     {
@@ -65,21 +145,19 @@ class Freeform_Next extends Plugin
         }
 
         $formModel = FormRepository::getInstance()->getFormByIdOrHandle($id ? $id : $handle);
-        $form      = $formModel->getForm();
+        if (!$formModel) {
+            return null;
+        }
+
+        $form = $formModel->getForm();
 
         FormTagParamUtilities::setFormCustomAttributes($form);
-
-        if (!$form) {
-            throw new FreeformException('Form not found');
-        }
 
         return $form;
     }
 
     /**
      * @return Form|null
-     * @throws \Twig_Error_Syntax
-     * @throws \Twig_Error_Loader
      * @throws FreeformException
      */
     private function submitForm()

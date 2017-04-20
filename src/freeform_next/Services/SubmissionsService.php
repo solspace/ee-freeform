@@ -1,6 +1,7 @@
 <?php
 /**
  * Freeform Next for Expression Engine
+ *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
@@ -26,8 +27,6 @@ class SubmissionsService implements SubmissionHandlerInterface
      * @param AbstractField[] $fields
      *
      * @return SubmissionModel|null
-     * @throws \Twig_Error_Syntax
-     * @throws \Twig_Error_Loader
      */
     public function storeSubmission(Form $form, array $fields)
     {
@@ -88,5 +87,27 @@ class SubmissionsService implements SubmissionHandlerInterface
         ee()->db
             ->where_in('assetId', $assetIds)
             ->delete('freeform_next_unfinalized_files');
+    }
+
+    /**
+     * Add a session flash variable that the form has been submitted
+     *
+     * @param Form $form
+     */
+    public function markFormAsSubmitted(Form $form)
+    {
+        ee()->session->set_flashdata(Form::SUBMISSION_FLASH_KEY . $form->getId(), true);
+    }
+
+    /**
+     * Check for a session flash variable for form submissions
+     *
+     * @param Form $form
+     *
+     * @return bool
+     */
+    public function wasFormFlashSubmitted(Form $form)
+    {
+        return ee()->session->flashdata(Form::SUBMISSION_FLASH_KEY . $form->getId()) === true;
     }
 }

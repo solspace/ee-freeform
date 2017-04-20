@@ -1,0 +1,36 @@
+<div class="container">
+
+    {if logged_in_group_id == "1"}
+
+        {exp:freeform_next:submission form="{embed:form}" submission_id="{embed:submission_id}"}
+
+            {if freeform_next:no_results}
+                <div class="alert alert-danger" role="alert">
+                    <p class="lead">
+                        Sorry, no submission was found.
+                    </p>
+                </div>
+            {/if}
+
+            <h3>{form:name} - {submission:title}</h3>
+
+            <table class="table table-striped">
+                {submission:fields}
+                <tr>
+                    <th style="width: 20%;">{field:label}</th>
+                    <td>{field:value}</td>
+                </tr>
+                {/submission:fields}
+            </table>
+
+        {/exp:freeform_next:submission}
+
+    {if:else}
+        <div class="alert alert-danger" role="alert">
+            <p class="lead">
+                Sorry, we couldn't find what you're looking for
+            </p>
+        </div>
+    {/if}
+
+</div>

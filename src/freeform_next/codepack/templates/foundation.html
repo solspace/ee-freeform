@@ -1,0 +1,27 @@
+{embed="demo/inc_header" title="Foundation" page="foundation"}
+
+<div class="top-bar" id="main-menu">
+    <div class="row">
+        <div class="top-bar-left">
+            <ul class="dropdown menu" data-dropdown-menu>
+                <li class="menu-text">Freeform Demo</li>
+            </ul>
+        </div>
+        <div class="top-bar-right">
+            <ul class="menu vertical medium-horizontal" data-responsive-menu="drilldown medium-dropdown">
+                <li><a href="{path='demo/bootstrap'}">Bootstrap</a></li>
+                <li class="active"><a href="{path='demo/foundation'}">Foundation</a></li>
+                <li><a href="https://solspace.com/craft/freeform/docs">Documentation</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+{if segment_3}
+    {embed="demo/foundation_view" form="{segment_3}"}
+{if:else}
+    {embed="demo/foundation_index"}
+{/if}
+
+{embed="demo/inc_footer" page="bootstrap"}

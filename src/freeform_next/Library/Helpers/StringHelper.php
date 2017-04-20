@@ -60,7 +60,7 @@ class StringHelper
      */
     public static function humanize($string)
     {
-        $string = trim(strtolower(preg_replace(array('/([A-Z])/', "/[_\\s]+/"), array('_$1', ' '), $string)));
+        $string = trim(strtolower(preg_replace(['/([A-Z])/', "/[_\\s]+/"], ['_$1', ' '], $string)));
 
         return $string;
     }
@@ -76,9 +76,28 @@ class StringHelper
     public static function camelize($string, $delimiter = " ")
     {
         $stringParts = explode($delimiter, $string);
-        $camelized = array_map("ucwords", $stringParts);
+        $camelized   = array_map("ucwords", $stringParts);
 
         return implode($delimiter, $camelized);
+    }
+
+    /**
+     * @param string $string
+     * @param array  $noStrip
+     *
+     * @return mixed|string
+     */
+    public static function toCamelCase($string, array $noStrip = [])
+    {
+        // non-alpha and non-numeric characters become spaces
+        $string = preg_replace('/[^a-z0-9' . implode("", $noStrip) . ']+/i', ' ', $string);
+        $string = trim($string);
+        // uppercase the first character of each word
+        $string = ucwords($string);
+        $string = str_replace(' ', '', $string);
+        $string = lcfirst($string);
+
+        return $string;
     }
 
     /**

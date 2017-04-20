@@ -189,6 +189,14 @@ class SubmissionModel extends Model
     }
 
     /**
+     * @return null|FormModel
+     */
+    public function getForm()
+    {
+        return FormRepository::getInstance()->getFormById($this->formId);
+    }
+
+    /**
      * @return string
      */
     public function getHash()

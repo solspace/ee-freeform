@@ -1,4 +1,5 @@
-/*
+<?php
+/**
  * Freeform Next for Expression Engine
  *
  * @package       Solspace:Freeform
@@ -8,14 +9,6 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-const $prefix = $('input[name=prefix]');
+$this->extend('_layouts/table_form_wrapper')?>
 
-$(() => {
-
-  $prefix.on({
-    keyup: function(e) {
-      $('[data-prefix]').text($(e.target).val());
-    }
-  });
-
-});
+<?php $this->embed('ee:_shared/table', $table); ?>

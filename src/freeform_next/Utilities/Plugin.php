@@ -57,4 +57,37 @@ class Plugin
         header('Location: ' . $url);
         die();
     }
+
+    /**
+     * Returns a path to the third-party theme folder
+     *
+     * @return string
+     */
+    public function theme_folder_url()
+    {
+        return rtrim(URL_THIRD_THEMES, '/') . '/' . $this->getAddonLowerName() . '/';
+    }
+
+    /**
+     * @return string
+     */
+    public function returnNoResults()
+    {
+        $pattern = '/' . LD . 'if ' . $this->getAddonLowerName() . ':no_results' . RD . '(.*?)'
+            . LD . preg_quote('/', '/') . 'if' . RD . '/s';
+
+        if (preg_match($pattern, ee()->TMPL->tagdata, $match)) {
+            return $match[1];
+        }
+
+        return ee()->TMPL->no_results();
+    }
+
+    /**
+     * @return string
+     */
+    private function getAddonLowerName()
+    {
+        return AddonInfo::getInstance()->getLowerName();
+    }
 }

@@ -34,8 +34,10 @@ use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 
 class Form implements \JsonSerializable, \Iterator, \ArrayAccess
 {
-    const PAGE_INDEX_KEY     = "page_index";
-    const RETURN_URI_KEY     = "formReturnUrl";
+    const SUBMISSION_FLASH_KEY = 'freeform_submission_flash';
+
+    const PAGE_INDEX_KEY     = 'page_index';
+    const RETURN_URI_KEY     = 'formReturnUrl';
     const DEFAULT_PAGE_INDEX = 0;
 
     /** @var int */
@@ -356,6 +358,14 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
     }
 
     /**
+     * @return bool
+     */
+    public function isSubmittedSuccessfully()
+    {
+        return $this->getSubmissionHandler()->wasFormFlashSubmitted($this);
+    }
+
+    /**
      * Submit and store the form values in either session or database
      * depending on the current form page
      *
@@ -402,6 +412,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
                 $submission      = null;
                 $this->formSaved = true;
             }
+            $this->getSubmissionHandler()->markFormAsSubmitted($this);
             $this->sendOutEmailNotifications($submission);
             $this->pushToMailingLists();
             $this->pushToCRM();

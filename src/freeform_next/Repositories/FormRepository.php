@@ -12,9 +12,13 @@
 namespace Solspace\Addons\FreeformNext\Repositories;
 
 use Solspace\Addons\FreeformNext\Model\FormModel;
+use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 
 class FormRepository extends Repository
 {
+    /** @var FormModel[] */
+    private static $cache;
+
     /**
      * @return FormRepository
      */
@@ -60,10 +64,14 @@ class FormRepository extends Repository
      */
     public function getFormById($id)
     {
-        return ee('Model')
-            ->get(FormModel::MODEL)
-            ->filter('id', $id)
-            ->first();
+        if (!isset(self::$cache[$id])) {
+            self::$cache[$id] = ee('Model')
+                ->get(FormModel::MODEL)
+                ->filter('id', $id)
+                ->first();
+        }
+
+        return self::$cache[$id];
     }
 
     /**
@@ -96,5 +104,21 @@ class FormRepository extends Repository
             ->filter('id', $idOrHandle)
             ->orFilter('handle', $idOrHandle)
             ->first();
+    }
+
+    /**
+     * @param array $formIds
+     *
+     * @return mixed
+     */
+    public function getFormSubmissionCount(array $formIds)
+    {
+        $data = ee()->db
+            ->select('formId, COUNT(id) as total')
+            ->group_by('formId')
+            ->get(SubmissionModel::TABLE)
+            ->result_array();
+
+        return array_column($data, 'total', 'formId');
     }
 }
