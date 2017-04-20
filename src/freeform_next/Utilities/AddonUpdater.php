@@ -27,7 +27,7 @@ abstract class AddonUpdater
     private $hasBackend = true;
 
     /** @var bool */
-    private $hasPublishFields = true;
+    private $hasPublishFields = false;
 
     /**
      * AddonUpdater constructor.
