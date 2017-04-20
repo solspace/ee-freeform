@@ -256,6 +256,12 @@ class FieldController extends Controller
         $field->set($validValues);
         $field->save();
 
+        ee('CP/Alert')
+            ->makeInline('shared-form')
+            ->asSuccess()
+            ->withTitle(lang('Success'))
+            ->defer();
+
         return $field;
     }
 

@@ -223,6 +223,12 @@ class StatusController extends Controller
             $this->updateDefaults();
         }
 
+        ee('CP/Alert')
+            ->makeInline('shared-form')
+            ->asSuccess()
+            ->withTitle(lang('Success'))
+            ->defer();
+
         return $model;
     }
 

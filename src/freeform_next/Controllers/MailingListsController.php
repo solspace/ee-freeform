@@ -40,6 +40,9 @@ class MailingListsController extends Controller
         return $this->edit($id);
     }
 
+    /**
+     * @return CpView
+     */
     public function index()
     {
         /** @var Table $table */
@@ -305,6 +308,12 @@ class MailingListsController extends Controller
         }
 
         $model->save();
+
+        ee('CP/Alert')
+            ->makeInline('shared-form')
+            ->asSuccess()
+            ->withTitle(lang('Success'))
+            ->defer();
 
         return null;
     }

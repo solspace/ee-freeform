@@ -61,3 +61,30 @@ export function getHandleValue(value) {
 
   return handleValue;
 }
+
+/**
+ * Shows a notification
+ *
+ * @param text
+ * @param type
+ */
+export function showNotification(text, type) {
+  switch (type) {
+    case 'error':
+      type = 'issue';
+      break;
+
+    default:
+      type = 'success';
+  }
+
+  let notification = document.createElement('div');
+  notification.className = 'alert ' + type;
+  notification.innerHTML = text;
+
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    document.body.removeChild(notification);
+  }, 3000)
+}

@@ -9,6 +9,7 @@ use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Utilities\AddonInfo;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 use Stringy\Stringy;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -30,18 +31,25 @@ class SettingsController extends Controller
 
     /**
      * @param string     $type
-     * @param int|string $id
      *
      * @return View
      * @throws FreeformException
      */
-    public function index($type, $id = null)
+    public function index($type)
     {
         if (!in_array($type, self::$allowedTypes, true)) {
             throw new FreeformException('Page does not exist');
         }
 
-        $this->handlePost();
+        if ($this->handlePost()) {
+            ee('CP/Alert')
+                ->makeInline('shared-form')
+                ->asSuccess()
+                ->withTitle(lang('Success'))
+                ->defer();
+
+            return new RedirectView($this->getLink('settings/' . $type));
+        }
 
         switch ($type) {
             case self::TYPE_FORMATTING_TEMPLATES:

@@ -17,6 +17,7 @@ import thunkMiddleware from "redux-thunk";
 import composerReducers from "./reducers/index";
 import * as FieldTypes from "./constants/FieldTypes";
 import "babel-polyfill";
+import {showNotification} from "./helpers/Utilities";
 
 const enhancer = compose(
   applyMiddleware(thunkMiddleware),
@@ -73,7 +74,7 @@ let store = createStore(
 );
 
 const rootElement = document.getElementById("freeform-builder");
-export const notificator = (type, message) => (console.log(type, message));
+export const notificator = (type, message) => (showNotification(message, type));
 export const urlBuilder = (url) => (baseUrl + '/' + url);
 
 ReactDOM.render(

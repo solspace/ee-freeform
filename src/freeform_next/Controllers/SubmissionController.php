@@ -384,6 +384,12 @@ class SubmissionController extends Controller
 
         $submission->save();
 
+        ee('CP/Alert')
+            ->makeInline('shared-form')
+            ->asSuccess()
+            ->withTitle(lang('Success'))
+            ->defer();
+
         return true;
     }
 

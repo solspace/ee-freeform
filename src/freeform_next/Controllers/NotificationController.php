@@ -272,6 +272,12 @@ class NotificationController extends Controller
         $notification->set($validValues);
         $notification->save();
 
+        ee('CP/Alert')
+            ->makeInline('shared-form')
+            ->asSuccess()
+            ->withTitle(lang('Success'))
+            ->defer();
+
         return $notification;
     }
 

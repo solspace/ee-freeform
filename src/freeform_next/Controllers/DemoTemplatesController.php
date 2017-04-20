@@ -109,6 +109,12 @@ class DemoTemplatesController extends Controller
 
             ee()->session->set_flashdata(self::FLASH_VAR_KEY, $prefix);
 
+            ee('CP/Alert')
+                ->makeInline('shared-form')
+                ->asSuccess()
+                ->withTitle(lang('Success'))
+                ->defer();
+
             return new RedirectView($this->getLink('settings/demo_templates/'));
         } catch (FileObjectException $exception) {
             return new CpView(

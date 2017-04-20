@@ -327,6 +327,12 @@ class CrmController extends Controller
 
         $model->save();
 
+        ee('CP/Alert')
+            ->makeInline('shared-form')
+            ->asSuccess()
+            ->withTitle(lang('Success'))
+            ->defer();
+
         return null;
     }
 
