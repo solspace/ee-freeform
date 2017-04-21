@@ -4,6 +4,7 @@ var zip       = require("gulp-zip");
 var zipFolder = require('zip-folder');
 var helpers   = require("./_helpers");
 var fs        = require("fs");
+var replace   = require("gulp-replace");
 
 
 function getVersionNumber() {
@@ -22,49 +23,80 @@ module.exports = {
       process.exit(1);
     }
 
-    var addonStream = gulp
-      .src(paths.deploy.addon.src)
-      .pipe(gulp.dest(paths.deploy.addon.dist));
-
-    addonStream.on('end', function () {
-
-      var themeStream = gulp
-        .src(paths.deploy.themes.src)
-        .pipe(gulp.dest(paths.deploy.themes.dist));
-
-      themeStream.on('end', function () {
-        del(paths.vendors.deleteList)
-          .then(function () {
-            var version = getVersionNumber();
-
-            zipFolder(paths.deploy.buildPath, "dist/freeform_next_pro_v" + version + ".zip", function (err) {
-              if (err) {
-                callback(err);
-              } else {
-                del(paths.deploy.addon.proFiles)
-                  .then(function () {
-                    zipFolder(paths.deploy.buildPath, "dist/freeform_next_basic_v" + version + ".zip", function (err) {
-                      if (err) {
-                        callback(err);
-                      } else {
-                        del(paths.deploy.buildPath);
-                        callback()
-                      }
-                    });
-                  });
-              }
-            });
-          });
-      });
-
-      themeStream.on('error', function (err) {
-        callback(err);
-      });
-
-    });
-
-    addonStream.on('error', function (err) {
-      callback(err);
-    });
+    buildProVersion(gulp, callback);
   }
 };
+
+/**
+ * Build and package the pro version
+ */
+function buildProVersion(gulp, callback) {
+  var version = getVersionNumber();
+
+  var addonStream = gulp
+    .src(paths.deploy.addon.src)
+    .pipe(replace(/('name'\s+=>\s+')Freeform Next',/g, "$1Freeform Next Pro',"))
+    .pipe(gulp.dest(paths.deploy.addon.dist));
+
+  addonStream.on('end', function () {
+    var themeStream = gulp
+      .src(paths.deploy.themes.src)
+      .pipe(gulp.dest(paths.deploy.themes.dist));
+
+    themeStream.on('end', function () {
+      del(paths.vendors.deleteList).then(function () {
+        zipFolder(paths.deploy.buildPath, "dist/freeform_next_pro_v" + version + ".zip", function (err) {
+          if (err) {
+            callback(err);
+          } else {
+            del(paths.deploy.buildPath).then(function () {
+              buildBasicVersion(gulp, callback);
+            })
+          }
+        });
+      });
+    }).on('error', function (err) {
+      callback(err);
+    });
+
+  }).on('error', function (err) {
+    callback(err);
+  });
+}
+
+/**
+ * Build and package the basic version
+ */
+function buildBasicVersion(gulp, callback) {
+  var version = getVersionNumber();
+
+  var addonStream = gulp
+    .src(paths.deploy.addon.src)
+    .pipe(gulp.dest(paths.deploy.addon.dist));
+
+  addonStream.on('end', function () {
+    var themeStream = gulp
+      .src(paths.deploy.themes.src)
+      .pipe(gulp.dest(paths.deploy.themes.dist));
+
+    themeStream.on('end', function () {
+      del(paths.vendors.deleteList).then(function () {
+        del(paths.deploy.addon.proFiles).then(function () {
+          zipFolder(paths.deploy.buildPath, "dist/freeform_next_basic_v" + version + ".zip", function (err) {
+            if (err) {
+              callback(err);
+            } else {
+              del(paths.deploy.buildPath);
+              callback()
+            }
+          });
+        });
+      });
+    }).on('error', function (err) {
+      callback(err);
+    });
+
+  }).on('error', function (err) {
+    callback(err);
+  });
+}

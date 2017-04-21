@@ -133,7 +133,7 @@ class FormController extends Controller
 
         $view = new CpView('form/edit');
         $view
-            ->setHeading($form->name)
+            ->setHeading($form->name ?: 'New Form')
             ->setSidebarDisabled(true)
             ->addJavascript('composer/vendors.js')
             ->addJavascript('composer/app.js')

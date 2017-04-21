@@ -49,8 +49,10 @@ class ControlPanelView
 
         $viewData = [];
         if ($view instanceof CpView) {
+            $addonInfo = AddonInfo::getInstance();
+
             $breadcrumbs = [
-                ee('CP/URL')->make('addons/settings/freeform_next')->compile() => lang('Freeform Next'),
+                ee('CP/URL')->make('addons/settings/freeform_next')->compile() => $addonInfo->getName(),
             ];
 
             foreach ($view->getBreadcrumbs() as $breadcrumb) {
