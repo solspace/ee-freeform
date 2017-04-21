@@ -13,6 +13,7 @@ use Solspace\Addons\FreeformNext\Services\MailingListsService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\ConfirmRemoveModal;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 
@@ -240,7 +241,11 @@ class MailingListsController extends Controller
                 'errors'                => $errors,
             ]
         );
-        $view->addJavascript('handleGenerator');
+
+        $view
+            ->setHeading($model->name ?: 'New Mailing List Integration')
+            ->addBreadcrumb(new NavigationLink('Mailing List Integrations', 'integrations/mailing_lists'))
+            ->addJavascript('handleGenerator');
 
         return $view;
     }

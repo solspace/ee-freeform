@@ -39,6 +39,7 @@ use Solspace\Addons\FreeformNext\Services\SubmissionsService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\ConfirmRemoveModal;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 
 class FormController extends Controller
@@ -132,10 +133,11 @@ class FormController extends Controller
 
         $view = new CpView('form/edit');
         $view
-            ->setHeading('Freeform')
+            ->setHeading($form->name)
             ->setSidebarDisabled(true)
             ->addJavascript('composer/vendors.js')
             ->addJavascript('composer/app.js')
+            ->addBreadcrumb(new NavigationLink('Forms', 'forms'))
             ->setTemplateVariables(
                 [
                     'form'                     => $form,

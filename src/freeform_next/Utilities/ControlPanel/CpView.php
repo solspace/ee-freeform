@@ -13,6 +13,7 @@ namespace Solspace\Addons\FreeformNext\Utilities\ControlPanel;
 
 use Solspace\Addons\FreeformNext\Utilities\AddonInfo;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\Modal;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
 
 class CpView extends View
 {
@@ -40,6 +41,9 @@ class CpView extends View
     /** @var Modal[] */
     private $modals;
 
+    /** @var NavigationLink[] */
+    private $breadcrumbs;
+
     /**
      * CpView constructor.
      *
@@ -53,6 +57,7 @@ class CpView extends View
         $this->cssList           = [];
         $this->javascriptList    = [];
         $this->modals            = [];
+        $this->breadcrumbs       = [];
     }
 
     /**
@@ -207,5 +212,25 @@ class CpView extends View
         $this->modals[] = $modal;
 
         return $this;
+    }
+
+    /**
+     * @param NavigationLink $link
+     *
+     * @return $this
+     */
+    public function addBreadcrumb(NavigationLink $link)
+    {
+        $this->breadcrumbs[] = $link;
+
+        return $this;
+    }
+
+    /**
+     * @return NavigationLink[]
+     */
+    public function getBreadcrumbs()
+    {
+        return $this->breadcrumbs;
     }
 }

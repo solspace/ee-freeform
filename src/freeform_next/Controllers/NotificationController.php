@@ -34,6 +34,7 @@ use Solspace\Addons\FreeformNext\Services\SubmissionsService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\ConfirmRemoveModal;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 
 class NotificationController extends Controller
@@ -130,7 +131,8 @@ class NotificationController extends Controller
 
         $view = new CpView('notifications/edit');
         $view
-            ->setHeading('Notification')
+            ->setHeading($notification->name ?: lang('New Notification'))
+            ->addBreadcrumb(new NavigationLink('Notifications', 'notifications'))
             ->addJavascript('notifications')
             ->addJavascript('handleGenerator')
             ->setTemplateVariables(

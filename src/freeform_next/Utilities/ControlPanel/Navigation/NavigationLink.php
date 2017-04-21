@@ -12,6 +12,7 @@
 namespace Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation;
 
 
+use EllisLab\ExpressionEngine\Library\CP\URL;
 use Solspace\Addons\FreeformNext\Utilities\AddonInfo;
 
 class NavigationLink
@@ -42,7 +43,7 @@ class NavigationLink
         $this->title  = $title;
         $this->subNav = [];
 
-        if (!is_null($method)) {
+        if (null !== $method) {
             $this->method = $method;
         }
     }
@@ -64,7 +65,7 @@ class NavigationLink
     }
 
     /**
-     * @return array
+     * @return URL|null
      */
     public function getLink()
     {
@@ -84,13 +85,6 @@ class NavigationLink
         }
 
         return $link;
-    }
-
-    public function isActive()
-    {
-        $link = $this->getLink();
-
-        return true;
     }
 
     /**

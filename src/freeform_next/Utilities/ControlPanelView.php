@@ -49,12 +49,19 @@ class ControlPanelView
 
         $viewData = [];
         if ($view instanceof CpView) {
+            $breadcrumbs = [
+                ee('CP/URL')->make('addons/settings/freeform_next')->compile() => lang('Freeform Next'),
+            ];
+
+            foreach ($view->getBreadcrumbs() as $breadcrumb) {
+                $breadcrumbs[$breadcrumb->getLink()->compile()] = $breadcrumb->getTitle();
+            }
+
+
             $viewData = [
                 'sidebar'    => $view->isSidebarDisabled() ? null : $this->buildNavigation()->buildNavigationView(),
                 'body'       => $view->compile(),
-                'breadcrumb' => [
-                    ee('CP/URL')->make('addons/settings/freeform_next')->compile() => lang('Freeform Next'),
-                ],
+                'breadcrumb' => $breadcrumbs,
             ];
         }
 

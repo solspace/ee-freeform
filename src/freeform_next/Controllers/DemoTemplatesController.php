@@ -8,6 +8,7 @@ use Solspace\Addons\FreeformNext\Library\Codepack\Exceptions\CodepackException;
 use Solspace\Addons\FreeformNext\Library\Codepack\Exceptions\FileObject\FileObjectException;
 use Solspace\Addons\FreeformNext\Library\Codepack\Exceptions\Manifest\ManifestNotPresentException;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 
@@ -29,13 +30,19 @@ class DemoTemplatesController extends Controller
 
         $postInstallPrefix = ee()->session->flashdata(self::FLASH_VAR_KEY);
         if ($postInstallPrefix) {
-            return new CpView(
+            $view = new CpView(
                 'codepack/post_install',
                 [
                     'cp_page_title' => 'Demo Templates',
                     'table'         => $this->getPostInstallTable($codepack, $postInstallPrefix),
                 ]
             );
+
+            $view
+                ->setHeading('Demo Templates')
+                ->addBreadcrumb(new NavigationLink('Settings', 'settings/general'));
+
+            return $view;
         }
 
         $prefix = 'freeform_next_demo';
@@ -82,7 +89,10 @@ class DemoTemplatesController extends Controller
             ]
         );
 
-        $view->addJavascript('code-pack');
+        $view
+            ->setHeading('Demo Templates')
+            ->addJavascript('code-pack')
+            ->addBreadcrumb(new NavigationLink('Settings', 'settings/general'));
 
         return $view;
     }

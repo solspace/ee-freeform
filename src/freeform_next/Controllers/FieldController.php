@@ -21,6 +21,7 @@ use Solspace\Addons\FreeformNext\Services\FilesService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\ConfirmRemoveModal;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 
 class FieldController extends Controller
@@ -192,7 +193,8 @@ class FieldController extends Controller
             ]
         );
         $view
-            ->setHeading(lang('Field'))
+            ->setHeading($model->label ?: lang('New Field'))
+            ->addBreadcrumb(new NavigationLink('Fields', 'fields'))
             ->addJavascript('fieldEditor')
             ->addJavascript('handleGenerator');
 

@@ -9,6 +9,7 @@ use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Utilities\AddonInfo;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 use Stringy\Stringy;
@@ -75,8 +76,10 @@ class SettingsController extends Controller
         $settings = $this->getSettings();
 
         $view = new CpView('settings/common', []);
-        $view->setHeading(lang('General'));
-        $view->setTemplateVariables(
+        $view
+            ->setHeading(lang('General'))
+            ->addBreadcrumb(new NavigationLink('Settings', 'settings/general'))
+            ->setTemplateVariables(
             [
                 'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),
                 'cp_page_title'         => $view->getHeading(),
@@ -134,8 +137,10 @@ class SettingsController extends Controller
         $settings = $this->getSettings();
 
         $view = new CpView('settings/common', []);
-        $view->setHeading(lang('Formatting Templates'));
-        $view->setTemplateVariables(
+        $view
+            ->setHeading(lang('Formatting Templates'))
+            ->addBreadcrumb(new NavigationLink('Settings', 'settings/general'))
+            ->setTemplateVariables(
             [
                 'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),
                 'cp_page_title'         => $view->getHeading(),
@@ -170,7 +175,9 @@ class SettingsController extends Controller
         $settings = $this->getSettings();
 
         $view = new CpView('settings/common', []);
-        $view->setHeading(lang('Email Templates'));
+        $view
+            ->setHeading(lang('Email Templates'))
+            ->addBreadcrumb(new NavigationLink('Settings', 'settings/general'));
 
         $variables = [
             'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),

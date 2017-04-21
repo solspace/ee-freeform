@@ -13,6 +13,7 @@ use Solspace\Addons\FreeformNext\Services\CrmService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\ConfirmRemoveModal;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 
@@ -258,7 +259,11 @@ class CrmController extends Controller
                 'errors'                => $errors,
             ]
         );
-        $view->addJavascript('handleGenerator');
+
+        $view
+            ->setHeading($model->name ?: 'New CRM Integration')
+            ->addBreadcrumb(new NavigationLink('CRM Integrations', 'integrations/crm'))
+            ->addJavascript('handleGenerator');
 
         return $view;
     }

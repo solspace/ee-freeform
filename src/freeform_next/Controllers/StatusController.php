@@ -8,6 +8,7 @@ use Solspace\Addons\FreeformNext\Model\StatusModel;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\ConfirmRemoveModal;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 
@@ -166,7 +167,8 @@ class StatusController extends Controller
 
         $view = new CpView('statuses/edit');
         $view
-            ->setHeading(lang('Statuses'))
+            ->setHeading($status->name ?: lang('New Status'))
+            ->addBreadcrumb(new NavigationLink('Statuses', 'statuses'))
             ->addJavascript('statuses')
             ->addJavascript('handleGenerator')
             ->setTemplateVariables(
