@@ -34,8 +34,6 @@ use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLin
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanelView;
 
-require_once __DIR__ . '/vendor/autoload.php';
-
 class Freeform_next_mcp extends ControlPanelView
 {
     /**

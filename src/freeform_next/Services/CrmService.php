@@ -1,6 +1,7 @@
 <?php
 /**
  * Freeform Next for Expression Engine
+ *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
@@ -30,6 +31,8 @@ use Solspace\Addons\FreeformNext\Model\CrmFieldModel;
 use Solspace\Addons\FreeformNext\Model\IntegrationModel;
 use Solspace\Addons\FreeformNext\Repositories\CrmRepository;
 use Solspace\Addons\FreeformNext\Utilities\Extension\FreeformIntegrationExtension;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class CrmService implements CRMHandlerInterface
 {
@@ -78,7 +81,7 @@ class CrmService implements CRMHandlerInterface
             $handles[] = $field->getHandle();
         }
 
-        $id             = $integration->getId();
+        $id     = $integration->getId();
         $result = ee()
             ->db
             ->select('handle')
@@ -222,7 +225,7 @@ class CrmService implements CRMHandlerInterface
             return false;
         }
 
-        $logger = new EELogger();
+        $logger     = new EELogger();
         $translator = new EETranslator();
 
         $mapping = $properties->getMapping();
@@ -305,6 +308,24 @@ class CrmService implements CRMHandlerInterface
             }
 
             $integrations = array_merge($integrations, $addonIntegrations);
+
+            $finder      = new Finder();
+            $crmListPath = __DIR__ . '/../Integrations/CRM';
+            if (file_exists($crmListPath) && is_dir($crmListPath)) {
+                $files = $finder->files()->in($crmListPath)->name('*.php');
+
+                /** @var SplFileInfo $file */
+                foreach ($files as $file) {
+                    $fileName = $file->getFilename();
+                    $baseName = substr(
+                        $fileName,
+                        0,
+                        strpos($fileName, '.')
+                    );
+
+                    $integrations['Solspace\Addons\FreeformNext\Integrations\CRM\\' . $baseName] = $baseName;
+                }
+            }
 
             $interface = 'Solspace\Addons\FreeformNext\Library\Integrations\CRM\CRMIntegrationInterface';
 

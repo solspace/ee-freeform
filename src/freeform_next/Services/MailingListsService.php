@@ -14,7 +14,6 @@ namespace Solspace\Addons\FreeformNext\Services;
 use Solspace\Addons\FreeformNext\Library\Database\MailingListHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\ListNotFoundException;
-use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\MailingListIntegrationNotFoundException;
 use Solspace\Addons\FreeformNext\Library\Integrations\AbstractIntegration;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
 use Solspace\Addons\FreeformNext\Library\Integrations\IntegrationInterface;
@@ -26,6 +25,8 @@ use Solspace\Addons\FreeformNext\Model\MailingListFieldModel;
 use Solspace\Addons\FreeformNext\Model\MailingListModel;
 use Solspace\Addons\FreeformNext\Repositories\MailingListRepository;
 use Solspace\Addons\FreeformNext\Utilities\Extension\FreeformIntegrationExtension;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class MailingListsService implements MailingListHandlerInterface
 {
@@ -347,6 +348,24 @@ class MailingListsService implements MailingListHandlerInterface
             }
 
             $integrations = array_merge($integrations, $addonIntegrations);
+
+            $finder          = new Finder();
+            $mailingListPath = __DIR__ . '/../Integrations/MailingLists';
+            if (file_exists($mailingListPath) && is_dir($mailingListPath)) {
+                $files = $finder->files()->in($mailingListPath)->name('*.php');
+
+                /** @var SplFileInfo $file */
+                foreach ($files as $file) {
+                    $fileName = $file->getFilename();
+                    $baseName = substr(
+                        $fileName,
+                        0,
+                        strpos($fileName, '.')
+                    );
+
+                    $integrations['Solspace\Addons\FreeformNext\Integrations\MailingLists\\' . $baseName] = $baseName;
+                }
+            }
 
             $interface = 'Solspace\Addons\FreeformNext\Library\Integrations\MailingLists\MailingListIntegrationInterface';
 

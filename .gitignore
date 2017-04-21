@@ -3,4 +3,5 @@
 /src/freeform_next/vendor/
 /src/freeform_next/javascript/
 /src/themes/
+/dist
 npm-debug.log
