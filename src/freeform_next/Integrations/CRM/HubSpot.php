@@ -23,6 +23,7 @@ use Solspace\Addons\FreeformNext\Library\Logging\LoggerInterface;
 class HubSpot extends AbstractCRMIntegration
 {
     const SETTING_API_KEY = 'api_key';
+    const LOG_CATEGORY    = 'HubSpot';
 
     /**
      * Returns a list of additional settings for this integration
@@ -96,14 +97,14 @@ class HubSpot extends AbstractCRMIntegration
             } catch (BadResponseException $e) {
                 if ($e->getResponse()) {
                     $json = json_decode($e->getResponse()->getBody(true));
-                    if (isset($json->error) && $json->error == 'CONTACT_EXISTS' && isset($json->identityProfile)) {
+                    if (isset($json->error, $json->identityProfile) && $json->error === 'CONTACT_EXISTS') {
                         $contactId = $json->identityProfile->vid;
                     } else {
-                        $this->getLogger()->log(LoggerInterface::LEVEL_WARNING, $e->getMessage());
+                        $this->getLogger()->error($e->getMessage(), self::LOG_CATEGORY);
                     }
                 }
             } catch (\Exception $e) {
-                $this->getLogger()->log(LoggerInterface::LEVEL_WARNING, $e->getMessage());
+                $this->getLogger()->error($e->getMessage(), self::LOG_CATEGORY);
             }
         }
 
@@ -120,9 +121,9 @@ class HubSpot extends AbstractCRMIntegration
                     $companyId = $json->companyId;
                 }
             } catch (BadResponseException $e) {
-                $this->getLogger()->log(LoggerInterface::LEVEL_WARNING, $e->getMessage());
+                $this->getLogger()->error($e->getMessage(), self::LOG_CATEGORY);
             } catch (\Exception $e) {
-                $this->getLogger()->log(LoggerInterface::LEVEL_WARNING, $e->getMessage());
+                $this->getLogger()->error($e->getMessage(), self::LOG_CATEGORY);
             }
         }
 
@@ -214,7 +215,7 @@ class HubSpot extends AbstractCRMIntegration
                     break;
             }
 
-            if (is_null($type)) {
+            if (null === $type) {
                 continue;
             }
 

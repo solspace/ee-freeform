@@ -1,6 +1,7 @@
 <?php
 /**
  * Freeform Next for Expression Engine
+ *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
@@ -12,6 +13,7 @@ use Solspace\Addons\FreeformNext\Controllers\ApiController;
 use Solspace\Addons\FreeformNext\Controllers\CrmController;
 use Solspace\Addons\FreeformNext\Controllers\FieldController;
 use Solspace\Addons\FreeformNext\Controllers\FormController;
+use Solspace\Addons\FreeformNext\Controllers\LogController;
 use Solspace\Addons\FreeformNext\Controllers\MailingListsController;
 use Solspace\Addons\FreeformNext\Controllers\NotificationController;
 use Solspace\Addons\FreeformNext\Controllers\SettingsController;
@@ -22,9 +24,7 @@ use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
 use Solspace\Addons\FreeformNext\Model\FormModel;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
 use Solspace\Addons\FreeformNext\Model\StatusModel;
-use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
-use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
 use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
 use Solspace\Addons\FreeformNext\Services\SettingsService;
@@ -33,6 +33,8 @@ use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\Navigation;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanelView;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class Freeform_next_mcp extends ControlPanelView
 {
@@ -311,6 +313,21 @@ class Freeform_next_mcp extends ControlPanelView
             case 'crm':
                 return $this->renderView($this->getCrmController()->handle($id));
         }
+
+        return null;
+    }
+
+    /**
+     * @param string      $logName
+     * @param string|null $action
+     *
+     * @return array
+     */
+    public function logs($logName, $action = null)
+    {
+        $controller = new LogController();
+
+        return $this->renderView($controller->view($logName, $action));
     }
 
     /**
@@ -342,6 +359,34 @@ class Freeform_next_mcp extends ControlPanelView
             ->addSubNavItem(new NavigationLink('Email Templates', 'settings/email_templates'))
             ->addSubNavItem(new NavigationLink('Demo Templates', 'settings/demo_templates'));
 
+        $logs   = null;
+        $logdir = __DIR__ . '/logs/';
+        if (file_exists($logdir) && is_dir($logdir)) {
+            $fs = new Finder();
+            /** @var SplFileInfo[] $files */
+            $files = $fs
+                ->files()
+                ->in($logdir)
+                ->name('*.log')
+                ->sortByName();
+
+            if (count($files)) {
+                $logs = new NavigationLink('Logs');
+
+                foreach ($files as $file) {
+                    $modTime    = $file->getMTime();
+                    $accessTime = $file->getATime();
+
+                    $logs->addSubNavItem(
+                        new NavigationLink(
+                            $file->getFilename() . ($modTime > $accessTime ? ' (new)' : ''),
+                            'logs/' . str_replace('.log', '', $file->getFilename())
+                        )
+                    );
+                }
+            }
+        }
+
         $nav = new Navigation();
         $nav
             ->addLink($forms)
@@ -350,6 +395,10 @@ class Freeform_next_mcp extends ControlPanelView
             ->addLink($statuses)
             ->addLink($settings)
             ->addLink($integrations);
+
+        if ($logs) {
+            $nav->addLink($logs);
+        }
 
         return $nav;
     }

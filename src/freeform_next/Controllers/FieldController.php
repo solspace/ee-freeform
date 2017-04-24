@@ -538,7 +538,7 @@ class FieldController extends Controller
         $singleValue = $type !== FieldInterface::TYPE_CHECKBOX_GROUP;
 
         ob_start();
-        include(PATH_THIRD . "freeform_next/Templates/fields/{$template}.php");
+        include PATH_THIRD . "freeform_next/Templates/fields/{$template}.php";
 
         return ob_get_clean();
     }

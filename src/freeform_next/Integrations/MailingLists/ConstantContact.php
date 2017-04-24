@@ -21,6 +21,8 @@ use Solspace\Addons\FreeformNext\Library\Logging\LoggerInterface;
 
 class ConstantContact extends MailingListOAuthConnector
 {
+    const LOG_CATEGORY = 'ConstantContact';
+
     /**
      * Returns the MailingList service provider short name
      * i.e. - MailChimp, Constant Contact, etc...
@@ -56,7 +58,10 @@ class ConstantContact extends MailingListOAuthConnector
             return isset($json->email);
 
         } catch (BadResponseException $e) {
-            $this->getLogger()->log(LoggerInterface::LEVEL_ERROR, $e->getMessage());
+            $responseBody = $e->getResponse()->getBody(true);
+
+            $this->getLogger()->error($responseBody, self::LOG_CATEGORY);
+            $this->getLogger()->error($e->getMessage(), self::LOG_CATEGORY);
 
             return false;
         }
@@ -98,7 +103,10 @@ class ConstantContact extends MailingListOAuthConnector
             $response = $request->send();
 
         } catch (BadResponseException $e) {
-            $this->getLogger()->log(LoggerInterface::LEVEL_ERROR, $e->getMessage());
+            $responseBody = $e->getResponse()->getBody(true);
+
+            $this->getLogger()->error($responseBody, self::LOG_CATEGORY);
+            $this->getLogger()->error($e->getMessage(), self::LOG_CATEGORY);
 
             throw new IntegrationException(
                 $this->getTranslator()->translate('Could not connect to API endpoint')
@@ -107,7 +115,7 @@ class ConstantContact extends MailingListOAuthConnector
 
         $status = $response->getStatusCode();
         if ($status !== 201) {
-            $this->getLogger()->log(LoggerInterface::LEVEL_ERROR, 'Could not add contacts to list');
+            $this->getLogger()->error('Could not add contacts to list', self::LOG_CATEGORY);
 
             throw new IntegrationException(
                 $this->getTranslator()->translate('Could not add emails to lists')
@@ -138,7 +146,10 @@ class ConstantContact extends MailingListOAuthConnector
             $response = $request->send();
 
         } catch (BadResponseException $e) {
-            $this->getLogger()->log(LoggerInterface::LEVEL_ERROR, $e->getMessage());
+            $responseBody = $e->getResponse()->getBody(true);
+
+            $this->getLogger()->error($responseBody, self::LOG_CATEGORY);
+            $this->getLogger()->error($e->getMessage(), self::LOG_CATEGORY);
 
             throw new IntegrationException(
                 $this->getTranslator()->translate('Could not connect to API endpoint')
@@ -147,7 +158,7 @@ class ConstantContact extends MailingListOAuthConnector
 
         $status = $response->getStatusCode();
         if ($status !== 200) {
-            $this->getLogger()->log(LoggerInterface::LEVEL_ERROR, 'Could not fetch ConstantContact lists');
+            $this->getLogger()->error('Could not fetch ConstantContact lists', self::LOG_CATEGORY);
 
             throw new IntegrationException(
                 $this->getTranslator()->translate(

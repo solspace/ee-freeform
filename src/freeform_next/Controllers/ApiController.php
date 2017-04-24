@@ -46,7 +46,7 @@ class ApiController extends Controller
         $view = new AjaxView();
 
         if (!empty($_POST)) {
-            $field = $this->getFieldController()->save();
+            $this->getFieldController()->save();
 
             $view->addVariable('success', true);
 
@@ -63,7 +63,7 @@ class ApiController extends Controller
      *
      * @return View
      */
-    public function notifications($args = [])
+    public function notifications(array $args = [])
     {
         $view = new AjaxView();
 

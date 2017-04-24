@@ -1,0 +1,42 @@
+.log-wrapper {
+
+  > div {
+    display: flex;
+
+    justify-content: flex-start;
+
+    margin: 0 0 5px;
+    font-family: Monospace, monospace;
+
+    .date {
+      flex: 0 0 135px;
+
+      font-size: 10px;
+      color: #CCC;
+    }
+
+    .level {
+      flex: 0 0 50px;
+
+      font-size: 10px;
+    }
+
+    .date, .level {
+      padding-top: 3px;
+    }
+
+    .message {
+      flex: 1 1;
+
+      border-left: 2px solid #e3e3e3;
+      padding-left: 5px;
+    }
+
+    &.level-info  .level { color: #868686; }
+    &.level-trace .level { color: #bfbfbf; }
+    &.level-debug .level { color: #cc6014; }
+    &.level-error .level { color: #cc0f00; }
+    &.level-warn  .level { color: #cca20a; }
+    &.level-fatal .level { color: #cc001c; }
+  }
+}

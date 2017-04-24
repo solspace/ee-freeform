@@ -90,7 +90,6 @@ class StatusController extends Controller
         );
         $view
             ->setHeading(lang('Statuses'))
-            ->addCss('')
             ->addModal($removeModal);
 
         return $view;

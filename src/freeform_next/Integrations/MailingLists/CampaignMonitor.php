@@ -23,6 +23,8 @@ use Solspace\Addons\FreeformNext\Library\Logging\LoggerInterface;
 
 class CampaignMonitor extends AbstractMailingListIntegration
 {
+    const LOG_CATEGORY = 'CampaignMonitor';
+
     const SETTING_API_KEY   = 'api_key';
     const SETTING_CLIENT_ID = 'client_id';
 
@@ -81,7 +83,10 @@ class CampaignMonitor extends AbstractMailingListIntegration
 
             return isset($json->ApiKey) && !empty($json->ApiKey);
         } catch (BadResponseException $e) {
-            $this->getLogger()->log(LoggerInterface::LEVEL_ERROR, $e->getMessage());
+            $responseBody = $e->getResponse()->getBody(true);
+
+            $this->getLogger()->error($responseBody, self::LOG_CATEGORY);
+            $this->getLogger()->error($e->getMessage(), self::LOG_CATEGORY);
 
             return false;
         }
@@ -131,7 +136,10 @@ class CampaignMonitor extends AbstractMailingListIntegration
                 $request->send();
             }
         } catch (BadResponseException $e) {
-            $this->getLogger()->log(LoggerInterface::LEVEL_ERROR, $e->getMessage());
+            $responseBody = $e->getResponse()->getBody(true);
+
+            $this->getLogger()->error($responseBody, self::LOG_CATEGORY);
+            $this->getLogger()->error($e->getMessage(), self::LOG_CATEGORY);
 
             throw new IntegrationException(
                 $this->getTranslator()->translate('Could not connect to API endpoint')
@@ -190,7 +198,10 @@ class CampaignMonitor extends AbstractMailingListIntegration
             $request->setAuth($this->getAccessToken(), 'freeform');
             $response = $request->send();
         } catch (BadResponseException $e) {
-            $this->getLogger()->log(LoggerInterface::LEVEL_ERROR, $e->getMessage());
+            $responseBody = $e->getResponse()->getBody(true);
+
+            $this->getLogger()->error($responseBody, self::LOG_CATEGORY);
+            $this->getLogger()->error($e->getMessage(), self::LOG_CATEGORY);
 
             throw new IntegrationException(
                 $this->getTranslator()->translate('Could not connect to API endpoint')
@@ -245,7 +256,10 @@ class CampaignMonitor extends AbstractMailingListIntegration
             $request->setAuth($this->getAccessToken(), 'freeform');
             $response = $request->send();
         } catch (BadResponseException $e) {
-            $this->getLogger()->log(LoggerInterface::LEVEL_ERROR, $e->getMessage());
+            $responseBody = $e->getResponse()->getBody(true);
+
+            $this->getLogger()->error($responseBody, self::LOG_CATEGORY);
+            $this->getLogger()->error($e->getMessage(), self::LOG_CATEGORY);
 
             throw new IntegrationException(
                 $this->getTranslator()->translate('Could not connect to API endpoint')

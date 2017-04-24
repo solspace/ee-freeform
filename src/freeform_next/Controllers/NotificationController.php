@@ -313,7 +313,7 @@ class NotificationController extends Controller
     private function getFieldHtml(NotificationModel $model, $template)
     {
         ob_start();
-        include(PATH_THIRD . "freeform_next/Templates/notifications/{$template}.php");
+        include PATH_THIRD . "freeform_next/Templates/notifications/{$template}.php";
 
         return ob_get_clean();
     }

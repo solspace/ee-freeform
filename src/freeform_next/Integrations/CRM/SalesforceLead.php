@@ -23,10 +23,61 @@ use Solspace\Addons\FreeformNext\Library\Integrations\TokenRefreshInterface;
 
 class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInterface
 {
+    const LOG_CATEGORY = 'Salesforce';
+
     const SETTING_CLIENT_ID     = 'salesforce_client_id';
     const SETTING_CLIENT_SECRET = 'salesforce_client_secret';
     const SETTING_USER_LOGIN    = 'salesforce_username';
+
+    /**
+     * Push objects to the CRM
+     *
+     * @param array $keyValueList
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function pushObject(array $keyValueList)
+    {
+        $client   = new Client();
+        $endpoint = $this->getEndpoint('/sobjects/Lead');
+
+        try {
+            $headers = [
+                'Authorization' => 'Bearer ' . $this->getAccessToken(),
+                'Accept'        => 'application/json',
+            ];
+
+            $request = $client->post($endpoint, $headers);
+            $request->setHeader('Content-Type', 'application/json');
+            $request->setBody(json_encode($keyValueList));
+            $response = $request->send();
+
+            return $response->getStatusCode() === 201;
+        } catch (BadResponseException $e) {
+            $responseBody = $e->getResponse()->getBody(true);
+
+            $this->getLogger()->error($responseBody, self::LOG_CATEGORY);
+            $this->getLogger()->error($e->getMessage(), self::LOG_CATEGORY);
+
+            if ($e->getResponse()->getStatusCode() === 400) {
+                $errors = json_decode($e->getResponse()->getBody());
+
+                if (is_array($errors)) {
+                    foreach ($errors as $error) {
+                        if (strtoupper($error->errorCode) === 'REQUIRED_FIELD_MISSING') {
+                            return false;
+                        }
+                    }
+
+                }
+            }
+
+            throw $e;
+        }
+    }
     const SETTING_USER_PASSWORD = 'salesforce_password';
+
     const SETTING_INSTANCE      = 'instance';
 
     /**
@@ -114,25 +165,34 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
 
         $body = http_build_query($payload);
 
-        $request = $client->post($this->getAccessTokenUrl(), ['Content-Type' => 'application/x-www-form-urlencoded']);
-        $request->setBody($body);
-        $response = $request->send();
+        try {
 
-        $json = json_decode($response->getBody());
+            $request = $client->post($this->getAccessTokenUrl(), ['Content-Type' => 'application/x-www-form-urlencoded']);
+            $request->setBody($body);
+            $response = $request->send();
 
-        if (!isset($json->access_token)) {
-            throw new IntegrationException(
-                $this->getTranslator()->translate(
-                    'No \'access_token\' present in auth response for {serviceProvider}',
-                    ['serviceProvider' => $this->getServiceProvider()]
-                )
-            );
+            $json = json_decode($response->getBody());
+
+            if (!isset($json->access_token)) {
+                throw new IntegrationException(
+                    $this->getTranslator()->translate(
+                        'No \'access_token\' present in auth response for {serviceProvider}',
+                        ['serviceProvider' => $this->getServiceProvider()]
+                    )
+                );
+            }
+
+            $this->setAccessToken($json->access_token);
+            $this->setAccessTokenUpdated(true);
+
+            $this->onAfterFetchAccessToken($json);
+
+        } catch (BadResponseException $e) {
+            $responseBody = $e->getResponse()->getBody(true);
+
+            $this->getLogger()->error($responseBody, self::LOG_CATEGORY);
+            $this->getLogger()->error($e->getMessage(), self::LOG_CATEGORY);
         }
-
-        $this->setAccessToken($json->access_token);
-        $this->setAccessTokenUpdated(true);
-
-        $this->onAfterFetchAccessToken($json);
 
         return $this->getAccessToken();
     }
@@ -157,49 +217,6 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
         $this->fetchAccessToken();
         $model->updateAccessToken($this->getAccessToken());
         $model->updateSettings($this->getSettings());
-    }
-
-    /**
-     * Push objects to the CRM
-     *
-     * @param array $keyValueList
-     *
-     * @return bool
-     * @throws \Exception
-     */
-    public function pushObject(array $keyValueList)
-    {
-        $client   = new Client();
-        $endpoint = $this->getEndpoint('/sobjects/Lead');
-
-        try {
-            $headers = [
-                'Authorization' => 'Bearer ' . $this->getAccessToken(),
-                'Accept'        => 'application/json',
-            ];
-
-            $request = $client->post($endpoint, $headers);
-            $request->setHeader('Content-Type', 'application/json');
-            $request->setBody(json_encode($keyValueList));
-            $response = $request->send();
-
-            return $response->getStatusCode() === 201;
-        } catch (BadResponseException $e) {
-            if ($e->getResponse()->getStatusCode() === 400) {
-                $errors = json_decode($e->getResponse()->getBody());
-
-                if (is_array($errors)) {
-                    foreach ($errors as $error) {
-                        if (strtoupper($error->errorCode) === 'REQUIRED_FIELD_MISSING') {
-                            return false;
-                        }
-                    }
-
-                }
-            }
-
-            throw $e;
-        }
     }
 
     /**
@@ -239,8 +256,18 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
             'Content-Type'  => 'application/json',
         ];
 
-        $request  = $client->get($this->getEndpoint('/sobjects/Lead/describe'), $headers);
-        $response = $request->send();
+
+        try {
+            $request  = $client->get($this->getEndpoint('/sobjects/Lead/describe'), $headers);
+            $response = $request->send();
+        } catch (BadResponseException $e) {
+            $responseBody = $e->getResponse()->getBody(true);
+
+            $this->getLogger()->error($responseBody, self::LOG_CATEGORY);
+            $this->getLogger()->error($e->getMessage(), self::LOG_CATEGORY);
+
+            return [];
+        }
 
         $data = json_decode($response->getBody(true));
 
