@@ -49,7 +49,7 @@ class StatusController extends Controller
                 $checkbox['disabled'] = true;
             }
 
-            $link = $this->getLink('statuses/' . $status->id);
+            $link = $this->getLink('settings/statuses/' . $status->id);
 
             $tableData[] = [
                 $status->id,
@@ -61,7 +61,7 @@ class StatusController extends Controller
                 [
                     'toolbar_items' => [
                         'edit' => [
-                            'href'  => $this->getLink('statuses/' . $status->id),
+                            'href'  => $link,
                             'title' => lang('edit'),
                         ],
                     ],
@@ -72,7 +72,7 @@ class StatusController extends Controller
         $table->setData($tableData);
         $table->setNoResultsText('No results');
 
-        $removeModal = new ConfirmRemoveModal($this->getLink('statuses/delete'));
+        $removeModal = new ConfirmRemoveModal($this->getLink('settings/statuses/delete'));
         $removeModal->setKind('Statuses');
 
         $view = new CpView(
@@ -83,7 +83,7 @@ class StatusController extends Controller
                 'form_right_links' => [
                     [
                         'title' => lang('New Status'),
-                        'link'  => $this->getLink('statuses/new'),
+                        'link'  => $this->getLink('settings/statuses/new'),
                     ],
                 ],
             ]
@@ -173,7 +173,7 @@ class StatusController extends Controller
             ->setTemplateVariables(
                 [
                     'cp_page_title'         => 'Statuses',
-                    'base_url'              => $this->getLink('statuses/' . $id),
+                    'base_url'              => $this->getLink('settings/statuses/' . $id),
                     'save_btn_text'         => 'Save',
                     'save_btn_text_working' => 'Saving',
                     'sections'              => $sectionData,

@@ -4,7 +4,9 @@ namespace Solspace\Addons\FreeformNext\Controllers;
 
 use EllisLab\ExpressionEngine\Library\CP\Table;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
+use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
 use Solspace\Addons\FreeformNext\Model\SettingsModel;
+use Solspace\Addons\FreeformNext\Model\StatusModel;
 use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Utilities\AddonInfo;
@@ -17,6 +19,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class SettingsController extends Controller
 {
+    const TYPE_STATUSES             = 'statuses';
     const TYPE_LICENSE              = 'license';
     const TYPE_GENERAL              = 'general';
     const TYPE_FORMATTING_TEMPLATES = 'formatting_templates';
@@ -25,6 +28,7 @@ class SettingsController extends Controller
 
     /** @var array */
     private static $allowedTypes = [
+        self::TYPE_STATUSES,
         self::TYPE_LICENSE,
         self::TYPE_GENERAL,
         self::TYPE_FORMATTING_TEMPLATES,
@@ -38,13 +42,13 @@ class SettingsController extends Controller
      * @return View
      * @throws FreeformException
      */
-    public function index($type)
+    public function index($type, $id)
     {
         if (!in_array($type, self::$allowedTypes, true)) {
             throw new FreeformException('Page does not exist');
         }
 
-        if ($this->handlePost()) {
+        if ($type !== 'statuses' && $this->handlePost()) {
             ee('CP/Alert')
                 ->makeInline('shared-form')
                 ->asSuccess()
@@ -55,6 +59,9 @@ class SettingsController extends Controller
         }
 
         switch ($type) {
+            case self::TYPE_STATUSES:
+                return $this->statusesAction($id);
+
             case self::TYPE_LICENSE:
                 return $this->licenseAction();
 
@@ -71,6 +78,35 @@ class SettingsController extends Controller
             default:
                 return $this->generalAction();
         }
+    }
+
+    /**
+     * @param null|string|int $id
+     *
+     * @return View
+     * @throws FreeformException
+     */
+    public function statusesAction($id = null)
+    {
+        if (strtolower($id) === 'delete') {
+            return $this->getStatusController()->batchDelete();
+        }
+
+        if (null !== $id) {
+            $validation = null;
+            if (isset($_POST['name'])) {
+                $validation = ee('Validation')->make(StatusModel::createValidationRules())->validate($_POST);
+                if ($validation->isValid()) {
+                    $this->getStatusController()->save($id);
+
+                    return new RedirectView(UrlHelper::getLink('settings/statuses/'));
+                }
+            }
+
+            return $this->getStatusController()->edit($id, $validation);
+        }
+
+        return $this->getStatusController()->index();
     }
 
     /**
@@ -327,5 +363,19 @@ class SettingsController extends Controller
         $target = str_replace('_action', '', $target);
 
         return 'addons/settings/' . AddonInfo::getInstance()->getLowerName() . '/settings/' . $target;
+    }
+
+    /**
+     * @return StatusController
+     */
+    private function getStatusController()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new StatusController();
+        }
+
+        return $instance;
     }
 }

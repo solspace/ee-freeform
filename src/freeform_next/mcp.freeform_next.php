@@ -153,39 +153,6 @@ class Freeform_next_mcp extends ControlPanelView
     }
 
     /**
-     * @param null|string|int $id
-     *
-     * @return array
-     * @throws FreeformException
-     */
-    public function statuses($id = null)
-    {
-        if (strtolower($id) === 'delete') {
-            return $this->renderView($this->getStatusController()->batchDelete());
-        }
-
-        if (null !== $id) {
-            $validation = null;
-            if (isset($_POST['name'])) {
-                $validation = ee('Validation')->make(StatusModel::createValidationRules())->validate($_POST);
-                if ($validation->isValid()) {
-                    $status = $this->getStatusController()->save($id);
-
-                    return $this->renderView(
-                        new RedirectView(
-                            UrlHelper::getLink('statuses/')
-                        )
-                    );
-                }
-            }
-
-            return $this->renderView($this->getStatusController()->edit($id, $validation));
-        }
-
-        return $this->renderView($this->getStatusController()->index());
-    }
-
-    /**
      * @param string   $formHandle
      * @param int|null $submissionId
      *
@@ -355,6 +322,7 @@ class Freeform_next_mcp extends ControlPanelView
         $settings = new NavigationLink('Settings');
         $settings
             ->addSubNavItem(new NavigationLink('License', 'settings/license'))
+            ->addSubNavItem(new NavigationLink('Statuses', 'settings/statuses'))
             ->addSubNavItem(new NavigationLink('General', 'settings/general'))
             ->addSubNavItem(new NavigationLink('Formatting Templates', 'settings/formatting_templates'))
             ->addSubNavItem(new NavigationLink('Email Templates', 'settings/email_templates'))
@@ -497,20 +465,6 @@ class Freeform_next_mcp extends ControlPanelView
 
         if (null === $instance) {
             $instance = new MailingListsController();
-        }
-
-        return $instance;
-    }
-
-    /**
-     * @return StatusController
-     */
-    private function getStatusController()
-    {
-        static $instance;
-
-        if (null === $instance) {
-            $instance = new StatusController();
         }
 
         return $instance;
