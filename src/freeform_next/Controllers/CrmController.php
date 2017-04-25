@@ -111,7 +111,7 @@ class CrmController extends Controller
             $formRightLinks = [
                 [
                     'title' => lang('Purchase integrations'),
-                    'link'  => 'https://solspace.com/',
+                    'link'  => 'https://solspace.com/expressionengine/freeform/pro',
                 ],
             ];
         }
@@ -140,6 +140,10 @@ class CrmController extends Controller
     public function edit($id)
     {
         $serviceProviderTypes = $this->getCrmService()->getAllCrmServiceProviders();
+
+        if (empty($serviceProviderTypes)) {
+            return new RedirectView('https://solspace.com/expressionengine/freeform/pro');
+        }
 
         if ($id === 'new') {
             $model        = IntegrationModel::create(IntegrationModel::TYPE_CRM);

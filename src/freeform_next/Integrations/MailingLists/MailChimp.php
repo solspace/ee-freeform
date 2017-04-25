@@ -9,7 +9,7 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-namespace Solspace\Addons\FreeformNext\Library\Integrations\MailingLists\Implementations;
+namespace Solspace\Addons\FreeformNext\Integrations\MailingLists;
 
 use Guzzle\Http\Client;
 use Guzzle\Http\Exception\BadResponseException;

@@ -84,7 +84,10 @@ class MailingListsController extends Controller
                     'name'  => 'id_list[]',
                     'value' => $integration->id,
                     'data'  => [
-                        'confirm' => lang('Integration') . ': <b>' . htmlentities($integration->name, ENT_QUOTES) . '</b>',
+                        'confirm' => lang('Integration') . ': <b>' . htmlentities(
+                                $integration->name,
+                                ENT_QUOTES
+                            ) . '</b>',
                     ],
                 ],
             ];
@@ -95,17 +98,30 @@ class MailingListsController extends Controller
         $removeModal = new ConfirmRemoveModal($this->getLink('integrations/mailing_lists/delete'));
         $removeModal->setKind('Mailing List Integrations');
 
+        $serviceProviderTypes = $this->getMailingListService()->getAllMailingListServiceProviders();
+
+        if (count($serviceProviderTypes)) {
+            $formRightLinks = [
+                [
+                    'title' => lang('New Integration'),
+                    'link'  => $this->getLink('integrations/mailing_lists/new'),
+                ],
+            ];
+        } else {
+            $formRightLinks = [
+                [
+                    'title' => lang('Purchase integrations'),
+                    'link'  => 'https://solspace.com/expressionengine/freeform/pro',
+                ],
+            ];
+        }
+
         $view = new CpView(
             'integrations/table',
             [
                 'table'            => $table->viewData(),
                 'cp_page_title'    => lang('Mailing List Integrations'),
-                'form_right_links' => [
-                    [
-                        'title' => lang('New Integration'),
-                        'link'  => $this->getLink('integrations/mailing_lists/new'),
-                    ],
-                ],
+                'form_right_links' => $formRightLinks,
             ]
         );
         $view->setHeading(lang('Mailing List Integrations'));
@@ -122,9 +138,15 @@ class MailingListsController extends Controller
      */
     public function edit($id)
     {
+        $serviceProviderTypes = $this->getMailingListService()->getAllMailingListServiceProviders();
+
+        if (empty($serviceProviderTypes)) {
+            return new RedirectView('https://solspace.com/expressionengine/freeform/pro');
+        }
+
         if ($id === 'new') {
             $model        = IntegrationModel::create(IntegrationModel::TYPE_MAILING_LIST);
-            $model->class = '\Solspace\Addons\FreeformNext\Library\Integrations\MailingLists\Implementations\MailChimp';
+            $model->class = array_keys($serviceProviderTypes)[0];
         } else {
             $model = MailingListRepository::getInstance()->getIntegrationById($id);
         }
@@ -151,8 +173,7 @@ class MailingListsController extends Controller
         $integration = $model->getIntegrationObject();
         $settings    = $integration->getSettings();
 
-        $serviceProviderTypes = $this->getMailingListService()->getAllMailingListServiceProviders();
-        $blueprints           = $this->getMailingListService()->getAllMailingListSettingBlueprints();
+        $blueprints = $this->getMailingListService()->getAllMailingListSettingBlueprints();
 
         $types = $targets = $settingGroups = [];
         foreach ($serviceProviderTypes as $className => $name) {
@@ -205,7 +226,7 @@ class MailingListsController extends Controller
                         'name' => [
                             'type'  => 'text',
                             'value' => $model->name,
-                            'attrs'    => 'data-generator-base',
+                            'attrs' => 'data-generator-base',
                         ],
                     ],
                 ],
@@ -216,7 +237,7 @@ class MailingListsController extends Controller
                         'handle' => [
                             'type'  => 'text',
                             'value' => $model->handle,
-                            'attrs'    => 'data-generator-target',
+                            'attrs' => 'data-generator-target',
                         ],
                     ],
                 ],

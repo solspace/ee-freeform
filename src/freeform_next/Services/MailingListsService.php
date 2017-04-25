@@ -338,9 +338,7 @@ class MailingListsService implements MailingListHandlerInterface
     public function getAllMailingListServiceProviders()
     {
         if (null === self::$integrations) {
-            $integrations = [
-                'Solspace\Addons\FreeformNext\Library\Integrations\MailingLists\Implementations\MailChimp' => 'MailChimp',
-            ];
+            $integrations = [];
 
             $addonIntegrations = [];
             if (ee()->extensions->active_hook(FreeformIntegrationExtension::HOOK_REGISTER_INTEGRATIONS) === true) {
@@ -352,9 +350,9 @@ class MailingListsService implements MailingListHandlerInterface
             $finder          = new Finder();
             $mailingListPath = __DIR__ . '/../Integrations/MailingLists';
             if (file_exists($mailingListPath) && is_dir($mailingListPath)) {
+                /** @var SplFileInfo[] $files */
                 $files = $finder->files()->in($mailingListPath)->name('*.php');
 
-                /** @var SplFileInfo $file */
                 foreach ($files as $file) {
                     $fileName = $file->getFilename();
                     $baseName = substr(
