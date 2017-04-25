@@ -20,6 +20,8 @@ use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Class FieldModel
@@ -148,12 +150,13 @@ class SettingsModel extends Model
             return [];
         }
 
+        $fs = new Finder();
+        /** @var SplFileInfo[] $fileIterator */
+        $fileIterator = $fs->files()->in($templateDirectoryPath)->name('*.html');
         $files = [];
-        $dir = new \DirectoryIterator($templateDirectoryPath);
-        foreach ($dir as $fileInfo) {
-            if (!$fileInfo->isDot() && !$fileInfo->isDir() && $fileInfo->getFilename() !== '.htaccess') {
-                $files[$fileInfo->getPathname()] = $fileInfo->getBasename();
-            }
+
+        foreach ($fileIterator as $file) {
+            $files[$file->getRealPath()] = $file->getBasename();
         }
 
         return $files;
