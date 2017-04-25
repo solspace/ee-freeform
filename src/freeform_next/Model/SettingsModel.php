@@ -12,14 +12,7 @@
 namespace Solspace\Addons\FreeformNext\Model;
 
 use EllisLab\ExpressionEngine\Service\Model\Model;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
-use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
-use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
-use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -34,6 +27,7 @@ use Symfony\Component\Finder\SplFileInfo;
  * @property string $formattingTemplatePath
  * @property string $notificationTemplatePath
  * @property string $notificationCreationMethod
+ * @property string $license
  */
 class SettingsModel extends Model
 {
@@ -52,6 +46,7 @@ class SettingsModel extends Model
     const DEFAULT_FORMATTING_TEMPLATE_PATH     = null;
     const DEFAULT_NOTIFICATION_TEMPLATE_PATH   = null;
     const DEFAULT_NOTIFICATION_CREATION_METHOD = self::NOTIFICATION_CREATION_METHOD_DATABASE;
+    const DEFAULT_LICENSE                      = null;
 
     protected static $_primary_key = 'id';
     protected static $_table_name  = self::TABLE;
@@ -64,6 +59,7 @@ class SettingsModel extends Model
     protected $formattingTemplatePath;
     protected $notificationTemplatePath;
     protected $notificationCreationMethod;
+    protected $license;
 
     /**
      * Creates a Settings Model
@@ -83,6 +79,7 @@ class SettingsModel extends Model
                 'formattingTemplatePath'     => self::DEFAULT_FORMATTING_TEMPLATE_PATH,
                 'notificationTemplatePath'   => self::DEFAULT_NOTIFICATION_TEMPLATE_PATH,
                 'notificationCreationMethod' => self::DEFAULT_NOTIFICATION_CREATION_METHOD,
+                'license'                    => self::DEFAULT_LICENSE,
             ]
         );
 
@@ -153,7 +150,7 @@ class SettingsModel extends Model
         $fs = new Finder();
         /** @var SplFileInfo[] $fileIterator */
         $fileIterator = $fs->files()->in($templateDirectoryPath)->name('*.html');
-        $files = [];
+        $files        = [];
 
         foreach ($fileIterator as $file) {
             $files[$file->getRealPath()] = $file->getBasename();
@@ -173,12 +170,13 @@ class SettingsModel extends Model
             return [];
         }
 
-        $files = [];
-        $dir = new \DirectoryIterator($templateDirectoryPath);
-        foreach ($dir as $fileInfo) {
-            if (!$fileInfo->isDot() && !$fileInfo->isDir() && $fileInfo->getFilename() !== '.htaccess') {
-                $files[$fileInfo->getPathname()] = $fileInfo->getBasename();
-            }
+        $fs = new Finder();
+        /** @var SplFileInfo[] $fileIterator */
+        $fileIterator = $fs->files()->in($templateDirectoryPath)->name('*.html');
+        $files        = [];
+
+        foreach ($fileIterator as $file) {
+            $files[$file->getRealPath()] = $file->getBasename();
         }
 
         return $files;

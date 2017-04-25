@@ -354,6 +354,7 @@ class Freeform_next_mcp extends ControlPanelView
 
         $settings = new NavigationLink('Settings');
         $settings
+            ->addSubNavItem(new NavigationLink('License', 'settings/license'))
             ->addSubNavItem(new NavigationLink('General', 'settings/general'))
             ->addSubNavItem(new NavigationLink('Formatting Templates', 'settings/formatting_templates'))
             ->addSubNavItem(new NavigationLink('Email Templates', 'settings/email_templates'))

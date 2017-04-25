@@ -17,6 +17,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class SettingsController extends Controller
 {
+    const TYPE_LICENSE              = 'license';
     const TYPE_GENERAL              = 'general';
     const TYPE_FORMATTING_TEMPLATES = 'formatting_templates';
     const TYPE_EMAIL_TEMPLATES      = 'email_templates';
@@ -24,6 +25,7 @@ class SettingsController extends Controller
 
     /** @var array */
     private static $allowedTypes = [
+        self::TYPE_LICENSE,
         self::TYPE_GENERAL,
         self::TYPE_FORMATTING_TEMPLATES,
         self::TYPE_EMAIL_TEMPLATES,
@@ -53,6 +55,9 @@ class SettingsController extends Controller
         }
 
         switch ($type) {
+            case self::TYPE_LICENSE:
+                return $this->licenseAction();
+
             case self::TYPE_FORMATTING_TEMPLATES:
                 return $this->formattingTemplatesAction();
 
@@ -66,6 +71,43 @@ class SettingsController extends Controller
             default:
                 return $this->generalAction();
         }
+    }
+
+    /**
+     * @return CpView
+     */
+    private function licenseAction()
+    {
+        $settings = $this->getSettings();
+
+        $view = new CpView('settings/common', []);
+        $view
+            ->setHeading(lang('License'))
+            ->addBreadcrumb(new NavigationLink('Settings', 'settings/general'))
+            ->setTemplateVariables(
+            [
+                'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),
+                'cp_page_title'         => $view->getHeading(),
+                'save_btn_text'         => 'btn_save_settings',
+                'save_btn_text_working' => 'btn_saving',
+                'sections'              => [
+                    [
+                        [
+                            'title'  => 'License',
+                            'desc'   => 'Enter your Freeform Next license key here.',
+                            'fields' => [
+                                'license' => [
+                                    'type'  => 'text',
+                                    'value' => $settings->license,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        return $view;
     }
 
     /**

@@ -197,6 +197,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_settings` (
   `formattingTemplatePath`     VARCHAR(255)        NULL      DEFAULT NULL,
   `notificationTemplatePath`   VARCHAR(255)        NULL      DEFAULT NULL,
   `notificationCreationMethod` VARCHAR(30)         NULL      DEFAULT NULL,
+  `license`                    VARCHAR(100)        NULL      DEFAULT NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
