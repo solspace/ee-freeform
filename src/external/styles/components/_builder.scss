@@ -129,6 +129,12 @@ $minRowHeight: 60px;
           pointer-events: none;
         }
 
+        textarea {
+          max-height: unset;
+          min-height: unset;
+          resize: unset;
+        }
+
         label.composer-field-required {
           > span.required {
             position: relative;

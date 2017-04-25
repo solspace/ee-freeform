@@ -223,6 +223,10 @@ class FieldController extends Controller
             $validValues['required'] = $validValues['required'] === 'y';
         }
 
+        if (isset($validValues['checked'])) {
+            $validValues['checked'] = $validValues['checked'] === 'y';
+        }
+
         $fieldHasOptions = in_array(
             $type,
             [
@@ -239,6 +243,10 @@ class FieldController extends Controller
             foreach ($fieldSpecificPost as $key => $value) {
                 if (in_array($key, ['values', 'options'], true)) {
                     continue;
+                }
+
+                if ($key === 'checked') {
+                    $value = $value === 'y';
                 }
 
                 if (property_exists($field, $key)) {
@@ -350,7 +358,7 @@ class FieldController extends Controller
                     'title'  => 'Rows',
                     'desc'   => 'The default number of rows this textarea should have.',
                     'fields' => [
-                        'placeholder' => [
+                        'rows' => [
                             'type'  => 'text',
                             'value' => $model->rows,
                         ],
@@ -412,7 +420,7 @@ class FieldController extends Controller
                     'title'  => 'Checked by default',
                     'desc'   => 'Enable this to check the checkbox by default.',
                     'fields' => [
-                        'value' => [
+                        'checked' => [
                             'type'  => 'yes_no',
                             'value' => $model->checked ? 'y' : 'n',
                         ],
