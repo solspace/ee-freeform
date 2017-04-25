@@ -186,7 +186,7 @@ export default class NotificationProperties extends Component {
     })
       .then(response => response.json())
       .then(json => {
-        if (json.templateName && json.errors.length === 0) {
+        if (json.templateName && json.success) {
           fetchTemplates();
           toggleForm();
 
