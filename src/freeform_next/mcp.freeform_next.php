@@ -311,9 +311,6 @@ class Freeform_next_mcp extends ControlPanelView
         $fields = new NavigationLink('Fields', 'fields');
         $fields->setButtonLink(new NavigationLink('New', 'fields/new'));
 
-        $statuses = new NavigationLink('Statuses', 'statuses');
-        $statuses->setButtonLink(new NavigationLink('New', 'statuses/new'));
-
         $integrations = new NavigationLink('Integrations');
         $integrations
             ->addSubNavItem(new NavigationLink('Mailing Lists', 'integrations/mailing_lists'))
@@ -361,7 +358,6 @@ class Freeform_next_mcp extends ControlPanelView
             ->addLink($forms)
             ->addLink($fields)
             ->addLink($notifications)
-            ->addLink($statuses)
             ->addLink($settings)
             ->addLink($integrations);
 

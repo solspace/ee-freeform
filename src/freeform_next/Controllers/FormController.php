@@ -219,10 +219,16 @@ class FormController extends Controller
         }
 
         $form->setLayout($composer);
-        $form->save();
 
-        $view->addVariable('id', $form->id);
-        $view->addVariable('handle', $form->handle);
+        $existing = FormRepository::getInstance()->getFormByIdOrHandle($form->handle);
+        if ($existing && $existing->id !== $form->id) {
+            $view->addError(sprintf('Handle "%s" already taken', $form->handle));
+        } else {
+            $form->save();
+
+            $view->addVariable('id', $form->id);
+            $view->addVariable('handle', $form->handle);
+        }
 
         return $view;
     }

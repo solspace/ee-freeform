@@ -1,6 +1,7 @@
 <?php
 /**
  * Freeform Next for Expression Engine
+ *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
@@ -12,14 +13,12 @@ namespace Solspace\Addons\FreeformNext\Controllers;
 
 use EllisLab\ExpressionEngine\Library\CP\Table;
 use EllisLab\ExpressionEngine\Model\File\File;
-use Solspace\Addons\FreeformNext\Library\Composer\Attributes\FormAttributes;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxGroupField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecipientField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\EmailField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\RadioGroupField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SelectField;
@@ -27,34 +26,19 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\TextareaFiel
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Page;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Row;
-use Solspace\Addons\FreeformNext\Library\Composer\Composer;
-use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
-use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
-use Solspace\Addons\FreeformNext\Library\Session\EERequest;
-use Solspace\Addons\FreeformNext\Library\Session\EESession;
-use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
-use Solspace\Addons\FreeformNext\Model\FormModel;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
-use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
-use Solspace\Addons\FreeformNext\Repositories\FormRepository;
-use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
-use Solspace\Addons\FreeformNext\Services\CrmService;
-use Solspace\Addons\FreeformNext\Services\FilesService;
-use Solspace\Addons\FreeformNext\Services\FormsService;
-use Solspace\Addons\FreeformNext\Services\MailerService;
-use Solspace\Addons\FreeformNext\Services\MailingListsService;
-use Solspace\Addons\FreeformNext\Services\StatusesService;
-use Solspace\Addons\FreeformNext\Services\SubmissionsService;
-use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\ConfirmRemoveModal;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 
 class SubmissionController extends Controller
 {
     /**
+     * @param Form $form
+     *
      * @return CpView
      */
     public function index(Form $form)
@@ -167,9 +151,17 @@ class SubmissionController extends Controller
         $modal = new ConfirmRemoveModal($this->getLink('submissions/' . $form->getHandle() . '/delete'));
         $modal->setKind('Submissions');
 
-        $view = new CpView('form/listing', ['table' => $table->viewData()]);
-        $view->setHeading(lang('Submissions'));
-        $view->addModal($modal);
+        $view = new CpView(
+            'form/listing',
+            [
+                'table'         => $table->viewData(),
+                'cp_page_title' => 'Submissions for ' . $form->getName(),
+            ]
+        );
+        $view
+            ->setHeading(lang('Submissions'))
+            ->addBreadcrumb(new NavigationLink('Form: ' . $form->getName(), 'forms/' . $form->getHandle()))
+            ->addModal($modal);
 
         return $view;
     }
