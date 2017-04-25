@@ -150,7 +150,7 @@ class SettingsController extends Controller
                     [
                         [
                             'title'  => 'Directory Path',
-                            'desc'   => 'Provide a relative path to the Craft root folder where your custom formatting templates directory is. This allows you to use Twig templates for your form formatting, and helps Composer locate these files to assign one of them to a form.',
+                            'desc'   => 'Provide a full path to the folder where your custom formatting templates directory is. This allows you to use HTML templates for your form formatting, and helps Composer locate these files to assign one of them to a form.',
                             'fields' => [
                                 'formattingTemplatePath' => [
                                     'type'        => 'text',
@@ -188,7 +188,7 @@ class SettingsController extends Controller
                 [
                     [
                         'title'  => 'Directory Path',
-                        'desc'   => 'Provide a relative path to the Craft root folder where your email templates directory is. This allows you to use Twig template files for your email formatting, and helps Composer locate these files when setting up notifications.',
+                        'desc'   => 'Provide a full path to the folder where your email templates directory is. This allows you to use HTML template files for your email formatting, and helps Composer locate these files when setting up notifications.',
                         'fields' => [
                             'notificationTemplatePath' => [
                                 'type'        => 'text',
