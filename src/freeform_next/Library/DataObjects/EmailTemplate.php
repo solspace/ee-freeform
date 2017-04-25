@@ -22,6 +22,9 @@ class EmailTemplate
     private $name;
 
     /** @var string */
+    private $fileName;
+
+    /** @var string */
     private $handle;
 
     /** @var string */
@@ -57,11 +60,12 @@ class EmailTemplate
     {
         $this->templateData = file_get_contents($filePath);
 
-        $this->handle = pathinfo($filePath, PATHINFO_FILENAME);
+        $this->handle   = pathinfo($filePath, PATHINFO_FILENAME);
+        $this->fileName = pathinfo($filePath, PATHINFO_BASENAME);
 
         $name = $this->getMetadata('templateName', false);
         if (!$name) {
-            $name = StringHelper::camelize(StringHelper::humanize(pathinfo($filePath, PATHINFO_FILENAME)));
+            $name = StringHelper::camelize(StringHelper::humanize($this->handle));
         }
 
         $this->name = $name;
@@ -168,7 +172,9 @@ class EmailTemplate
             list ($_, $value) = $matches;
             $value = trim($value);
         } else if ($required) {
-            throw new EmailTemplateException(sprintf('Email template does not contain "%s"', $key));
+            throw new EmailTemplateException(
+                sprintf('Email template "%s" does not contain "%s"', $this->fileName, $key)
+            );
         }
 
         return $value;

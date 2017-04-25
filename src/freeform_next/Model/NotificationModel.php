@@ -1,6 +1,7 @@
 <?php
 /**
  * Freeform Next for Expression Engine
+ *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
@@ -15,6 +16,7 @@ use Solspace\Addons\FreeformNext\Library\DataObjects\EmailTemplate;
 
 /**
  * Class NotificationModel
+ *
  * @property int    $id
  * @property int    $siteId
  * @property string $name
@@ -66,6 +68,7 @@ class NotificationModel extends Model implements \JsonSerializable
 
     /**
      * Creates a Field object with default settings
+     *
      * @return NotificationModel
      */
     public static function create()
@@ -108,7 +111,7 @@ EOT;
     {
         $template = new EmailTemplate($filePath);
 
-        $model                     = ee('Model')->make(
+        $model = ee('Model')->make(
             self::MODEL,
             [
                 'id'                 => pathinfo($filePath, PATHINFO_BASENAME),
@@ -129,7 +132,16 @@ EOT;
     }
 
     /**
+     * @return bool
+     */
+    public function isFileTemplate()
+    {
+        return !is_numeric($this->id);
+    }
+
+    /**
      * Specify data which should be serialized to JSON
+     *
      * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
      * @return mixed data which can be serialized by <b>json_encode</b>,
      *        which is a value of any type other than a resource.

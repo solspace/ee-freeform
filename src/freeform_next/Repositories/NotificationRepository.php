@@ -11,6 +11,8 @@
 
 namespace Solspace\Addons\FreeformNext\Repositories;
 
+use Solspace\Addons\FreeformNext\Library\Exceptions\DataObjects\EmailTemplateException;
+use Solspace\Addons\FreeformNext\Library\Logging\EELogger;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
 
 class NotificationRepository extends Repository
@@ -68,8 +70,12 @@ class NotificationRepository extends Repository
 
             $settings = SettingsRepository::getInstance()->getOrCreate();
             foreach ($settings->listTemplatesInEmailTemplateDirectory() as $filePath => $name) {
-                $model = NotificationModel::createFromTemplate($filePath);
-                self::$notificationCache[$model->id] = $model;
+                try {
+                    $model = NotificationModel::createFromTemplate($filePath);
+                    self::$notificationCache[$model->id] = $model;
+                } catch (EmailTemplateException $exception) {
+                    EELogger::get('notifications')->error($exception->getMessage(), $exception);
+                }
             }
 
             self::$allNotificationsLoaded = true;

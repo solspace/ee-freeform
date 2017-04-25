@@ -1,6 +1,7 @@
 <?php
 /**
  * Freeform Next for Expression Engine
+ *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
@@ -12,26 +13,9 @@ namespace Solspace\Addons\FreeformNext\Controllers;
 
 use EllisLab\ExpressionEngine\Library\CP\Table;
 use EllisLab\ExpressionEngine\Service\Validation\Result;
-use Solspace\Addons\FreeformNext\Library\Composer\Attributes\FormAttributes;
-use Solspace\Addons\FreeformNext\Library\Composer\Composer;
-use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
-use Solspace\Addons\FreeformNext\Library\Session\EERequest;
-use Solspace\Addons\FreeformNext\Library\Session\EESession;
-use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
-use Solspace\Addons\FreeformNext\Model\FormModel;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
-use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
-use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
-use Solspace\Addons\FreeformNext\Services\CrmService;
-use Solspace\Addons\FreeformNext\Services\FilesService;
-use Solspace\Addons\FreeformNext\Services\FormsService;
-use Solspace\Addons\FreeformNext\Services\MailerService;
-use Solspace\Addons\FreeformNext\Services\MailingListsService;
-use Solspace\Addons\FreeformNext\Services\StatusesService;
-use Solspace\Addons\FreeformNext\Services\SubmissionsService;
-use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\ConfirmRemoveModal;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
@@ -61,22 +45,20 @@ class NotificationController extends Controller
 
         $tableData = [];
         foreach ($notifications as $notification) {
-            $tableData[] = [
-                $notification->id,
-                [
-                    'content' => $notification->name,
-                    'href'    => $this->getLink('notifications/' . $notification->id),
-                ],
-                $notification->handle,
-                [
+            $link = null;
+            $editButton = ['toolbar_items' => []];
+            $checkboxes = ['name' => '', 'value' => '', 'disabled' => true];
+            if (!$notification->isFileTemplate()) {
+                $link       = $this->getLink('notifications/' . $notification->id);
+                $editButton = [
                     'toolbar_items' => [
                         'edit' => [
-                            'href'  => $this->getLink('notifications/' . $notification->id),
+                            'href'  => $link,
                             'title' => lang('edit'),
                         ],
                     ],
-                ],
-                [
+                ];
+                $checkboxes = [
                     'name'  => 'id_list[]',
                     'value' => $notification->id,
                     'data'  => [
@@ -85,7 +67,18 @@ class NotificationController extends Controller
                                 ENT_QUOTES
                             ) . '</b>',
                     ],
+                ];
+            }
+
+            $tableData[] = [
+                $notification->id,
+                [
+                    'content' => $notification->name,
+                    'href'    => $link,
                 ],
+                $notification->handle,
+                $editButton,
+                $checkboxes,
             ];
         }
         $table->setData($tableData);
@@ -94,7 +87,7 @@ class NotificationController extends Controller
         $view = new CpView(
             'notifications/listing',
             [
-                'table' => $table->viewData(),
+                'table'            => $table->viewData(),
                 'cp_page_title'    => lang('Notifications'),
                 'form_right_links' => [
                     [
