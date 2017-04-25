@@ -79,7 +79,7 @@ export function showNotification(text, type) {
   }
 
   let notification = document.createElement('div');
-  notification.className = 'alert ' + type;
+  notification.className = 'composer-alert alert ' + type;
   notification.innerHTML = text;
 
   document.body.appendChild(notification);
