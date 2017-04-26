@@ -42,9 +42,13 @@ abstract class AddonUpdater
      */
     public function install()
     {
+        $this->onBeforeInstall();
+
         $this->insertSqlTables();
         $this->installModule();
         $this->installActions();
+
+        $this->onAfterInstall();
 
         return true;
     }
@@ -62,6 +66,8 @@ abstract class AddonUpdater
      */
     public function uninstall()
     {
+        $this->onBeforeUninstall();
+
         $this->deleteSqlTables();
 
         ee()->db->delete(
@@ -72,6 +78,8 @@ abstract class AddonUpdater
         );
 
         $this->deleteActions();
+
+        $this->onAfterUninstall();
 
         return true;
     }
@@ -114,6 +122,34 @@ abstract class AddonUpdater
         $this->hasPublishFields = $hasPublishFields;
 
         return $this;
+    }
+
+    /**
+     * Perform any actions needed AFTER installing the plugin
+     */
+    protected function onAfterInstall()
+    {
+    }
+
+    /**
+     * Perform any actions needed BEFORE installing the plugin
+     */
+    protected function onBeforeInstall()
+    {
+    }
+
+    /**
+     * Perform any actions needed AFTER uninstalling the plugin
+     */
+    protected function onAfterUninstall()
+    {
+    }
+
+    /**
+     * Perform any actions needed BEFORE uninstalling the plugin
+     */
+    protected function onBeforeUninstall()
+    {
     }
 
     /**
