@@ -110,7 +110,7 @@ class MailingListsController extends Controller
         } else {
             $formRightLinks = [
                 [
-                    'title' => lang('Purchase integrations'),
+                    'title' => lang('Upgrade to Pro to Enable'),
                     'link'  => 'https://solspace.com/expressionengine/freeform/pro',
                 ],
             ];
