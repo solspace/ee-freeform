@@ -10,6 +10,7 @@
  */
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
+use Solspace\Addons\FreeformNext\Model\StatusModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Utilities\AddonUpdater;
 use Solspace\Addons\FreeformNext\Utilities\AddonUpdater\PluginAction;
@@ -109,5 +110,29 @@ class Freeform_next_upd extends AddonUpdater
         $field->type    = AbstractField::TYPE_SELECT;
         $field->options = $states;
         $field->save();
+
+        $status            = StatusModel::create();
+        $status->name      = 'Open';
+        $status->handle    = 'open';
+        $status->isDefault = true;
+        $status->color     = '#43C413';
+        $status->sortOrder = 1;
+        $status->save();
+
+        $status            = StatusModel::create();
+        $status->name      = 'Closed';
+        $status->handle    = 'closed';
+        $status->isDefault = false;
+        $status->color     = '#939393';
+        $status->sortOrder = 2;
+        $status->save();
+
+        $status            = StatusModel::create();
+        $status->name      = 'Pending';
+        $status->handle    = 'pending';
+        $status->isDefault = false;
+        $status->color     = '#FFFFFF';
+        $status->sortOrder = 3;
+        $status->save();
     }
 }
