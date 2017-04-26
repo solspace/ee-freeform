@@ -4,7 +4,7 @@
             <?php echo $path ?>
 
             <a class="btn action add-template" href="<?php echo $url ?>">
-                Add an email template
+                Add sample template
             </a>
         </th>
     </tr>
