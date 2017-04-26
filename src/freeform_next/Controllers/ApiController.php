@@ -8,7 +8,6 @@ use Solspace\Addons\FreeformNext\Model\NotificationModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
 use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
-use Solspace\Addons\FreeformNext\Services\SettingsService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 use Stringy\Stringy;
@@ -69,12 +68,14 @@ class ApiController extends Controller
 
         if (isset($args[1]) && $args[1] === 'create') {
             $settings    = SettingsRepository::getInstance()->getOrCreate();
-            $isDbStorage = $settings->isDbEmailTemplateStorage();
 
-            $errors  = [];
+            $errors = [];
 
-            $name   = ee()->input->post('name');
-            $handle = ee()->input->post('handle');
+            $name      = ee()->input->post('name');
+            $handle    = ee()->input->post('handle');
+            $forceFile = ee()->input->post('force_file', false);
+
+            $isDbStorage = $forceFile ? false : $settings->isDbEmailTemplateStorage();
 
             if (!$name) {
                 $errors[] = lang('Name is required');

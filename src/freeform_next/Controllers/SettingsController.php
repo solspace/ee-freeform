@@ -2,13 +2,11 @@
 
 namespace Solspace\Addons\FreeformNext\Controllers;
 
-use EllisLab\ExpressionEngine\Library\CP\Table;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
 use Solspace\Addons\FreeformNext\Model\SettingsModel;
 use Solspace\Addons\FreeformNext\Model\StatusModel;
 use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
-use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Utilities\AddonInfo;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
@@ -37,7 +35,7 @@ class SettingsController extends Controller
     ];
 
     /**
-     * @param string     $type
+     * @param string $type
      *
      * @return View
      * @throws FreeformException
@@ -121,27 +119,27 @@ class SettingsController extends Controller
             ->setHeading(lang('License'))
             ->addBreadcrumb(new NavigationLink('Settings', 'settings/general'))
             ->setTemplateVariables(
-            [
-                'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),
-                'cp_page_title'         => $view->getHeading(),
-                'save_btn_text'         => 'btn_save_settings',
-                'save_btn_text_working' => 'btn_saving',
-                'sections'              => [
-                    [
+                [
+                    'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),
+                    'cp_page_title'         => $view->getHeading(),
+                    'save_btn_text'         => 'btn_save_settings',
+                    'save_btn_text_working' => 'btn_saving',
+                    'sections'              => [
                         [
-                            'title'  => 'License',
-                            'desc'   => 'Enter your Freeform Next license key here.',
-                            'fields' => [
-                                'license' => [
-                                    'type'  => 'text',
-                                    'value' => $settings->license,
+                            [
+                                'title'  => 'License',
+                                'desc'   => 'Enter your Freeform Next license key here.',
+                                'fields' => [
+                                    'license' => [
+                                        'type'  => 'text',
+                                        'value' => $settings->license,
+                                    ],
                                 ],
                             ],
                         ],
                     ],
-                ],
-            ]
-        );
+                ]
+            );
 
         return $view;
     }
@@ -158,51 +156,51 @@ class SettingsController extends Controller
             ->setHeading(lang('General'))
             ->addBreadcrumb(new NavigationLink('Settings', 'settings/general'))
             ->setTemplateVariables(
-            [
-                'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),
-                'cp_page_title'         => $view->getHeading(),
-                'save_btn_text'         => 'btn_save_settings',
-                'save_btn_text_working' => 'btn_saving',
-                'sections'              => [
-                    [
+                [
+                    'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),
+                    'cp_page_title'         => $view->getHeading(),
+                    'save_btn_text'         => 'btn_save_settings',
+                    'save_btn_text_working' => 'btn_saving',
+                    'sections'              => [
                         [
-                            'title'  => 'Spam Protection',
-                            'desc'   => 'Enable this to use Freeform\'s built in Javascript-based honeypot spam protection.',
-                            'fields' => [
-                                'spamProtectionEnabled' => [
-                                    'type'  => 'yes_no',
-                                    'value' => $settings->isSpamProtectionEnabled(),
+                            [
+                                'title'  => 'Spam Protection',
+                                'desc'   => 'Enable this to use Freeform\'s built in Javascript-based honeypot spam protection.',
+                                'fields' => [
+                                    'spamProtectionEnabled' => [
+                                        'type'  => 'yes_no',
+                                        'value' => $settings->isSpamProtectionEnabled(),
+                                    ],
                                 ],
                             ],
-                        ],
-                        [
-                            'title'  => 'Show Composer Tutorial',
-                            'desc'   => 'Enable this to show the interactive tutorial again in Composer. This setting disables again when the tutorial is completed or skipped.',
-                            'fields' => [
-                                'showTutorial' => [
-                                    'type'  => 'yes_no',
-                                    'value' => $settings->isShowTutorial(),
+                            [
+                                'title'  => 'Show Composer Tutorial',
+                                'desc'   => 'Enable this to show the interactive tutorial again in Composer. This setting disables again when the tutorial is completed or skipped.',
+                                'fields' => [
+                                    'showTutorial' => [
+                                        'type'  => 'yes_no',
+                                        'value' => $settings->isShowTutorial(),
+                                    ],
                                 ],
                             ],
-                        ],
-                        [
-                            'title'  => 'Display Order of Fields in Composer',
-                            'desc'   => 'The display order for the list of available fields in Composer.',
-                            'fields' => [
-                                'fieldDisplayOrder' => [
-                                    'type'    => 'radio',
-                                    'value'   => $settings->getFieldDisplayOrder(),
-                                    'choices' => [
-                                        SettingsModel::FIELD_DISPLAY_ORDER_TYPE => 'Field type, Field name (alphabetical)',
-                                        SettingsModel::FIELD_DISPLAY_ORDER_NAME => 'Field name (alphabetical)',
+                            [
+                                'title'  => 'Display Order of Fields in Composer',
+                                'desc'   => 'The display order for the list of available fields in Composer.',
+                                'fields' => [
+                                    'fieldDisplayOrder' => [
+                                        'type'    => 'radio',
+                                        'value'   => $settings->getFieldDisplayOrder(),
+                                        'choices' => [
+                                            SettingsModel::FIELD_DISPLAY_ORDER_TYPE => 'Field type, Field name (alphabetical)',
+                                            SettingsModel::FIELD_DISPLAY_ORDER_NAME => 'Field name (alphabetical)',
+                                        ],
                                     ],
                                 ],
                             ],
                         ],
                     ],
-                ],
-            ]
-        );
+                ]
+            );
 
         return $view;
     }
@@ -214,33 +212,56 @@ class SettingsController extends Controller
     {
         $settings = $this->getSettings();
 
-        $view = new CpView('settings/common', []);
-        $view
-            ->setHeading(lang('Formatting Templates'))
-            ->addBreadcrumb(new NavigationLink('Settings', 'settings/general'))
-            ->setTemplateVariables(
-            [
-                'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),
-                'cp_page_title'         => $view->getHeading(),
-                'save_btn_text'         => 'btn_save_settings',
-                'save_btn_text_working' => 'btn_saving',
-                'sections'              => [
+        $variables = [
+            'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),
+            'cp_page_title'         => lang('Formatting Templates'),
+            'save_btn_text'         => 'btn_save_settings',
+            'save_btn_text_working' => 'btn_saving',
+            'sections'              => [
+                [
                     [
-                        [
-                            'title'  => 'Directory Path',
-                            'desc'   => 'Provide a full path to the folder where your custom formatting templates directory is. This allows you to use HTML templates for your form formatting, and helps Composer locate these files to assign one of them to a form.',
-                            'fields' => [
-                                'formattingTemplatePath' => [
-                                    'type'        => 'text',
-                                    'value'       => $settings->getFormattingTemplatePath(),
-                                    'placeholder' => PATH_TMPL,
-                                ],
+                        'title'  => 'Directory Path',
+                        'desc'   => 'Provide a full path to the folder where your custom formatting templates directory is. This allows you to use HTML templates for your form formatting, and helps Composer locate these files to assign one of them to a form.',
+                        'fields' => [
+                            'formattingTemplatePath' => [
+                                'type'        => 'text',
+                                'value'       => $settings->getFormattingTemplatePath(),
+                                'placeholder' => PATH_TMPL,
                             ],
                         ],
                     ],
                 ],
-            ]
-        );
+            ],
+        ];
+
+
+        if ($settings->getFormattingTemplatePath()) {
+            $path  = $settings->getFormattingTemplatePath();
+            $files = $settings->listTemplatesInFormTemplateDirectory();
+            $url   = $this->getLink('templates');
+
+            ob_start();
+            include(PATH_THIRD . 'freeform_next/Templates/notifications/listing.php');
+            $content = ob_get_clean();
+
+            $variables['sections'][0][1] = [
+                'title'  => '',
+                'wide'   => true,
+                'fields' => [
+                    'listing' => [
+                        'type'    => 'html',
+                        'content' => $content,
+                    ],
+                ],
+            ];
+        }
+
+        $view = new CpView('settings/common', $variables);
+        $view
+            ->setHeading(lang('Formatting Templates'))
+            ->addBreadcrumb(new NavigationLink('Settings', 'settings/general'))
+            ->addJavascript('settings');
+
 
         return $view;
     }
@@ -252,14 +273,9 @@ class SettingsController extends Controller
     {
         $settings = $this->getSettings();
 
-        $view = new CpView('settings/common', []);
-        $view
-            ->setHeading(lang('Email Templates'))
-            ->addBreadcrumb(new NavigationLink('Settings', 'settings/general'));
-
         $variables = [
             'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),
-            'cp_page_title'         => $view->getHeading(),
+            'cp_page_title'         => lang('Email Templates'),
             'save_btn_text'         => 'btn_save_settings',
             'save_btn_text_working' => 'btn_saving',
             'sections'              => [
@@ -294,9 +310,32 @@ class SettingsController extends Controller
                     ],
                 ],
             ];
+
+            $path  = $settings->getNotificationTemplatePath();
+            $files = $settings->listTemplatesInEmailTemplateDirectory();
+            $url   = $this->getLink('api/notifications/create');
+
+            ob_start();
+            include(PATH_THIRD . 'freeform_next/Templates/notifications/listing.php');
+            $content = ob_get_clean();
+
+            $variables['sections'][0][2] = [
+                'title'  => '',
+                'wide'   => true,
+                'fields' => [
+                    'listing' => [
+                        'type'    => 'html',
+                        'content' => $content,
+                    ],
+                ],
+            ];
         }
 
-        $view->setTemplateVariables($variables);
+        $view = new CpView('settings/common', $variables);
+        $view
+            ->setHeading(lang('Email Templates'))
+            ->addBreadcrumb(new NavigationLink('Settings', 'settings/general'))
+            ->addJavascript('settings');
 
         return $view;
     }
@@ -316,6 +355,7 @@ class SettingsController extends Controller
      * TRUE  - if it was handled
      * FALSE - if there were errors
      * NULL  - if nothing was posted
+     *
      * @return bool
      */
     private function handlePost()

@@ -207,16 +207,21 @@ class Freeform_next_mcp extends ControlPanelView
                 $templateName .= '.html';
 
                 $filePath = $settings->getFormattingTemplatePath() . '/' . $templateName;
-                $handle   = fopen($filePath, 'w');
 
-                if (false === $handle) {
-                    $ajaxView->addError('');
+                if (file_exists($filePath)) {
+                    $ajaxView->addError(sprintf('Template "%s" already exists', $templateName));
                 } else {
-                    $content = $settings->getDemoTemplateContent();
-                    fwrite($handle, $content);
-                    fclose($handle);
+                    $handle = fopen($filePath, 'w');
 
-                    $ajaxView->addVariable('templateName', $templateName);
+                    if (false === $handle) {
+                        $ajaxView->addError('');
+                    } else {
+                        $content = $settings->getDemoTemplateContent();
+                        fwrite($handle, $content);
+                        fclose($handle);
+
+                        $ajaxView->addVariable('templateName', $templateName);
+                    }
                 }
             } else {
                 $ajaxView->addError('No custom template directory specified in settings');

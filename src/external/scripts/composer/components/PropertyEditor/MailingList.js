@@ -129,7 +129,10 @@ export default class MailingList extends BasePropertyEditor {
         });
       }
 
-      let fieldList = selectedMailingList.fields;
+      let fieldList = [];
+      if (selectedMailingList) {
+        fieldList = selectedMailingList.fields;
+      }
 
       mappingField = (
         <CustomProperty
