@@ -28,56 +28,7 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
     const SETTING_CLIENT_ID     = 'salesforce_client_id';
     const SETTING_CLIENT_SECRET = 'salesforce_client_secret';
     const SETTING_USER_LOGIN    = 'salesforce_username';
-
-    /**
-     * Push objects to the CRM
-     *
-     * @param array $keyValueList
-     *
-     * @return bool
-     * @throws \Exception
-     */
-    public function pushObject(array $keyValueList)
-    {
-        $client   = new Client();
-        $endpoint = $this->getEndpoint('/sobjects/Lead');
-
-        try {
-            $headers = [
-                'Authorization' => 'Bearer ' . $this->getAccessToken(),
-                'Accept'        => 'application/json',
-            ];
-
-            $request = $client->post($endpoint, $headers);
-            $request->setHeader('Content-Type', 'application/json');
-            $request->setBody(json_encode($keyValueList));
-            $response = $request->send();
-
-            return $response->getStatusCode() === 201;
-        } catch (BadResponseException $e) {
-            $responseBody = $e->getResponse()->getBody(true);
-
-            $this->getLogger()->error($responseBody, self::LOG_CATEGORY);
-            $this->getLogger()->error($e->getMessage(), self::LOG_CATEGORY);
-
-            if ($e->getResponse()->getStatusCode() === 400) {
-                $errors = json_decode($e->getResponse()->getBody());
-
-                if (is_array($errors)) {
-                    foreach ($errors as $error) {
-                        if (strtoupper($error->errorCode) === 'REQUIRED_FIELD_MISSING') {
-                            return false;
-                        }
-                    }
-
-                }
-            }
-
-            throw $e;
-        }
-    }
     const SETTING_USER_PASSWORD = 'salesforce_password';
-
     const SETTING_INSTANCE      = 'instance';
 
     /**
@@ -240,6 +191,54 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
         $json = json_decode($response->getBody(true), true);
 
         return !empty($json);
+    }
+
+    /**
+     * Push objects to the CRM
+     *
+     * @param array $keyValueList
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function pushObject(array $keyValueList)
+    {
+        $client   = new Client();
+        $endpoint = $this->getEndpoint('/sobjects/Lead');
+
+        try {
+            $headers = [
+                'Authorization' => 'Bearer ' . $this->getAccessToken(),
+                'Accept'        => 'application/json',
+            ];
+
+            $request = $client->post($endpoint, $headers);
+            $request->setHeader('Content-Type', 'application/json');
+            $request->setBody(json_encode($keyValueList));
+            $response = $request->send();
+
+            return $response->getStatusCode() === 201;
+        } catch (BadResponseException $e) {
+            $responseBody = $e->getResponse()->getBody(true);
+
+            $this->getLogger()->error($responseBody, self::LOG_CATEGORY);
+            $this->getLogger()->error($e->getMessage(), self::LOG_CATEGORY);
+
+            if ($e->getResponse()->getStatusCode() === 400) {
+                $errors = json_decode($e->getResponse()->getBody());
+
+                if (is_array($errors)) {
+                    foreach ($errors as $error) {
+                        if (strtoupper($error->errorCode) === 'REQUIRED_FIELD_MISSING') {
+                            return false;
+                        }
+                    }
+
+                }
+            }
+
+            throw $e;
+        }
     }
 
     /**
