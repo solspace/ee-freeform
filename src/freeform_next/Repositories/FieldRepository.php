@@ -12,6 +12,7 @@
 namespace Solspace\Addons\FreeformNext\Repositories;
 
 use Solspace\Addons\FreeformNext\Model\FieldModel;
+use Solspace\Addons\FreeformNext\Model\SettingsModel;
 
 class FieldRepository extends Repository
 {
@@ -87,10 +88,18 @@ class FieldRepository extends Repository
     public function getAllFields($indexById = true)
     {
         if (null === self::$fieldCache || !self::$allFieldsLoaded) {
-            //$fieldDisplayOrder = craft()->freeform_settings->getFieldDisplayOrder();
+            $fieldDisplayOrder = SettingsRepository::getInstance()->getOrCreate()->getFieldDisplayOrder();
+            $orderByType = $fieldDisplayOrder === SettingsModel::FIELD_DISPLAY_ORDER_TYPE;
 
-            $fieldModels = ee('Model')
-                ->get(FieldModel::MODEL)
+            $resources = ee('Model')
+                ->get(FieldModel::MODEL);
+
+            if ($orderByType) {
+                $resources->order('type', 'ASC');
+            }
+
+            $fieldModels = $resources
+                ->order('label', 'ASC')
                 ->all()
                 ->asArray();
 
