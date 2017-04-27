@@ -11,7 +11,7 @@
 import React, {Component, PropTypes} from "react";
 import Tab from "./Tab";
 
-const MAX_TABS = 9;
+const MAX_TABS = 50;
 
 export default class TabList extends Component {
   static propTypes = {

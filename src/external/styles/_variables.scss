@@ -10,18 +10,18 @@
 
 // COLORS
 
-$color-cp-bg-gray: #FAFAFA;
+$color-cp-bg-gray: #f9f9f9;
 $color-cp-bg-white: #FFFFFF;
-$color-bg-tabs: #F4F4F6;
+$color-bg-tabs: #f1f1f1;
 
 $color-white: #FFFFFF;
 
 $color-field-text: #000000;
 $color-field-border: #DDDDDD;
-$color-column-label: #576574;
-$color-column-instructions: #8f98a3;
+$color-column-label: #292929;
+$color-column-instructions: #808080;
 $color-row-border: #EDEDED;
-$color-tab-border: #E6E7EA;
+$color-tab-border: #cdcdcd;
 $color-tab-text: #555555;
 $color-input-text: #29323d;
 $color-select-text: $color-input-text;
@@ -31,8 +31,10 @@ $color-input-readonly: #ECECEC;
 $color-input-readonly-border: #CCCCCC;
 $color-input-disabled-text: #ABA7A7;
 
-$color-placeholder: #F3F4F7;
-$color-placeholder-border: #BBBDBE;
+$color-placeholder: #fffdf4;
+$color-placeholder-border: #edc941;
+
+$color-active-column: #f3fbfe;
 
 $color-row-bg: $color-placeholder;
 $color-row-border: #DBDCDF;
