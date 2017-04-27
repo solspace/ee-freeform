@@ -165,6 +165,7 @@ class FieldController extends Controller
                     'desc'   => lang('What type of field is this?'),
                     'fields' => [
                         'type' => [
+                            'disabled'     => (bool) $model->id,
                             'type'         => 'select',
                             'value'        => $model->type,
                             'required'     => true,
