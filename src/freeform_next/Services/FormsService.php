@@ -21,6 +21,9 @@ use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 
 class FormsService implements FormHandlerInterface
 {
+    /** @var array */
+    private static $spamBlockCache = [];
+
     /**
      * @param Form   $form
      * @param string $templateName
@@ -82,19 +85,20 @@ class FormsService implements FormHandlerInterface
      */
     public function incrementSpamBlockCount(Form $form)
     {
-        ee()->db->query("UPDATE exp_freeform_next_forms SET spamBlockCount = spamBlockCount + 1 WHERE id = {$form->getId()}");
-        $result = ee()->db
-            ->select('spamBlockCount')
-            ->from('exp_freeform_next_forms')
-            ->where(['id' => $form->getId()])
-            ->get()
-            ->result_array();
+        if (!isset(self::$spamBlockCache[$form->getId()])) {
+            ee()->db->query("UPDATE exp_freeform_next_forms SET spamBlockCount = spamBlockCount + 1 WHERE id = {$form->getId()}");
 
-        if (count($result)) {
-            return $result[0]['spamBlockCount'];
+            $result = ee()->db
+                ->select('spamBlockCount')
+                ->from('exp_freeform_next_forms')
+                ->where(['id' => $form->getId()])
+                ->get()
+                ->row('spamBlockCount');
+
+            self::$spamBlockCache[$form->getId()] = (int) $result;
         }
 
-        return 0;
+        return self::$spamBlockCache[$form->getId()];
     }
 
     /**

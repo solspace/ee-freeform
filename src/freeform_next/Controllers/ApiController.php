@@ -6,6 +6,7 @@ use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
+use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
 use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
@@ -16,6 +17,7 @@ class ApiController extends Controller
 {
     const TYPE_FIELDS        = 'fields';
     const TYPE_NOTIFICATIONS = 'notifications';
+    const TYPE_RESET_SPAM    = 'reset_spam';
 
     /**
      * @param string $type
@@ -32,6 +34,9 @@ class ApiController extends Controller
 
             case self::TYPE_NOTIFICATIONS:
                 return $this->notifications($args);
+
+            case self::TYPE_RESET_SPAM:
+                return $this->resetSpam();
         }
 
         throw new FreeformException(sprintf('"%s" action is not present in the API controller', $type));
@@ -67,7 +72,7 @@ class ApiController extends Controller
         $view = new AjaxView();
 
         if (isset($args[1]) && $args[1] === 'create') {
-            $settings    = SettingsRepository::getInstance()->getOrCreate();
+            $settings = SettingsRepository::getInstance()->getOrCreate();
 
             $errors = [];
 
@@ -125,6 +130,28 @@ class ApiController extends Controller
         }
 
         $view->setVariables(NotificationRepository::getInstance()->getAllNotifications());
+
+        return $view;
+    }
+
+    /**
+     * @return AjaxView
+     */
+    public function resetSpam()
+    {
+        $formId = ee()->input->post('formId');
+
+        $form = FormRepository::getInstance()->getFormById($formId);
+        $view = new AjaxView();
+
+        if (!$form) {
+            $view->addError('Form not found');
+        } else {
+            $form->spamBlockCount = 0;
+            $form->save();
+
+            $view->addVariable('success', true);
+        }
 
         return $view;
     }

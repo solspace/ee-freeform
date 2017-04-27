@@ -1,6 +1,7 @@
 <?php
 /**
  * Freeform Next for Expression Engine
+ *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
@@ -19,7 +20,6 @@ use Solspace\Addons\FreeformNext\Library\Session\EERequest;
 use Solspace\Addons\FreeformNext\Library\Session\EESession;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
 use Solspace\Addons\FreeformNext\Model\FormModel;
-use Solspace\Addons\FreeformNext\Model\SettingsModel;
 use Solspace\Addons\FreeformNext\Repositories\CrmRepository;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FileRepository;
@@ -54,11 +54,12 @@ class FormController extends Controller
 
         $table->setColumns(
             [
-                'id'          => ['type' => Table::COL_ID],
-                'Form'        => ['type' => Table::COL_TEXT],
-                'Handle'      => ['type' => Table::COL_TEXT],
-                'Submissions' => ['type' => Table::COL_TEXT],
-                'manage'      => ['type' => Table::COL_TOOLBAR],
+                'id'                 => ['type' => Table::COL_ID],
+                'Form'               => ['type' => Table::COL_TEXT],
+                'Handle'             => ['type' => Table::COL_TEXT],
+                'Submissions'        => ['type' => Table::COL_TEXT],
+                'blocked_spam_count' => ['type' => Table::COL_TEXT],
+                'manage'             => ['type' => Table::COL_TOOLBAR],
                 ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
             ]
         );
@@ -79,11 +80,24 @@ class FormController extends Controller
                     'content' => isset($submissionTotals[$form->id]) ? $submissionTotals[$form->id] : 0,
                     'href'    => $this->getLink('submissions/' . $form->handle),
                 ],
+                $form->spamBlockCount,
                 [
                     'toolbar_items' => [
                         'edit' => [
                             'href'  => $this->getLink('forms/' . $form->id),
                             'title' => lang('edit'),
+                        ],
+                        'sync' => [
+                            'href'                 => 'javascript:;',
+                            'class'                => 'reset-spam-count',
+                            'title'                => lang('Reset Spam Count'),
+                            'data-csrf'            => CSRF_TOKEN,
+                            'data-url'             => $this->getLink('api/reset_spam'),
+                            'data-form-id'         => $form->id,
+                            'data-confirm-message' => sprintf(
+                                lang('Are you sure you want to reset the spam count for %s to 0?'),
+                                $form->name
+                            ),
                         ],
                     ],
                 ],
@@ -115,8 +129,11 @@ class FormController extends Controller
                 ],
             ]
         );
-        $view->setHeading(lang('Forms'));
-        $view->addModal((new ConfirmRemoveModal($this->getLink('forms/delete')))->setKind('Forms'));
+
+        $view
+            ->setHeading(lang('Forms'))
+            ->addJavascript('formIndex')
+            ->addModal((new ConfirmRemoveModal($this->getLink('forms/delete')))->setKind('Forms'));
 
         return $view;
     }

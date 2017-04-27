@@ -384,7 +384,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         }
 
         if (!$this->isValid()) {
-            throw new FreeformException($this->translator->translate("Trying to post an invalid form"));
+            throw new FreeformException($this->translator->translate('Trying to post an invalid form'));
         }
 
         $submittedValues = [];
