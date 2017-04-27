@@ -115,7 +115,7 @@ class Freeform_next_upd extends AddonUpdater
         $status->name      = 'Open';
         $status->handle    = 'open';
         $status->isDefault = true;
-        $status->color     = '#008000';
+        $status->color     = '#8cc258';
         $status->sortOrder = 1;
         $status->save();
 
@@ -123,7 +123,7 @@ class Freeform_next_upd extends AddonUpdater
         $status->name      = 'Closed';
         $status->handle    = 'closed';
         $status->isDefault = false;
-        $status->color     = '#ff0000';
+        $status->color     = '#df4537';
         $status->sortOrder = 2;
         $status->save();
 
@@ -131,7 +131,7 @@ class Freeform_next_upd extends AddonUpdater
         $status->name      = 'Pending';
         $status->handle    = 'pending';
         $status->isDefault = false;
-        $status->color     = '#ffff00';
+        $status->color     = '#ffe35b';
         $status->sortOrder = 3;
         $status->save();
     }
