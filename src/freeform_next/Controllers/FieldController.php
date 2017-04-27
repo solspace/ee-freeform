@@ -1,6 +1,7 @@
 <?php
 /**
  * Freeform Next for Expression Engine
+ *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
@@ -18,7 +19,6 @@ use Solspace\Addons\FreeformNext\Model\FieldModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FileRepository;
 use Solspace\Addons\FreeformNext\Services\FilesService;
-use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\ConfirmRemoveModal;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
@@ -80,7 +80,7 @@ class FieldController extends Controller
         $view = new CpView(
             'fields/listing',
             [
-                'table' => $table->viewData(),
+                'table'            => $table->viewData(),
                 'cp_page_title'    => lang('Fields'),
                 'form_right_links' => [
                     [
@@ -212,7 +212,7 @@ class FieldController extends Controller
         $field = FieldRepository::getInstance()->getOrCreateField($fieldId);
 
         $post        = $_POST;
-        $type        = $_POST['type'];
+        $type        = $_POST['type'] ?: $field->type;
         $validValues = [];
         foreach ($post as $key => $value) {
             if (property_exists($field, $key)) {
@@ -255,10 +255,11 @@ class FieldController extends Controller
                 }
             }
 
-            $hasValues = isset($fieldSpecificPost['values']) && is_array($fieldSpecificPost['values']);
+            $hasValues         = isset($fieldSpecificPost['values']) && is_array($fieldSpecificPost['values']);
+            $forceLabelOnValue = isset($fieldSpecificPost['custom_values']) && $fieldSpecificPost['custom_values'] !== '1';
 
             if ($fieldHasOptions && $hasValues) {
-                $field->setPostValues($fieldSpecificPost);
+                $field->setPostValues($fieldSpecificPost, $forceLabelOnValue);
             } else {
                 $validValues['values'] = null;
             }

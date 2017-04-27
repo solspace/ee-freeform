@@ -181,8 +181,9 @@ class FieldModel extends Model implements \JsonSerializable
 
     /**
      * @param array $postValues
+     * @param bool  $forceLabelToValue
      */
-    public function setPostValues(array $postValues)
+    public function setPostValues(array $postValues, $forceLabelToValue = false)
     {
         $labels           = $postValues['labels'];
         $values           = $postValues['values'];
@@ -198,11 +199,15 @@ class FieldModel extends Model implements \JsonSerializable
                 continue;
             }
 
-            if (empty($label) || empty($value)) {
-                $fieldValue = $fieldLabel = (!empty($label) ? $label : $value);
+            if (empty($label)) {
+                $fieldLabel = $value;
             } else {
                 $fieldValue = $value;
                 $fieldLabel = $label;
+            }
+
+            if ($forceLabelToValue) {
+                $fieldValue = $fieldLabel;
             }
 
             $isChecked = (bool) $checkedByDefault[$index];
