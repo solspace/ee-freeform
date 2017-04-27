@@ -218,7 +218,7 @@ $minRowHeight: 60px;
 
       margin-right: $spacing-short;
 
-      font-family: Craft, sans-serif;
+      font-family: FontAwesome, sans-serif;
     }
   }
 
@@ -227,7 +227,7 @@ $minRowHeight: 60px;
     top: 1px;
 
     &:before {
-      content: "\61";
+      content: "\f071";
     }
   }
 
@@ -235,8 +235,8 @@ $minRowHeight: 60px;
     color: $color-column-label;
 
     &:before {
-      font-family: solspace-freeform-craft;
-      content: "\e801";
+      font-family: FontAwesome, sans-serif;
+      content: "\f070";
     }
   }
 
@@ -244,7 +244,7 @@ $minRowHeight: 60px;
     color: $color-column-label;
 
     &:before {
-      font-family: solspace-freeform-craft;
+      font-family: FontAwesome, sans-serif;
       content: "\f121";
     }
   }
