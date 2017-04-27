@@ -18,9 +18,9 @@ import fetch from "isomorphic-fetch";
 @connect(
   null,
   (dispatch) => ({
-    fetchTemplates: () => {
+    fetchTemplates: (hash, templateName) => {
       dispatch(invalidateFormTemplates());
-      dispatch(fetchFormTemplatesIfNeeded());
+      dispatch(fetchFormTemplatesIfNeeded(hash, templateName));
     },
   })
 )
@@ -64,7 +64,7 @@ export default class NotificationProperties extends Component {
 
   render() {
     const {name, fileName, errors} = this.state;
-    const {toggleForm}           = this.props;
+    const {toggleForm}             = this.props;
 
     return (
       <div className="composer-new-field-form">
@@ -187,7 +187,7 @@ export default class NotificationProperties extends Component {
       .then(response => response.json())
       .then(json => {
         if (json.templateName && json.success) {
-          fetchTemplates();
+          fetchTemplates("form", json.templateName);
           toggleForm();
 
           notificator("notice", "Template added successfully");

@@ -162,8 +162,8 @@ export default class NotificationProperties extends Component {
    * @returns {boolean}
    */
   addNotification() {
-    const {name, handle}                                                         = this.refs;
-    const {toggleForm, fetchNotifications}                                       = this.props;
+    const {name, handle}                                                             = this.refs;
+    const {toggleForm, fetchNotifications}                                           = this.props;
     const {csrf, notificator, createNotificationUrl, hash, isDbEmailTemplateStorage} = this.context;
 
     const nameValue   = ReactDOM.findDOMNode(name).value;
@@ -198,7 +198,12 @@ export default class NotificationProperties extends Component {
       .then(response => response.json())
       .then(json => {
         if (json.success) {
-          fetchNotifications(hash, parseInt(json.id));
+          let id = json.id;
+          if (/^[0-9]+$/.test(id)) {
+            id = parseInt(id);
+          }
+
+          fetchNotifications(hash, id);
           toggleForm();
 
           notificator("notice", "Notification added successfully");

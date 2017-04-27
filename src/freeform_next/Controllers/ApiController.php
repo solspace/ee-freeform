@@ -105,6 +105,7 @@ class ApiController extends Controller
                     } else {
                         try {
                             file_put_contents($templatePath, $settings->getEmailTemplateContent());
+                            $notification = NotificationModel::createFromTemplate($templatePath);
                         } catch (FreeformException $exception) {
                             $errors[] = $exception->getMessage();
                         }
@@ -114,6 +115,7 @@ class ApiController extends Controller
 
             if (empty($errors)) {
                 $view->addVariable('success', true);
+                $view->addVariable('id', $notification->id);
             } else {
                 $view->addVariable('success', false);
                 $view->addVariable('errors', $errors);

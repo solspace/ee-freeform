@@ -11,6 +11,7 @@
 import * as ActionTypes from "../constants/ActionTypes";
 import fetch from 'isomorphic-fetch';
 import {urlBuilder} from "../app";
+import {updateProperty, switchHash} from "../actions/Actions";
 
 function requestFormTemplates() {
   return {
@@ -31,7 +32,7 @@ export function invalidateFormTemplates() {
   }
 }
 
-export function fetchFormTemplatesIfNeeded() {
+export function fetchFormTemplatesIfNeeded(hash = null, autoselectId = null) {
   return function(dispatch, getState) {
     if (shouldFetchFormTemplates(getState())) {
       dispatch(requestFormTemplates());
@@ -41,6 +42,15 @@ export function fetchFormTemplatesIfNeeded() {
         .then(response => response.json())
         .then(json => {
           dispatch(receiveFormTemplates(json));
+          if (hash && autoselectId) {
+            dispatch(updateProperty(hash, {formTemplate: autoselectId}));
+
+            // For some reason, the property update alone isn't enough
+            // for React to refresh the select box, so I have to do a quick back-and-forth
+            // with context hash
+            dispatch(switchHash(""));
+            dispatch(switchHash(hash));
+          }
         });
     } else {
       Promise.resolve();
