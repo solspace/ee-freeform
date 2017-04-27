@@ -160,7 +160,8 @@ class SubmissionController extends Controller
         );
         $view
             ->setHeading(lang('Submissions'))
-            ->addBreadcrumb(new NavigationLink('Form: ' . $form->getName(), 'forms/' . $form->getHandle()))
+            ->addBreadcrumb(new NavigationLink('Forms', 'forms'))
+            ->addBreadcrumb(new NavigationLink($form->getName(), 'forms/' . $form->getId()))
             ->addModal($modal);
 
         return $view;
@@ -333,7 +334,10 @@ class SubmissionController extends Controller
         }
 
         $view
-            ->setHeading('Submission: ' . $submission->title)
+            ->setHeading($submission->title)
+            ->addBreadcrumb(new NavigationLink('Forms', 'forms'))
+            ->addBreadcrumb(new NavigationLink($form->getName(), 'forms/' . $form->getId()))
+            ->addBreadcrumb(new NavigationLink('Submissions', 'submissions/' . $form->getHandle()))
             ->setTemplateVariables(
                 [
                     'base_url'              => $this->getLink(
