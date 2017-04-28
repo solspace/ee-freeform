@@ -45,6 +45,11 @@ $sidebarMinWidth: 18%;
       content: "\f067";
     }
   }
+
+  .btn.active {
+    background-color: #186291;
+    border-color: #186291;
+  }
 }
 
 #main > div.padded {
