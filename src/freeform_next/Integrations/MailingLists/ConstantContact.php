@@ -21,6 +21,7 @@ use Solspace\Addons\FreeformNext\Library\Logging\LoggerInterface;
 
 class ConstantContact extends MailingListOAuthConnector
 {
+    const TITLE        = 'Constant Contact';
     const LOG_CATEGORY = 'ConstantContact';
 
     /**

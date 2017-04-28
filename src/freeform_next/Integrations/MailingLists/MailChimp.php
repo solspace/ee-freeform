@@ -23,6 +23,7 @@ use Solspace\Addons\FreeformNext\Library\Logging\LoggerInterface;
 
 class MailChimp extends AbstractMailingListIntegration
 {
+    const TITLE        = 'MailChimp';
     const LOG_CATEGORY = 'MailChimp';
 
     const SETTING_API_KEY     = 'api_key';

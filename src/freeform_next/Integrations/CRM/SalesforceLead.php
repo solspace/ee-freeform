@@ -23,6 +23,7 @@ use Solspace\Addons\FreeformNext\Library\Integrations\TokenRefreshInterface;
 
 class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInterface
 {
+    const TITLE        = 'Salesforce Lead';
     const LOG_CATEGORY = 'Salesforce';
 
     const SETTING_CLIENT_ID     = 'salesforce_client_id';

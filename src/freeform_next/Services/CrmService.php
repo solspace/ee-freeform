@@ -31,7 +31,6 @@ use Solspace\Addons\FreeformNext\Model\CrmFieldModel;
 use Solspace\Addons\FreeformNext\Model\IntegrationModel;
 use Solspace\Addons\FreeformNext\Repositories\CrmRepository;
 use Solspace\Addons\FreeformNext\Utilities\Extension\FreeformIntegrationExtension;
-use Stringy\Stringy;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -313,7 +312,8 @@ class CrmService implements CRMHandlerInterface
             $finder      = new Finder();
             $crmListPath = __DIR__ . '/../Integrations/CRM';
             if (file_exists($crmListPath) && is_dir($crmListPath)) {
-                $files = $finder->files()->in($crmListPath)->name('*.php');
+                $files         = $finder->files()->in($crmListPath)->name('*.php');
+                $baseNamespace = 'Solspace\Addons\FreeformNext\Integrations\CRM\\';
 
                 /** @var SplFileInfo $file */
                 foreach ($files as $file) {
@@ -324,9 +324,9 @@ class CrmService implements CRMHandlerInterface
                         strpos($fileName, '.')
                     );
 
-                    $title = (string) Stringy::create($baseName)->underscored()->humanize()->titleize();
+                    $title = ($baseNamespace . $baseName)::TITLE;
 
-                    $integrations['Solspace\Addons\FreeformNext\Integrations\CRM\\' . $baseName] = $title;
+                    $integrations[$baseNamespace . $baseName] = $title;
                 }
             }
 

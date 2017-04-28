@@ -22,6 +22,7 @@ use Solspace\Addons\FreeformNext\Library\Logging\LoggerInterface;
 
 class HubSpot extends AbstractCRMIntegration
 {
+    const TITLE           = 'HubSpot';
     const SETTING_API_KEY = 'api_key';
     const LOG_CATEGORY    = 'HubSpot';
 

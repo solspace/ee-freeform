@@ -23,6 +23,7 @@ use Solspace\Addons\FreeformNext\Library\Logging\LoggerInterface;
 
 class CampaignMonitor extends AbstractMailingListIntegration
 {
+    const TITLE        = 'Campaign Monitor';
     const LOG_CATEGORY = 'CampaignMonitor';
 
     const SETTING_API_KEY   = 'api_key';

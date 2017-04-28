@@ -25,7 +25,6 @@ use Solspace\Addons\FreeformNext\Model\MailingListFieldModel;
 use Solspace\Addons\FreeformNext\Model\MailingListModel;
 use Solspace\Addons\FreeformNext\Repositories\MailingListRepository;
 use Solspace\Addons\FreeformNext\Utilities\Extension\FreeformIntegrationExtension;
-use Stringy\Stringy;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -352,7 +351,8 @@ class MailingListsService implements MailingListHandlerInterface
             $mailingListPath = __DIR__ . '/../Integrations/MailingLists';
             if (file_exists($mailingListPath) && is_dir($mailingListPath)) {
                 /** @var SplFileInfo[] $files */
-                $files = $finder->files()->in($mailingListPath)->name('*.php');
+                $files         = $finder->files()->in($mailingListPath)->name('*.php');
+                $baseNamespace = 'Solspace\Addons\FreeformNext\Integrations\MailingLists\\';
 
                 foreach ($files as $file) {
                     $fileName = $file->getFilename();
@@ -362,9 +362,9 @@ class MailingListsService implements MailingListHandlerInterface
                         strpos($fileName, '.')
                     );
 
-                    $title = (string) Stringy::create($baseName)->underscored()->humanize()->titleize();
+                    $title = ($baseNamespace . $baseName)::TITLE;
 
-                    $integrations['Solspace\Addons\FreeformNext\Integrations\MailingLists\\' . $baseName] = $title;
+                    $integrations[$baseNamespace . $baseName] = $title;
                 }
             }
 
