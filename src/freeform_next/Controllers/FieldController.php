@@ -212,7 +212,7 @@ class FieldController extends Controller
         $field = FieldRepository::getInstance()->getOrCreateField($fieldId);
 
         $post        = $_POST;
-        $type        = $_POST['type'] ?: $field->type;
+        $type        = isset($_POST['type']) ? $_POST['type'] : $field->type;
         $validValues = [];
         foreach ($post as $key => $value) {
             if (property_exists($field, $key)) {
