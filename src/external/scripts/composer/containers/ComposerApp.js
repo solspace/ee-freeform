@@ -71,9 +71,10 @@ export default class ComposerApp extends Component {
   render() {
     const {saveUrl, formUrl, showTutorial, finishTutorialUrl} = this.props;
 
+    // <Tutorials showTutorial={showTutorial} finishTutorialUrl={finishTutorialUrl} />
+
     return (
       <div className="builder-interface">
-        <Tutorials showTutorial={showTutorial} finishTutorialUrl={finishTutorialUrl} />
         <SaveButton saveUrl={saveUrl} formUrl={formUrl} />
 
         <div className="builder-blocks">
