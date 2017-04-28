@@ -167,7 +167,7 @@ class StatusController extends Controller
         $view = new CpView('statuses/edit');
         $view
             ->setHeading($status->name ?: lang('New Status'))
-            ->addBreadcrumb(new NavigationLink('Statuses', 'statuses'))
+            ->addBreadcrumb(new NavigationLink('Statuses', 'settings/statuses'))
             ->addJavascript('statuses')
             ->addJavascript('handleGenerator')
             ->setTemplateVariables(
