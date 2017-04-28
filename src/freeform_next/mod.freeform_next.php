@@ -181,6 +181,9 @@ class Freeform_Next extends Plugin
 
                 $returnUrl = $postedReturnUrl ?: $form->getReturnUrl();
                 $returnUrl = TemplateHelper::renderStringWithForm($returnUrl, $form, $submissionModel);
+                if ($submissionModel) {
+                    $returnUrl = str_replace('SUBMISSION_ID', $submissionModel->id, $returnUrl);
+                }
 
                 if ($isAjaxRequest) {
                     $this->returnJson(
