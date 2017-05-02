@@ -8,7 +8,11 @@
             <?php if ( ! empty($form_right_links)):?>
                 <fieldset class="tbl-search right">
                     <?php foreach ($form_right_links as $link_data):?>
-                        <a class="btn tn action" href="<?=$link_data['link']?>"><?=$link_data['title']?></a>
+                        <a class="btn tn action"
+                           <?php echo @$link_data['attrs'] ?>
+                           href="<?=$link_data['link']?>">
+                            <?=$link_data['title']?>
+                        </a>
                     <?php endforeach;?>
                 </fieldset>
             <?php endif;?>

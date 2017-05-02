@@ -13,22 +13,19 @@ namespace Solspace\Addons\FreeformNext\Model;
 
 use EllisLab\ExpressionEngine\Service\Model\Model;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
-use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 
 /**
- * Class FieldModel
- *
- * @property int    $id
- * @property int    $siteId
- * @property int    $statusId
- * @property int    $formId
- * @property string $title
+ * @property int       $id
+ * @property int       $siteId
+ * @property int       $statusId
+ * @property int       $formId
+ * @property string    $title
+ * @property \DateTime $dateCreated
+ * @property \DateTime $dateUpdated
  */
 class SubmissionModel extends Model
 {
@@ -51,6 +48,8 @@ class SubmissionModel extends Model
     protected $statusId;
     protected $formId;
     protected $title;
+    protected $dateCreated;
+    protected $dateUpdated;
 
     /** @var array */
     private $fieldValues;
@@ -115,11 +114,13 @@ class SubmissionModel extends Model
         $submission = ee('Model')->make(
             self::MODEL,
             [
-                'id'       => $fetchedValues['id'],
-                'siteId'   => $fetchedValues['siteId'],
-                'formId'   => $fetchedValues['formId'],
-                'statusId' => $fetchedValues['statusId'],
-                'title'    => $fetchedValues['title'],
+                'id'          => $fetchedValues['id'],
+                'siteId'      => $fetchedValues['siteId'],
+                'formId'      => $fetchedValues['formId'],
+                'statusId'    => $fetchedValues['statusId'],
+                'title'       => $fetchedValues['title'],
+                'dateCreated' => $fetchedValues['dateCreated'],
+                'dateUpdated' => $fetchedValues['dateUpdated'],
             ]
         );
 
@@ -259,10 +260,11 @@ class SubmissionModel extends Model
     public function save()
     {
         $insertData = [
-            'siteId'   => $this->siteId,
-            'formId'   => $this->formId,
-            'statusId' => $this->statusId,
-            'title'    => $this->title,
+            'siteId'      => $this->siteId,
+            'formId'      => $this->formId,
+            'statusId'    => $this->statusId,
+            'title'       => $this->title,
+            'dateUpdated' => date('Y-m-d H:i:s', time()),
         ];
 
         $insertData = array_merge($insertData, $this->assembleInsertData());

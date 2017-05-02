@@ -2,22 +2,26 @@
 
 namespace Solspace\Addons\FreeformNext\Controllers;
 
+use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionPreferenceSetting;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
+use Solspace\Addons\FreeformNext\Model\SubmissionPreferencesModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
 use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
+use Solspace\Addons\FreeformNext\Repositories\SubmissionPreferencesRepository;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 use Stringy\Stringy;
 
 class ApiController extends Controller
 {
-    const TYPE_FIELDS        = 'fields';
-    const TYPE_NOTIFICATIONS = 'notifications';
-    const TYPE_RESET_SPAM    = 'reset_spam';
+    const TYPE_FIELDS            = 'fields';
+    const TYPE_NOTIFICATIONS     = 'notifications';
+    const TYPE_RESET_SPAM        = 'reset_spam';
+    const TYPE_SUBMISSION_LAYOUT = 'submission_layout';
 
     /**
      * @param string $type
@@ -37,6 +41,9 @@ class ApiController extends Controller
 
             case self::TYPE_RESET_SPAM:
                 return $this->resetSpam();
+
+            case self::TYPE_SUBMISSION_LAYOUT:
+                return $this->submissionLayout();
         }
 
         throw new FreeformException(sprintf('"%s" action is not present in the API controller', $type));
@@ -149,6 +156,36 @@ class ApiController extends Controller
         } else {
             $form->spamBlockCount = 0;
             $form->save();
+
+            $view->addVariable('success', true);
+        }
+
+        return $view;
+    }
+
+    /**
+     * @return AjaxView
+     */
+    public function submissionLayout()
+    {
+        $formId   = ee()->input->post('formId');
+        $data     = ee()->input->post('data');
+        $memberId = ee()->session->userdata('member_id');
+
+        $form = FormRepository::getInstance()->getFormById($formId)->getForm();
+        $view = new AjaxView();
+
+        if (!$form) {
+            $view->addError('Form not found');
+        } else {
+            $layout = [];
+            foreach ($data as $item) {
+                $layout[] = SubmissionPreferenceSetting::createFromArray($item);
+            }
+
+            $prefs = SubmissionPreferencesRepository::getInstance()->getOrCreate($form, $memberId);
+            $prefs->settings = $layout;
+            $prefs->save();
 
             $view->addVariable('success', true);
         }

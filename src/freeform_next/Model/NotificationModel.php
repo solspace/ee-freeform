@@ -15,8 +15,6 @@ use EllisLab\ExpressionEngine\Service\Model\Model;
 use Solspace\Addons\FreeformNext\Library\DataObjects\EmailTemplate;
 
 /**
- * Class NotificationModel
- *
  * @property int    $id
  * @property int    $siteId
  * @property string $name

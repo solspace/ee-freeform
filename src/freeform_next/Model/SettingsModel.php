@@ -17,8 +17,6 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * Class FieldModel
- *
  * @property int    $id
  * @property int    $siteId
  * @property bool   $spamProtectionEnabled

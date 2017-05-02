@@ -26,8 +26,10 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\TextareaFiel
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Page;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Row;
+use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
+use Solspace\Addons\FreeformNext\Repositories\SubmissionPreferencesRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\ConfirmRemoveModal;
@@ -46,36 +48,49 @@ class SubmissionController extends Controller
         $submissions = SubmissionRepository::getInstance()->getAllSubmissionsFor($form);
         $colors      = StatusRepository::getInstance()->getColorsById();
 
-        /** @var AbstractField[] $showableFields */
-        $showableFields = [];
-        foreach ($form->getLayout()->getFields() as $field) {
-            if ($field instanceof NoStorageInterface) {
+        $preferences = SubmissionPreferencesRepository::getInstance()->getOrCreate(
+            $form,
+            ee()->session->userdata('member_id')
+        );
+        $layout      = $preferences->getLayout();
+
+        $columns = [];
+        foreach ($layout as $setting) {
+            if (!$setting->isChecked()) {
                 continue;
             }
 
-            $showableFields[] = $field;
-        }
-
-        /** @var Table $table */
-        $table = ee(
-            'CP/Table',
-            [
-                'sortable'   => true,
-                'searchable' => true,
-            ]
-        );
-
-        $columns = [
-            'id'    => ['type' => Table::COL_ID],
-            'title' => ['type' => Table::COL_TEXT, 'encode' => false],
-        ];
-
-        foreach ($showableFields as $field) {
-            if ($field instanceof FileUploadField) {
-                $columns[$field->getLabel()] = ['type' => Table::COL_TOOLBAR];
-            } else {
-                $columns[$field->getLabel()] = ['type' => Table::COL_TEXT];
+            $type   = Table::COL_TEXT;
+            $encode = true;
+            if ($setting->getId() === 'id') {
+                $type = Table::COL_ID;
+            } else if ($setting->getId() === 'title') {
+                $encode = false;
             }
+
+            $handle = $setting->getHandle();
+            $label  = $setting->getLabel();
+            if (is_numeric($setting->getId())) {
+                try {
+                    $field  = $form->getLayout()->getFieldById($setting->getId());
+                    $handle = $field->getHandle();
+                    $label  = $field->getLabel();
+
+                    if ($field->getType() === AbstractField::TYPE_FILE) {
+                        $type   = Table::COL_TOOLBAR;
+                        $encode = false;
+                    }
+                } catch (FreeformException $e) {
+                    continue;
+                }
+            }
+
+            $columns[$handle] = [
+                'label'  => $label,
+                'type'   => $type,
+                'encode' => $encode,
+                'sort'   => true,
+            ];
         }
 
         $columns = array_merge(
@@ -86,6 +101,16 @@ class SubmissionController extends Controller
             ]
         );
 
+        /** @var Table $table */
+        $table = ee(
+            'CP/Table',
+            [
+                'sortable'   => true,
+                'searchable' => true,
+                'limit'      => 5,
+            ]
+        );
+
         $table->setColumns($columns);
 
         ee()->javascript->set_global('file_view_url', ee('CP/URL')->make('files/file/view/###')->compile());
@@ -93,35 +118,49 @@ class SubmissionController extends Controller
         $tableData = [];
         foreach ($submissions as $submission) {
             $link = $this->getLink('submissions/' . $form->getHandle() . '/' . $submission->id);
-            $data = [
-                $submission->id,
-                [
-                    'content' => '<a href="' . $link . '"><span class="color-indicator" style="background: ' . @$colors[$submission->statusId] . ';"></span>' . $submission->title . '</a>',
-                ],
-            ];
+            $data = [];
 
-            foreach ($showableFields as $field) {
-                $value = $submission->getFieldValueAsString($field->getHandle());
+            foreach ($layout as $setting) {
+                if (!$setting->isChecked()) {
+                    continue;
+                }
 
-                if ($field instanceof FileUploadField) {
-                    if ($value) {
-                        $data[] = [
-                            'toolbar_items' => [
-                                'edit'     => [
-                                    'href'  => ee('CP/URL', 'cp/files/file/edit/' . $value),
-                                    'title' => lang('edit'),
-                                ],
-                                'download' => [
-                                    'href'  => ee('CP/URL')->make('files/file/download/' . $value),
-                                    'title' => lang('download'),
-                                ],
-                            ],
-                        ];
-                    } else {
-                        $data[] = ['toolbar_items' => []];
+                if ($setting->getId() === 'id') {
+                    $data[] = $submission->id;
+                } else if ($setting->getId() === 'title') {
+                    $data[] = [
+                        'content' => '<a href="' . $link . '"><span class="color-indicator" style="background: ' . @$colors[$submission->statusId] . ';"></span>' . $submission->title . '</a>',
+                    ];
+                } else if ($setting->getId() === 'dateCreated') {
+                    $data[] = date('Y-m-d H:i', strtotime($submission->dateCreated));
+                } else if (is_numeric($setting->getId())) {
+                    try {
+                        $field = $form->getLayout()->getFieldById($setting->getId());
+                        $value = $submission->getFieldValueAsString($field->getHandle());
+
+                        if ($field instanceof FileUploadField) {
+                            if ($value) {
+                                $data[] = [
+                                    'toolbar_items' => [
+                                        'edit'     => [
+                                            'href'  => ee('CP/URL', 'cp/files/file/edit/' . $value),
+                                            'title' => lang('edit'),
+                                        ],
+                                        'download' => [
+                                            'href'  => ee('CP/URL')->make('files/file/download/' . $value),
+                                            'title' => lang('download'),
+                                        ],
+                                    ],
+                                ];
+                            } else {
+                                $data[] = ['toolbar_items' => []];
+                            }
+                        } else {
+                            $data[] = $value;
+                        }
+                    } catch (FreeformException $e) {
+                        continue;
                     }
-                } else {
-                    $data[] = $value;
                 }
             }
 
@@ -152,14 +191,26 @@ class SubmissionController extends Controller
         $modal->setKind('Submissions');
 
         $view = new CpView(
-            'form/listing',
+            'submissions/listing',
             [
-                'table'         => $table->viewData(),
-                'cp_page_title' => 'Submissions for ' . $form->getName(),
+                'table'            => $table->viewData(),
+                'cp_page_title'    => 'Submissions for ' . $form->getName(),
+                'layout'           => $layout,
+                'form'             => $form,
+                'form_right_links' => [
+                    [
+                        'title' => lang('Edit Layout'),
+                        'link'  => '#',
+                        'attrs' => 'id="change-layout-trigger"',
+                    ],
+                ],
             ]
         );
+
         $view
             ->setHeading(lang('Submissions'))
+            ->addJavascript('submissions')
+            ->addJavascript('lib/featherlight.min.js')
             ->addBreadcrumb(new NavigationLink('Forms', 'forms'))
             ->addBreadcrumb(new NavigationLink($form->getName(), 'forms/' . $form->getId()))
             ->addModal($modal);
@@ -306,11 +357,13 @@ class SubmissionController extends Controller
                         $fields = [];
 
                         /** @var array $value */
-                        foreach ($value as $val) {
-                            $fields[$handle . '[]'] = [
-                                'type'  => 'text',
-                                'value' => $val,
-                            ];
+                        if (is_array($value)) {
+                            foreach ($value as $val) {
+                                $fields[$handle . '[]'] = [
+                                    'type'  => 'text',
+                                    'value' => $val,
+                                ];
+                            }
                         }
                     } else {
                         $fields = [

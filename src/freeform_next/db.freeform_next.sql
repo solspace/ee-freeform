@@ -204,3 +204,17 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_settings` (
   DEFAULT CHARSET = `utf8`
   COLLATE = `utf8_unicode_ci`;
 
+CREATE TABLE IF NOT EXISTS `exp_freeform_next_submission_preferences`
+(
+  `id`       INT  NOT NULL AUTO_INCREMENT,
+  `siteId`   INT  NOT NULL,
+  `memberId` INT  NOT NULL,
+  `formId`   INT  NOT NULL,
+  `settings` TEXT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `site_member_form` (`siteId`, `memberId`, `formId`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = `utf8`
+  COLLATE = `utf8_unicode_ci`;
+

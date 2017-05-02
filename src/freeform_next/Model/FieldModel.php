@@ -16,7 +16,6 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadFi
 use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
 
 /**
- * Class FieldModel
  * @property int    $id
  * @property int    $siteId
  * @property string $type

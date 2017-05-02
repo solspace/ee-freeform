@@ -14,8 +14,6 @@ namespace Solspace\Addons\FreeformNext\Model;
 use EllisLab\ExpressionEngine\Service\Model\Model;
 
 /**
- * Class NotificationModel
- *
  * @property int    $id
  * @property int    $siteId
  * @property string $name

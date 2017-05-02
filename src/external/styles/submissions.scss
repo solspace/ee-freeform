@@ -7,72 +7,70 @@
  * @link          https://solspace.com/expressionengine/freeform-next
  * @license       https://solspace.com/software/license-agreement
  */
-
 @import "variables";
 @import "extendable-classes";
 
-$spacing: 10px;
-$gutter: 10px;
-.fields-row {
-  display: flex;
-  justify-content: space-between;
-  margin: 0 (-($gutter)) 0;
-  padding: 0;
+.featherlight {
+  .featherlight-content {
+    width: 600px;
+    padding: 0 !important;
+    border-bottom: none !important;
+    overflow-x: hidden !important;
 
-  &:last-child {
-    border-bottom: none;
+    border-radius: 5px;
   }
+}
 
-  > div {
-    flex: 1 1 0;
-    padding: $spacing $gutter;
-  }
+.choice-panel {
 
-  @extend %reset-lists;
-  @extend %reset-headings;
+  ul {
+    max-height: 432px;
+    overflow-y: auto;
 
-  .field-required {
-    .field.checkboxfield {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    > li {
+      display: block;
+      margin: 0;
+      padding: 0;
+
+      transition: background .3s ease-out;
+
+      &:hover {
+        background: #eeeeee;
+      }
+
       label {
-        &:after {
-          position: relative;
-          top: -1px;
+        display: block;
+        font-size: 16px;
 
-          content: "*";
-          margin: 0 0 0 7px;
+        padding: 4px 10px;
+      }
 
-          font-family: Craft, sans-serif;
-          font-size: 7px;
-          color: #da5a47;
+      .handle {
+        position: relative;
+        top: -1px;
+
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        text-align: center;
+
+        cursor: pointer;
+
+        &:before {
+          content: "\f0c9";
+          font-family: FontAwesome, sans-serif;
         }
       }
     }
   }
-}
 
-#status-menu-btn {
-  background: none;
-  border: none;
-  box-shadow: none;
-
-  padding-left: 0;
-
-  &:focus {
-    outline: none;
-    box-shadow: none;
-  }
-}
-
-.tab-content {
-  margin: 0;
-}
-
-.input {
-  > input {
-    margin-top: 3px;
-
-    &:first-child {
-      margin-top: 0;
-    }
+  .buttons {
+    padding: 10px 10px;
+    border-top: 1px solid #e8e8e8;
+    background-image: -webkit-linear-gradient(top, #f9f9f9, #fff);
   }
 }
