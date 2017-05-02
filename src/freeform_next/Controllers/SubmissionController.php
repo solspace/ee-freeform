@@ -38,6 +38,8 @@ use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 
 class SubmissionController extends Controller
 {
+    const MAX_PER_PAGE = 20;
+
     /**
      * @param Form $form
      *
@@ -45,14 +47,42 @@ class SubmissionController extends Controller
      */
     public function index(Form $form)
     {
-        $submissions = SubmissionRepository::getInstance()->getAllSubmissionsFor($form);
-        $colors      = StatusRepository::getInstance()->getColorsById();
-
         $preferences = SubmissionPreferencesRepository::getInstance()->getOrCreate(
             $form,
             ee()->session->userdata('member_id')
         );
-        $layout      = $preferences->getLayout();
+
+        $layout = $preferences->getLayout();
+
+        $page = (int) ee()->input->get('page') ?: 1;
+
+        $sortDirection = ee()->input->get('sort_dir');
+        $sortColumn    = ee()->input->get('sort_col');
+
+        $sortVars = [
+            'sort_col' => $sortColumn,
+            'sort_dir' => $sortDirection,
+        ];
+
+        $totalSubmissionCount = SubmissionRepository::getInstance()->getAllSubmissionCountFor($form);
+
+        $submissions = SubmissionRepository::getInstance()->getAllSubmissionsFor(
+            $form,
+            [],
+            $preferences->getDatabaseColumnName($sortColumn),
+            $sortDirection,
+            self::MAX_PER_PAGE,
+            abs(self::MAX_PER_PAGE * ($page - 1))
+        );
+
+        $colors = StatusRepository::getInstance()->getColorsById();
+
+        $pagination = ee('CP/Pagination', $totalSubmissionCount)
+            ->perPage(self::MAX_PER_PAGE)
+            ->currentPage($page)
+            ->render(
+                $this->getLink('submissions/' . $form->getHandle() . '&' . http_build_query($sortVars))
+            );
 
         $columns = [];
         foreach ($layout as $setting) {
@@ -85,8 +115,11 @@ class SubmissionController extends Controller
                 }
             }
 
+            // Make sure the labels are "translatable"
+            ee()->lang->language[$handle] = $label;
+
             $columns[$handle] = [
-                'label'  => $label,
+                'label'  => $handle,
                 'type'   => $type,
                 'encode' => $encode,
                 'sort'   => true,
@@ -105,9 +138,9 @@ class SubmissionController extends Controller
         $table = ee(
             'CP/Table',
             [
-                'sortable'   => true,
-                'searchable' => true,
-                'limit'      => 5,
+                'sortable' => true,
+                'search'   => true,
+                'limit'    => 5,
             ]
         );
 
@@ -193,7 +226,7 @@ class SubmissionController extends Controller
         $view = new CpView(
             'submissions/listing',
             [
-                'table'            => $table->viewData(),
+                'table'            => $table->viewData($this->getLink('submissions/' . $form->getHandle())),
                 'cp_page_title'    => 'Submissions for ' . $form->getName(),
                 'layout'           => $layout,
                 'form'             => $form,
@@ -204,6 +237,7 @@ class SubmissionController extends Controller
                         'attrs' => 'id="change-layout-trigger"',
                     ],
                 ],
+                'pagination'       => $pagination,
             ]
         );
 

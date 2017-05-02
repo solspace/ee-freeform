@@ -39,6 +39,9 @@ class SubmissionPreferencesModel extends Model
     protected $formId;
     protected $settings;
 
+    /** @var SubmissionPreferenceSetting[] */
+    private $layout;
+
     /** @var array */
     protected static $_typed_columns = [
         'settings' => 'json',
@@ -85,75 +88,101 @@ class SubmissionPreferencesModel extends Model
      */
     public function getLayout()
     {
-        /** @var array $settings */
-        $settings   = $this->settings;
-        $form       = $this->getForm()->getForm();
-        $formLayout = $form->getLayout();
+        if (null === $this->layout) {
+            /** @var array $settings */
+            $settings   = $this->settings;
+            $form       = $this->getForm()->getForm();
+            $formLayout = $form->getLayout();
 
-        $layout = $usedIds = [];
-        $hasId  = $hasTitle = $hasCreated = false;
+            $layout = $usedIds = [];
+            $hasId  = $hasTitle = $hasCreated = false;
 
-        if (null !== $settings) {
-            foreach ($settings as $item) {
-                if (is_numeric($item['id'])) {
-                    try {
-                        $field = $formLayout->getFieldById($item['id']);
-                    } catch (FreeformException $e) {
-                        continue;
-                    }
+            if (null !== $settings) {
+                foreach ($settings as $item) {
+                    if (is_numeric($item['id'])) {
+                        try {
+                            $field = $formLayout->getFieldById($item['id']);
+                        } catch (FreeformException $e) {
+                            continue;
+                        }
 
-                    if ($field instanceof NoStorageInterface) {
-                        continue;
-                    }
+                        if ($field instanceof NoStorageInterface) {
+                            continue;
+                        }
 
-                    $layout[]  = SubmissionPreferenceSetting::createFromField($field, $item['checked']);
-                    $usedIds[] = $field->getId();
-                } else {
-                    $layout[] = SubmissionPreferenceSetting::createFromArray($item);
-                    if ($item['id'] === 'id') {
-                        $hasId = true;
-                    }
+                        $layout[]  = SubmissionPreferenceSetting::createFromField($field, $item['checked']);
+                        $usedIds[] = $field->getId();
+                    } else {
+                        $layout[] = SubmissionPreferenceSetting::createFromArray($item);
+                        if ($item['id'] === 'id') {
+                            $hasId = true;
+                        }
 
-                    if ($item['id'] === 'title') {
-                        $hasTitle = true;
-                    }
+                        if ($item['id'] === 'title') {
+                            $hasTitle = true;
+                        }
 
-                    if ($item['id'] === 'dateCreated') {
-                        $hasCreated = true;
+                        if ($item['id'] === 'dateCreated') {
+                            $hasCreated = true;
+                        }
                     }
                 }
             }
-        }
 
-        if (!$hasCreated) {
-            array_unshift(
-                $layout,
-                new SubmissionPreferenceSetting('dateCreated', 'dateCreated', 'Date Created', true)
-            );
-        }
-
-        if (!$hasTitle) {
-            array_unshift(
-                $layout,
-                new SubmissionPreferenceSetting('title', 'title', 'Title', true)
-            );
-        }
-
-        if (!$hasId) {
-            array_unshift(
-                $layout,
-                new SubmissionPreferenceSetting('id', 'id', 'ID', true)
-            );
-        }
-
-        foreach ($formLayout->getFields() as $field) {
-            if ($field instanceof NoStorageInterface || in_array($field->getId(), $usedIds, true)) {
-                continue;
+            if (!$hasCreated) {
+                array_unshift(
+                    $layout,
+                    new SubmissionPreferenceSetting('dateCreated', 'dateCreated', 'Date Created', true)
+                );
             }
 
-            $layout[] = SubmissionPreferenceSetting::createFromField($field, true);
+            if (!$hasTitle) {
+                array_unshift(
+                    $layout,
+                    new SubmissionPreferenceSetting('title', 'title', 'Title', true)
+                );
+            }
+
+            if (!$hasId) {
+                array_unshift(
+                    $layout,
+                    new SubmissionPreferenceSetting('id', 'id', 'ID', true)
+                );
+            }
+
+            foreach ($formLayout->getFields() as $field) {
+                if ($field instanceof NoStorageInterface || in_array($field->getId(), $usedIds, true)) {
+                    continue;
+                }
+
+                $layout[] = SubmissionPreferenceSetting::createFromField($field, true);
+            }
+
+            $this->layout = $layout;
         }
 
-        return $layout;
+        return $this->layout;
+    }
+
+    /**
+     * @param string $columnName
+     *
+     * @return null|string
+     */
+    public function getDatabaseColumnName($columnName)
+    {
+        $layout = $this->getLayout();
+
+        foreach ($layout as $item) {
+            if ($item->getHandle() === $columnName) {
+                if (is_numeric($item->getId())) {
+                    return SubmissionModel::getFieldColumnName($item->getId());
+                }
+
+                return $item->getId();
+            }
+        }
+
+        return null;
     }
 }

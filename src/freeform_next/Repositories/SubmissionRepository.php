@@ -60,15 +60,41 @@ class SubmissionRepository extends Repository
     }
 
     /**
-     * @param Form $form
+     * @param Form   $form
+     * @param array  $filters
+     * @param null   $orderBy
+     * @param string $sort
+     * @param null   $limit
+     * @param null   $offset
      *
      * @return SubmissionModel[]
      */
-    public function getAllSubmissionsFor(Form $form)
-    {
+    public function getAllSubmissionsFor(
+        Form $form,
+        array $filters = [],
+        $orderBy = null,
+        $sort = 'asc',
+        $limit = null,
+        $offset = null
+    ) {
+        $filters['formId'] = $form->getId();
+
         /** @var array $result */
+        ee()->db->where($filters);
+
+        if (null !== $orderBy) {
+            ee()->db->order_by($orderBy, strtolower($sort) === 'asc' ? 'ASC' : 'DESC');
+        }
+
+        if (null !== $limit) {
+            ee()->db->limit($limit);
+        }
+
+        if (null !== $offset) {
+            ee()->db->offset($offset);
+        }
+
         $result = ee()->db
-            ->where(['formId' => $form->getId()])
             ->get(SubmissionModel::TABLE)
             ->result_array();
 
@@ -80,6 +106,23 @@ class SubmissionRepository extends Repository
         }
 
         return $submissions;
+    }
+
+    /**
+     * @param Form  $form
+     * @param array $filters
+     *
+     * @return int
+     */
+    public function getAllSubmissionCountFor(Form $form, array $filters = [])
+    {
+        $filters['formId'] = $form->getId();
+
+        return ee()->db
+            ->select('COUNT(id) AS total')
+            ->where($filters)
+            ->get(SubmissionModel::TABLE)
+            ->row('total') ?: 0;
     }
 
     /**
