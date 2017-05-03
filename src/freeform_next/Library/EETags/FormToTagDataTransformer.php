@@ -3,11 +3,8 @@
 namespace Solspace\Addons\FreeformNext\Library\EETags;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Attributes\CustomFieldAttributes;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecipientField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\OptionsInterface;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SubmitField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\FileUploadInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Page;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Row;
@@ -27,15 +24,21 @@ class FormToTagDataTransformer
     /** @var string */
     private $content;
 
+    /** @var bool */
+    private $skipHelperFields;
+
     /**
      * FormToTagDataTransformer constructor.
      *
-     * @param Form $form
+     * @param Form   $form
+     * @param string $content
+     * @param bool   $skipHelperFields
      */
-    public function __construct(Form $form, $content)
+    public function __construct(Form $form, $content, $skipHelperFields = false)
     {
-        $this->form    = $form;
-        $this->content = $content;
+        $this->form             = $form;
+        $this->content          = $content;
+        $this->skipHelperFields = $skipHelperFields;
     }
 
     /**
@@ -72,8 +75,8 @@ class FormToTagDataTransformer
         $formTransformer = new FormTransformer();
 
         $data = [
-            'rows'              => $this->rowData(),
-            'pages'             => $this->pages(),
+            'rows'  => $this->rowData(),
+            'pages' => $this->pages(),
         ];
 
         $submissionCount = FormRepository::getInstance()->getFormSubmissionCount([$this->form->getId()]);
@@ -217,9 +220,19 @@ class FormToTagDataTransformer
 
             /** @var AbstractField $field */
             foreach ($row as $field) {
+                if ($this->skipHelperFields) {
+                    if ($field instanceof NoStorageInterface || $field instanceof FileUploadInterface) {
+                        continue;
+                    }
+                }
+
                 $column = $this->getFieldData($field, 'field:', $columnIndex++, $columnCount);
 
                 $columns['columns'][] = $column;
+            }
+
+            if (empty($columns['columns'])) {
+                continue;
             }
 
             $data[] = $columns;

@@ -24,11 +24,16 @@ class TemplateHelper
      * @param string          $string
      * @param Form            $form
      * @param SubmissionModel $submissionModel
+     * @param bool            $skipHelperFields
      *
      * @return string
      */
-    public static function renderStringWithForm($string, Form $form, SubmissionModel $submissionModel = null)
-    {
+    public static function renderStringWithForm(
+        $string,
+        Form $form,
+        SubmissionModel $submissionModel = null,
+        $skipHelperFields = false
+    ) {
         $form = clone $form;
 
         if ($submissionModel) {
@@ -41,7 +46,7 @@ class TemplateHelper
             }
         }
 
-        $dataTransformer = new FormToTagDataTransformer($form, $string);
+        $dataTransformer = new FormToTagDataTransformer($form, $string, $skipHelperFields);
         $string          = $dataTransformer->getOutputWithoutWrappingFormTags();
 
         ee()->TMPL->parse($string);

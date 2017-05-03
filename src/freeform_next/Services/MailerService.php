@@ -54,7 +54,6 @@ class MailerService implements MailHandlerInterface
         $fieldValues = $this->getFieldValues($fields, $form, $submission);
         foreach ($recipients as $recipientName => $emailAddress) {
 
-
             $fromEmail = TemplateHelper::renderStringWithForm($notification->fromEmail, $form, $submission);
             $fromName  = TemplateHelper::renderStringWithForm($notification->fromName, $form, $submission);
             $replyTo   = TemplateHelper::renderStringWithForm(
@@ -63,7 +62,7 @@ class MailerService implements MailHandlerInterface
                 $submission
             );
             $subject   = TemplateHelper::renderStringWithForm($notification->subject, $form, $submission);
-            $bodyHtml  = TemplateHelper::renderStringWithForm($notification->bodyHtml, $form, $submission);
+            $bodyHtml  = TemplateHelper::renderStringWithForm($notification->bodyHtml, $form, $submission, true);
 
             $message = \Swift_Message::newInstance()
                 ->setFrom([$fromEmail => $fromName])
