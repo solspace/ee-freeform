@@ -10,6 +10,7 @@
 
 namespace Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation;
 
+use EllisLab\ExpressionEngine\Library\CP\URL;
 use EllisLab\ExpressionEngine\Service\Sidebar\Header;
 use EllisLab\ExpressionEngine\Service\Sidebar\Sidebar;
 
@@ -35,8 +36,6 @@ class Navigation
      */
     public function buildNavigationView()
     {
-        $currentUrl = ltrim($_SERVER['REQUEST_URI'], '/');
-
         /** @var Sidebar $sidebar */
         $sidebar = ee('CP/Sidebar')->make();
 
@@ -45,7 +44,12 @@ class Navigation
 
             /** @var Header $header */
             $header = $sidebar->addHeader($item->getTitle(), $link);
-            if ($item->getMethod() !== '' && $link && strpos($currentUrl, $link->compile()) === 0) {
+
+            if ($item->getMethod() === '' && $this->getCurrentUrl() === 'addons/settings/freeform_next') {
+                $header->isActive();
+            }
+
+            if ($item->getMethod() !== '' && $link && $this->isUrlActive($link)) {
                 $header->isActive();
             }
 
@@ -61,7 +65,7 @@ class Navigation
                     $subLink = $subItem->getLink();
                     $subHeader = $basicList->addItem($subItem->getTitle(), $subItem->getLink());
 
-                    if ($subLink && $subItem->getMethod() !== '' && strpos($currentUrl, $subLink->compile()) === 0) {
+                    if ($subLink && $subItem->getMethod() !== '' && $this->isUrlActive($subLink)) {
                         $subHeader->isActive();
                     }
                 }
@@ -69,5 +73,46 @@ class Navigation
         }
 
         return $sidebar;
+    }
+
+    /**
+     * @param URL|string $url
+     *
+     * @return bool
+     */
+    private function isUrlActive($url)
+    {
+        return strpos($this->getCurrentUrl(), $this->getTrimLink($url)) === 0;
+    }
+
+    /**
+     * @param string $url
+     *
+     * @return bool|string
+     */
+    private function getTrimLink($url)
+    {
+        if ($url instanceof URL) {
+            $url = $url->compile();
+        }
+
+        return substr(
+            $url,
+            strpos($url, 'addons/settings')
+        );
+    }
+
+    /**
+     * @return bool|string
+     */
+    private function getCurrentUrl()
+    {
+        static $currentUrl;
+
+        if (null === $currentUrl) {
+            $currentUrl = $this->getTrimLink(ltrim($_SERVER['REQUEST_URI'], '/'));
+        }
+
+        return $currentUrl;
     }
 }

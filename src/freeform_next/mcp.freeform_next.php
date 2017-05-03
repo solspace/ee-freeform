@@ -43,7 +43,7 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function index()
     {
-        return $this->renderView($this->getFormController()->index());
+        return $this->renderView(new RedirectView($this->getLink('forms')));
     }
 
     /**
@@ -307,7 +307,7 @@ class Freeform_next_mcp extends ControlPanelView
      */
     protected function buildNavigation()
     {
-        $forms = new NavigationLink('Forms', '');
+        $forms = new NavigationLink('Forms', 'forms');
         $forms->setButtonLink(new NavigationLink('New', 'forms/new'));
 
         $notifications = new NavigationLink('Notifications', 'notifications');
