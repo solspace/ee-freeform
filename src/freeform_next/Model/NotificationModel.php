@@ -76,9 +76,7 @@ class NotificationModel extends Model implements \JsonSerializable
 <ul>
     {rows}
         {columns}
-            {if field:type != "submit" AND field:type != "file_upload"}
-                <li>{field:label}: {field:value}</li>
-            {/if}
+            <li>{field:label}: {field:value}</li>
         {/columns}
     {/rows}
 </ul>
