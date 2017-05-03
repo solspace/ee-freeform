@@ -16,6 +16,9 @@ class CustomFormAttributes extends AbstractAttributes
     /** @var string */
     protected $returnUrl;
 
+    /** @var string - Alias of $returnUrl */
+    protected $return;
+
     /** @var string */
     protected $inputClass;
 
@@ -72,6 +75,10 @@ class CustomFormAttributes extends AbstractAttributes
      */
     public function getReturnUrl()
     {
+        if (null === $this->returnUrl && null !== $this->return) {
+            return $this->return;
+        }
+
         return $this->returnUrl;
     }
 
@@ -200,7 +207,7 @@ class CustomFormAttributes extends AbstractAttributes
      */
     public function getFormAttributes()
     {
-        if (is_null($this->formAttributes)) {
+        if (null === $this->formAttributes) {
             return $this->formAttributes;
         }
 

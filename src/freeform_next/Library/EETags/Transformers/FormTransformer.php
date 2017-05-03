@@ -22,6 +22,7 @@ class FormTransformer implements Transformer
             'form:handle'                    => $form->getHandle(),
             'form:description'               => $form->getDescription(),
             'form:return_url'                => $form->getReturnUrl(),
+            'form:return'                    => $form->getReturnUrl(),
             'form:action'                    => $form->getCustomAttributes()->getAction(),
             'form:method'                    => $form->getCustomAttributes()->getMethod(),
             'form:class'                     => $form->getCustomAttributes()->getClass(),
