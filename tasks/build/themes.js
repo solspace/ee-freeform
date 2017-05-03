@@ -1,4 +1,4 @@
-var paths = require("../_paths");
+const paths = require("../_paths");
 
 module.exports = {
   dep: ['clean:themes'],

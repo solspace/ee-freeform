@@ -1,19 +1,26 @@
-var paths      = require("../_paths");
-var uglify     = require("gulp-uglify");
-var sourcemaps = require("gulp-sourcemaps");
-var gulpif     = require("gulp-if");
-var helpers    = require("../_helpers");
-var babel      = require('gulp-babel');
+const paths      = require("../_paths"),
+      uglify     = require("gulp-uglify"),
+      sourcemaps = require("gulp-sourcemaps"),
+      gulpif     = require("gulp-if"),
+      helpers    = require("../_helpers"),
+      babel      = require('gulp-babel'),
+      notify     = require('gulp-notify');
 
 module.exports = {
   dep: ['clean:scripts'],
   fn: function (gulp, callback) {
-    return gulp.src(paths.scripts.src)
+    return gulp
+      .src(paths.scripts.src)
       .pipe(gulpif(helpers.isProd(), sourcemaps.init()))
-      .on('error', function(err) { console.error(err); this.emit('end'); })
-      .pipe(babel({
-        presets: ['es2015']
-      }))
+      .pipe(
+        babel({
+          presets: ['es2015']
+        })
+          .on("error", notify.onError({
+            message: 'Error: <%= error.message %>',
+            sound: 'Sosumi'
+          }))
+      )
       .pipe(uglify({
         mangle: true,
       }))

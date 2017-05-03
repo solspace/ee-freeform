@@ -232,6 +232,11 @@ class SubmissionController extends Controller
                 'form'             => $form,
                 'form_right_links' => [
                     [
+                        'title' => lang('Export CSV'),
+                        'link'  => $this->getLink('api/submission_export/' . $form->getId()),
+                        'attrs' => 'id="export-trigger" style="margin-right: 5px;"',
+                    ],
+                    [
                         'title' => lang('Edit Layout'),
                         'link'  => '#',
                         'attrs' => 'id="change-layout-trigger"',

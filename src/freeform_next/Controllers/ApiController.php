@@ -6,13 +6,14 @@ use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionPreferenceSetting
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
-use Solspace\Addons\FreeformNext\Model\SubmissionPreferencesModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
 use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionPreferencesRepository;
+use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\FileDownloadView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 use Stringy\Stringy;
 
@@ -22,6 +23,7 @@ class ApiController extends Controller
     const TYPE_NOTIFICATIONS     = 'notifications';
     const TYPE_RESET_SPAM        = 'reset_spam';
     const TYPE_SUBMISSION_LAYOUT = 'submission_layout';
+    const TYPE_SUBMISSION_EXPORT = 'submission_export';
 
     /**
      * @param string $type
@@ -44,6 +46,9 @@ class ApiController extends Controller
 
             case self::TYPE_SUBMISSION_LAYOUT:
                 return $this->submissionLayout();
+
+            case self::TYPE_SUBMISSION_EXPORT:
+                return $this->submissionExport($args);
         }
 
         throw new FreeformException(sprintf('"%s" action is not present in the API controller', $type));
@@ -183,7 +188,7 @@ class ApiController extends Controller
                 $layout[] = SubmissionPreferenceSetting::createFromArray($item);
             }
 
-            $prefs = SubmissionPreferencesRepository::getInstance()->getOrCreate($form, $memberId);
+            $prefs           = SubmissionPreferencesRepository::getInstance()->getOrCreate($form, $memberId);
             $prefs->settings = $layout;
             $prefs->save();
 
@@ -191,6 +196,86 @@ class ApiController extends Controller
         }
 
         return $view;
+    }
+
+    /**
+     * @param array $args
+     *
+     * @return View
+     * @throws FreeformException
+     */
+    public function submissionExport(array $args = [])
+    {
+        $formId = @$args[1];
+
+        $form = FormRepository::getInstance()->getFormById($formId)->getForm();
+        if (!$form) {
+            throw new FreeformException('Form not found');
+        }
+
+        $fileName = sprintf('%s_submissions_%s.csv', $form->getHandle(), date('Y-m-d_H-i'));
+
+        $headers = $data = [];
+
+        $preferences = SubmissionPreferencesRepository::getInstance()->getOrCreate(
+            $form,
+            ee()->session->userdata('member_id')
+        );
+
+        $output = fopen('php://output', 'w');
+
+        $layout = $preferences->getLayout();
+
+        foreach ($layout as $item) {
+            if (!$item->isChecked()) {
+                continue;
+            }
+
+            $headers[] = $item->getLabel();
+        }
+
+        fputcsv($output, $headers);
+
+        $limit = 20;
+        $offset = 0;
+
+        $submissionRepository = SubmissionRepository::getInstance();
+        $submissions = $submissionRepository->getAllSubmissionsFor($form, [], 'id', 'asc', $limit, $offset);
+
+        while (!empty($submissions)) {
+            foreach ($submissions as $submission) {
+                $row = [];
+                foreach ($layout as $item) {
+                    if (!$item->isChecked()) {
+                        continue;
+                    }
+
+                    if (is_numeric($item->getId())) {
+                        $row[] = $submission->getFieldValueAsString($item->getHandle());
+                    } else {
+                        $row[] = $submission->{$item->getHandle()};
+                    }
+                }
+
+                fputcsv($output, $row);
+            }
+
+            $offset += $limit;
+            $submissions = $submissionRepository->getAllSubmissionsFor(
+                $form,
+                [],
+                'id',
+                'asc',
+                $limit,
+                $offset
+            );
+        }
+
+        fclose($output);
+
+        $content = ob_get_clean();
+
+        return new FileDownloadView($fileName, $content);
     }
 
     /**

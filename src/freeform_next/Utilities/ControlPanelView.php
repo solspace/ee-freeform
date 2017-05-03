@@ -15,6 +15,7 @@ use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\Navigation;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RenderlessViewInterface;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 
 class ControlPanelView
@@ -43,8 +44,9 @@ class ControlPanelView
             die();
         }
 
-        if ($view instanceof RedirectView) {
+        if ($view instanceof RenderlessViewInterface) {
             $view->compile();
+            die();
         }
 
         $viewData = [];
