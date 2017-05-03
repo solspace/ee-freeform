@@ -13,6 +13,7 @@ namespace Solspace\Addons\FreeformNext\Library\Database;
 
 use Craft\Freeform_NotificationModel;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
+use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 
 interface SubmissionHandlerInterface
 {
@@ -22,7 +23,7 @@ interface SubmissionHandlerInterface
      * @param Form  $form
      * @param array $fields
      *
-     * @return Freeform_NotificationModel|null
+     * @return SubmissionModel|null
      */
     public function storeSubmission(Form $form, array $fields);
 

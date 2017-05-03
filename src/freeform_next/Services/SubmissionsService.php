@@ -53,6 +53,7 @@ class SubmissionsService implements SubmissionHandlerInterface
         $submission = SubmissionModel::create($form, $savableFields);
 
         $submission->title = TemplateHelper::renderStringWithForm($form->getSubmissionTitleFormat(), $form);
+        $submission->title = TemplateHelper::renderString($submission->title, $savableFields);
 
         foreach ($savableFields as $handle => $value) {
             $submission->setFieldValue($handle, $value);
