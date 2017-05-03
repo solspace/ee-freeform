@@ -173,16 +173,16 @@ class SettingsController extends Controller
                                     ],
                                 ],
                             ],
-                            [
-                                'title'  => 'Show Composer Tutorial',
-                                'desc'   => 'Enable this to show the interactive tutorial again in Composer. This setting disables again when the tutorial is completed or skipped.',
-                                'fields' => [
-                                    'showTutorial' => [
-                                        'type'  => 'yes_no',
-                                        'value' => $settings->isShowTutorial(),
-                                    ],
-                                ],
-                            ],
+                            // [
+                            //     'title'  => 'Show Composer Tutorial',
+                            //     'desc'   => 'Enable this to show the interactive tutorial again in Composer. This setting disables again when the tutorial is completed or skipped.',
+                            //     'fields' => [
+                            //         'showTutorial' => [
+                            //             'type'  => 'yes_no',
+                            //             'value' => $settings->isShowTutorial(),
+                            //         ],
+                            //     ],
+                            // ],
                             [
                                 'title'  => 'Display Order of Fields in Composer',
                                 'desc'   => 'The display order for the list of available fields in Composer.',
