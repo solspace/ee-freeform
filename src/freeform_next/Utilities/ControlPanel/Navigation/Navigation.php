@@ -53,6 +53,12 @@ class Navigation
                 $header->isActive();
             }
 
+            if (strpos($this->getCurrentUrl(), 'addons/settings/freeform_next/submissions') === 0) {
+                if (strpos($item->getMethod(), 'form') === 0) {
+                    $header->isActive();
+                }
+            }
+
             $button = $item->getButtonLink();
             if ($button) {
                 $header->withButton($button->getTitle(), $button->getLink());
