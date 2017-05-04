@@ -94,7 +94,7 @@ class SubmissionController extends Controller
             $encode = true;
             if ($setting->getId() === 'id') {
                 $type = Table::COL_ID;
-            } else if ($setting->getId() === 'title') {
+            } else if (in_array($setting->getId(), ['title', 'statusName'], true)) {
                 $encode = false;
             }
 
@@ -162,7 +162,11 @@ class SubmissionController extends Controller
                     $data[] = $submission->id;
                 } else if ($setting->getId() === 'title') {
                     $data[] = [
-                        'content' => '<a href="' . $link . '"><span class="color-indicator" style="background: ' . @$colors[$submission->statusId] . ';"></span>' . $submission->title . '</a>',
+                        'content' => '<a href="' . $link . '">' . $submission->title . '</a>',
+                    ];
+                } else if ($setting->getId() === 'statusName') {
+                    $data[] = [
+                        'content' => '<span class="color-indicator" style="background: ' . $submission->statusColor . ';"></span>' . $submission->statusName,
                     ];
                 } else if ($setting->getId() === 'dateCreated') {
                     $data[] = date('Y-m-d H:i', strtotime($submission->dateCreated));

@@ -95,7 +95,7 @@ class SubmissionPreferencesModel extends Model
             $formLayout = $form->getLayout();
 
             $layout = $usedIds = [];
-            $hasId  = $hasTitle = $hasCreated = false;
+            $hasId  = $hasTitle = $hasCreated = $hasStatus = false;
 
             if (null !== $settings) {
                 foreach ($settings as $item) {
@@ -125,8 +125,19 @@ class SubmissionPreferencesModel extends Model
                         if ($item['id'] === 'dateCreated') {
                             $hasCreated = true;
                         }
+
+                        if ($item['id'] === 'status') {
+                            $hasStatus = true;
+                        }
                     }
                 }
+            }
+
+            if (!$hasStatus) {
+                array_unshift(
+                    $layout,
+                    new SubmissionPreferenceSetting('statusName', 'statusName', 'Status', true)
+                );
             }
 
             if (!$hasCreated) {

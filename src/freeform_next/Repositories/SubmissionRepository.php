@@ -3,6 +3,7 @@
 namespace Solspace\Addons\FreeformNext\Repositories;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
+use Solspace\Addons\FreeformNext\Model\StatusModel;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 
 class SubmissionRepository extends Repository
@@ -25,13 +26,16 @@ class SubmissionRepository extends Repository
     {
         /** @var array $result */
         $result = ee()->db
+            ->select('s.*, stat.name AS statusName, stat.color AS statusColor')
+            ->from(SubmissionModel::TABLE . ' AS s')
+            ->join(StatusModel::TABLE . ' AS stat', 's.statusId = stat.id')
             ->where(
                 [
-                    'id'     => $submissionId,
+                    's.id'     => $submissionId,
                     'formId' => $form->getId(),
                 ]
             )
-            ->get(SubmissionModel::TABLE)
+            ->get()
             ->result_array();
 
         if (count($result) > 0) {
@@ -95,7 +99,10 @@ class SubmissionRepository extends Repository
         }
 
         $result = ee()->db
-            ->get(SubmissionModel::TABLE)
+            ->select('s.*, stat.name AS statusName, stat.color AS statusColor')
+            ->from(SubmissionModel::TABLE . ' AS s')
+            ->join(StatusModel::TABLE . ' AS stat', 's.statusId = stat.id')
+            ->get()
             ->result_array();
 
         $submissions = [];

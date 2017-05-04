@@ -46,6 +46,8 @@ class SubmissionModel extends Model
     protected $id;
     protected $siteId;
     protected $statusId;
+    protected $statusName;
+    protected $statusColor;
     protected $formId;
     protected $title;
     protected $dateCreated;
@@ -121,6 +123,8 @@ class SubmissionModel extends Model
                 'title'       => $fetchedValues['title'],
                 'dateCreated' => $fetchedValues['dateCreated'],
                 'dateUpdated' => $fetchedValues['dateUpdated'],
+                'statusName'  => $fetchedValues['statusName'],
+                'statusColor' => $fetchedValues['statusColor'],
             ]
         );
 
