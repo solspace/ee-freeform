@@ -25,21 +25,19 @@
             </ul>
         {/if}
 
-
         {if form:has_errors}
             <div class="callout alert">
                 There was an error submitting this form
             </div>
         {/if}
 
-
         {rows}
             <div class="row {form:row_class}">
                 {columns}
                     <div class="{form:column_class} medium-{column:grid_width} columns {if field:type == 'checkbox' OR field:type == 'mailing_list'}checkbox{if:else}form-group{/if}{if field:has_errors} has-error{/if}{if field:type == 'submit'} submit submit-align-{field:position}{/if}">
                         {if field:type == 'checkbox_group'}
-                            {field:render_label label_class="{if field:required}required{/if}"}
 
+                            {field:render_label label_class="{if field:required}required{/if}"}
                             {field:options}
                                 <div class="checkbox">
                                     <label>
@@ -52,14 +50,12 @@
                                     </label>
                                 </div>
                             {/field:options}
-
                             {field:render_instructions instructions_class="help-block"}
                             {field:render_errors error_class="help-block"}
 
                         {if:elseif field:type == 'radio_group' OR (field:type == 'dynamic_recipients' AND field:show_as_radio)}
 
                             {field:render_label label_class="{if field:required}required{/if}"}
-
                             {field:options}
                                 <div class="radio">
                                     <label>
@@ -72,7 +68,6 @@
                                     </label>
                                 </div>
                             {/field:options}
-
                             {field:render_instructions instructions_class="help-block"}
                             {field:render_errors error_class="help-block"}
 
@@ -81,12 +76,14 @@
                             {field:render class="button"}
 
                         {if:else}
+
                             {field:render
                                 class="{if field:type == 'checkbox' OR field:type == 'mailing_list'}checkbox{if:else}form-control{/if}"
                                 label_class="{if field:required}required{/if}"
                                 instructions_class="help-text"
                                 instructions_below_field="1"
                             }
+
                         {/if}
                     </div>
                 {/columns}
