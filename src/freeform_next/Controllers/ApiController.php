@@ -222,6 +222,7 @@ class ApiController extends Controller
             ee()->session->userdata('member_id')
         );
 
+        ob_start();
         $output = fopen('php://output', 'w');
 
         $layout = $preferences->getLayout();
