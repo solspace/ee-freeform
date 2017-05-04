@@ -157,6 +157,10 @@ class FileUploadField extends AbstractField implements SingleValueInterface, Fil
      */
     public function uploadFile()
     {
+        if (isset($_FILES[$this->handle]) && empty($_FILES[$this->handle]['name']) && !$this->isRequired()) {
+            return null;
+        }
+
         if (!array_key_exists($this->handle, self::$filesUploaded)) {
             $response = $this->getForm()->getFileUploadHandler()->uploadFile($this);
 
