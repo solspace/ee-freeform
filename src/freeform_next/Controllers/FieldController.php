@@ -463,8 +463,8 @@ class FieldController extends Controller
             ],
             FieldInterface::TYPE_FILE               => [
                 [
-                    'title'  => 'Asset source',
-                    'desc'   => 'Select a default asset source for uploaded files.',
+                    'title'  => 'Upload Directory',
+                    'desc'   => 'Select a default upload directory source for uploaded files.',
                     'fields' => [
                         'assetSourceId' => [
                             'type'    => 'select',

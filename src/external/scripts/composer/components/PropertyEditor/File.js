@@ -108,13 +108,13 @@ export default class File extends BasePropertyEditor {
         />
 
         <SelectProperty
-          label="Asset Source"
-          instructions="Select an asset source to be able to store user uploaded files."
+          label="Upload Directory"
+          instructions="Select an upload directory source to be able to store user uploaded files."
           name="assetSourceId"
           value={assetSourceId}
           onChangeHandler={this.update}
           isNumeric={true}
-          emptyOption="Select an Asset Source..."
+          emptyOption="Select an Upload Directory..."
           options={assetSourceList}
         />
 

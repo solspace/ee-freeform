@@ -31,7 +31,7 @@ class FileRepository extends Repository
         if (count($results) > 0) {
             $result = $results[0];
 
-            $result['url'] = parse_config_variables($result['url']);
+            $result['url']         = parse_config_variables($result['url']);
             $result['server_path'] = parse_config_variables($result['server_path']);
 
             return $result;
@@ -48,6 +48,12 @@ class FileRepository extends Repository
         $results = ee()->db
             ->select('id, name')
             ->from('exp_upload_prefs')
+            ->where(
+                [
+                    'site_id'   => ee()->config->item('site_id'),
+                    'module_id' => 0,
+                ]
+            )
             ->get()
             ->result_array();
 
