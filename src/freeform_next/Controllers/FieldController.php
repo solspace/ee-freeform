@@ -489,7 +489,7 @@ class FieldController extends Controller
                 ],
                 [
                     'title'  => 'Allowed File Types',
-                    'desc'   => 'Select the file types to be allowed by default. Leaving all unchecked will allow all file types.',
+                    'desc'   => 'Select the file types to be allowed by default. Leaving all unchecked will allow all file types. Please be sure that the EE Upload Directory\'s <b>Allowed file types?</b> preference is set to <b>All file types</b>, even if you\'re only using images.',
                     'fields' => [
                         'fileKinds' => [
                             'type'    => 'checkbox',
