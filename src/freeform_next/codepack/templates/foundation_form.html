@@ -5,13 +5,13 @@
         return_url="{path='demo/foundation/{embed:form}'}"
     }
 
-        <h3>{form:name}</h3>
-
         {if form:is_submitted_successfully}
             <div class="callout success" role="alert">
                 Form submitted successfully!
             </div>
         {/if}
+
+        <h3>{form:name}</h3>
 
         {if form:page_count > 1}
             <ul class="menu pagemenu">

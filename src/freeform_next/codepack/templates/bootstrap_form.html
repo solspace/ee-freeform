@@ -2,13 +2,12 @@
 <div class="container">
     {exp:freeform_next:form form="{embed:form}"
         submit_class="btn btn-success"
-        return_url="{path='demo/bootstrap/{embed:form}'}"
+        return_url="{path='demo/bootstrap/{embed:form}/submissions/SUBMISSION_ID'}"
     }
+
         {if form:is_submitted_successfully}
             <div class="alert alert-success" role="alert">
-                <p class="lead">
-                    Form submitted successfully!
-                </p>
+                Form submitted successfully!
             </div>
         {/if}
 
