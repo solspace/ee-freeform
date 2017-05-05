@@ -74,11 +74,9 @@ class NotificationModel extends Model implements \JsonSerializable
         $body = <<<EOT
 <p>Submitted on: {current_time format="%l, %F %j, %Y at %g:%i%a"}</p>
 <ul>
-    {rows}
-        {columns}
-            <li>{field:label}: {field:value}</li>
-        {/columns}
-    {/rows}
+    {form:fields}
+        <li>{field:label}: {field:value}</li>
+    {/form:fields}
 </ul>
 EOT;
 

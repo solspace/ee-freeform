@@ -86,7 +86,10 @@ class FormToTagDataTransformer
             $submissionCount = 0;
         }
 
-        $data = array_merge($data, $formTransformer->transformForm($this->form, $submissionCount));
+        $data = array_merge(
+            $data,
+            $formTransformer->transformForm($this->form, $submissionCount, $this->skipHelperFields)
+        );
         $data = array_merge($data, $this->getFields());
         $data = array_merge($data, $this->pageData($this->form->getCurrentPage(), 'current_page:'));
 

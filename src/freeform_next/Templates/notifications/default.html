@@ -9,9 +9,7 @@
 
 <p>Submitted on: {current_time format="%D, %F %d, %Y - %g:%i:%s"}</p>
 <ul>
-    {rows}
-        {columns}
-            <li>{field:label}: {field:value}</li>
-        {/columns}
-    {/rows}
+    {form:fields}
+        <li>{field:label}: {field:value}</li>
+    {/form:fields}
 </ul>
