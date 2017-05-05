@@ -126,7 +126,7 @@ class SubmissionPreferencesModel extends Model
                             $hasCreated = true;
                         }
 
-                        if ($item['id'] === 'status') {
+                        if ($item['id'] === 'statusName') {
                             $hasStatus = true;
                         }
                     }
