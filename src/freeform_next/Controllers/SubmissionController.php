@@ -19,6 +19,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxGrou
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecipientField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\EmailField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\HiddenField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\RadioGroupField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SelectField;
@@ -300,9 +301,28 @@ class SubmissionController extends Controller
         /** @var Page $page */
         foreach ($form->getPages() as $page) {
             $data = [];
+            
+            foreach ($form->getLayout()->getHiddenFields() as $field) {
+                if ($field->getPageIndex() === $page->getIndex()) {
+                    $fields = [
+                        $field->getHandle() => [
+                            'type'     => 'text',
+                            'value'    => $submission->getFieldValue($field->getHandle()),
+                            'required' => $field->isRequired(),
+                        ],
+                    ];
+
+                    $data[] = [
+                        'title'  => $field->getLabel(),
+                        'fields' => $fields,
+                    ];
+                }
+            }
 
             /** @var Row $row */
             foreach ($page as $row) {
+
+
                 /** @var AbstractField $field */
                 foreach ($row as $field) {
                     if ($field instanceof NoStorageInterface) {
