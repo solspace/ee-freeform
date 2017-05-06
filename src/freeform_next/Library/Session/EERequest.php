@@ -23,6 +23,6 @@ class EERequest implements RequestInterface
     {
         $post = ee()->input->post($key);
 
-        return $post ?: $defaultValue;
+        return $post !== false ? $post : $defaultValue;
     }
 }

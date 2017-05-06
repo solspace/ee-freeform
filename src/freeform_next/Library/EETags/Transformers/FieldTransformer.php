@@ -20,13 +20,19 @@ class FieldTransformer
      */
     public function transformField(AbstractField $field, $prefix = 'field:', $columnIndex = null, $columnCount = null)
     {
-        $data = [
+        if ($field instanceof DynamicRecipientField) {
+            $value = $field->getValue();
+        } else {
+            $value = $field->getValueAsString();
+        }
+
+        $data  = [
             $prefix . 'id'                  => $field->getId(),
             $prefix . 'handle'              => $field->getHandle(),
             $prefix . 'hash'                => $field->getHash(),
             $prefix . 'type'                => $field->getType(),
             $prefix . 'label'               => $field->getLabel(),
-            $prefix . 'value'               => $field->getValueAsString(),
+            $prefix . 'value'               => $value,
             $prefix . 'instructions'        => $field->getInstructions(),
             $prefix . 'errors'              => $field->getErrors(),
             $prefix . 'render_input'        => $field->renderInput(),

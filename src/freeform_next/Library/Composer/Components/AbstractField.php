@@ -179,7 +179,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
      *
      * @param array $customAttributes
      *
-     * @return \Twig_Markup
+     * @return string
      */
     public final function renderLabel(array $customAttributes = null)
     {
@@ -191,7 +191,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
     /**
      * @param array|null $customAttributes
      *
-     * @return \Twig_Markup
+     * @return string
      */
     public function renderInstructions(array $customAttributes = null)
     {
@@ -205,7 +205,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
      *
      * @param array $customAttributes
      *
-     * @return \Twig_Markup
+     * @return string
      */
     public final function renderInput(array $customAttributes = null)
     {

@@ -166,12 +166,16 @@ class FormValueContext implements \JsonSerializable
 
                 if (null !== $value) {
                     return $value;
-                } else if (isset($this->storedValues[$fieldName])) {
+                }
+
+                if (isset($this->storedValues[$fieldName])) {
                     return $this->storedValues[$fieldName];
                 }
 
                 return null;
-            } else if (isset($this->storedValues[$fieldName])) {
+            }
+
+            if (isset($this->storedValues[$fieldName])) {
                 return $this->storedValues[$fieldName];
             }
         }
