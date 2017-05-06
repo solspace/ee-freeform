@@ -56,11 +56,28 @@ class SubmissionRepository extends Repository
             return [];
         }
 
-        return ee('Model')
-            ->get(SubmissionModel::MODEL)
-            ->filter('id', 'IN', $ids)
-            ->all()
-            ->asArray();
+        $result = ee()->db
+            ->select('s.*, stat.name AS statusName, stat.color AS statusColor')
+            ->from(SubmissionModel::TABLE . ' AS s')
+            ->join(StatusModel::TABLE . ' AS stat', 's.statusId = stat.id')
+            ->where_in('s.id', $ids)
+            ->get()
+            ->result_array();
+
+        $submissions = [];
+        foreach ($result as $row) {
+            static $form;
+
+            if (null === $form) {
+                $form = FormRepository::getInstance()->getFormById($row['formId'])->getForm();
+            }
+
+            $model = SubmissionModel::createFromDatabase($form, $row);
+
+            $submissions[] = $model;
+        }
+
+        return $submissions;
     }
 
     /**

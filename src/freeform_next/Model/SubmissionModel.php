@@ -128,6 +128,8 @@ class SubmissionModel extends Model
             ]
         );
 
+        $submission->_new = false;
+
         foreach ($fetchedValues as $key => $value) {
             if (preg_match('/^' . SubmissionModel::FIELD_COLUMN_PREFIX . '(\d+)$/', $key, $matches)) {
                 $fieldId = (int) $matches[1];
