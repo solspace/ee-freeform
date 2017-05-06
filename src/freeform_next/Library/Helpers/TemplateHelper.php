@@ -5,6 +5,7 @@ namespace Solspace\Addons\FreeformNext\Library\Helpers;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\EETags\FormToTagDataTransformer;
+use Solspace\Addons\FreeformNext\Library\EETags\Transformers\SubmissionTransformer;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 
 class TemplateHelper
@@ -36,7 +37,10 @@ class TemplateHelper
     ) {
         $form = clone $form;
 
+
         if ($submissionModel) {
+            $submissionTransformer = new SubmissionTransformer();
+
             $replaceValues = [];
             foreach ($form->getLayout()->getFields() as $field) {
                 if ($field instanceof NoStorageInterface) {
@@ -49,6 +53,7 @@ class TemplateHelper
                 $replaceValues[$field->getHandle()] = $value;
             }
 
+            $string = self::renderString($string, $submissionTransformer->transformSubmission($submissionModel));
             $string = self::renderString($string, $replaceValues);
         }
 

@@ -57,6 +57,12 @@ class SubmissionTransformer
         return $data;
     }
 
+    /**
+     * @param SubmissionModel $model
+     * @param string          $prefix
+     *
+     * @return array
+     */
     private function getSeparateFieldInfo(SubmissionModel $model, $prefix = 'submission:')
     {
         $fieldTransformer = new FieldTransformer();
