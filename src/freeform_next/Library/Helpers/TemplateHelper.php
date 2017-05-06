@@ -37,13 +37,19 @@ class TemplateHelper
         $form = clone $form;
 
         if ($submissionModel) {
+            $replaceValues = [];
             foreach ($form->getLayout()->getFields() as $field) {
                 if ($field instanceof NoStorageInterface) {
                     continue;
                 }
 
-                $field->setValue($submissionModel->getFieldValue($field->getHandle()));
+                $value = $submissionModel->getFieldValue($field->getHandle());
+
+                $field->setValue($value);
+                $replaceValues[$field->getHandle()] = $value;
             }
+
+            $string = self::renderString($string, $replaceValues);
         }
 
         $dataTransformer = new FormToTagDataTransformer($form, $string, $skipHelperFields);
