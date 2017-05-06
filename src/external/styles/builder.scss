@@ -575,4 +575,17 @@ $sidebarMinWidth: 18%;
   width: 700px;
   margin: 0 auto 0;
   padding: 8px 25px;
+
+  &.success, &.issue {
+    &:before {
+      font-family: FontAwesome, sans-serif;
+      padding-right: 5px;
+    }
+  }
+  &.success:before {
+    content: "\f00c";
+  }
+  &.issue:before {
+    content: "\f071";
+  }
 }
