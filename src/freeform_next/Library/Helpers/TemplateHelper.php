@@ -37,7 +37,6 @@ class TemplateHelper
     ) {
         $form = clone $form;
 
-
         if ($submissionModel) {
             $submissionTransformer = new SubmissionTransformer();
 
@@ -50,7 +49,7 @@ class TemplateHelper
                 $value = $submissionModel->getFieldValue($field->getHandle());
 
                 $field->setValue($value);
-                $replaceValues[$field->getHandle()] = $value;
+                $replaceValues[$field->getHandle()] = $field->getValueAsString();
             }
 
             $string = self::renderString($string, $submissionTransformer->transformSubmission($submissionModel));

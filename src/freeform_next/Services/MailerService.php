@@ -51,7 +51,6 @@ class MailerService implements MailHandlerInterface
             );
         }
 
-        $fieldValues = $this->getFieldValues($fields, $form, $submission);
         foreach ($recipients as $recipientName => $emailAddress) {
 
             $fromEmail = TemplateHelper::renderStringWithForm($notification->fromEmail, $form, $submission);
@@ -120,32 +119,6 @@ class MailerService implements MailHandlerInterface
     public function getNotificationById($id)
     {
         return NotificationRepository::getInstance()->getNotificationById($id);
-    }
-
-    /**
-     * @param FieldInterface[] $fields
-     * @param Form             $form
-     * @param SubmissionModel  $submission
-     *
-     * @return array
-     */
-    private function getFieldValues(array $fields, Form $form, SubmissionModel $submission = null)
-    {
-        $postedValues = [];
-        foreach ($fields as $field) {
-            if ($field instanceof NoStorageInterface || $field instanceof FileUploadInterface) {
-                continue;
-            }
-
-            $postedValues[$field->getHandle()] = $field;
-        }
-
-        $postedValues['allFields']   = $postedValues;
-        $postedValues['form']        = $form;
-        $postedValues['submission']  = $submission;
-        $postedValues['dateCreated'] = new \DateTime();
-
-        return $postedValues;
     }
 
     /**
