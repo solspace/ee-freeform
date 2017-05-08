@@ -2,7 +2,7 @@
 
     {if logged_in_group_id == "1"}
 
-        {exp:freeform_next:submission form="{embed:form}" submission_id="{embed:submission_id}"}
+        {exp:freeform_next:submissions form="{embed:form}" submission_id="{embed:submission_id}"}
 
             {if freeform_next:no_results}
                 <div class="alert alert-danger" role="alert">
@@ -37,7 +37,7 @@
                 {/submission:fields}
             </table>
 
-        {/exp:freeform_next:submission}
+        {/exp:freeform_next:submissions}
 
     {if:else}
         <div class="alert alert-danger" role="alert">

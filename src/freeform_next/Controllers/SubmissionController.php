@@ -27,6 +27,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\TextareaFiel
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Page;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Row;
+use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionAttributes;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
@@ -67,16 +68,14 @@ class SubmissionController extends Controller
 
         $totalSubmissionCount = SubmissionRepository::getInstance()->getAllSubmissionCountFor($form);
 
-        $submissions = SubmissionRepository::getInstance()->getAllSubmissionsFor(
-            $form,
-            [],
-            $preferences->getDatabaseColumnName($sortColumn),
-            $sortDirection,
-            self::MAX_PER_PAGE,
-            abs(self::MAX_PER_PAGE * ($page - 1))
-        );
+        $attributes = new SubmissionAttributes($form);
+        $attributes
+            ->setOrderBy($sortColumn)
+            ->setSort($sortDirection)
+            ->setLimit(self::MAX_PER_PAGE)
+            ->setOffset(self::MAX_PER_PAGE * ($page - 1));
 
-        $colors = StatusRepository::getInstance()->getColorsById();
+        $submissions = SubmissionRepository::getInstance()->getAllSubmissionsFor($attributes);
 
         $pagination = ee('CP/Pagination', $totalSubmissionCount)
             ->perPage(self::MAX_PER_PAGE)

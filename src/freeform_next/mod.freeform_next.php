@@ -10,6 +10,7 @@
  */
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
+use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionAttributes;
 use Solspace\Addons\FreeformNext\Library\EETags\FormTagParamUtilities;
 use Solspace\Addons\FreeformNext\Library\EETags\FormToTagDataTransformer;
 use Solspace\Addons\FreeformNext\Library\EETags\SubmissionToTagDataTransformer;
@@ -17,6 +18,7 @@ use Solspace\Addons\FreeformNext\Library\EETags\Transformers\FormTransformer;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\TemplateHelper;
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
+use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
 use Solspace\Addons\FreeformNext\Utilities\Plugin;
@@ -95,38 +97,26 @@ class Freeform_Next extends Plugin
             return $this->returnNoResults();
         }
 
-        $submissions = SubmissionRepository::getInstance()->getAllSubmissionsFor($form);
+        $attributes = new SubmissionAttributes($form);
+        $attributes
+            ->setStatus($this->getParam('status'))
+            ->setDateRangeStart($this->getParam('date_range_start'))
+            ->setDateRangeEnd($this->getParam('date_range_end'))
+            ->setDateRange($this->getParam('date_range'))
+            ->setSubmissionId($this->getParam('submission_id'))
+            ->setOrderBy($this->getParam('orderby'))
+            ->setSort($this->getParam('sort'))
+            ->setLimit($this->getParam('limit'))
+            ->setOffset($this->getParam('offset'));
+
+        $submissions = SubmissionRepository::getInstance()->getAllSubmissionsFor($attributes);
 
         if (empty($submissions)) {
             return $this->returnNoResults();
         }
 
-        $output = ee()->TMPL->tagdata;
+        $output      = ee()->TMPL->tagdata;
         $transformer = new SubmissionToTagDataTransformer($form, $output, $submissions);
-
-        return $transformer->getOutput();
-    }
-
-    /**
-     * @return string
-     */
-    public function submission()
-    {
-        $form = $this->assembleFormFromTag();
-        $submissionId = $this->getParam('submission_id', null);
-
-        if (!$form) {
-            return $this->returnNoResults();
-        }
-
-        $submission = SubmissionRepository::getInstance()->getSubmission($form, $submissionId);
-
-        if (!$submission) {
-            return $this->returnNoResults();
-        }
-
-        $output = ee()->TMPL->tagdata;
-        $transformer = new SubmissionToTagDataTransformer($form, $output, [$submission]);
 
         return $transformer->getOutput();
     }
@@ -136,8 +126,11 @@ class Freeform_Next extends Plugin
      */
     private function assembleFormFromTag()
     {
-        $handle = $this->getParam('form');
         $id     = $this->getParam('form_id');
+        $handle = $this->getParam('form');
+        if (!$handle) {
+            $handle = $this->getParam('form_name');
+        }
 
         $hash = $this->getPost(FormValueContext::FORM_HASH_KEY, null);
         if (null !== $hash) {

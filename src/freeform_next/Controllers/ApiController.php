@@ -2,6 +2,7 @@
 
 namespace Solspace\Addons\FreeformNext\Controllers;
 
+use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionAttributes;
 use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionPreferenceSetting;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
@@ -240,8 +241,13 @@ class ApiController extends Controller
         $limit = 20;
         $offset = 0;
 
+        $attributes = new SubmissionAttributes($form);
+        $attributes
+            ->setLimit($limit)
+            ->setOffset($offset);
+
         $submissionRepository = SubmissionRepository::getInstance();
-        $submissions = $submissionRepository->getAllSubmissionsFor($form, [], 'id', 'asc', $limit, $offset);
+        $submissions = $submissionRepository->getAllSubmissionsFor($attributes);
 
         while (!empty($submissions)) {
             foreach ($submissions as $submission) {
@@ -262,14 +268,7 @@ class ApiController extends Controller
             }
 
             $offset += $limit;
-            $submissions = $submissionRepository->getAllSubmissionsFor(
-                $form,
-                [],
-                'id',
-                'asc',
-                $limit,
-                $offset
-            );
+            $submissions = $submissionRepository->getAllSubmissionsFor($attributes);
         }
 
         fclose($output);

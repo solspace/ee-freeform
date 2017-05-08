@@ -3,6 +3,7 @@
 namespace Solspace\Addons\FreeformNext\Repositories;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
+use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionAttributes;
 use Solspace\Addons\FreeformNext\Model\StatusModel;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 
@@ -81,50 +82,42 @@ class SubmissionRepository extends Repository
     }
 
     /**
-     * @param Form   $form
-     * @param array  $filters
-     * @param null   $orderBy
-     * @param string $sort
-     * @param null   $limit
-     * @param null   $offset
+     * @param SubmissionAttributes $attributes
      *
      * @return SubmissionModel[]
      */
-    public function getAllSubmissionsFor(
-        Form $form,
-        array $filters = [],
-        $orderBy = null,
-        $sort = 'asc',
-        $limit = null,
-        $offset = null
-    ) {
-        $filters['formId'] = $form->getId();
-
+    public function getAllSubmissionsFor(SubmissionAttributes $attributes) {
         /** @var array $result */
-        ee()->db->where($filters);
+        ee()->db->where($attributes->getFilters());
 
-        if (null !== $orderBy) {
-            ee()->db->order_by($orderBy, strtolower($sort) === 'asc' ? 'ASC' : 'DESC');
+        foreach ($attributes->getInFilters() as $key => $value) {
+            ee()->db->where_in($key, $value);
         }
 
-        if (null !== $limit) {
-            ee()->db->limit($limit);
+        foreach ($attributes->getNotInFilters() as $key => $value) {
+            ee()->db->where_not_in($key, $value);
         }
 
-        if (null !== $offset) {
-            ee()->db->offset($offset);
+        ee()->db->order_by($attributes->getOrderBy(), $attributes->getSort());
+
+        if ($attributes->getLimit()) {
+            ee()->db->limit($attributes->getLimit());
+        }
+
+        if (null !== $attributes->getOffset()) {
+            ee()->db->offset($attributes->getOffset());
         }
 
         $result = ee()->db
-            ->select('s.*, stat.name AS statusName, stat.color AS statusColor')
-            ->from(SubmissionModel::TABLE . ' AS s')
-            ->join(StatusModel::TABLE . ' AS stat', 's.statusId = stat.id')
+            ->select('exp_s.*, exp_stat.name AS statusName, exp_stat.color AS statusColor')
+            ->from(SubmissionModel::TABLE . ' AS exp_s')
+            ->join(StatusModel::TABLE . ' AS exp_stat', 'exp_s.statusId = stat.id')
             ->get()
             ->result_array();
 
         $submissions = [];
         foreach ($result as $row) {
-            $model = SubmissionModel::createFromDatabase($form, $row);
+            $model = SubmissionModel::createFromDatabase($attributes->getForm(), $row);
 
             $submissions[] = $model;
         }
