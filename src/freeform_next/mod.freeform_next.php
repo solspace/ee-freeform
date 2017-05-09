@@ -117,7 +117,7 @@ class Freeform_Next extends Plugin
         /** @var \Pagination_object $pagination */
         $pagination = ee()->pagination->create();
 
-        $search  = [LD . 'submission:switch', LD . 'freeform_next:paginate', LD . '/freeform_next:paginate'];
+        $search  = [LD . 'submission:switch', LD . 'submission:paginate', LD . '/submission:paginate'];
         $replace = [LD . 'switch', LD . 'paginate', LD . '/paginate'];
 
         $output = str_replace($search, $replace, ee()->TMPL->tagdata);
