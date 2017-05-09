@@ -146,6 +146,7 @@ class SubmissionController extends Controller
         $table->setColumns($columns);
 
         ee()->javascript->set_global('file_view_url', ee('CP/URL')->make('files/file/view/###')->compile());
+        $dateFormat = ee()->localize->get_date_format();
 
         $tableData = [];
         foreach ($submissions as $submission) {
@@ -168,7 +169,7 @@ class SubmissionController extends Controller
                         'content' => '<span class="color-indicator" style="background: ' . $submission->statusColor . ';"></span>' . $submission->statusName,
                     ];
                 } else if ($setting->getId() === 'dateCreated') {
-                    $data[] = date('Y-m-d H:i', strtotime($submission->dateCreated));
+                    $data[] = ee()->localize->format_date($dateFormat, strtotime($submission->dateCreated));
                 } else if (is_numeric($setting->getId())) {
                     try {
                         $field = $form->getLayout()->getFieldById($setting->getId());
