@@ -56,7 +56,7 @@ class SubmissionAttributes
         $this->form = $form;
 
         $this->filters = [
-            'formId' => $form->getId(),
+            'su.formId' => $form->getId(),
         ];
 
         $this->inFilters    = [];
@@ -107,7 +107,7 @@ class SubmissionAttributes
     public function setSubmissionId($submissionId = null)
     {
         $this->submissionId = $submissionId;
-        $this->setFilter('s.id', $submissionId);
+        $this->setFilter('su.id', $submissionId);
 
         return $this;
     }
@@ -226,7 +226,7 @@ class SubmissionAttributes
     public function setStatus($status = null)
     {
         $this->status = $status;
-        $this->setFilter('stat.name', $status);
+        $this->setFilter('st.name', $status);
 
         return $this;
     }
@@ -249,7 +249,7 @@ class SubmissionAttributes
         $dateRangeStart = $this->getDateValue($dateRangeStart);
 
         $this->dateRangeStart = $dateRangeStart;
-        $this->setFilter('s.dateCreated >=', $dateRangeStart);
+        $this->setFilter('su.dateCreated >=', $dateRangeStart);
 
         return $this;
     }
@@ -272,7 +272,7 @@ class SubmissionAttributes
         $dateRangeEnd = $this->getDateValue($dateRangeEnd);
 
         $this->dateRangeEnd = $dateRangeEnd;
-        $this->setFilter('s.dateCreated <=', $dateRangeEnd);
+        $this->setFilter('su.dateCreated <=', $dateRangeEnd);
 
         return $this;
     }

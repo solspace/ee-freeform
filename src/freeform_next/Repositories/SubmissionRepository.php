@@ -32,7 +32,7 @@ class SubmissionRepository extends Repository
             ->join(StatusModel::TABLE . ' AS stat', 's.statusId = stat.id')
             ->where(
                 [
-                    's.id'     => $submissionId,
+                    's.id'   => $submissionId,
                     'formId' => $form->getId(),
                 ]
             )
@@ -86,9 +86,11 @@ class SubmissionRepository extends Repository
      *
      * @return SubmissionModel[]
      */
-    public function getAllSubmissionsFor(SubmissionAttributes $attributes) {
-        /** @var array $result */
-        ee()->db->where($attributes->getFilters());
+    public function getAllSubmissionsFor(SubmissionAttributes $attributes)
+    {
+        foreach ($attributes->getFilters() as $key => $value) {
+            ee()->db->where($key, $value, false);
+        }
 
         foreach ($attributes->getInFilters() as $key => $value) {
             ee()->db->where_in($key, $value);
@@ -109,9 +111,9 @@ class SubmissionRepository extends Repository
         }
 
         $result = ee()->db
-            ->select('exp_s.*, exp_stat.name AS statusName, exp_stat.color AS statusColor')
-            ->from(SubmissionModel::TABLE . ' AS exp_s')
-            ->join(StatusModel::TABLE . ' AS exp_stat', 'exp_s.statusId = stat.id')
+            ->select('su.*, st.name AS statusName, st.color AS statusColor', false)
+            ->from(SubmissionModel::TABLE . ' su', false)
+            ->join(StatusModel::TABLE . ' st', 'su.statusId = st.id')
             ->get()
             ->result_array();
 
@@ -126,19 +128,29 @@ class SubmissionRepository extends Repository
     }
 
     /**
-     * @param Form  $form
-     * @param array $filters
+     * @param SubmissionAttributes $attributes
      *
      * @return int
      */
-    public function getAllSubmissionCountFor(Form $form, array $filters = [])
+    public function getAllSubmissionCountFor(SubmissionAttributes $attributes)
     {
-        $filters['formId'] = $form->getId();
+        foreach ($attributes->getFilters() as $key => $value) {
+            ee()->db->where($key, $value, false);
+        }
+
+        foreach ($attributes->getInFilters() as $key => $value) {
+            ee()->db->where_in($key, $value);
+        }
+
+        foreach ($attributes->getNotInFilters() as $key => $value) {
+            ee()->db->where_not_in($key, $value);
+        }
 
         return ee()->db
-            ->select('COUNT(id) AS total')
-            ->where($filters)
-            ->get(SubmissionModel::TABLE)
+            ->select('COUNT(su.id) AS total', false)
+            ->from(SubmissionModel::TABLE . ' su', false)
+            ->join(StatusModel::TABLE . ' st', 'su.statusId = st.id')
+            ->get()
             ->row('total') ?: 0;
     }
 

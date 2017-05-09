@@ -19,7 +19,6 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxGrou
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecipientField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\EmailField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\HiddenField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\RadioGroupField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SelectField;
@@ -66,7 +65,6 @@ class SubmissionController extends Controller
             'sort_dir' => $sortDirection,
         ];
 
-        $totalSubmissionCount = SubmissionRepository::getInstance()->getAllSubmissionCountFor($form);
 
         $attributes = new SubmissionAttributes($form);
         $attributes
@@ -75,7 +73,8 @@ class SubmissionController extends Controller
             ->setLimit(self::MAX_PER_PAGE)
             ->setOffset(self::MAX_PER_PAGE * ($page - 1));
 
-        $submissions = SubmissionRepository::getInstance()->getAllSubmissionsFor($attributes);
+        $submissions          = SubmissionRepository::getInstance()->getAllSubmissionsFor($attributes);
+        $totalSubmissionCount = SubmissionRepository::getInstance()->getAllSubmissionCountFor($attributes);
 
         $pagination = ee('CP/Pagination', $totalSubmissionCount)
             ->perPage(self::MAX_PER_PAGE)
@@ -300,7 +299,7 @@ class SubmissionController extends Controller
         /** @var Page $page */
         foreach ($form->getPages() as $page) {
             $data = [];
-            
+
             foreach ($form->getLayout()->getHiddenFields() as $field) {
                 if ($field->getPageIndex() === $page->getIndex()) {
                     $fields = [

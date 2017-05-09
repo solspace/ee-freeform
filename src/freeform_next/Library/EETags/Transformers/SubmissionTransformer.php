@@ -3,7 +3,9 @@
 namespace Solspace\Addons\FreeformNext\Library\EETags\Transformers;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
+use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionAttributes;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 
 class SubmissionTransformer
@@ -12,19 +14,49 @@ class SubmissionTransformer
     private static $fieldsByFormId;
 
     /**
-     * @param SubmissionModel $model
+     * @param SubmissionModel           $model
+     * @param int                       $count
+     * @param int                       $totalResults
+     * @param int                       $absoluteTotal
+     * @param SubmissionAttributes|null $attributes
      *
      * @return array
      */
-    public function transformSubmission(SubmissionModel $model)
-    {
-        $prefix = 'submission:';
+    public function transformSubmission(
+        SubmissionModel $model,
+        $count = 1,
+        $totalResults = 1,
+        $absoluteTotal = 1,
+        SubmissionAttributes $attributes = null
+    ) {
+        $prefix        = 'submission:';
+        $absoluteCount = $count;
+
+        if (null !== $attributes && null !== $attributes->getLimit()) {
+            $absoluteCount = $attributes->getOffset() + $count;
+        }
+
+        $attachmentCount = 0;
+        foreach ($this->getFieldList($model) as $field) {
+            if ($field instanceof FileUploadField && (bool) $model->getFieldValue($field->getHandle())) {
+                $attachmentCount++;
+            }
+        }
 
         $data = [
-            $prefix . 'id'        => $model->id,
-            $prefix . 'title'     => $model->title,
-            $prefix . 'status_id' => $model->statusId,
-            $prefix . 'fields'    => $this->getFields($model),
+            $prefix . 'id'               => $model->id,
+            $prefix . 'title'            => $model->title,
+            $prefix . 'date'             => $model->dateCreated,
+            $prefix . 'status_id'        => $model->statusId,
+            $prefix . 'status'           => $model->statusName,
+            $prefix . 'status_name'      => $model->statusName,
+            $prefix . 'status_color'     => $model->statusColor,
+            $prefix . 'count'            => $count,
+            $prefix . 'total_results'    => $totalResults,
+            $prefix . 'absolute_count'   => $absoluteCount,
+            $prefix . 'absolute_results' => $absoluteTotal,
+            $prefix . 'attachment_count' => $attachmentCount,
+            $prefix . 'fields'           => $this->getFields($model),
         ];
 
         foreach ($this->getSeparateFieldInfo($model) as $fieldInfo) {
@@ -66,7 +98,8 @@ class SubmissionTransformer
     private function getSeparateFieldInfo(SubmissionModel $model, $prefix = 'submission:')
     {
         $fieldTransformer = new FieldTransformer();
-        $data             = [];
+
+        $data = [];
         foreach ($this->getFieldList($model) as $field) {
             if ($field instanceof NoStorageInterface) {
                 continue;

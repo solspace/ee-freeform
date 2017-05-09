@@ -18,7 +18,6 @@ use Solspace\Addons\FreeformNext\Library\EETags\Transformers\FormTransformer;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\TemplateHelper;
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
-use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
 use Solspace\Addons\FreeformNext\Utilities\Plugin;
@@ -91,11 +90,15 @@ class Freeform_Next extends Plugin
      */
     public function submissions()
     {
+        ee()->load->library('pagination');
         $form = $this->assembleFormFromTag();
 
         if (!$form) {
             return $this->returnNoResults();
         }
+
+        $limit          = $this->getParam('limit');
+        $shouldPaginate = (bool) $this->getParam('paginate') && (bool) $limit;
 
         $attributes = new SubmissionAttributes($form);
         $attributes
@@ -106,8 +109,26 @@ class Freeform_Next extends Plugin
             ->setSubmissionId($this->getParam('submission_id'))
             ->setOrderBy($this->getParam('orderby'))
             ->setSort($this->getParam('sort'))
-            ->setLimit($this->getParam('limit'))
+            ->setLimit($limit)
             ->setOffset($this->getParam('offset'));
+
+        $total = SubmissionRepository::getInstance()->getAllSubmissionCountFor($attributes);
+
+        /** @var \Pagination_object $pagination */
+        $pagination = ee()->pagination->create();
+
+        $search  = [LD . 'submission:switch', LD . 'freeform:paginate', LD . '/freeform:paginate'];
+        $replace = [LD . 'switch', LD . 'paginate', LD . '/paginate'];
+
+        $output = str_replace($search, $replace, ee()->TMPL->tagdata);
+        $output = $pagination->prepare($output);
+
+        if ($shouldPaginate) {
+            $pagination->prefix = 'P';
+            $pagination->build($total, (int) $limit);
+
+            $attributes->setOffset($pagination->offset);
+        }
 
         $submissions = SubmissionRepository::getInstance()->getAllSubmissionsFor($attributes);
 
@@ -115,10 +136,10 @@ class Freeform_Next extends Plugin
             return $this->returnNoResults();
         }
 
-        $output      = ee()->TMPL->tagdata;
         $transformer = new SubmissionToTagDataTransformer($form, $output, $submissions);
+        $output      = $transformer->getOutput($attributes);
 
-        return $transformer->getOutput();
+        return $pagination->render($output);
     }
 
     /**

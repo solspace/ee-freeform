@@ -22,6 +22,8 @@ use Solspace\Addons\FreeformNext\Repositories\FormRepository;
  * @property int       $id
  * @property int       $siteId
  * @property int       $statusId
+ * @property string    $statusName
+ * @property string    $statusColor
  * @property int       $formId
  * @property string    $title
  * @property \DateTime $dateCreated

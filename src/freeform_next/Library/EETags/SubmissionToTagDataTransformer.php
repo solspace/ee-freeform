@@ -3,10 +3,11 @@
 namespace Solspace\Addons\FreeformNext\Library\EETags;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
+use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionAttributes;
 use Solspace\Addons\FreeformNext\Library\EETags\Transformers\FormTransformer;
 use Solspace\Addons\FreeformNext\Library\EETags\Transformers\SubmissionTransformer;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
-use Solspace\Addons\FreeformNext\Repositories\FormRepository;
+use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
 
 class SubmissionToTagDataTransformer
 {
@@ -37,38 +38,46 @@ class SubmissionToTagDataTransformer
     }
 
     /**
+     * @param SubmissionAttributes $attributes
+     *
      * @return string
      */
-    public function getOutput()
+    public function getOutput(SubmissionAttributes $attributes)
     {
         $output = $this->content;
-        $output = ee()->TMPL->parse_variables($output, $this->transform());
+        $output = ee()->TMPL->parse_variables($output, $this->transform($attributes));
 
         return $output;
     }
 
     /**
+     * @param SubmissionAttributes $attributes
+     *
      * @return array
      */
-    private function transform()
+    private function transform(SubmissionAttributes $attributes)
     {
         $formTransformer = new FormTransformer();
+        $absoluteSubmissionCount = SubmissionRepository::getInstance()->getAllSubmissionCountFor($attributes);
 
-        $submissionCount = FormRepository::getInstance()->getFormSubmissionCount([$this->form->getId()]);
-        if (!empty($submissionCount)) {
-            $submissionCount = reset($submissionCount);
-        } else {
-            $submissionCount = 0;
-        }
-
-        $baseData = $formTransformer->transformForm($this->form, $submissionCount);
+        $baseData = $formTransformer->transformForm($this->form, $absoluteSubmissionCount);
 
         $submissionTransformer = new SubmissionTransformer();
+
         $data = [];
+
+        $count           = 1;
+        $submissionCount = count($this->submissions);
         foreach ($this->submissions as $submissionModel) {
             $data[] = array_merge(
                 $baseData,
-                $submissionTransformer->transformSubmission($submissionModel)
+                $submissionTransformer->transformSubmission(
+                    $submissionModel,
+                    $count++,
+                    $submissionCount,
+                    $absoluteSubmissionCount,
+                    $attributes
+                )
             );
         }
 
