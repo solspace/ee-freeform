@@ -53,11 +53,17 @@ export function deHashId(hash) {
  * Strips out all invalid characters from the handle string
  *
  * @param value
+ * @param autoUnderscore
  * @returns {*}
  */
-export function getHandleValue(value) {
-  let handleValue = underscored(value, true);
-  handleValue = handleValue.replace(/[^a-zA-Z0-9_]/g, '');
+export function getHandleValue(value, autoUnderscore = true) {
+  let handleValue = value;
+
+  if (autoUnderscore) {
+    handleValue = underscored(value, true);
+  }
+
+  handleValue = handleValue.replace(/[^a-zA-Z0-9\-_]/g, '');
 
   return handleValue;
 }

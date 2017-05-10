@@ -85,7 +85,7 @@ export default class BasePropertyEditor extends Component {
     const {updateField} = this.context;
     const {name, value} = event.target;
 
-    const handleValue = getHandleValue(value);
+    const handleValue = getHandleValue(value, false);
 
     updateField({[name]: handleValue});
   }
