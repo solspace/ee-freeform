@@ -4,7 +4,7 @@
 
         {exp:freeform_next:form form="{segment_3}" no_form_tags="true"}
 
-            <h3>{form:name} <small>({form:submission_count} submissions)</small></h3>
+            <h3>{form:name}</h3>
 
             <table class="table table-striped">
                 <thead>
@@ -35,7 +35,7 @@
                     <tr>
                         <td>{submission:id}</td>
                         <td>
-                            <a href="{path='demo/bootstrap/{form:handle}/submissions/view/{submission:id}'}">
+                            <a href="{path='demo/bootstrap/{form:handle}/submissions/{submission:id}'}">
                                 {submission:title}
                             </a>
                         </td>
