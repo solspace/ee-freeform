@@ -3,10 +3,12 @@
 namespace Solspace\Addons\FreeformNext\Controllers;
 
 use EllisLab\ExpressionEngine\Library\CP\Table;
+use Guzzle\Http\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
 use Solspace\Addons\FreeformNext\Library\Integrations\MailingLists\MailingListOAuthConnector;
 use Solspace\Addons\FreeformNext\Library\Integrations\SettingBlueprint;
+use Solspace\Addons\FreeformNext\Library\Integrations\TokenRefreshInterface;
 use Solspace\Addons\FreeformNext\Model\IntegrationModel;
 use Solspace\Addons\FreeformNext\Repositories\MailingListRepository;
 use Solspace\Addons\FreeformNext\Services\MailingListsService;
@@ -28,6 +30,10 @@ class MailingListsController extends Controller
     {
         if (null === $id) {
             return $this->index();
+        }
+
+        if ($id === 'check') {
+            return $this->check();
         }
 
         if ($id === 'get') {
@@ -245,6 +251,36 @@ class MailingListsController extends Controller
             'Settings' => $settingGroups,
         ];
 
+        if ($model->id) {
+            $link = $this->getLink('integrations/mailing_lists/check');
+            $sectionData[0][] = [
+                'title'  => 'Is Authorized?',
+                'desc'   => 'Is the connection authorized?',
+                'fields' => [
+                    'handle' => [
+                        'type'    => 'html',
+                        'content' => '
+                            <div id="auth-checker" data-url-stub="' . $link . '">
+                                <div class="authorized" style="display: none;">
+                                    Authorized
+                                </div>
+                                <div class="not-authorized" style="display: none;">
+                                    Not able to authorize.
+                                    <a href="' . $link . '" class="">Click here to re-authorize</a>
+                                    <div class="errors"></div>
+                                </div>
+                                <div class="pending-status-check" 
+                                     data-id="' . $model->id . '" 
+                                     data-type="mailing_lists">
+                                    Checking credentials...
+                                </div>
+                            </div>
+                        ',
+                    ],
+                ],
+            ];
+        }
+
         ee()->cp->add_js_script(
             [
                 'file' => ['cp/form_group'],
@@ -266,6 +302,7 @@ class MailingListsController extends Controller
         $view
             ->setHeading($model->name ?: 'New Mailing List Integration')
             ->addBreadcrumb(new NavigationLink('Mailing List Integrations', 'integrations/mailing_lists'))
+            ->addJavascript('integrations')
             ->addJavascript('handleGenerator');
 
         return $view;
@@ -426,5 +463,36 @@ class MailingListsController extends Controller
         }
 
         return $instance;
+    }
+
+    /**
+     * @return AjaxView
+     */
+    private function check()
+    {
+        $view = new AjaxView();
+
+        $id = ee()->input->post('id');
+        $model = MailingListRepository::getInstance()->getIntegrationById($id);
+        $integration = $model->getIntegrationObject();
+
+        if (!$model) {
+            $view->addVariable('success', false);
+            $view->addError('Integration does not exist');
+        }
+
+        try {
+            if ($integration->checkConnection()) {
+                $view->addVariable('success', true);
+            } else {
+                $view->addVariable('success', false);
+                $view->addError('Could not connect');
+            }
+        } catch (BadResponseException $e) {
+            $view->addVariable('success', false);
+            $view->addError($e->getResponse()->getBody(true));
+        }
+
+        return $view;
     }
 }

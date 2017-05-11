@@ -3,10 +3,12 @@
 namespace Solspace\Addons\FreeformNext\Controllers;
 
 use EllisLab\ExpressionEngine\Library\CP\Table;
+use Guzzle\Http\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
 use Solspace\Addons\FreeformNext\Library\Integrations\CRM\CRMOAuthConnector;
 use Solspace\Addons\FreeformNext\Library\Integrations\SettingBlueprint;
+use Solspace\Addons\FreeformNext\Library\Integrations\TokenRefreshInterface;
 use Solspace\Addons\FreeformNext\Model\IntegrationModel;
 use Solspace\Addons\FreeformNext\Repositories\CrmRepository;
 use Solspace\Addons\FreeformNext\Services\CrmService;
@@ -28,6 +30,10 @@ class CrmController extends Controller
     {
         if (null === $id) {
             return $this->index();
+        }
+
+        if ($id === 'check') {
+            return $this->check();
         }
 
         if ($id === 'get') {
@@ -246,6 +252,37 @@ class CrmController extends Controller
             'Settings' => $settingGroups,
         ];
 
+        if ($model->id) {
+            $link = $this->getLink('integrations/' . $model->type . '/check');
+            $sectionData[0][] = [
+                'title'  => 'Is Authorized?',
+                'desc'   => 'Is the connection authorized?',
+                'fields' => [
+                    'handle' => [
+                        'type'    => 'html',
+                        'content' => '
+                            <div id="auth-checker" data-url-stub="' . $link . '">
+                                <div class="authorized" style="display: none;">
+                                    Authorized
+                                </div>
+                                <div class="not-authorized" style="display: none;">
+                                    Not able to authorize.
+                                    <a href="' . $link . '" class="">Click here to re-authorize</a>
+                                    <div class="errors"></div>
+                                </div>
+                                <div class="pending-status-check" 
+                                     data-id="' . $model->id . '" 
+                                     data-type="' . $model->type . '">
+                                    Checking credentials...
+                                </div>
+                            </div>
+                        ',
+                    ],
+                ],
+            ];
+        }
+
+
         ee()->cp->add_js_script(
             [
                 'file' => ['cp/form_group'],
@@ -267,6 +304,7 @@ class CrmController extends Controller
         $view
             ->setHeading($model->name ?: 'New CRM Integration')
             ->addBreadcrumb(new NavigationLink('CRM Integrations', 'integrations/crm'))
+            ->addJavascript('integrations')
             ->addJavascript('handleGenerator');
 
         return $view;
@@ -363,6 +401,27 @@ class CrmController extends Controller
     }
 
     /**
+     * @return RedirectView
+     */
+    public function batchDelete()
+    {
+        if (isset($_POST['id_list'])) {
+            $ids = [];
+            foreach ($_POST['id_list'] as $id) {
+                $ids[] = (int) $id;
+            }
+
+            $models = CrmRepository::getInstance()->getIntegrationsByIdList($ids);
+
+            foreach ($models as $model) {
+                $model->delete();
+            }
+        }
+
+        return new RedirectView($this->getLink('integrations/crm/'));
+    }
+
+    /**
      * Handle OAuth2 authorization
      *
      * @param IntegrationModel $model
@@ -385,6 +444,54 @@ class CrmController extends Controller
     }
 
     /**
+     * @return AjaxView
+     */
+    private function check()
+    {
+        $view = new AjaxView();
+
+        $id = ee()->input->post('id');
+        $model = CrmRepository::getInstance()->getIntegrationById($id);
+        $integration = $model->getIntegrationObject();
+
+        if (!$model) {
+            $view->addVariable('success', false);
+            $view->addError('Integration does not exist');
+        }
+
+        try {
+            if ($integration->checkConnection()) {
+                $view->addVariable('success', true);
+            } else {
+                $view->addVariable('success', false);
+                $view->addError('Could not connect');
+            }
+        } catch (BadResponseException $e) {
+            if ($integration instanceof TokenRefreshInterface) {
+                try {
+                    if ($integration->refreshToken() && $integration->isAccessTokenUpdated()) {
+                        $crmService = new CrmService();
+                        $crmService->updateAccessToken($integration);
+
+                        $view->addVariable('success', true);
+                    } else {
+                        $view->addVariable('success', false);
+                        $view->addError($e->getResponse()->getBody(true));
+                    }
+                } catch (\Exception $e) {
+                    $view->addVariable('success', false);
+                    $view->addError($e->getMessage());
+                }
+            } else {
+                $view->addVariable('success', false);
+                $view->addError($e->getResponse()->getBody(true));
+            }
+        }
+
+        return $view;
+    }
+
+    /**
      * @return CrmService
      */
     private function getCrmService()
@@ -396,26 +503,5 @@ class CrmController extends Controller
         }
 
         return $instance;
-    }
-
-    /**
-     * @return RedirectView
-     */
-    public function batchDelete()
-    {
-        if (isset($_POST['id_list'])) {
-            $ids = [];
-            foreach ($_POST['id_list'] as $id) {
-                $ids[] = (int) $id;
-            }
-
-            $models = CrmRepository::getInstance()->getIntegrationsByIdList($ids);
-
-            foreach ($models as $model) {
-                $model->delete();
-            }
-        }
-
-        return new RedirectView($this->getLink('integrations/crm/'));
     }
 }
