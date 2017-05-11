@@ -664,7 +664,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
             . 'name="' . $honeypot->getName() . '" '
             . '/>';
 
-        $output = '<div style="position: absolute !important; width: 0 !important; height: 0 !important; overflow: hidden !important;">'
+        $output = '<div style="position: absolute !important; width: 0 !important; height: 0 !important; overflow: hidden !important;" aria-hidden="true">'
             . '<label>Leave this field blank</label>'
             . $output
             . '</div>'
