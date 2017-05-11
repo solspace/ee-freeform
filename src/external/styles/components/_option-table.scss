@@ -66,6 +66,20 @@
             }
           }
 
+          label {
+            display: block;
+            white-space: normal;
+
+            padding: 7px 10px;
+            box-sizing: border-box;
+
+            &.required:after {
+              content: '*';
+              color: red;
+              padding-left: 3px;
+            }
+          }
+
           &.composer-option-row-checkbox {
             width: 13px;
 
@@ -120,7 +134,7 @@
 
             > select {
               width: 128px;
-              padding: 4px 20px 5px 8px !important;
+              //padding: 4px 20px 5px 8px !important;
 
               font-size: 11px;
               font-family: Menlo, monospace;
