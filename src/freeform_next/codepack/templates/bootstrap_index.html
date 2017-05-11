@@ -13,7 +13,7 @@
         </thead>
         <tbody>
         {exp:freeform_next:forms}
-            {if freeform_next:no_results}
+            {if form:no_results}
                 <tr>
                     <th colspan="{if logged_in_group_id=='1'}4{if:else}3{/if}"
                         style="text-align: center; font-size: 30px; color: #CCC;"

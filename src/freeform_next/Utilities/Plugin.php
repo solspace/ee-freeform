@@ -73,8 +73,7 @@ class Plugin
      */
     public function returnNoResults()
     {
-        $pattern = '/' . LD . 'if ' . $this->getAddonLowerName() . ':no_results' . RD . '(.*?)'
-            . LD . preg_quote('/', '/') . 'if' . RD . '/s';
+        $pattern = '/{if (?:freeform_next|submission|form):no_results}(.*?){\/if}/s';
 
         if (preg_match($pattern, ee()->TMPL->tagdata, $match)) {
             return $match[1];
