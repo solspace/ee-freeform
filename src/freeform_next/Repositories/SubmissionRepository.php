@@ -85,6 +85,7 @@ class SubmissionRepository extends Repository
      * @param SubmissionAttributes $attributes
      *
      * @return SubmissionModel[]
+     * @throws \Exception
      */
     public function getAllSubmissionsFor(SubmissionAttributes $attributes)
     {
@@ -110,12 +111,20 @@ class SubmissionRepository extends Repository
             ee()->db->offset($attributes->getOffset());
         }
 
-        $result = ee()->db
-            ->select('su.*, st.name AS statusName, st.color AS statusColor', false)
-            ->from(SubmissionModel::TABLE . ' su', false)
-            ->join(StatusModel::TABLE . ' st', 'su.statusId = st.id')
-            ->get()
-            ->result_array();
+        try {
+            $result = ee()->db
+                ->select('su.*, st.name AS statusName, st.color AS statusColor', false)
+                ->from(SubmissionModel::TABLE . ' su', false)
+                ->join(StatusModel::TABLE . ' st', 'su.statusId = st.id')
+                ->get()
+                ->result_array();
+        } catch (\Exception $e) {
+            if (preg_match("/Column not found: 1054.*in 'order clause'/", $e->getMessage())) {
+                throw new \Exception(sprintf('Cannot order by %s', $attributes->getOrderBy()));
+            } else {
+                return [];
+            }
+        }
 
         $submissions = [];
         foreach ($result as $row) {

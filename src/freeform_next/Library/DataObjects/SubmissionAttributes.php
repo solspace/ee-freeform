@@ -160,11 +160,15 @@ class SubmissionAttributes
         $orderBy = $this->orderBy;
 
         if (null === $orderBy || false === $orderBy) {
-            return 'id';
+            return 'dateCreated';
         }
 
         if ($orderBy === 'status') {
             return 'statusName';
+        }
+
+        if ($orderBy === 'date') {
+            return 'dateCreated';
         }
 
         if ($orderBy && !in_array($orderBy, ['id', 'title', 'status'], true)) {
