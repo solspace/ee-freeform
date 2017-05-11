@@ -267,7 +267,7 @@ class ApiController extends Controller
                 fputcsv($output, $row);
             }
 
-            $offset += $limit;
+            $attributes->setOffset($attributes->getOffset() + $limit);
             $submissions = $submissionRepository->getAllSubmissionsFor($attributes);
         }
 
