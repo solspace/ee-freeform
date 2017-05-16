@@ -28,10 +28,6 @@
                     orderby="date" sort="desc"
                     paginate="bottom"
                 }
-                    {if submission:no_results}
-                        <div>There are no submissions</div>
-                    {/if}
-
                     <tr>
                         <td>{submission:id}</td>
                         <td>
@@ -48,6 +44,13 @@
                         {/submission:fields}
                         <td>{submission:attachment_count} file{if submission:attachment_count != "1"}s{/if}</td>
                     </tr>
+                    {if submission:no_results}
+                    <tr>
+                        <td colspan="100">
+                            There are currently no submissions for this form.
+                        </td>
+                    </tr>
+                    {/if}
                     {submission:paginate}
                     <tr>
                         <td colspan="100">
