@@ -16,26 +16,19 @@
 	* [Spam Protection](spam-protection.md)
 	* [Translating](translating.md)
 	* [Fieldtypes](fieldtypes.md)
-	* [Widgets](widgets.md)
 
 * ### API Integrations
 	* [CRM Integrations](crm-integrations.md)
 	* [Mailing Lists](mailing-list-integrations.md)
 
-* ### Template Functions
-	* [freeform.form](freeform.form.md)
-	* [freeform.submissions](freeform.submissions.md)
-
-* ### Template Objects
-	* [Form](form.md)
-	* [Page](page.md)
-	* [Row](row.md)
-	* [Field](field.md)
-	* [Submission](submission.md)
+* ### Template Tags
+	* [form](form.md)
+	* [forms](forms.md)
+	* [submissions](submissions.md)
 
 * ### Templating Extras
 	* [AJAX Forms](ajax-forms.md)
 	* [Formatting Template Examples](formatting-template-examples.md)
 
 * ### Developer
-	* [Events & Hooks](events-and-hooks.md)
+	* [Extension Hooks](extension-hooks.md)

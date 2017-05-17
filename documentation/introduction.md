@@ -48,7 +48,7 @@ Additionally, you may also insert **HTML** areas into your form for you to type 
 
 ## Email Notifications <a href="#email-notifications" id="email-notifications" class="docs-anchor">#</a>
 
-[Email notifications](email-notifications.md) are global and can be reused for multiple forms, saving you time when you are managing many forms. They can be created and customized at **Freeform > Email Notifications**. They can also be created directly at form level within Composer. Email notification templates that are created within Composer will contain basic default content, and should be checked and updated once finished building your form.
+[Email notifications](email-notifications.md) are global and can be reused for multiple forms, saving you time when you are managing many forms. Email templates can be managed within Craft control panel (saved to database), or as HTML template files. Database entry templates are created and customized at **Freeform > Email Notifications**. They can also be created directly at form level within Composer. Email notification templates that are created within Composer will contain basic default content, and should be checked and updated once finished building your form.
 
 Freeform allows you to send email notifications upon submittal of a form 4 different ways, each with their own content/template:
 

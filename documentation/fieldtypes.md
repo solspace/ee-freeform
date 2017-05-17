@@ -66,6 +66,18 @@ An example of template code you would use to display a Freeform form (with field
 
 ---
 
+If you'd like to automatically pass content from another element (such as a Craft Entry) into Freeform field(s), you'd have to use the [overrideValues](form.md#prop-custattr-overridevalues) property inside your formatting template.
+
+For example, if you want to pass a title of an entry to a Freeform field, and the entry slug was in the second segment of your URL, you should set that in your formatting template. Also be sure to include a hidden Freeform field in your form (in this case called `entryTitle`). Your formatting template code might look something like this:
+
+	{% set entry = craft.entries.slug(craft.request.getSegment(2)).first() %}
+
+	{{ form.renderTag({
+		overrideValues: { entryTitle: entry.title }
+	}) }}
+
+---
+
 Below is example code for displaying form submissions that have been attached to a blog entry (from a field called **formSubmissions**).
 
 	{% set blogs = craft.entries.section("blog").limit(20) %}

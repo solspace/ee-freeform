@@ -79,6 +79,7 @@ Render the form using its formatting template, but overriding some classes and d
 		labelClass: "form-label",
 		inputClass: "form-control",
 		instructionsBelowField: true,
+		submitClass: "btn btn-success",
 		overrideValues: {
 			hiddenFieldHandle: entry.id,
 			stateSelect: "AZ",
@@ -126,4 +127,15 @@ Manually iterate through form fields:
 	{% endfor %}
 
 	{{ form.renderClosingTag }}
-#
+
+---
+
+Use session success flash message variable (displays only once) for when form is successfully submitted:
+
+	{% set form = craft.freeform.form("composerForm") %}
+
+	{% if form.submittedSuccessfully %}
+		<div>You've successfully submitted this form!</div>
+	{% endif %}
+
+	{{ form.render }}

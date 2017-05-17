@@ -6,7 +6,7 @@ Freeform centers itself around the idea of letting admins and/or clients enjoy t
 
 Freeform uses its own set of [fields and field types](fields-field-types.md). Fields are global and available to all forms, but they can also be overwritten per form. This allows you to save time reusing existing fields when making other forms, but also gives you flexibility to make adjustments to them when needed. So to clarify, you can create fields with labels and options that are common to all forms, but also override those on each form.
 
-[Email notifications](email-notifications.md) are global and can be reused for multiple forms, saving you time when you are managing many forms. Freeform allows you to send email notifications upon submittal of a form 4 different ways, each with their own content/template.
+[Email notifications](email-notifications.md) are global and can be reused for multiple forms, saving you time when you are managing many forms. Freeform allows you to send email notifications upon submittal of a form 5 different ways, each with their own content/template. Email templates can be managed within Craft control panel (saved to database), or as HTML template files.
 
 Freeform attempts to do all the heavy lifting when it comes to templating. Our looping templating approach allows you to automate all or almost all of your form formatting.
 

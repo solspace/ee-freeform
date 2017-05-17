@@ -1,36 +1,36 @@
 <style>.freeform-pages{padding:0;margin:0 0 10px;list-style:none}.freeform-pages:after{content:"";display:table;clear:both}.freeform-pages li{float:left;margin:0 10px 0 0}.freeform-row{display:block;margin:0 -15px}.freeform-row:after{content:"";display:table;clear:both}.freeform-row .freeform-column{display:block;padding:10px 15px;float:left;box-sizing:border-box}.freeform-row .freeform-column:after{content:"";display:table;clear:both}.freeform-row .freeform-column label{display:block}.freeform-row .freeform-column .freeform-label{font-weight:bold}.freeform-row .freeform-column .freeform-label.freeform-required:after{content:"*";margin-left:5px;color:red}.freeform-row .freeform-column .freeform-input{width:100%;display:block;box-sizing:border-box}.freeform-row .freeform-column .freeform-input[type=checkbox],.freeform-row .freeform-column .freeform-input[type=radio]{width:auto;display:inline;margin-right:5px}.freeform-row .freeform-column .freeform-input-only-label{font-weight:normal}.freeform-row .freeform-column .freeform-input-only-label>.freeform-input{display:inline-block;width:auto;margin-right:5px}.freeform-row .freeform-column .freeform-errors{list-style:none;padding:0;margin:5px 0 0}.freeform-row .freeform-column .freeform-errors>li{color:red}.freeform-row .freeform-column .freeform-instructions{margin:0 0 5px;font-size:13px;color:#ABA7A7}.freeform-row .freeform-column.freeform-column-content-align-left{text-align:left}.freeform-row .freeform-column.freeform-column-content-align-left button:not(:first-of-type){margin-left:5px}.freeform-row .freeform-column.freeform-column-content-align-center{text-align:center}.freeform-row .freeform-column.freeform-column-content-align-center button:not(:first-of-type){margin-left:5px}.freeform-row .freeform-column.freeform-column-content-align-right{text-align:right}.freeform-row .freeform-column.freeform-column-content-align-right button:not(:first-of-type){margin-left:5px}.freeform-row .freeform-column.freeform-column-content-align-spread button:first-child{float:left}.freeform-row .freeform-column.freeform-column-content-align-spread button:last-child{float:right}.freeform-row .freeform-column-1{width:8.33333%}.freeform-row .freeform-column-2{width:16.66667%}.freeform-row .freeform-column-3{width:25%}.freeform-row .freeform-column-4{width:33.33333%}.freeform-row .freeform-column-5{width:41.66667%}.freeform-row .freeform-column-6{width:50%}.freeform-row .freeform-column-7{width:58.33333%}.freeform-row .freeform-column-8{width:66.66667%}.freeform-row .freeform-column-9{width:75%}.freeform-row .freeform-column-10{width:83.33333%}.freeform-row .freeform-column-11{width:91.66667%}.freeform-row .freeform-column-12{width:100%}.freeform-form-has-errors{color:red}</style>
 
 {if form:page_count > 1}
-    <ul class="freeform-pages">
-        {pages}
-        <li>
-            {if page:index == current_page:index}
-                <a href="javascript:;">{page:label}</a>
-            {if:else}
-                {page:label}
-            {/if}
-        </li>
-        {/pages}
-    </ul>
+	<ul class="freeform-pages">
+	{pages}
+		<li>
+		{if page:index == current_page:index}
+			<a href="javascript:;">{page:label}</a>
+		{if:else}
+			{page:label}
+		{/if}
+		</li>
+	{/pages}
+	</ul>
 {/if}
 
 {if form:has_errors}
-    <div class="freeform-form-has-errors">
-        There was an error submitting this form
-    </div>
+	<div class="freeform-form-has-errors">
+		There was an error submitting this form
+	</div>
 {/if}
 
 {rows}
-    <div class="freeform-row {form:row_class}">
-        {columns}
-            <div class="freeform-column {form:column_class} freeform-column-{column:grid_width} {if field:type == 'submit'} freeform-column-content-align-{field:position}{/if}">
-                {field:render
-                    class="{if field:type != 'submit'}freeform-input{/if}"
-                    label_class="freeform-label{if field:required} freeform-required{/if}{if field:input_only} freeform-input-only-label{/if}"
-                    error_class="freeform-errors"
-                    instructions_class="freeform-instructions"
-                }
-            </div>
-        {/columns}
-    </div>
+	<div class="freeform-row {form:row_class}">
+	{columns}
+		<div class="freeform-column {form:column_class} freeform-column-{column:grid_width} {if field:type == 'submit'} freeform-column-content-align-{field:position}{/if}">
+			{field:render
+				class="{if field:type != 'submit'}freeform-input{/if}"
+				label_class="freeform-label{if field:required} freeform-required{/if}{if field:input_only} freeform-input-only-label{/if}"
+				error_class="freeform-errors"
+				instructions_class="freeform-instructions"
+			}
+		</div>
+	{/columns}
+	</div>
 {/rows}

@@ -1,78 +1,81 @@
 <style>label.required:after {content:"*";color:#d00;margin-left:5px;}.submit-align-left{text-align:left}.submit-align-right{text-align:right}.submit-align-center{text-align:center}.submit-align-center button:not(:first-of-type),.submit-align-left button:not(:first-of-type),.submit-align-right button:not(:first-of-type){margin-left:5px}.submit-align-spread button:first-child{float:left}.submit-align-spread button:last-child{float:right}</style>
 
 {if form:page_count > 1}
-    <ul class="nav nav-tabs">
-        {pages}
-            <li class="{if page:index == current_page:index}active{if:else}disabled{/if}">
-                <a href="javascript:;">{page:label}</a>
-            </li>
-        {/pages}
-    </ul>
+	<ul class="nav nav-tabs">
+	{pages}
+		<li class="{if page:index == current_page:index}active{if:else}disabled{/if}">
+			<a href="javascript:;">{page:label}</a>
+		</li>
+	{/pages}
+	</ul>
 {/if}
 
 {if form:has_errors}
-    <div class="alert alert-danger">
-        There was an error submitting this form
-    </div>
+	<div class="alert alert-danger">
+		There was an error submitting this form
+	</div>
 {/if}
 
 {rows}
-    <div class="row {form:row_class}">
-        {columns}
-            <div class="{form:column_class} col-xs-12 col-lg-{column:grid_width} {if field:type == 'checkbox' OR field:type == 'mailing_list'}checkbox{if:else}form-group{/if}{if field:has_errors} has-error{/if}{if field:type == 'submit'} submit-align-{field:position}{/if}">
-                {if field:type == 'checkbox_group'}
-                    {field:render_label label_class="{if field:required}required{/if}"}
+	<div class="row {form:row_class}">
+	{columns}
+		<div class="{form:column_class} col-xs-12 col-lg-{column:grid_width} {if field:type == 'checkbox' OR field:type == 'mailing_list'}checkbox{if:else}form-group{/if}{if field:has_errors} has-error{/if}{if field:type == 'submit'} submit-align-{field:position}{/if}">
+		{if field:type == 'checkbox_group'}
 
-                    {field:options}
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox"
-                                       name="{field:handle}[]"
-                                       value="{option:value}"
-                                       {if option:checked}checked{/if}
-                                />
-                                {option:label}
-                            </label>
-                        </div>
-                    {/field:options}
+			{field:render_label label_class="{if field:required}required{/if}"}
 
-                    {field:render_instructions instructions_class="help-block"}
-                    {field:render_errors error_class="help-block"}
+			{field:options}
+				<div class="checkbox">
+					<label>
+						<input type="checkbox"
+							name="{field:handle}[]"
+							value="{option:value}"
+							{if option:checked}checked{/if}
+						/>
+						{option:label}
+					</label>
+				</div>
+			{/field:options}
 
-                {if:elseif field:type == 'radio_group' OR (field:type == 'dynamic_recipients' AND field:show_as_radio)}
+			{field:render_instructions instructions_class="help-block"}
+			{field:render_errors error_class="help-block"}
 
-                    {field:render_label label_class="{if field:required}required{/if}"}
+		{if:elseif field:type == 'radio_group' OR (field:type == 'dynamic_recipients' AND field:show_as_radio)}
 
-                    {field:options}
-                        <div class="radio">
-                            <label>
-                                <input type="radio"
-                                       name="{field:handle}"
-                                       value="{option:value}"
-                                       {if option:checked}checked{/if}
-                                />
-                                {option:label}
-                            </label>
-                        </div>
-                    {/field:options}
+			{field:render_label label_class="{if field:required}required{/if}"}
 
-                    {field:render_instructions instructions_class="help-block"}
-                    {field:render_errors error_class="help-block"}
+			{field:options}
+				<div class="radio">
+					<label>
+						<input type="radio"
+							name="{field:handle}"
+							value="{option:value}"
+							{if option:checked}checked{/if}
+						/>
+						{option:label}
+					</label>
+				</div>
+			{/field:options}
 
-                {if:elseif field:type == 'submit'}
+			{field:render_instructions instructions_class="help-block"}
+			{field:render_errors error_class="help-block"}
 
-                    {field:render}
+		{if:elseif field:type == 'submit'}
 
-                {if:else}
-                    {field:render
-                        class="{if field:type == 'checkbox' OR field:type == 'mailing_list'}checkbox{if:else}form-control{/if}"
-                        label_class="{if field:required}required{/if}"
-                        error_class="help-block"
-                        instructions_class="help-block"
-                        instructions_below_field="1"
-                    }
-                {/if}
-            </div>
-        {/columns}
-    </div>
+			{field:render}
+
+		{if:else}
+
+			{field:render
+				class="{if field:type == 'checkbox' OR field:type == 'mailing_list'}checkbox{if:else}form-control{/if}"
+				label_class="{if field:required}required{/if}"
+				error_class="help-block"
+				instructions_class="help-block"
+				instructions_below_field="1"
+			}
+
+		{/if}
+		</div>
+	{/columns}
+	</div>
 {/rows}

@@ -10,15 +10,15 @@
         </thead>
         <tbody>
             {exp:freeform_next:forms}
-                {if form:no_results}
-                    <tr>
-                        <th colspan="{if logged_in_group_id=='1'}4{if:else}3{/if}"
-                            style="text-align: center; font-size: 30px; color: #CCC;">
-                            No forms
-                        </th>
-                    </tr>
-                {/if}
-
+            {if form:no_results}
+                <tr>
+                    <th colspan="{if logged_in_group_id=='1'}4{if:else}3{/if}"
+                        style="text-align: center; font-size: 30px; color: #CCC;"
+                    >
+                        There are currently no forms for this site.
+                    </th>
+                </tr>
+            {/if}
                 <tr>
                     <td>{form:id}</td>
                     <td>
