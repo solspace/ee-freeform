@@ -1,14 +1,14 @@
 # Mailing List Integrations
 
-Freeform supports some popular mailing list integrations. Inside the [Settings](settings.md#mailing-lists) area of Freeform, there is a Mailing List API Integration Manager, which allows you to manage your mailing list API integrations.
+Freeform Next Pro supports some popular mailing list integrations. Inside the **Integrations** area of Freeform, there is a Mailing List API Integration Manager, which allows you to manage your mailing list API integrations. If you currently have Freeform Next Basic, you can [purchase an upgrade to Freeform Next Pro here](https://solspace.com/expressionengine/freeform/pro).
 
 [![Connect Mailing List](images/cp_settings-mailinglist-create.png)](images/cp_settings-mailinglist-create.png)
 
-The following Mailing List integrations are currently available (click each one for individual setup instructions):
+The following Mailing List integrations are currently available for *Freeform Next Pro* (click each one for individual setup instructions):
 
-* [MailChimp](mailing-list-api-mailchimp.md) (included with Freeform)
-* [Constant Contact](mailing-list-api-constant-contact.md) (available for purchase in [Freeform Marketplace](https://solspace.com/craft/freeform/marketplace/mailinglist))
-* [Campaign Monitor](mailing-list-api-campaign-monitor.md) (available for purchase in [Freeform Marketplace](https://solspace.com/craft/freeform/marketplace/mailinglist))
+* [MailChimp](mailing-list-api-mailchimp.md)
+* [Constant Contact](mailing-list-api-constant-contact.md)
+* [Campaign Monitor](mailing-list-api-campaign-monitor.md)
 
 Some important things to know about Mailing List integrations are:
 
@@ -21,7 +21,5 @@ Some important things to know about Mailing List integrations are:
 	* You can specify the mailing list to be used for the mailing list integration.
 	* Your form must include an [Email](fields-field-types.md#fields-email) field type, which must then be assigned to the **Target Email Field** setting.
 	* When available, **Field Mapping** setting allows you to map Freeform fields to available mailing list integration fields.
-* Freeform includes *MailChimp* integration built in.
-* To shop for other mailing list integrations, visit the [Freeform Marketplace](https://solspace.com/craft/freeform/marketplace/mailinglist).
 
 Every integration is a little bit different, so we have detailed instructions for setting up each integration on their own page.

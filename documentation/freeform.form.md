@@ -42,6 +42,8 @@ So following this format: `{{ craft.freeform.form("FORMHANDLE", {OVERRIDES}) }}`
 		* Overrides the `<form>` class name.
 	* `id` <a href="#param-id" id="param-id" class="docs-anchor">#</a>
 		* Overrides the `<form>` ID attribute.
+	* `returnUrl` <a href="#param-returnurl" id="param-returnurl" class="docs-anchor">#</a>
+		* Overrides the return URL for the form.
 	* `method` <a href="#param-method" id="param-method" class="docs-anchor">#</a>
 		* Overrides the `<form>` method attribute. `POST` by default.
 	* `name` <a href="#param-name" id="param-name" class="docs-anchor">#</a>
@@ -61,6 +63,11 @@ So following this format: `{{ craft.freeform.form("FORMHANDLE", {OVERRIDES}) }}`
 		* Ex: `inputAttributes: { "readonly": true, "data-field-id": "test" }`
 	* `useRequiredAttribute: true` <a href="#param-userequiredattribute" id="param-userequiredattribute" class="docs-anchor">#</a>
 		* Adds `required` attribute to input fields that have been set to be required in Composer.
+	* `dynamicNotification: { recipients: ["admin@example.com", "support@example.com"], template: "test.html" }` <a href="#param-dynamicnotification" id="param-dynamicnotification" class="docs-anchor">#</a>
+		* Allows using a dynamic template level notification for a more fine-grained control.
+		* Hard code values or pass a value from another element such as an Entry.
+		* For Database entry based templates, specify the handle for `template`.
+		* For Twig file based templates, specify the full file name including **.html** for `template`.
 
 
 ## Usage in Templates <a href="#templates" id="templates" class="docs-anchor">#</a>
@@ -77,6 +84,7 @@ Render the form using its formatting template, but overriding some classes:
 		labelClass: "form-label",
 		inputClass: "form-control",
 		instructionsBelowField: true,
+		submitClass: "btn btn-success",
 		overrideValues: {
 			hiddenFieldHandle: entry.id,
 		}
@@ -90,6 +98,7 @@ Get the form object and manually iterate through fields:
 		id: "myform",
 		class: "form-class",
 		rowClass: "sample-row-class"
+		submitClass: "button",
 	}) %}
 
 	{{ form.renderTag }}

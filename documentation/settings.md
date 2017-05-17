@@ -16,13 +16,26 @@ The settings allow you to adjust:
 	* **Default view** <a href="#default-view" id="default-view" class="docs-anchor">#</a>
 		* This setting allows you to specify which Freeform page should be loaded by default when clicking the Freeform navigation link.
 * *Formatting Templates* <a href="#formatting-templates" id="formatting-templates" class="docs-anchor">#</a>
-	* **Form Template Directory** <a href="#form-template-directory" id="form-template-directory" class="docs-anchor">#</a>
+	* **Directory Path** <a href="#formatting-directory-path" id="formatting-directory-path" class="docs-anchor">#</a>
 		* When using custom formatting templates for your forms, you'll need to specify where your Twig-based templates are stored.
 		* Provide a relative path to craft root to your custom form templates directory.
 			* Ex: **templates/freeform**
 		* To add a starter example template, click the "Add a sample template" button, and then edit the template after.
 
 [![Formatting Templates](images/cp_settings-formatting-templates.png)](images/cp_settings-formatting-templates.png)
+
+* *Email Templates* <a href="#email-templates" id="email-templates" class="docs-anchor">#</a>
+	* This area is for users that wish to use Twig-based HTML template files for email notifications. See [Email Notifications](email-notifications.md) documentation for more information about implementation.
+	* **Directory Path** <a href="#email-directory-path" id="email-directory-path" class="docs-anchor">#</a>
+		* Provide a relative path to craft root to your custom form templates directory.
+			* Ex: **templates/freeform_emails**
+		* To add a starter example template, click the "Add a sample template" button, and then edit the template after.
+	* **Default Email Notification Creation Method** <a href="#default-email-method" id="default-email-method" class="docs-anchor">#</a>
+		* Select which storage method to use when creating new email notifications with **Add New Notification** option in Composer.
+			* **Database Entry** - Use CP-based database template editor.
+			* **Template File** - Use Twig-based HTML template files.
+
+[![Email Templates](images/cp_settings-email-templates.png)](images/cp_settings-email-templates.png)
 
 * *Statuses* <a href="#statuses" id="statuses" class="docs-anchor">#</a>
 	* This area allows you to manage and create new statuses for your forms.
