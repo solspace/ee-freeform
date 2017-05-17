@@ -17,13 +17,11 @@ use Solspace\Addons\FreeformNext\Controllers\LogController;
 use Solspace\Addons\FreeformNext\Controllers\MailingListsController;
 use Solspace\Addons\FreeformNext\Controllers\NotificationController;
 use Solspace\Addons\FreeformNext\Controllers\SettingsController;
-use Solspace\Addons\FreeformNext\Controllers\StatusController;
 use Solspace\Addons\FreeformNext\Controllers\SubmissionController;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
 use Solspace\Addons\FreeformNext\Model\FormModel;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
-use Solspace\Addons\FreeformNext\Model\StatusModel;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
@@ -330,6 +328,18 @@ class Freeform_next_mcp extends ControlPanelView
             ->addSubNavItem(new NavigationLink('Statuses', 'settings/statuses'))
             ->addSubNavItem(new NavigationLink('Demo Templates', 'settings/demo_templates'));
 
+        $resources = new NavigationLink('Resources');
+        $resources
+            ->addSubNavItem(
+                new NavigationLink('Product Info', 'https://solspace.com/expressionengine/freeform')
+            )
+            ->addSubNavItem(
+                new NavigationLink('Documentation', 'https://solspace.com/expressionengine/freeform/docs')
+            )
+            ->addSubNavItem(
+                new NavigationLink('Official Support', 'https://solspace.com/expressionengine/support')
+            );
+
         $logs   = null;
         $logdir = __DIR__ . '/logs/';
         if (file_exists($logdir) && is_dir($logdir)) {
@@ -364,7 +374,8 @@ class Freeform_next_mcp extends ControlPanelView
             ->addLink($fields)
             ->addLink($notifications)
             ->addLink($settings)
-            ->addLink($integrations);
+            ->addLink($integrations)
+            ->addLink($resources);
 
         if ($logs) {
             $nav->addLink($logs);
