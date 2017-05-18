@@ -11,7 +11,7 @@
 	* [Email Notifications](email-notifications.md)
 	* [Forms & Composer](forms-composer.md)
 	* [Formatting Templates](formatting-templates.md)
-	* [Submissions](submissions.md)
+	* [Submissions](form-submissions.md)
 	* [Multi-Page Forms](multi-page-forms.md)
 	* [Spam Protection](spam-protection.md)
 	* [Translating](translating.md)
