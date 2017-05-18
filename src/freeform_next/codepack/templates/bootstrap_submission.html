@@ -4,14 +4,6 @@
 
         {exp:freeform_next:submissions form="{embed:form}" submission_id="{embed:submission_id}"}
 
-            {if freeform_next:no_results}
-                <div class="alert alert-danger" role="alert">
-                    <p class="lead">
-                        Sorry, no submission was found.
-                    </p>
-                </div>
-            {/if}
-
             <h3>{form:name} - {submission:title}</h3>
 
             <table class="table table-striped">
@@ -36,6 +28,14 @@
                 </tr>
                 {/submission:fields}
             </table>
+
+            {if submission:no_results}
+                <div class="alert alert-danger" role="alert">
+                    <p class="lead">
+                        Sorry, no submission was found.
+                    </p>
+                </div>
+            {/if}
 
         {/exp:freeform_next:submissions}
 
