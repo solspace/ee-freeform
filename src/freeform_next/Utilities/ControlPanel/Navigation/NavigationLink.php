@@ -65,12 +65,16 @@ class NavigationLink
     }
 
     /**
-     * @return URL|null
+     * @return URL|string|null
      */
     public function getLink()
     {
         if (null === $this->method) {
             return null;
+        }
+
+        if (preg_match('/^https?:\/\//i', $this->method)) {
+            return $this->method;
         }
 
         $addonInfo = AddonInfo::getInstance();
