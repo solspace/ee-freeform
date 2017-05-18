@@ -58,8 +58,6 @@ The *Freeform_Next:Submissions* template tag fetches an individual submission or
 		* `{field:FIELD_HANDLE:value}` - the submitted value
 		* `{field:FIELD_HANDLE:label}` - the label of the field
 		* `{field:FIELD_HANDLE:type}` - the type of field, e.g. `select`, `textarea`, etc
-		* `{field:FIELD_HANDLE:placeholder}` - the placeholder for the field
-		* `{field:FIELD_HANDLE:default_value}` - the default value for the field
 	* See [{submission:fields}](#varpair-fields) variable pair for automated approach.
 * `{form:name}` <a href="#var-form-name" id="var-form-name" class="docs-anchor">#</a>
 	* The name of the form the submission belongs to.
