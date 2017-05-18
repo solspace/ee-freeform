@@ -9,9 +9,9 @@ Freeform includes a complete set of demo templates. These demo templates let you
 
 ## Installing the Demo Templates <a href="#install" id="install" class="docs-anchor">#</a>
 
-To install the Demo Templates, simply visit the **Settings** page for Freeform and click on the **Demo Templates** nav item (**Freeform > Settings > Demo Templates**).
+To install the Demo Templates, simply visit the **Demo Templates** nav item in Freeform (**Freeform Next > Settings > Demo Templates**).
 
-By default, the Demo Templates page will have **freeform_** as a prefix for your template path. You can change this to whatever you like. The string "**demo**" will be appended to the path name. So for example, if you leave the Prefix value as **freeform_**, the demo templates will be installed to **/freeform_demo/**.
+By default, the Demo Templates page will be set to **freeform_next_demo** for template group name. You can change this to whatever you like.
 
 During installation of demo templates, Freeform will copy the template folders and files (as shown on page) to the **/craft/templates/** directory. So using the above example, your templates would be located at **/craft/templates/freeform_demo/**.
 
