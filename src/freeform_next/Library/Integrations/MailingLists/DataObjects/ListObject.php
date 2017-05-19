@@ -101,13 +101,13 @@ class ListObject implements \JsonSerializable
     /**
      * Specify data which should be serialized to JSON
      */
-    function jsonSerialize()
+    public function jsonSerialize()
     {
         return [
-            "id"          => $this->getId(),
-            "name"        => $this->getName(),
-            "fields"      => $this->getFields(),
-            "memberCount" => $this->getMemberCount(),
+            'id'          => $this->getId(),
+            'name'        => $this->getName(),
+            'fields'      => $this->getFields(),
+            'memberCount' => $this->getMemberCount(),
         ];
     }
 }

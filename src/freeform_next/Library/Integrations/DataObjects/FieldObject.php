@@ -13,10 +13,10 @@ namespace Solspace\Addons\FreeformNext\Library\Integrations\DataObjects;
 
 class FieldObject implements \JsonSerializable
 {
-    const TYPE_STRING  = "string";
-    const TYPE_ARRAY   = "array";
-    const TYPE_NUMERIC = "numeric";
-    const TYPE_BOOLEAN = "boolean";
+    const TYPE_STRING  = 'string';
+    const TYPE_ARRAY   = 'array';
+    const TYPE_NUMERIC = 'numeric';
+    const TYPE_BOOLEAN = 'boolean';
 
     /** @var string */
     private $handle;
@@ -93,44 +93,14 @@ class FieldObject implements \JsonSerializable
     }
 
     /**
-     * Convert a given value to a type specific value
-     *
-     * @param mixed $value
-     *
-     * @return bool|int|string
-     */
-    public function convertValue($value)
-    {
-        switch ($this->type) {
-            case self::TYPE_NUMERIC:
-                return (int)preg_replace("/[^0-9]/", "", $value) ?: "";
-
-            case self::TYPE_BOOLEAN:
-                return (bool)$value;
-
-            case self::TYPE_ARRAY:
-                return implode(";", $value);
-
-            case self::TYPE_STRING:
-                if (is_array($value)) {
-                    $value = implode(", ", $value);
-                }
-
-                return (string)$value;
-        }
-
-        return $value;
-    }
-
-    /**
      * Specify data which should be serialized to JSON
      */
     public function jsonSerialize()
     {
         return [
-            "handle"   => $this->getHandle(),
-            "label"    => $this->getLabel(),
-            "required" => $this->isRequired(),
+            'handle'   => $this->getHandle(),
+            'label'    => $this->getLabel(),
+            'required' => $this->isRequired(),
         ];
     }
 }

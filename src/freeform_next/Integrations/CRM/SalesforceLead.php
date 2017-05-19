@@ -328,6 +328,21 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
     }
 
     /**
+     * @param FieldObject $fieldObject
+     * @param mixed|null  $value
+     *
+     * @return bool|string
+     */
+    public function convertCustomFieldValue(FieldObject $fieldObject, $value = null)
+    {
+        if ($fieldObject->getType() === FieldObject::TYPE_ARRAY) {
+            return implode(';', $value);
+        }
+
+        return parent::convertCustomFieldValue($fieldObject, $value);
+    }
+
+    /**
      * @param \stdClass $responseData
      *
      * @throws CRMIntegrationNotFoundException

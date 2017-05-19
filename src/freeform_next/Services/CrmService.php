@@ -259,7 +259,7 @@ class CrmService implements CRMHandlerInterface
                     $value = $formField->getValueAsString(false);
                 }
 
-                $objectValues[$crmHandle] = $crmField->convertValue($value);
+                $objectValues[$crmHandle] = $integration->convertCustomFieldValue($crmField, $value);
             } catch (FreeformException $e) {
                 $logger->log(LoggerInterface::LEVEL_ERROR, $e->getMessage());
             }

@@ -115,10 +115,19 @@ class CampaignMonitor extends AbstractMailingListIntegration
                     continue;
                 }
 
-                $customFields[] = [
-                    'Key'   => $key,
-                    'Value' => $value,
-                ];
+                if (is_array($value)) {
+                    foreach ($value as $subValue) {
+                        $customFields[] = [
+                            'Key'   => $key,
+                            'Value' => $subValue,
+                        ];
+                    }
+                } else {
+                    $customFields[] = [
+                        'Key'   => $key,
+                        'Value' => $value,
+                    ];
+                }
             }
 
             foreach ($emails as $email) {
@@ -277,11 +286,16 @@ class CampaignMonitor extends AbstractMailingListIntegration
             foreach ($json as $field) {
                 switch ($field->DataType) {
                     case 'Text':
+                    case 'MultiSelectOne':
                         $type = FieldObject::TYPE_STRING;
                         break;
 
                     case 'Number':
                         $type = FieldObject::TYPE_NUMERIC;
+                        break;
+
+                    case 'MultiSelectMany':
+                        $type = FieldObject::TYPE_ARRAY;
                         break;
 
                     default:

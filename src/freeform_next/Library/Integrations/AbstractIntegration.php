@@ -13,6 +13,7 @@ namespace Solspace\Addons\FreeformNext\Library\Integrations;
 
 use Solspace\Addons\FreeformNext\Library\Configuration\ConfigurationInterface;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
+use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
 use Solspace\Addons\FreeformNext\Library\Logging\LoggerInterface;
 use Solspace\Addons\FreeformNext\Library\Translations\TranslatorInterface;
 
@@ -208,6 +209,38 @@ abstract class AbstractIntegration implements IntegrationInterface
         $this->accessTokenUpdated = (bool)$accessTokenUpdated;
 
         return $this;
+    }
+
+    /**
+     * @param FieldObject $fieldObject
+     * @param mixed|null  $value
+     *
+     * @return bool|string
+     */
+    public function convertCustomFieldValue(FieldObject $fieldObject, $value = null)
+    {
+        if (is_array($value) && $fieldObject->getType() !== FieldObject::TYPE_ARRAY) {
+            $value = implode(', ', $value);
+        }
+
+        switch ($fieldObject->getType()) {
+            case FieldObject::TYPE_NUMERIC:
+                return (int)preg_replace('/\D/', '', $value) ?: '';
+
+            case FieldObject::TYPE_BOOLEAN:
+                return (bool)$value;
+
+            case FieldObject::TYPE_ARRAY:
+                if (!is_array($value)) {
+                    $value = [$value];
+                }
+
+                return $value;
+
+            case FieldObject::TYPE_STRING:
+            default:
+                return (string)$value;
+        }
     }
 
     /**
