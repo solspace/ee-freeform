@@ -74,6 +74,7 @@ class FieldTransformer
             return null;
         }
 
+        $index = 0;
         $options = [];
         foreach ($field->getOptions() as $option) {
             if ($field instanceof MultipleValueInterface) {
@@ -83,6 +84,7 @@ class FieldTransformer
             }
 
             $options[] = [
+                'option:index'   => $index++,
                 'option:label'   => $option->getLabel(),
                 'option:value'   => $option->getValue(),
                 'option:checked' => $isChecked,
