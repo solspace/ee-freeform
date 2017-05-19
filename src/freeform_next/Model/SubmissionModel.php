@@ -23,6 +23,7 @@ use Solspace\Addons\FreeformNext\Repositories\FormRepository;
  * @property int       $siteId
  * @property int       $statusId
  * @property string    $statusName
+ * @property string    $statusHandle
  * @property string    $statusColor
  * @property int       $formId
  * @property string    $title
@@ -49,6 +50,7 @@ class SubmissionModel extends Model
     protected $siteId;
     protected $statusId;
     protected $statusName;
+    protected $statusHandle;
     protected $statusColor;
     protected $formId;
     protected $title;
@@ -118,15 +120,16 @@ class SubmissionModel extends Model
         $submission = ee('Model')->make(
             self::MODEL,
             [
-                'id'          => $fetchedValues['id'],
-                'siteId'      => $fetchedValues['siteId'],
-                'formId'      => $fetchedValues['formId'],
-                'statusId'    => $fetchedValues['statusId'],
-                'title'       => $fetchedValues['title'],
-                'dateCreated' => $fetchedValues['dateCreated'],
-                'dateUpdated' => $fetchedValues['dateUpdated'],
-                'statusName'  => $fetchedValues['statusName'],
-                'statusColor' => $fetchedValues['statusColor'],
+                'id'           => $fetchedValues['id'],
+                'siteId'       => $fetchedValues['siteId'],
+                'formId'       => $fetchedValues['formId'],
+                'statusId'     => $fetchedValues['statusId'],
+                'title'        => $fetchedValues['title'],
+                'dateCreated'  => $fetchedValues['dateCreated'],
+                'dateUpdated'  => $fetchedValues['dateUpdated'],
+                'statusName'   => $fetchedValues['statusName'],
+                'statusHandle' => $fetchedValues['statusHandle'],
+                'statusColor'  => $fetchedValues['statusColor'],
             ]
         );
 

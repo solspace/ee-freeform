@@ -27,7 +27,7 @@ class SubmissionRepository extends Repository
     {
         /** @var array $result */
         $result = ee()->db
-            ->select('s.*, stat.name AS statusName, stat.color AS statusColor')
+            ->select('s.*, stat.name AS statusName, stat.handle AS statusHandle, stat.color AS statusColor')
             ->from(SubmissionModel::TABLE . ' AS s')
             ->join(StatusModel::TABLE . ' AS stat', 's.statusId = stat.id')
             ->where(
@@ -58,7 +58,7 @@ class SubmissionRepository extends Repository
         }
 
         $result = ee()->db
-            ->select('s.*, stat.name AS statusName, stat.color AS statusColor')
+            ->select('s.*, stat.name AS statusName, stat.handle AS statusHandle, stat.color AS statusColor')
             ->from(SubmissionModel::TABLE . ' AS s')
             ->join(StatusModel::TABLE . ' AS stat', 's.statusId = stat.id')
             ->where_in('s.id', $ids)
@@ -113,7 +113,7 @@ class SubmissionRepository extends Repository
 
         try {
             $result = ee()->db
-                ->select('su.*, st.name AS statusName, st.color AS statusColor', false)
+                ->select('su.*, st.name AS statusName, stat.handle AS statusHandle, st.color AS statusColor', false)
                 ->from(SubmissionModel::TABLE . ' su', false)
                 ->join(StatusModel::TABLE . ' st', 'su.statusId = st.id')
                 ->get()

@@ -50,6 +50,7 @@ class SubmissionTransformer
             $prefix . 'status_id'        => $model->statusId,
             $prefix . 'status'           => $model->statusName,
             $prefix . 'status_name'      => $model->statusName,
+            $prefix . 'status_handle'    => $model->statusHandle,
             $prefix . 'status_color'     => $model->statusColor,
             $prefix . 'count'            => $count,
             $prefix . 'total_results'    => $totalResults,
