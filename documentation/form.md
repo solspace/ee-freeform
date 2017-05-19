@@ -228,10 +228,12 @@ Form formatting can also be extremely manual, if that is something you prefer. H
 		{% endif %}
 
 		<label>Recipient</label>
-		<select name="{{ recipients.handle }}" type="dynamic_recipients">
-		{% for recipients in recipients.options %}
-			<option value="{{ loop.index0 }}">{{ recipients.label }}</option>
-		{% endfor %}
+		<select name="{field:department:handle}" type="dynamic_recipients">
+		{field:department:options}
+			<option value="{option:index}" {if option:checked}selected{/if}>
+				{option:label}
+			</option>
+		{/field:department:options}
 		</select>
 
 		<button type="submit">Submit</button>
