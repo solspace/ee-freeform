@@ -113,7 +113,7 @@ class SubmissionRepository extends Repository
 
         try {
             $result = ee()->db
-                ->select('su.*, st.name AS statusName, stat.handle AS statusHandle, st.color AS statusColor', false)
+                ->select('su.*, st.name AS statusName, st.handle AS statusHandle, st.color AS statusColor', false)
                 ->from(SubmissionModel::TABLE . ' su', false)
                 ->join(StatusModel::TABLE . ' st', 'su.statusId = st.id')
                 ->get()
