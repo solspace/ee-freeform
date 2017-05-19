@@ -4,7 +4,7 @@ This documentation page assumes you have read over the [Mailing List Integration
 
 MailChimp integration includes support for the following:
 
-* Field mapping to standard and custom fields (of text type only), per list.
+* Field mapping to standard and custom fields (of text type and dropdown only), per list.
 
 ## Setup Instructions <a href="#setup" id="setup" class="docs-anchor">#</a>
 

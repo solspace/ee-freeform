@@ -70,9 +70,7 @@ Database templates are managed within the EE control panel in the **Notification
 				* `{field:field_name:value}` - displays the option label(s) submitted.
 					* Example: `Apples`
 					* Array of data example: `Apples, Oranges`
-				* `{field:field_name:instructions}` - displays the instructions for the field.
 				* `{field:field_name:handle}` - displays the handle of the field.
-				* `{field:field_name:placeholder}` - displays the placeholder of the field.
 		* Can also use `{form:fields}{/form:fields}` variable pair to automate parsing of fields.
 			* Will only parse fields that contain data.
 			* Fields will be displayed in order of how they are laid out in Composer.
@@ -81,9 +79,7 @@ Database templates are managed within the EE control panel in the **Notification
 				* `{field:value}` - displays the option label(s) submitted.
 					* Example: `Apples`
 					* Array of data example: `Apples, Oranges`
-				* `{field:instructions}` - displays the instructions for the field.
 				* `{field:handle}` - displays the handle of the field.
-				* `{field:placeholder}` - displays the placeholder of the field.
 
 
 ## Managing Email Templates as HTML Files <a href="#notification-template-files" id="notification-template-files" class="docs-anchor">#</a>

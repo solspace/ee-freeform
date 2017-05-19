@@ -1,8 +1,8 @@
 # Forms & Composer
 
-What makes Freeform very different from other form plugins is that it includes a very intuitive, very interactive and very flexible interface for building forms. We call this, **Composer**.
+What makes Freeform Next different from other form add-ons is that it includes a very intuitive, very interactive and very flexible interface for building forms. We call this, **Composer**.
 
-To create your first form, visit the Forms area of the Freeform control panel (**Freeform > Forms**), and then click the **New Form** button at the top right corner of the page.
+To create your first form, visit the Forms area of the Freeform Next control panel (**Freeform Next > Forms**), and then click the **New Form** button at the top right corner of the page.
 
 The below documentation assumes that you have reviewed the [Fields & Field Types documentation](fields-field-types.md). If you have not already done so, start over there first.
 
@@ -17,13 +17,13 @@ The below documentation assumes that you have reviewed the [Fields & Field Types
 
 ## Composer <a href="#composer" id="composer" class="docs-anchor">#</a>
 
-Freeform Composer is an all-in-one interface that lets you take control of almost every aspect of your forms. Everything is at your fingertips. Before we get started, here's a few notes about Composer:
+Freeform Next Composer is an all-in-one interface that lets you take control of almost every aspect of your forms. Everything is at your fingertips. Before we get started, here's a few notes about Composer:
 
 * Composer is divided into 3 columns:
 	* **Fields** (left column) contains all of the available fields you can add to your form.
 	* **Layout** (center column) is where you actively see an interactive live preview of what your form will look like.
 	* **Property Editor** (right column) is where all your configuration will happen. Clicking on any field, page tab or settings icon inside Composer layout area will load its configuration options here.
-* Freeform Composer applies changes to fields instantly (no need to click save before you move on to adjust the next thing). We've also made the **Save and continue editing*** button and **⌘S** option conveniently accessible for you.
+* Freeform Composer applies changes to fields instantly (no need to click save before you move on to adjust the next thing). We've also made the **Save*** button and **⌘S** option conveniently accessible for you.
 * Fields, special fields and mailing lists are all drag and drop. Drag them on to add them. Drag them around to move them.
 * Freeform Composer tries to handle as much work for you as possible. It will auto-split rows into columns to fit your fields beside each other, if you wish (to a maximum of 4 columns).
 * As mentioned in the [Fields & Field Types documentation](fields-field-types.md), fields are global and available to all forms, but they can also be overwritten per form. This allows you to save time reusing existing fields when making other forms, but also gives you flexibility to make adjustments to them when needed.
@@ -49,21 +49,20 @@ When you first create a form, the Property Editor (right column) will display ov
 	* The unique identifier for the form used in your regular templates calling the form.
 * **Submission Title** <a href="#submission-title" id="submission-title" class="docs-anchor">#</a>
 	* The variable(s) you place here will establish the title of each form submission to be displayed in the Submissions list.
-		* Can include any Freeform field variables (`{{ fieldName }}`) as well as `{{ form.name }}`, `{{ form.id }}`, `{{ form.handle }}` and `{{ dateCreated }}`.
+		* Can include any Freeform field variables (`{field_name}`) as well as `{form:name}`, `{form:id}`, `{form:handle}` and `{date_created format="%l, %F %j, %Y at %g:%i%a"}`.
 * **Store Submitted Data** <a href="#submission-store-data" id="submission-store-data" class="docs-anchor">#</a>
 	* This setting allows you to specify whether the submission data for this form should be stored in the database or not.
 		* Typical use-cases for not storing submission data on your site would be if you just wanted the [email notification](email-notifications.md) and/or wanted the data submitted over to a [Mailing List](mailing-list-integrations.md) or [CRM](crm-integrations.md) API.
 * **Formatting Template** <a href="#formatting-template" id="formatting-template" class="docs-anchor">#</a>
-	* Optional, if using the [render() method](freeform.form.md#render), this essentially allows you to "attach" a formatting template to a form so that you don't need to include formatting inside the template(s) you place the form inside.
+	* Optional, if using the [Freeform_Next:Render](render.md) template tag, this essentially allows you to "attach" a formatting template to a form so that you don't need to include formatting inside the template(s) you place the form inside.
 	* Select from an existing sample or custom template, or create a new one.
 		* If creating a new one, a new template file will automatically be created for you in your [Form Template Directory](settings.md#form-template-directory) containing sample template code that you can adjust later.
-		* Users/groups need to have permissions access for **Settings** to create new formatting templates.
 * **Status** <a href="#form-status" id="form-status" class="docs-anchor">#</a>
 	* The default status to be used when users submit the form, unless overwritten at template level.
 	* See [Statuses documentation](settings.md#statuses) for managing statuses.
 * **Return URL** <a href="#form-return-url" id="form-return-url" class="docs-anchor">#</a>
 	* The URL that the form will redirect to after successful submit.
-	* May contain `{{ form.handle }}` and/or `{{ submission.id }}` to parse the newly created unique submission ID in the URL. This would allow you to use the [freeform.submissions](freeform.submissions.md) template function to display some or all of the users' submission on the success page.
+	* May contain `{form:handle}` and/or `{submission:id}` to parse the newly created unique submission ID in the URL. This would allow you to use the [Freeform_Next:Submissions](submissions.md) template tag to display some or all of the users' submission on the success page.
 * **Description** <a href="#form-description" id="form-description" class="docs-anchor">#</a>
 	* A description for the form to store notes or help identify what it's used for, etc.
 
@@ -80,7 +79,7 @@ To use the latter approach, click the **Notify** button in the Property Editor (
 
 ### Fields (left column) <a href="#fields" id="fields" class="docs-anchor">#</a>
 
-The left column displays a list of fields available for use. New fields can be created in the main field creation area (**Freeform > Fields > New Field**) as well as directly within the *Composer* interface by clicking the **Add New Field** button. Fields created here are available globally as well (they do not just exist for that form).
+The left column displays a list of fields available for use. New fields can be created in the main field creation area (**Freeform Next > Fields > New Field**) as well as directly within the *Composer* interface by clicking the **Add New Field** button. Fields created here are available globally as well (they do not just exist for that form).
 
 To use any fields, simply drag the field over to the **Layout** area (center column).
 
@@ -107,7 +106,7 @@ Special Fields include *HTML* and *Submit* button(s):
 			* Together at Right
 	* You may include 1 per page in your form.
 
-If you have configured a [Mailing Lists integration](settings.md#mailing-lists), you'll see a list for Mailing List integrations. There will be 1 displayed per connection, but you can include the mailing list sign up field as many times as you wish, as long as each uses a different list for that integration.
+If you have configured a [Mailing List integration](mailing-list-integrations.md), you'll see a list for Mailing List integrations. There will be 1 displayed per connection, but you can include the mailing list sign up field as many times as you wish, as long as each uses a different list for that integration.
 
 * **Mailing Lists** <a href="#form-mailing-list" id="form-mailing-list" class="docs-anchor">#</a>
 	* Can only be displayed as a single checkbox.
@@ -139,4 +138,4 @@ The Property Editor controls every aspect of your form. Clicking on any field, p
 
 ### CRM API Integrations <a href="#crm-integrations" id="crm-integrations" class="docs-anchor">#</a>
 
-If you have installed and configured any [CRM API integrations](settings.md#crm) (Customer Relationship Management), you will see a **CRM** button at the top of the **Property Editor** area (right column). To configure this, click that button, and then select an integration name from the options. You may then map out your Freeform fields to your CRM's fields.
+If you have installed and configured any [CRM API integrations](crm-integrations.md) (Customer Relationship Management), you will see a **CRM** button at the top of the **Property Editor** area (right column). To configure this, click that button, and then select an integration name from the options. You may then map out your Freeform fields to your CRM's fields.

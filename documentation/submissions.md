@@ -52,23 +52,23 @@ The *Freeform_Next:Submissions* template tag fetches an individual submission or
 
 ## Variables <a href="#variables" id="variables" class="docs-anchor">#</a>
 
-* `{field:FIELD_HANDLE:value}` <a href="#var-field-handle-value" id="var-field-handle-value" class="docs-anchor">#</a>
-	* Access any field in the submission's form by the field's handle. If you have a field with a handle `first_name`, you can access its value by calling `{field:first_name:value}` or get its label with `{field:first_name:label}`
-	* The following variables are available for rendering field data:
-		* `{field:FIELD_HANDLE:value}` - the submitted value
-		* `{field:FIELD_HANDLE:label}` - the label of the field
-		* `{field:FIELD_HANDLE:type}` - the type of field, e.g. `select`, `textarea`, etc
-	* See [{submission:fields}](#varpair-fields) variable pair for automated approach.
 * `{form:name}` <a href="#var-form-name" id="var-form-name" class="docs-anchor">#</a>
 	* The name of the form the submission belongs to.
 	* For form ID, use `{form:id}`
 	* For form handle, use `{form:handle}`
 * `{submission:id}` <a href="#var-id" id="var-id" class="docs-anchor">#</a>
 	* The submission's unique ID.
-* `{submission:title}` <a href="#var-title" id="var-title" class="docs-anchor">#</a>
-	* The submission's title.
 * `{submission:date}` <a href="#var-date" id="var-date" class="docs-anchor">#</a>
 	* The date the submission was submitted, e.g. `{submission:date format="%Y-%m-%d %g:%i %a"}`
+* `{submission:title}` <a href="#var-title" id="var-title" class="docs-anchor">#</a>
+	* The submission's title.
+* `{submission:FIELD_HANDLE:value}` <a href="#var-field-handle-value" id="var-field-handle-value" class="docs-anchor">#</a>
+	* Access any field in the submission's form by the field's handle. If you have a field with a handle `first_name`, you can access its value by calling `{submission:first_name:value}` or get its label with `{submission:first_name:label}`
+	* The following variables are available for rendering field data:
+		* `{submission:FIELD_HANDLE:value}` - the submitted value
+		* `{submission:FIELD_HANDLE:label}` - the label of the field
+		* `{submission:FIELD_HANDLE:type}` - the type of field, e.g. `checkbox_group`, `textarea`, etc
+	* See [{submission:fields}](#varpair-fields) variable pair for automated approach.
 * `{submission:status}` <a href="#var-status" id="var-status" class="docs-anchor">#</a>
 	* The status of the submission.
 	* For status color, use `{submission:status_color}`, which returns the HEX value, e.g. `#ff0000`
@@ -93,10 +93,9 @@ The *Freeform_Next:Submissions* template tag fetches an individual submission or
 	* Contains all fields that store values (doesn't include HTML fields, submit fields, mailing-list fields).
 	* The following variables are available for rendering field data:
 		* `{field:value}` - the submitted value
-		* `{field.label}` - the label of the field
-		* `{field.type}` - the type of field, e.g. `select`, `textarea`, etc
-		* `{field.placeholder}` - the placeholder for the field
-		* `{field.default_value}` - the default value for the field
+		* `{field:label}` - the label of the field
+		* `{field:handle}` - the handle of the field
+		* `{field:type}` - the type of field, e.g. `checkbox_group`, `textarea`, etc
 * `{submission:paginate}{/submission:paginate}` <a href="#varpair-paginate" id="varpair-paginate" class="docs-anchor">#</a>
 	* Renders pagination for submission results. Works just like regular EE pagination, but the  variable pair is prepended with `submission:`. Used in conjunction with the [paginate](#param-paginate) parameter.
 	* Can be displayed as one of two ways:
@@ -245,7 +244,10 @@ Display a more complete table view of submissions with table heading (generated 
 
 Display a single submission, complete with special handling for file fields:
 
-	{exp:freeform_next:submissions form="contact" submission_id="{segment_3}"}
+	{exp:freeform_next:submissions
+		form="contact"
+		submission_id="{segment_3}"
+	}
 
 		<h3>{form:name} - {submission:title}</h3>
 
@@ -270,6 +272,52 @@ Display a single submission, complete with special handling for file fields:
 				</td>
 			</tr>
 			{/submission:fields}
+		</table>
+
+		{if submission:no_results}
+			<div class="alert">
+				Sorry, no submission was found.
+			</div>
+		{/if}
+
+	{/exp:freeform_next:submissions}
+
+---
+
+Display a single submission with manually set variables:
+
+	{exp:freeform_next:submissions
+		form="contact"
+		submission_id="{segment_3}"
+	}
+
+		<table class="table table-striped">
+			<tr>
+				<th style="width: 20%;">Name</th>
+				<td>{submission:first_name:value} {submission:last_name:value}</td>
+			</tr>
+			<tr>
+				<th>{submission:email:label}</th>
+				<td>{submission:email:value}</td>
+			</tr>
+			<tr>
+				<th>Date Submitted</th>
+				<td>{submission:date format="%l, %F %j, %Y at %g:%i%a"}</td>
+			</tr>
+			{if submission:file_upload:value}
+				<tr>
+					<th>{submission:file_upload:label}</th>
+					<td>
+						{exp:file:entries file_id="{submission:file_upload:value}"}
+							{if extension == "gif" OR extension == "jpg" OR extension == "jpeg" OR extension == "png"}
+								<img src="{file_url}" width="{width}" height="{height}" alt="{title}" />
+							{if:else}
+								<a href="{file_url}">{title}</a>
+							{/if}
+						{/exp:file:entries}
+					</td>
+				</tr>
+			{/if}
 		</table>
 
 		{if submission:no_results}

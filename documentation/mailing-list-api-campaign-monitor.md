@@ -4,13 +4,18 @@ This documentation page assumes you have read over the [Mailing List Integration
 
 Campaign Monitor integration includes support for the following:
 
-* Field mapping to standard and custom fields (of text type only), per list.
+* Field mapping to standard and custom fields of the following types:
+	* Text
+	* Number
+	* Multiple Options (can only select one)
+	* Multiple Options (can select many)
+
 
 ## Setup Instructions <a href="#setup" id="setup" class="docs-anchor">#</a>
 
 1. Create & get API Key from Campaign Monitor:
 	* Go to [Campaign Monitor website](http://campaignmonitor.com) and log into your account.
-	* At the top right corner, click on the profile icon and select **Manage Account**.
+	* At the top right corner, click on the profile icon and select **Account Settings**.
 	* On the next page, click the **API keys** link near the bottom of the page.
 	* After the page reloads, click the **Show API Key** link to reveal your API key.
 	* Leave this page open and open a new tab to go to EE control panel...
