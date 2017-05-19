@@ -38,6 +38,10 @@ class Freeform_Next extends Plugin
     {
         $form = $this->assembleFormFromTag();
 
+        if (!$form) {
+            return $this->returnNoResults();
+        }
+
         return $form->render();
     }
 
