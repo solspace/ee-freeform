@@ -178,7 +178,7 @@ class Freeform_Next extends Plugin
      * @return Form|null
      * @throws FreeformException
      */
-    private function submitForm()
+    public function submitForm()
     {
         $hash   = $this->getPost(FormValueContext::FORM_HASH_KEY, null);
         $formId = FormValueContext::getFormIdFromHash($hash);
