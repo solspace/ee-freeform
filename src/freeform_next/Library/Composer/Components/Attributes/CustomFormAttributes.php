@@ -59,6 +59,12 @@ class CustomFormAttributes extends AbstractAttributes
     protected $action;
 
     /** @var array */
+    protected $dynamicNotificationRecipients;
+
+    /** @var string */
+    protected $dynamicNotificationTemplate;
+
+    /** @var array */
     protected $overrideValues;
 
     /** @var bool */
@@ -184,6 +190,26 @@ class CustomFormAttributes extends AbstractAttributes
     public function getAction()
     {
         return $this->action;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDynamicNotificationRecipients()
+    {
+        if (null === $this->dynamicNotificationRecipients) {
+            return null;
+        }
+
+        return explode('|', $this->dynamicNotificationRecipients);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDynamicNotificationTemplate()
+    {
+        return $this->dynamicNotificationTemplate;
     }
 
     /**

@@ -10,6 +10,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Page;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Row;
 use Solspace\Addons\FreeformNext\Library\EETags\Transformers\FieldTransformer;
 use Solspace\Addons\FreeformNext\Library\EETags\Transformers\FormTransformer;
+use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Stringy\Stringy;
 
@@ -139,7 +140,11 @@ class FormToTagDataTransformer
             foreach ($handles as $index => $handle) {
                 $field = $this->form->get($handle);
                 if (!$field) {
-                    $field = $this->form->getLayout()->getFieldByHash($handle);
+                    try {
+                        $field = $this->form->getLayout()->getFieldByHash($handle);
+                    } catch (FreeformException $e) {
+                        continue;
+                    }
                 }
 
                 $string     = $strings[$index];

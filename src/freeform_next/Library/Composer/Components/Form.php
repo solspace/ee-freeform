@@ -487,7 +487,8 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
             ) . PHP_EOL;
 
         if ($customAttributes->getReturnUrl()) {
-            $output .= '<input type="hidden" name="' . self::RETURN_URI_KEY . '" value="' . $customAttributes->getReturnUrl() . '" />';
+            $output .= '<input type="hidden" name="' . self::RETURN_URI_KEY . '" value="' . $customAttributes->getReturnUrl(
+                ) . '" />';
         }
 
         $output .= '<input '
@@ -581,6 +582,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
     {
         if (null !== $attributes) {
             $this->customAttributes->mergeAttributes($attributes);
+            $this->setSessionCustomFormData();
         }
 
         return $this;
@@ -631,6 +633,28 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
     }
 
     /**
+     * Adds any custom form data items to the form value context session
+     *
+     * @return $this
+     */
+    private function setSessionCustomFormData()
+    {
+        $this
+            ->getFormValueContext()
+            ->setCustomFormData(
+                [
+                    FormValueContext::DATA_DYNAMIC_TEMPLATE_KEY   =>
+                        $this->customAttributes->getDynamicNotificationTemplate(),
+                    FormValueContext::DATA_DYNAMIC_RECIPIENTS_KEY =>
+                        $this->customAttributes->getDynamicNotificationRecipients(),
+                ]
+            )
+            ->saveState();
+
+        return $this;
+    }
+
+    /**
      * @return int
      */
     private function getPageIndexFromContext()
@@ -668,7 +692,8 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
             . '<label>Leave this field blank</label>'
             . $output
             . '</div>'
-            . '<script type="text/javascript">document.getElementById("' . $honeypot->getName() . '").value = "' . $honeypot->getHash() . '";</script>';
+            . '<script type="text/javascript">document.getElementById("' . $honeypot->getName(
+            ) . '").value = "' . $honeypot->getHash() . '";</script>';
 
         return $output;
     }
@@ -716,6 +741,17 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
                 $this,
                 $field->getRecipients(),
                 $field->getNotificationId(),
+                $this->layout->getFields(),
+                $submission
+            );
+        }
+
+        $dynamicRecipients = $this->getFormValueContext()->getDynamicNotificationData();
+        if ($dynamicRecipients && $dynamicRecipients->getRecipients()) {
+            $this->getMailHandler()->sendEmail(
+                $this,
+                $dynamicRecipients->getRecipients(),
+                $dynamicRecipients->getTemplate(),
                 $this->layout->getFields(),
                 $submission
             );

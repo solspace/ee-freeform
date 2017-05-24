@@ -162,6 +162,10 @@ class FileUploadField extends AbstractField implements SingleValueInterface, Fil
         }
 
         if (!array_key_exists($this->handle, self::$filesUploaded)) {
+            if (!isset($_FILES[$this->handle]) && !$this->required) {
+                return null;
+            }
+
             $response = $this->getForm()->getFileUploadHandler()->uploadFile($this);
 
             self::$filesUploaded[$this->handle] = null;
@@ -175,7 +179,9 @@ class FileUploadField extends AbstractField implements SingleValueInterface, Fil
                     self::$filesUploaded[$this->handle] = $response->getAssetId();
 
                     return $this->value;
-                } else if ($response->getErrors()) {
+                }
+
+                if ($response->getErrors()) {
                     $this->errors = array_merge($errors, $response->getErrors());
                     self::$filesUploadedErrors[$this->handle] = $this->errors;
                     throw new FileUploadException(implode('. ', $response->getErrors()));
