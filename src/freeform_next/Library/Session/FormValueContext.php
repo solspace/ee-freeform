@@ -11,24 +11,28 @@
 
 namespace Solspace\Addons\FreeformNext\Library\Session;
 
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Attributes\DynamicNotificationAttributes;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SubmitField;
 use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
 
 class FormValueContext implements \JsonSerializable
 {
-    const FORM_HASH_DELIMITER = "_";
-    const FORM_HASH_KEY       = "formHash";
-    const FORM_HONEYPOT_KEY   = "freeformHoneypotHashList";
-    const FORM_HONEYPOT_NAME  = "form_name_handle";
-    const HASH_PATTERN        = "/^(?P<formId>[a-zA-Z0-9]+)_(?P<pageIndex>[a-zA-Z0-9]+)_(?P<payload>.*)$/";
+    const FORM_HASH_DELIMITER = '_';
+    const FORM_HASH_KEY       = 'formHash';
+    const FORM_HONEYPOT_KEY   = 'freeformHoneypotHashList';
+    const FORM_HONEYPOT_NAME  = 'form_name_handle';
+    const HASH_PATTERN        = '/^(?P<formId>[a-zA-Z0-9]+)_(?P<pageIndex>[a-zA-Z0-9]+)_(?P<payload>.*)$/';
 
     const FORM_SESSION_TTL    = 10800; // 3 hours
-    const ACTIVE_SESSIONS_KEY = "freeformActiveSessions";
+    const ACTIVE_SESSIONS_KEY = 'freeformActiveSessions';
 
     const MAX_HONEYPOT_TTL   = 10800; // 3 Hours
     const MAX_HONEYPOT_COUNT = 100;   // Limit the number of maximum honeypot values per session
 
-    const DEFAULT_PAGE_INDEX    = 0;
+    const DEFAULT_PAGE_INDEX = 0;
+
+    const DATA_DYNAMIC_RECIPIENTS_KEY = 'dynamicRecipients';
+    const DATA_DYNAMIC_TEMPLATE_KEY   = 'dynamicTemplate';
 
     /** @var int */
     private $formId;
@@ -45,6 +49,9 @@ class FormValueContext implements \JsonSerializable
 
     /** @var array */
     private $storedValues;
+
+    /** @var array */
+    private $customFormData;
 
     /** @var SessionInterface */
     private $session;
@@ -92,7 +99,7 @@ class FormValueContext implements \JsonSerializable
     private static function getHashParts($hash)
     {
         if (preg_match(self::HASH_PATTERN, $hash, $matches)) {
-            return [$matches["formId"], $matches["pageIndex"], $matches["payload"]];
+            return [$matches['formId'], $matches['pageIndex'], $matches['payload']];
         }
 
         return [null, null, null];
@@ -244,6 +251,43 @@ class FormValueContext implements \JsonSerializable
     }
 
     /**
+     * @param array|null $data
+     *
+     * @return $this
+     */
+    public function setCustomFormData(array $data = null)
+    {
+        $this->customFormData = $data;
+
+        return $this;
+    }
+
+    /**
+     * @return DynamicNotificationAttributes|null
+     */
+    public function getDynamicNotificationData()
+    {
+        if (
+            isset(
+                $this->customFormData[self::DATA_DYNAMIC_TEMPLATE_KEY],
+                $this->customFormData[self::DATA_DYNAMIC_RECIPIENTS_KEY]
+            )
+        ) {
+            $template   = $this->customFormData[self::DATA_DYNAMIC_TEMPLATE_KEY];
+            $recipients = $this->customFormData[self::DATA_DYNAMIC_RECIPIENTS_KEY];
+
+            return new DynamicNotificationAttributes(
+                [
+                    'template'   => $template,
+                    'recipients' => $recipients,
+                ]
+            );
+        }
+
+        return null;
+    }
+
+    /**
      * @param array $storedValues
      *
      * @return $this
@@ -305,9 +349,11 @@ class FormValueContext implements \JsonSerializable
 
             $this->currentPageIndex = $sessionState['currentPageIndex'];
             $this->storedValues     = $sessionState['storedValues'];
+            $this->customFormData   = $sessionState['customFormData'];
         } else {
             $this->currentPageIndex = self::DEFAULT_PAGE_INDEX;
             $this->storedValues     = [];
+            $this->customFormData   = [];
         }
     }
 
@@ -400,7 +446,7 @@ class FormValueContext implements \JsonSerializable
         // Attempt to fetch hashes from POST data
         list($formIdHash, $_, $payload) = self::getHashParts($this->getPostedHash());
 
-        $formId = self::getFormIdFromHash($this->getPostedHash());
+        $formId           = self::getFormIdFromHash($this->getPostedHash());
         $isFormIdMatching = $formId === $this->formId;
 
         // Only generate a new hash if the content indexes don' match with the posted hash
@@ -542,18 +588,14 @@ class FormValueContext implements \JsonSerializable
     }
 
     /**
-     * Specify data which should be serialized to JSON
-     *
-     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     *        which is a value of any type other than a resource.
-     * @since 5.4.0
+     * @inheritdoc
      */
     public function jsonSerialize()
     {
         return [
             'currentPageIndex' => $this->currentPageIndex,
             'storedValues'     => $this->storedValues,
+            'customFormData'   => $this->customFormData,
         ];
     }
 }
