@@ -237,7 +237,7 @@ class Layout implements \JsonSerializable, \Iterator
      */
     public function getFieldByHash($hash)
     {
-        if (is_null($this->fieldsByHash)) {
+        if (null === $this->fieldsByHash) {
             $fields = [];
             foreach ($this->getFields() as $field) {
                 $fields[$field->getHash()] = $field;
