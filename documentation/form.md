@@ -216,7 +216,7 @@ Render a form automatically with some control on formatting:
 
 		{rows}
 			<div class="freeform-row {form:row_class}">
-			{columns}
+			{fields}
 				<div class="freeform-column {form:column_class}{if field:type == 'submit'} freeform-column-content-align-{field:position}{/if}">
 					{field:render
 						class="{if field:type != 'submit'}freeform-input{/if}"
@@ -225,7 +225,7 @@ Render a form automatically with some control on formatting:
 						instructions_class="freeform-instructions"
 					}
 				</div>
-			{/columns}
+			{/fields}
 			</div>
 		{/rows}
 
@@ -260,7 +260,7 @@ Here is a more complex form (made to work with Bootstrap):
 
 		{rows}
 			<div class="row {form:row_class}">
-			{columns}
+			{fields}
 				<div class="{form:column_class} col-xs-12 col-lg-{column:grid_width} {if field:type == 'checkbox' OR field:type == 'mailing_list'}checkbox{if:else}form-group{/if}{if field:has_errors} has-error{/if}{if field:type == 'submit'} submit-align-{field:position}{/if}">
 				{if field:type == 'checkbox_group'}
 
@@ -318,7 +318,7 @@ Here is a more complex form (made to work with Bootstrap):
 
 				{/if}
 				</div>
-			{/columns}
+			{/fields}
 			</div>
 		{/rows}
 

@@ -220,7 +220,7 @@ class FormToTagDataTransformer
         /** @var Row $row */
         foreach ($form as $row) {
             $columns = [
-                'columns' => [],
+                'fields' => [],
             ];
 
             $columnCount = count($row);
@@ -236,10 +236,10 @@ class FormToTagDataTransformer
 
                 $column = $this->getFieldData($field, 'field:', $columnIndex++, $columnCount);
 
-                $columns['columns'][] = $column;
+                $columns['fields'][] = $column;
             }
 
-            if (empty($columns['columns'])) {
+            if (empty($columns['fields'])) {
                 continue;
             }
 

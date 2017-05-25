@@ -20,7 +20,7 @@
 
 {rows}
 	<div class="row {form:row_class}">
-	{columns}
+	{fields}
 		<div class="{form:column_class} medium-{column:grid_width} columns {if field:type == 'checkbox' OR field:type == 'mailing_list'}checkbox{if:else}form-group{/if}{if field:has_errors} has-error{/if}{if field:type == 'submit'} submit submit-align-{field:position}{/if}">
 		{if field:type == 'checkbox_group'}
 
@@ -77,6 +77,6 @@
 
 		{/if}
 		</div>
-	{/columns}
+	{/fields}
 	</div>
 {/rows}

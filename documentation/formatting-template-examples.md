@@ -58,7 +58,7 @@ The following example assumes you're including necessary Bootstrap JS and CSS.
 
 	{rows}
 		<div class="row {form:row_class}">
-		{columns}
+		{fields}
 			<div class="{form:column_class} col-xs-12 col-lg-{column:grid_width} {if field:type == 'checkbox' OR field:type == 'mailing_list'}checkbox{if:else}form-group{/if}{if field:has_errors} has-error{/if}{if field:type == 'submit'} submit-align-{field:position}{/if}">
 			{if field:type == 'checkbox_group'}
 
@@ -116,7 +116,7 @@ The following example assumes you're including necessary Bootstrap JS and CSS.
 
 			{/if}
 			</div>
-		{/columns}
+		{/fields}
 		</div>
 	{/rows}
 
@@ -179,7 +179,7 @@ The following example assumes you're including necessary Foundation JS and CSS.
 
 	{rows}
 		<div class="row {form:row_class}">
-		{columns}
+		{fields}
 			<div class="{form:column_class} medium-{column:grid_width} columns {if field:type == 'checkbox' OR field:type == 'mailing_list'}checkbox{if:else}form-group{/if}{if field:has_errors} has-error{/if}{if field:type == 'submit'} submit submit-align-{field:position}{/if}">
 			{if field:type == 'checkbox_group'}
 
@@ -236,7 +236,7 @@ The following example assumes you're including necessary Foundation JS and CSS.
 
 			{/if}
 			</div>
-		{/columns}
+		{/fields}
 		</div>
 	{/rows}
 
@@ -267,7 +267,7 @@ The following example assumes you're including necessary Foundation JS and CSS.
 
 	{rows}
 		<div class="freeform-row {form:row_class}">
-		{columns}
+		{fields}
 			<div class="freeform-column {form:column_class} freeform-column-{column:grid_width} {if field:type == 'submit'} freeform-column-content-align-{field:position}{/if}">
 				{field:render
 					class="{if field:type != 'submit'}freeform-input{/if}"
@@ -276,7 +276,7 @@ The following example assumes you're including necessary Foundation JS and CSS.
 					instructions_class="freeform-instructions"
 				}
 			</div>
-		{/columns}
+		{/fields}
 		</div>
 	{/rows}
 
@@ -307,7 +307,7 @@ The following example assumes you're including necessary Foundation JS and CSS.
 
 	{rows}
 		<div class="freeform-row {form:row_class}">
-		{columns}
+		{fields}
 			<div class="freeform-column {form:column_class}{if field:type == 'submit'} freeform-column-content-align-{field:position}{/if}">
 				{field:render
 					class="{if field:type != 'submit'}freeform-input{/if}"
@@ -316,6 +316,6 @@ The following example assumes you're including necessary Foundation JS and CSS.
 					instructions_class="freeform-instructions"
 				}
 			</div>
-		{/columns}
+		{/fields}
 		</div>
 	{/rows}

@@ -22,7 +22,7 @@
 
 {rows}
 	<div class="freeform-row {form:row_class}">
-	{columns}
+	{fields}
 		<div class="freeform-column {form:column_class}{if field:type == 'submit'} freeform-column-content-align-{field:position}{/if}">
 			{field:render
 				class="{if field:type != 'submit'}freeform-input{/if}"
@@ -31,6 +31,6 @@
 				instructions_class="freeform-instructions"
 			}
 		</div>
-	{/columns}
+	{/fields}
 	</div>
 {/rows}
