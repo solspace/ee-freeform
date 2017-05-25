@@ -87,7 +87,7 @@ The *Freeform_Next:Submissions* template tag fetches an individual submission or
 	* Returns the total number of files uploaded across all file upload fields for the submission. For example, if you had 2 fields that were the **file upload** field type, and one had 2 file uploads within it, while the other had one, and each contained files uploaded, the total value would be **3**.
 
 
-## Variable Pairs
+## Variable Pairs <a href="#variable-pairs" id="variables" class="docs-anchor">#</a>
 
 * `{submission:fields}{/submission:fields}` <a href="#varpair-fields" id="varpair-fields" class="docs-anchor">#</a>
 	* Contains all fields that store values (doesn't include HTML fields, submit fields, mailing-list fields).
@@ -130,7 +130,7 @@ The *Freeform_Next:Submissions* template tag fetches an individual submission or
 	```
 
 
-## Conditionals
+## Conditionals <a href="#conditionals" id="conditionals" class="docs-anchor">#</a>
 
 * `{if submission:no_results}{/if}` <a href="#cond-no-results" id="cond-no-results" class="docs-anchor">#</a>
 	* Displays its contents when there are no results found for this template tag with the given set of parameters.

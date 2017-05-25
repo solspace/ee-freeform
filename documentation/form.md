@@ -35,6 +35,7 @@ If you're wanting to simply render a complete form based on Composer layout and 
 	* Overrides the `<form>` ID attribute.
 * `return_url` or `return` <a href="#param-returnurl" id="param-returnurl" class="docs-anchor">#</a>
 	* Overrides the return URL (set inside Composer) for the form.
+	* Use `SUBMISSION_ID` to generate the future submission ID in the return URL.
 * `method` <a href="#param-method" id="param-method" class="docs-anchor">#</a>
 	* Overrides the `<form>` method attribute. `POST` by default.
 * `name` <a href="#param-name" id="param-name" class="docs-anchor">#</a>
@@ -75,15 +76,11 @@ If you're wanting to simply render a complete form based on Composer layout and 
 	* Outputs the unique ID of the form.
 * `description` <a href="#var-description" id="var-description" class="docs-anchor">#</a>
 	* Outputs the description of the form.
-* `submissionTitleFormat` <a href="#var-submissionTitleFormat" id="var-submissionTitleFormat" class="docs-anchor">#</a>
-	* Outputs the submissionTitleFormat used when creating new submissions based on this form.
-* `returnUrl` <a href="#var-returnUrl" id="var-returnUrl" class="docs-anchor">#</a>
-	* Outputs the returnUrl of the form.
-* `pages` <a href="#var-pages" id="var-pages" class="docs-anchor">#</a>
-	* Returns a list of [Page objects](page.md) each containing its label and index.
-* `currentPage` <a href="#var-currentPage" id="var-currentPage" class="docs-anchor">#</a>
-	* Returns the current [Page object](page.md) containing its label and index.
-* `customAttributes` <a href="#var-custom-attributes" id="var-custom-attributes" class="docs-anchor">#</a>
+* `return_url` <a href="#var-returnUrl" id="var-returnUrl" class="docs-anchor">#</a>
+	* Outputs the return URL of the form.
+* `current_page` <a href="#var-currentpage" id="var-currentpage" class="docs-anchor">#</a>
+	* Returns the current page containing its label and index.
+* `custom_attributes` <a href="#var-custom-attributes" id="var-custom-attributes" class="docs-anchor">#</a>
 	* An object of customizable attributes to ease the customizability of field rendering.
 	* Contains the following properties (each one is `null` if not set):
 		* `id` <a href="#var-custattr-id" id="var-custattr-id" class="docs-anchor">#</a>
@@ -94,38 +91,71 @@ If you're wanting to simply render a complete form based on Composer layout and 
 			* The METHOD attribute for the form tag.
 		* `action` <a href="#var-custattr-action" id="var-custattr-action" class="docs-anchor">#</a>
 			* The ACTION attribute for the form tag.
-		* `returnUrl` <a href="#var-custattr-returnurl" id="var-custattr-returnurl" class="docs-anchor">#</a>
+		* `return_url` <a href="#var-custattr-returnurl" id="var-custattr-returnurl" class="docs-anchor">#</a>
 			* Allows overriding the return URL of the form upon successful submit.
-		* `rowClass` <a href="#var-custattr-rowclass" id="var-custattr-rowclass" class="docs-anchor">#</a>
+		* `row_class` <a href="#var-custattr-rowclass" id="var-custattr-rowclass" class="docs-anchor">#</a>
 			* The CLASS attribute of all HTML row tags.
-		* `columnClass` <a href="#var-custattr-columnclass" id="var-custattr-columnclass" class="docs-anchor">#</a>
+		* `column_class` <a href="#var-custattr-columnclass" id="var-custattr-columnclass" class="docs-anchor">#</a>
 			* The CLASS attribute of all HTML column tags.
-		* `submitClass` <a href="#var-custattr-submitclass" id="var-custattr-submitclass" class="docs-anchor">#</a>
+		* `submit_class` <a href="#var-custattr-submitclass" id="var-custattr-submitclass" class="docs-anchor">#</a>
 			* The CLASS attribute of submit field input elements.
-		* `inputClass` <a href="#var-custattr-inputclass" id="var-custattr-inputclass" class="docs-anchor">#</a>
+		* `input_class` <a href="#var-custattr-inputclass" id="var-custattr-inputclass" class="docs-anchor">#</a>
 			* The CLASS attribute of all HTML input fields.
-		* `labelClass` <a href="#var-custattr-labelclass" id="var-custattr-labelclass" class="docs-anchor">#</a>
+		* `label_class` <a href="#var-custattr-labelclass" id="var-custattr-labelclass" class="docs-anchor">#</a>
 			* The CLASS attribute of all HTML label fields.
-		* `errorClass` <a href="#var-custattr-errorclass" id="var-custattr-errorclass" class="docs-anchor">#</a>
+		* `error_class` <a href="#var-custattr-errorclass" id="var-custattr-errorclass" class="docs-anchor">#</a>
 			* The CLASS attribute of all HTML error lists.
-		* `instructionsClass` <a href="#var-custattr-instructionsclass" id="var-custattr-instructionsclass" class="docs-anchor">#</a>
+		* `instructions_class` <a href="#var-custattr-instructionsclass" id="var-custattr-instructionsclass" class="docs-anchor">#</a>
 			* The CLASS attribute of all instruction fields.
-		* `instructionsBelowField` <a href="#var-custattr-instructionsbelowfield" id="var-custattr-instructionsbelowfield" class="docs-anchor">#</a>
+		* `instructions_below_field` <a href="#var-custattr-instructionsbelowfield" id="var-custattr-instructionsbelowfield" class="docs-anchor">#</a>
 			* A boolean value. Set to true to render instructions below, not above the input field.
-		* `overrideValues` <a href="#var-custattr-overridevalues" id="var-custattr-overridevalues" class="docs-anchor">#</a>
+		* `override_values` <a href="#var-custattr-overridevalues" id="var-custattr-overridevalues" class="docs-anchor">#</a>
 			* An object of override values for any field's `defaultValue` in case you need a context specific default value. Examples provided below...
-		* `formAttributes` <a href="#var-custattr-formattributes" id="var-custattr-formattributes" class="docs-anchor">#</a>
+		* `form_attributes` <a href="#var-custattr-formattributes" id="var-custattr-formattributes" class="docs-anchor">#</a>
 			* An object of attributes which will be added to the form.
 			* Ex: `formAttributes: { "novalidate": true, "data-form-id": "test" }`
-		* `inputAttributes` <a href="#var-custattr-inputattributes" id="var-custattr-inputattributes" class="docs-anchor">#</a>
+		* `input_attributes` <a href="#var-custattr-inputattributes" id="var-custattr-inputattributes" class="docs-anchor">#</a>
 			* An object of attributes which will be added to all input fields.
 			* Ex: `inputAttributes: { "readonly": true, "data-field-id": "test" }`
-		* `useRequiredAttribute: true` <a href="#var-custattr-userequiredattribute" id="var-custattr-userequiredattribute" class="docs-anchor">#</a>
+		* `use_required_attribute: true` <a href="#var-custattr-userequiredattribute" id="var-custattr-userequiredattribute" class="docs-anchor">#</a>
 			* Adds `required` attribute to input fields that have been set to be required in Composer.
 
 
-When iterating over the form, you will iterate through [Row](row.md) objects for the currently active [Page](page.md), each [Row](row.md) can be iterated over to get [Field](field.md) objects. Check the [Field](field.md) documentation to see available parameters for those objects.
+## Variable Pairs <a href="#variable-pairs" id="variable-pairs" class="docs-anchor">#</a>
 
+* `pages` <a href="#varpair-pages" id="varpair-pages" class="docs-anchor">#</a>
+	* Handles formatting options for displaying pages for multi-page forms.
+		* `form:page_count` - total number of pages for the form
+		* `page:index` - page number
+		* `current_page:index` - page number of currently viewed page
+		* `page:label` - name of the page (set in Composer)
+	* Typical usage looks something like this:
+		```
+		{if form:page_count > 1}
+			<ul class="nav nav-tabs">
+			{pages}
+				<li class="{if page:index == current_page:index}active{if:else}disabled{/if}">
+					<a href="javascript:;">{page:label}</a>
+				</li>
+			{/pages}
+			</ul>
+		{/if}
+		```
+* `rows` <a href="#varpair-rows" id="varpair-rows" class="docs-anchor">#</a>
+	* Handles formatting options for displaying rows of fields in layout (set by Composer).
+* `columns` <a href="#varpair-columns" id="varpair-columns" class="docs-anchor">#</a>
+	* Handles formatting options for displaying columns of fields in layout (set by Composer).
+
+
+## Conditionals <a href="#conditionals" id="conditionals" class="docs-anchor">#</a>
+
+* `{if form:no_results}{/if}` <a href="#cond-no-results" id="cond-no-results" class="docs-anchor">#</a>
+	* Displays its contents when there are no results found for this template tag with the given set of parameters.
+* `{if form:has_errors}{/if}` <a href="#cond-has-errors" id="cond-has-errors" class="docs-anchor">#</a>
+	* Displays its contents when there are errors after attempting to submit the form.
+* `{if form:is_submitted_successfully}{/if}` <a href="#cond-submitted-successfully" id="cond-submitted-successfully" class="docs-anchor">#</a>
+	* Session success flash message.
+	* Displays only once after a form is successfully submitted.
 
 
 ## Usage in Templates <a href="#templates" id="templates" class="docs-anchor">#</a>
@@ -203,7 +233,100 @@ Render a form automatically with some control on formatting:
 
 ---
 
-Form formatting can also be extremely manual, if that is something you prefer. Here's an example of different levels of manual you can use:
+Here is a more complex form (made to work with Bootstrap):
+
+	<style>label.required:after {content:"\*";color:#d00;margin-left:5px;}.submit-align-left{text-align:left}.submit-align-right{text-align:right}.submit-align-center{text-align:center}.submit-align-center button:not(:first-of-type),.submit-align-left button:not(:first-of-type),.submit-align-right button:not(:first-of-type){margin-left:5px}.submit-align-spread button:first-child{float:left}.submit-align-spread button:last-child{float:right}</style>
+
+	{exp:freeform_next:form
+		form="contact_form"
+		return_url="{path='about/contact'}"
+	}
+
+		{if form:page_count > 1}
+			<ul class="nav nav-tabs">
+			{pages}
+				<li class="{if page:index == current_page:index}active{if:else}disabled{/if}">
+					<a href="javascript:;">{page:label}</a>
+				</li>
+			{/pages}
+			</ul>
+		{/if}
+
+		{if form:has_errors}
+			<div class="alert alert-danger">
+				There was an error submitting this form
+			</div>
+		{/if}
+
+		{rows}
+			<div class="row {form:row_class}">
+			{columns}
+				<div class="{form:column_class} col-xs-12 col-lg-{column:grid_width} {if field:type == 'checkbox' OR field:type == 'mailing_list'}checkbox{if:else}form-group{/if}{if field:has_errors} has-error{/if}{if field:type == 'submit'} submit-align-{field:position}{/if}">
+				{if field:type == 'checkbox_group'}
+
+					{field:render_label label_class="{if field:required}required{/if}"}
+
+					{field:options}
+						<div class="checkbox">
+							<label>
+								<input type="checkbox"
+									name="{field:handle}[]"
+									value="{option:value}"
+									{if option:checked}checked{/if}
+								/>
+								{option:label}
+							</label>
+						</div>
+					{/field:options}
+
+					{field:render_instructions instructions_class="help-block"}
+					{field:render_errors error_class="help-block"}
+
+				{if:elseif field:type == 'radio_group' OR (field:type == 'dynamic_recipients' AND field:show_as_radio)}
+
+					{field:render_label label_class="{if field:required}required{/if}"}
+
+					{field:options}
+						<div class="radio">
+							<label>
+								<input type="radio"
+									name="{field:handle}"
+									value="{option:value}"
+									{if option:checked}checked{/if}
+								/>
+								{option:label}
+							</label>
+						</div>
+					{/field:options}
+
+					{field:render_instructions instructions_class="help-block"}
+					{field:render_errors error_class="help-block"}
+
+				{if:elseif field:type == 'submit'}
+
+					{field:render}
+
+				{if:else}
+
+					{field:render
+						class="{if field:type == 'checkbox' OR field:type == 'mailing_list'}checkbox{if:else}form-control{/if}"
+						label_class="{if field:required}required{/if}"
+						error_class="help-block"
+						instructions_class="help-block"
+						instructions_below_field="1"
+					}
+
+				{/if}
+				</div>
+			{/columns}
+			</div>
+		{/rows}
+
+	{/exp:freeform_next:form}
+
+---
+
+Form formatting can also be very manual or semi manual, if that is something you prefer. Here's an example of different levels of manual you can use:
 
 
 	{exp:freeform_next:form
