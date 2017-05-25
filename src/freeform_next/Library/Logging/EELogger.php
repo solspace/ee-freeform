@@ -61,7 +61,7 @@ class EELogger implements LoggerInterface
      */
     public function debug($message, $category = self::DEFAULT_LOGGER_CATEGORY)
     {
-        self::get($category)->info($message);
+        self::get($category)->debug($message);
     }
 
     /**
@@ -79,7 +79,7 @@ class EELogger implements LoggerInterface
      */
     public function warn($message, $category = self::DEFAULT_LOGGER_CATEGORY)
     {
-        self::get($category)->info($message);
+        self::get($category)->warn($message);
     }
 
     /**
@@ -88,7 +88,7 @@ class EELogger implements LoggerInterface
      */
     public function error($message, $category = self::DEFAULT_LOGGER_CATEGORY)
     {
-        self::get($category)->info($message);
+        self::get($category)->error($message);
     }
 
     /**
@@ -97,7 +97,7 @@ class EELogger implements LoggerInterface
      */
     public function fatal($message, $category = self::DEFAULT_LOGGER_CATEGORY)
     {
-        self::get($category)->info($message);
+        self::get($category)->fatal($message);
     }
 
     /**

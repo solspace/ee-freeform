@@ -16,6 +16,11 @@ interface NotificationInterface
     /**
      * @return string
      */
+    public function getHandle();
+
+    /**
+     * @return string
+     */
     public function getFromName();
 
     /**
