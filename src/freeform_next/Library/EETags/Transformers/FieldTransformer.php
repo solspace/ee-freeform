@@ -27,7 +27,7 @@ class FieldTransformer
             $value = $field->getValueAsString();
         }
 
-        $data  = [
+        $data = [
             $prefix . 'id'                  => $field->getId(),
             $prefix . 'handle'              => $field->getHandle(),
             $prefix . 'hash'                => $field->getHash(),
@@ -57,9 +57,9 @@ class FieldTransformer
         ];
 
         if (null !== $columnCount && null !== $columnIndex) {
-            $data['column:index'] = $columnIndex;
-            $data['column:count'] = $columnCount;
-            $data['column:grid_width'] = 12 / ($columnCount ?: 1);
+            $data['column:index']           = $columnIndex;
+            $data['column:count']           = $columnCount;
+            $data['form:column_grid_width'] = 12 / ($columnCount ?: 1);
         }
 
         return $data;
@@ -76,7 +76,7 @@ class FieldTransformer
             return null;
         }
 
-        $index = 0;
+        $index   = 0;
         $options = [];
         foreach ($field->getOptions() as $option) {
             if ($field instanceof MultipleValueInterface) {
