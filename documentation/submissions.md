@@ -4,6 +4,12 @@ The *Freeform_Next:Submissions* template tag fetches an individual submission or
 
 [![Submissions](images/templates_submission.png)](images/templates_submission.png)
 
+* [Parameters](#parameters)
+* [Variables](#variables)
+* [Variable Pairs](#variable-pairs)
+* [Conditionals](#conditionals)
+* [Examples](#examples)
+
 
 ## Parameters <a href="#parameters" id="parameters" class="docs-anchor">#</a>
 
@@ -63,11 +69,11 @@ The *Freeform_Next:Submissions* template tag fetches an individual submission or
 * `{submission:title}` <a href="#var-title" id="var-title" class="docs-anchor">#</a>
 	* The submission's title.
 * `{submission:FIELD_HANDLE:value}` <a href="#var-field-handle-value" id="var-field-handle-value" class="docs-anchor">#</a>
-	* Access any field in the submission's form by the field's handle. If you have a field with a handle `first_name`, you can access its value by calling `{submission:first_name:value}` or get its label with `{submission:first_name:label}`
+	* Manually access any field in the submission's form by the field's handle. If you have a field with a handle `first_name`, you can access its value by calling `{submission:first_name:value}` or get its label with `{submission:first_name:label}`
 	* The following variables are available for rendering field data:
 		* `{submission:FIELD_HANDLE:value}` - the submitted value. Array values get joined via a `,` separator.
-		* `{submission:FIELD_HANDLE:label}` - the label of the field
-		* `{submission:FIELD_HANDLE:type}` - the type of field, e.g. `checkbox_group`, `textarea`, etc
+		* `{submission:FIELD_HANDLE:label}` - the label of the field.
+		* `{submission:FIELD_HANDLE:type}` - the type of field, e.g. `checkbox_group`, `textarea`, etc.
 	* See [{submission:fields}](#varpair-fields) variable pair for automated approach.
 * `{submission:status}` <a href="#var-status" id="var-status" class="docs-anchor">#</a>
 	* The status of the submission.
@@ -136,7 +142,7 @@ The *Freeform_Next:Submissions* template tag fetches an individual submission or
 	* Displays its contents when there are no results found for this template tag with the given set of parameters.
 
 
-## Usage in Templates <a href="#templates" id="templates" class="docs-anchor">#</a>
+## Example Usage in Templates <a href="#examples" id="examples" class="docs-anchor">#</a>
 
 Display a simple list of submissions:
 

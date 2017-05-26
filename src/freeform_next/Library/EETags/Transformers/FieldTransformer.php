@@ -59,7 +59,7 @@ class FieldTransformer
         if (null !== $columnCount && null !== $columnIndex) {
             $data['column:index']           = $columnIndex;
             $data['column:count']           = $columnCount;
-            $data['form:column_grid_width'] = 12 / ($columnCount ?: 1);
+            $data['column:grid_width'] = 12 / ($columnCount ?: 1);
         }
 
         return $data;

@@ -24,7 +24,6 @@
 * ### Template Tags
 	* [Form](form.md)
 	* [Forms](forms.md)
-	* [Render](render.md)
 	* [submissions](submissions.md)
 
 * ### Templating Extras

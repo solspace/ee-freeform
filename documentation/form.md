@@ -2,9 +2,15 @@
 
 The *Freeform_Next:Form* template tag displays your form contents. You can either loop through automated rendering of form pages/rows/columns/fields (based on what is in Composer), or manually enter each field if you need full control for complex forms.
 
-If you're wanting to simply render a complete form based on Composer layout and the assigned formatting template, you can just use the [Freeform_Next:Render](render.md) template tag.
+If you're wanting to simply render a complete form based on Composer layout and the assigned formatting template, you can just use the [Freeform_Next:Render](#render-examples) template tag (all of the same parameters below are available for it).
 
 [![Form](images/templates_form-errors.png)](images/templates_form-errors.png)
+
+* [Parameters](#parameters)
+* [Variables](#variables)
+* [Variable Pairs](#variable-pairs)
+* [Conditionals](#conditionals)
+* [Examples](#examples)
 
 
 ## Parameters <a href="#parameters" id="parameters" class="docs-anchor">#</a>
@@ -82,6 +88,8 @@ If you're wanting to simply render a complete form based on Composer layout and 
 	* Returns the current page containing its label and index.
 * **Custom Attributes** <a href="#var-custom-attributes" id="var-custom-attributes" class="docs-anchor">#</a>
 	* The following variables are available to help with formatting, based on what you have specified in Composer or the corresponding parameters:
+		* `{form:id_attribute}` <a href="#var-custattr-id" id="var-custattr-id" class="docs-anchor">#</a>
+			* The ID attribute of the HTML form tag.
 		* `{form:class}` <a href="#var-custattr-class" id="var-custattr-class" class="docs-anchor">#</a>
 			* The CLASS attribute of the HTML form tag.
 		* `{form:method}` <a href="#var-custattr-method" id="var-custattr-method" class="docs-anchor">#</a>
@@ -92,18 +100,22 @@ If you're wanting to simply render a complete form based on Composer layout and 
 			* The CLASS attribute of all HTML row tags.
 		* `{form:column_class}` <a href="#var-custattr-columnclass" id="var-custattr-columnclass" class="docs-anchor">#</a>
 			* The CLASS attribute of all HTML column tags.
-* `{column:grid_width}` <a href="#var-grid_width" id="var-grid_width" class="docs-anchor">#</a>
+* `{column:grid_width}` <a href="#var-column_grid_width" id="var-column_grid_width" class="docs-anchor">#</a>
 	* Outputs the grid width (out of 12) for the column that contains the field. Aids with setting up responsive template.
+* `{column:count}` <a href="#var-column_count" id="var-column_count" class="docs-anchor">#</a>
+	* Outputs the total number of columns (fields) for the row.
+* `{column:index}` <a href="#var-column_index" id="var-column_index" class="docs-anchor">#</a>
+	* Outputs the column number for specific column (field) of that row, e.g. `0`, `1`, `2`, `3`.
 
 
 ## Variable Pairs <a href="#variable-pairs" id="variable-pairs" class="docs-anchor">#</a>
 
 * `{pages}{/pages}` <a href="#varpair-pages" id="varpair-pages" class="docs-anchor">#</a>
 	* Handles formatting options for displaying list of pages for multi-page forms.
-		* `{form:page_count}` - total number of pages for the form
 		* `{page:index}` - page number
-		* `{current_page:index}` - page number of currently viewed page
 		* `{page:label}` - name of the page (set in Composer)
+		* `{current_page:index}` - page number of currently viewed page
+		* `{form:page_count}` - total number of pages for the form
 	* Typical usage looks something like this:
 		```
 		{if form:page_count > 1}
@@ -126,7 +138,6 @@ If you're wanting to simply render a complete form based on Composer layout and 
 		* `{field:handle}` - handle for field, e.g. `first_name`
 		* `{field:instructions}` - instructions for field, e.g. `Please select from the following`
 		* `{field:placeholder}` - placeholder for field, e.g. `you@yourdomain.com`
-		* `{field:default_value}` - default value for field
 		* `{field:type}` - type of field, e.g. `checkbox_group`.
 		* `{field:required}` - renders as `1` if field is set to be required. Used as a conditional.
 		* `{field:options}{/field:options}` - variable pair for formatting options for a multi-option field.
@@ -162,7 +173,6 @@ If you're wanting to simply render a complete form based on Composer layout and 
 			* `errors_class`
 
 
-
 ## Conditionals <a href="#conditionals" id="conditionals" class="docs-anchor">#</a>
 
 * `{if form:no_results}{/if}` <a href="#cond-no-results" id="cond-no-results" class="docs-anchor">#</a>
@@ -174,17 +184,18 @@ If you're wanting to simply render a complete form based on Composer layout and 
 	* Displays only once after a form is successfully submitted.
 
 
-## Usage in Templates <a href="#templates" id="templates" class="docs-anchor">#</a>
+## Example Usage in Templates <a href="#examples" id="examples" class="docs-anchor">#</a>
 
 Below shows a variety of approaches available to render your forms. For more complete examples for use with front-end frameworks like *Bootstrap*, see the [Formatting Template Examples documentation](formatting-template-examples.md).
 
-Render the form using its **formatting template** with the [Render](render.md) template tag:
+<a name="render-examples"></a>
+Render the form using its **formatting template** with the *Render* template tag:
 
 	{exp:freeform_next:render form="contact_form"}
 
 ---
 
-Render the form using its **formatting template**, but overriding some classes with the [Render](render.md) template tag:
+Render the form using its **formatting template**, but overriding some classes with the *Render* template tag:
 
 	{exp:freeform_next:render
 		form="contact_form"
