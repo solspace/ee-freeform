@@ -22,7 +22,7 @@
 	* [Mailing Lists](mailing-list-integrations.md)
 
 * ### Template Tags
-	* [form](form.md)
+	* [Form](form.md)
 	* [Forms](forms.md)
 	* [Render](render.md)
 	* [submissions](submissions.md)

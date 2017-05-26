@@ -68,67 +68,42 @@ If you're wanting to simply render a complete form based on Composer layout and 
 
 ## Variables <a href="#variables" id="variables" class="docs-anchor">#</a>
 
-* `name` <a href="#var-name" id="var-name" class="docs-anchor">#</a>
+* `{form:name}` <a href="#var-name" id="var-name" class="docs-anchor">#</a>
 	* Outputs the name of the form.
-* `handle` <a href="#var-handle" id="var-handle" class="docs-anchor">#</a>
+* `{form:handle}` <a href="#var-handle" id="var-handle" class="docs-anchor">#</a>
 	* Outputs the handle of the form.
-* `id` <a href="#var-id" id="var-id" class="docs-anchor">#</a>
+* `{form:id}` <a href="#var-id" id="var-id" class="docs-anchor">#</a>
 	* Outputs the unique ID of the form.
-* `description` <a href="#var-description" id="var-description" class="docs-anchor">#</a>
+* `{form:description}` <a href="#var-description" id="var-description" class="docs-anchor">#</a>
 	* Outputs the description of the form.
-* `return_url` <a href="#var-returnUrl" id="var-returnUrl" class="docs-anchor">#</a>
+* `{form:return_url}` <a href="#var-returnUrl" id="var-returnUrl" class="docs-anchor">#</a>
 	* Outputs the return URL of the form.
-* `current_page` <a href="#var-currentpage" id="var-currentpage" class="docs-anchor">#</a>
+* `{form:current_page}` <a href="#var-currentpage" id="var-currentpage" class="docs-anchor">#</a>
 	* Returns the current page containing its label and index.
-* `custom_attributes` <a href="#var-custom-attributes" id="var-custom-attributes" class="docs-anchor">#</a>
-	* An object of customizable attributes to ease the customizability of field rendering.
-	* Contains the following properties (each one is `null` if not set):
-		* `id` <a href="#var-custattr-id" id="var-custattr-id" class="docs-anchor">#</a>
-			* The ID attribute of the HTML form tag.
-		* `class` <a href="#var-custattr-class" id="var-custattr-class" class="docs-anchor">#</a>
+* **Custom Attributes** <a href="#var-custom-attributes" id="var-custom-attributes" class="docs-anchor">#</a>
+	* The following variables are available to help with formatting, based on what you have specified in Composer or the corresponding parameters:
+		* `{form:class}` <a href="#var-custattr-class" id="var-custattr-class" class="docs-anchor">#</a>
 			* The CLASS attribute of the HTML form tag.
-		* `method` <a href="#var-custattr-method" id="var-custattr-method" class="docs-anchor">#</a>
+		* `{form:method}` <a href="#var-custattr-method" id="var-custattr-method" class="docs-anchor">#</a>
 			* The METHOD attribute for the form tag.
-		* `action` <a href="#var-custattr-action" id="var-custattr-action" class="docs-anchor">#</a>
+		* `{form:action}` <a href="#var-custattr-action" id="var-custattr-action" class="docs-anchor">#</a>
 			* The ACTION attribute for the form tag.
-		* `return_url` <a href="#var-custattr-returnurl" id="var-custattr-returnurl" class="docs-anchor">#</a>
-			* Allows overriding the return URL of the form upon successful submit.
-		* `row_class` <a href="#var-custattr-rowclass" id="var-custattr-rowclass" class="docs-anchor">#</a>
+		* `{form:row_class}` <a href="#var-custattr-rowclass" id="var-custattr-rowclass" class="docs-anchor">#</a>
 			* The CLASS attribute of all HTML row tags.
-		* `column_class` <a href="#var-custattr-columnclass" id="var-custattr-columnclass" class="docs-anchor">#</a>
+		* `{form:column_class}` <a href="#var-custattr-columnclass" id="var-custattr-columnclass" class="docs-anchor">#</a>
 			* The CLASS attribute of all HTML column tags.
-		* `submit_class` <a href="#var-custattr-submitclass" id="var-custattr-submitclass" class="docs-anchor">#</a>
-			* The CLASS attribute of submit field input elements.
-		* `input_class` <a href="#var-custattr-inputclass" id="var-custattr-inputclass" class="docs-anchor">#</a>
-			* The CLASS attribute of all HTML input fields.
-		* `label_class` <a href="#var-custattr-labelclass" id="var-custattr-labelclass" class="docs-anchor">#</a>
-			* The CLASS attribute of all HTML label fields.
-		* `error_class` <a href="#var-custattr-errorclass" id="var-custattr-errorclass" class="docs-anchor">#</a>
-			* The CLASS attribute of all HTML error lists.
-		* `instructions_class` <a href="#var-custattr-instructionsclass" id="var-custattr-instructionsclass" class="docs-anchor">#</a>
-			* The CLASS attribute of all instruction fields.
-		* `instructions_below_field` <a href="#var-custattr-instructionsbelowfield" id="var-custattr-instructionsbelowfield" class="docs-anchor">#</a>
-			* A boolean value. Set to true to render instructions below, not above the input field.
-		* `override_values` <a href="#var-custattr-overridevalues" id="var-custattr-overridevalues" class="docs-anchor">#</a>
-			* An object of override values for any field's `defaultValue` in case you need a context specific default value. Examples provided below...
-		* `form_attributes` <a href="#var-custattr-formattributes" id="var-custattr-formattributes" class="docs-anchor">#</a>
-			* An object of attributes which will be added to the form.
-			* Ex: `formAttributes: { "novalidate": true, "data-form-id": "test" }`
-		* `input_attributes` <a href="#var-custattr-inputattributes" id="var-custattr-inputattributes" class="docs-anchor">#</a>
-			* An object of attributes which will be added to all input fields.
-			* Ex: `inputAttributes: { "readonly": true, "data-field-id": "test" }`
-		* `use_required_attribute: true` <a href="#var-custattr-userequiredattribute" id="var-custattr-userequiredattribute" class="docs-anchor">#</a>
-			* Adds `required` attribute to input fields that have been set to be required in Composer.
+* `{column:grid_width}` <a href="#var-grid_width" id="var-grid_width" class="docs-anchor">#</a>
+	* Outputs the grid width (out of 12) for the column that contains the field. Aids with setting up responsive template.
 
 
 ## Variable Pairs <a href="#variable-pairs" id="variable-pairs" class="docs-anchor">#</a>
 
-* `pages` <a href="#varpair-pages" id="varpair-pages" class="docs-anchor">#</a>
-	* Handles formatting options for displaying pages for multi-page forms.
-		* `form:page_count` - total number of pages for the form
-		* `page:index` - page number
-		* `current_page:index` - page number of currently viewed page
-		* `page:label` - name of the page (set in Composer)
+* `{pages}{/pages}` <a href="#varpair-pages" id="varpair-pages" class="docs-anchor">#</a>
+	* Handles formatting options for displaying list of pages for multi-page forms.
+		* `{form:page_count}` - total number of pages for the form
+		* `{page:index}` - page number
+		* `{current_page:index}` - page number of currently viewed page
+		* `{page:label}` - name of the page (set in Composer)
 	* Typical usage looks something like this:
 		```
 		{if form:page_count > 1}
@@ -141,10 +116,51 @@ If you're wanting to simply render a complete form based on Composer layout and 
 			</ul>
 		{/if}
 		```
-* `rows` <a href="#varpair-rows" id="varpair-rows" class="docs-anchor">#</a>
+* `{rows}{/rows}` <a href="#varpair-rows" id="varpair-rows" class="docs-anchor">#</a>
 	* Handles formatting options for displaying rows of fields in layout (set by Composer).
-* `columns` <a href="#varpair-columns" id="varpair-columns" class="docs-anchor">#</a>
+* `{fields}{/fields}` <a href="#varpair-fields" id="varpair-fields" class="docs-anchor">#</a>
 	* Handles formatting options for displaying columns of fields in layout (set by Composer).
+	* Not required if rendering a form manually.
+	* The following variables and variable pairs are available for use when rendering your form:
+		* `{field:label}` - label of field, e.g. `First Name`
+		* `{field:handle}` - handle for field, e.g. `first_name`
+		* `{field:instructions}` - instructions for field, e.g. `Please select from the following`
+		* `{field:placeholder}` - placeholder for field, e.g. `you@yourdomain.com`
+		* `{field:default_value}` - default value for field
+		* `{field:type}` - type of field, e.g. `checkbox_group`.
+		* `{field:required}` - renders as `1` if field is set to be required. Used as a conditional.
+		* `{field:options}{/field:options}` - variable pair for formatting options for a multi-option field.
+			* `{option:label}` - label of option, e.g. `California`
+			* `{option:value}` - value of the option, e.g. `CA`
+			* `{option:checked}` - renders as `1` if the option should be checked. Used as a conditional.
+			* `{option:index}` - the order number of the option, e.g. `4`
+		* `{field:show_as_radio}` - specific to Dynamic Recipients fieldtype.
+		* `{field:position}` - positioning of field (submit fields), e.g. `submit-align-left`
+	* Also available are automated rendering options:
+		* `{field:render}` - renders complete field (label, input, etc). The following override parameters are available:
+			* `id`
+			* `class`
+			* `label_class`
+			* `error_class`
+			* `instructions_class`
+			* `instructions_below_field="1"`
+			* `input_attributes`
+				* Attributes to be added to the input field, e.g. `input_attributes:readonly="true"`, `input_attributes:data-field-id="test"`
+			* `override_value`
+				* Override the value for the input field, e.g. `override_value="test"`
+		* `{field:render_label}` - renders the complete label. The following override parameters are available:
+			* `label_class`
+		* `{field:render_input}` - renders the complete input. The following override parameters are available:
+			* `input_class`
+			* `input_attributes`
+				* Attributes to be added to the input field, e.g. `input_attributes:readonly="true"`, `input_attributes:data-field-id="test"`
+			* `override_value`
+				* Override the value for the input field, e.g. `override_value="test"`
+		* `{field:render_instructions}` - renders the instructions. The following override parameters are available:
+			* `instructions_class`
+		* `{field:render_errors}` - renders the errors. The following override parameters are available:
+			* `errors_class`
+
 
 
 ## Conditionals <a href="#conditionals" id="conditionals" class="docs-anchor">#</a>

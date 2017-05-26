@@ -65,7 +65,7 @@ The *Freeform_Next:Submissions* template tag fetches an individual submission or
 * `{submission:FIELD_HANDLE:value}` <a href="#var-field-handle-value" id="var-field-handle-value" class="docs-anchor">#</a>
 	* Access any field in the submission's form by the field's handle. If you have a field with a handle `first_name`, you can access its value by calling `{submission:first_name:value}` or get its label with `{submission:first_name:label}`
 	* The following variables are available for rendering field data:
-		* `{submission:FIELD_HANDLE:value}` - the submitted value
+		* `{submission:FIELD_HANDLE:value}` - the submitted value. Array values get joined via a `,` separator.
 		* `{submission:FIELD_HANDLE:label}` - the label of the field
 		* `{submission:FIELD_HANDLE:type}` - the type of field, e.g. `checkbox_group`, `textarea`, etc
 	* See [{submission:fields}](#varpair-fields) variable pair for automated approach.
@@ -92,7 +92,7 @@ The *Freeform_Next:Submissions* template tag fetches an individual submission or
 * `{submission:fields}{/submission:fields}` <a href="#varpair-fields" id="varpair-fields" class="docs-anchor">#</a>
 	* Contains all fields that store values (doesn't include HTML fields, submit fields, mailing-list fields).
 	* The following variables are available for rendering field data:
-		* `{field:value}` - the submitted value
+		* `{field:value}` - the submitted value. Array values get joined via a `,` separator.
 		* `{field:label}` - the label of the field
 		* `{field:handle}` - the handle of the field
 		* `{field:type}` - the type of field, e.g. `checkbox_group`, `textarea`, etc
