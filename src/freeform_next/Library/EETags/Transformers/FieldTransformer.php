@@ -6,6 +6,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecipientField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\OptionsInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\PlaceholderInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SubmitField;
 
 class FieldTransformer
@@ -33,6 +34,7 @@ class FieldTransformer
             $prefix . 'type'                => $field->getType(),
             $prefix . 'label'               => $field->getLabel(),
             $prefix . 'value'               => $value,
+            $prefix . 'placeholder'         => $field instanceof PlaceholderInterface ? $field->getPlaceholder() : null,
             $prefix . 'instructions'        => $field->getInstructions(),
             $prefix . 'errors'              => $field->getErrors(),
             $prefix . 'render_input'        => $field->renderInput(),
