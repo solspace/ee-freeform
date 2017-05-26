@@ -55,7 +55,7 @@ class AddonInfo
      */
     public static function getInstance()
     {
-        if (is_null(self::$instance)) {
+        if (null === self::$instance) {
             self::$instance = new AddonInfo();
         }
 
@@ -67,7 +67,7 @@ class AddonInfo
      */
     protected function __construct()
     {
-        $data = require(__DIR__ . "/../addon.setup.php");
+        $data = require __DIR__ . '/../addon.setup.php';
 
         foreach ($data as $key => $value) {
             if (property_exists($this, $key)) {

@@ -1,0 +1,42 @@
+/*!
+ * Freeform Next for Expression Engine
+ *
+ * @package       Solspace:Freeform
+ * @author        Solspace, Inc.
+ * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
+ * @link          https://solspace.com/expressionengine/freeform-next
+ * @license       https://solspace.com/software/license-agreement
+ */
+
+@import "variables";
+
+.update-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    margin: 0;
+    padding: 2px 0;
+
+    &:before {
+      font-family: FontAwesome, sans-serif;
+      margin-right: 5px;
+    }
+
+    &.feature:before {
+      content: '\f005';
+      color: #54A261;
+    }
+
+    &.note:before {
+      content: '\f1fc';
+      color: #4486C1;
+    }
+
+    &.bugfix:before {
+      content: '\f0ad';
+      color: #CB3131;
+    }
+  }
+}

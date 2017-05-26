@@ -18,6 +18,7 @@ use Solspace\Addons\FreeformNext\Controllers\MailingListsController;
 use Solspace\Addons\FreeformNext\Controllers\NotificationController;
 use Solspace\Addons\FreeformNext\Controllers\SettingsController;
 use Solspace\Addons\FreeformNext\Controllers\SubmissionController;
+use Solspace\Addons\FreeformNext\Controllers\UpdateController;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
 use Solspace\Addons\FreeformNext\Model\FormModel;
@@ -26,6 +27,7 @@ use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
 use Solspace\Addons\FreeformNext\Services\SettingsService;
+use Solspace\Addons\FreeformNext\Services\UpdateService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\Navigation;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
@@ -269,6 +271,16 @@ class Freeform_next_mcp extends ControlPanelView
     }
 
     /**
+     * @return array
+     */
+    public function updates()
+    {
+        $updateController = new UpdateController();
+
+        return $this->renderView($updateController->index());
+    }
+
+    /**
      * @param string $type
      * @param null   $id
      *
@@ -368,6 +380,15 @@ class Freeform_next_mcp extends ControlPanelView
             }
         }
 
+        $updates = null;
+        $updateService = new UpdateService();
+        if ($updateService->updateCount()) {
+            $updates = new NavigationLink(
+                'Updates available (' . $updateService->updateCount() . ')',
+                'updates'
+            );
+        }
+
         $nav = new Navigation();
         $nav
             ->addLink($forms)
@@ -379,6 +400,10 @@ class Freeform_next_mcp extends ControlPanelView
 
         if ($logs) {
             $nav->addLink($logs);
+        }
+
+        if ($updates) {
+            $nav->addLink($updates);
         }
 
         return $nav;
