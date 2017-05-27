@@ -15,7 +15,7 @@
 	* [Multi-Page Forms](multi-page-forms.md)
 	* [Spam Protection](spam-protection.md)
 	* [Translating](translating.md)
-	* [Fieldtypes](fieldtypes.md)
+	* [Channel Fieldtype](channel-fieldtype.md)
 
 * ### API Integrations
 	* [CRM Integrations](crm-integrations.md)
@@ -30,5 +30,7 @@
 	* [AJAX Forms](ajax-forms.md)
 	* [Formatting Template Examples](formatting-template-examples.md)
 
+<!--
 * ### Developer
 	* [Extension Hooks](extension-hooks.md)
+-->

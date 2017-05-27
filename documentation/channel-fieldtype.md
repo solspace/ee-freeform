@@ -1,16 +1,13 @@
-# Field types
+# Field type
 
-Freeform includes 2 field types:
+Freeform includes a channel field type that allows you to assign/relate forms to Channel Entries.
 
-* *Freeform Forms* - allows you to assign/relate forms to other element types such as Entries.
-* *Freeform Submissions* - allows you to assign/relate form submissions to other element types such as Entries.
+Here's an overview on how to use this field type:
 
-Here's an overview on how to use these field types:
-
-* [Creating a Freeform field](#create)
-* [How the Fieldtypes work](#how-works)
-* [Template Properties](#properties)
-* [Usage in Templates](#templates)
+* [Creating a Freeform channel field](#create)
+* [How the Fieldtype works](#how-works)
+* [Template Variables](#variables)
+* [Example Usage in Templates](#examples)
 
 
 ## Creating a Freeform field <a href="#create" id="create" class="docs-anchor">#</a>
@@ -28,13 +25,13 @@ Your Freeform Form/Submissions field is now available to be assigned to other se
 [![Create New Fieldtype](images/cp_fieldtype-create.png)](images/cp_fieldtype-create.png)
 
 
-## How the Fieldtypes work <a href="#how-works" id="how-works" class="docs-anchor">#</a>
+## How the Fieldtype works <a href="#how-works" id="how-works" class="docs-anchor">#</a>
 The Freeform *Form* (or *Submissions*) fieldtype lets the user assign any Freeform form (or form submissions) to any element: a section entry, categories, assets, etc.
 
 [![Using Fieldtype](images/cp_fieldtype-entry.png)](images/cp_fieldtype-entry.png)
 
 
-## Template Properties <a href="#properties" id="properties" class="docs-anchor">#</a>
+## Template Variables <a href="#variables" id="variables" class="docs-anchor">#</a>
 
 The *Submissions* field type can access anything in the [Submission object](submission.md). For the *Form* field type, the following are template properties are available:
 
@@ -50,7 +47,7 @@ The *Submissions* field type can access anything in the [Submission object](subm
 	* Outputs the full form, rendering it with the [Formatting Template](formatting-templates.md) specified in Composer for the form.
 
 
-## Usage in Templates <a href="#templates" id="templates" class="docs-anchor">#</a>
+## Example Usage in Templates <a href="#examples" id="examples" class="docs-anchor">#</a>
 An example of template code you would use to display a Freeform form (with field handle of *myFreeformfieldname*) that is attached to a Craft Entry would look something like this:
 
 	{% for entry in craft.entries.section('news').limit(10) %}
