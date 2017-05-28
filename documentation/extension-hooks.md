@@ -1,6 +1,6 @@
-# Events & Hooks
+# Extension Hooks
 
-If you wish to extend the capabilities of Freeform, you can use any of the events and hooks below:
+If you wish to extend the capabilities of Freeform, you can use any of the extension hooks below:
 
 ## Events for Freeform Forms <a href="#events-freeform-forms" id="events-freeform-forms" class="docs-anchor">#</a>
 
