@@ -14,7 +14,6 @@
 	* [Submissions](form-submissions.md)
 	* [Multi-Page Forms](multi-page-forms.md)
 	* [Spam Protection](spam-protection.md)
-	* [Translating](translating.md)
 	* [Channel Fieldtype](channel-fieldtype.md)
 
 * ### API Integrations
