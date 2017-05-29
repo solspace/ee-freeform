@@ -353,6 +353,7 @@ Here is a more complex form (made to work with Bootstrap):
 
 ---
 
+<a name="manual-example"></a>
 Form formatting can also be very manual or semi manual, if that is something you prefer. Here's an example of different levels of manual you can use:
 
 

@@ -1,10 +1,10 @@
 # Formatting Templates
 
-While Freeform offers a very intuitive Composer interface to give you a live preview of the form you're building, there of course isn't exactly a magic way to do this on the front end for your templates. However, we have created an automated way for Freeform to figure out as much of this as possible for you.
+While Freeform Next offers a very intuitive Composer interface to give you a live preview of the form you're building, there of course isn't exactly a magic way to do this on the front end for your templates. However, we have created an automated way for Freeform to figure out as much of this as possible for you.
 
 Forms can be generated on the front end templates 2 different ways. There is no worse or better way, but here's an overview:
 
-1. With the [Freeform_Next:Form](form.md) template function.
+1. With the [Freeform_Next:Form](form.md) template tag.
 	* Your form formatting code is contain directly within the template that you want the form to appear in.
 	* No matter what formatting template your form may have assigned to it in Composer, the form always conforms to the template formatting used in this template.
 2. Using [Freeform_Next:Render](form.md#render-examples) method.
