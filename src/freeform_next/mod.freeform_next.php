@@ -26,6 +26,7 @@ class Freeform_Next extends Plugin
 {
     public function __construct()
     {
+        // TODO: Prevent this from firing all the time
         $fileService = new \Solspace\Addons\FreeformNext\Services\FilesService();
         $fileService->cleanUpUnfinalizedAssets();
     }
@@ -69,8 +70,14 @@ class Freeform_Next extends Plugin
      */
     public function forms()
     {
+        $ids     = $this->getParam('form_id');
+        $handles = $this->getParam('form');
+        if (!$handles) {
+            $handles = $this->getParam('form_name');
+        }
+
         $transformer      = new FormTransformer();
-        $forms            = FormRepository::getInstance()->getAllForms();
+        $forms            = FormRepository::getInstance()->getAllForms($ids, $handles);
         $submissionCounts = FormRepository::getInstance()->getFormSubmissionCount(array_keys($forms));
 
         if (empty($forms)) {
@@ -148,34 +155,6 @@ class Freeform_Next extends Plugin
 
     /**
      * @return Form|null
-     */
-    private function assembleFormFromTag()
-    {
-        $id     = $this->getParam('form_id');
-        $handle = $this->getParam('form');
-        if (!$handle) {
-            $handle = $this->getParam('form_name');
-        }
-
-        $hash = $this->getPost(FormValueContext::FORM_HASH_KEY, null);
-        if (null !== $hash) {
-            $this->submitForm();
-        }
-
-        $formModel = FormRepository::getInstance()->getFormByIdOrHandle($id ? $id : $handle);
-        if (!$formModel) {
-            return null;
-        }
-
-        $form = $formModel->getForm();
-
-        FormTagParamUtilities::setFormCustomAttributes($form);
-
-        return $form;
-    }
-
-    /**
-     * @return Form|null
      * @throws FreeformException
      */
     public function submitForm()
@@ -242,5 +221,33 @@ class Freeform_Next extends Plugin
                 );
             }
         }
+    }
+
+    /**
+     * @return Form|null
+     */
+    private function assembleFormFromTag()
+    {
+        $id     = $this->getParam('form_id');
+        $handle = $this->getParam('form');
+        if (!$handle) {
+            $handle = $this->getParam('form_name');
+        }
+
+        $hash = $this->getPost(FormValueContext::FORM_HASH_KEY, null);
+        if (null !== $hash) {
+            $this->submitForm();
+        }
+
+        $formModel = FormRepository::getInstance()->getFormByIdOrHandle($id ? $id : $handle);
+        if (!$formModel) {
+            return null;
+        }
+
+        $form = $formModel->getForm();
+
+        FormTagParamUtilities::setFormCustomAttributes($form);
+
+        return $form;
     }
 }
