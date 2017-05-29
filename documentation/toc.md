@@ -29,7 +29,5 @@
 * ### Templating Extras
 	* [Formatting Template Examples](formatting-template-examples.md)
 
-<!--
 * ### Developer
 	* [Extension Hooks](extension-hooks.md)
--->
