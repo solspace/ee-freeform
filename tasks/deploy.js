@@ -45,7 +45,7 @@ function buildProVersion(gulp, callback) {
 
     themeStream.on('end', function () {
       del(paths.vendors.deleteList).then(function () {
-        zipFolder(paths.deploy.buildPath, "dist/freeform_next_pro_v" + version + ".zip", function (err) {
+        zipFolder(paths.deploy.buildPath, "dist/FreeformNext-Pro_" + version + ".zip", function (err) {
           if (err) {
             callback(err);
           } else {
@@ -82,7 +82,7 @@ function buildBasicVersion(gulp, callback) {
     themeStream.on('end', function () {
       del(paths.vendors.deleteList).then(function () {
         del(paths.deploy.addon.proFiles).then(function () {
-          zipFolder(paths.deploy.buildPath, "dist/freeform_next_basic_v" + version + ".zip", function (err) {
+          zipFolder(paths.deploy.buildPath, "dist/FreeformNext_" + version + ".zip", function (err) {
             if (err) {
               callback(err);
             } else {
