@@ -384,7 +384,7 @@ class Freeform_next_mcp extends ControlPanelView
         $updateService = new UpdateService();
         if ($updateService->updateCount()) {
             $updates = new NavigationLink(
-                'Updates available (' . $updateService->updateCount() . ')',
+                'Updates Available (' . $updateService->updateCount() . ')',
                 'updates'
             );
         }

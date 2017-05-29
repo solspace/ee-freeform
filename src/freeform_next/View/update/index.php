@@ -27,7 +27,7 @@
                         Freeform Next <b><?= $item->getVersion() ?></b>
                         <i>
                             (released on
-                            <b><?= ee()->localize->format_date($format, $item->getDate()->getTimestamp()) ?></b>)
+                            <?= ee()->localize->format_date($format, $item->getDate()->getTimestamp()) ?>)
                         </i>
                     </h3>
                     <div class="message">
