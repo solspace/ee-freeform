@@ -14,10 +14,9 @@ namespace Solspace\Addons\FreeformNext\Controllers;
 use EllisLab\ExpressionEngine\Library\CP\Table;
 use EllisLab\ExpressionEngine\Service\Validation\Result;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
-use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
+use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
 use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
-use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\ConfirmRemoveModal;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
@@ -253,6 +252,7 @@ class NotificationController extends Controller
     public function save($id)
     {
         $notification = NotificationRepository::getInstance()->getOrCreateNotification($id);
+        $isNew        = !$notification->id;
 
         $post        = $_POST;
         $validValues = [];
@@ -267,7 +267,14 @@ class NotificationController extends Controller
         }
 
         $notification->set($validValues);
+
+        if (!ExtensionHelper::call(ExtensionHelper::HOOK_NOTIFICATION_BEFORE_SAVE, $notification, $isNew)) {
+            return $notification;
+        }
+
         $notification->save();
+
+        ExtensionHelper::call(ExtensionHelper::HOOK_NOTIFICATION_AFTER_SAVE, $notification, $isNew);
 
         ee('CP/Alert')
             ->makeInline('shared-form')
@@ -292,7 +299,13 @@ class NotificationController extends Controller
             $models = NotificationRepository::getInstance()->getNotificationsByIdList($ids);
 
             foreach ($models as $model) {
+                if (!ExtensionHelper::call(ExtensionHelper::HOOK_NOTIFICATION_BEFORE_DELETE, $model)) {
+                    continue;
+                }
+
                 $model->delete();
+
+                ExtensionHelper::call(ExtensionHelper::HOOK_NOTIFICATION_AFTER_DELETE, $model);
             }
         }
 

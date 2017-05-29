@@ -5,6 +5,7 @@ namespace Solspace\Addons\FreeformNext\Controllers;
 use EllisLab\ExpressionEngine\Library\CP\Table;
 use Guzzle\Http\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
+use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
 use Solspace\Addons\FreeformNext\Library\Integrations\CRM\CRMOAuthConnector;
 use Solspace\Addons\FreeformNext\Library\Integrations\SettingBlueprint;
@@ -372,7 +373,13 @@ class CrmController extends Controller
             $model->getIntegrationObject()->initiateAuthentication();
         }
 
+        if (!ExtensionHelper::call(ExtensionHelper::HOOK_CRM_BEFORE_SAVE, $model, $isNew)) {
+            return null;
+        }
+
         $model->save();
+
+        ExtensionHelper::call(ExtensionHelper::HOOK_CRM_AFTER_SAVE, $model, $isNew);
 
         ee('CP/Alert')
             ->makeInline('shared-form')
@@ -414,7 +421,13 @@ class CrmController extends Controller
             $models = CrmRepository::getInstance()->getIntegrationsByIdList($ids);
 
             foreach ($models as $model) {
+                if (!ExtensionHelper::call(ExtensionHelper::HOOK_CRM_BEFORE_DELETE, $model)) {
+                    continue;
+                }
+
                 $model->delete();
+
+                ExtensionHelper::call(ExtensionHelper::HOOK_CRM_BEFORE_DELETE, $model);
             }
         }
 

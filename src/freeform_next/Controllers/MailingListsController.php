@@ -5,6 +5,7 @@ namespace Solspace\Addons\FreeformNext\Controllers;
 use EllisLab\ExpressionEngine\Library\CP\Table;
 use Guzzle\Http\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
+use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
 use Solspace\Addons\FreeformNext\Library\Integrations\MailingLists\MailingListOAuthConnector;
 use Solspace\Addons\FreeformNext\Library\Integrations\SettingBlueprint;
@@ -370,7 +371,13 @@ class MailingListsController extends Controller
             $model->getIntegrationObject()->initiateAuthentication();
         }
 
+        if (!ExtensionHelper::call(ExtensionHelper::HOOK_MAILING_LISTS_BEFORE_SAVE, $model, $isNew)) {
+            return null;
+        }
+
         $model->save();
+
+        ExtensionHelper::call(ExtensionHelper::HOOK_MAILING_LISTS_AFTER_SAVE, $model, $isNew);
 
         ee('CP/Alert')
             ->makeInline('shared-form')
@@ -412,7 +419,13 @@ class MailingListsController extends Controller
             $models = MailingListRepository::getInstance()->getIntegrationsByIdList($ids);
 
             foreach ($models as $model) {
+                if (!ExtensionHelper::call(ExtensionHelper::HOOK_MAILING_LISTS_BEFORE_DELETE, $model)) {
+                    continue;
+                }
+
                 $model->delete();
+
+                ExtensionHelper::call(ExtensionHelper::HOOK_MAILING_LISTS_AFTER_DELETE, $model);
             }
         }
 

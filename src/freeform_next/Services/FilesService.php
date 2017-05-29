@@ -14,6 +14,7 @@ namespace Solspace\Addons\FreeformNext\Services;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
 use Solspace\Addons\FreeformNext\Library\FileUploads\FileUploadHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\FileUploads\FileUploadResponse;
+use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Repositories\FileRepository;
 
 class FilesService implements FileUploadHandlerInterface
@@ -44,6 +45,10 @@ class FilesService implements FileUploadHandlerInterface
             ]
         );
 
+        if (!ExtensionHelper::call(ExtensionHelper::HOOK_FILE_BEFORE_UPLOAD, $field)) {
+            return new FileUploadResponse(null, 'Could not upload file');
+        }
+
         if (!ee()->upload->do_upload($field->getHandle())) {
             return new FileUploadResponse(null, ee()->upload->error_msg);
         }
@@ -64,6 +69,8 @@ class FilesService implements FileUploadHandlerInterface
         );
 
         $this->markAssetUnfinalized($fileId);
+
+        ExtensionHelper::call(ExtensionHelper::HOOK_FILE_AFTER_UPLOAD, $field, $fileId);
 
         return new FileUploadResponse($fileId);
     }

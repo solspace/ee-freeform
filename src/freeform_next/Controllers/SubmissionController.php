@@ -28,6 +28,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Page;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Row;
 use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionAttributes;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
+use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionPreferencesRepository;
@@ -493,7 +494,20 @@ class SubmissionController extends Controller
             $submission->setFieldValue($field->getHandle(), $value);
         }
 
+        if (!ExtensionHelper::call(ExtensionHelper::HOOK_SUBMISSION_BEFORE_SAVE, $submission, false)) {
+
+            ee('CP/Alert')
+                ->makeInline('shared-form')
+                ->asIssue()
+                ->withTitle(lang('Failed'))
+                ->defer();
+
+            return false;
+        }
+
         $submission->save();
+
+        ExtensionHelper::call(ExtensionHelper::HOOK_SUBMISSION_AFTER_SAVE, $submission, false);
 
         ee('CP/Alert')
             ->makeInline('shared-form')
@@ -520,7 +534,14 @@ class SubmissionController extends Controller
             $models = SubmissionRepository::getInstance()->getSubmissionsByIdList($ids);
 
             foreach ($models as $model) {
+
+                if (!ExtensionHelper::call(ExtensionHelper::HOOK_SUBMISSION_BEFORE_DELETE, $model)) {
+                    continue;
+                }
+
                 $model->delete();
+
+                ExtensionHelper::call(ExtensionHelper::HOOK_SUBMISSION_AFTER_DELETE, $model);
             }
         }
 

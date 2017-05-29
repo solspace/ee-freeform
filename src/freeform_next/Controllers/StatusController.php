@@ -4,6 +4,7 @@ namespace Solspace\Addons\FreeformNext\Controllers;
 
 use EllisLab\ExpressionEngine\Library\CP\Table;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
+use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Model\StatusModel;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
@@ -201,6 +202,8 @@ class StatusController extends Controller
             throw new FreeformException(lang('Such status does not exist'));
         }
 
+        $isNew = !$model->id;
+
         $name    = ee()->input->post('name');
         $handle  = ee()->input->post('handle');
         $color   = ee()->input->post('color');
@@ -210,7 +213,14 @@ class StatusController extends Controller
         $model->handle    = $handle;
         $model->color     = $color;
         $model->isDefault = $default === 'y';
+
+        if (ExtensionHelper::call(ExtensionHelper::HOOK_STATUS_BEFORE_SAVE, $model, $isNew)) {
+            return $model;
+        }
+
         $model->save();
+
+        ExtensionHelper::call(ExtensionHelper::HOOK_STATUS_AFTER_SAVE, $model, $isNew);
 
         if ($model->isDefault) {
             ee()
@@ -247,7 +257,13 @@ class StatusController extends Controller
             $models = StatusRepository::getInstance()->getStatusesByIdList($ids);
 
             foreach ($models as $model) {
+                if (ExtensionHelper::call(ExtensionHelper::HOOK_STATUS_BEFORE_DELETE, $model)) {
+                    continue;
+                }
+
                 $model->delete();
+
+                ExtensionHelper::call(ExtensionHelper::HOOK_STATUS_AFTER_DELETE, $model);
             }
 
             $this->updateDefaults();
