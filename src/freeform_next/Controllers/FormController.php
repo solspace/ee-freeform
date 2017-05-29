@@ -16,6 +16,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Attributes\FormAttributes;
 use Solspace\Addons\FreeformNext\Library\Composer\Composer;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
+use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Library\Session\EERequest;
 use Solspace\Addons\FreeformNext\Library\Session\EESession;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
@@ -199,6 +200,8 @@ class FormController extends Controller
         $form          = FormRepository::getInstance()->getOrCreateForm($formId);
         $composerState = json_decode($post['composerState'], true);
 
+        $isNew = !$form->id;
+
         if ($this->getPost('duplicate', false)) {
             $oldHandle = $composerState['composer']['properties']['form']['handle'];
 
@@ -237,11 +240,19 @@ class FormController extends Controller
 
         $form->setLayout($composer);
 
+        if (!ExtensionHelper::call(ExtensionHelper::HOOK_FORM_BEFORE_SAVE, $form, $isNew)) {
+            return $view;
+        }
+
         $existing = FormRepository::getInstance()->getFormByIdOrHandle($form->handle);
         if ($existing && $existing->id !== $form->id) {
             $view->addError(sprintf('Handle "%s" already taken', $form->handle));
         } else {
             $form->save();
+
+            if (!ExtensionHelper::call(ExtensionHelper::HOOK_FORM_AFTER_SAVE, $form, $isNew)) {
+                return $view;
+            }
 
             $view->addVariable('id', $form->id);
             $view->addVariable('handle', $form->handle);
@@ -264,7 +275,14 @@ class FormController extends Controller
             $models = FormRepository::getInstance()->getFormByIdList($ids);
 
             foreach ($models as $model) {
+
+                if (!ExtensionHelper::call(ExtensionHelper::HOOK_FORM_BEFORE_DELETE, $model)) {
+                    continue;
+                }
+
                 $model->delete();
+
+                ExtensionHelper::call(ExtensionHelper::HOOK_FORM_AFTER_DELETE, $model);
             }
         }
 

@@ -15,6 +15,7 @@ use EllisLab\ExpressionEngine\Library\CP\Table;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FieldExceptions\FieldException;
+use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Model\FieldModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FileRepository;
@@ -210,6 +211,7 @@ class FieldController extends Controller
     public function save($fieldId = null)
     {
         $field = FieldRepository::getInstance()->getOrCreateField($fieldId);
+        $isNew = !$field->id;
 
         $post        = $_POST;
         $type        = isset($_POST['type']) ? $_POST['type'] : $field->type;
@@ -266,7 +268,14 @@ class FieldController extends Controller
         }
 
         $field->set($validValues);
+
+        if (!ExtensionHelper::call(ExtensionHelper::HOOK_FIELD_BEFORE_SAVE, $field, $isNew)) {
+            return $field;
+        }
+
         $field->save();
+
+        ExtensionHelper::call(ExtensionHelper::HOOK_FIELD_AFTER_SAVE, $field, $isNew);
 
         ee('CP/Alert')
             ->makeInline('shared-form')
@@ -291,7 +300,13 @@ class FieldController extends Controller
             $models = FieldRepository::getInstance()->getFieldsByIdList($ids);
 
             foreach ($models as $model) {
+                if (!ExtensionHelper::call(ExtensionHelper::HOOK_FIELD_BEFORE_DELETE, $model)) {
+                    continue;
+                }
+
                 $model->delete();
+
+                ExtensionHelper::call(ExtensionHelper::HOOK_FIELD_AFTER_DELETE, $model);
             }
         }
 

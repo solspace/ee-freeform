@@ -17,6 +17,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\O
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\StaticValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Database\SubmissionHandlerInterface;
+use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\TemplateHelper;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 
@@ -59,7 +60,13 @@ class SubmissionsService implements SubmissionHandlerInterface
             $submission->setFieldValue($handle, $value);
         }
 
+        if (!ExtensionHelper::call(ExtensionHelper::HOOK_SUBMISSION_BEFORE_SAVE, $submission, true)) {
+            return null;
+        }
+
         $submission->save();
+
+        ExtensionHelper::call(ExtensionHelper::HOOK_SUBMISSION_AFTER_SAVE, $submission, true);
 
         if ($submission->id) {
             $this->finalizeFormFiles($form);

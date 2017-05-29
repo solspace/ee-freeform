@@ -15,6 +15,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\F
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
+use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\TemplateHelper;
 use Solspace\Addons\FreeformNext\Library\Mailing\MailHandlerInterface;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
@@ -92,18 +93,15 @@ class MailerService implements MailHandlerInterface
             }
 
             try {
-                ee()->extensions->call('freeform_next_before_send_email', $message);
-                if (ee()->extensions->end_script === true) {
+                if (!ExtensionHelper::call(ExtensionHelper::HOOK_MAILER_BEFORE_SEND, $message)) {
                     return $sentMailCount;
                 }
 
                 $mailer        = $this->getSwiftMailer();
-                $sentMailCount += $mailer->send($message);
+                $sentToRecipients = $mailer->send($message);
+                $sentMailCount += $sentToRecipients;
 
-                ee()->extensions->call('freeform_next_after_send_email', $message);
-                if (ee()->extensions->end_script === true) {
-                    return $sentMailCount;
-                }
+                ExtensionHelper::call(ExtensionHelper::HOOK_MAILER_AFTER_SEND, (bool) $sentToRecipients);
             } catch (\Exception $e) {
             }
         }

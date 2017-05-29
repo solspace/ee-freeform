@@ -47,12 +47,41 @@ class FormRepository extends Repository
     }
 
     /**
+     * @param string $ids
+     * @param string $handles
+     *
      * @return FormModel[]
      */
-    public function getAllForms()
+    public function getAllForms($ids = null, $handles = null)
     {
-        return ee('Model')
-            ->get(FormModel::MODEL)
+        $query = ee('Model')
+            ->get(FormModel::MODEL);
+
+        if (null !== $ids) {
+            $operator = 'IN';
+            if (strpos($ids, 'not ') === 0) {
+                $ids      = substr($ids, 4);
+                $operator = 'NOT IN';
+            }
+
+            $ids = explode('|', $ids);
+
+            $query->filter('id', $operator, $ids);
+        }
+
+        if (null !== $handles) {
+            $operator = 'IN';
+            if (strpos($handles, 'not ') === 0) {
+                $handles  = substr($handles, 4);
+                $operator = 'NOT IN';
+            }
+
+            $handles = explode('|', $handles);
+
+            $query->filter('handle', $operator, $handles);
+        }
+
+        return $query
             ->all()
             ->asArray();
     }
@@ -116,6 +145,7 @@ class FormRepository extends Repository
         $data = ee()->db
             ->select('formId, COUNT(id) as total')
             ->group_by('formId')
+            ->where_in('formId', $formIds ?: [])
             ->get(SubmissionModel::TABLE)
             ->result_array();
 
