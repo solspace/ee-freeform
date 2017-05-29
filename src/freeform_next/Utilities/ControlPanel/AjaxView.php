@@ -94,7 +94,15 @@ class AjaxView extends View
      */
     public function addError($message)
     {
-        $this->errors[] = $message;
+        if ($message === null) {
+            return $this;
+        }
+
+        if (is_array($message)) {
+            $this->errors = array_merge($this->errors, $message);
+        } else {
+            $this->errors[] = $message;
+        }
 
         return $this;
     }

@@ -64,4 +64,16 @@ class ExtensionHelper
 
         return !$extClass->end_script;
     }
+
+    /**
+     * @return mixed|null
+     */
+    public static function getLastCallData()
+    {
+        if (ee()->extensions->last_call !== false) {
+            return ee()->extensions->last_call;
+        }
+
+        return null;
+    }
 }

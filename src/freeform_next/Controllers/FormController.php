@@ -241,6 +241,8 @@ class FormController extends Controller
         $form->setLayout($composer);
 
         if (!ExtensionHelper::call(ExtensionHelper::HOOK_FORM_BEFORE_SAVE, $form, $isNew)) {
+            $view->addError(ExtensionHelper::getLastCallData());
+
             return $view;
         }
 
