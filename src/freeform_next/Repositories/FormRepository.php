@@ -138,10 +138,14 @@ class FormRepository extends Repository
     /**
      * @param array $formIds
      *
-     * @return mixed
+     * @return array
      */
     public function getFormSubmissionCount(array $formIds)
     {
+        if (empty($formIds)) {
+            return [];
+        }
+
         $data = ee()->db
             ->select('formId, COUNT(id) as total')
             ->group_by('formId')
