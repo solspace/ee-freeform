@@ -78,7 +78,13 @@ class Freeform_Next extends Plugin
 
         $transformer      = new FormTransformer();
         $forms            = FormRepository::getInstance()->getAllForms($ids, $handles);
-        $submissionCounts = FormRepository::getInstance()->getFormSubmissionCount(array_keys($forms));
+
+        $formIds = [];
+        foreach ($forms as $form) {
+            $formIds[] = $form->id;
+        }
+
+        $submissionCounts = FormRepository::getInstance()->getFormSubmissionCount($formIds);
 
         if (empty($forms)) {
             return $this->returnNoResults();

@@ -11,5 +11,10 @@
 
 class Freeform_next_ext
 {
+    public $version = '1.0.0';
 
+    public function __construct()
+    {
+        $this->version = \Solspace\Addons\FreeformNext\Utilities\AddonInfo::getInstance()->getVersion();
+    }
 }
