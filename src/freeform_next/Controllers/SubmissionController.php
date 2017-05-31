@@ -40,7 +40,7 @@ use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 
 class SubmissionController extends Controller
 {
-    const MAX_PER_PAGE = 20;
+    const MAX_PER_PAGE = 3;
 
     /**
      * @param Form $form
@@ -59,7 +59,9 @@ class SubmissionController extends Controller
         $page = (int) ee()->input->get('page') ?: 1;
 
         $sortDirection = ee()->input->get('sort_dir');
+        $sortDirection = $sortDirection === '0' ? 'asc' : $sortDirection;
         $sortColumn    = ee()->input->get('sort_col');
+        $sortColumn    = $sortColumn === '0' ? 'id' : $sortColumn;
 
         $sortVars = [
             'sort_col' => $sortColumn,
