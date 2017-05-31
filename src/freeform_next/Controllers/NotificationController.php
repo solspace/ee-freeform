@@ -46,30 +46,29 @@ class NotificationController extends Controller
 
         $tableData = [];
         foreach ($notifications as $notification) {
-            $link       = null;
-            $editButton = ['toolbar_items' => []];
-            $checkboxes = ['name' => '', 'value' => '', 'disabled' => true];
-            if (!$notification->isFileTemplate()) {
-                $link       = $this->getLink('notifications/' . $notification->id);
-                $editButton = [
-                    'toolbar_items' => [
-                        'edit' => [
-                            'href'  => $link,
-                            'title' => lang('edit'),
-                        ],
-                    ],
-                ];
-                $checkboxes = [
-                    'name'  => 'id_list[]',
-                    'value' => $notification->id,
-                    'data'  => [
-                        'confirm' => lang('Notification') . ': <b>' . htmlentities(
-                                $notification->name,
-                                ENT_QUOTES
-                            ) . '</b>',
-                    ],
-                ];
+            if ($notification->isFileTemplate()) {
+                continue;
             }
+
+            $link       = $this->getLink('notifications/' . $notification->id);
+            $editButton = [
+                'toolbar_items' => [
+                    'edit' => [
+                        'href'  => $link,
+                        'title' => lang('edit'),
+                    ],
+                ],
+            ];
+            $checkboxes = [
+                'name'  => 'id_list[]',
+                'value' => $notification->id,
+                'data'  => [
+                    'confirm' => lang('Notification') . ': <b>' . htmlentities(
+                            $notification->name,
+                            ENT_QUOTES
+                        ) . '</b>',
+                ],
+            ];
 
             $tableData[] = [
                 $notification->id,
@@ -85,10 +84,39 @@ class NotificationController extends Controller
         $table->setData($tableData);
         $table->setNoResultsText('No results');
 
+
+        /** @var Table $table */
+        $fileTable = ee('CP/Table', ['sortable' => false, 'searchable' => false]);
+        $fileTable->setColumns(
+            [
+                'name'   => ['type' => Table::COL_TEXT],
+                'handle' => ['type' => Table::COL_TEXT],
+            ]
+        );
+
+        $fileTableData = [];
+        foreach ($notifications as $notification) {
+            if (!$notification->isFileTemplate()) {
+                continue;
+            }
+
+            $fileTableData[] = [
+                [
+                    'content' => $notification->name,
+                    'href'    => null,
+                ],
+                $notification->id,
+            ];
+        }
+        $fileTable->setData($fileTableData);
+        $fileTable->setNoResultsText('No results');
+
         $view = new CpView(
             'notifications/listing',
             [
                 'table'            => $table->viewData(),
+                'fileTable'        => $fileTable->viewData(),
+                'fileTableHasData' => !empty($fileTableData),
                 'cp_page_title'    => lang('Notifications'),
                 'form_right_links' => [
                     [
