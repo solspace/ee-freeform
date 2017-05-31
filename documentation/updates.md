@@ -7,7 +7,7 @@
 
 Freeform Next has its own **Update Service** built in, which means that every time there's an update available, an **Updates Available** nav item will show up in the Freeform Next add-on area of the EE control panel. You can then review the changelog there, or [view it here](changelog.md).
 
-[![Craft Updates Service](images/cp_updates.png)](images/cp_updates.png)
+[![Freeform Next's Built in Update Service](images/cp_updates.png)](images/cp_updates.png)
 
 To download the update, simply click the **Get Latest Version** button, and you'll be taken to your account area on the Solspace site where you can log in and download the updated package for Freeform Next. Then follow the steps below:
 

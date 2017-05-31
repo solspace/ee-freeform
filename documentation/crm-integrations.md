@@ -1,8 +1,10 @@
 # CRM API Integrations
 
-Freeform Next Pro supports some popular CRM (Customer Relationship Management) API integrations. Inside the **Integrations** area of Freeform, there is a CRM API Integration Manager, which allows you to manage your CRM API integrations. If you currently have Freeform Next Basic, you can [purchase an upgrade to Freeform Next Pro here](https://solspace.com/expressionengine/freeform/pro).
+Freeform Next Pro supports some popular CRM (Customer Relationship Management) API integrations. Inside the **Integrations** area of Freeform, there is a CRM API Integration Manager, which allows you to manage your CRM API integrations. If you currently have Freeform Next Basic, you can [purchase an upgrade to Freeform Next Pro in your account area](https://solspace.com/account/software).
 
-[![Salesforce CRM API Integrations](images/cp_forms-composer-crm.png)](images/cp_forms-composer-crm.png)
+[![Connect CRM](images/cp_api-crm-create.png)](images/cp_api-crm-create.png)
+
+[![CRM API Integration Field Mapping in Composer](images/cp_api-crm-composer-field-mapping.png)](images/cp_api-crm-composer-field-mapping.png)
 
 The following CRM integrations are currently available for *Freeform Next Pro* (click each one for individual setup instructions):
 

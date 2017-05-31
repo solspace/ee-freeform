@@ -6,7 +6,7 @@ To create your first form, visit the Forms area of the Freeform Next control pan
 
 The below documentation assumes that you have reviewed the [Fields & Field Types documentation](fields-field-types.md). If you have not already done so, start over there first.
 
-[![Forms](images/cp_forms.png)](images/cp_forms.png)
+[![Forms](images/cp_forms-list.png)](images/cp_forms-list.png)
 
 [![Composer - Contact Form](images/cp_forms-composer-contact.png)](images/cp_forms-composer-contact.png)
 
@@ -139,3 +139,5 @@ The Property Editor controls every aspect of your form. Clicking on any field, p
 ### CRM API Integrations <a href="#crm-integrations" id="crm-integrations" class="docs-anchor">#</a>
 
 If you have installed and configured any [CRM API integrations](crm-integrations.md) (Customer Relationship Management), you will see a **CRM** button at the top of the **Property Editor** area (right column). To configure this, click that button, and then select an integration name from the options. You may then map out your Freeform fields to your CRM's fields.
+
+[![Composer - CRM Field Mapping](images/cp_api-crm-composer-field-mapping.png)](images/cp_api-crm-composer-field-mapping.png)
