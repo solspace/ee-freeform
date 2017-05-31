@@ -4,6 +4,7 @@ namespace Solspace\Addons\FreeformNext\Controllers;
 
 use Solspace\Addons\FreeformNext\Services\UpdateService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 
 class UpdateController extends Controller
@@ -22,6 +23,8 @@ class UpdateController extends Controller
                 'format'  => ee()->config->item('date_format'),
             ]
         );
+
+        $view->setHeading('Updates');
 
         return $view;
     }
