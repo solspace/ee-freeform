@@ -32,9 +32,9 @@
 
 {if segment_4 == "submissions"}
     {if segment_5 ^= "P" OR segment_5 == ""}
-        {embed="freeform_next_demo/bootstrap_submissions_list" form="{segment_3}"}
+        {embed="demo/bootstrap_submissions_list" form="{segment_3}"}
     {if:else}
-        {embed="freeform_next_demo/bootstrap_submission" submission_id="{segment_5}" form="{segment_3}"}
+        {embed="demo/bootstrap_submission" submission_id="{segment_5}" form="{segment_3}"}
     {/if}
 {if:else}
     {if segment_3}

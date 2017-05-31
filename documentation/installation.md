@@ -4,6 +4,7 @@
 * [Installing Instructions](#install)
 * [Quick Setup](#setup)
 
+
 ## Requirements <a href="#requirements" id="requirements" class="docs-anchor">#</a>
 Solspace Freeform Next mostly meets the same requirements as listed on the [ExpressionEngine Requirements](https://docs.expressionengine.com/v3/installation/requirements.html) page.
 
@@ -18,6 +19,7 @@ Solspace Freeform Next mostly meets the same requirements as listed on the [Expr
 	* Internet Explorer 11 or later
 	* Microsoft Edge
 
+
 ## Installing Instructions <a href="#install" id="install" class="docs-anchor">#</a>
 1. Unzip the download package:
 	* Copy the *freeform_next* folder to your EE sites **/system/user/addons/** directory.
@@ -26,7 +28,6 @@ Solspace Freeform Next mostly meets the same requirements as listed on the [Expr
 
 **NOTE:** Freeform Next can be used alongside classic Freeform/Freeform Pro installations if you're wanting to try out Freeform Next.
 
-[![Installation](images/cp_install.png)](images/cp_install.png)
 
 ## Quick Setup <a href="#setup" id="setup" class="docs-anchor">#</a>
 Follow the steps below to quickly get Solspace Freeform setup in minutes.

@@ -1,6 +1,6 @@
-# Field type
+# Channel Fieldtype
 
-Freeform includes a channel field type that allows you to attach forms to Channel Entries, so that you can display a form with your entry automatically inside the  [Channel:Entries](https://docs.expressionengine.com/v3/channel/channel_entries.html) tag. This method does force using a [Formatting Template](formatting-templates.md) to control its output.
+Freeform includes a channel fieldtype that allows you to attach forms to Channel Entries, so that you can display a form with your entry automatically inside the  [Channel:Entries](https://docs.expressionengine.com/v3/channel/channel_entries.html) tag. This method does force using a [Formatting Template](formatting-templates.md) to control its output.
 
 Here's an overview on how to use this field type:
 
@@ -28,7 +28,7 @@ Your Freeform Form/Submissions field is now available to be assigned to other se
 Once you have a Freeform Next channel entry field setup, and you've created a form with Composer, assigning a form to a channel entry is very easy!
 
 * Go to the *Publish* area in the EE control panel. If the field group the Freeform field belongs to is assigned to the channel you selected, you should now see the special Freeform field.
-* To add a Composer-based form, simply select the form name from the select field list.
+* To add a form, simply select the form name from the select field list.
 * Once you have submitted or updated the channel entry, that's it! The form has now been assigned to the entry.
 
 [![Using Fieldtype](images/cp_fieldtype-entry.png)](images/cp_fieldtype-entry.png)
