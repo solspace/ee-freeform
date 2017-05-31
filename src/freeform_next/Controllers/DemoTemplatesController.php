@@ -64,8 +64,8 @@ class DemoTemplatesController extends Controller
                 'sections'              => [
                     [
                         [
-                            'title'  => 'Template Group Prefix',
-                            'desc'   => 'Each template group installed will be prefixed with this variable in order to prevent a naming collision.',
+                            'title'  => 'Template Group Name',
+                            'desc'   => 'A new template group will be created with this name. Be sure to name this something unique to prevent a naming collision.',
                             'fields' => [
                                 'prefix' => [
                                     'type'     => 'text',
@@ -75,8 +75,8 @@ class DemoTemplatesController extends Controller
                             ],
                         ],
                         [
-                            'title'  => 'Template Groups and Templates to be Installed',
-                            'desc'   => 'These template groups and their accompanying templates will be installed into your ExpressionEngine site.',
+                            'title'  => 'Templates to be Installed',
+                            'desc'   => 'These templates will be installed into your ExpressionEngine site.',
                             'fields' => [
                                 'test' => [
                                     'type'    => 'html',
