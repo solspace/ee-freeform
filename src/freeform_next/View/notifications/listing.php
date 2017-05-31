@@ -14,6 +14,10 @@ $this->extend('_layouts/table_form_wrapper')?>
 <form>
     <?php $this->embed('ee:_shared/table', $table); ?>
 
+    <?php if ($fileTableHasData) : ?>
+        <h1>File Templates</h1>
+        <?php $this->embed('ee:_shared/table', $fileTable); ?>
+    <?php endif; ?>
 
     <fieldset class="tbl-bulk-act hidden">
         <select>
