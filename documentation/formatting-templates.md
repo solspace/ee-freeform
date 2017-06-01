@@ -65,7 +65,7 @@ The following is a basic example of what your formatting template can look like 
 
 A more complex example (accounting for checkbox groups, radios, etc) with Bootstrap formatting may look like this:
 
-	<style>label.required:after {content:"\*";color:#d00;margin-left:5px;}.submit-align-left{text-align:left}.submit-align-right{text-align:right}.submit-align-center{text-align:center}.submit-align-center button:not(:first-of-type),.submit-align-left button:not(:first-of-type),.submit-align-right button:not(:first-of-type){margin-left:5px}.submit-align-spread button:first-child{float:left}.submit-align-spread button:last-child{float:right}</style>
+	<style>label.required:after {content:"*";color:#d00;margin-left:5px;}.submit-align-left{text-align:left}.submit-align-right{text-align:right}.submit-align-center{text-align:center}.submit-align-center button:not(:first-of-type),.submit-align-left button:not(:first-of-type),.submit-align-right button:not(:first-of-type){margin-left:5px}.submit-align-spread button:first-child{float:left}.submit-align-spread button:last-child{float:right}</style>
 
 	{if form:page_count > 1}
 		<ul class="nav nav-tabs">

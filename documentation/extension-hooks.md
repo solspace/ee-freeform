@@ -1,6 +1,6 @@
 # Extension Hooks
 
-If you wish to extend the capabilities of Freeform, you can use any of the extension hooks below:
+If you wish to extend the capabilities of Freeform Next, you can use any of the extension hooks below:
 
 ## Hooks for Freeform Forms <a href="#hooks-freeform-forms" id="hooks-freeform-forms" class="docs-anchor">#</a>
 
