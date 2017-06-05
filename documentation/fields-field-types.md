@@ -20,7 +20,7 @@ Some important notes:
 * Once a field is created, you cannot change the field type after.
 * Freeform will load fields of [Hidden](#fields-hidden) type at the beginning of the form, regardless of where they are placed in Composer layout.
 
-[![Fields](images/cp_fields.png)](images/cp_fields.png)
+[![Fields](images/cp_fields-list.png)](images/cp_fields-list.png)
 
 [![Create a Field](images/cp_fields-create.png)](images/cp_fields-create.png)
 

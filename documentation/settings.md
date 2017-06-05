@@ -35,7 +35,7 @@ The settings allow you to adjust:
 			* **Database Entry** - Use CP-based database template editor.
 			* **Template File** - Use HTML template files.
 
-[![Email Templates](images/cp_settings-email-templates.png)](images/cp_settings-email-templates.png)
+[![Email Templates](images/cp_settings-notification-templates.png)](images/cp_settings-notification-templates.png)
 
 * *Statuses* <a href="#statuses" id="statuses" class="docs-anchor">#</a>
 	* This area allows you to manage and create new statuses for your forms.
