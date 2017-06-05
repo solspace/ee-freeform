@@ -37,11 +37,11 @@ use Solspace\Addons\FreeformNext\Services\SubmissionsService;
  * @property string $layoutJson
  * @property string $returnUrl
  * @property string $defaultStatus
- * @property string $dateCreated
- * @property string $dateUpdated
  */
 class FormModel extends Model
 {
+    use TimestampableTrait;
+
     const MODEL = 'freeform_next:FormModel';
     const TABLE = 'freeform_next_forms';
 
@@ -57,8 +57,6 @@ class FormModel extends Model
     protected $layoutJson;
     protected $returnUrl;
     protected $defaultStatus;
-    protected $dateCreated;
-    protected $dateUpdated;
 
     /** @var Composer */
     private $composer;

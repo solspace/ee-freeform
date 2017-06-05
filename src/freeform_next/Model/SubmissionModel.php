@@ -27,11 +27,11 @@ use Solspace\Addons\FreeformNext\Repositories\FormRepository;
  * @property string    $statusColor
  * @property int       $formId
  * @property string    $title
- * @property \DateTime $dateCreated
- * @property \DateTime $dateUpdated
  */
 class SubmissionModel extends Model
 {
+    use TimestampableTrait;
+
     const MODEL = 'freeform_next:SubmissionModel';
     const TABLE = 'freeform_next_submissions';
 
@@ -54,8 +54,6 @@ class SubmissionModel extends Model
     protected $statusColor;
     protected $formId;
     protected $title;
-    protected $dateCreated;
-    protected $dateUpdated;
 
     /** @var array */
     private $fieldValues;
@@ -288,6 +286,8 @@ class SubmissionModel extends Model
                     $insertData
                 );
         } else {
+            $insertData['dateCreated'] = date('Y-m-d H:i:s');
+
             ee()->db
                 ->insert(
                     self::TABLE,

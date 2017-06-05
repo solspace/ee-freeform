@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_forms` (
   `layoutJson`     TEXT         NOT NULL,
   `returnUrl`      VARCHAR(255)           DEFAULT NULL,
   `defaultStatus`  INT(10)      NOT NULL,
-  `dateCreated`    DATETIME               DEFAULT CURRENT_TIMESTAMP,
-  `dateUpdated`    DATETIME               DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `dateCreated`    DATETIME               DEFAULT NULL,
+  `dateUpdated`    DATETIME               DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `exp_freeform_next_forms_handle_unq_idx` (`handle`)
 )
@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_fields` (
   `rows`           INT(10)                       DEFAULT NULL,
   `fileKinds`      TEXT,
   `maxFileSizeKB`  INT(10)                       DEFAULT NULL,
-  `dateCreated`    DATETIME                      DEFAULT CURRENT_TIMESTAMP,
-  `dateUpdated`    DATETIME                      DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `dateCreated`    DATETIME                      DEFAULT NULL,
+  `dateUpdated`    DATETIME                      DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `exp_freeform_next_fields_handle_unq_idx` (`handle`),
   KEY `exp_freeform_next_fields_notificationId_fk` (`notificationId`),
@@ -58,8 +58,8 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_integrations` (
   `settings`    TEXT,
   `forceUpdate` TINYINT(1) UNSIGNED          NOT NULL  DEFAULT '0',
   `lastUpdate`  DATETIME                               DEFAULT NULL,
-  `dateCreated` DATETIME                               DEFAULT CURRENT_TIMESTAMP,
-  `dateUpdated` DATETIME                               DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `dateCreated` DATETIME                               DEFAULT NULL,
+  `dateUpdated` DATETIME                               DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `exp_freeform_next_class_handle_unq_idx` (`class`, `handle`),
   UNIQUE KEY `exp_freeform_next_handle_unq_idx` (`handle`)
@@ -76,8 +76,8 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_crm_fields` (
   `label`         VARCHAR(255)                                   NOT NULL,
   `type`          ENUM ('string', 'numeric', 'boolean', 'array') NOT NULL DEFAULT 'string',
   `required`      INT(1) UNSIGNED                                NOT NULL DEFAULT '0',
-  `dateCreated`   DATETIME                                                DEFAULT CURRENT_TIMESTAMP,
-  `dateUpdated`   DATETIME                                                DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `dateCreated`   DATETIME                                                DEFAULT NULL,
+  `dateUpdated`   DATETIME                                                DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `exp_freeform_next_crm_fields_integrationId_handle_unq_idx` (`integrationId`, `handle`)
 )
@@ -93,8 +93,8 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_mailing_list_fields` (
   `label`         VARCHAR(255)    NOT NULL,
   `type`          VARCHAR(40)     NOT NULL  DEFAULT 'string',
   `required`      INT(1) UNSIGNED NOT NULL  DEFAULT '0',
-  `dateCreated`   DATETIME                  DEFAULT CURRENT_TIMESTAMP,
-  `dateUpdated`   DATETIME                  DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `dateCreated`   DATETIME                  DEFAULT NULL,
+  `dateUpdated`   DATETIME                  DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `exp_freeform_next_mailingListId_handle_unq_idx` (`mailingListId`, `handle`)
 )
@@ -109,8 +109,8 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_mailing_lists` (
   `resourceId`    VARCHAR(255) NOT NULL,
   `name`          VARCHAR(255) NOT NULL,
   `memberCount`   INT(11)                DEFAULT NULL,
-  `dateCreated`   DATETIME               DEFAULT CURRENT_TIMESTAMP,
-  `dateUpdated`   DATETIME               DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `dateCreated`   DATETIME               DEFAULT NULL,
+  `dateUpdated`   DATETIME               DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `exp_freeform_next_integrationId_resourceId_unq_idx` (`integrationId`, `resourceId`)
 )
@@ -132,8 +132,8 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_notifications` (
   `bodyHtml`           TEXT,
   `bodyText`           TEXT,
   `sortOrder`          INT(10)                       DEFAULT NULL,
-  `dateCreated`        DATETIME                      DEFAULT CURRENT_TIMESTAMP,
-  `dateUpdated`        DATETIME                      DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `dateCreated`        DATETIME                      DEFAULT NULL,
+  `dateUpdated`        DATETIME                      DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `exp_freeform_next_notifications_handle_unq_idx` (`handle`)
 )
@@ -149,8 +149,8 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_statuses` (
   `color`       VARCHAR(30)         NOT NULL  DEFAULT 'grey',
   `isDefault`   TINYINT(1) UNSIGNED NOT NULL  DEFAULT '0',
   `sortOrder`   INT(10)                       DEFAULT NULL,
-  `dateCreated` DATETIME                      DEFAULT CURRENT_TIMESTAMP,
-  `dateUpdated` DATETIME                      DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `dateCreated` DATETIME                      DEFAULT NULL,
+  `dateUpdated` DATETIME                      DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `exp_freeform_next_statuses_name_unq_idx` (`name`),
   UNIQUE KEY `exp_freeform_next_statuses_handle_unq_idx` (`handle`)
@@ -165,8 +165,8 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_submissions` (
   `statusId`    INT(11)                DEFAULT NULL,
   `formId`      INT(11)      NOT NULL,
   `title`       VARCHAR(255) NULL      DEFAULT NULL,
-  `dateCreated` DATETIME               DEFAULT CURRENT_TIMESTAMP,
-  `dateUpdated` DATETIME               DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `dateCreated` DATETIME               DEFAULT NULL,
+  `dateUpdated` DATETIME               DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `exp_freeform_next_submissions_statusId_fk` (`statusId`),
   KEY `exp_freeform_next_submissions_formId_fk` (`formId`)
@@ -179,8 +179,8 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_unfinalized_files` (
   `id`          INT(11) NOT NULL  AUTO_INCREMENT,
   `siteId`      INT(11) NOT NULL  DEFAULT '1',
   `assetId`     INT(11) NOT NULL,
-  `dateCreated` DATETIME          DEFAULT CURRENT_TIMESTAMP,
-  `dateUpdated` DATETIME          DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `dateCreated` DATETIME          DEFAULT NULL,
+  `dateUpdated` DATETIME          DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `exp_freeform_next_unfinalized_files_assetId_fk` (`assetId`)
 )

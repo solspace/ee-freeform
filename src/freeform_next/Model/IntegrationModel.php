@@ -30,6 +30,8 @@ use Solspace\Addons\FreeformNext\Services\MailingListsService;
  */
 class IntegrationModel extends Model implements IntegrationStorageInterface
 {
+    use TimestampableTrait;
+
     const MODEL = 'freeform_next:IntegrationModel';
     const TABLE = 'freeform_next_integrations';
 
@@ -49,8 +51,6 @@ class IntegrationModel extends Model implements IntegrationStorageInterface
     protected $settings;
     protected $forceUpdate;
     protected $lastUpdate;
-    protected $dateCreated;
-    protected $dateUpdated;
 
     /**
      * @param string $type

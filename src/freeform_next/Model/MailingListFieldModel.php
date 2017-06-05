@@ -17,6 +17,8 @@ use EllisLab\ExpressionEngine\Service\Model\Model;
  */
 class MailingListFieldModel extends Model
 {
+    use TimestampableTrait;
+
     const MODEL = 'freeform_next:MailingListFieldModel';
     const TABLE = 'freeform_next_mailing_list_fields';
 
@@ -30,8 +32,6 @@ class MailingListFieldModel extends Model
     protected $label;
     protected $type;
     protected $required;
-    protected $dateCreated;
-    protected $dateUpdated;
 
     /**
      * @return MailingListFieldModel

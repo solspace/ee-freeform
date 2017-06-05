@@ -34,6 +34,8 @@ use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
  * @property int    $rows
  * @property array  $fileKinds
  * @property int    $maxFileSizeKB
+ * @property \DateTime $dateCreated
+ * @property \DateTime $dateUpdated
  */
 class FieldModel extends Model implements \JsonSerializable
 {
@@ -60,8 +62,10 @@ class FieldModel extends Model implements \JsonSerializable
     protected $rows;
     protected $fileKinds;
     protected $maxFileSizeKB;
+    protected $dateCreated;
+    protected $dateUpdated;
 
-    protected static $_events = ['afterSave', 'afterDelete'];
+    protected static $_events = ['afterSave', 'afterDelete', 'beforeInsert', 'beforeUpdate'];
 
     protected static $_typed_columns = [
         'values'    => 'json',
@@ -320,5 +324,34 @@ class FieldModel extends Model implements \JsonSerializable
         $columnName = SubmissionModel::getFieldColumnName($this->id);
 
         ee()->db->query("ALTER TABLE exp_freeform_next_submissions DROP COLUMN $columnName");
+    }
+
+    /**
+     * Event beforeInsert sets the $dateCreated and $dateUpdated properties
+     */
+    public function onBeforeInsert()
+    {
+        $this->set(
+            [
+                'dateCreated' => $this->getTimestampableDate(),
+                'dateUpdated' => $this->getTimestampableDate(),
+            ]
+        );
+    }
+
+    /**
+     * Event beforeUpdate sets the $dateUpdated property
+     */
+    public function onBeforeUpdate()
+    {
+        $this->set(['dateUpdated' => $this->getTimestampableDate()]);
+    }
+
+    /**
+     * @return \DateTime
+     */
+    private function getTimestampableDate()
+    {
+        return date('Y-m-d H:i:s');
     }
 }

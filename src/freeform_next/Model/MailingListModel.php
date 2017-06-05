@@ -17,6 +17,8 @@ use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
  */
 class MailingListModel extends Model
 {
+    use TimestampableTrait;
+
     const MODEL = 'freeform_next:MailingListModel';
     const TABLE = 'freeform_next_mailing_lists';
 
@@ -29,8 +31,6 @@ class MailingListModel extends Model
     protected $resourceId;
     protected $name;
     protected $memberCount;
-    protected $dateCreated;
-    protected $dateUpdated;
 
     /**
      * @return MailingListModel

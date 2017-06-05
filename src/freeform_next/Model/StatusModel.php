@@ -24,6 +24,8 @@ use EllisLab\ExpressionEngine\Service\Model\Model;
  */
 class StatusModel extends Model implements \JsonSerializable
 {
+    use TimestampableTrait;
+
     const MODEL = 'freeform_next:StatusModel';
     const TABLE = 'freeform_next_statuses';
 

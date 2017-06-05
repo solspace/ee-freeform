@@ -31,6 +31,8 @@ use Solspace\Addons\FreeformNext\Library\DataObjects\EmailTemplate;
  */
 class NotificationModel extends Model implements \JsonSerializable
 {
+    use TimestampableTrait;
+
     const MODEL = 'freeform_next:NotificationModel';
     const TABLE = 'freeform_next_notifications';
 
