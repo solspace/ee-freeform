@@ -9,6 +9,7 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
+require_once __DIR__ . '/helper_functions.php';
 require_once __DIR__ . '/vendor/autoload.php';
 
 if (!session_id()) {
