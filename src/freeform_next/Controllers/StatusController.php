@@ -214,7 +214,7 @@ class StatusController extends Controller
         $model->color     = $color;
         $model->isDefault = $default === 'y';
 
-        if (ExtensionHelper::call(ExtensionHelper::HOOK_STATUS_BEFORE_SAVE, $model, $isNew)) {
+        if (!ExtensionHelper::call(ExtensionHelper::HOOK_STATUS_BEFORE_SAVE, $model, $isNew)) {
             return $model;
         }
 
