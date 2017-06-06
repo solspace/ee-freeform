@@ -18,6 +18,14 @@ use Solspace\Addons\FreeformNext\Utilities\AddonUpdater\PluginAction;
 class Freeform_next_upd extends AddonUpdater
 {
     /**
+     * @return bool
+     */
+    public function update()
+    {
+        return true;
+    }
+
+    /**
      * @return array
      */
     protected function getInstallableActions()
