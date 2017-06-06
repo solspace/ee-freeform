@@ -338,7 +338,8 @@ class MailingListsService implements MailingListHandlerInterface
     public function getAllMailingListServiceProviders()
     {
         if (null === self::$integrations) {
-            $integrations = [];
+            $interface = 'Solspace\Addons\FreeformNext\Library\Integrations\MailingLists\MailingListIntegrationInterface';
+            $integrations = $validIntegrations = [];
 
             $addonIntegrations = [];
             if (ee()->extensions->active_hook(FreeformIntegrationExtension::HOOK_REGISTER_INTEGRATIONS) === true) {
@@ -362,20 +363,18 @@ class MailingListsService implements MailingListHandlerInterface
                         strpos($fileName, '.')
                     );
 
-                    $title = ($baseNamespace . $baseName)::TITLE;
+                    $className = $baseNamespace . $baseName;
 
-                    $integrations[$baseNamespace . $baseName] = $title;
+                    $integrations[$className] = $baseName;
                 }
             }
 
-            $interface = 'Solspace\Addons\FreeformNext\Library\Integrations\MailingLists\MailingListIntegrationInterface';
 
-            $validIntegrations = [];
             foreach ($integrations as $class => $name) {
                 $reflectionClass = new \ReflectionClass($class);
 
                 if ($reflectionClass->implementsInterface($interface)) {
-                    $validIntegrations[$class] = $name;
+                    $validIntegrations[$class] = $reflectionClass->getConstant('TITLE');
                 }
             }
 

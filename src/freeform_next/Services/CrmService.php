@@ -300,7 +300,8 @@ class CrmService implements CRMHandlerInterface
     public function getAllCrmServiceProviders()
     {
         if (null === self::$integrations) {
-            $integrations = [];
+            $interface = 'Solspace\Addons\FreeformNext\Library\Integrations\CRM\CRMIntegrationInterface';
+            $integrations = $validIntegrations = [];
 
             $addonIntegrations = [];
             if (ee()->extensions->active_hook(FreeformIntegrationExtension::HOOK_REGISTER_INTEGRATIONS) === true) {
@@ -324,20 +325,19 @@ class CrmService implements CRMHandlerInterface
                         strpos($fileName, '.')
                     );
 
-                    $title = ($baseNamespace . $baseName)::TITLE;
+                    $className = $baseNamespace . $baseName;
 
-                    $integrations[$baseNamespace . $baseName] = $title;
+                    $integrations[$className] = $baseName;
                 }
             }
 
-            $interface = 'Solspace\Addons\FreeformNext\Library\Integrations\CRM\CRMIntegrationInterface';
 
             $validIntegrations = [];
             foreach ($integrations as $class => $name) {
                 $reflectionClass = new \ReflectionClass($class);
 
                 if ($reflectionClass->implementsInterface($interface)) {
-                    $validIntegrations[$class] = $name;
+                    $validIntegrations[$class] = $reflectionClass->getConstant('TITLE');
                 }
             }
 
