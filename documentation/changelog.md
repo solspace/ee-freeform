@@ -1,6 +1,6 @@
 # Changelog
 
-### 1.0.2 (June XX, 2017) <a href="#v1-0-2" id="v1-0-2" class="docs-anchor">#</a>
+### 1.0.2 (June 6, 2017) <a href="#v1-0-2" id="v1-0-2" class="docs-anchor">#</a>
 * Fixed a bug where Composer would error and show a blank white page in some cases.
 * Fixed a bug where Mailing List and CRM pages would sometimes display an error.
 * Fixed a bug where the version number update process wouldn't work correctly.
