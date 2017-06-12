@@ -224,8 +224,13 @@ class SubmissionController extends Controller
             $tableData[] = $data;
         }
 
-        $table->setData($tableData);
-        $table->setNoResultsText('No results');
+        if (empty($tableData) || count($tableData[0]) === count($columns)) {
+            $table->setData($tableData);
+            $table->setNoResultsText('No results');
+        } else {
+            $table->setData([]);
+            $table->setNoResultsText('Please re-save the column layout');
+        }
 
         $modal = new ConfirmRemoveModal($this->getLink('submissions/' . $form->getHandle() . '/delete'));
         $modal->setKind('Submissions');
