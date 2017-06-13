@@ -87,6 +87,7 @@ class SubmissionController extends Controller
             );
 
         $columns = [];
+        $index   = 0;
         foreach ($layout as $setting) {
             if (!$setting->isChecked()) {
                 continue;
@@ -120,7 +121,7 @@ class SubmissionController extends Controller
             // Make sure the labels are "translatable"
             ee()->lang->language[$handle] = $label;
 
-            $columns[$handle] = [
+            $columns[] = [
                 'label'  => $handle,
                 'type'   => $type,
                 'encode' => $encode,

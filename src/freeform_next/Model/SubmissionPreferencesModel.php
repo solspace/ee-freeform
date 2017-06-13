@@ -76,7 +76,7 @@ class SubmissionPreferencesModel extends Model
     }
 
     /**
-     * @return null|FormModel
+     * @return FormModel
      */
     public function getForm()
     {
