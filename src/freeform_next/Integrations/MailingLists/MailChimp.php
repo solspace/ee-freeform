@@ -255,7 +255,9 @@ class MailChimp extends AbstractMailingListIntegration
      */
     protected function fetchFields($listId)
     {
-        $client   = new Client();
+        $client = new Client();
+        $client->setDefaultOption('query', ['count'  => 999]);
+        
         $endpoint = $this->getEndpoint("/lists/$listId/merge-fields");
 
         try {

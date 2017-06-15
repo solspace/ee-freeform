@@ -789,6 +789,10 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
                     $mappedValues = [];
                     if ($field->getMapping()) {
                         foreach ($field->getMapping() as $key => $handle) {
+                            if (!isset($mailingListFieldsByHandle[$key])) {
+                                continue;
+                            }
+
                             $mailingListField = $mailingListFieldsByHandle[$key];
 
                             $convertedValue = $integration->convertCustomFieldValue(
