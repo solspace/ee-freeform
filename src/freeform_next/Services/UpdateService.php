@@ -19,14 +19,35 @@ class UpdateService
     /** @var AddonInfo */
     private $addonInfo;
 
+    /** @var bool */
+    private $writeToCache;
+
     /**
      * UpdateService constructor.
      */
     public function __construct()
     {
+        $cacheDir = PATH_CACHE . '/freeform_next';
+
         $this->jsonUrl   = 'https://solspace.com/expressionengine/updates/freeform.json';
-        $this->jsonPath  = __DIR__ . '/../changelog.json';
+        $this->jsonPath  = $cacheDir . '/changelog.json';
         $this->addonInfo = AddonInfo::getInstance();
+
+        $this->writeToCache = true;
+        if (!file_exists($cacheDir) && !@mkdir($cacheDir) && !is_dir($cacheDir)) {
+            $this->writeToCache = false;
+        }
+
+        $jsonPath = $this->jsonPath;
+        if (!file_exists($jsonPath)) {
+            $tmpFile = $cacheDir . '/tmpFile';
+
+            if (!@touch($tmpFile)) {
+                $this->writeToCache = false;
+            } else {
+                @unlink($tmpFile);
+            }
+        }
     }
 
     /**
@@ -42,6 +63,10 @@ class UpdateService
      */
     public function getInstallableUpdates()
     {
+        if (!$this->writeToCache) {
+            return [];
+        }
+
         if (null === self::$feed) {
             $pluginVersion = $this->addonInfo->getVersion();
             $feedJsonData  = $this->getDecodedJsonFeed();
