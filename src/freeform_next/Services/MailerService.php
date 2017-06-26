@@ -1,6 +1,7 @@
 <?php
 /**
  * Freeform Next for Expression Engine
+ *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
@@ -97,9 +98,9 @@ class MailerService implements MailHandlerInterface
                     return $sentMailCount;
                 }
 
-                $mailer        = $this->getSwiftMailer();
+                $mailer           = $this->getSwiftMailer();
                 $sentToRecipients = $mailer->send($message);
-                $sentMailCount += $sentToRecipients;
+                $sentMailCount    += $sentToRecipients;
 
                 ExtensionHelper::call(ExtensionHelper::HOOK_MAILER_AFTER_SEND, (bool) $sentToRecipients);
             } catch (\Exception $e) {
