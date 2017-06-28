@@ -267,6 +267,10 @@ class FieldController extends Controller
             }
         }
 
+        if ($type === FieldInterface::TYPE_FILE && !isset($validValues['fileKinds'])) {
+            $validValues['fileKinds'] = [];
+        }
+
         $field->set($validValues);
 
         if (!ExtensionHelper::call(ExtensionHelper::HOOK_FIELD_BEFORE_SAVE, $field, $isNew)) {
