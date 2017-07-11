@@ -1,6 +1,6 @@
 # Changelog
 
-### 1.0.3 (June 30, 2017) <a href="#v1-0-3" id="v1-0-3" class="docs-anchor">#</a>
+### 1.0.3 (July 3, 2017) <a href="#v1-0-3" id="v1-0-3" class="docs-anchor">#</a>
 * Fixed a bug where Freeform Updates Service was writing to add-on folder instead of EE Cache directory.
 * Fixed a bug where unchecking ALL filetype options for File Upload fields in Fields area would not save preferences.
 * Fixed a bug where {field_name} syntax would NOT parse in Subject/From Name/From Email/Reply-to fields when not Storing Submissions in DB.
