@@ -94,7 +94,14 @@ class MailerService implements MailHandlerInterface
             }
 
             try {
-                if (!ExtensionHelper::call(ExtensionHelper::HOOK_MAILER_BEFORE_SEND, $message)) {
+                $beforeSave = ExtensionHelper::call(
+                    ExtensionHelper::HOOK_MAILER_BEFORE_SEND,
+                    $message,
+                    $notification,
+                    $submission
+                );
+
+                if (!$beforeSave) {
                     return $sentMailCount;
                 }
 
@@ -102,7 +109,13 @@ class MailerService implements MailHandlerInterface
                 $sentToRecipients = $mailer->send($message);
                 $sentMailCount    += $sentToRecipients;
 
-                ExtensionHelper::call(ExtensionHelper::HOOK_MAILER_AFTER_SEND, (bool) $sentToRecipients);
+                ExtensionHelper::call(
+                    ExtensionHelper::HOOK_MAILER_AFTER_SEND,
+                    (bool) $sentToRecipients,
+                    $message,
+                    $notification,
+                    $submission
+                );
             } catch (\Exception $e) {
             }
         }

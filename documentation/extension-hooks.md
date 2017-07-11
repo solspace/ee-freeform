@@ -124,12 +124,16 @@ If you wish to extend the capabilities of Freeform Next, you can use any of the 
 * `freeform_next_mailer_before_send` <a href="#hook-onbeforesend-mailing" id="event-onbeforesend-mailing" class="docs-anchor">#</a>
 	* Called before sending an email
 	* Contains these parameters:
-		*  `model` - the `EmailModel`
+	    *  `message` - the `Swift_Message` instance 
+		*  `notification` - the `NotificationModel`
+		*  `submission` - the `SubmissionModel` if data is being stored for this form
 * `freeform_next_mailer_after_send` <a href="#hook-onaftersend-mailing" id="event-onaftersend-mailing" class="docs-anchor">#</a>
 	* Called after sending an email
 	* Contains these parameters:
-		*  `model` - the `EmailModel`
 		*  `isSent` - boolean value
+		*  `message` - the `Swift_Message` instance
+		*  `notification` - the `NotificationModel`
+		*  `submission` - the `SubmissionModel` if data is being stored for this form
 
 ## Hooks for Freeform CRM Integrations <a href="#hooks-freeform-crm-integrations" id="hooks-freeform-crm-integrations" class="docs-anchor">#</a>
 
