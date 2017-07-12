@@ -52,6 +52,25 @@ trait MultipleValueTrait
     {
         $this->values = $value;
 
+        if ($this instanceof OptionsInterface) {
+            $updatedOptions = [];
+            foreach ($this->getOptions() as $option) {
+                if (is_numeric($option->getValue())) {
+                    $checked = in_array((int) $option->getValue(), $this->getValue(), false);
+                } else {
+                    $checked = in_array($option->getValue(), $this->getValue(), true);
+                }
+
+                $updatedOptions[] = new Option(
+                    $option->getLabel(),
+                    $option->getValue(),
+                    $checked
+                );
+            }
+
+            $this->options = $updatedOptions;
+        }
+
         return $this;
     }
 }

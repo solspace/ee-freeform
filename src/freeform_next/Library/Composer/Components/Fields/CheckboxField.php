@@ -27,6 +27,9 @@ class CheckboxField extends AbstractField implements SingleValueInterface, Input
     /** @var bool */
     protected $checked;
 
+    /** @var bool */
+    protected $checkedByPost;
+
     /**
      * Return the field TYPE
      *
@@ -42,6 +45,10 @@ class CheckboxField extends AbstractField implements SingleValueInterface, Input
      */
     public function isChecked()
     {
+        if (null !== $this->checkedByPost) {
+            return $this->checkedByPost;
+        }
+
         return $this->checked;
     }
 

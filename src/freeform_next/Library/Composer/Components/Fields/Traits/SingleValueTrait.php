@@ -11,6 +11,10 @@
 
 namespace Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits;
 
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DataContainers\Option;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\OptionsInterface;
+
 trait SingleValueTrait
 {
     /** @var string */
@@ -36,6 +40,29 @@ trait SingleValueTrait
     public function setValue($value)
     {
         $this->value = $value;
+
+        if ($this instanceof OptionsInterface) {
+            $updatedOptions = [];
+            foreach ($this->getOptions() as $option) {
+                if (is_numeric($option->getValue()) && is_numeric($this->getValue())) {
+                    $checked = (int) $option->getValue() === (int) $this->getValue();
+                } else {
+                    $checked = $option->getValue() === $this->getValue();
+                }
+
+                $updatedOptions[] = new Option(
+                    $option->getLabel(),
+                    $option->getValue(),
+                    $checked
+                );
+            }
+
+            $this->options = $updatedOptions;
+        }
+
+        if ($this instanceof CheckboxField && $value !== $this->getStaticValue()) {
+            $this->checkedByPost = $value === '1';
+        }
 
         return $this;
     }
