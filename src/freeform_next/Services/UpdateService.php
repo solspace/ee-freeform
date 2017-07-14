@@ -72,13 +72,15 @@ class UpdateService
             $feedJsonData  = $this->getDecodedJsonFeed();
 
             $feedData = [];
-            foreach ($feedJsonData as $item) {
-                if (version_compare($pluginVersion, $item->version, '>=')) {
-                    continue;
-                }
+            if (is_array($feedJsonData)) {
+                foreach ($feedJsonData as $item) {
+                    if (version_compare($pluginVersion, $item->version, '>=')) {
+                        continue;
+                    }
 
-                $date       = new \DateTime($item->date);
-                $feedData[] = new PluginUpdate($item->version, $item->downloadUrl, $date, $item->notes);
+                    $date       = new \DateTime($item->date);
+                    $feedData[] = new PluginUpdate($item->version, $item->downloadUrl, $date, $item->notes);
+                }
             }
 
             self::$feed = array_reverse($feedData);
