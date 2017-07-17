@@ -639,17 +639,20 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      */
     private function setSessionCustomFormData()
     {
-        $this
-            ->getFormValueContext()
-            ->setCustomFormData(
-                [
-                    FormValueContext::DATA_DYNAMIC_TEMPLATE_KEY   =>
-                        $this->customAttributes->getDynamicNotificationTemplate(),
-                    FormValueContext::DATA_DYNAMIC_RECIPIENTS_KEY =>
-                        $this->customAttributes->getDynamicNotificationRecipients(),
-                ]
-            )
-            ->saveState();
+        $template   = $this->customAttributes->getDynamicNotificationTemplate();
+        $recipients = $this->customAttributes->getDynamicNotificationRecipients();
+
+        if (!empty($recipients) || !empty($template)) {
+            $this
+                ->getFormValueContext()
+                ->setCustomFormData(
+                    [
+                        FormValueContext::DATA_DYNAMIC_TEMPLATE_KEY   => $template,
+                        FormValueContext::DATA_DYNAMIC_RECIPIENTS_KEY => $recipients,
+                    ]
+                )
+                ->saveState();
+        }
 
         return $this;
     }

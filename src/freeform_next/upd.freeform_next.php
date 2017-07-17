@@ -18,10 +18,35 @@ use Solspace\Addons\FreeformNext\Utilities\AddonUpdater\PluginAction;
 class Freeform_next_upd extends AddonUpdater
 {
     /**
+     * @param string|null $previousVersion
+     *
      * @return bool
      */
-    public function update()
+    public function update($previousVersion = null)
     {
+        if (version_compare($previousVersion, '1.0.3', '<=')) {
+            ee()->db
+                ->query('
+                CREATE TABLE IF NOT EXISTS `exp_freeform_next_session_data`
+                (
+                  `sessionId`   VARCHAR(255) NOT NULL,
+                  `key`         VARCHAR(255) NOT NULL,
+                  `data`        TEXT         NULL,
+                  `dateCreated` DATETIME     NOT NULL,
+                  PRIMARY KEY (`sessionId`, `key`)
+                )
+                  ENGINE = InnoDB
+                  DEFAULT CHARSET = `utf8`
+                  COLLATE = `utf8_unicode_ci`
+              ');
+
+            ee()->db
+                ->query('
+                    ALTER TABLE exp_freeform_next_settings 
+                    ADD COLUMN `sessionStorage` ENUM(\'session\', \'db\') DEFAULT \'session\' AFTER `license`                
+                ');
+        }
+
         return true;
     }
 

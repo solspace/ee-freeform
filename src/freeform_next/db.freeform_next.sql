@@ -189,15 +189,16 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_unfinalized_files` (
   COLLATE = `utf8_unicode_ci`;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_settings` (
-  `id`                         INT(11)             NOT NULL  AUTO_INCREMENT,
-  `siteId`                     INT(11)             NOT NULL  DEFAULT '1',
-  `spamProtectionEnabled`      TINYINT(1) UNSIGNED NOT NULL  DEFAULT '0',
-  `showTutorial`               TINYINT(1) UNSIGNED NOT NULL  DEFAULT '0',
-  `fieldDisplayOrder`          VARCHAR(30)         NULL      DEFAULT NULL,
-  `formattingTemplatePath`     VARCHAR(255)        NULL      DEFAULT NULL,
-  `notificationTemplatePath`   VARCHAR(255)        NULL      DEFAULT NULL,
-  `notificationCreationMethod` VARCHAR(30)         NULL      DEFAULT NULL,
-  `license`                    VARCHAR(100)        NULL      DEFAULT NULL,
+  `id`                         INT(11)                NOT NULL  AUTO_INCREMENT,
+  `siteId`                     INT(11)                NOT NULL  DEFAULT '1',
+  `spamProtectionEnabled`      TINYINT(1) UNSIGNED    NOT NULL  DEFAULT '0',
+  `showTutorial`               TINYINT(1) UNSIGNED    NOT NULL  DEFAULT '0',
+  `fieldDisplayOrder`          VARCHAR(30)            NULL      DEFAULT NULL,
+  `formattingTemplatePath`     VARCHAR(255)           NULL      DEFAULT NULL,
+  `notificationTemplatePath`   VARCHAR(255)           NULL      DEFAULT NULL,
+  `notificationCreationMethod` VARCHAR(30)            NULL      DEFAULT NULL,
+  `license`                    VARCHAR(100)           NULL      DEFAULT NULL,
+  `sessionStorage`             ENUM ('session', 'db') NULL      DEFAULT 'session',
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
@@ -213,6 +214,18 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_submission_preferences`
   `settings` TEXT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `site_member_form` (`siteId`, `memberId`, `formId`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = `utf8`
+  COLLATE = `utf8_unicode_ci`;
+
+CREATE TABLE IF NOT EXISTS `exp_freeform_next_session_data`
+(
+  `sessionId`   VARCHAR(255) NOT NULL,
+  `key`         VARCHAR(255) NOT NULL,
+  `data`        TEXT         NULL,
+  `dateCreated` DATETIME     NOT NULL,
+  PRIMARY KEY (`sessionId`, `key`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = `utf8`

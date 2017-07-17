@@ -559,7 +559,7 @@ class FormValueContext implements \JsonSerializable
             }
         }
 
-        $this->session->set(self::ACTIVE_SESSIONS_KEY, $instances);
+        $this->session->set(self::ACTIVE_SESSIONS_KEY, json_encode($instances));
     }
 
     /**
@@ -570,7 +570,7 @@ class FormValueContext implements \JsonSerializable
      */
     private function getActionSessionList()
     {
-        return $this->session->get(self::ACTIVE_SESSIONS_KEY, []);
+        return json_decode($this->session->get(self::ACTIVE_SESSIONS_KEY, '[]'));
     }
 
     /**
@@ -584,7 +584,7 @@ class FormValueContext implements \JsonSerializable
 
         $instances[time()] = $sessionHash;
 
-        $this->session->set(self::ACTIVE_SESSIONS_KEY, $instances);
+        $this->session->set(self::ACTIVE_SESSIONS_KEY, json_encode($instances));
     }
 
     /**
