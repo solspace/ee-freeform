@@ -173,7 +173,7 @@ class Layout implements \JsonSerializable, \Iterator
         }
 
         throw new FreeformException(
-            $this->translate("Field with ID {id} not found", ["id" => $id])
+            $this->translate('Field with ID {id} not found', ['id' => $id])
         );
     }
 
@@ -188,11 +188,11 @@ class Layout implements \JsonSerializable, \Iterator
     {
         foreach ($this->layoutData as $pageIndex => $page) {
             foreach ($page as $rowIndex => $row) {
-                foreach ($row["columns"] as $columnIndex => $column) {
+                foreach ($row['columns'] as $columnIndex => $column) {
                     if ($column === $field->getHash()) {
-                        unset($this->layoutData[$pageIndex][$rowIndex]["columns"][$columnIndex]);
-                        $this->layoutData[$pageIndex][$rowIndex]["columns"] = array_values(
-                            $this->layoutData[$pageIndex][$rowIndex]["columns"]
+                        unset($this->layoutData[$pageIndex][$rowIndex]['columns'][$columnIndex]);
+                        $this->layoutData[$pageIndex][$rowIndex]['columns'] = array_values(
+                            $this->layoutData[$pageIndex][$rowIndex]['columns']
                         );
                         break;
                     }
@@ -202,7 +202,7 @@ class Layout implements \JsonSerializable, \Iterator
 
         foreach ($this->layoutData as $pageIndex => $page) {
             foreach ($page as $rowIndex => $row) {
-                if (count($row["columns"]) === 0) {
+                if (count($row['columns']) === 0) {
                     unset($this->layoutData[$pageIndex][$rowIndex]);
                     $this->layoutData[$pageIndex] = array_values($this->layoutData[$pageIndex]);
                 }
@@ -225,7 +225,7 @@ class Layout implements \JsonSerializable, \Iterator
         }
 
         throw new FreeformException(
-            $this->translate("Field with handle '{handle}' not found", ["handle" => $handle])
+            $this->translate("Field with handle '{handle}' not found", ['handle' => $handle])
         );
     }
 
@@ -251,7 +251,7 @@ class Layout implements \JsonSerializable, \Iterator
         }
 
         throw new FreeformException(
-            $this->translate("Field with hash '{hash}' not found", ["hash" => $hash])
+            $this->translate("Field with hash '{hash}' not found", ['hash' => $hash])
         );
     }
 
@@ -284,33 +284,33 @@ class Layout implements \JsonSerializable, \Iterator
             if (!is_array($rows)) {
                 throw new ComposerException(
                     $this->translate(
-                        "Layout page {pageIndex} does not contain a row array",
-                        ["pageIndex" => $pageIndex]
+                        'Layout page {pageIndex} does not contain a row array',
+                        ['pageIndex' => $pageIndex]
                     )
                 );
             }
 
             $rowObjects = $pageFields = [];
             foreach ($rows as $rowIndex => $rowData) {
-                if (!isset($rowData["id"])) {
+                if (!isset($rowData['id'])) {
                     throw new ComposerException(
                         $this->translate(
-                            "Layout page {pageIndex} row {rowIndex} does not contain its ID",
-                            ["pageIndex" => $pageIndex, "rowIndex" => $rowIndex]
+                            'Layout page {pageIndex} row {rowIndex} does not contain its ID',
+                            ['pageIndex' => $pageIndex, 'rowIndex' => $rowIndex]
                         )
                     );
                 }
 
-                if (!isset($rowData["columns"]) || !is_array($rowData["columns"])) {
+                if (!isset($rowData['columns']) || !is_array($rowData['columns'])) {
                     throw new ComposerException(
                         $this->translate(
-                            "Layout page {pageIndex} row {rowIndex} does not contain a list of columns",
-                            ["pageIndex" => $pageIndex, "rowIndex" => $rowIndex]
+                            'Layout page {pageIndex} row {rowIndex} does not contain a list of columns',
+                            ['pageIndex' => $pageIndex, 'rowIndex' => $rowIndex]
                         )
                     );
                 }
 
-                $columns = $rowData["columns"];
+                $columns = $rowData['columns'];
 
                 $fields = [];
                 foreach ($columns as $fieldHash) {
@@ -349,7 +349,7 @@ class Layout implements \JsonSerializable, \Iterator
                     continue;
                 }
 
-                $rowId = $rowData["id"];
+                $rowId = $rowData['id'];
                 $row   = new Row($rowId, $fields);
 
                 $rowObjects[] = $row;
@@ -441,7 +441,7 @@ class Layout implements \JsonSerializable, \Iterator
      */
     public function valid()
     {
-        return !is_null($this->key()) && $this->key() !== false;
+        return null !== $this->key() && $this->key() !== false;
     }
 
     /**
@@ -453,6 +453,6 @@ class Layout implements \JsonSerializable, \Iterator
      */
     public function rewind()
     {
-        rewind($this->pages);
+        reset($this->pages);
     }
 }

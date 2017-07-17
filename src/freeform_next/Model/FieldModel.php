@@ -1,6 +1,7 @@
 <?php
 /**
  * Freeform Next for Expression Engine
+ *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
@@ -16,26 +17,27 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadFi
 use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
 
 /**
- * @property int    $id
- * @property int    $siteId
- * @property string $type
- * @property string $handle
- * @property string $label
- * @property bool   $required
- * @property string $groupValueType
- * @property string $value
- * @property bool   $checked
- * @property string $placeholder
- * @property string $instructions
- * @property array  $values
- * @property array  $options
- * @property int    $notificationId
- * @property int    $assetSourceId
- * @property int    $rows
- * @property array  $fileKinds
- * @property int    $maxFileSizeKB
+ * @property int       $id
+ * @property int       $siteId
+ * @property string    $type
+ * @property string    $handle
+ * @property string    $label
+ * @property bool      $required
+ * @property string    $groupValueType
+ * @property string    $value
+ * @property bool      $checked
+ * @property string    $placeholder
+ * @property string    $instructions
+ * @property array     $values
+ * @property array     $options
+ * @property int       $notificationId
+ * @property int       $assetSourceId
+ * @property int       $rows
+ * @property array     $fileKinds
+ * @property int       $maxFileSizeKB
  * @property \DateTime $dateCreated
  * @property \DateTime $dateUpdated
+ * @property array     $additionalProperties
  */
 class FieldModel extends Model implements \JsonSerializable
 {
@@ -64,6 +66,7 @@ class FieldModel extends Model implements \JsonSerializable
     protected $maxFileSizeKB;
     protected $dateCreated;
     protected $dateUpdated;
+    protected $additionalProperties;
 
     protected static $_events = ['afterSave', 'afterDelete', 'beforeInsert', 'beforeUpdate'];
 
@@ -75,6 +78,7 @@ class FieldModel extends Model implements \JsonSerializable
 
     /**
      * Creates a Field object with default settings
+     *
      * @return FieldModel
      */
     public static function create()
@@ -101,6 +105,7 @@ class FieldModel extends Model implements \JsonSerializable
 
     /**
      * Specify data which should be serialized to JSON
+     *
      * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
      * @return mixed data which can be serialized by <b>json_encode</b>,
      *        which is a value of any type other than a resource.
@@ -171,6 +176,70 @@ class FieldModel extends Model implements \JsonSerializable
             $returnArray['options']          = $this->options ?: [];
         }
 
+        if ($this->type === FieldInterface::TYPE_DATETIME) {
+            $returnArray['value']               = $this->value ?: '';
+            $returnArray['placeholder']         = $this->placeholder ?: '';
+            $returnArray['initialValue']        = $this->getAdditionalProperty('initialValue');
+            $returnArray['dateTimeType']        = $this->getAdditionalProperty('dateTimeType', 'both');
+            $returnArray['generatePlaceholder'] = $this->getAdditionalProperty('generatePlaceholder', true);
+            $returnArray['dateOrder']           = $this->getAdditionalProperty('dateOrder', 'ymd');
+            $returnArray['date4DigitYear']      = $this->getAdditionalProperty('date4DigitYear', true);
+            $returnArray['dateLeadingZero']     = $this->getAdditionalProperty('dateLeadingZero', true);
+            $returnArray['dateSeparator']       = $this->getAdditionalProperty('dateSeparator', '/');
+            $returnArray['clock24h']            = $this->getAdditionalProperty('clock24h', false);
+            $returnArray['lowercaseAMPM']       = $this->getAdditionalProperty('lowercaseAMPM', true);
+            $returnArray['clockSeparator']      = $this->getAdditionalProperty('clockSeparator', ':');
+            $returnArray['clockAMPMSeparate']   = $this->getAdditionalProperty('clockAMPMSeparate', true);
+            $returnArray['useDatepicker']       = $this->getAdditionalProperty('useDatepicker', true);
+        }
+
+        if ($this->type === FieldInterface::TYPE_NUMBER) {
+            $returnArray['value']              = $this->value ?: '';
+            $returnArray['placeholder']        = $this->placeholder ?: '';
+            $returnArray['minLength']          = $this->getAdditionalProperty('minLength');
+            $returnArray['maxLength']          = $this->getAdditionalProperty('maxLength');
+            $returnArray['minValue']           = $this->getAdditionalProperty('minValue');
+            $returnArray['maxValue']           = $this->getAdditionalProperty('maxValue');
+            $returnArray['decimalCount']       = $this->getAdditionalProperty('decimalCount');
+            $returnArray['decimalSeparator']   = $this->getAdditionalProperty('decimalSeparator', '.');
+            $returnArray['thousandsSeparator'] = $this->getAdditionalProperty('thousandsSeparator', ',');
+            $returnArray['allowNegative']      = $this->getAdditionalProperty('allowNegative', false);
+        }
+
+        if ($this->type === FieldInterface::TYPE_RATING) {
+            $returnArray['value']         = (int) $this->value;
+            $returnArray['maxValue']      = $this->getAdditionalProperty('maxValue', 5);
+            $returnArray['colorIdle']     = $this->getAdditionalProperty('colorIdle', '#ddd');
+            $returnArray['colorHover']    = $this->getAdditionalProperty('colorHover', 'gold');
+            $returnArray['colorSelected'] = $this->getAdditionalProperty('colorSelected', '#f70');
+        }
+
+        if ($this->type === FieldInterface::TYPE_REGEX) {
+            $returnArray['value']       = $this->value ?: '';
+            $returnArray['placeholder'] = $this->placeholder ?: '';
+            $returnArray['pattern']     = $this->getAdditionalProperty('pattern');
+            $returnArray['message']     = $this->getAdditionalProperty('message');
+        }
+
+        if ($this->type === FieldInterface::TYPE_CONFIRMATION) {
+            $returnArray['value']         = $this->value ?: '';
+            $returnArray['placeholder']   = $this->placeholder ?: '';
+            $returnArray['targetFieldId'] = $this->getAdditionalProperty('targetFieldId');
+        }
+
+        if ($this->type === FieldInterface::TYPE_CONFIRMATION) {
+            $returnArray['value']         = $this->value ?: '';
+            $returnArray['placeholder']   = $this->placeholder ?: '';
+            $returnArray['targetFieldId'] = $this->getAdditionalProperty('targetFieldId');
+        }
+
+        if ($this->type === FieldInterface::TYPE_PHONE) {
+            $returnArray['value']       = $this->value ?: '';
+            $returnArray['placeholder'] = $this->placeholder ?: '';
+            $returnArray['pattern']     = $this->getAdditionalProperty('pattern');
+            $returnArray['countryCode'] = $this->getAdditionalProperty('countryCode', 'US');
+        }
+
         if (in_array(
             $this->type,
             [FieldInterface::TYPE_HIDDEN, FieldInterface::TYPE_HTML, FieldInterface::TYPE_SUBMIT],
@@ -202,6 +271,7 @@ class FieldModel extends Model implements \JsonSerializable
                 continue;
             }
 
+            $fieldValue = $value;
             if (empty($label)) {
                 $fieldLabel = $value;
             } else {
@@ -268,7 +338,18 @@ class FieldModel extends Model implements \JsonSerializable
     }
 
     /**
+     * Determines if the submission table should get a column for this field or not
+     *
+     * @return bool
+     */
+    public function canStoreValues()
+    {
+        return $this->type !== FieldInterface::TYPE_CONFIRMATION;
+    }
+
+    /**
      * Depending on the field type - return its column type for the database
+     *
      * @return string
      */
     public function getColumnType()
@@ -303,10 +384,52 @@ class FieldModel extends Model implements \JsonSerializable
     }
 
     /**
+     * @param string $name
+     * @param mixed  $defaultValue
+     *
+     * @return mixed|null
+     */
+    public function getAdditionalProperty($name, $defaultValue = null)
+    {
+        if (is_array($this->additionalProperties) && isset($this->additionalProperties[$name])) {
+            $value = $this->additionalProperties[$name];
+
+            if (null === $value) {
+                return $defaultValue;
+            }
+
+            return $this->getCleanedPropertyValue($name, $value);
+        }
+
+        return $defaultValue;
+    }
+
+    /**
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public function setAdditionalProperty($name, $value)
+    {
+        $props = $this->additionalProperties ?: [];
+
+        $props[$name] = $this->getCleanedPropertyValue($name, $value);
+
+        $this->set(['additionalProperties' => $props]);
+
+        return $this;
+    }
+
+    /**
      * Add a new column in the submissions table for this field
      */
     public function onAfterSave()
     {
+        if (!$this->canStoreValues()) {
+            return;
+        }
+
         $columnName = SubmissionModel::getFieldColumnName($this->id);
         $type       = $this->getColumnType();
 
@@ -323,7 +446,10 @@ class FieldModel extends Model implements \JsonSerializable
     {
         $columnName = SubmissionModel::getFieldColumnName($this->id);
 
-        ee()->db->query("ALTER TABLE exp_freeform_next_submissions DROP COLUMN $columnName");
+        try {
+            ee()->db->query("ALTER TABLE exp_freeform_next_submissions DROP COLUMN $columnName");
+        } catch (\Exception $e) {
+        }
     }
 
     /**
@@ -353,5 +479,40 @@ class FieldModel extends Model implements \JsonSerializable
     private function getTimestampableDate()
     {
         return date('Y-m-d H:i:s');
+    }
+
+    /**
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return mixed
+     */
+    private function getCleanedPropertyValue($name, $value)
+    {
+        static $customTypes = [
+            'generatePlaceholder' => 'bool',
+            'date4DigitYear'      => 'bool',
+            'dateLeadingZero'     => 'bool',
+            'clock24h'            => 'bool',
+            'clockLeadingZero'    => 'bool',
+            'lowercaseAMPM'       => 'bool',
+            'allowNegative'       => 'bool',
+            'minLength'           => 'int',
+            'maxLength'           => 'int',
+            'minValue'            => 'int',
+            'maxValue'            => 'int',
+        ];
+
+        if (isset($customTypes[$name])) {
+            switch ($customTypes[$name]) {
+                case 'bool':
+                    return (bool) $value ? true : false;
+
+                case 'int':
+                    return $value !== null ? (int) $value : null;
+            }
+        }
+
+        return $value;
     }
 }

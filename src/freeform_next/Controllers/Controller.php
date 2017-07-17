@@ -12,6 +12,7 @@
 namespace Solspace\Addons\FreeformNext\Controllers;
 
 use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
+use Solspace\Addons\FreeformNext\Services\FieldsService;
 
 abstract class Controller
 {
@@ -40,5 +41,19 @@ abstract class Controller
     protected function getLink($target)
     {
         return UrlHelper::getLink($target);
+    }
+
+    /**
+     * @return FieldsService
+     */
+    protected function getFieldsService()
+    {
+        static $service;
+
+        if (null === $service) {
+            $service = new FieldsService();
+        }
+
+        return $service;
     }
 }

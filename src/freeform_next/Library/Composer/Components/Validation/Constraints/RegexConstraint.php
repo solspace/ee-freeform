@@ -1,8 +1,8 @@
 <?php
 
-namespace Solspace\Freeform\Library\Composer\Components\Validation\Constraints;
+namespace Solspace\Addons\FreeformNext\Library\Composer\Components\Validation\Constraints;
 
-use Solspace\Freeform\Library\Composer\Components\Validation\Errors\ConstraintViolationList;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Validation\Errors\ConstraintViolationList;
 
 class RegexConstraint implements ConstraintInterface
 {

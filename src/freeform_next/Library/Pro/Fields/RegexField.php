@@ -2,8 +2,8 @@
 
 namespace Solspace\Addons\FreeformNext\Library\Pro\Fields;
 
-use Solspace\Freeform\Library\Composer\Components\Fields\TextField;
-use Solspace\Freeform\Library\Composer\Components\Validation\Constraints\RegexConstraint;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\TextField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Validation\Constraints\RegexConstraint;
 
 class RegexField extends TextField
 {

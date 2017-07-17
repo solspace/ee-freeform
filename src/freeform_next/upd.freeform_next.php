@@ -47,6 +47,14 @@ class Freeform_next_upd extends AddonUpdater
                 ');
         }
 
+        if (version_compare($previousVersion, '1.2.0', '<')) {
+            ee()->db
+                ->query('
+                    ALTER TABLE exp_freeform_next_fields 
+                    ADD COLUMN `additionalProperties` TEXT DEFAULT NULL AFTER `maxFileSizeKB`                
+                ');
+        }
+
         return true;
     }
 

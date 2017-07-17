@@ -115,6 +115,8 @@ class FieldController extends Controller
             throw new FieldException(sprintf('Field by ID "%d" not found', $id));
         }
 
+        $fieldTypes = $this->getFieldsService()->getFieldTypes();
+
         $sections = [
             [
                 [
@@ -170,10 +172,10 @@ class FieldController extends Controller
                             'type'         => 'select',
                             'value'        => $model->type,
                             'required'     => true,
-                            'choices'      => AbstractField::getFieldTypes(),
+                            'choices'      => $fieldTypes,
                             'group_toggle' => array_combine(
-                                array_keys(AbstractField::getFieldTypes()),
-                                array_keys(AbstractField::getFieldTypes())
+                                array_keys($fieldTypes),
+                                array_keys($fieldTypes)
                             ),
                         ],
                     ],
@@ -192,6 +194,7 @@ class FieldController extends Controller
                 'base_url'              => $this->getLink('fields/' . $id),
                 'save_btn_text'         => lang('Save'),
                 'save_btn_text_working' => lang('Saving...'),
+                'countryOptions'        => include __DIR__ . '/../countries.php',
             ]
         );
         $view

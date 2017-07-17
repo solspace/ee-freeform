@@ -1,10 +1,9 @@
 <?php
 
-namespace Solspace\Freeform\Library\Composer\Components\Validation\Constraints;
+namespace Solspace\Addons\FreeformNext\Library\Composer\Components\Validation\Constraints;
 
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberUtil;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Validation\Constraints\ConstraintInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Validation\Errors\ConstraintViolationList;
 
 class PhoneConstraint implements ConstraintInterface

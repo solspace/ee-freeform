@@ -2,11 +2,11 @@
 
 namespace Solspace\Addons\FreeformNext\Library\Pro\Fields;
 
-use Solspace\Freeform\Library\Composer\Components\AbstractField;
-use Solspace\Freeform\Library\Composer\Components\Fields\Interfaces\SingleValueInterface;
-use Solspace\Freeform\Library\Composer\Components\Fields\Traits\SingleValueTrait;
-use Solspace\Freeform\Library\Composer\Components\Validation\Constraints\NumericConstraint;
-use Solspace\Freeform\Library\Helpers\HashHelper;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\SingleValueInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits\SingleValueTrait;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Validation\Constraints\NumericConstraint;
+use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
 
 class RatingField extends AbstractField implements SingleValueInterface
 {
