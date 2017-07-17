@@ -15,6 +15,7 @@ use EllisLab\ExpressionEngine\Service\Model\Model;
 use Solspace\Addons\FreeformNext\Library\Composer\Attributes\FormAttributes;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Composer\Composer;
+use Solspace\Addons\FreeformNext\Library\Session\DbSession;
 use Solspace\Addons\FreeformNext\Library\Session\EERequest;
 use Solspace\Addons\FreeformNext\Library\Session\EESession;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
@@ -24,6 +25,7 @@ use Solspace\Addons\FreeformNext\Services\FilesService;
 use Solspace\Addons\FreeformNext\Services\FormsService;
 use Solspace\Addons\FreeformNext\Services\MailerService;
 use Solspace\Addons\FreeformNext\Services\MailingListsService;
+use Solspace\Addons\FreeformNext\Services\SettingsService;
 use Solspace\Addons\FreeformNext\Services\StatusesService;
 use Solspace\Addons\FreeformNext\Services\SubmissionsService;
 
@@ -150,7 +152,9 @@ class FormModel extends Model
      */
     private function getFormAttributes()
     {
-        $attributes = new FormAttributes($this->id, new EESession(), new EERequest());
+        $sessionImplementation = (new SettingsService())->getSessionStorageImplementation();
+
+        $attributes = new FormAttributes($this->id, $sessionImplementation, new EERequest());
         $attributes
             ->setActionUrl(null)
             ->setCsrfEnabled(false)

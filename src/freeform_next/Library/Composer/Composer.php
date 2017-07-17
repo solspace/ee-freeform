@@ -24,9 +24,11 @@ use Solspace\Addons\FreeformNext\Library\Database\SubmissionHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
 use Solspace\Addons\FreeformNext\Library\FileUploads\FileUploadHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Mailing\MailHandlerInterface;
+use Solspace\Addons\FreeformNext\Library\Session\DbSession;
 use Solspace\Addons\FreeformNext\Library\Session\EERequest;
 use Solspace\Addons\FreeformNext\Library\Session\EESession;
 use Solspace\Addons\FreeformNext\Library\Translations\TranslatorInterface;
+use Solspace\Addons\FreeformNext\Services\SettingsService;
 
 class Composer
 {
@@ -253,7 +255,9 @@ class Composer
             $this->translator
         );
 
-        $formAttributes = new FormAttributes(null, new EESession(), new EERequest());
+        $sessionImplementation = (new SettingsService())->getSessionStorageImplementation();
+
+        $formAttributes = new FormAttributes(null, $sessionImplementation, new EERequest());
 
         $this->context = new Context([]);
         $this->form    = new Form(

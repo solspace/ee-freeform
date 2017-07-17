@@ -3,6 +3,9 @@
 namespace Solspace\Addons\FreeformNext\Services;
 
 use Solspace\Addons\FreeformNext\Library\DataObjects\FormTemplate;
+use Solspace\Addons\FreeformNext\Library\Session\DbSession;
+use Solspace\Addons\FreeformNext\Library\Session\EESession;
+use Solspace\Addons\FreeformNext\Library\Session\SessionInterface;
 use Solspace\Addons\FreeformNext\Model\SettingsModel;
 use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 
@@ -83,6 +86,26 @@ class SettingsService
     }
 
     /**
+     * @return bool
+     */
+    public function isDatabaseSessionStorage()
+    {
+        return $this->getSettingsModel()->isDatabaseSessionStorage();
+    }
+
+    /**
+     * @return SessionInterface
+     */
+    public function getSessionStorageImplementation()
+    {
+        if ($this->isDatabaseSessionStorage()) {
+            return new DbSession();
+        }
+
+        return new EESession();
+    }
+
+    /**
      * @return SettingsModel
      */
     public function getSettingsModel()
@@ -92,5 +115,19 @@ class SettingsService
         }
 
         return self::$settingsModel;
+    }
+
+    /**
+     * Remove all stale stored session data entries
+     */
+    public function cleanUpDatabaseSessionData()
+    {
+        $date = new \DateTime('-180 minutes');
+
+        ee()->db
+            ->delete(
+                'exp_freeform_next_session_data',
+                ['dateCreated <' => $date->format('Y-m-d H:i:s')]
+            );
     }
 }

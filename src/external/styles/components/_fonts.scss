@@ -9,13 +9,13 @@
  */
 
 @font-face {
-  font-family: 'solspace-freeform-craft';
-  src: url('../font/solspace-freeform-craft.eot?61199501');
-  src: url('../font/solspace-freeform-craft.eot?61199501#iefix') format('embedded-opentype'),
-  url('../font/solspace-freeform-craft.woff2?61199501') format('woff2'),
-  url('../font/solspace-freeform-craft.woff?61199501') format('woff'),
-  url('../font/solspace-freeform-craft.ttf?61199501') format('truetype'),
-  url('../font/solspace-freeform-craft.svg?61199501#solspace-freeform-craft') format('svg');
+  font-family: 'solspace-freeform';
+  src: url('../font/solspace-freeform.svg?61199501');
+  src: url('../font/solspace-freeform.eot?61199501#iefix') format('embedded-opentype'),
+  url('../font/solspace-freeform.woff2?61199501') format('woff2'),
+  url('../font/solspace-freeform.woff?61199501') format('woff'),
+  url('../font/solspace-freeform.ttf?61199501') format('truetype'),
+  url('../font/solspace-freeform.svg?61199501#solspace-freeform') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -31,7 +31,7 @@
 */
 
 [class^="icon-solspace-"]:before, [class*=" icon-solspace-"]:before {
-  font-family: "solspace-freeform-craft";
+  font-family: "solspace-freeform";
   font-style: normal;
   font-weight: normal;
   speak: none;

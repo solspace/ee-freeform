@@ -101,7 +101,9 @@ class EmailField extends AbstractField implements RecipientInterface, MultipleVa
                 continue;
             }
 
-            if (!$validator->isValid($email)) {
+            $hasDot = preg_match('/@.+\..+$/', $email);
+
+            if (!$hasDot || !$validator->isValid($email)) {
                 $errors[] = $this->translate('{email} is not a valid email address', ['email' => $email]);
             }
         }

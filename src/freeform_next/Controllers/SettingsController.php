@@ -184,6 +184,20 @@ class SettingsController extends Controller
                             //     ],
                             // ],
                             [
+                                'title'  => 'Session storage mechanism',
+                                'desc'   => 'Choose the mechanism with which session data is stored',
+                                'fields' => [
+                                    'sessionStorage' => [
+                                        'type'    => 'radio',
+                                        'value'   => $settings->sessionStorage,
+                                        'choices' => [
+                                            SettingsModel::SESSION_STORAGE_SESSION  => 'PHP Sessions',
+                                            SettingsModel::SESSION_STORAGE_DATABASE => 'Database',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            [
                                 'title'  => 'Display Order of Fields in Composer',
                                 'desc'   => 'The display order for the list of available fields in Composer.',
                                 'fields' => [
