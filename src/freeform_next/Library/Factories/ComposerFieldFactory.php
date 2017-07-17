@@ -11,34 +11,26 @@
 
 namespace Solspace\Addons\FreeformNext\Library\Factories;
 
+use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxGroupField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecipientField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\EmailField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\HiddenField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\HtmlField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\MailingListField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\RadioGroupField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SelectField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SubmitField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\TextareaField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\TextField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Properties\FieldProperties;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
+use Stringy\Stringy;
 
 class ComposerFieldFactory
 {
+    private static $defaultFieldNamespace = 'Solspace\Addons\FreeformNext\Library\Composer\Components\Fields';
+    private static $proFieldNamespace     = 'Solspace\Addons\FreeformNext\Library\Pro\Fields';
+
     /**
      * @param Form             $form
      * @param FieldProperties  $properties
      * @param FormValueContext $formValueContext
      * @param int              $pageIndex
      *
-     * @return HiddenField|TextField
+     * @return AbstractField
      * @throws ComposerException
      */
     public static function createFromProperties(
@@ -47,52 +39,33 @@ class ComposerFieldFactory
         FormValueContext $formValueContext,
         $pageIndex
     ) {
-        switch ($properties->getType()) {
-            case FieldInterface::TYPE_TEXT:
-                return TextField::createFromProperties($form, $properties, $formValueContext, $pageIndex);
 
-            case FieldInterface::TYPE_TEXTAREA:
-                return TextareaField::createFromProperties($form, $properties, $formValueContext, $pageIndex);
-
-            case FieldInterface::TYPE_EMAIL:
-                return EmailField::createFromProperties($form, $properties, $formValueContext, $pageIndex);
-
-            case FieldInterface::TYPE_HIDDEN:
-                return HiddenField::createFromProperties($form, $properties, $formValueContext, $pageIndex);
-
-            case FieldInterface::TYPE_CHECKBOX:
-                return CheckboxField::createFromProperties($form, $properties, $formValueContext, $pageIndex);
-
-            case FieldInterface::TYPE_CHECKBOX_GROUP:
-                return CheckboxGroupField::createFromProperties($form, $properties, $formValueContext, $pageIndex);
-
-            case FieldInterface::TYPE_RADIO_GROUP:
-                return RadioGroupField::createFromProperties($form, $properties, $formValueContext, $pageIndex);
-
-            case FieldInterface::TYPE_SELECT:
-                return SelectField::createFromProperties($form, $properties, $formValueContext, $pageIndex);
-
-            case FieldInterface::TYPE_HTML:
-                return HtmlField::createFromProperties($form, $properties, $formValueContext, $pageIndex);
-
-            case FieldInterface::TYPE_SUBMIT:
-                return SubmitField::createFromProperties($form, $properties, $formValueContext, $pageIndex);
-
-            case FieldInterface::TYPE_DYNAMIC_RECIPIENTS:
-                return DynamicRecipientField::createFromProperties($form, $properties, $formValueContext, $pageIndex);
-
-            case FieldInterface::TYPE_FILE:
-                return FileUploadField::createFromProperties($form, $properties, $formValueContext, $pageIndex);
-
-            case FieldInterface::TYPE_MAILING_LIST:
-                return MailingListField::createFromProperties($form, $properties, $formValueContext, $pageIndex);
+        /** @var AbstractField $className */
+        $className = $properties->getType();
+        if ($className === FieldInterface::TYPE_DYNAMIC_RECIPIENTS) {
+            $className = 'dynamic_recipient';
         }
 
-        throw new ComposerException(
-            $form->getTranslator()->translate(
-                "Could not create a field of type {type}",
-                ["type" => $properties->getType()]
-            )
-        );
+        if ($className === FieldInterface::TYPE_FILE) {
+            $className = 'file_upload';
+        }
+
+        $className = (string) Stringy::create($className)->upperCamelize();
+        $className .= 'Field';
+
+        if (class_exists(self::$defaultFieldNamespace . '\\' . $className)) {
+            $className = self::$defaultFieldNamespace . '\\' . $className;
+        } else if (class_exists(self::$proFieldNamespace . '\\' . $className)) {
+            $className = self::$proFieldNamespace . '\\' . $className;
+        } else {
+            throw new ComposerException(
+                $form->getTranslator()->translate(
+                    'Could not create a field of type {type}',
+                    ['type' => $properties->getType()]
+                )
+            );
+        }
+
+        return $className::createFromProperties($form, $properties, $formValueContext, $pageIndex);
     }
 }

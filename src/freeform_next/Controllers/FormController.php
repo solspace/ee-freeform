@@ -164,6 +164,7 @@ class FormController extends Controller
                     'statuses'                 => StatusRepository::getInstance()->getAllStatuses(),
                     'assetSources'             => FileRepository::getInstance()->getAllAssetSources(),
                     'fileKinds'                => $fileService->getFileKinds(),
+                    'fieldTypeList'            => $this->getFieldsService()->getFieldTypes(),
                     'formTemplates'            => $settingsService->getCustomFormTemplates(),
                     'solspaceFormTemplates'    => $settingsService->getSolspaceFormTemplates(),
                     'showTutorial'             => $settingsService->getSettingsModel()->isShowTutorial(),

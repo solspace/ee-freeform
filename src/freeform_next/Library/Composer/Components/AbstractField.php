@@ -19,7 +19,10 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\N
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\ObscureValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\StaticValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Properties\FieldProperties;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Validation\Constraints\ConstraintInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Validation\Validator;
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
+use Stringy\Stringy;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -55,6 +58,9 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
     /** @var int */
     protected $pageIndex;
 
+    /** @var array */
+    private $inputClasses;
+
     /**
      * @param Form             $form
      * @param FieldProperties  $properties
@@ -63,7 +69,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
      *
      * @return AbstractField
      */
-    public static final function createFromProperties(
+    final public static function createFromProperties(
         Form $form,
         FieldProperties $properties,
         FormValueContext $formValueContext,
@@ -114,7 +120,33 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
             self::TYPE_RADIO_GROUP        => 'Radio group',
             self::TYPE_FILE               => 'File upload',
             self::TYPE_DYNAMIC_RECIPIENTS => 'Dynamic Recipients',
+            self::TYPE_DATETIME           => 'Date & Time',
+            self::TYPE_NUMBER             => 'Number',
+            self::TYPE_PHONE              => 'Phone',
+            self::TYPE_WEBSITE            => 'Website',
+            self::TYPE_RATING             => 'Rating',
+            self::TYPE_REGEX              => 'Regex',
+            self::TYPE_CONFIRMATION       => 'Confirmation',
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public static function getFieldTypeName()
+    {
+        return (string) Stringy::create(static::getFieldType())->humanize();
+    }
+
+    /**
+     * @return string
+     */
+    public static function getFieldType()
+    {
+        $name = (new \ReflectionClass(get_called_class()))->getShortName();
+        $name = str_replace('Field', '', $name);
+
+        return (string) Stringy::create($name)->underscored();
     }
 
     /**
@@ -126,6 +158,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
     {
         $this->form             = $form;
         $this->customAttributes = new CustomFieldAttributes($this, [], $this->getForm()->getCustomAttributes());
+        $this->inputClasses     = [];
     }
 
     /**
@@ -312,7 +345,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
      */
     public function getId()
     {
-        return (int)$this->id;
+        return (int) $this->id;
     }
 
     /**
@@ -344,7 +377,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
      */
     public function isRequired()
     {
-        return (bool)$this->required;
+        return (bool) $this->required;
     }
 
     /**
@@ -371,7 +404,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
                 return implode(', ', $value);
             }
 
-            return (string)$value;
+            return (string) $value;
         }
 
         return $value;
@@ -413,6 +446,34 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
     }
 
     /**
+     * @return ConstraintInterface[]
+     */
+    public function getConstraints()
+    {
+        return [];
+    }
+
+    /**
+     * @return string
+     */
+    protected function getInputClassString()
+    {
+        return implode(' ', $this->inputClasses);
+    }
+
+    /**
+     * @param string $class
+     *
+     * @return $this
+     */
+    protected function addInputClass($class)
+    {
+        $this->inputClasses[] = $class;
+
+        return $this;
+    }
+
+    /**
      * Assemble the Label HTML string
      *
      * @return string
@@ -440,11 +501,11 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
     protected function getInstructionsHtml()
     {
         if (!$this->getInstructions()) {
-            return "";
+            return '';
         }
 
         $classAttribute = $this->getCustomAttributes()->getInstructionsClass();
-        $classAttribute = $classAttribute ? ' class="' . $classAttribute . '"' : "";
+        $classAttribute = $classAttribute ? ' class="' . $classAttribute . '"' : '';
 
         $output = '<div' . $classAttribute . '>';
         $output .= $this->getInstructions();
@@ -500,7 +561,8 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
      */
     protected function getAttributeString($name, $value, $escapeValue = true)
     {
-        if ($value) {
+        $value = trim($value);
+        if (!empty($value)) {
             return sprintf(
                 ' %s="%s"',
                 $name,
@@ -508,7 +570,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
             );
         }
 
-        return "";
+        return '';
     }
 
     /**
@@ -516,7 +578,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
      */
     protected function getRequiredAttribute()
     {
-        $attribute = "";
+        $attribute = '';
 
         if ($this->getCustomAttributes()->getUseRequiredAttribute() && $this->isRequired()) {
             $attribute = ' required';
@@ -539,6 +601,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
      */
     protected function onBeforeInputHtml()
     {
+        return '';
     }
 
     /**
@@ -548,6 +611,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
      */
     protected function onAfterInputHtml()
     {
+        return '';
     }
 
     /**
@@ -558,13 +622,14 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
     protected function validate()
     {
         $errors = [];
-        if ($this->isRequired()) {
-            if ($this instanceof ObscureValueInterface) {
-                $value = $this->getActualValue($this->getValue());
-            } else {
-                $value = $this->getValue();
-            }
 
+        if ($this instanceof ObscureValueInterface) {
+            $value = $this->getActualValue($this->getValue());
+        } else {
+            $value = $this->getValue();
+        }
+
+        if ($this->isRequired()) {
             if (is_array($value)) {
                 $value = array_filter($value);
 
@@ -574,6 +639,18 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
             } else if (!strlen($value)) {
                 $errors[] = $this->translate('This field is required');
             }
+        }
+
+        if (!empty($value)) {
+            static $validator;
+
+            if (null === $validator) {
+                $validator = new Validator();
+            }
+
+            $violationList = $validator->validate($this, $value);
+
+            $errors = array_merge($errors, $violationList->getErrors());
         }
 
         return $errors;
