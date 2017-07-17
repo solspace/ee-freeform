@@ -570,7 +570,10 @@ class FormValueContext implements \JsonSerializable
      */
     private function getActionSessionList()
     {
-        return json_decode($this->session->get(self::ACTIVE_SESSIONS_KEY, '[]'));
+        return json_decode(
+            $this->session->get(self::ACTIVE_SESSIONS_KEY, '[]'),
+            true
+        );
     }
 
     /**
