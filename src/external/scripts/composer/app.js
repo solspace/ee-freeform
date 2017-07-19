@@ -31,7 +31,8 @@ let store = createStore(
     fields: {
       isFetching: false,
       didInvalidate: false,
-      fields: fieldList
+      fields: fieldList,
+      types: fieldTypeList,
     },
     specialFields: [
       {type: FieldTypes.HTML, label: "HTML", value: "<div>Html content</div>"},
@@ -87,6 +88,7 @@ ReactDOM.render(
       createTemplateUrl={createTemplateUrl}
       finishTutorialUrl={finishTutorialUrl}
       showTutorial={showTutorial}
+      defaultTemplates={defaultTemplates}
       notificator={notificator}
       canManageFields={canManageFields}
       canManageNotifications={canManageNotifications}

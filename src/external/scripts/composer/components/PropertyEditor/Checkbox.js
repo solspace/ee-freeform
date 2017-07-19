@@ -8,7 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import BasePropertyEditor from "./BasePropertyEditor";
 import TextProperty from "./PropertyItems/TextProperty";
 import TextareaProperty from "./PropertyItems/TextareaProperty";
@@ -25,9 +26,9 @@ export default class Checkbox extends BasePropertyEditor {
       required: PropTypes.bool.isRequired,
       checked: PropTypes.bool,
       value: PropTypes.oneOfType([
-        React.PropTypes.string,
-        React.PropTypes.number,
-        React.PropTypes.bool,
+        PropTypes.string,
+        PropTypes.number,
+        PropTypes.bool,
       ]),
     }).isRequired,
   };

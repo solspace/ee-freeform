@@ -8,7 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import {CHECKBOX} from "../../../constants/FieldTypes";
 import HtmlInput from "./HtmlInput";
 import Checkbox from "./Components/Checkbox";
@@ -31,12 +32,16 @@ export default class CheckboxField extends HtmlInput {
       required: PropTypes.bool.isRequired,
       checked: PropTypes.bool,
       value: PropTypes.oneOfType([
-        React.PropTypes.string,
-        React.PropTypes.number,
-        React.PropTypes.bool,
+        PropTypes.string,
+        PropTypes.number,
+        PropTypes.bool,
       ]),
     }).isRequired,
   };
+
+  getClassName() {
+    return 'CheckboxField';
+  }
 
   getType() {
     return CHECKBOX;
@@ -48,7 +53,7 @@ export default class CheckboxField extends HtmlInput {
     const {label, required, checked, instructions} = properties;
 
     return (
-      <div>
+      <div className={this.prepareWrapperClass()}>
         <Instructions instructions={instructions}/>
         <Checkbox
           label={label}

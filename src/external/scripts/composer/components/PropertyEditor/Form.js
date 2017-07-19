@@ -8,7 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import BasePropertyEditor from "./BasePropertyEditor";
 import {camelize} from "underscore.string";
 import {connect} from "react-redux";
@@ -46,9 +47,11 @@ export default class Form extends BasePropertyEditor {
       formTemplate: PropTypes.string,
     }).isRequired,
     canManageSettings: PropTypes.bool.isRequired,
+    isDefaultTemplates: PropTypes.bool.isRequired,
   };
 
   render() {
+    const {isDefaultTemplates} = this.context;
     const {properties: {name, handle, submissionTitleFormat, defaultStatus, returnUrl, description, formTemplate}} = this.context;
 
     let storeData = this.context.properties.storeData;
@@ -75,16 +78,18 @@ export default class Form extends BasePropertyEditor {
       })
     });
 
-    const optionGroups = [
-      {
+    let optionGroups = [];
+    if (isDefaultTemplates) {
+      optionGroups.push({
         label: "Solspace Templates",
         options: solspaceTemplateList,
-      },
-      {
-        label: "Custom Templates",
-        options: templateList,
-      }
-    ];
+      });
+    }
+
+    optionGroups.push({
+      label: "Custom Templates",
+      options: templateList,
+    });
 
     const statusOptions = [];
     formStatuses.map((status) => {

@@ -8,7 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {HIDDEN} from "../../../../constants/FieldTypes";
 
 export default class Label extends Component {

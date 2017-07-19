@@ -8,7 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import HtmlInput from "./HtmlInput";
 import * as FieldTypes from "../../../constants/FieldTypes";
 import Label from "./Components/Label";
@@ -21,29 +22,19 @@ export default class Email extends HtmlInput {
     notificationId: PropTypes.number,
   };
 
+  getClassName() {
+    return 'Email';
+  }
+
   getType() {
     return FieldTypes.EMAIL;
   }
 
-  render() {
-    const {properties: {label, type, required, notificationId, instructions}} = this.props;
+  getBadges() {
+    const {properties: {notificationId}} = this.props;
 
-    let badges;
     if (!notificationId) {
-      badges = <Badge label="No Template" />;
+      return <Badge label="No Template" />;
     }
-
-    return (
-      <div>
-        <Label label={label} type={type} isRequired={required}>{badges}</Label>
-        <Instructions instructions={instructions}/>
-        <input
-          readOnly={true}
-          className="composer-ft-text text fullwidth"
-          type={this.getType()}
-          {...this.getCleanProperties()}
-        />
-      </div>
-    );
   }
 }

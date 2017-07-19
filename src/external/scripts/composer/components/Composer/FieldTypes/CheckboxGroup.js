@@ -8,12 +8,11 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import {CHECKBOX_GROUP} from "../../../constants/FieldTypes";
 import HtmlInput from "./HtmlInput";
 import Checkbox from "./Components/Checkbox";
-import Label from "./Components/Label";
-import Instructions from "./Components/Instructions";
 import {connect} from "react-redux";
 
 @connect(
@@ -32,13 +31,17 @@ export default class CheckboxGroup extends HtmlInput {
     }).isRequired,
   };
 
+  getClassName() {
+    return 'CheckboxGroup';
+  }
+
   getType() {
     return CHECKBOX_GROUP;
   }
 
-  render() {
-    const {properties}                       = this.props;
-    const {label, required, options, values, instructions} = properties;
+  renderInput() {
+    const {properties}      = this.props;
+    const {options, values} = properties;
 
     let checkboxes = [];
     if (options) {
@@ -51,17 +54,11 @@ export default class CheckboxGroup extends HtmlInput {
             label={label}
             value={value}
             isChecked={values ? (values.indexOf(value) !== -1) : false}
-            properties={properties} />
+            properties={properties}/>
         );
       }
     }
 
-    return (
-      <div>
-        <Label label={label} isRequired={required} />
-        <Instructions instructions={instructions}/>
-        {checkboxes}
-      </div>
-    );
+    return checkboxes;
   }
 }

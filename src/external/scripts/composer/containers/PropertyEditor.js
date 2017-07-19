@@ -8,7 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import * as FieldTypes from "../constants/FieldTypes";
 import Form from "../components/PropertyEditor/Form";
@@ -27,8 +28,41 @@ import RadioGroup from "../components/PropertyEditor/RadioGroup";
 import DynamicRecipients from "../components/PropertyEditor/DynamicRecipients";
 import MailingList from "../components/PropertyEditor/MailingList";
 import File from "../components/PropertyEditor/File";
+import DateTime from "../components/PropertyEditor/Datetime";
+import Number from "../components/PropertyEditor/Number";
+import Phone from "../components/PropertyEditor/Phone";
+import Regex from "../components/PropertyEditor/Regex";
+import Rating from "../components/PropertyEditor/Rating";
+import Website from "../components/PropertyEditor/Website";
+import Confirmation from "../components/PropertyEditor/Confirmation";
 import {updateProperty, switchHash} from "../actions/Actions";
 import {titleize} from "underscore.string";
+
+const propertyTypes = {
+  admin_notifications: AdminNotifications,
+  page: Page,
+  text: Text,
+  textarea: Textarea,
+  hidden: Hidden,
+  email: Email,
+  html: Html,
+  submit: Submit,
+  select: RadioGroup,
+  checkbox: Checkbox,
+  checkbox_group: CheckboxGroup,
+  radio_group: RadioGroup,
+  dynamic_recipients: DynamicRecipients,
+  mailing_list: MailingList,
+  integration: Integrations,
+  file: File,
+  datetime: DateTime,
+  number: Number,
+  phone: Phone,
+  rating: Rating,
+  website: Website,
+  regex: Regex,
+  confirmation: Confirmation,
+};
 
 @connect(
   (state) => ({
@@ -87,68 +121,13 @@ export default class PropertyEditor extends Component {
         form  = <Form formStatuses={formStatuses} />;
         break;
 
-      case FieldTypes.ADMIN_NOTIFICATIONS:
-        title = "Admin Notifications";
-        form  = <AdminNotifications />;
-        break;
+      default:
+        if (props.type && propertyTypes[props.type]) {
+          let DynamicClassName = propertyTypes[props.type];
 
-      case FieldTypes.PAGE:
-        title = "Page Property Editor";
-        form  = <Page />;
-        break;
+          form = <DynamicClassName />;
+        }
 
-      case FieldTypes.INTEGRATION:
-        title = "CRM Integration Settings";
-        form  = <Integrations />;
-        break;
-
-      case FieldTypes.HIDDEN:
-        form = <Hidden />;
-        break;
-
-      case FieldTypes.TEXT:
-        form = <Text />;
-        break;
-
-      case FieldTypes.TEXTAREA:
-        form = <Textarea />;
-        break;
-
-      case FieldTypes.EMAIL:
-        form = <Email />;
-        break;
-
-      case FieldTypes.CHECKBOX:
-        form = <Checkbox />;
-        break;
-
-      case FieldTypes.CHECKBOX_GROUP:
-        form = <CheckboxGroup />;
-        break;
-
-      case FieldTypes.RADIO_GROUP:
-      case FieldTypes.SELECT:
-        form = <RadioGroup />;
-        break;
-
-      case FieldTypes.HTML:
-        form = <Html />;
-        break;
-
-      case FieldTypes.SUBMIT:
-        form = <Submit />;
-        break;
-
-      case FieldTypes.DYNAMIC_RECIPIENTS:
-        form = <DynamicRecipients />;
-        break;
-
-      case FieldTypes.MAILING_LIST:
-        form = <MailingList />;
-        break;
-
-      case FieldTypes.FILE:
-        form = <File />;
         break;
     }
 

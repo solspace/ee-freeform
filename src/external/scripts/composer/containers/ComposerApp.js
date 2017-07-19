@@ -8,7 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import FieldList from "../containers/FieldList";
 import Composer from "../containers/Composer";
 import PropertyEditor from "../containers/PropertyEditor";
@@ -32,6 +33,7 @@ export default class ComposerApp extends Component {
     createTemplateUrl: PropTypes.string.isRequired,
     finishTutorialUrl: PropTypes.string.isRequired,
     showTutorial: PropTypes.bool.isRequired,
+    defaultTemplates: PropTypes.bool.isRequired,
     canManageFields: PropTypes.bool.isRequired,
     canManageNotifications: PropTypes.bool.isRequired,
     canManageSettings: PropTypes.bool.isRequired,
@@ -53,6 +55,7 @@ export default class ComposerApp extends Component {
     canManageSettings: PropTypes.bool.isRequired,
     isDbEmailTemplateStorage: PropTypes.bool.isRequired,
     isWidgetsInstalled: PropTypes.bool.isRequired,
+    isDefaultTemplates: PropTypes.bool.isRequired,
   };
 
   getChildContext = () => ({
@@ -66,6 +69,7 @@ export default class ComposerApp extends Component {
     canManageSettings: this.props.canManageSettings,
     isDbEmailTemplateStorage: this.props.isDbEmailTemplateStorage,
     isWidgetsInstalled: this.props.isWidgetsInstalled,
+    isDefaultTemplates: this.props.defaultTemplates,
   });
 
   render() {

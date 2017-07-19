@@ -1,6 +1,6 @@
 <?php
 /**
- * Freeform for Craft
+ * Freeform Next for Expression Engine
  *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.

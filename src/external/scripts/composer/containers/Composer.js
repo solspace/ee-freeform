@@ -8,7 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {DropTarget} from "react-dnd";
 import {FIELD, COLUMN, ROW} from "../constants/DraggableTypes";

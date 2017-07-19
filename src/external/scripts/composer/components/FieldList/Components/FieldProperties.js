@@ -8,7 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 import {connect} from "react-redux";
 import * as FieldTypes from "../../../constants/FieldTypes";
@@ -17,7 +18,9 @@ import fetch from "isomorphic-fetch";
 import {getHandleValue} from "../../../helpers/Utilities";
 
 @connect(
-  null,
+  (state) => ({
+    fieldTypeList: state.fields.types,
+  }),
   (dispatch) => ({
     fetchFields: () => {
       dispatch(invalidateFields());
@@ -66,8 +69,15 @@ export default class FieldProperties extends Component {
   }
 
   render() {
-    const {label, handle, type, errors} = this.state;
-    const {toggleFieldForm}             = this.props;
+    const {label, handle, type, errors}    = this.state;
+    const {toggleFieldForm, fieldTypeList} = this.props;
+
+    let options = [];
+    for (let type in fieldTypeList) {
+      if (!fieldTypeList.hasOwnProperty(type)) continue;
+
+      options.push({key: type, value: fieldTypeList[type]});
+    }
 
     return (
       <div className="composer-new-field-form">
@@ -82,16 +92,9 @@ export default class FieldProperties extends Component {
                     onChange={this.updateType}
                     className="fullwidth"
             >
-              <option value={FieldTypes.TEXT}>Text</option>
-              <option value={FieldTypes.TEXTAREA}>Textarea</option>
-              <option value={FieldTypes.EMAIL}>Email</option>
-              <option value={FieldTypes.HIDDEN}>Hidden</option>
-              <option value={FieldTypes.SELECT}>Select</option>
-              <option value={FieldTypes.CHECKBOX}>Checkbox</option>
-              <option value={FieldTypes.CHECKBOX_GROUP}>Checkbox Group</option>
-              <option value={FieldTypes.RADIO_GROUP}>Radio Group</option>
-              <option value={FieldTypes.FILE}>File upload</option>
-              <option value={FieldTypes.DYNAMIC_RECIPIENTS}>Dynamic Recipients</option>
+              {options.map((item) => (
+                <option key={item.key} value={item.key}>{item.value}</option>
+              ))}
             </select>
           </div>
         </div>

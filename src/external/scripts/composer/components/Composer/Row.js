@@ -8,7 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import Column from "./Column";
 import PlaceholderColumn from "./Placeholders/PlaceholderColumn";
 import PlaceholderRow from "./Placeholders/PlaceholderRow";

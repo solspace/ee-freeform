@@ -8,7 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import HtmlInput from "./HtmlInput";
 import FieldHelper from "../../../helpers/FieldHelper";
 import * as SubmitPositions  from "../../../constants/SubmitPositions";
@@ -34,6 +35,10 @@ export default class Submit extends HtmlInput {
   static contextTypes = {
     hash: PropTypes.string.isRequired,
   };
+
+  getClassName() {
+    return 'Submit';
+  }
 
   render() {
     const {layout, properties: {labelNext, labelPrev, disablePrev}} = this.props;
@@ -63,5 +68,22 @@ export default class Submit extends HtmlInput {
         <input type="submit" className="btn submit" value={labelNext} />
       </div>
     )
+  }
+
+  getWrapperClassNames() {
+    let {properties: {position, disablePrev}} = this.props;
+
+    if (disablePrev) {
+      const allowedPositions = [SubmitPositions.LEFT, SubmitPositions.RIGHT, SubmitPositions.CENTER];
+
+      if (!allowedPositions.find(x => x === position)) {
+        position = SubmitPositions.LEFT;
+      }
+    }
+
+    return [
+      "composer-submit-position-wrapper",
+      "composer-submit-position-" + position,
+    ];
   }
 }

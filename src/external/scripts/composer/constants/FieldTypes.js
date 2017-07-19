@@ -20,6 +20,14 @@ export const EMAIL              = "email";
 export const DYNAMIC_RECIPIENTS = "dynamic_recipients";
 export const FILE               = "file";
 
+export const DATETIME     = "datetime";
+export const NUMBER       = "number";
+export const PHONE        = "phone";
+export const WEBSITE      = "website";
+export const RATING       = "rating";
+export const REGEX        = "regex";
+export const CONFIRMATION = "confirmation";
+
 export const HTML         = "html";
 export const MAILING_LIST = "mailing_list";
 export const SUBMIT       = "submit";
@@ -41,3 +49,17 @@ export const INTEGRATION_SUPPORTED_TYPES = [
   DYNAMIC_RECIPIENTS,
   FILE,
 ];
+
+export const CONFIRMATION_SUPPORTED_TYPES = [
+  TEXT,
+  EMAIL,
+  DATETIME,
+  NUMBER,
+  PHONE,
+  WEBSITE,
+  REGEX,
+];
+
+export const DATE_TIME_TYPE_BOTH = 'both';
+export const DATE_TIME_TYPE_DATE = 'date';
+export const DATE_TIME_TYPE_TIME = 'time';

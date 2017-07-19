@@ -8,7 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {RADIO_GROUP} from "../../../constants/FieldTypes";
 import HtmlInput from "./HtmlInput";
 import Radio from "./Components/Radio";
@@ -32,13 +33,17 @@ export default class RadioGroup extends HtmlInput {
     }).isRequired,
   };
 
+  getClassName() {
+    return 'RadioGroup';
+  }
+
   getType() {
     return RADIO_GROUP;
   }
 
-  render() {
-    const {properties}               = this.props;
-    const {label, required, options, instructions} = properties;
+  renderInput() {
+    const {properties} = this.props;
+    const {options}    = properties;
 
     let radios = [];
     if (options) {
@@ -56,12 +61,6 @@ export default class RadioGroup extends HtmlInput {
       }
     }
 
-    return (
-      <div>
-        <Label label={label} isRequired={required} />
-        <Instructions instructions={instructions}/>
-        {radios}
-      </div>
-    );
+    return radios;
   }
 }

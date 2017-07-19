@@ -8,10 +8,12 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {TEXT} from "../../../constants/FieldTypes";
 import Label from "./Components/Label";
 import Instructions from "./Components/Instructions";
+import {slugify, underscored} from "underscore.string";
 
 const allowedProperties = [
   "name",
@@ -41,6 +43,20 @@ export default class HtmlInput extends Component {
     properties: PropTypes.object.isRequired
   };
 
+  constructor(props, context) {
+    super(props, context);
+
+    this.getBadges            = this.getBadges.bind(this);
+    this.getWrapperClassNames = this.getWrapperClassNames.bind(this);
+    this.prepareWrapperClass  = this.prepareWrapperClass.bind(this);
+    this.renderInput          = this.renderInput.bind(this);
+    this.getClassName         = this.getClassName.bind(this);
+  }
+
+  getClassName() {
+    return 'HtmlInput';
+  }
+
   getType() {
     return TEXT;
   }
@@ -50,7 +66,7 @@ export default class HtmlInput extends Component {
 
     const clean = {...properties};
 
-    for (var key in clean) {
+    for (let key in clean) {
       if (allowedProperties.indexOf(key) === -1) {
         delete clean[key];
       }
@@ -64,18 +80,70 @@ export default class HtmlInput extends Component {
     return clean;
   }
 
+  renderInput() {
+    return (
+      <input readOnly={true} className={this.prepareInputClass()}
+             type={this.getType()}
+             {...this.getCleanProperties()}
+      />
+    );
+  }
+
   render() {
     const {properties: {label, type, required, instructions}} = this.props;
 
     return (
       <div>
-        <Label label={label} type={type} isRequired={required} />
+        <Label label={label} type={type} isRequired={required}>{this.getBadges()}</Label>
         <Instructions instructions={instructions}/>
-        <input readOnly={true} className="composer-ft-text text fullwidth"
-               type={this.getType()}
-               {...this.getCleanProperties()}
-        />
+        {this.renderInput()}
       </div>
     );
+  }
+
+  /**
+   * Return any Badge objects if applicable
+   */
+  getBadges() {
+  }
+
+  /**
+   * Return any additional wrapper class names as an array
+   *
+   * @return {string[]}
+   */
+  getWrapperClassNames() {
+    return [];
+  }
+
+  /**
+   * @return {string}
+   */
+  prepareWrapperClass() {
+    let wrapperClassNames = this.getWrapperClassNames();
+
+    wrapperClassNames.push('composer-ft-' + slugify(underscored(this.getClassName())) + '-wrapper');
+
+    return wrapperClassNames.join(' ');
+  }
+
+  /**
+   * Return any additional input class names as an array
+   *
+   * @return {string[]}
+   */
+  getInputClassNames() {
+    return [];
+  }
+
+  /**
+   * @return {string}
+   */
+  prepareInputClass() {
+    let inputClassNames = this.getInputClassNames();
+
+    inputClassNames.push('composer-ft-' + slugify(underscored(this.getClassName())));
+
+    return inputClassNames.join(' ');
   }
 }
