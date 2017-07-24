@@ -29,6 +29,9 @@ class Freeform_Next extends Plugin
         // TODO: Prevent this from firing all the time
         $fileService = new \Solspace\Addons\FreeformNext\Services\FilesService();
         $fileService->cleanUpUnfinalizedAssets();
+
+        $settingsService = new \Solspace\Addons\FreeformNext\Services\SettingsService();
+        $settingsService->cleanUpDatabaseSessionData();
     }
 
     /**

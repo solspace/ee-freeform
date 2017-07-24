@@ -54,9 +54,11 @@ abstract class AddonUpdater
     }
 
     /**
+     * @param string|null $previousVersion
+     *
      * @return bool
      */
-    public function update()
+    public function update($previousVersion = null)
     {
         return false;
     }

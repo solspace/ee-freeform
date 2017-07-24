@@ -219,7 +219,9 @@ class FormController extends Controller
         $formsService = new FormsService();
 
         try {
-            $formAttributes = new FormAttributes($formId, new EESession(), new EERequest());
+            $sessionImplementation = (new SettingsService())->getSessionStorageImplementation();
+
+            $formAttributes = new FormAttributes($formId, $sessionImplementation, new EERequest());
             $composer       = new Composer(
                 $composerState,
                 $formAttributes,
