@@ -447,7 +447,7 @@ class FormValueContext implements \JsonSerializable
         list($formIdHash, $_, $payload) = self::getHashParts($this->getPostedHash());
 
         $formId           = self::getFormIdFromHash($this->getPostedHash());
-        $isFormIdMatching = $formId === $this->formId;
+        $isFormIdMatching = (int) $formId === (int) $this->formId;
 
         // Only generate a new hash if the content indexes don' match with the posted hash
         // Or if there is no posted hash
