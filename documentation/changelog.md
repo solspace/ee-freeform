@@ -1,5 +1,8 @@
 # Changelog
 
+### 1.0.5 (July 25, 2017) <a href="#v1-0-5" id="v1-0-5" class="docs-anchor">#</a>
+* Fixed a bug where 1.0.4 upgrade would show errors in CP for some installs.
+
 ### 1.0.4 (July 25, 2017) <a href="#v1-0-4" id="v1-0-4" class="docs-anchor">#</a>
 * Added a Sandbox option for Salesforce integration in Pro version.
 * Added option to use database instead of PHP sessions for storing state of form submissions.
