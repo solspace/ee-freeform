@@ -1,5 +1,15 @@
 # Changelog
 
+### 1.0.4 (July 25, 2017) <a href="#v1-0-4" id="v1-0-4" class="docs-anchor">#</a>
+* Added a Sandbox option for Salesforce integration in Pro version.
+* Added option to use database instead of PHP sessions for storing state of form submissions.
+* Fixed a bug where forms would not submit correctly for some users.
+* Fixed a bug where single checkbox fields were not saving the user's selection if errors were triggered.
+* Fixed a bug where single checkboxes were not displaying the field value in email notifications.
+* Fixed a bug where email validation was allowing some invalid syntax.
+* Fixed a bug where the Update Service would error if it couldn't connect to Solspace.com.
+* Fixed a bug where the Mailer extension hooks were not working correctly.
+
 ### 1.0.3 (July 3, 2017) <a href="#v1-0-3" id="v1-0-3" class="docs-anchor">#</a>
 * Fixed a bug where Freeform Updates Service was writing to add-on folder instead of EE Cache directory.
 * Fixed a bug where unchecking ALL filetype options for File Upload fields in Fields area would not save preferences.
