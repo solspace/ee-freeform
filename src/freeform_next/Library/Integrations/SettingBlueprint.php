@@ -17,6 +17,7 @@ class SettingBlueprint
     const TYPE_CONFIG   = 'config';
     const TYPE_TEXT     = 'text';
     const TYPE_PASSWORD = 'password';
+    const TYPE_BOOL     = 'bool';
 
     /** @var string */
     private $type;
@@ -41,6 +42,7 @@ class SettingBlueprint
         return [
             self::TYPE_TEXT,
             self::TYPE_PASSWORD,
+            self::TYPE_BOOL,
         ];
     }
 
