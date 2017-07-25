@@ -184,8 +184,8 @@ class SettingsController extends Controller
                             //     ],
                             // ],
                             [
-                                'title'  => 'Session storage mechanism',
-                                'desc'   => 'Choose the mechanism with which session data is stored',
+                                'title'  => 'Session Storage Mechanism',
+                                'desc'   => 'Choose the mechanism with which session data is stored on front end submissions.',
                                 'fields' => [
                                     'sessionStorage' => [
                                         'type'    => 'radio',
