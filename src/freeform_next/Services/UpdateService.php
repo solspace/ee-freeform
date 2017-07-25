@@ -97,7 +97,7 @@ class UpdateService
      */
     private function fetchLatestFeed()
     {
-        $content = file_get_contents($this->jsonUrl) ?: '';
+        $content = @file_get_contents($this->jsonUrl) ?: '';
 
         $handle = fopen($this->jsonPath, 'wb+');
         fwrite($handle, $content);
