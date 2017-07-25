@@ -7,6 +7,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecip
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\OptionsInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\PlaceholderInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\StaticValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SubmitField;
 
 class FieldTransformer
@@ -23,6 +24,8 @@ class FieldTransformer
     {
         if ($field instanceof DynamicRecipientField) {
             $value = $field->getValue();
+        } else if ($field instanceof StaticValueInterface) {
+            $value = $field->getStaticValue();
         } else {
             $value = $field->getValueAsString();
         }
