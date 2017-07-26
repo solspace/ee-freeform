@@ -686,8 +686,8 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         $honeypot = $this->getFormValueContext()->getNewHoneypot();
         $output   = '<input '
             . 'type="text" '
-            . 'value="' . $hash . '"'
-            . 'id="' . $honeypot->getName() . '"'
+            . 'value="' . $hash . '" '
+            . 'id="' . $honeypot->getName() . '" '
             . 'name="' . $honeypot->getName() . '" '
             . '/>';
 
