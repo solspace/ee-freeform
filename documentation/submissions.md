@@ -105,35 +105,33 @@ The *Freeform_Next:Submissions* template tag fetches an individual submission or
 * `{submission:paginate}{/submission:paginate}` <a href="#varpair-paginate" id="varpair-paginate" class="docs-anchor">#</a>
 	* Renders pagination for submission results. Works just like regular EE pagination, but the  variable pair is prepended with `submission:`. Used in conjunction with the [paginate](#param-paginate) parameter.
 	* Can be displayed as one of two ways:
-	```
-	{submission:paginate}
-		Page {current_page} of {total_pages} pages.
-		{pagination_links}
-	{/submission:paginate}
-	```
-	```
-	{submission:paginate}
-		<ul class="pagination">
-		{pagination_links}
-		{first_page}
-			<li><a href="{pagination_url}">First</a></li>
-		{/first_page}
-		{previous_page}
-			<li><a href="{pagination_url}">&laquo; Previous</a></li>
-		{/previous_page}
-		{page}
-			<li{if current_page} class="active"{/if}><a href="{pagination_url}">{pagination_page_number}</a></li>
-		{/page}
-		{next_page}
-			<li><a href="{pagination_url}">Next &raquo;</a></li>
-		{/next_page}
-		{last_page}
-			<li><a href="{pagination_url}">Last</a></li>
-		{/last_page}
-		{/pagination_links}
-		</ul>
-		{/submission:paginate}
-	```
+
+```{submission:paginate}
+	Page {current_page} of {total_pages} pages.
+	{pagination_links}
+{/submission:paginate}```
+
+```{submission:paginate}
+	<ul class="pagination">
+	{pagination_links}
+	{first_page}
+		<li><a href="{pagination_url}">First</a></li>
+	{/first_page}
+	{previous_page}
+		<li><a href="{pagination_url}">&laquo; Previous</a></li>
+	{/previous_page}
+	{page}
+		<li{if current_page} class="active"{/if}><a href="{pagination_url}">{pagination_page_number}</a></li>
+	{/page}
+	{next_page}
+		<li><a href="{pagination_url}">Next &raquo;</a></li>
+	{/next_page}
+	{last_page}
+		<li><a href="{pagination_url}">Last</a></li>
+	{/last_page}
+	{/pagination_links}
+	</ul>
+{/submission:paginate}```
 
 
 ## Conditionals <a href="#conditionals" id="conditionals" class="docs-anchor">#</a>
