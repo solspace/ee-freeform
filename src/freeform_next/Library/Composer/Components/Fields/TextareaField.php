@@ -44,6 +44,22 @@ class TextareaField extends AbstractField implements SingleValueInterface, Place
     }
 
     /**
+     * Gets whatever value is set and returns its string representation
+     *
+     * @param bool $optionsAsValues
+     *
+     * @return string
+     */
+    public function getValueAsString($optionsAsValues = true)
+    {
+        if ($optionsAsValues) {
+            return nl2br($this->getValue());
+        }
+
+        return $this->getValue();
+    }
+
+    /**
      * Outputs the HTML of input
      *
      * @return string
