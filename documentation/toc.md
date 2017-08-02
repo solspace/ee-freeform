@@ -24,7 +24,7 @@
 * ### Template Tags
 	* [Form](form.md)
 	* [Forms](forms.md)
-	* [submissions](submissions.md)
+	* [Submissions](submissions.md)
 
 * ### Templating Extras
 	* [Formatting Template Examples](formatting-template-examples.md)
