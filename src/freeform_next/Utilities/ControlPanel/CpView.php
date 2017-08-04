@@ -123,6 +123,24 @@ class CpView extends View
     }
 
     /**
+     * @param array $templateVariables
+     *
+     * @return $this
+     */
+    public function addTemplateVariables(array $templateVariables)
+    {
+        if (null === $this->templateVariables) {
+            $this->templateVariables = $templateVariables;
+
+            return $this;
+        }
+
+        $this->templateVariables = array_merge($this->templateVariables, $templateVariables);
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getHeading()

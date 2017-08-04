@@ -38,5 +38,7 @@ return [
         'MailingListModel'           => 'Model\MailingListModel',
         'MailingListFieldModel'      => 'Model\MailingListFieldModel',
         'CrmFieldModel'              => 'Model\CrmFieldModel',
+        'ExportProfileModel'         => 'Model\ExportProfileModel',
+        'ExportSettingModel'         => 'Model\ExportSettingModel',
     ],
 ];

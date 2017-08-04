@@ -33,14 +33,6 @@ class NumberField extends TextField
     protected $allowNegative;
 
     /**
-     * @inheritDoc
-     */
-    public function getType()
-    {
-        return self::TYPE_NUMBER;
-    }
-
-    /**
      * @return int
      */
     public function getMinLength()

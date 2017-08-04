@@ -183,7 +183,7 @@ class FilesService implements FileUploadHandlerInterface
                 ],
                 'flash'       => ['label' => lang('Flash'), 'extensions' => ['fla', 'flv', 'swf', 'swt', 'swc']],
                 'html'        => ['label' => lang('HTML'), 'extensions' => ['html', 'htm']],
-                'illustrator' => ['label' => lang('Illustrator'), 'extensions' => ['ai']],
+                'illustrator' => ['label' => lang('Illustrator'), 'extensions' => ['ai', 'eps']],
                 'image'       => [
                     'label'      => lang('Image'),
                     'extensions' => [

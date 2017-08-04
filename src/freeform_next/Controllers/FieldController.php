@@ -12,7 +12,6 @@
 namespace Solspace\Addons\FreeformNext\Controllers;
 
 use EllisLab\ExpressionEngine\Library\CP\Table;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FieldExceptions\FieldException;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
@@ -184,6 +183,7 @@ class FieldController extends Controller
             'settings' => $this->getFieldSettingsByType($model),
         ];
 
+        ee()->cp->add_js_script('plugin', 'minicolors');
         ee()->cp->add_js_script(['file' => ['cp/form_group']]);
 
         $view = new CpView(
@@ -218,19 +218,37 @@ class FieldController extends Controller
 
         $post        = $_POST;
         $type        = isset($_POST['type']) ? $_POST['type'] : $field->type;
-        $validValues = [];
+        $validValues = $additionalProperties = [];
         foreach ($post as $key => $value) {
             if (property_exists($field, $key)) {
                 $validValues[$key] = $value;
             }
         }
 
-        if (isset($validValues['required'])) {
-            $validValues['required'] = $validValues['required'] === 'y';
-        }
+        $booleanValues = [
+            'required',
+            'checked',
+            'generatePlaceholder',
+            'date4DigitYear',
+            'dateLeadingZero',
+            'clock24h',
+            'lowercaseAMPM',
+            'clockAMPMSeparate',
+            'allowNegative',
+        ];
 
-        if (isset($validValues['checked'])) {
-            $validValues['checked'] = $validValues['checked'] === 'y';
+        $integerValues = [
+            'minValue',
+            'maxValue',
+            'minLength',
+            'maxLength',
+            'decimalCount',
+        ];
+
+        foreach ($validValues as $key => $value) {
+            if (in_array($key, $booleanValues, true)) {
+                $validValues[$key] = $value === 'y';
+            }
         }
 
         $fieldHasOptions = in_array(
@@ -257,6 +275,12 @@ class FieldController extends Controller
 
                 if (property_exists($field, $key)) {
                     $validValues[$key] = $value;
+                } else {
+                    if (in_array($key, $booleanValues, true)) {
+                        $value = $value === 'y';
+                    }
+
+                    $additionalProperties[$key] = $value;
                 }
             }
 
@@ -273,6 +297,8 @@ class FieldController extends Controller
         if ($type === FieldInterface::TYPE_FILE && !isset($validValues['fileKinds'])) {
             $validValues['fileKinds'] = [];
         }
+
+        $validValues['additionalProperties'] = empty($additionalProperties) ? null : $additionalProperties;
 
         $field->set($validValues);
 
@@ -537,7 +563,488 @@ class FieldController extends Controller
                     ],
                 ],
             ],
+            FieldInterface::TYPE_RATING             => [
+                [
+                    'title'  => 'Default Value',
+                    'desc'   => 'If present, this will be the value pre-populated when the form is rendered.',
+                    'fields' => [
+                        'value' => [
+                            'type'    => 'select',
+                            'value'   => $model->value,
+                            'choices' => [
+                                0  => 'None',
+                                1  => 1,
+                                2  => 2,
+                                3  => 3,
+                                4  => 4,
+                                5  => 5,
+                                6  => 6,
+                                7  => 7,
+                                8  => 8,
+                                9  => 9,
+                                10 => 10,
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Maximum Number of Stars',
+                    'desc'   => 'Set how many stars are there in this rating',
+                    'fields' => [
+                        'maxValue' => [
+                            'type'    => 'select',
+                            'value'   => $model->getAdditionalProperty('maxValue', 5),
+                            'choices' => [
+                                3  => 3,
+                                4  => 4,
+                                5  => 5,
+                                6  => 6,
+                                7  => 7,
+                                8  => 8,
+                                9  => 9,
+                                10 => 10,
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Unselected Color',
+                    'fields' => [
+                        'colorIdle' => [
+                            'type'  => 'text',
+                            'attrs' => 'class="color-picker"',
+                            'value' => $model->getAdditionalProperty('colorIdle', '#dddddd'),
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Hover Color',
+                    'fields' => [
+                        'colorHover' => [
+                            'type'  => 'text',
+                            'attrs' => 'class="color-picker"',
+                            'value' => $model->getAdditionalProperty('colorHover', '#FFD700'),
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Selected Color',
+                    'fields' => [
+                        'colorSelected' => [
+                            'type'  => 'text',
+                            'attrs' => 'class="color-picker"',
+                            'value' => $model->getAdditionalProperty('colorSelected', '#ff7700'),
+                        ],
+                    ],
+                ],
+            ],
+            FieldInterface::TYPE_DATETIME           => [
+                [
+                    'title'  => 'Date Time Type',
+                    'desc'   => 'Use only date, time or both',
+                    'fields' => [
+                        'dateTimeType' => [
+                            'type'    => 'select',
+                            'value'   => $model->getAdditionalProperty('dateTimeType', 'both'),
+                            'choices' => [
+                                'both' => 'Both',
+                                'date' => 'Date',
+                                'time' => 'Time',
+                            ],
+                            'attrs'   => 'id="dateTimeType"',
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Default Value',
+                    'desc'   => 'You can use \'now\', \'today\', \'5 days ago\', \'2017-01-01 20:00:00\', etc, which will format the default value according to the chosen format',
+                    'fields' => [
+                        'initialValue' => [
+                            'type'  => 'text',
+                            'value' => $model->getAdditionalProperty('initialValue'),
+                            'attrs' => 'data-datetime-date-group',
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Generate Placeholder',
+                    'desc'   => 'Enable this to automatically generate a placeholder based on the given date format settings',
+                    'fields' => [
+                        'generatePlaceholder' => [
+                            'type'  => 'yes_no',
+                            'value' => $model->getAdditionalProperty('generatePlaceholder', true) ? 'y' : 'n',
+                            'attrs' => 'data-toggle="placeholder" data-toggle-reverse data-datetime-date-group',
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Placeholder',
+                    'desc'   => 'The default text that will be shown if the field doesn’t have a value.',
+                    'fields' => [
+                        'placeholder' => [
+                            'type'  => 'text',
+                            'value' => $model->placeholder,
+                            'attrs' => 'data-toggle-group="placeholder" data-datetime-date-group',
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Date Order',
+                    'desc'   => 'Choose the order in which to show day, month and year',
+                    'fields' => [
+                        'dateOrder' => [
+                            'type'    => 'select',
+                            'value'   => $model->getAdditionalProperty('dateOrder', 'ymd'),
+                            'choices' => [
+                                'ymd' => 'Year Month Day',
+                                'mdy' => 'Month Day Year',
+                                'dmy' => 'Day Month Year',
+                            ],
+                            'attrs'   => 'data-datetime-date-group',
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Four digit year?',
+                    'fields' => [
+                        'date4DigitYear' => [
+                            'type'  => 'yes_no',
+                            'value' => $model->getAdditionalProperty('date4DigitYear', true) ? 'y' : 'n',
+                            'attrs' => 'data-datetime-date-group',
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Date leading zero',
+                    'desc'   => 'If enabled will use the leading zero for days and months',
+                    'fields' => [
+                        'dateLeadingZero' => [
+                            'type'  => 'yes_no',
+                            'value' => $model->getAdditionalProperty('dateLeadingZero', true) ? 'y' : 'n',
+                            'attrs' => 'data-datetime-date-group',
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Date Separator',
+                    'desc'   => 'Used to separate dates',
+                    'fields' => [
+                        'dateSeparator' => [
+                            'type'    => 'select',
+                            'value'   => $model->getAdditionalProperty('dateSeparator', '/'),
+                            'choices' => [
+                                ''  => 'None',
+                                ' ' => 'Space',
+                                '/' => '/',
+                                '-' => '-',
+                                '.' => '.',
+                            ],
+                            'attrs'   => 'data-datetime-date-group',
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => '24h clock?',
+                    'fields' => [
+                        'clock24h' => [
+                            'type'  => 'yes_no',
+                            'value' => $model->getAdditionalProperty('clock24h', false) ? 'y' : 'n',
+                            'attrs' => 'data-toggle="ampm" data-toggle-reverse data-datetime-time-group',
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Clock Separator',
+                    'desc'   => 'Used to separate hours and minutes',
+                    'fields' => [
+                        'clockSeparator' => [
+                            'type'    => 'select',
+                            'value'   => $model->getAdditionalProperty('clockSeparator', ':'),
+                            'choices' => [
+                                ''  => 'None',
+                                ' ' => 'Space',
+                                ':' => ':',
+                                '-' => '-',
+                                '.' => '.',
+                            ],
+                            'attrs'   => 'data-datetime-time-group',
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Lowercase AM/PM?',
+                    'fields' => [
+                        'lowercaseAMPM' => [
+                            'type'  => 'yes_no',
+                            'value' => $model->getAdditionalProperty('lowercaseAMPM', false) ? 'y' : 'n',
+                            'attrs' => 'data-toggle-group="ampm" data-datetime-time-group',
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Separate AM/PM with a space?',
+                    'fields' => [
+                        'clockAMPMSeparate' => [
+                            'type'  => 'yes_no',
+                            'value' => $model->getAdditionalProperty('clockAMPMSeparate', true) ? 'y' : 'n',
+                            'attrs' => 'data-toggle-group="ampm" data-datetime-time-group',
+                        ],
+                    ],
+                ],
+            ],
+            FieldInterface::TYPE_WEBSITE            => [
+                [
+                    'title'  => 'Default Value',
+                    'desc'   => 'The default value for the field.',
+                    'fields' => [
+                        'value' => [
+                            'type'  => 'text',
+                            'value' => $model->value,
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Placeholder',
+                    'desc'   => 'The default text that will be shown if the field doesn’t have a value.',
+                    'fields' => [
+                        'placeholder' => [
+                            'type'  => 'text',
+                            'value' => $model->placeholder,
+                        ],
+                    ],
+                ],
+            ],
+            FieldInterface::TYPE_NUMBER             => [
+                [
+                    'title'  => 'Default Value',
+                    'desc'   => 'The default value for the field.',
+                    'fields' => [
+                        'value' => [
+                            'type'  => 'text',
+                            'value' => $model->value,
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Placeholder',
+                    'desc'   => 'The default text that will be shown if the field doesn’t have a value.',
+                    'fields' => [
+                        'placeholder' => [
+                            'type'  => 'text',
+                            'value' => $model->placeholder,
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Allow negative numbers?',
+                    'fields' => [
+                        'allowNegative' => [
+                            'type'  => 'yes_no',
+                            'value' => $model->getAdditionalProperty('allowNegative', false) ? 'y' : 'n',
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Min Value',
+                    'desc'   => '(Optional) The minimum allowed numeric value this field is allowed to have.',
+                    'fields' => [
+                        'minValue' => [
+                            'type'  => 'text',
+                            'value' => $model->getAdditionalProperty('minValue'),
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Max Value',
+                    'desc'   => '(Optional) The maximum allowed numeric value this field is allowed to have.',
+                    'fields' => [
+                        'maxValue' => [
+                            'type'  => 'text',
+                            'value' => $model->getAdditionalProperty('maxValue'),
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Min Length',
+                    'desc'   => '(Optional) The minimum length of characters the field is allowed to have.',
+                    'fields' => [
+                        'minLength' => [
+                            'type'  => 'text',
+                            'value' => $model->getAdditionalProperty('minLength'),
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Max Length',
+                    'desc'   => '(Optional) The maximum length of characters the field is allowed to have.',
+                    'fields' => [
+                        'maxLength' => [
+                            'type'  => 'text',
+                            'value' => $model->getAdditionalProperty('maxLength'),
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Decimal Count',
+                    'desc'   => 'The number of decimals allowed.',
+                    'fields' => [
+                        'maxLength' => [
+                            'type'  => 'text',
+                            'value' => $model->getAdditionalProperty('decimalCount', 0),
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Decimal Separator',
+                    'desc'   => 'Used to separate decimals.',
+                    'fields' => [
+                        'decimalSeparator' => [
+                            'type'  => 'select',
+                            'value' => $model->getAdditionalProperty('decimalSeparator', '.'),
+                            'choices' => [
+                                '.' => '.',
+                                ',' => ',',
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Thousands Separator',
+                    'desc'   => 'Used to separate thousands.',
+                    'fields' => [
+                        'thousandsSeparator' => [
+                            'type'  => 'select',
+                            'value' => $model->getAdditionalProperty('thousandsSeparator', ''),
+                            'choices' => [
+                                '' => 'None',
+                                ' ' => 'Space',
+                                ',' => ',',
+                                '.' => '.',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            FieldInterface::TYPE_PHONE              => [
+                [
+                    'title'  => 'Default Value',
+                    'desc'   => 'The default value for the field.',
+                    'fields' => [
+                        'value' => [
+                            'type'  => 'text',
+                            'value' => $model->value,
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Placeholder',
+                    'desc'   => 'The default text that will be shown if the field doesn’t have a value.',
+                    'fields' => [
+                        'placeholder' => [
+                            'type'  => 'text',
+                            'value' => $model->placeholder,
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Pattern',
+                    'desc'   => 'Custom phone pattern (i.e. \'(xxx) xxx xxxx\'). The letter \'x\' stands for a digit between 0-9. if left blank - will default to a universal phone number validation pattern.',
+                    'fields' => [
+                        'pattern' => [
+                            'type'  => 'text',
+                            'value' => $model->getAdditionalProperty('pattern'),
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Default Country',
+                    'desc'   => 'Used to validate local phone numbers. International numbers will work regardless.',
+                    'fields' => [
+                        'countryCode' => [
+                            'type'  => 'select',
+                            'value' => $model->getAdditionalProperty('countryCode', 'US'),
+                            'choices' => include __DIR__ . '/../countries.php',
+                        ],
+                    ],
+                ],
+            ],
+            FieldInterface::TYPE_CONFIRMATION       => [
+                [
+                    'title'  => 'Default Value',
+                    'desc'   => 'The default value for the field.',
+                    'fields' => [
+                        'value' => [
+                            'type'  => 'text',
+                            'value' => $model->value,
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Placeholder',
+                    'desc'   => 'The default text that will be shown if the field doesn’t have a value.',
+                    'fields' => [
+                        'placeholder' => [
+                            'type'  => 'text',
+                            'value' => $model->placeholder,
+                        ],
+                    ],
+                ],
+            ],
+            FieldInterface::TYPE_REGEX              => [
+                [
+                    'title'  => 'Default Value',
+                    'desc'   => 'The default value for the field.',
+                    'fields' => [
+                        'value' => [
+                            'type'  => 'text',
+                            'value' => $model->value,
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Placeholder',
+                    'desc'   => 'The default text that will be shown if the field doesn’t have a value.',
+                    'fields' => [
+                        'placeholder' => [
+                            'type'  => 'text',
+                            'value' => $model->placeholder,
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Pattern',
+                    'desc'   => 'Any regex pattern here.',
+                    'fields' => [
+                        'pattern' => [
+                            'type'  => 'text',
+                            'value' => $model->getAdditionalProperty('pattern'),
+                        ],
+                    ],
+                ],
+                [
+                    'title'  => 'Error Message',
+                    'desc'   => 'The message a user should receive if an incorrect value is given. Will replace any occurrances of \'{{pattern}}\' with the supplied regex pattern inside the message if any are found.',
+                    'fields' => [
+                        'message' => [
+                            'type'  => 'text',
+                            'value' => $model->getAdditionalProperty('message'),
+                        ],
+                    ],
+                ],
+            ],
         ];
+
+        if (!file_exists(__DIR__ . '/../Library/Pro')) {
+            unset(
+                $byType[FieldInterface::TYPE_CONFIRMATION],
+                $byType[FieldInterface::TYPE_DATETIME],
+                $byType[FieldInterface::TYPE_NUMBER],
+                $byType[FieldInterface::TYPE_PHONE],
+                $byType[FieldInterface::TYPE_RATING],
+                $byType[FieldInterface::TYPE_REGEX],
+                $byType[FieldInterface::TYPE_WEBSITE]
+            );
+        }
 
         $sectionData = [];
         foreach ($byType as $type => $items) {
@@ -550,7 +1057,7 @@ class FieldController extends Controller
                 $sectionData[] = [
                     'group'  => $type,
                     'title'  => $data['title'],
-                    'desc'   => $data['desc'],
+                    'desc'   => isset($data['desc']) ? $data['desc'] : '',
                     'fields' => $fields,
                 ];
             }

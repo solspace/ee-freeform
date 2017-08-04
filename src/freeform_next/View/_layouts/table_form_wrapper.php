@@ -16,6 +16,28 @@
                     <?php endforeach;?>
                 </fieldset>
             <?php endif;?>
+            <?php if ( ! empty($form_dropdown_links)):?>
+                <fieldset class="tbl-search right">
+                    <?php foreach ($form_dropdown_links as $dropdownTitle => $links): ?>
+                        <div class="dropdown">
+                            <a class="btn action tn">
+                                <?php echo $dropdownTitle ?>
+                            </a>
+                            <ul>
+                                <?php foreach ($links as $link_data):?>
+                                    <li>
+                                        <a class="btn tn action"
+                                            <?php echo @$link_data['attrs'] ?>
+                                           href="<?=$link_data['link']?>">
+                                            <?=$link_data['title']?>
+                                        </a>
+                                    </li>
+                                <?php endforeach;?>
+                            </ul>
+                        </div>
+                    <?php endforeach;?>
+                </fieldset>
+            <?php endif;?>
             <?php if (isset($cp_page_title)):?>
                 <h1><?=$cp_page_title?></h1>
             <?php elseif (isset($wrapper_header)):?>

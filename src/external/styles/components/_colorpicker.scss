@@ -1,0 +1,37 @@
+/*!
+ * Freeform for Craft
+ *
+ * @package       Solspace:Freeform
+ * @author        Solspace, Inc.
+ * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
+ * @link          https://solspace.com/craft/freeform
+ * @license       https://solspace.com/software/license-agreement
+ */
+
+.freeform-colorpicker-preview-wrapper {
+  padding: 5px;
+  background: #fff;
+  border-radius: 1px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .1);
+  display: inline-block;
+  cursor: pointer;
+
+  .freeform-colorpicker-preview {
+    width: 36px;
+    height: 14px;
+    border-radius: 2px;
+  }
+}
+
+.freeform-colorpicker-wrapper {
+  position: absolute;
+  z-index: 2000;
+
+  .freeform-colorpicker-cover {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}

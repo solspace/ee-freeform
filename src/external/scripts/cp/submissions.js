@@ -53,5 +53,19 @@ $(() => {
         }
       });
     }
-  })
+  });
+
+  $('#export-csv-modal').on({
+    submit: () => {
+      const current = $.featherlight.current();
+      current.close();
+    }
+  });
+
+  $('#quick-export-trigger').featherlight('#quick-export-modal', {
+    otherClose: '.btn.cancel',
+    afterContent: function() {
+      $('.checkbox-select', this.$content).sortable();
+    }
+  });
 });

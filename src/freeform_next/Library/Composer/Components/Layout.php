@@ -67,6 +67,9 @@ class Layout implements \JsonSerializable, \Iterator
     /** @var TranslatorInterface */
     private $translator;
 
+    /** @var bool */
+    private $hasDatepickerEnabledFields;
+
     /**
      * Layout constructor.
      *
@@ -88,6 +91,14 @@ class Layout implements \JsonSerializable, \Iterator
         $this->layoutData = $layoutData;
         $this->translator = $translator;
         $this->buildLayout($formValueContext);
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasDatepickerEnabledFields()
+    {
+        return $this->hasDatepickerEnabledFields;
     }
 
     /**
@@ -135,7 +146,7 @@ class Layout implements \JsonSerializable, \Iterator
      */
     public function getFieldsByHandle()
     {
-        if (is_null($this->fieldsByHandle)) {
+        if (null === $this->fieldsByHandle) {
             $fields = [];
             foreach ($this->getFields() as $field) {
                 if (!$field->getHandle()) {
@@ -159,7 +170,7 @@ class Layout implements \JsonSerializable, \Iterator
      */
     public function getFieldById($id)
     {
-        if (is_null($this->fieldsById)) {
+        if (null === $this->fieldsById) {
             $fields = [];
             foreach ($this->getFields() as $field) {
                 $fields[$field->getId()] = $field;
@@ -272,13 +283,17 @@ class Layout implements \JsonSerializable, \Iterator
      */
     private function buildLayout(FormValueContext $formValueContext)
     {
-        $pageObjects       = [];
-        $allRows           = [];
-        $allFields         = [];
-        $hiddenFields      = [];
-        $recipientFields   = [];
-        $fileUploadFields  = [];
-        $mailingListFields = [];
+        $datetimeClass  = 'Solspace\Addons\FreeformNext\Library\Pro\Fields\DatetimeField';
+        $datetimeExists = class_exists($datetimeClass);
+
+        $hasDatepickerEnabledFields = false;
+        $pageObjects                = [];
+        $allRows                    = [];
+        $allFields                  = [];
+        $hiddenFields               = [];
+        $recipientFields            = [];
+        $fileUploadFields           = [];
+        $mailingListFields          = [];
 
         foreach ($this->layoutData as $pageIndex => $rows) {
             if (!is_array($rows)) {
@@ -341,6 +356,12 @@ class Layout implements \JsonSerializable, \Iterator
                         $recipientFields[] = $field;
                     }
 
+                    if ($datetimeExists && get_class($field) === $datetimeClass) {
+                        if ($field->isUseDatepicker()) {
+                            $hasDatepickerEnabledFields = true;
+                        }
+                    }
+
                     $pageFields[] = $field;
                     $allFields[]  = $field;
                 }
@@ -362,18 +383,19 @@ class Layout implements \JsonSerializable, \Iterator
             $pageObjects[] = $page;
         }
 
-        $this->pages             = $pageObjects;
-        $this->rows              = $allRows;
-        $this->fields            = $allFields;
-        $this->hiddenFields      = $hiddenFields;
-        $this->recipientFields   = $recipientFields;
-        $this->fileUploadFields  = $fileUploadFields;
-        $this->mailingListFields = $mailingListFields;
+        $this->pages                      = $pageObjects;
+        $this->rows                       = $allRows;
+        $this->fields                     = $allFields;
+        $this->hiddenFields               = $hiddenFields;
+        $this->recipientFields            = $recipientFields;
+        $this->fileUploadFields           = $fileUploadFields;
+        $this->mailingListFields          = $mailingListFields;
+        $this->hasDatepickerEnabledFields = $hasDatepickerEnabledFields;
     }
 
     /**
      * @param string $string
-     * @param array $variables
+     * @param array  $variables
      *
      * @return string
      */

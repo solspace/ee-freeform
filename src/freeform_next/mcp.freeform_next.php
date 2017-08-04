@@ -11,6 +11,8 @@
 
 use Solspace\Addons\FreeformNext\Controllers\ApiController;
 use Solspace\Addons\FreeformNext\Controllers\CrmController;
+use Solspace\Addons\FreeformNext\Controllers\ExportController;
+use Solspace\Addons\FreeformNext\Controllers\ExportProfilesController;
 use Solspace\Addons\FreeformNext\Controllers\FieldController;
 use Solspace\Addons\FreeformNext\Controllers\FormController;
 use Solspace\Addons\FreeformNext\Controllers\LogController;
@@ -150,6 +152,54 @@ class Freeform_next_mcp extends ControlPanelView
         }
 
         return $this->renderView($this->getNotificationController()->index());
+    }
+
+    /**
+     * @param int    $seg1
+     * @param string $seg2
+     *
+     * @return array
+     */
+    public function export_profiles($seg1 = null, $seg2 = null)
+    {
+        if (strtolower($seg1) === 'delete') {
+            return $this->renderView($this->getExportProfilesController()->batchDelete());
+        }
+
+        if (null !== $seg1) {
+            if (in_array($seg1, ['csv', 'xml', 'json', 'text'], true)) {
+                return $this->getExportProfilesController()->export($seg2, $seg1);
+            }
+
+            if (isset($_POST['name'])) {
+                $this->getExportProfilesController()->save($seg1);
+
+                return $this->renderView(
+                    new RedirectView(
+                        UrlHelper::getLink('export_profiles/')
+                    )
+                );
+            }
+
+            return $this->renderView($this->getExportProfilesController()->edit($seg1, $seg2));
+        }
+
+        return $this->renderView($this->getExportProfilesController()->index());
+    }
+
+    /**
+     * @param null $id
+     *
+     * @return array
+     */
+    public function export($id = null)
+    {
+        $controller = new ExportController();
+        if ($id === 'dialogue') {
+            return $this->renderView($controller->exportDialogue());
+        }
+
+        return $this->renderView($controller->export());
     }
 
     /**
@@ -331,6 +381,12 @@ class Freeform_next_mcp extends ControlPanelView
             ->addSubNavItem(new NavigationLink('Mailing Lists', 'integrations/mailing_lists'))
             ->addSubNavItem(new NavigationLink('CRM', 'integrations/crm'));
 
+
+        $exportProfiles = null;
+        if (class_exists('Solspace\Addons\FreeformNext\Controllers\ExportProfilesController')) {
+            $exportProfiles = new NavigationLink('Export', 'export_profiles');
+        }
+
         $settings = new NavigationLink('Settings');
         $settings
             ->addSubNavItem(new NavigationLink('License', 'settings/license'))
@@ -394,6 +450,7 @@ class Freeform_next_mcp extends ControlPanelView
             ->addLink($forms)
             ->addLink($fields)
             ->addLink($notifications)
+            ->addLink($exportProfiles)
             ->addLink($settings)
             ->addLink($integrations)
             ->addLink($resources);
@@ -446,6 +503,20 @@ class Freeform_next_mcp extends ControlPanelView
 
         if (null === $instance) {
             $instance = new NotificationController();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @return ExportProfilesController
+     */
+    private function getExportProfilesController()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new ExportProfilesController();
         }
 
         return $instance;

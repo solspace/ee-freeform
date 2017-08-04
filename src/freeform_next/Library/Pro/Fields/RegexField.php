@@ -14,6 +14,16 @@ class RegexField extends TextField
     protected $message;
 
     /**
+     * Return the field TYPE
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return self::TYPE_REGEX;
+    }
+
+    /**
      * @return string
      */
     public function getPattern()

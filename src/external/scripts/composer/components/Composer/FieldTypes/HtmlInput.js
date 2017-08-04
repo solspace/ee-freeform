@@ -93,7 +93,7 @@ export default class HtmlInput extends Component {
     const {properties: {label, type, required, instructions}} = this.props;
 
     return (
-      <div>
+      <div className={this.prepareWrapperClass()}>
         <Label label={label} type={type} isRequired={required}>{this.getBadges()}</Label>
         <Instructions instructions={instructions}/>
         {this.renderInput()}

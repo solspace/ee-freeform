@@ -144,7 +144,7 @@ class RatingField extends AbstractField implements SingleValueInterface
      */
     private function getStyles()
     {
-        $cssPath = __DIR__ . '/../../../resources/css/fields/rating.css';
+        $cssPath = PATH_THIRD_THEMES . 'freeform_next/css/fields/rating.css';
 
         $output = '<style>' . PHP_EOL;
         $output .= @file_get_contents($cssPath);

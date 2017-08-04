@@ -8,6 +8,16 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Validation\Constrai
 class WebsiteField extends TextField
 {
     /**
+     * Return the field TYPE
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return self::TYPE_WEBSITE;
+    }
+
+    /**
      * @inheritDoc
      */
     public function getConstraints()

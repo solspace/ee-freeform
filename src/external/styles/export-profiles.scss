@@ -1,0 +1,63 @@
+
+.tbl-search {
+  .dropdown {
+    position: relative;
+
+    > a {
+      &:after {
+        font-family: FontAwesome, sans-serif;
+        content: "\f0d7";
+      }
+    }
+
+    > ul {
+      position: absolute;
+      right: 0;
+      top: 15px;
+
+      display: none;
+
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      > li {
+        display: block;
+        padding: 0;
+        margin: 15px 0 0;
+      }
+    }
+
+    &.active {
+      > ul {
+        display: block;
+      }
+    }
+  }
+}
+
+.toolbar {
+  li {
+    &.csv,
+    &.json,
+    &.xml,
+    &.text {
+      a:before {
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 12px;
+      }
+    }
+    &.csv a:before {
+      content: "CSV";
+    }
+    &.json a:before {
+      content: "JSON";
+    }
+    &.xml a:before {
+      content: "XML";
+    }
+    &.text a:before {
+      content: "Text";
+    }
+  }
+}

@@ -176,6 +176,37 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_submissions` (
   DEFAULT CHARSET = `utf8`
   COLLATE = `utf8_unicode_ci`;
 
+CREATE TABLE IF NOT EXISTS `exp_freeform_next_export_profiles` (
+  `id`          INT(11)      NOT NULL  AUTO_INCREMENT,
+  `siteId`      INT(11)      NOT NULL  DEFAULT '1',
+  `name`        VARCHAR(255) NULL,
+  `formId`      INT(11) NOT NULL,
+  `limit`       INT(11) NULL,
+  `dateRange`   VARCHAR(255) NULL,
+  `fields`      TEXT NULL,
+  `filters`     TEXT NULL,
+  `statuses`    TEXT NULL,
+  `dateCreated` DATETIME DEFAULT NULL,
+  `dateUpdated` DATETIME DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `exp_freeform_next_export_formId_fk` (`formId`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = `utf8`
+  COLLATE = `utf8_unicode_ci`;
+
+CREATE TABLE IF NOT EXISTS `exp_freeform_next_export_settings` (
+  `id`          INT(11)      NOT NULL  AUTO_INCREMENT,
+  `siteId`      INT(11)      NOT NULL  DEFAULT '1',
+  `userId`      INT(11)      NOT NULL,
+  `settings`    TEXT         NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `exp_freeform_next_export_userId_fk` (`userId`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = `utf8`
+  COLLATE = `utf8_unicode_ci`;
+
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_unfinalized_files` (
   `id`          INT(11) NOT NULL  AUTO_INCREMENT,
   `siteId`      INT(11) NOT NULL  DEFAULT '1',

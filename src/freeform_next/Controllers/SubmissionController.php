@@ -33,6 +33,7 @@ use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionPreferencesRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
+use Solspace\Addons\FreeformNext\Services\ExportService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\ConfirmRemoveModal;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
@@ -236,6 +237,29 @@ class SubmissionController extends Controller
         $modal = new ConfirmRemoveModal($this->getLink('submissions/' . $form->getHandle() . '/delete'));
         $modal->setKind('Submissions');
 
+        $formRightLinks = [
+            [
+                'title' => lang('Edit Layout'),
+                'link'  => '#',
+                'attrs' => 'id="change-layout-trigger"',
+            ],
+        ];
+
+        if (class_exists('Solspace\Addons\FreeformNext\Controllers\ExportController')) {
+            array_unshift($formRightLinks, [
+                'title' => lang('Quick Export'),
+                'link'  => '#',
+                'attrs' => 'id="quick-export-trigger" style="margin-right: 5px;"',
+            ]);
+        } else {
+            array_unshift($formRightLinks, [
+                'title' => lang('Export CSV'),
+                'link'  => $this->getLink('api/submission_export/' . $form->getId()),
+                'attrs' => 'id="export-trigger" style="margin-right: 5px;"',
+            ]);
+        }
+
+
         $view = new CpView(
             'submissions/listing',
             [
@@ -243,25 +267,22 @@ class SubmissionController extends Controller
                 'cp_page_title'    => 'Submissions for ' . $form->getName(),
                 'layout'           => $layout,
                 'form'             => $form,
-                'form_right_links' => [
-                    [
-                        'title' => lang('Export CSV'),
-                        'link'  => $this->getLink('api/submission_export/' . $form->getId()),
-                        'attrs' => 'id="export-trigger" style="margin-right: 5px;"',
-                    ],
-                    [
-                        'title' => lang('Edit Layout'),
-                        'link'  => '#',
-                        'attrs' => 'id="change-layout-trigger"',
-                    ],
-                ],
+                'form_right_links' => $formRightLinks,
                 'pagination'       => $pagination,
+                'exportLink'       => $this->getLink('export'),
             ]
         );
+
+        $exportServiceClassName = 'Solspace\Addons\FreeformNext\Services\ExportService';
+        if (class_exists($exportServiceClassName)) {
+            $exportService = new $exportServiceClassName();
+            $view->addTemplateVariables($exportService->getExportDialogueTemplateVariables($form->getId()));
+        }
 
         $view
             ->setHeading(lang('Submissions'))
             ->addJavascript('submissions')
+            ->addJavascript('export')
             ->addJavascript('lib/featherlight.min.js')
             ->addBreadcrumb(new NavigationLink('Forms', 'forms'))
             ->addBreadcrumb(new NavigationLink($form->getName(), 'forms/' . $form->getId()))

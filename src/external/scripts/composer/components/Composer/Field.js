@@ -22,6 +22,7 @@ import RadioGroup from "./FieldTypes/RadioGroup";
 import Select from "./FieldTypes/Select";
 import DynamicRecipients from "./FieldTypes/DynamicRecipients";
 import MailingList from "./FieldTypes/MailingList";
+import Number from "./FieldTypes/Number";
 import Datetime from "./FieldTypes/Datetime";
 import Phone from "./FieldTypes/Phone";
 import Rating from "./FieldTypes/Rating";

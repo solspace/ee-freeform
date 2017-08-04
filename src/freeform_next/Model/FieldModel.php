@@ -71,9 +71,10 @@ class FieldModel extends Model implements \JsonSerializable
     protected static $_events = ['afterSave', 'afterDelete', 'beforeInsert', 'beforeUpdate'];
 
     protected static $_typed_columns = [
-        'values'    => 'json',
-        'options'   => 'json',
-        'fileKinds' => 'json',
+        'values'               => 'json',
+        'options'              => 'json',
+        'fileKinds'            => 'json',
+        'additionalProperties' => 'json',
     ];
 
     /**
@@ -196,11 +197,11 @@ class FieldModel extends Model implements \JsonSerializable
         if ($this->type === FieldInterface::TYPE_NUMBER) {
             $returnArray['value']              = $this->value ?: '';
             $returnArray['placeholder']        = $this->placeholder ?: '';
-            $returnArray['minLength']          = $this->getAdditionalProperty('minLength');
-            $returnArray['maxLength']          = $this->getAdditionalProperty('maxLength');
-            $returnArray['minValue']           = $this->getAdditionalProperty('minValue');
-            $returnArray['maxValue']           = $this->getAdditionalProperty('maxValue');
-            $returnArray['decimalCount']       = $this->getAdditionalProperty('decimalCount');
+            $returnArray['minLength']          = $this->getAdditionalProperty('minLength', '');
+            $returnArray['maxLength']          = $this->getAdditionalProperty('maxLength', '');
+            $returnArray['minValue']           = $this->getAdditionalProperty('minValue', '');
+            $returnArray['maxValue']           = $this->getAdditionalProperty('maxValue', '');
+            $returnArray['decimalCount']       = $this->getAdditionalProperty('decimalCount', 0);
             $returnArray['decimalSeparator']   = $this->getAdditionalProperty('decimalSeparator', '.');
             $returnArray['thousandsSeparator'] = $this->getAdditionalProperty('thousandsSeparator', ',');
             $returnArray['allowNegative']      = $this->getAdditionalProperty('allowNegative', false);
@@ -217,8 +218,8 @@ class FieldModel extends Model implements \JsonSerializable
         if ($this->type === FieldInterface::TYPE_REGEX) {
             $returnArray['value']       = $this->value ?: '';
             $returnArray['placeholder'] = $this->placeholder ?: '';
-            $returnArray['pattern']     = $this->getAdditionalProperty('pattern');
-            $returnArray['message']     = $this->getAdditionalProperty('message');
+            $returnArray['pattern']     = $this->getAdditionalProperty('pattern', '');
+            $returnArray['message']     = $this->getAdditionalProperty('message', '');
         }
 
         if ($this->type === FieldInterface::TYPE_CONFIRMATION) {
@@ -501,6 +502,7 @@ class FieldModel extends Model implements \JsonSerializable
             'maxLength'           => 'int',
             'minValue'            => 'int',
             'maxValue'            => 'int',
+            'decimalCount'        => 'int',
         ];
 
         if (isset($customTypes[$name])) {
@@ -509,7 +511,7 @@ class FieldModel extends Model implements \JsonSerializable
                     return (bool) $value ? true : false;
 
                 case 'int':
-                    return $value !== null ? (int) $value : null;
+                    return !empty($value) ? (int) $value : null;
             }
         }
 

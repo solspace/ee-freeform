@@ -44,7 +44,7 @@ class TextField extends AbstractField implements SingleValueInterface, Placehold
 
         return '<input '
             . $this->getAttributeString('name', $this->getHandle())
-            . $this->getAttributeString('type', $this->getType())
+            . $this->getAttributeString('type', 'text')
             . $this->getAttributeString('id', $this->getIdAttribute())
             . $this->getAttributeString('class', $classString)
             . $this->getAttributeString(

@@ -57,6 +57,16 @@ class DatetimeField extends TextField implements InitialValueInterface
     }
 
     /**
+     * Return the field TYPE
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return self::TYPE_DATETIME;
+    }
+
+    /**
      * @return string
      */
     public function getDateTimeType()

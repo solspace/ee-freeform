@@ -32,6 +32,17 @@ var paths = {
       dist: buildPath + "freeform_next/",
       proFiles: [
         buildPath + "freeform_next/Integrations",
+        buildPath + "freeform_next/Library/Pro",
+        buildPath + "freeform_next/Controllers/ExportController.php",
+        buildPath + "freeform_next/Controllers/ExportProfilesController.php",
+        buildPath + "freeform_next/Repositories/ExportProfilesRepository.php",
+        buildPath + "freeform_next/Repositories/ExportSettingsRepository.php",
+        buildPath + "freeform_next/Model/ExportProfileModel.php",
+        buildPath + "freeform_next/Model/ExportSettingModel.php",
+        buildPath + "freeform_next/Services/ExportProfilesService.php",
+        buildPath + "freeform_next/Services/ExportService.php",
+        buildPath + "freeform_next/View/export",
+        buildPath + "freeform_next/View/export_profiles",
       ]
     },
     themes: {

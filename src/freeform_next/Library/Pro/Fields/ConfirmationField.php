@@ -13,6 +13,16 @@ class ConfirmationField extends TextField implements NoStorageInterface
     protected $targetFieldHash;
 
     /**
+     * Return the field TYPE
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return self::TYPE_CONFIRMATION;
+    }
+
+    /**
      * @return int
      */
     public function getTargetFieldHash()

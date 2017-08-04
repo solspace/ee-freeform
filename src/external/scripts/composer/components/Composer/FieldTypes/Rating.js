@@ -17,14 +17,14 @@ export default class Rating extends HtmlInput {
   }
 
   renderInput() {
-    const {properties: {maxValue, value}} = this.props;
+    const {properties: {maxValue, value, colorIdle, colorSelected}} = this.props;
 
     let stars = [];
     for (let i = 1; i <= maxValue; i++) {
       stars.push(
         <span
           key={i}
-          style={{color: value >= i ? 'gold' : '#ddd'}}
+          style={{color: value >= i ? colorSelected : colorIdle}}
         />
       );
     }

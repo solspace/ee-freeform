@@ -14,6 +14,16 @@ class PhoneField extends TextField
     protected $countryCode;
 
     /**
+     * Return the field TYPE
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return self::TYPE_PHONE;
+    }
+
+    /**
      * @return string|null
      */
     public function getPattern()
