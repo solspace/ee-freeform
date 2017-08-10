@@ -10,9 +10,6 @@ class PhoneField extends TextField
     /** @var string */
     protected $pattern;
 
-    /** @var string */
-    protected $countryCode;
-
     /**
      * Return the field TYPE
      *
@@ -32,14 +29,6 @@ class PhoneField extends TextField
     }
 
     /**
-     * @return string
-     */
-    public function getCountryCode()
-    {
-        return $this->countryCode;
-    }
-
-    /**
      * @inheritDoc
      */
     public function getConstraints()
@@ -47,8 +36,7 @@ class PhoneField extends TextField
         return [
             new PhoneConstraint(
                 $this->translate('Invalid phone number'),
-                $this->getPattern(),
-                $this->getCountryCode()
+                $this->getPattern()
             ),
         ];
     }

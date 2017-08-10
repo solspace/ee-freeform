@@ -238,7 +238,6 @@ class FieldModel extends Model implements \JsonSerializable
             $returnArray['value']       = $this->value ?: '';
             $returnArray['placeholder'] = $this->placeholder ?: '';
             $returnArray['pattern']     = $this->getAdditionalProperty('pattern');
-            $returnArray['countryCode'] = $this->getAdditionalProperty('countryCode', 'US');
         }
 
         if (in_array(

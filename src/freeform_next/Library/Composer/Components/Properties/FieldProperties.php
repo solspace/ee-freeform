@@ -157,9 +157,6 @@ class FieldProperties extends AbstractProperties
     protected $targetFieldHash;
 
     /** @var string */
-    protected $countryCode;
-
-    /** @var string */
     protected $message;
 
     /** @var string */
@@ -564,14 +561,6 @@ class FieldProperties extends AbstractProperties
     /**
      * @return string
      */
-    public function getCountryCode()
-    {
-        return $this->countryCode;
-    }
-
-    /**
-     * @return string
-     */
     public function getMessage()
     {
         return $this->message;
@@ -658,7 +647,6 @@ class FieldProperties extends AbstractProperties
             'allowNegative'       => self::TYPE_BOOLEAN,
             'pattern'             => self::TYPE_STRING,
             'targetFieldHash'     => self::TYPE_STRING,
-            'countryCode'         => self::TYPE_STRING,
             'message'             => self::TYPE_STRING,
             'colorIdle'           => self::TYPE_STRING,
             'colorHover'          => self::TYPE_STRING,

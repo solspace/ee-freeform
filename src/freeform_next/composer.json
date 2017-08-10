@@ -12,7 +12,6 @@
     "swiftmailer/swiftmailer": "^5.4",
     "danielstjules/stringy": "^3.1.0",
     "guzzle/guzzle": "^3.9",
-    "giggsey/libphonenumber-for-php": "^8.5",
     "apache/log4php": "^2.3.0"
   },
   "require-dev": {

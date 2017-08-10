@@ -29,26 +29,11 @@ export default class Phone extends BasePropertyEditor {
       placeholder: PropTypes.string,
       required: PropTypes.bool,
       pattern: PropTypes.string,
-      countryCode: PropTypes.string,
     }).isRequired,
   };
 
   render() {
-    const {properties: {label, value, handle, placeholder, required, instructions, pattern, countryCode}} = this.context;
-
-    let countryInput = '';
-    if (!pattern || !pattern.length) {
-      countryInput = (
-        <SelectProperty
-          label="Default Country"
-          instructions="Used to validate local phone numbers. International numbers will work regardless."
-          name="countryCode"
-          value={countryCode ? countryCode : 'US'}
-          onChangeHandler={this.update}
-          options={countries}
-        />
-      );
-    }
+    const {properties: {label, value, handle, placeholder, required, instructions, pattern}} = this.context;
 
     return (
       <div>
@@ -115,8 +100,6 @@ export default class Phone extends BasePropertyEditor {
           value={pattern}
           onChangeHandler={this.update}
         />
-
-        {countryInput}
       </div>
     );
   }

@@ -2,8 +2,6 @@
 
 namespace Solspace\Addons\FreeformNext\Library\Composer\Components\Validation\Constraints;
 
-use libphonenumber\NumberParseException;
-use libphonenumber\PhoneNumberUtil;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Validation\Errors\ConstraintViolationList;
 
 class PhoneConstraint implements ConstraintInterface
@@ -21,21 +19,16 @@ class PhoneConstraint implements ConstraintInterface
      */
     private $pattern;
 
-    /** @var string */
-    private $defaultCountry;
-
     /**
      * RegexConstraint constructor.
      *
      * @param string $message
      * @param string $pattern
-     * @param string $defaultCountry
      */
-    public function __construct($message = 'Invalid phone number', $pattern = null, $defaultCountry = 'US')
+    public function __construct($message = 'Invalid phone number', $pattern = null)
     {
         $this->message = $message;
         $this->pattern = !empty($pattern) ? $pattern : null;
-        $this->defaultCountry = $defaultCountry;
     }
 
     /**
@@ -71,20 +64,8 @@ class PhoneConstraint implements ConstraintInterface
             return $violationList;
         }
 
-        static $phoneUtil;
-
-        if (null === $phoneUtil) {
-            $phoneUtil = PhoneNumberUtil::getInstance();
-        }
-
-        try {
-            $phoneNumber = $phoneUtil->parse($value, $this->defaultCountry);
-
-            if (!$phoneUtil->isValidNumber($phoneNumber)) {
-                $violationList->addError($this->message);
-            }
-        } catch (NumberParseException $e) {
-            $violationList->addError($this->message);
+        if (!preg_match('/^\+?[0-9\- ,.\(\)]+$/', $value)) {
+            $violationList->addError('Phone number is invalid.');
         }
 
         return $violationList;

@@ -194,7 +194,6 @@ class FieldController extends Controller
                 'base_url'              => $this->getLink('fields/' . $id),
                 'save_btn_text'         => lang('Save'),
                 'save_btn_text_working' => lang('Saving...'),
-                'countryOptions'        => include __DIR__ . '/../countries.php',
             ]
         );
         $view
@@ -953,17 +952,6 @@ class FieldController extends Controller
                         'pattern' => [
                             'type'  => 'text',
                             'value' => $model->getAdditionalProperty('pattern'),
-                        ],
-                    ],
-                ],
-                [
-                    'title'  => 'Default Country',
-                    'desc'   => 'Used to validate local phone numbers. International numbers will work regardless.',
-                    'fields' => [
-                        'countryCode' => [
-                            'type'  => 'select',
-                            'value' => $model->getAdditionalProperty('countryCode', 'US'),
-                            'choices' => include __DIR__ . '/../countries.php',
                         ],
                     ],
                 ],
