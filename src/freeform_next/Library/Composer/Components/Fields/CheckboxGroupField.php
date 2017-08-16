@@ -71,12 +71,12 @@ class CheckboxGroupField extends AbstractField implements MultipleValueInterface
     public function getValueAsString($optionsAsValues = true)
     {
         if (!$optionsAsValues) {
-            return implode(", ", $this->getValue());
+            return implode(', ', $this->getValue());
         }
 
         $labels = [];
         foreach ($this->getOptions() as $option) {
-            if (in_array($option->getValue(), $this->getValue())) {
+            if (in_array($option->getValue(), $this->getValue(), false)) {
                 $labels[] = $option->getLabel();
             }
         }

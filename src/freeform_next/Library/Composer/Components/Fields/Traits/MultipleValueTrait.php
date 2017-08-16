@@ -11,6 +11,9 @@
 
 namespace Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits;
 
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DataContainers\Option;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\OptionsInterface;
+
 trait MultipleValueTrait
 {
     /** @var array */

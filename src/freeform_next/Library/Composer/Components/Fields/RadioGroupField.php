@@ -75,7 +75,7 @@ class RadioGroupField extends AbstractField implements SingleValueInterface, Opt
         }
 
         foreach ($this->getOptions() as $option) {
-            if ($option->getValue() === $this->getValue()) {
+            if ($option->getValue() == $this->getValue()) {
                 return $option->getLabel();
             }
         }

@@ -73,7 +73,7 @@ class SelectField extends AbstractField implements SingleValueInterface, Options
         }
 
         foreach ($this->getOptions() as $option) {
-            if ($option->getValue() === $this->getValue()) {
+            if ($option->getValue() == $this->getValue()) {
                 return $option->getLabel();
             }
         }
