@@ -176,7 +176,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
     }
 
     /**
-     * @param $fieldHandle
+     * @param string $fieldHandle
      *
      * @return null|AbstractField
      */
@@ -185,7 +185,11 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         try {
             return $this->getLayout()->getFieldByHandle($fieldHandle);
         } catch (FreeformException $e) {
-            return null;
+            try {
+                return $this->getLayout()->getFieldByHash($fieldHandle);
+            } catch (FreeformException $e) {
+                return null;
+            }
         }
     }
 

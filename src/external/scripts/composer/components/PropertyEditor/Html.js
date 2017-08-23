@@ -11,12 +11,14 @@
 import React, {Component, PropTypes} from "react";
 import BasePropertyEditor from "./BasePropertyEditor";
 import AceEditor from "react-ace";
+import TextProperty from "./PropertyItems/TextProperty";
 import "brace/mode/html";
 import "brace/theme/chrome";
 
 export default class Html extends BasePropertyEditor {
   static contextTypes = {
     ...BasePropertyEditor.contextTypes,
+    hash: PropTypes.string.isRequired,
     properties: PropTypes.shape({
       type: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
@@ -31,10 +33,21 @@ export default class Html extends BasePropertyEditor {
   }
 
   render() {
-    const {properties: {value}} = this.context;
+    const {hash, properties: {value}} = this.context;
 
     return (
       <div>
+        <TextProperty
+          label="Hash"
+          instructions="Used to access this field on the frontend."
+          name="handle"
+          value={hash}
+          className="code"
+          readOnly={true}
+        />
+
+        <hr />
+
         <AceEditor
           mode="html"
           theme="chrome"
