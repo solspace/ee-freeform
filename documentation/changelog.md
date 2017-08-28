@@ -1,5 +1,13 @@
 # Changelog
 
+### 1.0.6 (August 28, 2017) <a href="#v1-0-6" id="v1-0-6" class="docs-anchor">#</a>
+* Updated Composer to show hash handles for Submit and HTML blocks so they can be accessible manually in frontend templates.
+* Updated textareas to now automatically convert newlines to line breaks when outputting data in templates or email notifications.
+* Fixed a bug where selected values for fields with options would not output correctly.
+* Fixed a bug where tabbing through labels and values in Field creation/editing area would reset values.
+* Fixed a bug where the honeypot field for spam protection did not have spaces in-between attributes.
+* Fixed a bug where Composer would have JS errors when creating new fields while using Sessions only in CP.
+
 ### 1.0.5 (July 25, 2017) <a href="#v1-0-5" id="v1-0-5" class="docs-anchor">#</a>
 * Fixed a bug where 1.0.4 upgrade would show errors in CP for some installs.
 

@@ -38,6 +38,7 @@ The following field types are available:
 		* Specify the number of rows the textarea should have.
 		* Can be marked as required.
 		* Can contain default text and/or placeholder.
+		* Will automatically convert newlines to line breaks when outputting data in templates or email notifications.
 * **Email** (`email`) <a href="#fields-email" id="fields-email" class="docs-anchor">#</a>
 	* An input field that is flagged in Freeform to expect an email address value as well as possibility for receiving email notifications.
 		* In the Property Editor (right column) in Composer, select a notification template if you want the email entered for this field to receive an email notification.
