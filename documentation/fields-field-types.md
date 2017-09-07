@@ -93,15 +93,15 @@ The following field types are available:
 		* Specify labels and email address values.
 			* Emails are never parsed in source code (they're replaced with **0**, **1**, **2**, etc).
 				* **NOTE:** When parsing this field semi-manually, be sure to use `{field:index}` to generate numeric values of options instead of `{field:value}`.
-					```
-					<select name="{field:department:handle}" type="dynamic_recipients">
+
+					```<select name="{field:department:handle}" type="dynamic_recipients">
 					{field:department:options}
 						<option value="{option:index}" {if option:checked}selected{/if}>
 							{option:label}
 						</option>
 					{/field:department:options}
-					</select>
-					```
+					</select>```
+
 			* To make the first option empty, specify **--** or **Please select...**, etc for the label, and leave option blank.
 		* In the Property Editor (right column) in Composer, select a notification template you want the selected recipient for this field to receive.
 			* Users/groups need to have permissions access for **Email Notifications** to create new formatting templates.
