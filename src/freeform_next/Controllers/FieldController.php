@@ -267,8 +267,14 @@ class FieldController extends Controller
             }
         }
 
-        if ($type === FieldInterface::TYPE_FILE && !isset($validValues['fileKinds'])) {
-            $validValues['fileKinds'] = [];
+        if ($type === FieldInterface::TYPE_FILE) {
+            if (!isset($validValues['fileKinds'])) {
+                $validValues['fileKinds'] = [];
+            }
+
+            if (!isset($validValues['maxFileSizeKB']) || empty($validValues['maxFileSizeKB'])) {
+                $validValues['maxFileSizeKB'] = 2048;
+            }
         }
 
         $field->set($validValues);
