@@ -3,6 +3,7 @@
 namespace Solspace\Addons\FreeformNext\Library\EETags\Transformers;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecipientField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\OptionsInterface;
@@ -25,7 +26,11 @@ class FieldTransformer
         if ($field instanceof DynamicRecipientField) {
             $value = $field->getValue();
         } else if ($field instanceof StaticValueInterface) {
-            $value = $field->getStaticValue();
+            if ($field instanceof CheckboxField) {
+                $value = $field->isChecked() ? $field->getStaticValue() : '';
+            } else {
+                $value = $field->getStaticValue();
+            }
         } else {
             $value = $field->getValueAsString();
         }

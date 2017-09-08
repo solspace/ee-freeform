@@ -33,8 +33,6 @@ class MailerService implements MailHandlerInterface
      * @param SubmissionModel|null $submission
      *
      * @return int
-     * @throws \Twig_Error_Syntax
-     * @throws \Twig_Error_Loader
      * @throws FreeformException
      */
     public function sendEmail(
