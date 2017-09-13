@@ -29,6 +29,14 @@ class FieldTransformer
         $columnIndex = null,
         $columnCount = null
     ) {
+        if (!is_string($value)) {
+            if (is_array($value)) {
+                $value = implode(', ', $value);
+            }
+
+            $value = (string) $value;
+        }
+
         $data = [
             $prefix . 'id'                  => $field->getId(),
             $prefix . 'handle'              => $field->getHandle(),
