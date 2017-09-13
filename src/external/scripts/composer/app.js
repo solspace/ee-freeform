@@ -77,7 +77,7 @@ const rootElement = document.getElementById("freeform-builder");
 export const notificator = (type, message) => (showNotification(message, type));
 export const urlBuilder = (url) => {
   const index = baseUrl.indexOf('&');
-  if (index === false) {
+  if (index === -1 || index === false) {
     return baseUrl + '/' + url;
   }
 
