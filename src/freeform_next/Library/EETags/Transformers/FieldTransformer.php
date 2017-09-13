@@ -15,26 +15,20 @@ class FieldTransformer
 {
     /**
      * @param AbstractField $field
+     * @param mixed         $value
      * @param string        $prefix
      * @param null          $columnIndex
      * @param null          $columnCount
      *
      * @return array
      */
-    public function transformField(AbstractField $field, $prefix = 'field:', $columnIndex = null, $columnCount = null)
-    {
-        if ($field instanceof DynamicRecipientField) {
-            $value = $field->getValue();
-        } else if ($field instanceof StaticValueInterface) {
-            if ($field instanceof CheckboxField) {
-                $value = $field->isChecked() ? $field->getStaticValue() : '';
-            } else {
-                $value = $field->getStaticValue();
-            }
-        } else {
-            $value = $field->getValueAsString();
-        }
-
+    public function transformField(
+        AbstractField $field,
+        $value = null,
+        $prefix = 'field:',
+        $columnIndex = null,
+        $columnCount = null
+    ) {
         $data = [
             $prefix . 'id'                  => $field->getId(),
             $prefix . 'handle'              => $field->getHandle(),

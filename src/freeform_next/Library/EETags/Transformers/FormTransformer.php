@@ -2,9 +2,12 @@
 
 namespace Solspace\Addons\FreeformNext\Library\EETags\Transformers;
 
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecipientField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\FileUploadInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoRenderInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\StaticValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SubmitField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 
@@ -58,7 +61,19 @@ class FormTransformer implements Transformer
                 continue;
             }
 
-            $data[] = $fieldTransformer->transformField($field, $prefix);
+            if ($field instanceof DynamicRecipientField) {
+                $value = $field->getValue();
+            } else if ($field instanceof StaticValueInterface) {
+                if ($field instanceof CheckboxField) {
+                    $value = $field->isChecked() ? $field->getStaticValue() : '';
+                } else {
+                    $value = $field->getStaticValue();
+                }
+            } else {
+                $value = $field->getValueAsString();
+            }
+
+            $data[] = $fieldTransformer->transformField($field, $value, $prefix);
         }
 
         return $data;

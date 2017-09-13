@@ -63,7 +63,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
      *
      * @return AbstractField
      */
-    public static final function createFromProperties(
+    final public static function createFromProperties(
         Form $form,
         FieldProperties $properties,
         FormValueContext $formValueContext,
