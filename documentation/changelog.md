@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.0.7 (September 18, 2017) <a href="#v1-0-7" id="v1-0-7" class="docs-anchor">#</a>
+* Fixed a bug where creating a new File Upload field (Fields area) would trigger an error if a value isn't specified for Maximum Filesize.
+* Fixed a bug where single Checkbox fields would always return the default value for the field in Submissions tag and email notifications, whether or not the checkbox is checked.
+* Fixed a bug where quick creating fields, email templates and formatting templates in Composer would not autoload them into the list.
+
 ### 1.0.6 (August 28, 2017) <a href="#v1-0-6" id="v1-0-6" class="docs-anchor">#</a>
 * Updated Composer to show hash handles for Submit and HTML blocks so they can be accessible manually in frontend templates.
 * Updated textareas to now automatically convert newlines to line breaks when outputting data in templates or email notifications.
