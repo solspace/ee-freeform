@@ -40,7 +40,7 @@ Database templates are managed within the EE control panel in the **Notification
 	* A description for the notification template to help identify what it's used for, etc.
 * **Subject** <a href="#subject" id="subject" class="docs-anchor">#</a>
 	* The subject line for the email notification.
-		* Can include any Freeform field variables (`{field_name}`) as well as `{form:name}` (where `{form:name}` is the name of the form, not a custom field).
+		* Can include any Freeform field variables (`{field_name}`) as well as `{submission:id}` and `{form:name}` (where `{form:name}` is the name of the form, not a custom field).
 * **From Email** <a href="#from-email" id="from-email" class="docs-anchor">#</a>
 	* The email address the email notification will appear from.
 		* Can include any Freeform field variable (`{field_name}`).
@@ -59,7 +59,7 @@ Database templates are managed within the EE control panel in the **Notification
 	* Include uploaded files as attachments in email notification.
 * **Email Body** <a href="#email-body" id="email-body" class="docs-anchor">#</a>
 	* The HTML body of the email notification to be sent.
-		* Can include any Freeform field variable (`{field_name}`) as well as `{form:name}` (the name of the form, not a custom field), `{form:id}`, `{form:handle}` and `{date_created format="%l, %F %j, %Y at %g:%i%a"}`.
+		* Can include any Freeform field variable (`{field_name}`) as well as `{form:name}` (the name of the form, not a custom field), `{form:id}`, `{form:handle}`, `{submission:id}` and `{date_created format="%l, %F %j, %Y at %g:%i%a"}`.
 			* Available field options:
 				* `{field:field_name:label}` - displays the label (name) of the field.
 				* `{field:field_name:value}` - displays the option label(s) submitted.
