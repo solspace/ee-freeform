@@ -93,7 +93,7 @@ class FormProperties extends AbstractProperties
      */
     public function isStoreData()
     {
-        return !is_null($this->storeData) ? (bool) $this->storeData : true;
+        return null !== $this->storeData ? (bool)$this->storeData : true;
     }
 
     /**

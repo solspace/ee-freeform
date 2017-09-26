@@ -265,7 +265,18 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      */
     public function getReturnUrl()
     {
-        return $this->returnUrl ?: "";
+        return $this->returnUrl ?: '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getAnchor()
+    {
+        $hash = $this->getFormValueContext()->getHash();
+        $id   = substr(sha1($this->getId() . $this->getHandle()), 0, 6);
+
+        return "$id-form-$hash";
     }
 
     /**
@@ -359,6 +370,14 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         $this->valid = $isFormValid;
 
         return $this->valid;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPagePosted()
+    {
+        return $this->getFormValueContext()->hasPageBeenPosted();
     }
 
     /**
@@ -508,6 +527,8 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
                 $actionAttribute,
                 $customAttributes->getFormAttributesAsString()
             ) . PHP_EOL;
+
+        $output .= '<a id="' . $this->getAnchor() . '"></a>';
 
         if ($customAttributes->getReturnUrl()) {
             $output .= '<input type="hidden" name="' . self::RETURN_URI_KEY . '" value="' . $customAttributes->getReturnUrl(

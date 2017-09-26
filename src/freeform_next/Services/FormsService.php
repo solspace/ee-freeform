@@ -129,6 +129,12 @@ class FormsService implements FormHandlerInterface
             }
         }
 
+        if ($form->isPagePosted() && !$form->isValid()) {
+            $anchorJs = file_get_contents(__DIR__ . '/../javascript/invalid-form.js');
+            $anchorJs = str_replace('{{FORM_ANCHOR}}', $form->getAnchor(), $anchorJs);
+            $output .= '<script type="text/javascript">' . $anchorJs . '</script>';
+        }
+
         return $output;
     }
 
