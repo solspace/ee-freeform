@@ -42,16 +42,16 @@ class Freeform_next_upd extends AddonUpdater
 
             ee()->db
                 ->query('
-                    ALTER TABLE exp_freeform_next_settings 
-                    ADD COLUMN `sessionStorage` ENUM(\'session\', \'db\') DEFAULT \'session\' AFTER `license`                
+                    ALTER TABLE exp_freeform_next_settings
+                    ADD COLUMN `sessionStorage` ENUM(\'session\', \'db\') DEFAULT \'session\' AFTER `license`
                 ');
         }
 
-        if (version_compare($previousVersion, '1.2.0', '<')) {
+        if (version_compare($previousVersion, '1.1.0', '<')) {
             ee()->db
                 ->query('
-                    ALTER TABLE exp_freeform_next_fields 
-                    ADD COLUMN `additionalProperties` TEXT DEFAULT NULL AFTER `maxFileSizeKB`                
+                    ALTER TABLE exp_freeform_next_fields
+                    ADD COLUMN `additionalProperties` TEXT DEFAULT NULL AFTER `maxFileSizeKB`
                 ');
 
             ee()->db
