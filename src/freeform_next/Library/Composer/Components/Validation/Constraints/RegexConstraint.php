@@ -45,7 +45,7 @@ class RegexConstraint implements ConstraintInterface
         }
 
         if (!preg_match($pattern, $value)) {
-            $message = str_replace('{{pattern}}', $pattern, $this->message);
+            $message = str_replace('{pattern}', $pattern, $this->message);
 
             $violationList->addError($message);
         }

@@ -102,7 +102,7 @@ export default class Regex extends BasePropertyEditor {
 
         <TextProperty
           label="Error Message"
-          instructions="The message a user should receive if an incorrect value is given. Will replace any occurrances of '{{pattern}}' with the supplied regex pattern inside the message if any are found."
+          instructions="The message a user should receive if an incorrect value is given. Will replace any occurrences of '{pattern}' with the supplied regex pattern inside the message if any are found."
           name="message"
           placeholder="Value is not valid"
           value={message ? message : ''}

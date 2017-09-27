@@ -1017,7 +1017,7 @@ class FieldController extends Controller
                 ],
                 [
                     'title'  => 'Error Message',
-                    'desc'   => 'The message a user should receive if an incorrect value is given. Will replace any occurrances of \'{{pattern}}\' with the supplied regex pattern inside the message if any are found.',
+                    'desc'   => 'The message a user should receive if an incorrect value is given. Will replace any occurrences of \'{pattern}\' with the supplied regex pattern inside the message if any are found.',
                     'fields' => [
                         'message' => [
                             'type'  => 'text',
