@@ -1,37 +1,9 @@
 
 .tbl-search {
   .dropdown {
-    position: relative;
-
-    > a {
-      &:after {
-        font-family: FontAwesome, sans-serif;
-        content: "\f0d7";
-      }
-    }
-
-    > ul {
-      position: absolute;
-      right: 0;
-      top: 15px;
-
-      display: none;
-
-      list-style: none;
-      padding: 0;
-      margin: 0;
-
-      > li {
-        display: block;
-        padding: 0;
-        margin: 15px 0 0;
-      }
-    }
-
-    &.active {
-      > ul {
-        display: block;
-      }
+    select {
+      position: relative;
+      top: 4px;
     }
   }
 }

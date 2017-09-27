@@ -93,7 +93,7 @@ class ExportProfilesController extends Controller
         $formRightLinks = [];
         foreach ($forms as $form) {
             $formRightLinks[] = [
-                'title' => 'For ' . $form->name,
+                'title' => $form->name,
                 'link'  => $this->getLink('export_profiles/new/' . $form->handle),
             ];
         }
@@ -104,7 +104,7 @@ class ExportProfilesController extends Controller
                 'table'               => $table->viewData(),
                 'cp_page_title'       => lang('Export Profiles'),
                 'form_dropdown_links' => [
-                    'New Export Profile For' => $formRightLinks,
+                    'Create Export Profile' => $formRightLinks,
                 ],
             ]
         );
