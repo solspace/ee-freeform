@@ -29,6 +29,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Row;
 use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionAttributes;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
+use Solspace\Addons\FreeformNext\Library\Pro\Fields\RatingField;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionPreferencesRepository;
@@ -197,6 +198,8 @@ class SubmissionController extends Controller
                             } else {
                                 $data[] = ['toolbar_items' => []];
                             }
+                        } elseif ($field instanceof RatingField) {
+                            $data[] = (int) $value . '/' . $field->getMaxValue();
                         } else {
                             $data[] = $value;
                         }
