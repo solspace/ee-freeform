@@ -19,7 +19,7 @@ if (!session_id()) {
 return [
     'author'         => 'Solspace',
     'author_url'     => 'https://solspace.com/expressionengine',
-    'docs_url'       => 'https://solspace.com/expressionengine/freeform-next/docs',
+    'docs_url'       => 'https://solspace.com/expressionengine/freeform/docs',
     'name'           => 'Freeform Next',
     'module_name'    => 'Freeform_next',
     'description'    => 'Advanced form creation and data collecting.',

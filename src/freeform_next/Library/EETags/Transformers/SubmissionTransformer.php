@@ -83,8 +83,8 @@ class SubmissionTransformer
                 continue;
             }
 
-            $field->setValue($model->getFieldValue($field->getHandle()));
-            $data[] = $fieldTransformer->transformField($field, $prefix);
+            $value  = $model->getFieldValue($field->getHandle());
+            $data[] = $fieldTransformer->transformField($field, $value, $prefix);
         }
 
         return $data;
@@ -106,8 +106,8 @@ class SubmissionTransformer
                 continue;
             }
 
-            $field->setValue($model->getFieldValue($field->getHandle()));
-            $data[] = $fieldTransformer->transformField($field, $prefix . $field->getHandle() . ':');
+            $value = $model->getFieldValue($field->getHandle());
+            $data[] = $fieldTransformer->transformField($field, $value, $prefix . $field->getHandle() . ':');
         }
 
         return $data;

@@ -106,6 +106,50 @@ If you're wanting to simply render a complete form based on Composer layout and 
 	* Outputs the total number of columns (fields) for the row.
 * `{column:index}` <a href="#var-column_index" id="var-column_index" class="docs-anchor">#</a>
 	* Outputs the column number for specific column (field) of that row, e.g. `0`, `1`, `2`, `3`.
+* **Manual Fields** <a href="#var-fieldname" id="var-fieldname" class="docs-anchor">#</a>
+	* You can manually construct forms with any Freeform field variable, using the proper syntax:
+		* `{field:field_name:label}` - displays the label (name) of the field.
+		* `{field:field_name:value}` - displays the option label(s) submitted (for form reloading upon submit error).
+		* `{field:field_name:handle}` - displays the handle of the field.
+		* `{field:field_name:options}{/field:field_name:options}` - variable pair that helps render fields with multiple options like select fields, etc.
+			* `{option:value}` - the option value for the field option.
+			* `{option:label}` - the option label for the field option.
+			* `{if option:checked}selected{/if}` - check if the field option is selected/checked.
+			* Example code would look something like this:
+				```
+				<select name="{field:state:handle}">
+					{field:state:options}
+					<option value="{option:value}" {if option:checked}selected{/if}>
+						{option:label}
+					</option>
+					{/field:state:options}
+				</select>
+				```
+	* Also available are automated rendering options for manually constructed forms:
+		* `{field:field_name:render}` - renders complete field (label, input, etc). The following override parameters are available:
+			* `id`
+			* `class`
+			* `label_class`
+			* `error_class`
+			* `instructions_class`
+			* `instructions_below_field="1"`
+			* `input_attributes`
+				* Attributes to be added to the input field, e.g. `input_attributes:readonly="true"`, `input_attributes:data-field-id="test"`
+			* `override_value`
+				* Override the value for the input field, e.g. `override_value="test"`
+		* `{field:field_name:render_label}` - renders the complete label. The following override parameters are available:
+			* `label_class`
+		* `{field:field_name:render_input}` - renders the complete input. The following override parameters are available:
+			* `input_class`
+			* `input_attributes`
+				* Attributes to be added to the input field, e.g. `input_attributes:readonly="true"`, `input_attributes:data-field-id="test"`
+			* `override_value`
+				* Override the value for the input field, e.g. `override_value="test"`
+		* `{field:field_name:render_instructions}` - renders the instructions. The following override parameters are available:
+			* `instructions_class`
+		* `{field:field_name:render_errors}` - renders the errors. The following override parameters are available:
+			* `errors_class`
+	* For a more robust automated rendering of fields, see the [{fields}{/fields}](#varpair-fields) variable pair.
 
 
 ## Variable Pairs <a href="#variable-pairs" id="variable-pairs" class="docs-anchor">#</a>
@@ -389,7 +433,7 @@ Form formatting can also be very manual or semi manual, if that is something you
 			</li>
 			<li>
 				<label for="city">City</label>
-				<input type="text" name="city" value="{field:fcity:value}" />
+				<input type="text" name="city" value="{field:city:value}" />
 				{if field:city:render_errors}
 					<div class="field-error">This field is required!</div>
 				{/if}

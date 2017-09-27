@@ -15,12 +15,14 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\InputOnlyInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\SingleValueInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits\HashAsHandleTrait;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits\SingleStaticValueTrait;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits\SingleValueTrait;
 
 class HtmlField extends AbstractField implements SingleValueInterface, InputOnlyInterface, NoStorageInterface
 {
     use SingleStaticValueTrait;
+    use HashAsHandleTrait;
 
     /**
      * Return the field TYPE

@@ -205,7 +205,7 @@ class CrmController extends Controller
                     'group'  => $hash,
                     'fields' => [
                         $hash . '-' . $item->getHandle() => [
-                            'type'     => 'text',
+                            'type'     => $item->getType() === SettingBlueprint::TYPE_BOOL ? 'yes_no' : 'text',
                             'required' => $item->isRequired(),
                             'value'    => isset($settings[$item->getHandle()]) ? $settings[$item->getHandle()] : null,
                         ],
@@ -349,6 +349,10 @@ class CrmController extends Controller
 
             $blueprintHandle = $blueprint->getHandle();
             $value           = $postedSettings[$blueprintHandle];
+
+            if ($blueprint->getType() === SettingBlueprint::TYPE_BOOL) {
+                $value = $value === 'y';
+            }
 
             $settings[$blueprintHandle] = $value;
             if ($blueprint->isRequired()) {

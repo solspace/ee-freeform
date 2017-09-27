@@ -57,6 +57,17 @@ export default class Submit extends BasePropertyEditor {
     return (
       <div>
         <TextProperty
+          label="Hash"
+          instructions="Used to access this field on the frontend."
+          name="handle"
+          value={hash}
+          className="code"
+          readOnly={true}
+        />
+
+        <hr />
+
+        <TextProperty
           label="Submit button Label"
           instructions="The label of the submit button"
           name="labelNext"

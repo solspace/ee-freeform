@@ -3,8 +3,11 @@
 namespace Solspace\Addons\FreeformNext\Library\EETags;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecipientField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\FileUploadInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\StaticValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Page;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Row;
@@ -282,7 +285,19 @@ class FormToTagDataTransformer
             $transformer = new FieldTransformer();
         }
 
-        return $transformer->transformField($field, $prefix, $columnIndex, $columnCount);
+        if ($field instanceof DynamicRecipientField) {
+            $value = $field->getValue();
+        } else if ($field instanceof StaticValueInterface) {
+            if ($field instanceof CheckboxField) {
+                $value = $field->isChecked() ? $field->getStaticValue() : '';
+            } else {
+                $value = $field->getStaticValue();
+            }
+        } else {
+            $value = $field->getValueAsString();
+        }
+
+        return $transformer->transformField($field, $value, $prefix, $columnIndex, $columnCount);
     }
 
     /**

@@ -24,9 +24,10 @@
 * ### Template Tags
 	* [Form](form.md)
 	* [Forms](forms.md)
-	* [submissions](submissions.md)
+	* [Submissions](submissions.md)
 
 * ### Templating Extras
+	* [AJAX Forms](ajax-forms.md)
 	* [Formatting Template Examples](formatting-template-examples.md)
 
 * ### Developer

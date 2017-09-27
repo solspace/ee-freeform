@@ -304,6 +304,10 @@ abstract class AbstractIntegration implements IntegrationInterface
         }
 
         if (isset($this->settings[$handle])) {
+            if ($blueprint->getType() === SettingBlueprint::TYPE_BOOL) {
+                return (bool) $this->settings[$handle];
+            }
+
             return $this->settings[$handle];
         }
 

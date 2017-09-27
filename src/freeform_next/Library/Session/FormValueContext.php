@@ -447,7 +447,7 @@ class FormValueContext implements \JsonSerializable
         list($formIdHash, $_, $payload) = self::getHashParts($this->getPostedHash());
 
         $formId           = self::getFormIdFromHash($this->getPostedHash());
-        $isFormIdMatching = $formId === $this->formId;
+        $isFormIdMatching = (int) $formId === (int) $this->formId;
 
         // Only generate a new hash if the content indexes don' match with the posted hash
         // Or if there is no posted hash
@@ -570,7 +570,16 @@ class FormValueContext implements \JsonSerializable
      */
     private function getActionSessionList()
     {
-        return json_decode($this->session->get(self::ACTIVE_SESSIONS_KEY, '[]'), true);
+        $activeSessionList = json_decode(
+            $this->session->get(self::ACTIVE_SESSIONS_KEY, '[]'),
+            true
+        );
+
+        if (!is_array($activeSessionList)) {
+            return [];
+        }
+
+        return $activeSessionList;
     }
 
     /**

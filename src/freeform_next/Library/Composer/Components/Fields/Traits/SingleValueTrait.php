@@ -61,7 +61,7 @@ trait SingleValueTrait
         }
 
         if ($this instanceof CheckboxField && $value !== $this->getStaticValue()) {
-            $this->checkedByPost = $value === '1';
+            $this->checkedByPost = (bool) $value;
         }
 
         return $this;

@@ -3,28 +3,38 @@
 namespace Solspace\Addons\FreeformNext\Library\EETags\Transformers;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecipientField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\OptionsInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\PlaceholderInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\StaticValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SubmitField;
 
 class FieldTransformer
 {
     /**
      * @param AbstractField $field
+     * @param mixed         $value
      * @param string        $prefix
      * @param null          $columnIndex
      * @param null          $columnCount
      *
      * @return array
      */
-    public function transformField(AbstractField $field, $prefix = 'field:', $columnIndex = null, $columnCount = null)
-    {
-        if ($field instanceof DynamicRecipientField) {
-            $value = $field->getValue();
-        } else {
-            $value = $field->getValueAsString();
+    public function transformField(
+        AbstractField $field,
+        $value = null,
+        $prefix = 'field:',
+        $columnIndex = null,
+        $columnCount = null
+    ) {
+        if (!is_string($value)) {
+            if (is_array($value)) {
+                $value = implode(', ', $value);
+            }
+
+            $value = (string) $value;
         }
 
         $data = [

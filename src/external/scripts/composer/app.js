@@ -76,7 +76,14 @@ let store = createStore(
 
 const rootElement = document.getElementById("freeform-builder");
 export const notificator = (type, message) => (showNotification(message, type));
-export const urlBuilder = (url) => (baseUrl + '/' + url);
+export const urlBuilder = (url) => {
+  const index = baseUrl.indexOf('&');
+  if (index === -1 || index === false) {
+    return baseUrl + '/' + url;
+  }
+
+  return baseUrl.substring(0, index) + '/' + url + baseUrl.substring(index, baseUrl.length);
+};
 
 ReactDOM.render(
   <Provider store={store}>

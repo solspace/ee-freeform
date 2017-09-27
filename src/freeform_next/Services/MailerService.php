@@ -11,9 +11,7 @@
 
 namespace Solspace\Addons\FreeformNext\Services;
 
-use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\FileUploadInterface;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
@@ -33,8 +31,6 @@ class MailerService implements MailHandlerInterface
      * @param SubmissionModel|null $submission
      *
      * @return int
-     * @throws \Twig_Error_Syntax
-     * @throws \Twig_Error_Loader
      * @throws FreeformException
      */
     public function sendEmail(
@@ -65,12 +61,17 @@ class MailerService implements MailHandlerInterface
             $subject   = TemplateHelper::renderStringWithForm($notification->subject, $form, $submission);
             $bodyHtml  = TemplateHelper::renderStringWithForm($notification->bodyHtml, $form, $submission, true);
 
-            $message = \Swift_Message::newInstance()
-                ->setFrom([$fromEmail => $fromName])
-                ->setReplyTo([$replyTo => $fromName])
-                ->setTo([$emailAddress => $emailAddress])
-                ->setSubject($subject)
-                ->setBody($bodyHtml, 'text/html');
+
+            ee()->load->library('email');
+            ee()->load->helper('text');
+
+            ee()->email->wordwrap = true;
+            ee()->email->mailtype = 'html';
+            ee()->email->from($fromEmail, $fromName);
+            ee()->email->reply_to($replyTo, $fromName);
+            ee()->email->to($emailAddress);
+            ee()->email->subject($subject);
+            ee()->email->message(entities_to_ascii($bodyHtml));
 
             if ($notification->includeAttachments) {
                 foreach ($fields as $field) {
@@ -86,7 +87,7 @@ class MailerService implements MailHandlerInterface
                             if ($file) {
                                 $filePath = $file->getAbsolutePath();
 
-                                $message->attach(\Swift_Attachment::fromPath($filePath));
+                                ee()->email->attach($filePath);
                             }
                         }
                     }
@@ -96,7 +97,6 @@ class MailerService implements MailHandlerInterface
             try {
                 $beforeSave = ExtensionHelper::call(
                     ExtensionHelper::HOOK_MAILER_BEFORE_SEND,
-                    $message,
                     $notification,
                     $submission
                 );
@@ -105,14 +105,12 @@ class MailerService implements MailHandlerInterface
                     return $sentMailCount;
                 }
 
-                $mailer           = $this->getSwiftMailer();
-                $sentToRecipients = $mailer->send($message);
+                $sentToRecipients = (bool) ee()->email->Send();
                 $sentMailCount    += $sentToRecipients;
 
                 ExtensionHelper::call(
                     ExtensionHelper::HOOK_MAILER_AFTER_SEND,
-                    (bool) $sentToRecipients,
-                    $message,
+                    $sentToRecipients,
                     $notification,
                     $submission
                 );
@@ -131,39 +129,5 @@ class MailerService implements MailHandlerInterface
     public function getNotificationById($id)
     {
         return NotificationRepository::getInstance()->getNotificationById($id);
-    }
-
-    /**
-     * @return \Swift_Mailer
-     */
-    private function getSwiftMailer()
-    {
-        switch (ee()->config->item('mail_protocol')) {
-            case 'sendmail':
-                $transport = \Swift_SendmailTransport::newInstance();
-
-                break;
-
-            case 'smtp':
-                $host = ee()->config->item('smtp_server');
-                $port = ee()->config->item('smtp_port');
-                $user = ee()->config->item('smtp_username');
-                $pass = ee()->config->item('smtp_password');
-                $type = ee()->config->item('email_smtp_crypto');
-
-                $transport = \Swift_SmtpTransport::newInstance($host, $port, $type ?: null);
-                $transport->setUsername($user);
-                $transport->setPassword($pass);
-
-                break;
-
-            case 'mail':
-            default:
-                $transport = \Swift_MailTransport::newInstance();
-
-                break;
-        }
-
-        return \Swift_Mailer::newInstance($transport);
     }
 }

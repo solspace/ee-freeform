@@ -30,6 +30,7 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
     const SETTING_CLIENT_SECRET = 'salesforce_client_secret';
     const SETTING_USER_LOGIN    = 'salesforce_username';
     const SETTING_USER_PASSWORD = 'salesforce_password';
+    const SETTING_SANDBOX       = 'salesforce_sandbox';
     const SETTING_INSTANCE      = 'instance';
 
     /**
@@ -41,6 +42,13 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
     public static function getSettingBlueprints()
     {
         return [
+            new SettingBlueprint(
+                SettingBlueprint::TYPE_BOOL,
+                self::SETTING_SANDBOX,
+                'Sandbox Mode',
+                'Enabling this connects to "test.salesforce.com" instead of "login.salesforce.com"',
+                false
+            ),
             new SettingBlueprint(
                 SettingBlueprint::TYPE_CONFIG,
                 self::SETTING_CLIENT_ID,
@@ -324,7 +332,7 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
      */
     public function refreshToken()
     {
-        return $this->fetchAccessToken() ? true : false;
+        return (bool) $this->fetchAccessToken();
     }
 
     /**
@@ -373,7 +381,7 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
      */
     protected function getAuthorizeUrl()
     {
-        return 'https://login.salesforce.com/services/oauth2/authorize';
+        return 'https://' . $this->getLoginUrl() . '.salesforce.com/services/oauth2/authorize';
     }
 
     /**
@@ -383,7 +391,7 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
      */
     protected function getAccessTokenUrl()
     {
-        return 'https://login.salesforce.com/services/oauth2/token';
+        return 'https://' . $this->getLoginUrl() . '.salesforce.com/services/oauth2/token';
     }
 
     /**
@@ -394,6 +402,20 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
         $instance = $this->getSetting(self::SETTING_INSTANCE);
 
         return sprintf('https://%s.salesforce.com/services/data/v20.0/', $instance);
+    }
+
+    /**
+     * @return string
+     */
+    private function getLoginUrl()
+    {
+        $isSandboxMode = $this->getSetting(self::SETTING_SANDBOX);
+
+        if ($isSandboxMode) {
+            return 'test';
+        }
+
+        return 'login';
     }
 
     /**

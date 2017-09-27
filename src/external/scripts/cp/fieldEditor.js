@@ -64,6 +64,10 @@ $(() => {
       }, '[data-checked] input[type=checkbox]')
       .on({
         keyup: (event) => {
+          if (event.which === 9 || event.keyCode === 9) {
+            return false;
+          }
+
           const labelInput = $(event.target);
           const valueInput = labelInput.parent().siblings('[data-value]').find('input:text');
 
