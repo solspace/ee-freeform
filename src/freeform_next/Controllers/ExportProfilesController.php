@@ -3,9 +3,11 @@
 namespace Solspace\Addons\FreeformNext\Controllers;
 
 use EllisLab\ExpressionEngine\Library\CP\Table;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Model\ExportProfileModel;
+use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 use Solspace\Addons\FreeformNext\Repositories\ExportProfilesRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
@@ -344,6 +346,27 @@ class ExportProfilesController extends Controller
                         continue;
                     }
                     $labels[$id] = $item['label'];
+                }
+
+                foreach ($data as $index => $item) {
+                    foreach ($item as $fieldId => $value) {
+                        if (!preg_match('/^' . SubmissionModel::FIELD_COLUMN_PREFIX . '(\d+)$/', $fieldId, $matches)) {
+                            continue;
+                        }
+
+                        try {
+                            $field = $form->getLayout()->getFieldById($matches[1]);
+
+                            if ($field instanceof MultipleValueInterface) {
+                                $value = json_decode($value ?: '[]', true);
+                                $value = implode(', ', $value);
+
+                                $data[$index][$fieldId] = $value;
+                            }
+                        } catch (FreeformException $e) {
+                            continue;
+                        }
+                    }
                 }
 
                 $this->getExportProfileService()->exportCsv($form, $labels, $data);
