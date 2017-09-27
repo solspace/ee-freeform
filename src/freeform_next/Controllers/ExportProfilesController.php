@@ -205,7 +205,7 @@ class ExportProfilesController extends Controller
                                             30          => 'Last 30 days',
                                             365         => 'Last 365 days',
                                         ],
-                                        'value'   => $profile->statuses,
+                                        'value'   => $profile->dateRange,
                                     ],
                                 ],
                             ],
