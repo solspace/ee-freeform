@@ -246,7 +246,7 @@ class ExportProfileModel extends Model
 
         $dateRangeEnd = $this->getDateRangeEnd();
         if ($dateRangeEnd) {
-            $command->where('s.dateCreated', $dateRangeEnd->format('Y-m-d H:i:s'));
+            $command->where('s.dateCreated >', $dateRangeEnd->format('Y-m-d H:i:s'));
         }
 
         if ($this->filters) {
