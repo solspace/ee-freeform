@@ -3,6 +3,7 @@
 namespace Solspace\Addons\FreeformNext\Library\DataObjects;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
+use Solspace\Addons\FreeformNext\Model\StatusModel;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 
 class SubmissionAttributes
@@ -56,7 +57,7 @@ class SubmissionAttributes
         $this->form = $form;
 
         $this->filters = [
-            'su.formId' => $form->getId(),
+            SubmissionModel::TABLE . '.formId' => $form->getId(),
         ];
 
         $this->inFilters    = [];
@@ -107,7 +108,7 @@ class SubmissionAttributes
     public function setSubmissionId($submissionId = null)
     {
         $this->submissionId = $submissionId;
-        $this->setFilter('su.id', $submissionId);
+        $this->setFilter(SubmissionModel::TABLE . '.id', $submissionId);
 
         return $this;
     }
@@ -230,7 +231,7 @@ class SubmissionAttributes
     public function setStatus($status = null)
     {
         $this->status = $status;
-        $this->setFilter('st.name', $status);
+        $this->setFilter(StatusModel::TABLE . '.name', $status);
 
         return $this;
     }
@@ -253,7 +254,7 @@ class SubmissionAttributes
         $dateRangeStart = $this->getDateValue($dateRangeStart);
 
         $this->dateRangeStart = $dateRangeStart;
-        $this->setFilter('su.dateCreated >=', $dateRangeStart);
+        $this->setFilter(SubmissionModel::TABLE . '.dateCreated >=', $dateRangeStart);
 
         return $this;
     }
@@ -276,7 +277,7 @@ class SubmissionAttributes
         $dateRangeEnd = $this->getDateValue($dateRangeEnd);
 
         $this->dateRangeEnd = $dateRangeEnd;
-        $this->setFilter('su.dateCreated <=', $dateRangeEnd);
+        $this->setFilter(SubmissionModel::TABLE . '.dateCreated <=', $dateRangeEnd);
 
         return $this;
     }

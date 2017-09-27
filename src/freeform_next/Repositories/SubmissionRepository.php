@@ -90,7 +90,7 @@ class SubmissionRepository extends Repository
     public function getAllSubmissionsFor(SubmissionAttributes $attributes)
     {
         foreach ($attributes->getFilters() as $key => $value) {
-            ee()->db->where($key, $value, false);
+            ee()->db->where($key, $value);
         }
 
         foreach ($attributes->getInFilters() as $key => $value) {
@@ -112,18 +112,21 @@ class SubmissionRepository extends Repository
         }
 
         try {
+            $submissionTable = SubmissionModel::TABLE;
+            $statusTable     = StatusModel::TABLE;
+
             $result = ee()->db
-                ->select('su.*, st.name AS statusName, st.handle AS statusHandle, st.color AS statusColor', false)
-                ->from(SubmissionModel::TABLE . ' su', false)
-                ->join(StatusModel::TABLE . ' st', 'su.statusId = st.id')
+                ->select("$submissionTable.*, $statusTable.name AS statusName, $statusTable.handle AS statusHandle, $statusTable.color AS statusColor")
+                ->from($submissionTable)
+                ->join($statusTable, "$submissionTable.statusId = $statusTable.id")
                 ->get()
                 ->result_array();
         } catch (\Exception $e) {
             if (preg_match("/Column not found: 1054.*in 'order clause'/", $e->getMessage())) {
                 throw new \Exception(sprintf('Cannot order by %s', $attributes->getOrderBy()));
-            } else {
-                return [];
             }
+
+            return [];
         }
 
         $submissions = [];
@@ -144,7 +147,7 @@ class SubmissionRepository extends Repository
     public function getAllSubmissionCountFor(SubmissionAttributes $attributes)
     {
         foreach ($attributes->getFilters() as $key => $value) {
-            ee()->db->where($key, $value, false);
+            ee()->db->where($key, $value);
         }
 
         foreach ($attributes->getInFilters() as $key => $value) {
@@ -155,10 +158,14 @@ class SubmissionRepository extends Repository
             ee()->db->where_not_in($key, $value);
         }
 
+        $prefix = ee()->db->dbprefix;
+        $submissionTable = SubmissionModel::TABLE;
+        $statusTable = StatusModel::TABLE;
+
         return ee()->db
-            ->select('COUNT(su.id) AS total', false)
-            ->from(SubmissionModel::TABLE . ' su', false)
-            ->join(StatusModel::TABLE . ' st', 'su.statusId = st.id')
+            ->select("COUNT({$prefix}{$submissionTable}.id) AS total")
+            ->from($submissionTable)
+            ->join($statusTable, "$submissionTable.statusId = $statusTable.id")
             ->get()
             ->row('total') ?: 0;
     }
