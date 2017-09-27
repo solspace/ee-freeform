@@ -893,7 +893,7 @@ class FieldController extends Controller
                     'title'  => 'Decimal Count',
                     'desc'   => 'The number of decimals allowed.',
                     'fields' => [
-                        'maxLength' => [
+                        'decimalCount' => [
                             'type'  => 'text',
                             'value' => $model->getAdditionalProperty('decimalCount', 0),
                         ],
