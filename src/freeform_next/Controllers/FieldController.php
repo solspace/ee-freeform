@@ -12,6 +12,7 @@
 namespace Solspace\Addons\FreeformNext\Controllers;
 
 use EllisLab\ExpressionEngine\Library\CP\Table;
+use EllisLab\ExpressionEngine\Service\Validation\Result;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FieldExceptions\FieldException;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
@@ -97,12 +98,13 @@ class FieldController extends Controller
     }
 
     /**
-     * @param int|null $id
+     * @param int|null    $id
+     * @param Result|null $validation
      *
      * @return CpView
      * @throws FieldException
      */
-    public function edit($id)
+    public function edit($id, Result $validation = null)
     {
         if ($id === 'new') {
             $model = FieldModel::create();
@@ -189,6 +191,7 @@ class FieldController extends Controller
         $view = new CpView(
             'fields/edit',
             [
+                'errors'                => $validation,
                 'sections'              => $sections,
                 'cp_page_title'         => lang('Field'),
                 'base_url'              => $this->getLink('fields/' . $id),
@@ -904,8 +907,8 @@ class FieldController extends Controller
                     'desc'   => 'Used to separate decimals.',
                     'fields' => [
                         'decimalSeparator' => [
-                            'type'  => 'select',
-                            'value' => $model->getAdditionalProperty('decimalSeparator', '.'),
+                            'type'    => 'select',
+                            'value'   => $model->getAdditionalProperty('decimalSeparator', '.'),
                             'choices' => [
                                 '.' => '.',
                                 ',' => ',',
@@ -918,10 +921,10 @@ class FieldController extends Controller
                     'desc'   => 'Used to separate thousands.',
                     'fields' => [
                         'thousandsSeparator' => [
-                            'type'  => 'select',
-                            'value' => $model->getAdditionalProperty('thousandsSeparator', ''),
+                            'type'    => 'select',
+                            'value'   => $model->getAdditionalProperty('thousandsSeparator', ''),
                             'choices' => [
-                                '' => 'None',
+                                ''  => 'None',
                                 ' ' => 'Space',
                                 ',' => ',',
                                 '.' => '.',

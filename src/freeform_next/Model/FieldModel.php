@@ -78,6 +78,18 @@ class FieldModel extends Model implements \JsonSerializable
     ];
 
     /**
+     * @return array
+     */
+    public static function createValidationRules()
+    {
+        return [
+            'label'  => 'required',
+            'handle' => 'required',
+            'type'   => 'required',
+        ];
+    }
+
+    /**
      * Creates a Field object with default settings
      *
      * @return FieldModel

@@ -23,6 +23,7 @@ use Solspace\Addons\FreeformNext\Controllers\SubmissionController;
 use Solspace\Addons\FreeformNext\Controllers\UpdateController;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
+use Solspace\Addons\FreeformNext\Model\FieldModel;
 use Solspace\Addons\FreeformNext\Model\FormModel;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
@@ -105,17 +106,21 @@ class Freeform_next_mcp extends ControlPanelView
         }
 
         if (null !== $id) {
+            $validation = null;
             if (isset($_POST['label'])) {
-                $field = $this->getFieldController()->save($id);
+                $validation = ee('Validation')->make(FieldModel::createValidationRules())->validate($_POST);
+                if ($validation->isValid()) {
+                    $this->getFieldController()->save($id);
 
-                return $this->renderView(
-                    new RedirectView(
-                        UrlHelper::getLink('fields/')
-                    )
-                );
+                    return $this->renderView(
+                        new RedirectView(
+                            UrlHelper::getLink('fields/')
+                        )
+                    );
+                }
             }
 
-            return $this->renderView($this->getFieldController()->edit($id));
+            return $this->renderView($this->getFieldController()->edit($id, $validation));
         }
 
         return $this->renderView($this->getFieldController()->index());
@@ -138,7 +143,7 @@ class Freeform_next_mcp extends ControlPanelView
             if (isset($_POST['name'])) {
                 $validation = ee('Validation')->make(NotificationModel::createValidationRules())->validate($_POST);
                 if ($validation->isValid()) {
-                    $notification = $this->getNotificationController()->save($notificationId);
+                    $this->getNotificationController()->save($notificationId);
 
                     return $this->renderView(
                         new RedirectView(
