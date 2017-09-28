@@ -1,0 +1,131 @@
+<style>.brand-logo{margin-left:20px}label.required:after{display:inline-block!important;content:"*"!important;color:#d00!important;margin-left:5px!important;position:relative!important;top:0!important;opacity:1!important}.errors,ul.errors>li{color:red}.submit-align-left{text-align:left}.submit-align-right{text-align:right}.submit-align-center{text-align:center}.submit-align-center button:not(:first-of-type),.submit-align-left button:not(:first-of-type),.submit-align-right button:not(:first-of-type){margin-left:5px}.submit-align-spread button:first-child{float:left}.submit-align-spread button:last-child{float:right}</style>
+
+{if form:page_count > 1}
+	<ul class="pagination">
+		{pages}
+			<li class="{if page:index == current_page:index}active{if:else}disabled{/if}">
+				<a href="javascript:;">{page:label}</a>
+			</li>
+		{/pages}
+	</ul>
+{/if}
+
+{if form:has_errors}
+	<div class="alert alert-danger errors">
+		There was an error submitting this form
+	</div>
+{/if}
+
+{rows}
+	<div class="row {form:row_class}">
+		{fields}
+
+			{if field:type == 'checkbox_group'}
+				<div class="{form:column_class} s12 col m{column:grid_width}{if field:has_errors} has-error{/if}" style="margin-bottom: 20px;">
+					{field:render_label label_class="{if field:required}required{/if}"}
+					{field:options}
+						<p>
+							<input type="checkbox"
+								   id="{form:hash}{field:handle}{option:value}"
+								   name="{field:handle}[]"
+								   value="{option:value}"
+								   {if option:checked}checked{/if}
+							/>
+							<label for="{form:hash}{field:handle}{option:value}">{option:label}</label>
+						</p>
+					{/field:options}
+					{field:render_instructions}
+					{field:render_errors}
+				</div>
+			{if:elseif field:type == 'radio_group' OR (field:type == 'dynamic_recipients' AND field:show_as_radio)}
+
+				<div class="{form:column_class} s12 col m{column:grid_width}{if field:has_errors} has-error{/if}" style="margin-bottom: 20px;">
+					{field:render_label label_class="{if field:required}required{/if}"}
+					{field:options}
+							<p>
+								<input type="radio"
+									   id="{form:hash}{field:handle}{option:value}"
+									   name="{field:handle}"
+									   value="{option:value}"
+									   {if option:checked}checked{/if}
+								/>
+								<label for="{form:hash}{field:handle}{option:value}">{option:label}</label>
+							</p>
+					{/field:options}
+					{field:render_instructions}
+					{field:render_errors}
+				</div>
+
+			{if:elseif field:type == 'textarea'}
+
+				<div class="{form:column_class} s12 col m{column:grid_width}">
+					{field:render class="materialize-textarea"}
+				</div>
+
+			{if:elseif field:type == 'checkbox'}
+
+				<div class="{form:column_class} s12 col m{column:grid_width}">
+					{field:render_input}
+					{field:render_label
+						instructions_class="help-block"
+						error_class="help-block"
+					}
+					{field:render_instructions}
+					{field:render_errors}
+				</div>
+
+			{if:elseif field:type == 'mailing_list'}
+
+				<div class="{form:column_class} s12 col m{column:grid_width}">
+					{field:render_input}
+					{field:render_label
+						instructions_class="help-block"
+						error_class="help-block"
+					}
+					{field:render_instructions}
+					{field:render_errors}
+				</div>
+
+			{if:elseif field:type == 'file'}
+
+				<div class="{form:column_class} file-field input-field s12 col m{column:grid_width}">
+					<div class="btn">
+						<span>File</span>
+						{field:render_input}
+					</div>
+					<div class="file-path-wrapper">
+						<input class="file-path validate"
+							   type="text"
+							   placeholder="{field:label}"
+						/>
+					</div>
+
+					{field:render_instructions}
+					{field:render_errors}
+				</div>
+
+			{if:elseif field:type == 'html'}
+
+				<div class="{form:column_class} s12 col m{column:grid_width}">
+					{field:render_input}
+				</div>
+
+			{if:elseif field:type == 'submit'}
+
+				<div class="{form:column_class} s12 col m{column:grid_width} submit-align-{field:position}">
+					{field:render}
+				</div>
+
+			{if:else}
+
+				<div class="{form:column_class} s12 col m{column:grid_width} input-field{if field:has_errors} has-error{/if}{if field:type == 'submit'} submit-align-{field:position}{/if}">
+					{field:render_input}
+					{field:render_label label_class="{if field:required}required{/if}"}
+
+					{field:render_instructions instructions_class="help-block"}
+					{field:render_errors error_class="help-block"}
+				</div>
+			{/if}
+		{/fields}
+	</div>
+{/rows}
