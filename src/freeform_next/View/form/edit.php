@@ -10,6 +10,7 @@
 /** @var array $fileKinds */
 /** @var array $formTemplates */
 /** @var array $solspaceFormTemplates */
+/** @var array $defaultTemplates */
 /** @var bool $showTutorial */
 ?>
 <div id="freeform-builder"></div>
@@ -37,7 +38,7 @@
     var finishTutorialUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/finish_tutorial') ?>";
 
     var showTutorial = <?php echo $showTutorial ? 'true' : 'false' ?>;
-    var defaultTemplates = true;
+    var defaultTemplates = <?php echo $defaultTemplates ? "true" : "false" ?>;
     var canManageFields = true;
     var canManageNotifications = true;
     var canManageSettings = true;

@@ -36,6 +36,7 @@ class SettingsController extends Controller
 
     /**
      * @param string $type
+     * @param int    $id
      *
      * @return View
      * @throws FreeformException
@@ -208,6 +209,16 @@ class SettingsController extends Controller
                                             SettingsModel::FIELD_DISPLAY_ORDER_TYPE => 'Field type, Field name (alphabetical)',
                                             SettingsModel::FIELD_DISPLAY_ORDER_NAME => 'Field name (alphabetical)',
                                         ],
+                                    ],
+                                ],
+                            ],
+                            [
+                                'title'  => 'Include Default Freeform Formatting Templates',
+                                'desc'   => 'Disable this to hide the default Freeform formatting templates in the Formatting Template options list inside Composer.',
+                                'fields' => [
+                                    'defaultTemplates' => [
+                                        'type'  => 'yes_no',
+                                        'value' => $settings->isDefaultTemplates() ? 'y' : 'n',
                                     ],
                                 ],
                             ],

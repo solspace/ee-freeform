@@ -94,6 +94,14 @@ class SettingsService
     }
 
     /**
+     * @return bool
+     */
+    public function isDefaultTemplates()
+    {
+        return $this->getSettingsModel()->isDefaultTemplates();
+    }
+
+    /**
      * @return SessionInterface
      */
     public function getSessionStorageImplementation()

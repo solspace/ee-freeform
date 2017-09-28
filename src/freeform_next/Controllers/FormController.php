@@ -167,6 +167,7 @@ class FormController extends Controller
                     'fieldTypeList'            => $this->getFieldsService()->getFieldTypes(),
                     'formTemplates'            => $settingsService->getCustomFormTemplates(),
                     'solspaceFormTemplates'    => $settingsService->getSolspaceFormTemplates(),
+                    'defaultTemplates'         => $settingsService->isDefaultTemplates(),
                     'showTutorial'             => $settingsService->getSettingsModel()->isShowTutorial(),
                     'mailingLists'             => MailingListRepository::getInstance()->getAllIntegrationObjects(),
                     'crmIntegrations'          => CrmRepository::getInstance()->getAllIntegrationObjects(),

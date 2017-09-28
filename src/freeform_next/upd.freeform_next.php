@@ -49,13 +49,16 @@ class Freeform_next_upd extends AddonUpdater
 
         if (version_compare($previousVersion, '1.1.0', '<')) {
             ee()->db
-                ->query('
+                ->query(
+                    '
                     ALTER TABLE exp_freeform_next_fields
                     ADD COLUMN `additionalProperties` TEXT DEFAULT NULL AFTER `maxFileSizeKB`
-                ');
+                '
+                );
 
             ee()->db
-                ->query('
+                ->query(
+                    '
                 CREATE TABLE IF NOT EXISTS `exp_freeform_next_export_profiles` (
                   `id`          INT(11)      NOT NULL  AUTO_INCREMENT,
                   `siteId`      INT(11)      NOT NULL  DEFAULT \'1\',
@@ -74,10 +77,12 @@ class Freeform_next_upd extends AddonUpdater
                   ENGINE = InnoDB
                   DEFAULT CHARSET = `utf8`
                   COLLATE = `utf8_unicode_ci`
-                ');
+                '
+                );
 
             ee()->db
-                ->query('
+                ->query(
+                    '
                 CREATE TABLE IF NOT EXISTS `exp_freeform_next_export_settings` (
                   `id`          INT(11)      NOT NULL  AUTO_INCREMENT,
                   `siteId`      INT(11)      NOT NULL  DEFAULT \'1\',
@@ -89,6 +94,13 @@ class Freeform_next_upd extends AddonUpdater
                   ENGINE = InnoDB
                   DEFAULT CHARSET = `utf8`
                   COLLATE = `utf8_unicode_ci`;
+                '
+                );
+
+            ee()->db
+                ->query('
+                    ALTER TABLE exp_freeform_next_settings
+                    ADD COLUMN `defaultTemplates` TINYINT(1) DEFAULT 1 AFTER `sessionStorage`
                 ');
         }
 
