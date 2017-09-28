@@ -594,7 +594,7 @@ class FieldController extends Controller
                 ],
                 [
                     'title'  => 'Maximum Number of Stars',
-                    'desc'   => 'Set how many stars are there in this rating',
+                    'desc'   => 'Set how many stars there should be for this rating.',
                     'fields' => [
                         'maxValue' => [
                             'type'    => 'select',
@@ -646,7 +646,7 @@ class FieldController extends Controller
             FieldInterface::TYPE_DATETIME           => [
                 [
                     'title'  => 'Date Time Type',
-                    'desc'   => 'Use only date, time or both',
+                    'desc'   => 'Use only date, time or both.',
                     'fields' => [
                         'dateTimeType' => [
                             'type'    => 'select',
@@ -662,7 +662,7 @@ class FieldController extends Controller
                 ],
                 [
                     'title'  => 'Default Value',
-                    'desc'   => 'You can use \'now\', \'today\', \'5 days ago\', \'2017-01-01 20:00:00\', etc, which will format the default value according to the chosen format',
+                    'desc'   => 'You can use \'now\', \'today\', \'5 days ago\', \'2017-01-01 20:00:00\', etc, which will format the default value according to the chosen format.',
                     'fields' => [
                         'initialValue' => [
                             'type'  => 'text',
@@ -673,7 +673,7 @@ class FieldController extends Controller
                 ],
                 [
                     'title'  => 'Generate Placeholder',
-                    'desc'   => 'Enable this to automatically generate a placeholder based on the given date format settings',
+                    'desc'   => 'Enable this to automatically generate a placeholder based on the given date format settings.',
                     'fields' => [
                         'generatePlaceholder' => [
                             'type'  => 'yes_no',
@@ -695,7 +695,7 @@ class FieldController extends Controller
                 ],
                 [
                     'title'  => 'Date Order',
-                    'desc'   => 'Choose the order in which to show day, month and year',
+                    'desc'   => 'Choose the order in which to show day, month and year.',
                     'fields' => [
                         'dateOrder' => [
                             'type'    => 'select',
@@ -721,7 +721,7 @@ class FieldController extends Controller
                 ],
                 [
                     'title'  => 'Date leading zero',
-                    'desc'   => 'If enabled will use the leading zero for days and months',
+                    'desc'   => 'If enabled, a leading zero will be used for days and months.',
                     'fields' => [
                         'dateLeadingZero' => [
                             'type'  => 'yes_no',
@@ -732,7 +732,7 @@ class FieldController extends Controller
                 ],
                 [
                     'title'  => 'Date Separator',
-                    'desc'   => 'Used to separate dates',
+                    'desc'   => 'Used to separate date values.',
                     'fields' => [
                         'dateSeparator' => [
                             'type'    => 'select',
@@ -760,7 +760,7 @@ class FieldController extends Controller
                 ],
                 [
                     'title'  => 'Clock Separator',
-                    'desc'   => 'Used to separate hours and minutes',
+                    'desc'   => 'Used to separate hours and minutes.',
                     'fields' => [
                         'clockSeparator' => [
                             'type'    => 'select',
@@ -851,7 +851,7 @@ class FieldController extends Controller
                 ],
                 [
                     'title'  => 'Min Value',
-                    'desc'   => '(Optional) The minimum allowed numeric value this field is allowed to have.',
+                    'desc'   => '(Optional) The minimum numeric value this field is allowed to have.',
                     'fields' => [
                         'minValue' => [
                             'type'  => 'text',
@@ -861,7 +861,7 @@ class FieldController extends Controller
                 ],
                 [
                     'title'  => 'Max Value',
-                    'desc'   => '(Optional) The maximum allowed numeric value this field is allowed to have.',
+                    'desc'   => '(Optional) The maximum numeric value this field is allowed to have.',
                     'fields' => [
                         'maxValue' => [
                             'type'  => 'text',
@@ -891,7 +891,7 @@ class FieldController extends Controller
                 ],
                 [
                     'title'  => 'Decimal Count',
-                    'desc'   => 'The number of decimals allowed.',
+                    'desc'   => 'The number of decimal places allowed.',
                     'fields' => [
                         'decimalCount' => [
                             'type'  => 'text',
@@ -953,7 +953,7 @@ class FieldController extends Controller
                 ],
                 [
                     'title'  => 'Pattern',
-                    'desc'   => 'Custom phone pattern (i.e. \'(xxx) xxx xxxx\'). The letter \'x\' stands for a digit between 0-9. if left blank - will default to a universal phone number validation pattern.',
+                    'desc'   => 'Custom phone pattern (i.e. \'(xxx) xxx-xxxx\'). The letter \'x\' stands for a digit between 0-9. If left blank, any number and dash, dot, space, parentheses and optional + at the beginning will be validated.',
                     'fields' => [
                         'pattern' => [
                             'type'  => 'text',
@@ -1007,7 +1007,7 @@ class FieldController extends Controller
                 ],
                 [
                     'title'  => 'Pattern',
-                    'desc'   => 'Any regex pattern here.',
+                    'desc'   => 'Enter any regex pattern here.',
                     'fields' => [
                         'pattern' => [
                             'type'  => 'text',
@@ -1017,7 +1017,7 @@ class FieldController extends Controller
                 ],
                 [
                     'title'  => 'Error Message',
-                    'desc'   => 'The message a user should receive if an incorrect value is given. Will replace any occurrences of \'{pattern}\' with the supplied regex pattern inside the message if any are found.',
+                    'desc'   => 'The message a user should receive if an incorrect value is given. It will replace any occurrences of \'{pattern}\' with the supplied regex pattern inside the message if any are found.',
                     'fields' => [
                         'message' => [
                             'type'  => 'text',

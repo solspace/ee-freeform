@@ -119,7 +119,7 @@ export default class Confirmation extends BasePropertyEditor {
 
         <SelectProperty
           label="Target Field"
-          instructions="The target field which should be confirmed by re-entering its value."
+          instructions="The target Freeform field to be confirmed by re-entering its value."
           name="targetFieldHash"
           onChangeHandler={this.update}
           value={targetFieldHash}

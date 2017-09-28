@@ -63,7 +63,7 @@ export default class Checkbox extends BasePropertyEditor {
 
         <TextProperty
           label="Value"
-          instructions="The value."
+          instructions="The value for this field."
           name="value"
           value={value}
           onChangeHandler={this.update}

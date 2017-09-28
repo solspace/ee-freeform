@@ -93,7 +93,7 @@ export default class Datetime extends BasePropertyEditor {
 
         <SelectProperty
           label="Date Time Type"
-          instructions="Use only date, time or both?"
+          instructions="Choose between using date, time or both."
           name="dateTimeType"
           value={dateTimeType}
           options={[
@@ -106,14 +106,14 @@ export default class Datetime extends BasePropertyEditor {
 
         <TextProperty
           label="Default Value"
-          instructions="You can use 'now', 'today', '5 days ago', '2017-01-01 20:00:00', etc, which will format the default value according to the chosen format"
+          instructions="You can use 'now', 'today', '5 days ago', '2017-01-01 20:00:00', etc, which will format the default value according to the chosen format."
           name="initialValue"
           value={initialValue ? initialValue : ''}
           onChangeHandler={this.update}
         />
 
         <CheckboxProperty
-          label="Use a datepicker for this field?"
+          label="Use the Freeform datepicker for this field?"
           name="useDatepicker"
           checked={useDatepicker}
           onChangeHandler={this.update}
@@ -140,7 +140,7 @@ export default class Datetime extends BasePropertyEditor {
           <div>
             <SelectProperty
               label="Date Order"
-              instructions="Choose the order in which to show day, month and year"
+              instructions="Choose the order in which to show day, month and year."
               name="dateOrder"
               value={dateOrder}
               onChangeHandler={this.update}
@@ -152,15 +152,15 @@ export default class Datetime extends BasePropertyEditor {
             />
 
             <CheckboxProperty
-              label="Four Digit Year?"
+              label="Four digit year?"
               name="date4DigitYear"
               checked={date4DigitYear}
               onChangeHandler={this.update}
             />
 
             <CheckboxProperty
-              label="Date Leading Zero"
-              instructions="If enabled will use the leading zero for days and months"
+              label="Date leading zero"
+              instructions="If enabled, a leading zero will be used for days and months."
               name="dateLeadingZero"
               checked={dateLeadingZero}
               onChangeHandler={this.update}
@@ -168,7 +168,7 @@ export default class Datetime extends BasePropertyEditor {
 
             <SelectProperty
               label="Date Separator"
-              instructions="Used to separate dates"
+              instructions="Used to separate date values."
               name="dateSeparator"
               value={dateSeparator}
               onChangeHandler={this.update}
@@ -194,7 +194,7 @@ export default class Datetime extends BasePropertyEditor {
 
             <SelectProperty
               label="Clock Separator"
-              instructions="Used to separate hours and minutes"
+              instructions="Used to separate hours and minutes."
               name="clockSeparator"
               value={clockSeparator}
               onChangeHandler={this.update}

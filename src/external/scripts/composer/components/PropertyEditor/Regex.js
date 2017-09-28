@@ -93,16 +93,16 @@ export default class Regex extends BasePropertyEditor {
 
         <TextProperty
           label="Pattern"
-          instructions="Any regex pattern here."
+          instructions="Enter any regex pattern here."
           name="pattern"
-          placeholder="I.e. /^[a-zA-Z0-9]*$/"
+          placeholder="e.g. /^[a-zA-Z0-9]*$/"
           value={pattern}
           onChangeHandler={this.update}
         />
 
         <TextProperty
           label="Error Message"
-          instructions="The message a user should receive if an incorrect value is given. Will replace any occurrences of '{pattern}' with the supplied regex pattern inside the message if any are found."
+          instructions="The message a user should receive if an incorrect value is given. It will replace any occurrences of '{pattern}' with the supplied regex pattern inside the message if any are found."
           name="message"
           placeholder="Value is not valid"
           value={message ? message : ''}

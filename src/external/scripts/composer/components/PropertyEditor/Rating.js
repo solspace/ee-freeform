@@ -109,7 +109,7 @@ export default class Rating extends BasePropertyEditor {
 
         <SelectProperty
           label="Maximum Number of Stars"
-          instructions="Set how many stars are there in this rating"
+          instructions="Set how many stars there should be for this rating."
           name="maxValue"
           value={maxValue ? maxValue : 5}
           onChangeHandler={this.update}

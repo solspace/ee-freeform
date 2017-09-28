@@ -49,7 +49,7 @@ export default class Number extends BasePropertyEditor {
       decimalSeparatorInput = (
         <SelectProperty
           label="Decimal Separator"
-          instructions="Used to separate decimals"
+          instructions="Used to separate decimals."
           name="decimalSeparator"
           value={decimalSeparator}
           onChangeHandler={this.update}
@@ -127,7 +127,7 @@ export default class Number extends BasePropertyEditor {
 
         <CustomProperty
           label="Min/Max Values"
-          instructions="Both are optional, you can have both, just one or neither."
+          instructions="The minimum and/or maximum numeric value this field is allowed to have (optional)."
         >
           <div className="composer-property-input composer-property-flex">
             <input name="minValue"
@@ -148,7 +148,7 @@ export default class Number extends BasePropertyEditor {
 
         <CustomProperty
           label="Min/Max Length"
-          instructions="Both are optional, you can have both, just one or neither."
+          instructions="The minimum and/or maximum character length this field is allowed to have (optional)."
         >
           <div className="composer-property-input composer-property-flex">
             <input name="minLength"
@@ -170,9 +170,9 @@ export default class Number extends BasePropertyEditor {
 
         <TextProperty
           label="Decimal Count"
-          instructions="The number of decimals allowed."
+          instructions="The number of decimal places allowed."
           name="decimalCount"
-          placeholder="Leave blank for no decimals"
+          placeholder="Leave blank for no decimals."
           value={decimalCount}
           isNumeric={true}
           onChangeHandler={this.update}
@@ -182,7 +182,7 @@ export default class Number extends BasePropertyEditor {
 
         <SelectProperty
           label="Thousands Separator"
-          instructions="Used to separate thousands"
+          instructions="Used to separate thousands."
           name="thousandsSeparator"
           value={thousandsSeparator}
           onChangeHandler={this.update}

@@ -94,7 +94,7 @@ export default class Phone extends BasePropertyEditor {
 
         <TextProperty
           label="Pattern"
-          instructions="Custom phone pattern (i.e. '(xxx) xxx xxxx'). The letter 'x' stands for a digit between 0-9. if left blank - will default to a universal phone number validation pattern."
+          instructions="Custom phone pattern (i.e. '(xxx) xxx-xxxx'). The letter 'x' stands for a digit between 0-9. If left blank, any number and dash, dot, space, parentheses and optional + at the beginning will be validated."
           name="pattern"
           placeholder="Optional"
           value={pattern}
