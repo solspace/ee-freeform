@@ -13,6 +13,7 @@
 	* [Formatting Templates](formatting-templates.md)
 	* [Submissions](form-submissions.md)
 	* [Multi-Page Forms](multi-page-forms.md)
+	* [Exporting](exporting.md)
 	* [Spam Protection](spam-protection.md)
 	* [Channel Fieldtype](channel-fieldtype.md)
 	* [Switching from Freeform Classic](switching-from-classic.md)

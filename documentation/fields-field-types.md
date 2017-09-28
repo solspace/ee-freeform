@@ -4,11 +4,12 @@ Freeform uses its own set of fields and field types. Using a predefined set of f
 
 **NOTE:** There is currently a limitation of 195 Freeform fields for each install of ExpressionEngine, due to the MySQL column limit, since all fields are stored in a single table. However, Freeform fields can be used across all forms, and even be relabelled for each form.
 
-* [Fields](#fields)
+* [Fields Overview](#fields)
 * [Field Types](#field-types)
-* [Field Specific Properties](#field-specific-props)
+* [Pro Field Types](#pro-field-types)
 
-## Fields <a href="#fields" id="fields" class="docs-anchor">#</a>
+
+## Fields Overview <a href="#fields" id="fields" class="docs-anchor">#</a>
 
 Fields are global and available to all forms, but they can also be overwritten per form. This allows you to save time reusing existing fields when making other forms, but also gives you flexibility to make adjustments to them when needed. So to clarify, you can create fields with labels and options that are common to all forms, but also override those on each form. For example, if you have a field named **Cell Phone**, on the form level, you can rename the field name to **Mobile Phone**, or if you have a Checkbox Group field with options: **Option 1**, **Option 2**, and **Option 3**, you could override it to just have 2 options with values of **Option A** and **Option B**. When the fields are edited at global level (in main Fields area of Freeform control panel), your customizations per form will NOT be lost.
 
@@ -27,7 +28,7 @@ Some important notes:
 
 ## Field Types <a href="#field-types" id="field-types" class="docs-anchor">#</a>
 
-The following field types are available:
+The following field types are available ([see below for additional Pro Field Types](#pro-fields)):
 
 * **Text** (`text`) <a href="#fields-text" id="fields-text" class="docs-anchor">#</a>
 	* A simple input field.
@@ -111,42 +112,106 @@ The following field types are available:
 		* Can include more than 1 of this field type in your forms, allowing for multiple sets of recipients to be notified.
 
 
-## Field Specific Properties <a href="#field-specific-props" id="field-specific-props" class="docs-anchor">#</a>
+## Pro Field Types <a href="#pro-field-types" id="pro-field-types" class="docs-anchor">#</a>
 
-* `text` <a href="#field-text" id="field-text" class="docs-anchor">#</a>
-	* `placeholder` <a href="#field-text-placeholder" id="field-text-placeholder" class="docs-anchor">#</a>
-* `textarea` <a href="#field-textarea" id="field-textarea" class="docs-anchor">#</a>
-	* `placeholder` <a href="#field-textarea-placeholder" id="field-textarea-placeholder" class="docs-anchor">#</a>
-* `select` <a href="#field-select" id="field-select" class="docs-anchor">#</a>
-	* `options` <a href="#field-select-options" id="field-select-options" class="docs-anchor">#</a>
-		* An array of option objects with `label` and `value` properties.
-* `checkbox` <a href="#field-checkbox" id="field-checkbox" class="docs-anchor">#</a>
-	* Has a default value of **Yes**, which can be overwritten with any value you want. The front end however, will always display the value as `1`, but upon submission, the value will be switched to the one you have set.
-* `checkbox_group` <a href="#field-checkbox_group" id="field-checkbox_group" class="docs-anchor">#</a>
-	* `options` <a href="#field-checkbox_group-options" id="field-checkbox_group-options" class="docs-anchor">#</a>
-		* An array of option objects with `label` and `value` properties.
-* `radio_group` <a href="#field-radio_group" id="field-radio_group" class="docs-anchor">#</a>
-	* `options` <a href="#field-radio_group-options" id="field-radio_group-options" class="docs-anchor">#</a>
-		* An array of option objects with `label` and `value` properties.
-* `submit` <a href="#field-submit" id="field-submit" class="docs-anchor">#</a>
-	* `label_next` <a href="#field-submit-label-next" id="field-submit-label-next" class="docs-anchor">#</a>
-		* A label for the **Next** button. `Submit` by default.
-	* `label_prev` <a href="#field-submit-label-prev" id="field-submit-label-prev" class="docs-anchor">#</a>
-		* A label for the **Previous** button. `Previous` by default.
-	* `disable_prev` <a href="#field-submit-disable-prev" id="field-submit-disable-prev" class="docs-anchor">#</a>
-		* A boolean value. If `true` the **Previous** button should not be rendered.
-* `dynamic_recipients` <a href="#field-dynamic_recipients" id="field-dynamic_recipients" class="docs-anchor">#</a>
-	* `show_as_radio` <a href="#field-dynamic_recipients-show-as-radio" id="field-dynamic_recipients-show-as-radio" class="docs-anchor">#</a>
-		* A boolean value. If `true` the dynamic recipients field should be rendered as radio buttons instead of a select field.
-	* `notification_id` <a href="#field-dynamic_recipients-notification-id" id="field-dynamic_recipients-notification-id" class="docs-anchor">#</a>
-		* The database ID of the assigned Email Notification Template.
-	* **NOTE:** When parsing this field semi-manually, be sure to use `field.index` to generate numeric values of options instead of `field.value`.
-* `email` <a href="#field-email" id="field-email" class="docs-anchor">#</a>
-	* `placeholder` <a href="#field-email-placeholder" id="field-email-placeholder" class="docs-anchor">#</a>
-	* `notification_id` <a href="#field-email-notification-id" id="field-email-notification-id" class="docs-anchor">#</a>
-		* The database ID of the assigned Email Notification Template.
-* `file` <a href="#field-file" id="field-file" class="docs-anchor">#</a>
-	* `file_kinds` <a href="#field-file-file-kinds" id="field-file-file-kinds" class="docs-anchor">#</a>
-		* An array of allowed file kinds, e.g. `image`, `document`, `audio`, etc.
-	* `max_file_size_kb` <a href="#field-file-max-filesize-kb" id="field-file-max-filesize-kb" class="docs-anchor">#</a>
-		* The numeric representation of the upload limit in kilobytes.
+The following extra field types are available with Freeform Next Pro:
+
+* **Confirmation** <a href="#fields-confirmation" id="fields-confirmation" class="docs-anchor">#</a>
+	* Allows you to force a user to enter a matching value for another field (e.g. "Confirm Email Address").
+		* Select a target field to compare with.
+		* Can be marked as required.
+		* Can contain default text and/or placeholder.
+
+[![Confirmation fieldtype](images/cp_field-confirm.png)](images/cp_field-confirm.png)
+
+* **Date & Time** <a href="#fields-date-time" id="fields-date-time" class="docs-anchor">#</a>
+	* A complex date and/or time field. Can be used as Date only, Time only, or both. Many configuration and validation options available as well:
+		* Set a default value.
+			* Can use `now`, `today`, `5 days ago`, `2017-01-01 20:00:00`, etc, which will format the default value according to the chosen format as a localized value.
+		* Select if the field should use the default Freeform datepicker.
+			* Can include your own manually in the template if you wish.
+		* Generate a placeholder from your date format settings showing the accepted format.
+			* Can include your own placeholder if you wish.
+		* Date Order - the formatting order you'd like. Options are:
+			* Year month day
+			* Month day year
+			* Day month year
+		* Select if the year should be displayed/validated as 4 digits.
+		* Select if the day and month numbers should have a leading `0` for single digit values (e.g. August will display as `08` instead of `8`).
+		* Date separator - the character used between each year, month, day value:
+			* None
+			* Space (` `)
+			* `/`
+			* `-`
+			* `.`
+		* Select if time and datepicker should use 24 hour clock.
+		* Clock separator - the character used to separate hours and minutes:
+			* None
+			* Space (` `)
+			* `:`
+			* `-`
+			* `.`
+		* Choose if placeholder should display lowercase AM/PM (for 12hr clock).
+		* Choose if placeholder should separate AM/PM with a space (for 12hr clock).
+		* Can be marked as required.
+
+[![Date & Time fieldtype](images/cp_field-datetime.png)](images/cp_field-datetime.png)
+
+* **Number** <a href="#fields-number" id="fields-number" class="docs-anchor">#</a>
+	* An input field that is validated to contain numbers only, based on several configuration options.
+		* Choose if validation should allow negative numbers.
+		* Optionally set Min/Max values.
+			* Both are optional, you can have both, just one or neither.
+		* Optionally set Min/Max character length.
+			* Both are optional, you can have both, just one or neither.
+		* Set the number of decimals allowed.
+		* Decimal Separator - the character used to separate decimals:
+			* `.`
+			* `,`
+		* Thousands Separator - the character used to separate thousands:
+			* None
+			* Space (` `)
+			* `,`
+			* `.`
+		* Can be marked as required.
+		* Can contain default text and/or placeholder.
+
+[![Number fieldtype](images/cp_field-number.png)](images/cp_field-number.png)
+
+* **Phone** <a href="#fields-phone" id="fields-phone" class="docs-anchor">#</a>
+	* An input field that is validated to contain phone numbers only, based on pattern configured.
+		* Set pattern to desired format, where `x` is a digit between `0` and `9`, e.g:
+			* `(xxx) xxx xxxx`
+			* `xxx-xxx-xxxx`
+			* If no pattern specified, Freeform will default to a universal phone number validation pattern.
+		* Can be marked as required.
+		* Can contain default text and/or placeholder.
+
+[![Phone fieldtype](images/cp_field-phone.png)](images/cp_field-phone.png)
+
+* **Rating** <a href="#fields-rating" id="fields-rating" class="docs-anchor">#</a>
+	* A special field that allows for star ratings using Freeform's built in CSS and JS.
+		* Set a default star rating value (based on Maximum Number of Stars configuration option)
+		* Set the maximum number of stars allowed.
+		* Select an "Unselected" display color.
+		* Select a "Hover" display color.
+		* Select a "Selected" display color.
+		* Can be marked as required.
+
+[![Rating fieldtype](images/cp_field-rating.png)](images/cp_field-rating.png)
+
+* **Regex** <a href="#fields-regex" id="fields-regex" class="docs-anchor">#</a>
+	* An input field that is validated based on the specified regex pattern (e.g. `/^[a-zA-Z0-9]*$/`).
+		* Set error message a user will see if an incorrect value is supplied.
+			* Any occurrences of `{{pattern}}` will be replaced with specified regex pattern inside the error message, if any are found.
+		* Can be marked as required.
+		* Can contain default text and/or placeholder.
+
+[![Regex fieldtype](images/cp_field-regex.png)](images/cp_field-regex.png)
+
+* **Website** <a href="#fields-website" id="fields-website" class="docs-anchor">#</a>
+	* A simple input field that checks to see if the URL specified has valid syntax (`http://`, `https://`, `ftp://`, etc).
+		* Can be marked as required.
+		* Can contain default text and/or placeholder.
+
+[![Website fieldtype](images/cp_field-website.png)](images/cp_field-website.png)

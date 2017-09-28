@@ -111,6 +111,7 @@ If you're wanting to simply render a complete form based on Composer layout and 
 		* `{field:field_name:label}` - displays the label (name) of the field.
 		* `{field:field_name:value}` - displays the option label(s) submitted (for form reloading upon submit error).
 		* `{field:field_name:handle}` - displays the handle of the field.
+		* `{field:field_name:placeholder}` - displays the placeholder of the field (when applicable).
 		* `{field:field_name:options}{/field:field_name:options}` - variable pair that helps render fields with multiple options like select fields, etc.
 			* `{option:value}` - the option value for the field option.
 			* `{option:label}` - the option label for the field option.
@@ -181,10 +182,29 @@ If you're wanting to simply render a complete form based on Composer layout and 
 		* `{field:label}` - label of field, e.g. `First Name`
 		* `{field:handle}` - handle for field, e.g. `first_name`
 		* `{field:instructions}` - instructions for field, e.g. `Please select from the following`
-		* `{field:placeholder}` - placeholder for field, e.g. `you@yourdomain.com`
-		* `{field:type}` - type of field, e.g. `checkbox_group`.
+		* `{field:placeholder}` - placeholder for field (where applicable), e.g. `you@yourdomain.com`
+		* `{field:type}` - type of field:
+			* `text`
+			* `textarea`
+			* `hidden`
+			* `select`
+			* `checkbox`
+			* `checkbox_group`
+			* `radio_group`
+			* `email`
+			* `dynamic_recipients`
+			* `file`
+			* `mailing_list`
+			* `html`
+			* `submit`
+			* `confirmation` (Pro)
+			* `datetime` (Pro)
+			* `phone` (Pro)
+			* `rating` (Pro)
+			* `regex` (Pro)
+			* `website` (Pro)
 		* `{field:required}` - renders as `1` if field is set to be required. Used as a conditional.
-		* `{field:options}{/field:options}` - variable pair for formatting options for a multi-option field.
+		* `{field:options}{/field:options}` - variable pair for formatting options for multi-option fields.
 			* `{option:label}` - label of option, e.g. `California`
 			* `{option:value}` - value of the option, e.g. `CA`
 			* `{option:checked}` - renders as `1` if the option should be checked. Used as a conditional.
