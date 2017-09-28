@@ -10,5 +10,15 @@
 {/if}
 
 
+{if embed:page=='materialize'}
+    <script src="{exp:freeform_next:theme_folder_url}lib/codepack/js/materialize.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('select').material_select();
+      });
+    </script>
+{/if}
+
+
 </body>
 </html>
