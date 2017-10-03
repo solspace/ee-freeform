@@ -38,11 +38,11 @@ Freeform Next Pro's Export Profiles feature allows admins to create more complex
 	* Select a field name and check if it's **Equal to** / **Not equal to** / **Like** a value specified.
 	* Specify as many filters as you wish.
 
-[![Form](images/cp_export-profiles-create.png)](images/cp_export-profiles-create.png)
+[![Form](images/cp_export-profile-create.png)](images/cp_export-profile-create.png)
 
 Once export profile(s) exist users can export submissions in their choice of **CSV**, **Text**, **JSON** or **XML**.
 
-[![Form](images/cp_export-profiles-list.png)](images/cp_export-profiles-list.png)
+[![Form](images/cp_export-profile-list.png)](images/cp_export-profile-list.png)
 
 
 ## Basic CSV Export <a href="#basic-csv" id="basic-csv" class="docs-anchor">#</a>
@@ -55,5 +55,3 @@ To export all of your Freeform submissions:
 	* Currently you can only export ALL submissions.
 
 For more advanced and flexible exporting options, consider [upgrading to Freeform Next Pro](https://solspace.com/expressionengine/freeform/pro)!
-
-[![Basic CSV Exporting](images/cp_submissions-export.png)](images/cp_submissions-export.png)

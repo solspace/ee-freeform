@@ -28,7 +28,7 @@ Some important notes:
 
 ## Field Types <a href="#field-types" id="field-types" class="docs-anchor">#</a>
 
-The following field types are available ([see below for additional Pro Field Types](#pro-fields)):
+The following field types are available ([see below for additional Pro Field Types](#pro-field-types)):
 
 * **Text** (`text`) <a href="#fields-text" id="fields-text" class="docs-anchor">#</a>
 	* A simple input field.
