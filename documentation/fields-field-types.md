@@ -7,6 +7,7 @@ Freeform uses its own set of fields and field types. Using a predefined set of f
 * [Fields Overview](#fields)
 * [Field Types](#field-types)
 * [Pro Field Types](#pro-field-types)
+* [Field Specific Properties](#field-specific-properties)
 
 
 ## Fields Overview <a href="#fields" id="fields" class="docs-anchor">#</a>
@@ -215,3 +216,55 @@ The following extra field types are available with Freeform Next Pro:
 		* Can contain default text and/or placeholder.
 
 [![Website fieldtype](images/cp_field-website.png)](images/cp_field-website.png)
+
+
+## Field Specific Properties <a href="#field-specific-props" id="field-specific-props" class="docs-anchor">#</a>
+
+
+## Field Specific Properties <a href="#field-specific-properties" id="field-specific-properties" class="docs-anchor">#</a>
+
+The following are field specific properties for the basic and Pro field types:
+
+* `checkbox` <a href="#field-checkbox" id="field-checkbox" class="docs-anchor">#</a>
+	* Has a default value of **Yes**, which can be overwritten with any value you want. The front end however, will always display the value as `1`, but upon submission, the value will be switched to the one you have set.
+	* `{field:checked}` - will display whether the field is checked by default.
+* `dynamic_recipients` <a href="#field-dynamic_recipients" id="field-dynamic_recipients" class="docs-anchor">#</a>
+	* `{field:show_as_radio}`
+		* A boolean value. If `true` the dynamic recipients field should be rendered as radio buttons instead of a select field.
+* `datetime` <a href="#field-datetime" id="field-datetime" class="docs-anchor">#</a>
+	* `{field:date_time_type}` (e.g. `both`)
+	* `{field:generate_placeholder}` (e.g. `true`)
+	* `{field:date_order}` (e.g. `ymd`)
+	* `{field:date_4_digit_year}` (e.g. `true`)
+	* `{field:date_leading_zero}` (e.g. `true`)
+	* `{field:date_separator}` (e.g. `/`)
+	* `{field:clock_24h}` (e.g. `false`)
+	* `{field:lowercase_ampm}` (e.g. `true`)
+	* `{field:clock_separator}` (e.g. `:`)
+	* `{field:clock_ampm_separate}` (e.g. `true`)
+	* `{field:use_datepicker}` (e.g. `true`)
+* `number` <a href="#field-number" id="field-number" class="docs-anchor">#</a>
+	* `{field:min_length}`
+	* `{field:max_length}`
+	* `{field:min_value}`
+	* `{field:max_value}`
+	* `{field:decimal_count}`
+	* `{field:decimal_separator}` (e.g. `.`)
+	* `{field:thousands_separator}` (e.g. `,`)
+	* `{field:allow_negative}` (e.g. `false`)
+* `phone` <a href="#field-phone" id="field-phone" class="docs-anchor">#</a>
+	* `{field:pattern}`
+* `rating` <a href="#field-rating" id="field-rating" class="docs-anchor">#</a>
+	* `{field:max_value}` (e.g. `5`)
+	* `{field:color_idle}` (e.g. `#dddddd`)
+	* `{field:color_hover}` (e.g. `#ffd700`)
+	* `{field:color_selected}` (e.g. `#77ff00`)
+* `regex` <a href="#field-regex" id="field-regex" class="docs-anchor">#</a>
+	* `{field:pattern}`
+* `submit` <a href="#field-submit" id="field-submit" class="docs-anchor">#</a>
+	* `{field:label_next}`
+		* A label for the **Next** button. `Submit` by default.
+	* `{field:label_prev}`
+		* A label for the **Previous** button. `Previous` by default.
+	* `{field:disable_prev}`
+		* A boolean value. If `true` the **Previous** button should not be rendered.

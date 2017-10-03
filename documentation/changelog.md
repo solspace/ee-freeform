@@ -1,12 +1,13 @@
 # Changelog
 
-### 1.1.0 (September XX, 2017) <a href="#v1-1-0" id="v1-1-0" class="docs-anchor">#</a>
+### 1.1.0 (October 3, 2017) <a href="#v1-1-0" id="v1-1-0" class="docs-anchor">#</a>
 * Added new Field types for Pro version: Confirmation, Date & Time, Number, Phone, Rating, Regex, Website.
 * Added advanced Quick Export and Export Profiles options in Pro version.
 * Added a setting to hide Solspace default formatting templates from showing in Formatting Template dropdown list in Composer.
 * Added an example formatting template and demo template for Materialize framework.
 * Added form anchor to be automatically generated so inline error returns can focus down to form, if it's lower down on page.
 * Updated Freeform to use EE's Email service instead of it's own.
+* Fixed a bug where `{field:checked}` variable was not working for manual implementations of checkbox fields.
 * Fixed a bug where date_range_start/end="" and date_range="" parameters were not working in Submissions template tag.
 * Fixed a bug where status filtering would result in an error in the Submissions template tag.
 * Fixed a bug where no errors would be triggered if attempting to create a blank field (no name or handle, etc).
