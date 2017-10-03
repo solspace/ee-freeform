@@ -23,6 +23,7 @@ use Solspace\Addons\FreeformNext\Controllers\SubmissionController;
 use Solspace\Addons\FreeformNext\Controllers\UpdateController;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
+use Solspace\Addons\FreeformNext\Model\ExportProfileModel;
 use Solspace\Addons\FreeformNext\Model\FieldModel;
 use Solspace\Addons\FreeformNext\Model\FormModel;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
@@ -176,17 +177,20 @@ class Freeform_next_mcp extends ControlPanelView
                 return $this->getExportProfilesController()->export($seg2, $seg1);
             }
 
+            $validation = null;
             if (isset($_POST['name'])) {
-                $this->getExportProfilesController()->save($seg1);
-
-                return $this->renderView(
-                    new RedirectView(
-                        UrlHelper::getLink('export_profiles/')
-                    )
-                );
+                $validation = ee('Validation')->make(ExportProfileModel::createValidationRules())->validate($_POST);
+                if ($validation->isValid()) {
+                    $this->getExportProfilesController()->save($seg1);
+                    return $this->renderView(
+                        new RedirectView(
+                            UrlHelper::getLink('export_profiles/')
+                        )
+                    );
+                }
             }
 
-            return $this->renderView($this->getExportProfilesController()->edit($seg1, $seg2));
+            return $this->renderView($this->getExportProfilesController()->edit($seg1, $seg2, $validation));
         }
 
         return $this->renderView($this->getExportProfilesController()->index());

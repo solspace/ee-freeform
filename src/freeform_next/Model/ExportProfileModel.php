@@ -49,6 +49,16 @@ class ExportProfileModel extends Model
     ];
 
     /**
+     * @return array
+     */
+    public static function createValidationRules()
+    {
+        return [
+            'name' => 'required',
+        ];
+    }
+
+    /**
      * @param Form $form
      *
      * @return ExportProfileModel

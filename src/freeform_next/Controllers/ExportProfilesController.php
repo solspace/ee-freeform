@@ -3,6 +3,7 @@
 namespace Solspace\Addons\FreeformNext\Controllers;
 
 use EllisLab\ExpressionEngine\Library\CP\Table;
+use EllisLab\ExpressionEngine\Service\Validation\Result;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
@@ -55,7 +56,7 @@ class ExportProfilesController extends Controller
                 $profile->getSubmissionCount(),
                 [
                     'toolbar_items' => [
-                        'csv' => [
+                        'csv'  => [
                             'href'  => $this->getLink('export_profiles/csv/' . $profile->id),
                             'title' => lang('CSV'),
                         ],
@@ -63,7 +64,7 @@ class ExportProfilesController extends Controller
                             'href'  => $this->getLink('export_profiles/json/' . $profile->id),
                             'title' => lang('JSON'),
                         ],
-                        'xml' => [
+                        'xml'  => [
                             'href'  => $this->getLink('export_profiles/xml/' . $profile->id),
                             'title' => lang('XML'),
                         ],
@@ -123,20 +124,21 @@ class ExportProfilesController extends Controller
     }
 
     /**
-     * @param int|string $profileId
-     * @param string     $formHandle
+     * @param int|string  $profileId
+     * @param string      $formHandle
+     * @param Result|null $validation
      *
      * @return CpView
      * @throws FreeformException
      */
-    public function edit($profileId, $formHandle)
+    public function edit($profileId, $formHandle, Result $validation = null)
     {
         $profile = ExportProfilesRepository::getInstance()->getProfileById($profileId);
 
         if ($profile) {
             $form = $profile->getFormModel();
         } else {
-            $form     = FormRepository::getInstance()->getFormByIdOrHandle($formHandle);
+            $form = FormRepository::getInstance()->getFormByIdOrHandle($formHandle);
         }
 
         $statuses = StatusRepository::getInstance()->getStatusNamesById();
@@ -160,8 +162,9 @@ class ExportProfilesController extends Controller
             ->addJavascript('export-profiles')
             ->setTemplateVariables(
                 [
+                    'errors'                => $validation,
                     'cp_page_title'         => 'Export Profiles',
-                    'base_url'              => $this->getLink('export_profiles/' . $profileId),
+                    'base_url'              => $this->getLink("export_profiles/$profileId/$formHandle"),
                     'save_btn_text'         => 'Save',
                     'save_btn_text_working' => 'Saving',
                     'sections'              => [
