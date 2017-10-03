@@ -50,6 +50,7 @@ Once export profile(s) exist users can export submissions in their choice of **C
 The basic version of Freeform includes CSV exporting functionality.
 
 To export all of your Freeform submissions:
+
 * For the form you'd like to export, click on the submissions count in the **Submissions** column of the forms list.
 * At the top right of the page, click the **Export CSV button**.
 	* Currently you can only export ALL submissions.
