@@ -5,7 +5,6 @@ namespace Solspace\Addons\FreeformNext\Library\EETags\Transformers;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecipientField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\OptionsInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\PlaceholderInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SubmitField;
@@ -80,6 +79,8 @@ class FieldTransformer
             $prefix . 'clock_24h'            => $field instanceof DatetimeField ? $field->isClock24h() : null,
             $prefix . 'lowercase_ampm'       => $field instanceof DatetimeField ? $field->isLowercaseAMPM() : null,
             $prefix . 'use_datepicker'       => $field instanceof DatetimeField ? $field->isUseDatepicker() : null,
+            $prefix . 'clock_separator'      => $field instanceof DatetimeField ? $field->getClockSeparator() : null,
+            $prefix . 'clock_am_pm_separate' => $field instanceof DatetimeField ? $field->isClockAMPMSeparate() : null,
             $prefix . 'pattern'              => $field instanceof RegexField || $field instanceof PhoneField ? $field->getPattern(
             ) : null,
             $prefix . 'min_length'           => $field instanceof NumberField ? $field->getMinLength() : null,
@@ -94,6 +95,9 @@ class FieldTransformer
             $prefix . 'color_idle'           => $field instanceof RatingField ? $field->getColorIdle() : null,
             $prefix . 'color_hover'          => $field instanceof RatingField ? $field->getColorHover() : null,
             $prefix . 'color_selected'       => $field instanceof RatingField ? $field->getColorSelected() : null,
+            $prefix . 'label_next'           => $field instanceof SubmitField ? $field->getLabelNext() : null,
+            $prefix . 'label_prev'           => $field instanceof SubmitField ? $field->getLabelPrev() : null,
+            $prefix . 'disable_prev'         => $field instanceof SubmitField ? $field->isDisablePrev() : null,
         ];
 
         if (null !== $columnCount && null !== $columnIndex) {
