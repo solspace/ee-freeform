@@ -8,7 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {FILE} from "./../../../constants/FieldTypes";
 import Label from "./Components/Label";
 import Instructions from "./Components/Instructions";
@@ -24,24 +25,19 @@ export default class File extends HtmlInput {
     }).isRequired,
   };
 
+  getClassName() {
+    return 'File';
+  }
+
   getType() {
     return FILE;
   }
 
-  render() {
-    const {properties: {label, required, assetSourceId, instructions}} = this.props;
+  getBadges() {
+    const {properties: {assetSourceId}} = this.props;
 
-    let badges;
     if (!assetSourceId) {
-      badges = <Badge label="No Asset Source" type={Badge.WARNING} />;
+      return <Badge label="No Asset Source" type={Badge.WARNING} />;
     }
-
-    return (
-      <div>
-        <Label label={label} isRequired={required}>{badges}</Label>
-        <Instructions instructions={instructions}/>
-        <input type={this.getType()} disabled={true} readOnly={true} />
-      </div>
-    );
   }
 }

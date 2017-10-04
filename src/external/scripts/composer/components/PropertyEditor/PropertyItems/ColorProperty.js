@@ -1,17 +1,16 @@
 /*
- * Freeform for Craft
+ * Freeform Next for Expression Engine
  *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
- * @copyright     Copyright (c) 2008-2016, Solspace, Inc.
+ * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
  * @link          https://solspace.com/craft/freeform
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React from "react";
 import BasePropertyItem from "./BasePropertyItem";
 import {SketchPicker} from "react-color";
-import {connect} from "react-redux";
 
 export default class ColorProperty extends BasePropertyItem {
   static initialState = {
@@ -30,8 +29,8 @@ export default class ColorProperty extends BasePropertyItem {
   }
 
   renderInput() {
-    const {name, value, onChangeHandler, readOnly, disabled, className} = this.props;
-    const {displayColorPicker, color} = this.state;
+    const {value, readOnly, disabled, className} = this.props;
+    const {displayColorPicker} = this.state;
 
     const classes = [className];
     if (readOnly && disabled) {
@@ -44,7 +43,7 @@ export default class ColorProperty extends BasePropertyItem {
           <div
             className="freeform-colorpicker-preview"
             style={{backgroundColor: value}}
-          ></div>
+          />
         </div>
 
         { displayColorPicker && !readOnly && !disabled &&
@@ -70,6 +69,8 @@ export default class ColorProperty extends BasePropertyItem {
   };
 
   handleChange = (color) => {
-    this.props.onChangeHandler('color', color.hex);
+    const {name} = this.props;
+
+    this.props.onChangeHandler(name, color.hex);
   };
 }

@@ -36,4 +36,11 @@ interface FormHandlerInterface
      * @return int - new spam block count
      */
     public function incrementSpamBlockCount(Form $form);
+
+    /**
+     * @param Form $form
+     *
+     * @return string
+     */
+    public function addScriptsToPage(Form $form);
 }

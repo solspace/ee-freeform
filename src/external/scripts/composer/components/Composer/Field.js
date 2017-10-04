@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
-import * as FieldTypes from "../../constants/FieldTypes";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import Checkbox from "./FieldTypes/CheckboxField";
 import CheckboxGroup from "./FieldTypes/CheckboxGroup";
 import Text from "./FieldTypes/Text";
@@ -22,7 +22,37 @@ import RadioGroup from "./FieldTypes/RadioGroup";
 import Select from "./FieldTypes/Select";
 import DynamicRecipients from "./FieldTypes/DynamicRecipients";
 import MailingList from "./FieldTypes/MailingList";
+import Number from "./FieldTypes/Number";
+import Datetime from "./FieldTypes/Datetime";
+import Phone from "./FieldTypes/Phone";
+import Rating from "./FieldTypes/Rating";
+import Website from "./FieldTypes/Website";
+import Regex from "./FieldTypes/Regex";
+import Confirmation from "./FieldTypes/Confirmation";
 import File from "./FieldTypes/File";
+
+const fieldTypes = {
+  checkbox: Checkbox,
+  checkbox_group: CheckboxGroup,
+  text: Text,
+  textarea: Textarea,
+  email: Email,
+  hidden: Hidden,
+  html: Html,
+  submit: Submit,
+  radio_group: RadioGroup,
+  select: Select,
+  dynamic_recipients: DynamicRecipients,
+  mailing_list: MailingList,
+  file: File,
+  datetime: Datetime,
+  number: Number,
+  phone: Phone,
+  rating: Rating,
+  website: Website,
+  regex: Regex,
+  confirmation: Confirmation,
+};
 
 export default class Field extends Component {
     static propTypes = {
@@ -49,54 +79,15 @@ export default class Field extends Component {
         rowIndex: this.props.rowIndex,
     });
 
-    render() {
-        const {type, properties} = this.props;
+  render() {
+    const {type, properties} = this.props;
 
-        switch (type) {
-            case FieldTypes.TEXT:
-                return <Text properties={properties} />;
+    if (fieldTypes[type]) {
+      const DynamicClassName = fieldTypes[type];
 
-            case FieldTypes.TEXTAREA:
-                return <Textarea properties={properties} />;
-
-            case FieldTypes.EMAIL:
-                return <Email properties={properties} />;
-
-            case FieldTypes.HIDDEN:
-                return <Hidden properties={properties} />;
-
-            case FieldTypes.CHECKBOX:
-                return <Checkbox properties={properties} />;
-
-            case FieldTypes.CHECKBOX_GROUP:
-                return <CheckboxGroup properties={properties} />;
-
-            case FieldTypes.RADIO:
-                return <CheckboxGroup properties={properties} />;
-
-            case FieldTypes.HTML:
-                return <Html properties={properties} />;
-
-            case FieldTypes.SUBMIT:
-                return <Submit properties={properties} />;
-
-            case FieldTypes.RADIO_GROUP:
-                return <RadioGroup properties={properties} />;
-
-            case FieldTypes.SELECT:
-                return <Select properties={properties} />;
-
-            case FieldTypes.DYNAMIC_RECIPIENTS:
-                return <DynamicRecipients properties={properties} />;
-
-            case FieldTypes.MAILING_LIST:
-                return <MailingList properties={properties} />;
-
-            case FieldTypes.FILE:
-                return <File properties={properties} />;
-
-            default:
-                return <div>Field type "{type}" not found</div>;
-        }
+      return <DynamicClassName properties={properties}/>
     }
+
+    return <div>Field type "{type}" not found</div>;
+  }
 }

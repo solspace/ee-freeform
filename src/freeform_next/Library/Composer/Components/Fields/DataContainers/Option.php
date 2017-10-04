@@ -19,16 +19,21 @@ class Option
     /** @var string */
     private $value;
 
+    /** @var bool */
+    private $checked;
+
     /**
      * Option constructor.
      *
      * @param string $label
      * @param string $value
+     * @param bool   $checked
      */
-    public function __construct($label, $value)
+    public function __construct($label, $value, $checked = false)
     {
-        $this->label = $label;
-        $this->value = $value;
+        $this->label   = $label;
+        $this->value   = $value;
+        $this->checked = $checked;
     }
 
     /**
@@ -45,5 +50,13 @@ class Option
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isChecked()
+    {
+        return $this->checked;
     }
 }

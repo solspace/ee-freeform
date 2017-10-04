@@ -13,19 +13,27 @@ namespace Solspace\Addons\FreeformNext\Library\Composer\Components;
 
 interface FieldInterface
 {
-    const TYPE_TEXT               = "text";
-    const TYPE_TEXTAREA           = "textarea";
-    const TYPE_HIDDEN             = "hidden";
-    const TYPE_SELECT             = "select";
-    const TYPE_CHECKBOX           = "checkbox";
-    const TYPE_CHECKBOX_GROUP     = "checkbox_group";
-    const TYPE_RADIO_GROUP        = "radio_group";
-    const TYPE_HTML               = "html";
-    const TYPE_SUBMIT             = "submit";
-    const TYPE_DYNAMIC_RECIPIENTS = "dynamic_recipients";
-    const TYPE_EMAIL              = "email";
-    const TYPE_MAILING_LIST       = "mailing_list";
-    const TYPE_FILE               = "file";
+    const TYPE_TEXT               = 'text';
+    const TYPE_TEXTAREA           = 'textarea';
+    const TYPE_HIDDEN             = 'hidden';
+    const TYPE_SELECT             = 'select';
+    const TYPE_CHECKBOX           = 'checkbox';
+    const TYPE_CHECKBOX_GROUP     = 'checkbox_group';
+    const TYPE_RADIO_GROUP        = 'radio_group';
+    const TYPE_HTML               = 'html';
+    const TYPE_SUBMIT             = 'submit';
+    const TYPE_DYNAMIC_RECIPIENTS = 'dynamic_recipients';
+    const TYPE_EMAIL              = 'email';
+    const TYPE_MAILING_LIST       = 'mailing_list';
+    const TYPE_FILE               = 'file';
+
+    const TYPE_DATETIME     = 'datetime';
+    const TYPE_NUMBER       = 'number';
+    const TYPE_PHONE        = 'phone';
+    const TYPE_WEBSITE      = 'website';
+    const TYPE_RATING       = 'rating';
+    const TYPE_REGEX        = 'regex';
+    const TYPE_CONFIRMATION = 'confirmation';
 
     /**
      * Returns the INPUT type

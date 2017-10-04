@@ -18,25 +18,26 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_forms` (
 
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_fields` (
-  `id`             INT(11)             NOT NULL  AUTO_INCREMENT,
-  `siteId`         INT(11)             NOT NULL  DEFAULT '1',
-  `notificationId` INT(11)                       DEFAULT NULL,
-  `assetSourceId`  INT(11)                       DEFAULT NULL,
-  `type`           VARCHAR(40)                   DEFAULT NULL,
-  `handle`         VARCHAR(255)        NOT NULL,
-  `label`          VARCHAR(255)        NOT NULL,
-  `required`       TINYINT(1) UNSIGNED NOT NULL  DEFAULT '0',
-  `value`          VARCHAR(255)                  DEFAULT NULL,
-  `placeholder`    VARCHAR(255)                  DEFAULT NULL,
-  `instructions`   TEXT,
-  `values`         TEXT,
-  `options`        TEXT,
-  `checked`        TINYINT(1)                    DEFAULT NULL,
-  `rows`           INT(10)                       DEFAULT NULL,
-  `fileKinds`      TEXT,
-  `maxFileSizeKB`  INT(10)                       DEFAULT NULL,
-  `dateCreated`    DATETIME                      DEFAULT NULL,
-  `dateUpdated`    DATETIME                      DEFAULT NULL,
+  `id`                   INT(11)             NOT NULL  AUTO_INCREMENT,
+  `siteId`               INT(11)             NOT NULL  DEFAULT '1',
+  `notificationId`       INT(11)                       DEFAULT NULL,
+  `assetSourceId`        INT(11)                       DEFAULT NULL,
+  `type`                 VARCHAR(40)                   DEFAULT NULL,
+  `handle`               VARCHAR(255)        NOT NULL,
+  `label`                VARCHAR(255)        NOT NULL,
+  `required`             TINYINT(1) UNSIGNED NOT NULL  DEFAULT '0',
+  `value`                VARCHAR(255)                  DEFAULT NULL,
+  `placeholder`          VARCHAR(255)                  DEFAULT NULL,
+  `instructions`         TEXT,
+  `values`               TEXT,
+  `options`              TEXT,
+  `checked`              TINYINT(1)                    DEFAULT NULL,
+  `rows`                 INT(10)                       DEFAULT NULL,
+  `fileKinds`            TEXT,
+  `maxFileSizeKB`        INT(10)                       DEFAULT NULL,
+  `additionalProperties` TEXT                          DEFAULT NULL,
+  `dateCreated`          DATETIME                      DEFAULT NULL,
+  `dateUpdated`          DATETIME                      DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `exp_freeform_next_fields_handle_unq_idx` (`handle`),
   KEY `exp_freeform_next_fields_notificationId_fk` (`notificationId`),
@@ -170,6 +171,37 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_submissions` (
   PRIMARY KEY (`id`),
   KEY `exp_freeform_next_submissions_statusId_fk` (`statusId`),
   KEY `exp_freeform_next_submissions_formId_fk` (`formId`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = `utf8`
+  COLLATE = `utf8_unicode_ci`;
+
+CREATE TABLE IF NOT EXISTS `exp_freeform_next_export_profiles` (
+  `id`          INT(11)      NOT NULL  AUTO_INCREMENT,
+  `siteId`      INT(11)      NOT NULL  DEFAULT '1',
+  `name`        VARCHAR(255) NULL,
+  `formId`      INT(11) NOT NULL,
+  `limit`       INT(11) NULL,
+  `dateRange`   VARCHAR(255) NULL,
+  `fields`      TEXT NULL,
+  `filters`     TEXT NULL,
+  `statuses`    TEXT NULL,
+  `dateCreated` DATETIME DEFAULT NULL,
+  `dateUpdated` DATETIME DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `exp_freeform_next_export_formId_fk` (`formId`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = `utf8`
+  COLLATE = `utf8_unicode_ci`;
+
+CREATE TABLE IF NOT EXISTS `exp_freeform_next_export_settings` (
+  `id`          INT(11)      NOT NULL  AUTO_INCREMENT,
+  `siteId`      INT(11)      NOT NULL  DEFAULT '1',
+  `userId`      INT(11)      NOT NULL,
+  `settings`    TEXT         NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `exp_freeform_next_export_userId_fk` (`userId`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = `utf8`

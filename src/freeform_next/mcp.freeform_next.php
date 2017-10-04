@@ -11,6 +11,8 @@
 
 use Solspace\Addons\FreeformNext\Controllers\ApiController;
 use Solspace\Addons\FreeformNext\Controllers\CrmController;
+use Solspace\Addons\FreeformNext\Controllers\ExportController;
+use Solspace\Addons\FreeformNext\Controllers\ExportProfilesController;
 use Solspace\Addons\FreeformNext\Controllers\FieldController;
 use Solspace\Addons\FreeformNext\Controllers\FormController;
 use Solspace\Addons\FreeformNext\Controllers\LogController;
@@ -21,6 +23,8 @@ use Solspace\Addons\FreeformNext\Controllers\SubmissionController;
 use Solspace\Addons\FreeformNext\Controllers\UpdateController;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
+use Solspace\Addons\FreeformNext\Model\ExportProfileModel;
+use Solspace\Addons\FreeformNext\Model\FieldModel;
 use Solspace\Addons\FreeformNext\Model\FormModel;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
@@ -103,17 +107,21 @@ class Freeform_next_mcp extends ControlPanelView
         }
 
         if (null !== $id) {
+            $validation = null;
             if (isset($_POST['label'])) {
-                $field = $this->getFieldController()->save($id);
+                $validation = ee('Validation')->make(FieldModel::createValidationRules())->validate($_POST);
+                if ($validation->isValid()) {
+                    $this->getFieldController()->save($id);
 
-                return $this->renderView(
-                    new RedirectView(
-                        UrlHelper::getLink('fields/')
-                    )
-                );
+                    return $this->renderView(
+                        new RedirectView(
+                            UrlHelper::getLink('fields/')
+                        )
+                    );
+                }
             }
 
-            return $this->renderView($this->getFieldController()->edit($id));
+            return $this->renderView($this->getFieldController()->edit($id, $validation));
         }
 
         return $this->renderView($this->getFieldController()->index());
@@ -136,7 +144,7 @@ class Freeform_next_mcp extends ControlPanelView
             if (isset($_POST['name'])) {
                 $validation = ee('Validation')->make(NotificationModel::createValidationRules())->validate($_POST);
                 if ($validation->isValid()) {
-                    $notification = $this->getNotificationController()->save($notificationId);
+                    $this->getNotificationController()->save($notificationId);
 
                     return $this->renderView(
                         new RedirectView(
@@ -150,6 +158,57 @@ class Freeform_next_mcp extends ControlPanelView
         }
 
         return $this->renderView($this->getNotificationController()->index());
+    }
+
+    /**
+     * @param int    $seg1
+     * @param string $seg2
+     *
+     * @return array
+     */
+    public function export_profiles($seg1 = null, $seg2 = null)
+    {
+        if (strtolower($seg1) === 'delete') {
+            return $this->renderView($this->getExportProfilesController()->batchDelete());
+        }
+
+        if (null !== $seg1) {
+            if (in_array($seg1, ['csv', 'xml', 'json', 'text'], true)) {
+                return $this->getExportProfilesController()->export($seg2, $seg1);
+            }
+
+            $validation = null;
+            if (isset($_POST['name'])) {
+                $validation = ee('Validation')->make(ExportProfileModel::createValidationRules())->validate($_POST);
+                if ($validation->isValid()) {
+                    $this->getExportProfilesController()->save($seg1);
+                    return $this->renderView(
+                        new RedirectView(
+                            UrlHelper::getLink('export_profiles/')
+                        )
+                    );
+                }
+            }
+
+            return $this->renderView($this->getExportProfilesController()->edit($seg1, $seg2, $validation));
+        }
+
+        return $this->renderView($this->getExportProfilesController()->index());
+    }
+
+    /**
+     * @param null $id
+     *
+     * @return array
+     */
+    public function export($id = null)
+    {
+        $controller = new ExportController();
+        if ($id === 'dialogue') {
+            return $this->renderView($controller->exportDialogue());
+        }
+
+        return $this->renderView($controller->export());
     }
 
     /**
@@ -331,6 +390,12 @@ class Freeform_next_mcp extends ControlPanelView
             ->addSubNavItem(new NavigationLink('Mailing Lists', 'integrations/mailing_lists'))
             ->addSubNavItem(new NavigationLink('CRM', 'integrations/crm'));
 
+
+        $exportProfiles = null;
+        if (class_exists('Solspace\Addons\FreeformNext\Controllers\ExportProfilesController')) {
+            $exportProfiles = new NavigationLink('Export', 'export_profiles');
+        }
+
         $settings = new NavigationLink('Settings');
         $settings
             ->addSubNavItem(new NavigationLink('License', 'settings/license'))
@@ -394,6 +459,7 @@ class Freeform_next_mcp extends ControlPanelView
             ->addLink($forms)
             ->addLink($fields)
             ->addLink($notifications)
+            ->addLink($exportProfiles)
             ->addLink($settings)
             ->addLink($integrations)
             ->addLink($resources);
@@ -446,6 +512,20 @@ class Freeform_next_mcp extends ControlPanelView
 
         if (null === $instance) {
             $instance = new NotificationController();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @return ExportProfilesController
+     */
+    private function getExportProfilesController()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new ExportProfilesController();
         }
 
         return $instance;

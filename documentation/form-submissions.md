@@ -14,14 +14,7 @@ Each form contains it's own grouping of submissions. You can view these by click
 
 ## Exporting Submissions <a href="#exporting" id="exporting" class="docs-anchor">#</a>
 
-Freeform currently includes some basic exporting functionality.
-
-To export all of your Freeform submissions:
-* For the form you'd like to export, click on the submissions count in the **Submissions** column of the forms list.
-* At the top right of the page, click the **Export CSV button**.
-    * Currently you can only export ALL submissions.
-
-An upcoming version of Freeform Next will include more exporting options and flexibility.
+Freeform Next includes 3 options for exporting (2 of which are Pro only). Please refer to the [Exporting](exporting.md) documentation for more information.
 
 ## In Front End Templates <a href="#templates" id="templates" class="docs-anchor">#</a>
 

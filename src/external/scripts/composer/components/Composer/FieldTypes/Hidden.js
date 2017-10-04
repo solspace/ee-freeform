@@ -8,32 +8,19 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {TEXT} from "../../../constants/FieldTypes";
 import Badge from "./Components/Badge";
 import Label from "./Components/Label";
 import HtmlInput from "./HtmlInput";
 
 export default class Hidden extends HtmlInput {
-  getType() {
-    return TEXT;
+  getClassName() {
+    return 'Hidden';
   }
 
-  render() {
-    const {properties: {label, type, required}} = this.props;
-
-    return (
-      <div>
-        <Label isRequired={required}>
-          <Badge label="Hidden field" type={Badge.VISIBILITY} />
-        </Label>
-        <input
-          readOnly={true}
-          className="composer-ft-text text fullwidth"
-          type={this.getType()}
-          {...this.getCleanProperties()}
-        />
-      </div>
-    );
+  getBadges() {
+    return <Badge label="Hidden field" type={Badge.VISIBILITY}/>;
   }
 }

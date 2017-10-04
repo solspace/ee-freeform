@@ -24,8 +24,12 @@ class Navigation
      *
      * @return $this
      */
-    public function addLink(NavigationLink $link)
+    public function addLink(NavigationLink $link = null)
     {
+        if (null === $link) {
+            return $this;
+        }
+
         $this->stack[] = $link;
 
         return $this;

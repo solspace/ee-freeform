@@ -92,3 +92,44 @@
 
   border-radius: ($size / 2);
 }
+
+#export-csv-modal {
+  .radio-list label {
+    margin-right: 5px;
+  }
+
+  .body {
+    overflow-y: auto;
+    height: 380px;
+
+    padding: 15px;
+
+    .heading {
+      font-weight: bold;
+    }
+
+    .field {
+      margin-bottom: 15px;
+    }
+  }
+
+  .icon.move {
+    display: inline-block;
+
+    &:before {
+      content: "\f0c9";
+      font-family: FontAwesome, sans-serif;
+    }
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    > li {
+      margin: 0;
+      padding: 0;
+    }
+  }
+}

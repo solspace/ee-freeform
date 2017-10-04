@@ -1,0 +1,35 @@
+
+.tbl-search {
+  .dropdown {
+    select {
+      position: relative;
+      top: 4px;
+    }
+  }
+}
+
+.toolbar {
+  li {
+    &.csv,
+    &.json,
+    &.xml,
+    &.text {
+      a:before {
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 12px;
+      }
+    }
+    &.csv a:before {
+      content: "CSV";
+    }
+    &.json a:before {
+      content: "JSON";
+    }
+    &.xml a:before {
+      content: "XML";
+    }
+    &.text a:before {
+      content: "Text";
+    }
+  }
+}

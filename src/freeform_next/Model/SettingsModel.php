@@ -27,6 +27,7 @@ use Symfony\Component\Finder\SplFileInfo;
  * @property string $notificationCreationMethod
  * @property string $license
  * @property string $sessionStorage
+ * @property bool   $defaultTemplates
  */
 class SettingsModel extends Model
 {
@@ -46,6 +47,7 @@ class SettingsModel extends Model
     const DEFAULT_NOTIFICATION_TEMPLATE_PATH   = null;
     const DEFAULT_NOTIFICATION_CREATION_METHOD = self::NOTIFICATION_CREATION_METHOD_DATABASE;
     const DEFAULT_LICENSE                      = null;
+    const DEFAULT_DEFAULT_TEMPLATES            = true;
 
     const SESSION_STORAGE_SESSION  = 'session';
     const SESSION_STORAGE_DATABASE = 'db';
@@ -63,6 +65,7 @@ class SettingsModel extends Model
     protected $notificationCreationMethod;
     protected $license;
     protected $sessionStorage;
+    protected $defaultTemplates;
 
     /**
      * Creates a Settings Model
@@ -84,6 +87,7 @@ class SettingsModel extends Model
                 'notificationCreationMethod' => self::DEFAULT_NOTIFICATION_CREATION_METHOD,
                 'license'                    => self::DEFAULT_LICENSE,
                 'sessionStorage'             => self::SESSION_STORAGE_SESSION,
+                'defaultTemplates'           => self::DEFAULT_DEFAULT_TEMPLATES,
             ]
         );
 
@@ -282,6 +286,14 @@ class SettingsModel extends Model
     public function isDatabaseSessionStorage()
     {
         return $this->sessionStorage === self::SESSION_STORAGE_DATABASE;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDefaultTemplates()
+    {
+        return (bool) $this->defaultTemplates;
     }
 
     /**

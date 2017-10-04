@@ -8,7 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {MAILING_LIST} from "../../../constants/FieldTypes";
 import HtmlInput from "./HtmlInput";
 import Checkbox from "./Components/Checkbox";
@@ -37,14 +38,17 @@ export default class MailingList extends HtmlInput {
     }).isRequired,
   };
 
+  getClassName() {
+    return 'MailingList';
+  }
+
   getType() {
     return MAILING_LIST;
   }
 
-  render() {
-    const {properties, mailingListIntegrations} = this.props;
-
-    const {name, label, value, integrationId, resourceId, emailFieldHash, instructions} = properties;
+  getBadges() {
+    const {properties, mailingListIntegrations}             = this.props;
+    const {name, integrationId, resourceId, emailFieldHash} = properties;
 
     let resourceName = "";
     if (resourceId) {
@@ -72,17 +76,20 @@ export default class MailingList extends HtmlInput {
       badges.push(<Badge key="no-email-field-hash" label="No email field" type={Badge.WARNING} />)
     }
 
+    return badges;
+  }
+
+  renderInput() {
+    const {properties}   = this.props;
+    const {label, value} = properties;
+
     return (
-      <div>
-        <Label>{badges}</Label>
-        <Instructions instructions={instructions}/>
-        <Checkbox
-          label={label}
-          value={1}
-          isChecked={!!value}
-          properties={properties}
-        />
-      </div>
+      <Checkbox
+        label={label}
+        value={1}
+        isChecked={!!value}
+        properties={properties}
+      />
     );
   }
 }

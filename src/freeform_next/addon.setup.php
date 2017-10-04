@@ -23,7 +23,7 @@ return [
     'name'           => 'Freeform Next',
     'module_name'    => 'Freeform_next',
     'description'    => 'Advanced form creation and data collecting.',
-    'version'        => '1.0.7',
+    'version'        => '1.1.0',
     'namespace'      => 'Solspace\Addons\FreeformNext',
     'settings_exist' => true,
     'models'         => [
@@ -38,5 +38,7 @@ return [
         'MailingListModel'           => 'Model\MailingListModel',
         'MailingListFieldModel'      => 'Model\MailingListFieldModel',
         'CrmFieldModel'              => 'Model\CrmFieldModel',
+        'ExportProfileModel'         => 'Model\ExportProfileModel',
+        'ExportSettingModel'         => 'Model\ExportSettingModel',
     ],
 ];

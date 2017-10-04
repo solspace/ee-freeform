@@ -8,7 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {SELECT} from "../../../constants/FieldTypes";
 import HtmlInput from "./HtmlInput";
 import Option from "./Components/Option";
@@ -31,13 +32,17 @@ export default class Select extends HtmlInput {
     }).isRequired,
   };
 
+  getClassName() {
+    return 'Select';
+  }
+
   getType() {
     return SELECT;
   }
 
-  render() {
-    const {properties}               = this.props;
-    const {label, required, options, instructions} = properties;
+  renderInput() {
+    const {properties} = this.props;
+    const {options}    = properties;
 
     if (!options) {
       return;
@@ -52,19 +57,21 @@ export default class Select extends HtmlInput {
           key={i}
           label={label}
           value={value}
-          properties={properties} />
+          properties={properties}
+        />
       );
     }
 
     return (
-      <div>
-        <Label label={label} type={this.getType()} isRequired={required} />
-        <Instructions instructions={instructions}/>
-        <div className="select">
-          <select readOnly={true} disabled={true} value={this.props.properties.value}>
-            {selectOptions}
-          </select>
-        </div>
+      <div className="select">
+        <select
+          className={this.prepareInputClass()}
+          readOnly={true}
+          disabled={true}
+          value={this.props.properties.value}
+        >
+          {selectOptions}
+        </select>
       </div>
     );
   }

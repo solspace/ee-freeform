@@ -83,7 +83,7 @@ class CustomFieldAttributes extends AbstractAttributes
     public function getClass()
     {
         $value = $this->class;
-        if (!is_null($this->formAttributes)) {
+        if (null !== $this->formAttributes) {
             $value = $this->combineClassStrings($value, $this->formAttributes->getInputClass());
         }
 
@@ -104,7 +104,7 @@ class CustomFieldAttributes extends AbstractAttributes
     public function getLabelClass()
     {
         $value = $this->labelClass;
-        if (!is_null($this->formAttributes)) {
+        if (null !== $this->formAttributes) {
             $value = $this->combineClassStrings($value, $this->formAttributes->getLabelClass());
         }
 
@@ -117,7 +117,7 @@ class CustomFieldAttributes extends AbstractAttributes
     public function getErrorClass()
     {
         $value = $this->errorClass;
-        if (!is_null($this->formAttributes)) {
+        if (null !== $this->formAttributes) {
             $value = $this->combineClassStrings($value, $this->formAttributes->getErrorClass());
         }
 
@@ -130,7 +130,7 @@ class CustomFieldAttributes extends AbstractAttributes
     public function getInstructionsClass()
     {
         $value = $this->instructionsClass;
-        if (!is_null($this->formAttributes)) {
+        if (null !== $this->formAttributes) {
             $value = $this->combineClassStrings($value, $this->formAttributes->getInstructionsClass());
         }
 
@@ -143,7 +143,7 @@ class CustomFieldAttributes extends AbstractAttributes
     public function isInstructionsBelowField()
     {
         $value = $this->instructionsBelowField;
-        if (!$value && !is_null($this->formAttributes)) {
+        if (!$value && null !== $this->formAttributes) {
             $value = $this->formAttributes->isInstructionsBelowField();
         }
 
@@ -165,12 +165,11 @@ class CustomFieldAttributes extends AbstractAttributes
     {
         $value = $this->overrideValue;
 
-        if (is_null($value) && !is_null($this->formAttributes)) {
+        if (null === $value && null !== $this->formAttributes) {
             $overrideValues = $this->formAttributes->getOverrideValues();
-            if ($overrideValues) {
-                if (isset($overrideValues[$this->field->getHandle()])) {
-                    $value = $overrideValues[$this->field->getHandle()];
-                }
+
+            if ($overrideValues && isset($overrideValues[$this->field->getHandle()])) {
+                $value = $overrideValues[$this->field->getHandle()];
             }
         }
 
@@ -182,7 +181,7 @@ class CustomFieldAttributes extends AbstractAttributes
      */
     public function getInputAttributes()
     {
-        if (is_null($this->inputAttributes)) {
+        if (null === $this->inputAttributes) {
             return $this->inputAttributes;
         }
 
@@ -223,7 +222,7 @@ class CustomFieldAttributes extends AbstractAttributes
     {
         $value = $this->useRequiredAttribute;
 
-        if (is_null($value) && !is_null($this->formAttributes)) {
+        if (null === $value && null !== $this->formAttributes) {
             $value = $this->formAttributes->getUseRequiredAttribute();
         }
 
@@ -240,13 +239,13 @@ class CustomFieldAttributes extends AbstractAttributes
      */
     private function combineClassStrings($classStringA = null, $classStringB = null)
     {
-        $classListA = explode(" ", $classStringA ?: "");
-        $classListB = explode(" ", $classStringB ?: "");
+        $classListA = explode(' ', $classStringA ?: '');
+        $classListB = explode(' ', $classStringB ?: '');
 
         $combined = array_merge($classListA, $classListB);
         $combined = array_unique($combined);
         $combined = array_filter($combined);
 
-        return implode(" ", $combined);
+        return implode(' ', $combined);
     }
 }

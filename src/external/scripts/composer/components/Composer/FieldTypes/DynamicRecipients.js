@@ -8,7 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import HtmlInput from "./HtmlInput";
 import * as FieldTypes from "../../../constants/FieldTypes";
 import Label from "./Components/Label";
@@ -31,6 +32,10 @@ export default class DynamicRecipients extends HtmlInput {
     showAsRadio: PropTypes.bool,
   };
 
+  getClassName() {
+    return 'DynamicRecipients';
+  }
+
   constructor(props, context) {
     super(props, context);
 
@@ -42,21 +47,18 @@ export default class DynamicRecipients extends HtmlInput {
     return FieldTypes.DYNAMIC_RECIPIENTS;
   }
 
-  render() {
-    const {label, notificationId, required, showAsRadio, instructions} = this.props.properties;
+  getBadges() {
+    const {notificationId} = this.props.properties;
 
-    let badges;
     if (!notificationId) {
-      badges = <Badge label="No Template" type={Badge.WARNING} />;
+      return <Badge label="No Template" type={Badge.WARNING} />;
     }
+  }
 
-    return (
-      <div>
-        <Label label={label} type={this.getType()} isRequired={required}>{badges}</Label>
-        <Instructions instructions={instructions}/>
-        {showAsRadio ? this.renderAsRadios() : this.renderAsSelect()}
-      </div>
-    );
+  renderInput() {
+    const {showAsRadio} = this.props.properties;
+
+    return showAsRadio ? this.renderAsRadios() : this.renderAsSelect();
   }
 
   renderAsSelect() {

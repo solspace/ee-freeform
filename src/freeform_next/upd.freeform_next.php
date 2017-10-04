@@ -42,8 +42,65 @@ class Freeform_next_upd extends AddonUpdater
 
             ee()->db
                 ->query('
-                    ALTER TABLE exp_freeform_next_settings 
-                    ADD COLUMN `sessionStorage` ENUM(\'session\', \'db\') DEFAULT \'session\' AFTER `license`                
+                    ALTER TABLE exp_freeform_next_settings
+                    ADD COLUMN `sessionStorage` ENUM(\'session\', \'db\') DEFAULT \'session\' AFTER `license`
+                ');
+        }
+
+        if (version_compare($previousVersion, '1.1.0', '<')) {
+            ee()->db
+                ->query(
+                    '
+                    ALTER TABLE exp_freeform_next_fields
+                    ADD COLUMN `additionalProperties` TEXT DEFAULT NULL AFTER `maxFileSizeKB`
+                '
+                );
+
+            ee()->db
+                ->query(
+                    '
+                CREATE TABLE IF NOT EXISTS `exp_freeform_next_export_profiles` (
+                  `id`          INT(11)      NOT NULL  AUTO_INCREMENT,
+                  `siteId`      INT(11)      NOT NULL  DEFAULT \'1\',
+                  `name`        VARCHAR(255) NULL,
+                  `formId`      INT(11) NOT NULL,
+                  `limit`       INT(11) NULL,
+                  `dateRange`   VARCHAR(255) NULL,
+                  `fields`      TEXT NULL,
+                  `filters`     TEXT NULL,
+                  `statuses`    TEXT NULL,
+                  `dateCreated` DATETIME DEFAULT NULL,
+                  `dateUpdated` DATETIME DEFAULT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `exp_freeform_next_export_formId_fk` (`formId`)
+                )
+                  ENGINE = InnoDB
+                  DEFAULT CHARSET = `utf8`
+                  COLLATE = `utf8_unicode_ci`
+                '
+                );
+
+            ee()->db
+                ->query(
+                    '
+                CREATE TABLE IF NOT EXISTS `exp_freeform_next_export_settings` (
+                  `id`          INT(11)      NOT NULL  AUTO_INCREMENT,
+                  `siteId`      INT(11)      NOT NULL  DEFAULT \'1\',
+                  `userId`      INT(11)      NOT NULL,
+                  `settings`    TEXT         NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `exp_freeform_next_export_userId_fk` (`userId`)
+                )
+                  ENGINE = InnoDB
+                  DEFAULT CHARSET = `utf8`
+                  COLLATE = `utf8_unicode_ci`;
+                '
+                );
+
+            ee()->db
+                ->query('
+                    ALTER TABLE exp_freeform_next_settings
+                    ADD COLUMN `defaultTemplates` TINYINT(1) DEFAULT 1 AFTER `sessionStorage`
                 ');
         }
 

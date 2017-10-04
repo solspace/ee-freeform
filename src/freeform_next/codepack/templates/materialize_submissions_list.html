@@ -1,0 +1,92 @@
+<div class="container">
+
+    {if logged_in_group_id == "1"}
+
+        {exp:freeform_next:form form="{segment_3}" no_form_tags="yes"}
+
+            <h3>{form:name}</h3>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    {form:fields}
+                        {if field:can_store_values}
+                        <th>{field:label}</th>
+                        {/if}
+                    {/form:fields}
+                    <th>Files</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {exp:freeform_next:submissions
+                        form="{segment_3}"
+                        limit="20"
+                        orderby="date" sort="desc"
+                        paginate="bottom"
+                    }
+                        <tr>
+                            <td>{submission:id}</td>
+                            <td>
+                                <a href="{path='demo/materialize/{form:handle}/submissions/{submission:id}'}">
+                                    {submission:title}
+                                </a>
+                            </td>
+                            <td>{submission:date format="%Y-%m-%d %g:%i %a"}</td>
+                            <td><span style="color: {submission:status_color};">{submission:status}</span></td>
+                            {submission:fields}
+                                {if field:can_store_values}
+                                    <td>{field:value}</td>
+                                {/if}
+                            {/submission:fields}
+                            <td>{submission:attachment_count} file{if submission:attachment_count != "1"}s{/if}</td>
+                        </tr>
+                        {if submission:no_results}
+                        <tr>
+                            <td colspan="100">
+                                There are currently no submissions for this form.
+                            </td>
+                        </tr>
+                        {/if}
+                        {submission:paginate}
+                        <tr>
+                            <td colspan="100">
+                                <ul class="pagination">
+                                {pagination_links}
+                                {first_page}
+                                    <li><a href="{pagination_url}">First</a></li>
+                                {/first_page}
+                                {previous_page}
+                                    <li><a href="{pagination_url}">&laquo; Previous</a></li>
+                                {/previous_page}
+                                {page}
+                                    <li{if current_page} class="active"{/if}><a href="{pagination_url}">{pagination_page_number}</a></li>
+                                {/page}
+                                {next_page}
+                                    <li><a href="{pagination_url}">Next &raquo;</a></li>
+                                {/next_page}
+                                {last_page}
+                                    <li><a href="{pagination_url}">Last</a></li>
+                                {/last_page}
+                                {/pagination_links}
+                                </ul>
+                            </td>
+                        </tr>
+                        {/submission:paginate}
+                    {/exp:freeform_next:submissions}
+                 </tbody>
+            </table>
+
+        {/exp:freeform_next:form}
+
+    {if:else}
+        <div class="alert alert-danger" role="alert">
+            <p class="lead">
+                Sorry, we couldn't find what you're looking for. You must be an admin to see form submissions, or adjust your template.
+            </p>
+        </div>
+    {/if}
+</div>

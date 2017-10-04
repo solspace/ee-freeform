@@ -8,7 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import Label from "./Components/Label";
 import Badge from "./Components/Badge";
 
@@ -20,6 +21,10 @@ export default class Html extends Component {
       value: PropTypes.string.isRequired,
     }).isRequired,
   };
+
+  getClassName() {
+    return 'Html';
+  }
 
   render() {
     const {properties: {label, value}} = this.props;

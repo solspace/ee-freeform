@@ -20,6 +20,9 @@ class FormProperties extends AbstractProperties
     protected $handle;
 
     /** @var string */
+    protected $color;
+
+    /** @var string */
     protected $submissionTitleFormat;
 
     /** @var string */
@@ -56,6 +59,14 @@ class FormProperties extends AbstractProperties
     /**
      * @return string
      */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * @return string
+     */
     public function getSubmissionTitleFormat()
     {
         return $this->submissionTitleFormat;
@@ -82,7 +93,7 @@ class FormProperties extends AbstractProperties
      */
     public function isStoreData()
     {
-        return !is_null($this->storeData) ? (bool)$this->storeData : true;
+        return null !== $this->storeData ? (bool)$this->storeData : true;
     }
 
     /**
@@ -112,14 +123,15 @@ class FormProperties extends AbstractProperties
     protected function getPropertyManifest()
     {
         return [
-            "name"                  => self::TYPE_STRING,
-            "handle"                => self::TYPE_STRING,
-            "submissionTitleFormat" => self::TYPE_STRING,
-            "description"           => self::TYPE_STRING,
-            "returnUrl"             => self::TYPE_STRING,
-            "storeData"             => self::TYPE_BOOLEAN,
-            "defaultStatus"         => self::TYPE_INTEGER,
-            "formTemplate"          => self::TYPE_STRING,
+            'name'                  => self::TYPE_STRING,
+            'handle'                => self::TYPE_STRING,
+            'color'                 => self::TYPE_STRING,
+            'submissionTitleFormat' => self::TYPE_STRING,
+            'description'           => self::TYPE_STRING,
+            'returnUrl'             => self::TYPE_STRING,
+            'storeData'             => self::TYPE_BOOLEAN,
+            'defaultStatus'         => self::TYPE_INTEGER,
+            'formTemplate'          => self::TYPE_STRING,
         ];
     }
 }

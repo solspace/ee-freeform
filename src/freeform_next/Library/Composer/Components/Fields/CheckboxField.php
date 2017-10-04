@@ -93,7 +93,7 @@ class CheckboxField extends AbstractField implements SingleValueInterface, Input
         $attributes = $this->getCustomAttributes();
 
         return '<label'
-            . $this->getAttributeString("class", $attributes->getLabelClass())
+            . $this->getAttributeString('class', $attributes->getLabelClass())
             . '>';
     }
 

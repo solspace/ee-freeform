@@ -107,5 +107,53 @@ $(() => {
     self.checkValueCount();
   });
 
+  // $('select#dateTimeType')
+  //   .on({
+  //     change: function () {
+  //       const val      = $(this).val(),
+  //             showDate = val === 'both' || val === 'date',
+  //             showTime = val === 'both' || val === 'time';
+  //
+  //       $('*[data-datetime-date-group]').each(function () {
+  //         if (showDate) $(this).parents("fieldset:first").show();
+  //         if (!showDate) $(this).parents("fieldset:first").hide();
+  //       });
+  //
+  //       $('*[data-datetime-time-group]').each(function () {
+  //         if (showTime) $(this).parents("fieldset:first").show();
+  //         if (!showTime) $(this).parents("fieldset:first").hide();
+  //       });
+  //     }
+  //   })
+  //   .trigger('change');
+  //
+  // $("*[data-toggle]")
+  //   .on({
+  //     click: function () {
+  //       $(this).trigger('change');
+  //     },
+  //     change: function () {
+  //       const val       = $(this).val(),
+  //             isReverse = $(this).data('toggle-reverse'),
+  //             group     = $(this).data('toggle'),
+  //             targets   = $('*[data-toggle-group="' + group + '"]');
+  //
+  //       if (val === (isReverse ? 'y' : 'n')) {
+  //         targets.each(function () {
+  //           $(this).parents("fieldset:first").show()
+  //         });
+  //       } else {
+  //         targets.each(function () {
+  //           $(this).parents("fieldset:first").hide()
+  //         });
+  //       }
+  //     }
+  //   });
+  //
+  // $("*[data-toggle]:checked").trigger('change');
+
+  $('.color-picker').minicolors({
+
+  });
 
 });

@@ -10,6 +10,7 @@
 /** @var array $fileKinds */
 /** @var array $formTemplates */
 /** @var array $solspaceFormTemplates */
+/** @var array $defaultTemplates */
 /** @var bool $showTutorial */
 ?>
 <div id="freeform-builder"></div>
@@ -17,6 +18,7 @@
 <script>
     var formId = <?php echo $form->getId() ?: 'null' ?>;
     var fieldList = <?php echo json_encode($fields) ?>;
+    var fieldTypeList = <?php echo json_encode($fieldTypeList) ?>;
     var mailingList = <?php echo json_encode($mailingLists) ?>;
     var crmIntegrations = <?php echo json_encode($crmIntegrations) ?>;
     var notificationList = <?php echo json_encode($notifications) ?>;
@@ -36,6 +38,7 @@
     var finishTutorialUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/finish_tutorial') ?>";
 
     var showTutorial = <?php echo $showTutorial ? 'true' : 'false' ?>;
+    var defaultTemplates = <?php echo $defaultTemplates ? "true" : "false" ?>;
     var canManageFields = true;
     var canManageNotifications = true;
     var canManageSettings = true;

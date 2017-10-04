@@ -102,6 +102,43 @@ class FormsService implements FormHandlerInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function addScriptsToPage(Form $form)
+    {
+        $output = '';
+
+        if ($this->isSpamProtectionEnabled()) {
+            $output .= '<script type="text/javascript">' . $form->getHoneypotJavascriptScript() . '</script>';
+        }
+
+        if ($form->getLayout()->hasDatepickerEnabledFields()) {
+            static $datepickerLoaded;
+
+            if (null === $datepickerLoaded) {
+                $flatpickrCss = file_get_contents(PATH_THIRD_THEMES . 'freeform_next/css/fields/datepicker.css');
+                $output .= "<style>$flatpickrCss</style>";
+
+                $flatpickrJs = file_get_contents(__DIR__ . '/../javascript/fields/flatpickr.js');
+                $datepickerJs = file_get_contents(__DIR__ . '/../javascript/fields/datepicker.js');
+
+                $output .= '<script type="text/javascript">' . $flatpickrJs . '</script>';
+                $output .= '<script type="text/javascript">' . $datepickerJs . '</script>';
+
+                $datepickerLoaded = true;
+            }
+        }
+
+        if ($form->isPagePosted() && !$form->isValid()) {
+            $anchorJs = file_get_contents(__DIR__ . '/../javascript/invalid-form.js');
+            $anchorJs = str_replace('{{FORM_ANCHOR}}', $form->getAnchor(), $anchorJs);
+            $output .= '<script type="text/javascript">' . $anchorJs . '</script>';
+        }
+
+        return $output;
+    }
+
+    /**
      * @return SettingsService
      */
     private function getSettingsService()

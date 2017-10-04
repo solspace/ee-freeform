@@ -8,7 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {getHandleValue} from "../../helpers/Utilities";
 import {camelize} from "underscore.string";
 
@@ -50,7 +51,7 @@ export default class BasePropertyEditor extends Component {
 
     let isNumeric = false;
     if (event.target.dataset.isNumeric) {
-      if (event.target.dataset.isNumeric != "false") {
+      if (event.target.dataset.isNumeric !== "false") {
         isNumeric = true;
       }
     }
@@ -62,7 +63,7 @@ export default class BasePropertyEditor extends Component {
 
     let couldBeNumeric = false;
     if (event.target.dataset.couldBeNumeric) {
-      if (event.target.dataset.couldBeNumeric != "false") {
+      if (event.target.dataset.couldBeNumeric !== "false") {
         couldBeNumeric = true;
       }
     }

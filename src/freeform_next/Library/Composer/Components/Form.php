@@ -29,6 +29,7 @@ use Solspace\Addons\FreeformNext\Library\FileUploads\FileUploadHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
 use Solspace\Addons\FreeformNext\Library\Mailing\MailHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
+use Solspace\Addons\FreeformNext\Library\Session\Honeypot;
 use Solspace\Addons\FreeformNext\Library\Translations\TranslatorInterface;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 
@@ -48,6 +49,9 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
 
     /** @var string */
     private $handle;
+
+    /** @var string */
+    private $color;
 
     /** @var string */
     private $submissionTitleFormat;
@@ -111,6 +115,9 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
 
     /** @var CustomFormAttributes */
     private $customAttributes;
+
+    /** @var Honeypot */
+    private $honeypot;
 
     /**
      * Form constructor.
@@ -220,6 +227,22 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
     /**
      * @return string
      */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHash()
+    {
+        return $this->getFormValueContext()->getHash();
+    }
+
+    /**
+     * @return string
+     */
     public function getSubmissionTitleFormat()
     {
         return $this->submissionTitleFormat;
@@ -246,7 +269,18 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      */
     public function getReturnUrl()
     {
-        return $this->returnUrl ?: "";
+        return $this->returnUrl ?: '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getAnchor()
+    {
+        $hash = $this->getFormValueContext()->getHash();
+        $id   = substr(sha1($this->getId() . $this->getHandle()), 0, 6);
+
+        return "$id-form-$hash";
     }
 
     /**
@@ -340,6 +374,14 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         $this->valid = $isFormValid;
 
         return $this->valid;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPagePosted()
+    {
+        return $this->getFormValueContext()->hasPageBeenPosted();
     }
 
     /**
@@ -465,10 +507,10 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         $encTypeAttribute = count($this->getLayout()->getFileUploadFields()) ? ' enctype="multipart/form-data"' : '';
 
         $idAttribute = $customAttributes->getId();
-        $idAttribute = $idAttribute ? ' id="' . $idAttribute . '"' : "";
+        $idAttribute = $idAttribute ? ' id="' . $idAttribute . '"' : '';
 
         $nameAttribute = $customAttributes->getName();
-        $nameAttribute = $nameAttribute ? ' name="' . $nameAttribute . '"' : "";
+        $nameAttribute = $nameAttribute ? ' name="' . $nameAttribute . '"' : '';
 
         $methodAttribute = $customAttributes->getMethod() ?: $this->formAttributes->getMethod();
         $methodAttribute = $methodAttribute ? ' method="' . $methodAttribute . '"' : '';
@@ -489,6 +531,8 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
                 $actionAttribute,
                 $customAttributes->getFormAttributesAsString()
             ) . PHP_EOL;
+
+        $output .= '<a id="' . $this->getAnchor() . '"></a>';
 
         if ($customAttributes->getReturnUrl()) {
             $output .= '<input type="hidden" name="' . self::RETURN_URI_KEY . '" value="' . $customAttributes->getReturnUrl(
@@ -533,7 +577,46 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      */
     public function renderClosingTag()
     {
-        return '</form>';
+        $output = '</form>';
+        $output .= $this->formHandler->addScriptsToPage($this);
+
+        return $output;
+    }
+
+    /**
+     * Assembles a honeypot field
+     *
+     * @return string
+     */
+    public function getHoneyPotInput()
+    {
+        $random = time() . mt_rand(111, 999) . (time() + 999);
+        $hash   = substr(sha1($random), 0, 6);
+
+        $honeypot = $this->getHoneypot();
+        $output   = '<input '
+            . 'type="text" '
+            . 'value="' . $hash . '" '
+            . 'id="' . $honeypot->getName() . '" '
+            . 'name="' . $honeypot->getName() . '" '
+            . '/>';
+
+        $output = '<div style="position: absolute !important; width: 0 !important; height: 0 !important; overflow: hidden !important;" aria-hidden="true">'
+            . '<label>Leave this field blank</label>'
+            . $output
+            . '</div>';
+
+        return $output;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHoneypotJavascriptScript()
+    {
+        $honeypot = $this->getHoneypot();
+
+        return 'document.getElementById("' . $honeypot->getName() . '").value = "' . $honeypot->getHash() . '";';
     }
 
     /**
@@ -601,6 +684,18 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
     }
 
     /**
+     * @return Honeypot
+     */
+    private function getHoneypot()
+    {
+        if (null === $this->honeypot) {
+            $this->honeypot = $this->getFormValueContext()->getNewHoneypot();
+        }
+
+        return $this->honeypot;
+    }
+
+    /**
      * @param int $index
      *
      * @throws FreeformException
@@ -628,6 +723,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
     {
         $this->name                  = $formProperties->getName();
         $this->handle                = $formProperties->getHandle();
+        $this->color                 = $formProperties->getColor();
         $this->submissionTitleFormat = $formProperties->getSubmissionTitleFormat();
         $this->description           = $formProperties->getDescription();
         $this->returnUrl             = $formProperties->getReturnUrl();
@@ -675,34 +771,6 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
     private function getFormValueContext()
     {
         return $this->formAttributes->getFormValueContext();
-    }
-
-    /**
-     * Assembles a honeypot field
-     *
-     * @return string
-     */
-    private function getHoneyPotInput()
-    {
-        $random = time() . mt_rand(111, 999) . (time() + 999);
-        $hash   = substr(sha1($random), 0, 6);
-
-        $honeypot = $this->getFormValueContext()->getNewHoneypot();
-        $output   = '<input '
-            . 'type="text" '
-            . 'value="' . $hash . '" '
-            . 'id="' . $honeypot->getName() . '" '
-            . 'name="' . $honeypot->getName() . '" '
-            . '/>';
-
-        $output = '<div style="position: absolute !important; width: 0 !important; height: 0 !important; overflow: hidden !important;" aria-hidden="true">'
-            . '<label>Leave this field blank</label>'
-            . $output
-            . '</div>'
-            . '<script type="text/javascript">document.getElementById("' . $honeypot->getName(
-            ) . '").value = "' . $honeypot->getHash() . '";</script>';
-
-        return $output;
     }
 
     /**
@@ -847,6 +915,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         return [
             'name'          => $this->name,
             'handle'        => $this->handle,
+            'color'         => $this->color,
             'description'   => $this->description,
             'returnUrl'     => $this->returnUrl,
             'storeData'     => (bool) $this->storeData,

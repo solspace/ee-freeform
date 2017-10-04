@@ -67,6 +67,9 @@ class Layout implements \JsonSerializable, \Iterator
     /** @var TranslatorInterface */
     private $translator;
 
+    /** @var bool */
+    private $hasDatepickerEnabledFields;
+
     /**
      * Layout constructor.
      *
@@ -88,6 +91,14 @@ class Layout implements \JsonSerializable, \Iterator
         $this->layoutData = $layoutData;
         $this->translator = $translator;
         $this->buildLayout($formValueContext);
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasDatepickerEnabledFields()
+    {
+        return $this->hasDatepickerEnabledFields;
     }
 
     /**
@@ -135,7 +146,7 @@ class Layout implements \JsonSerializable, \Iterator
      */
     public function getFieldsByHandle()
     {
-        if (is_null($this->fieldsByHandle)) {
+        if (null === $this->fieldsByHandle) {
             $fields = [];
             foreach ($this->getFields() as $field) {
                 if (!$field->getHandle()) {
@@ -159,7 +170,7 @@ class Layout implements \JsonSerializable, \Iterator
      */
     public function getFieldById($id)
     {
-        if (is_null($this->fieldsById)) {
+        if (null === $this->fieldsById) {
             $fields = [];
             foreach ($this->getFields() as $field) {
                 $fields[$field->getId()] = $field;
@@ -173,7 +184,7 @@ class Layout implements \JsonSerializable, \Iterator
         }
 
         throw new FreeformException(
-            $this->translate("Field with ID {id} not found", ["id" => $id])
+            $this->translate('Field with ID {id} not found', ['id' => $id])
         );
     }
 
@@ -188,11 +199,11 @@ class Layout implements \JsonSerializable, \Iterator
     {
         foreach ($this->layoutData as $pageIndex => $page) {
             foreach ($page as $rowIndex => $row) {
-                foreach ($row["columns"] as $columnIndex => $column) {
+                foreach ($row['columns'] as $columnIndex => $column) {
                     if ($column === $field->getHash()) {
-                        unset($this->layoutData[$pageIndex][$rowIndex]["columns"][$columnIndex]);
-                        $this->layoutData[$pageIndex][$rowIndex]["columns"] = array_values(
-                            $this->layoutData[$pageIndex][$rowIndex]["columns"]
+                        unset($this->layoutData[$pageIndex][$rowIndex]['columns'][$columnIndex]);
+                        $this->layoutData[$pageIndex][$rowIndex]['columns'] = array_values(
+                            $this->layoutData[$pageIndex][$rowIndex]['columns']
                         );
                         break;
                     }
@@ -202,7 +213,7 @@ class Layout implements \JsonSerializable, \Iterator
 
         foreach ($this->layoutData as $pageIndex => $page) {
             foreach ($page as $rowIndex => $row) {
-                if (count($row["columns"]) === 0) {
+                if (count($row['columns']) === 0) {
                     unset($this->layoutData[$pageIndex][$rowIndex]);
                     $this->layoutData[$pageIndex] = array_values($this->layoutData[$pageIndex]);
                 }
@@ -225,7 +236,7 @@ class Layout implements \JsonSerializable, \Iterator
         }
 
         throw new FreeformException(
-            $this->translate("Field with handle '{handle}' not found", ["handle" => $handle])
+            $this->translate("Field with handle '{handle}' not found", ['handle' => $handle])
         );
     }
 
@@ -251,7 +262,7 @@ class Layout implements \JsonSerializable, \Iterator
         }
 
         throw new FreeformException(
-            $this->translate("Field with hash '{hash}' not found", ["hash" => $hash])
+            $this->translate("Field with hash '{hash}' not found", ['hash' => $hash])
         );
     }
 
@@ -272,45 +283,49 @@ class Layout implements \JsonSerializable, \Iterator
      */
     private function buildLayout(FormValueContext $formValueContext)
     {
-        $pageObjects       = [];
-        $allRows           = [];
-        $allFields         = [];
-        $hiddenFields      = [];
-        $recipientFields   = [];
-        $fileUploadFields  = [];
-        $mailingListFields = [];
+        $datetimeClass  = 'Solspace\Addons\FreeformNext\Library\Pro\Fields\DatetimeField';
+        $datetimeExists = class_exists($datetimeClass);
+
+        $hasDatepickerEnabledFields = false;
+        $pageObjects                = [];
+        $allRows                    = [];
+        $allFields                  = [];
+        $hiddenFields               = [];
+        $recipientFields            = [];
+        $fileUploadFields           = [];
+        $mailingListFields          = [];
 
         foreach ($this->layoutData as $pageIndex => $rows) {
             if (!is_array($rows)) {
                 throw new ComposerException(
                     $this->translate(
-                        "Layout page {pageIndex} does not contain a row array",
-                        ["pageIndex" => $pageIndex]
+                        'Layout page {pageIndex} does not contain a row array',
+                        ['pageIndex' => $pageIndex]
                     )
                 );
             }
 
             $rowObjects = $pageFields = [];
             foreach ($rows as $rowIndex => $rowData) {
-                if (!isset($rowData["id"])) {
+                if (!isset($rowData['id'])) {
                     throw new ComposerException(
                         $this->translate(
-                            "Layout page {pageIndex} row {rowIndex} does not contain its ID",
-                            ["pageIndex" => $pageIndex, "rowIndex" => $rowIndex]
+                            'Layout page {pageIndex} row {rowIndex} does not contain its ID',
+                            ['pageIndex' => $pageIndex, 'rowIndex' => $rowIndex]
                         )
                     );
                 }
 
-                if (!isset($rowData["columns"]) || !is_array($rowData["columns"])) {
+                if (!isset($rowData['columns']) || !is_array($rowData['columns'])) {
                     throw new ComposerException(
                         $this->translate(
-                            "Layout page {pageIndex} row {rowIndex} does not contain a list of columns",
-                            ["pageIndex" => $pageIndex, "rowIndex" => $rowIndex]
+                            'Layout page {pageIndex} row {rowIndex} does not contain a list of columns',
+                            ['pageIndex' => $pageIndex, 'rowIndex' => $rowIndex]
                         )
                     );
                 }
 
-                $columns = $rowData["columns"];
+                $columns = $rowData['columns'];
 
                 $fields = [];
                 foreach ($columns as $fieldHash) {
@@ -341,6 +356,12 @@ class Layout implements \JsonSerializable, \Iterator
                         $recipientFields[] = $field;
                     }
 
+                    if ($datetimeExists && get_class($field) === $datetimeClass) {
+                        if ($field->isUseDatepicker()) {
+                            $hasDatepickerEnabledFields = true;
+                        }
+                    }
+
                     $pageFields[] = $field;
                     $allFields[]  = $field;
                 }
@@ -349,7 +370,7 @@ class Layout implements \JsonSerializable, \Iterator
                     continue;
                 }
 
-                $rowId = $rowData["id"];
+                $rowId = $rowData['id'];
                 $row   = new Row($rowId, $fields);
 
                 $rowObjects[] = $row;
@@ -362,18 +383,19 @@ class Layout implements \JsonSerializable, \Iterator
             $pageObjects[] = $page;
         }
 
-        $this->pages             = $pageObjects;
-        $this->rows              = $allRows;
-        $this->fields            = $allFields;
-        $this->hiddenFields      = $hiddenFields;
-        $this->recipientFields   = $recipientFields;
-        $this->fileUploadFields  = $fileUploadFields;
-        $this->mailingListFields = $mailingListFields;
+        $this->pages                      = $pageObjects;
+        $this->rows                       = $allRows;
+        $this->fields                     = $allFields;
+        $this->hiddenFields               = $hiddenFields;
+        $this->recipientFields            = $recipientFields;
+        $this->fileUploadFields           = $fileUploadFields;
+        $this->mailingListFields          = $mailingListFields;
+        $this->hasDatepickerEnabledFields = $hasDatepickerEnabledFields;
     }
 
     /**
      * @param string $string
-     * @param array $variables
+     * @param array  $variables
      *
      * @return string
      */
@@ -441,7 +463,7 @@ class Layout implements \JsonSerializable, \Iterator
      */
     public function valid()
     {
-        return !is_null($this->key()) && $this->key() !== false;
+        return null !== $this->key() && $this->key() !== false;
     }
 
     /**
@@ -453,6 +475,6 @@ class Layout implements \JsonSerializable, \Iterator
      */
     public function rewind()
     {
-        rewind($this->pages);
+        reset($this->pages);
     }
 }

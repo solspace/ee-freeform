@@ -8,7 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import BasePropertyEditor from "./BasePropertyEditor";
 import * as FieldTypes from "../../constants/FieldTypes";
 import {connect} from "react-redux";

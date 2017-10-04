@@ -37,20 +37,21 @@ class TextField extends AbstractField implements SingleValueInterface, Placehold
      *
      * @return string
      */
-    public function getInputHtml()
+    protected function getInputHtml()
     {
-        $attributes = $this->getCustomAttributes();
+        $attributes  = $this->getCustomAttributes();
+        $classString = $attributes->getClass() . ' ' . $this->getInputClassString();
 
         return '<input '
-            . $this->getAttributeString("name", $this->getHandle())
-            . $this->getAttributeString("type", $this->getType())
-            . $this->getAttributeString("id", $this->getIdAttribute())
-            . $this->getAttributeString("class", $attributes->getClass())
+            . $this->getAttributeString('name', $this->getHandle())
+            . $this->getAttributeString('type', 'text')
+            . $this->getAttributeString('id', $this->getIdAttribute())
+            . $this->getAttributeString('class', $classString)
             . $this->getAttributeString(
-                "placeholder",
+                'placeholder',
                 $this->translate($attributes->getPlaceholder() ?: $this->getPlaceholder())
             )
-            . $this->getAttributeString("value", $this->getValue(), false)
+            . $this->getAttributeString('value', $this->getValue(), false)
             . $this->getRequiredAttribute()
             . $attributes->getInputAttributesAsString()
             . '/>';
