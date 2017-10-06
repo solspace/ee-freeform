@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.1.1 (October 6, 2017) <a href="#v1-1-1" id="v1-1-1" class="docs-anchor">#</a>
+* Fixed a bug where fresh installs would error after install.
+* Fixed a bug where some field specific property variables were unavailable for parsing on front end in manual implementations.
+
 ### 1.1.0 (October 3, 2017) <a href="#v1-1-0" id="v1-1-0" class="docs-anchor">#</a>
 * Added new Field types for Pro version: Confirmation, Date & Time, Number, Phone, Rating, Regex, Website.
 * Added advanced Quick Export and Export Profiles options in Pro version.
