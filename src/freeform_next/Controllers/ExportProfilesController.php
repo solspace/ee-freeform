@@ -351,27 +351,6 @@ class ExportProfilesController extends Controller
                     $labels[$id] = $item['label'];
                 }
 
-                foreach ($data as $index => $item) {
-                    foreach ($item as $fieldId => $value) {
-                        if (!preg_match('/^' . SubmissionModel::FIELD_COLUMN_PREFIX . '(\d+)$/', $fieldId, $matches)) {
-                            continue;
-                        }
-
-                        try {
-                            $field = $form->getLayout()->getFieldById($matches[1]);
-
-                            if ($field instanceof MultipleValueInterface) {
-                                $value = json_decode($value ?: '[]', true);
-                                $value = implode(', ', $value);
-
-                                $data[$index][$fieldId] = $value;
-                            }
-                        } catch (FreeformException $e) {
-                            continue;
-                        }
-                    }
-                }
-
                 $this->getExportProfileService()->exportCsv($form, $labels, $data);
         }
     }

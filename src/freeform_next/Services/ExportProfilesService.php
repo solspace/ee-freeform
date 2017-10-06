@@ -2,9 +2,11 @@
 
 namespace Solspace\Addons\FreeformNext\Services;
 
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\DataExport\ExportDataCSV;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
+use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 
 class ExportProfilesService
 {
@@ -15,6 +17,8 @@ class ExportProfilesService
      */
     public function exportCsv(Form $form, array $labels, array $data)
     {
+        $data = $this->normalizeArrayData($form, $data);
+
         $csvData = $data;
         array_unshift($csvData, array_values($labels));
 
@@ -37,6 +41,8 @@ class ExportProfilesService
      */
     public function exportJson(Form $form, array $data)
     {
+        $data = $this->normalizeArrayData($form, $data, false);
+
         $export = [];
         foreach ($data as $itemList) {
             $sub = [];
@@ -62,6 +68,8 @@ class ExportProfilesService
      */
     public function exportText(Form $form, array $data)
     {
+        $data = $this->normalizeArrayData($form, $data);
+
         $output = '';
         foreach ($data as $itemList) {
             foreach ($itemList as $id => $value) {
@@ -84,6 +92,8 @@ class ExportProfilesService
      */
     public function exportXml(Form $form, array $data)
     {
+        $data = $this->normalizeArrayData($form, $data);
+
         $xml = new \SimpleXMLElement('<root/>');
 
         foreach ($data as $itemList) {
@@ -176,6 +186,41 @@ class ExportProfilesService
         }
 
         return $cache[$id];
+    }
+
+    /**
+     * @param Form  $form
+     * @param array $data
+     * @param bool  $flattenArrays
+     *
+     * @return array
+     */
+    private function normalizeArrayData(Form $form, array $data, $flattenArrays = true)
+    {
+        foreach ($data as $index => $item) {
+            foreach ($item as $fieldId => $value) {
+                if (!preg_match('/^' . SubmissionModel::FIELD_COLUMN_PREFIX . '(\d+)$/', $fieldId, $matches)) {
+                    continue;
+                }
+
+                try {
+                    $field = $form->getLayout()->getFieldById($matches[1]);
+
+                    if ($field instanceof MultipleValueInterface) {
+                        $value = json_decode($value ?: '[]', true);
+                        if ($flattenArrays) {
+                            $value = implode(', ', $value);
+                        }
+
+                        $data[$index][$fieldId] = $value;
+                    }
+                } catch (FreeformException $e) {
+                    continue;
+                }
+            }
+        }
+
+        return $data;
     }
 
     /**
