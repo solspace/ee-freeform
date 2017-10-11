@@ -344,7 +344,7 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
     public function convertCustomFieldValue(FieldObject $fieldObject, $value = null)
     {
         if ($fieldObject->getType() === FieldObject::TYPE_ARRAY) {
-            return implode(';', $value);
+            return is_array($value) ? implode(';', $value) : $value;
         }
 
         return parent::convertCustomFieldValue($fieldObject, $value);
