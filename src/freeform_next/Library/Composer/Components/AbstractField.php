@@ -12,6 +12,7 @@
 namespace Solspace\Addons\FreeformNext\Library\Composer\Components;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Attributes\CustomFieldAttributes;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\InputOnlyInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoRenderInterface;
@@ -100,6 +101,11 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
 
         $storedValue = $formValueContext->getStoredValue($field->getHandle(), $field->getValue());
         $field->setValue($storedValue);
+
+        if ($field instanceof CheckboxField && $formValueContext->hasFormBeenPosted() && !$formValueContext->hasPageBeenPosted()) {
+            $storedValue = $formValueContext->getStoredValue($field->getHandle());
+            $field->setIsCheckedByPost($storedValue);
+        }
 
         return $field;
     }

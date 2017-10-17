@@ -53,6 +53,30 @@ class CheckboxField extends AbstractField implements SingleValueInterface, Input
     }
 
     /**
+     * @param bool $isChecked
+     *
+     * @return $this
+     */
+    public function setIsChecked($isChecked)
+    {
+        $this->checked = (bool) $isChecked;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $isChecked
+     *
+     * @return $this
+     */
+    public function setIsCheckedByPost($isChecked)
+    {
+        $this->checkedByPost = (bool) $isChecked;
+
+        return $this;
+    }
+
+    /**
      * Outputs the HTML of input
      *
      * @return string
@@ -81,6 +105,22 @@ class CheckboxField extends AbstractField implements SingleValueInterface, Input
             . '/>';
 
         return $output;
+    }
+
+    /**
+     * @param bool $optionsAsValues
+     *
+     * @return string
+     */
+    public function getValueAsString($optionsAsValues = true)
+    {
+        if ($optionsAsValues) {
+            $value = (int) $this->getValue() === 1 ? $this->getStaticValue() : $this->getValue();
+
+            return (string) $value;
+        }
+
+        return (string) $this->getValue();
     }
 
     /**

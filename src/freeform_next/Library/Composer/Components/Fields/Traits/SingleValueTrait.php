@@ -60,10 +60,6 @@ trait SingleValueTrait
             $this->options = $updatedOptions;
         }
 
-        if ($this instanceof CheckboxField && $value !== $this->getStaticValue()) {
-            $this->checkedByPost = (bool) $value;
-        }
-
         return $this;
     }
 }
