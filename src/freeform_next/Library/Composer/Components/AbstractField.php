@@ -102,7 +102,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
         $storedValue = $formValueContext->getStoredValue($field->getHandle(), $field->getValue());
         $field->setValue($storedValue);
 
-        if ($field instanceof CheckboxField && $formValueContext->hasFormBeenPosted() && !$formValueContext->hasPageBeenPosted()) {
+        if ($field instanceof CheckboxField && $formValueContext->hasFormBeenPosted()) {
             $storedValue = $formValueContext->getStoredValue($field->getHandle());
             $field->setIsCheckedByPost($storedValue);
         }
