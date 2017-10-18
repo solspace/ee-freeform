@@ -208,7 +208,7 @@ class ExportProfilesService
 
                     if ($field instanceof MultipleValueInterface) {
                         $value = json_decode($value ?: '[]', true);
-                        if ($flattenArrays) {
+                        if ($flattenArrays && is_array($value)) {
                             $value = implode(', ', $value);
                         }
 
