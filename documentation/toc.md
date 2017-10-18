@@ -4,6 +4,7 @@
 	* [Changelog](changelog.md)
 	* [Settings](settings.md)
 	* [Demo Templates](demo-templates.md)
+	* [Common Issues](common-issues.md)
 
 * ### Getting Started
 	* [Introduction](introduction.md)
