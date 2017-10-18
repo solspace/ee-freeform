@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.1.2 (October XX, 2017) <a href="#v1-1-2" id="v1-1-2" class="docs-anchor">#</a>
+* Fixed a bug where single Checkbox fields would not remember their selection if the form errored or if the submitter went back a page in multi-page forms.
+* Fixed a bug where fields with array data would display as a literal array when exporting in CSV.
+* Fixed a bug where an array of data in select fields for Salesforce API integration could cause an error.
+
 ### 1.1.1 (October 6, 2017) <a href="#v1-1-1" id="v1-1-1" class="docs-anchor">#</a>
 * Fixed a bug where fresh installs would error after install.
 * Fixed a bug where some field specific property variables were unavailable for parsing on front end in manual implementations.
