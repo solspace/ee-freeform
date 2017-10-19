@@ -17,6 +17,8 @@ Check out this documentation resource to troubleshoot common problems or find an
 ### Common Questions <a href="#questions" id="questions" class="docs-anchor">#</a>
 
 * [How many sites can I use Freeform on?](#site-license)
+* [If I switch from Classic to Next, will all of my data move over with it too?](#classic-next-transition)
+* [Can I run Freeform Classic and Next at the same time?](#classic-next)
 * [What kind of email notifications can I send?](#email-notification-options)
 * [How many fields can I have?](#how-many-fields)
 * [Can I show POST data on the success page?](#form-post-data)
@@ -118,6 +120,16 @@ If you're seeing any errors as follows:
 ## How many sites can I use Freeform on? <a href="#site-license" id="site-license" class="docs-anchor">#</a>
 
 Each purchase of Freeform entitles you to use it on one site (including dev/staging copies of the site). For every additional site you wish to use it on, you'll need to purchase additional licenses.
+
+
+## If I switch from Classic to Next, will all of my data move over with it too? <a href="#classic-next-transition" id="classic-next-transition" class="docs-anchor">#</a>
+
+Freeform Next was completely rebuilt from scratch, and while it of course contains much of the same functionality as Classic, it's actually a whole new add-on. Because of this, along with the drastic changes we made in the architecture of Next, there currently is no migration path. We are however in the process of making a migration path that will be available in the not-to-distant future. In the meantime, because Freeform Next has a different module name and the add-on folder is named `freeform_next`, it means that it won't conflict with classic Freeform installs in anyway. This allows you to explore and try Freeform Next out and/or transition from Classic to Next at a comfortable pace. You could even keep Classic around for legacy viewing of submissions too.
+
+
+## Can I run Freeform Classic and Next at the same time? <a href="#classic-next" id="classic-next" class="docs-anchor">#</a>
+
+The simple answer is, YES! The longer answer is... Freeform Next has a different module name and the add-on folder is named `freeform_next`. This means that it won't conflict with classic Freeform installs in anyway. This allows you to explore and try Freeform Next out and/or transition from Classic to Next at a comfortable pace. You could even keep Classic around for legacy viewing of submissions too (as there currently isn't a migration path from Classic to Next yet).
 
 
 ## What kind of email notifications can I send? <a href="#email-notification-options" id="email-notification-options" class="docs-anchor">#</a>
