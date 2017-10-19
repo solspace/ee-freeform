@@ -65,6 +65,9 @@ class FormValueContext implements \JsonSerializable
     /** @var bool */
     private $pageIsPosted;
 
+    /** @var bool */
+    private $honeypotValid;
+
     /**
      * @param string $hash
      *
@@ -215,25 +218,31 @@ class FormValueContext implements \JsonSerializable
      */
     public function isHoneypotValid()
     {
-        /** @var array $postValues */
-        $postValues = $_POST;
+        if (null === $this->honeypotValid) {
+            /** @var array $postValues */
+            $postValues = $_POST;
 
-        foreach ($postValues as $key => $value) {
-            if (strpos($key, Honeypot::NAME_PREFIX) === 0) {
-                $honeypotList = $this->getHoneypotList();
-                foreach ($honeypotList as $honeypot) {
-                    $hasMatchingName = $key === $honeypot->getName();
-                    $hasMatchingHash = $value === $honeypot->getHash();
-                    if ($hasMatchingName && $hasMatchingHash) {
-                        return true;
+            foreach ($postValues as $key => $value) {
+                if (strpos($key, Honeypot::NAME_PREFIX) === 0) {
+                    $honeypotList = $this->getHoneypotList();
+                    foreach ($honeypotList as $honeypot) {
+                        $hasMatchingName = $key === $honeypot->getName();
+                        $hasMatchingHash = $value === $honeypot->getHash();
+                        if ($hasMatchingName && $hasMatchingHash) {
+                            $this->honeypotValid = true;
+
+                            $this->removeHoneypot($honeypot);
+
+                            return $this->honeypotValid;
+                        }
                     }
                 }
-
-                return false;
             }
+
+            $this->honeypotValid = false;
         }
 
-        return false;
+        return $this->honeypotValid;
     }
 
     /**
@@ -535,6 +544,26 @@ class FormValueContext implements \JsonSerializable
         }
 
         return $cleanList;
+    }
+
+    /**
+     * Removes a honeypot from the list once it has been validated
+     *
+     * @param Honeypot $honeypot
+     */
+    private function removeHoneypot(Honeypot $honeypot)
+    {
+        $list = $this->getHoneypotList();
+
+        foreach ($list as $index => $listHoneypot) {
+            if ($listHoneypot->getName() === $honeypot->getName()) {
+                unset($list[$index]);
+
+                break;
+            }
+        }
+
+        $this->updateHoneypotList($list);
     }
 
     /**
