@@ -59,7 +59,7 @@ If you're wanting to simply render a complete form based on Composer layout and 
 * `input_attributes` <a href="#param-inputattributes" id="param-inputattributes" class="docs-anchor">#</a>
 	* Attributes which will be added to all input fields.
 	* Ex: `input_attributes:readonly="true"`, `input_attributes:data-field-id="test"`
-* `use_required_attribute: yes` <a href="#param-userequiredattribute" id="param-userequiredattribute" class="docs-anchor">#</a>
+* `use_required_attribute="yes"` <a href="#param-userequiredattribute" id="param-userequiredattribute" class="docs-anchor">#</a>
 	* Adds `required` attribute to input fields that have been set to be required in Composer.
 * `dynamic_notification_recipients` <a href="#param-dynamicnotificationrecipients" id="param-dynamicnotificationrecipients" class="docs-anchor">#</a>
 	* Allows using a dynamic template level notification for a more fine-grained control.
