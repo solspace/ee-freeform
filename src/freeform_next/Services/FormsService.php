@@ -112,6 +112,11 @@ class FormsService implements FormHandlerInterface
             $output .= '<script type="text/javascript">' . $form->getHoneypotJavascriptScript() . '</script>';
         }
 
+        // Add the form submit disable logic
+        $formSubmitJs = file_get_contents(__DIR__ . '/../javascript/form-submit.js');
+        $formSubmitJs = str_replace('{{FORM_ANCHOR}}', $form->getAnchor(), $formSubmitJs);
+        $output .= '<script type="text/javascript">' . $formSubmitJs . '</script>';
+
         if ($form->getLayout()->hasDatepickerEnabledFields()) {
             static $datepickerLoaded;
 
