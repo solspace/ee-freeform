@@ -17,6 +17,8 @@ Check out this documentation resource to troubleshoot common problems or find an
 ### Common Questions <a href="#questions" id="questions" class="docs-anchor">#</a>
 
 * [How many sites can I use Freeform on?](#site-license)
+* [If I switch from Classic to Next, will all of my data move over with it too?](#classic-next-transition)
+* [Can I run Freeform Classic and Next at the same time?](#classic-next)
 * [What kind of email notifications can I send?](#email-notification-options)
 * [How many fields can I have?](#how-many-fields)
 * [Can I show POST data on the success page?](#form-post-data)
@@ -43,6 +45,7 @@ The most common issue users run into is email notifications not sending out prop
 		* `{form:id}` - the ID of the form
 * Verify that the fields you're manually calling (if applicable) actually exist for the form and contain data. For example, if you include a field such as `{full_name}` in the **From Name** input field, but your form uses something like `{first_name}` and `{last_name}` instead, it will result in a silent error and failure of the email notification sending.
 * Have you tried testing this inside the demo templates that come included with Freeform? This will at least help narrow things down to possibly an error in your template code if applicable.
+* Does your base email address for your site's outgoing email (**CP** -> **Settings** -> **Outgoing Email** -> **Address** field) have an email address in it? It's a required field, but we've seen many sites with a blank value.
 * Are you sending **to** and **from** the same email address or email address domain? For example, sending FROM *bob@acmewidgets.com* TO *bob@acmewidgets.com*, OR FROM *bob@acmewidgets.com* TO *larry@acmewidgets.com*. Sometimes the email server has very aggressive spam protection and knows that the email is not actually coming from that email address, and blocks the email altogether.
 * Can you send email with EE's Communicate feature? Freeform uses ExpressionEngine's Email service, so if that doesn't work, then Freeform won't either. To check this, in the Control Panel go to **Developer** -> **Utilities** -> **Communicate**, and then try sending an email. You can read more about [troubleshooting email issues on EE's documentation page](https://docs.expressionengine.com/v3/troubleshooting/email/emails_not_reaching_destination.html).
 * To be extra thorough, you can also try sending notifications with EE's simple [Contact Form](https://docs.expressionengine.com/latest/add-ons/email/contact_form.html) feature.
@@ -117,6 +120,16 @@ If you're seeing any errors as follows:
 ## How many sites can I use Freeform on? <a href="#site-license" id="site-license" class="docs-anchor">#</a>
 
 Each purchase of Freeform entitles you to use it on one site (including dev/staging copies of the site). For every additional site you wish to use it on, you'll need to purchase additional licenses.
+
+
+## If I switch from Classic to Next, will all of my data move over with it too? <a href="#classic-next-transition" id="classic-next-transition" class="docs-anchor">#</a>
+
+Freeform Next was completely rebuilt from scratch, and while it of course contains much of the same functionality as Classic, it's actually a whole new add-on. Because of this, along with the drastic changes we made in the architecture of Next, there currently is no migration path. We are however in the process of making a migration path that will be available in the not-to-distant future. In the meantime, because Freeform Next has a different module name and the add-on folder is named `freeform_next`, it means that it won't conflict with classic Freeform installs in anyway. This allows you to explore and try Freeform Next out and/or transition from Classic to Next at a comfortable pace. You could even keep Classic around for legacy viewing of submissions too.
+
+
+## Can I run Freeform Classic and Next at the same time? <a href="#classic-next" id="classic-next" class="docs-anchor">#</a>
+
+The simple answer is, YES! The longer answer is... Freeform Next has a different module name and the add-on folder is named `freeform_next`. This means that it won't conflict with classic Freeform installs in anyway. This allows you to explore and try Freeform Next out and/or transition from Classic to Next at a comfortable pace. You could even keep Classic around for legacy viewing of submissions too (as there currently isn't a migration path from Classic to Next yet).
 
 
 ## What kind of email notifications can I send? <a href="#email-notification-options" id="email-notification-options" class="docs-anchor">#</a>
