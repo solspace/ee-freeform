@@ -11,6 +11,7 @@
 
 namespace Solspace\Addons\FreeformNext\Services;
 
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SubmitField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Database\FormHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\EETags\FormToTagDataTransformer;
@@ -114,7 +115,11 @@ class FormsService implements FormHandlerInterface
 
         // Add the form submit disable logic
         $formSubmitJs = file_get_contents(__DIR__ . '/../javascript/form-submit.js');
-        $formSubmitJs = str_replace('{{FORM_ANCHOR}}', $form->getAnchor(), $formSubmitJs);
+        $formSubmitJs = str_replace(
+            ['{{FORM_ANCHOR}}', '{{PREV_BUTTON_NAME}}'],
+            [$form->getAnchor(), SubmitField::PREVIOUS_PAGE_INPUT_NAME],
+            $formSubmitJs
+        );
         $output .= '<script type="text/javascript">' . $formSubmitJs . '</script>';
 
         if ($form->getLayout()->hasDatepickerEnabledFields()) {
