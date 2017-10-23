@@ -222,6 +222,16 @@ class SettingsController extends Controller
                                     ],
                                 ],
                             ],
+                            [
+                                'title'  => 'Disable to not disable lol',
+                                'desc'   => 'Disable to not disable or not to disable to disable, that is the question.',
+                                'fields' => [
+                                    'formSubmitDisable' => [
+                                        'type'  => 'yes_no',
+                                        'value' => $settings->isFormSubmitDisable() ? 'y' : 'n',
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ]

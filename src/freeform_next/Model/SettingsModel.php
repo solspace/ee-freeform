@@ -28,6 +28,7 @@ use Symfony\Component\Finder\SplFileInfo;
  * @property string $license
  * @property string $sessionStorage
  * @property bool   $defaultTemplates
+ * @property bool   $formSubmitDisable
  */
 class SettingsModel extends Model
 {
@@ -48,6 +49,7 @@ class SettingsModel extends Model
     const DEFAULT_NOTIFICATION_CREATION_METHOD = self::NOTIFICATION_CREATION_METHOD_DATABASE;
     const DEFAULT_LICENSE                      = null;
     const DEFAULT_DEFAULT_TEMPLATES            = true;
+    const DEFAULT_FORM_SUBMIT_DISABLE          = true;
 
     const SESSION_STORAGE_SESSION  = 'session';
     const SESSION_STORAGE_DATABASE = 'db';
@@ -66,6 +68,7 @@ class SettingsModel extends Model
     protected $license;
     protected $sessionStorage;
     protected $defaultTemplates;
+    protected $formSubmitDisable;
 
     /**
      * Creates a Settings Model
@@ -88,6 +91,7 @@ class SettingsModel extends Model
                 'license'                    => self::DEFAULT_LICENSE,
                 'sessionStorage'             => self::SESSION_STORAGE_SESSION,
                 'defaultTemplates'           => self::DEFAULT_DEFAULT_TEMPLATES,
+                'formSubmitDisable'          => self::DEFAULT_FORM_SUBMIT_DISABLE,
             ]
         );
 
@@ -294,6 +298,14 @@ class SettingsModel extends Model
     public function isDefaultTemplates()
     {
         return (bool) $this->defaultTemplates;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFormSubmitDisable()
+    {
+        return (bool) $this->formSubmitDisable;
     }
 
     /**

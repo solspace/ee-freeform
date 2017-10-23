@@ -102,6 +102,14 @@ class SettingsService
     }
 
     /**
+     * @return bool
+     */
+    public function isFormSubmitDisable()
+    {
+        return $this->getSettingsModel()->isFormSubmitDisable();
+    }
+
+    /**
      * @return SessionInterface
      */
     public function getSessionStorageImplementation()

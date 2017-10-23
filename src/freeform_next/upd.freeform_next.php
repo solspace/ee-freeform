@@ -104,6 +104,14 @@ class Freeform_next_upd extends AddonUpdater
                 ');
         }
 
+        if (version_compare($previousVersion, '1.1.3', '<')) {
+            ee()->db
+                ->query('
+                    ALTER TABLE exp_freeform_next_settings
+                    ADD COLUMN `formSubmitDisable` TINYINT(1) DEFAULT 1 AFTER `defaultTemplates`
+                ');
+        }
+
         return true;
     }
 
