@@ -8,6 +8,6 @@ form.addEventListener('submit', () => {
 
     setTimeout(function () {
       submit.disabled = false;
-    }, 10000);
+    }, 600000);
   }
 });
