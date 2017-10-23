@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.1.3 (October XX, 2017) <a href="#v1-1-3" id="v1-1-3" class="docs-anchor">#</a>
+* Added auto-disable Submit button feature once a user clicks Submit (and a setting for it in control panel).
+* Updated `form_attributes` parameter to allow no attribute value (to achieve `novalidate=` instead of `novalidate="true"`, etc).
+* Fixed a bug where Freeform was allowing double (or more) submitting of forms if users kept clicking the Submit button while it was loading.
+
 ### 1.1.2 (October 18, 2017) <a href="#v1-1-2" id="v1-1-2" class="docs-anchor">#</a>
 * Fixed a bug where single Checkbox fields would not remember their selection if the form errored or if the submitter went back a page in multi-page forms.
 * Fixed a bug where fields with array data would display as a literal array when exporting in CSV.

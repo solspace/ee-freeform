@@ -55,10 +55,11 @@ If you're wanting to simply render a complete form based on Composer layout and 
 		* If a field uses an `override_value` attribute, it will take precedence over the value specified in this attribute.
 * `form_attributes` <a href="#param-formattributes" id="param-formattributes" class="docs-anchor">#</a>
 	* Attributes which will be added to the form.
-	* Ex: `form_attributes:novalidate="true"`, `form_attributes:data-form-id="test"`
+	* E.g. `form_attributes:novalidate="true"`, `form_attributes:data-form-id="test"`
+	* To achieve something like `<form novalidate>`, just specify `form_attributes:novalidate` instead of `form_attributes:novalidate="true"`.
 * `input_attributes` <a href="#param-inputattributes" id="param-inputattributes" class="docs-anchor">#</a>
 	* Attributes which will be added to all input fields.
-	* Ex: `input_attributes:readonly="true"`, `input_attributes:data-field-id="test"`
+	* E.g. `input_attributes:readonly="true"`, `input_attributes:data-field-id="test"`
 * `use_required_attribute="yes"` <a href="#param-userequiredattribute" id="param-userequiredattribute" class="docs-anchor">#</a>
 	* Adds `required` attribute to input fields that have been set to be required in Composer.
 * `dynamic_notification_recipients` <a href="#param-dynamicnotificationrecipients" id="param-dynamicnotificationrecipients" class="docs-anchor">#</a>

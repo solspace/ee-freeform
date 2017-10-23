@@ -1,6 +1,6 @@
 # Settings
 
-Freeform Next includes several settings that allow you to customize your form management experience. To adjust your settings, click the **Settings** menu item while in the Freeform Next plugin, or go to **Settings > Plugins > Freeform** and click the settings cog icon.
+Freeform Next includes several settings that allow you to customize your form management experience. To adjust your settings, click the **Settings** menu item while in the Freeform Next plugin, or go to **CP > Developer > Add-On Manager > Freeform Next > Settings**.
 
 [![General Settings](images/cp_settings-general.png)](images/cp_settings-general.png)
 
@@ -13,8 +13,16 @@ The settings allow you to adjust:
 	* **Spam Protection** <a href="#spam-protection" id="spam-protection" class="docs-anchor">#</a>
 		* Freeform includes its own Javascript-based honeypot spam protection. This is enabled by default, but can be disabled here.
 		* For more information, visit the [Spam Protection documentation](spam-protection.md).
+	* **Session Storage Mechanism** <a href="#session-storage" id="session-storage" class="docs-anchor">#</a>
+		* Choose the mechanism with which session data is stored on front end submissions:
+			* **PHP Sessions** (default)
+			* **Database**
 	* **Display Order of Fields in Composer** <a href="#display-order" id="display-order" class="docs-anchor">#</a>
 		* This setting allows you to set the display order for the list of available fields in Composer.
+	* **Include Default Freeform Formatting Templates** <a href="#include-default-templates" id="include-default-templates" class="docs-anchor">#</a>
+		* Disable this to hide the default Freeform formatting templates in the Formatting Template options list inside Composer.
+	* **Disable Submit Button on Form Submit?** <a href="#disable-submit" id="disable-submit" class="docs-anchor">#</a>
+		* Enable this to automatically disable the form's submit button when the user submits the form. This will prevent the form from double-submitting.
 * *Formatting Templates* <a href="#formatting-templates" id="formatting-templates" class="docs-anchor">#</a>
 	* **Directory Path** <a href="#formatting-directory-path" id="formatting-directory-path" class="docs-anchor">#</a>
 		* When using custom formatting templates for your forms, you'll need to specify where your HTML templates are stored.
