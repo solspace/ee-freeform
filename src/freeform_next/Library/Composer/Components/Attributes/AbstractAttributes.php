@@ -62,9 +62,9 @@ abstract class AbstractAttributes
      *
      * @return string
      */
-    protected final function getAttributeStringFromArray(array $array)
+    final protected function getAttributeStringFromArray(array $array)
     {
-        $attributeString = "";
+        $attributeString = '';
 
         foreach ($array as $key => $value) {
             if (is_bool($value) && $value) {
@@ -74,7 +74,7 @@ abstract class AbstractAttributes
             }
         }
 
-        return $attributeString ? " " . $attributeString : "";
+        return $attributeString ? ' ' . $attributeString : '';
     }
 
     /**
@@ -82,14 +82,14 @@ abstract class AbstractAttributes
      *
      * @return string
      */
-    protected final function extractClassValue($value)
+    final protected function extractClassValue($value)
     {
         if (empty($value)) {
-            return "";
+            return '';
         }
 
         if (is_array($value)) {
-            $value = implode(" ", $value);
+            $value = implode(' ', $value);
         }
 
         return $value;

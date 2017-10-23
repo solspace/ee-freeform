@@ -8,7 +8,8 @@ use Stringy\Stringy;
 
 class FormTagParamUtilities
 {
-    const PATTERN_ARRAY_ATTRIBUTES = '/(override_values|input_attributes|form_attributes):([a-zA-Z_\-0-9]+)=(?:"|\')([^\'"]*)(?:"|\')/';
+    const PATTERN_ARRAY_ATTRIBUTES  = '/(override_values|input_attributes|form_attributes):([a-zA-Z_\-0-9]+)=(?:"|\')([^\'"]*)(?:"|\')?/';
+    const PATTERN_SINGLE_ATTRIBUTES = '/(input_attributes|form_attributes):([a-zA-Z_\-0-9]+)\b[^=]/';
 
     /**
      * @param Form $form
@@ -59,6 +60,19 @@ class FormTagParamUtilities
                 }
 
                 $new[$camelizedKey][$handle] = $value;
+            }
+        }
+
+        if (preg_match_all(self::PATTERN_SINGLE_ATTRIBUTES, $tagproper, $matches)) {
+            /** @var array $keys */
+            /** @var array $handles */
+            list ($_, $keys, $handles) = $matches;
+
+            foreach ($handles as $index => $handle) {
+                $key          = $keys[$index];
+                $camelizedKey = (string) Stringy::create($key)->camelize();
+
+                $new[$camelizedKey][$handle] = true;
             }
         }
 
