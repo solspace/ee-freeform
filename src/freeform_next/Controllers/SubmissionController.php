@@ -61,9 +61,9 @@ class SubmissionController extends Controller
         $page = (int) ee()->input->get('page') ?: 1;
 
         $sortDirection = ee()->input->get('sort_dir');
-        $sortDirection = $sortDirection === '0' ? 'asc' : $sortDirection;
+        $sortDirection = !$sortDirection || $sortDirection === '0' ? 'desc' : $sortDirection;
         $sortColumn    = ee()->input->get('sort_col');
-        $sortColumn    = $sortColumn === '0' ? 'id' : $sortColumn;
+        $sortColumn    = !$sortColumn || $sortColumn === '0' ? 'dateCreated' : $sortColumn;
 
         $sortVars = [
             'sort_col' => $sortColumn,
