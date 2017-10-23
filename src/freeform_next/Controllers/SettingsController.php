@@ -223,8 +223,8 @@ class SettingsController extends Controller
                                 ],
                             ],
                             [
-                                'title'  => 'Disable to not disable lol',
-                                'desc'   => 'Disable to not disable or not to disable to disable, that is the question.',
+                                'title'  => 'Disable Submit Button on Form Submit',
+                                'desc'   => 'Enable this to automatically disable the form\'s submit button when the user submits the form. This will prevent the form from double-submitting.',
                                 'fields' => [
                                     'formSubmitDisable' => [
                                         'type'  => 'yes_no',
