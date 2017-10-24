@@ -9,7 +9,7 @@ use Stringy\Stringy;
 class FormTagParamUtilities
 {
     const PATTERN_ARRAY_ATTRIBUTES  = '/(override_values|input_attributes|form_attributes):([a-zA-Z_\-0-9]+)=(?:"|\')([^\'"]*)(?:"|\')?/';
-    const PATTERN_SINGLE_ATTRIBUTES = '/(input_attributes|form_attributes):([a-zA-Z_\-0-9]+)\b[^=]/';
+    const PATTERN_SINGLE_ATTRIBUTES = '/(input_attributes|form_attributes):([a-zA-Z_\-0-9]+)(?:\s|\})/';
 
     /**
      * @param Form $form
