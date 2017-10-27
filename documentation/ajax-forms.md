@@ -23,10 +23,12 @@ The AJAX request must be a `post` request and it will return a JSON object with 
 * `errors` - An object of field handles as keys and each containing an array of error messages.
 	* An example, if the form's `firstName` and `lastName` fields were required, but not filled out, the returning object would be:
 
-```"errors": {
+```
+"errors": {
 	"firstName": ["This field is required"],
 	"lastName": ["This field is required"]
-}```
+}
+```
 
 
 ## Usage in Templates <a href="#templates" id="templates" class="docs-anchor">#</a>
@@ -86,3 +88,13 @@ Here's a fully working Bootstrap form AJAX example:
 		});
 	});
 	</script>
+
+
+If you wish to send POST data without using jQuery, be sure to set the request header manually:
+
+    const request = new XMLHttpRequest();
+
+    request.open('POST', url);
+    request.setRequestHeader('HTTP_X_REQUESTED_WITH', 'XMLHttpRequest');
+    request.setRequestHeader('Content-type', 'application/json');
+    request.send(params);
