@@ -1,9 +1,12 @@
 # Changelog
 
-### 1.1.3 (October XX, 2017) <a href="#v1-1-3" id="v1-1-3" class="docs-anchor">#</a>
+### 1.2.0 (October 26, 2017) <a href="#v1-2-0" id="v1-2-0" class="docs-anchor">#</a>
+* Added new [SharpSpring CRM](https://sharpspring.com) API integration for Pro version.
 * Added auto-disable Submit button feature once a user clicks Submit (and a setting for it in control panel).
 * Updated `form_attributes` parameter to allow no attribute value (to achieve `novalidate=` instead of `novalidate="true"`, etc).
+* Updated form submissions in Submissions list of control panel to be ordered by newest date first as default.
 * Fixed a bug where Freeform was allowing double (or more) submitting of forms if users kept clicking the Submit button while it was loading.
+* Fixed a bug where instruction text would overlap the "remove" link (if long enough) for single Checkbox fields in Composer interface.
 
 ### 1.1.2 (October 18, 2017) <a href="#v1-1-2" id="v1-1-2" class="docs-anchor">#</a>
 * Fixed a bug where single Checkbox fields would not remember their selection if the form errored or if the submitter went back a page in multi-page forms.

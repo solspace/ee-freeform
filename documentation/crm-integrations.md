@@ -10,6 +10,7 @@ The following CRM integrations are currently available for *Freeform Next Pro* (
 
 * [Salesforce](crm-api-salesforce.md)
 * [HubSpot](crm-api-hubspot.md)
+* [SharpSpring](crm-api-sharpspring.md)
 
 Some important things to know about CRM integrations are:
 

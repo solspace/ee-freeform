@@ -23,7 +23,7 @@ return [
     'name'           => 'Freeform Next',
     'module_name'    => 'Freeform_next',
     'description'    => 'Advanced form creation and data collecting.',
-    'version'        => '1.1.3',
+    'version'        => '1.2.0',
     'namespace'      => 'Solspace\Addons\FreeformNext',
     'settings_exist' => true,
     'models'         => [
