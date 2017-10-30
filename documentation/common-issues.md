@@ -6,6 +6,7 @@ Check out this documentation resource to troubleshoot common problems or find an
 
 * [Emails not sending](#emails-not-sending)
 * [Form not submitting](#form-not-submitting)
+* [Updated field options aren't showing](#field-options)
 * [Form submits very slowly](#form-submits-slow)
 * [Errors about missing files/pages in Freeform CP](#missing-files)
 * [Errors about Update Service](#update-service-errors)
@@ -65,6 +66,15 @@ A common issue customers run into is their forms not submitting successfully. Th
 * Try disabling the [Spam Protection](spam-protection.md) feature (**CP** -> **Developer** -> **Add-On Manager** -> **Freeform Next** -> **Settings** -> **General** and set *Spam Protection* setting to disabled) and test again.
 * Are you getting redirected correctly after form submission? Be sure that you don't have any routes or .htaccess rewrites that conflict with the form submission.
 * To be extra thorough, you can also try submitting EE's simple [Contact Form](https://docs.expressionengine.com/latest/add-ons/email/contact_form.html) feature.
+
+
+## Updated field options aren't showing <a href="#field-options" id="field-options" class="docs-anchor">#</a>
+
+Freeform takes a bit of a unique - but flexible - approach to [fields](fields-field-types.md). Fields are global and available to all forms, but they can also be overwritten per form. This allows you to save time reusing existing fields when making other forms, but also gives you flexibility to make adjustments to them when needed. So to clarify, you can create fields with labels and options that are common to all forms, but also override those on each form. For example, if you have a field named Cell Phone, on the form level, you can rename the field name to Mobile Phone, or if you have a Checkbox Group field with options: Option A, Option B, and Option C, you could override it to just have 2 options with values of Option A and Option B, and/or add Option D.
+
+The possibly confusing part here is that when you edit/add/remove options at Composer level for each form, they will NOT update the "master" field options/labels. And likewise, if you edit/add/remove options at the "master" field level (**Freeform** -> **Fields**), they will NOT update any existing usage of this field in the forms they're assigned to. It would be chaos if it did in either case, and prevent you from being able to tweak field labels and options per form.
+
+If you plan on building several forms with matching fields (that have matching options, etc), we strongly encourage you to create the field(s) in main Field area (**Freeform** -> **Fields**) first with all the options you'd like. Then when you construct your forms, you'll see all the default options available. It's better to think of the main fields area as defaults for new forms (or new assignments of that field to existing forms).
 
 
 ## Form submits very slowly <a href="#form-submits-slow" id="form-submits-slow" class="docs-anchor">#</a>
