@@ -141,7 +141,10 @@ class SharpSpring extends AbstractCRMIntegration
 
         $data = json_decode($response->getBody(true), true);
 
-        $fields = $data['result']['field'];
+        $fields = [];
+        if (isset($data['result']['field'])) {
+            $fields = $data['result']['field'];
+        }
 
         $fieldList = [
             new FieldObject('contact___emailAddress', 'Email', FieldObject::TYPE_STRING, false),
@@ -163,7 +166,7 @@ class SharpSpring extends AbstractCRMIntegration
         ];
 
         foreach ($fields as $field) {
-            if ($field->readOnlyValue || $field->hidden || $field->calculated) {
+            if (!$field || !is_object($field) || $field->readOnlyValue || $field->hidden || $field->calculated) {
                 continue;
             }
 
