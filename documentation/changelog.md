@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.2.1 (November 1, 2017) <a href="#v1-2-1" id="v1-2-1" class="docs-anchor">#</a>
+* Fixed a bug where Pro fieldtype fields would not show as options for mapping to API integrations.
+* Fixed a bug where the SharpSpring integration would error in some cases.
+* Fixed a bug where editing a field in main fields area (Freeform -> Fields) would error on the fieldtype selection.
+
 ### 1.2.0 (October 26, 2017) <a href="#v1-2-0" id="v1-2-0" class="docs-anchor">#</a>
 * Added new [SharpSpring CRM](https://sharpspring.com) API integration for Pro version.
 * Added auto-disable Submit button feature once a user clicks Submit (and a setting for it in control panel).

@@ -1,11 +1,11 @@
 # SharpSpring CRM API Integration
 
-This documentation page assumes you have read over the [CRM Integration Overview page](crm-integrations.md). If you have not yet read it, please do so now. We also assume that you have a [SharpSpring](https://sharpspring.com) account already. The *Freeform SharpSpring* API integration requires that you have *Freeform Next Pro*. If you currently have Freeform Next Basic, you can [purchase an upgrade to Freeform Next Pro here](https://solspace.com/expressionengine/freeform/pro).
+This documentation page assumes you have read over the [CRM Integration Overview page](crm-integrations.md). If you have not yet read it, please do so now. We also assume that you have a [SharpSpring](https://sharpspring.com) account already. The *SharpSpring* API integration requires that you have *Freeform Next Pro*. If you currently have Freeform Next Basic, you can [purchase an upgrade to Freeform Next Pro here](https://solspace.com/expressionengine/freeform/pro).
 
 SharpSpring integration includes support for the following:
 
 * Field mapping to standard and custom fields (of text/number string type only).
-* Maps data to [Contacts](#) API.
+* Maps data to **Contacts**.
 
 ## Setup Instructions <a href="#setup" id="setup" class="docs-anchor">#</a>
 
