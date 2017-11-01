@@ -85,7 +85,6 @@ class FieldModel extends Model implements \JsonSerializable
         return [
             'label'  => 'required',
             'handle' => 'required',
-            'type'   => 'required',
         ];
     }
 
