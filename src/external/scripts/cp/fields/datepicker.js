@@ -7,9 +7,8 @@ for (let i = 0; i < datepickers.length; i++) {
       enableDate = picker.dataset.datepickerEnabledate,
       clock_24h = picker.dataset.datepickerClock_24h;
 
-  console.log(!!enableTime);
-
   flatpickr(picker, {
+    disableMobile: true,
     allowInput: true,
     dateFormat: dateFormat,
     enableTime: !!enableTime,
