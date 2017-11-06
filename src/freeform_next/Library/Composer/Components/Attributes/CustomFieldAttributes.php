@@ -147,7 +147,7 @@ class CustomFieldAttributes extends AbstractAttributes
             $value = $this->formAttributes->isInstructionsBelowField();
         }
 
-        return $value;
+        return $this->getBooleanValue($value);
     }
 
     /**

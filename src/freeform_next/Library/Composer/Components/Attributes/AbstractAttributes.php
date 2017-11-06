@@ -94,4 +94,26 @@ abstract class AbstractAttributes
 
         return $value;
     }
+
+    /**
+     * @param mixed $value
+     *
+     * @return bool|null
+     */
+    final protected function getBooleanValue($value = null)
+    {
+        if ($value !== null) {
+            switch (strtolower($value)) {
+                case 'yes':
+                case '1':
+                case 'y':
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
+        return null;
+    }
 }
