@@ -13,6 +13,7 @@ namespace Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DataContainers\Option;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\ObscureValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\OptionsInterface;
 
 trait SingleValueTrait
@@ -43,11 +44,18 @@ trait SingleValueTrait
 
         if ($this instanceof OptionsInterface) {
             $updatedOptions = [];
+
+            if ($this instanceof ObscureValueInterface) {
+                $objectValue = $this->getActualValue($this->getValue());
+            } else {
+                $objectValue = $this->getValue();
+            }
+
             foreach ($this->getOptions() as $option) {
-                if (is_numeric($option->getValue()) && is_numeric($this->getValue())) {
-                    $checked = (int) $option->getValue() === (int) $this->getValue();
+                if (is_numeric($option->getValue()) && is_numeric($objectValue)) {
+                    $checked = (int) $option->getValue() === (int) $objectValue;
                 } else {
-                    $checked = $option->getValue() === $this->getValue();
+                    $checked = $option->getValue() === $objectValue;
                 }
 
                 $updatedOptions[] = new Option(
