@@ -27,11 +27,12 @@ export default class Textarea extends BasePropertyEditor {
       placeholder: PropTypes.string,
       required: PropTypes.bool,
       rows: PropTypes.number,
+      maxLength: PropTypes.number,
     }).isRequired,
   };
 
   render() {
-    const {properties: {label, value, handle, placeholder, required, rows, instructions}} = this.context;
+    const {properties: {label, value, handle, placeholder, required, rows, instructions, maxLength}} = this.context;
 
     return (
       <div>
@@ -93,6 +94,15 @@ export default class Textarea extends BasePropertyEditor {
           instructions="The number of rows in height that the textarea should have"
           name="rows"
           value={rows ? rows : 0}
+          isNumeric={true}
+          onChangeHandler={this.update}
+        />
+
+        <TextProperty
+          label="Maximum Length"
+          instructions="The number that specifies the maximum length (in characters) of a text area."
+          name="maxLength"
+          value={maxLength ? maxLength : ''}
           isNumeric={true}
           onChangeHandler={this.update}
         />

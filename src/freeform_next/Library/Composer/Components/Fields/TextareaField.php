@@ -25,6 +25,9 @@ class TextareaField extends AbstractField implements SingleValueInterface, Place
     /** @var int */
     protected $rows;
 
+    /** @var int */
+    protected $maxLength;
+
     /**
      * Return the field TYPE
      *
@@ -41,6 +44,14 @@ class TextareaField extends AbstractField implements SingleValueInterface, Place
     public function getRows()
     {
         return $this->rows;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getMaxLength()
+    {
+        return $this->maxLength;
     }
 
     /**
@@ -73,6 +84,7 @@ class TextareaField extends AbstractField implements SingleValueInterface, Place
             . $this->getAttributeString("id", $this->getIdAttribute())
             . $this->getAttributeString("class", $attributes->getClass())
             . $this->getAttributeString("rows", $this->getRows())
+            . $this->getAttributeString("maxlength", $this->getMaxLength())
             . $this->getRequiredAttribute()
             . $attributes->getInputAttributesAsString()
             . $this->getAttributeString(
