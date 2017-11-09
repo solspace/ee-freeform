@@ -112,7 +112,7 @@ The following example assumes you're including necessary [Bootstrap JS and CSS](
 					label_class="{if field:required}required{/if}"
 					error_class="help-block"
 					instructions_class="help-block"
-					instructions_below_field="1"
+					instructions_below_field="yes"
 				}
 
 			{/if}
@@ -232,7 +232,7 @@ The following example assumes you're including necessary [Foundation JS and CSS]
 					class="{if field:type == 'checkbox' OR field:type == 'mailing_list'}checkbox{if:else}form-control{/if}"
 					label_class="{if field:required}required{/if}"
 					instructions_class="help-text"
-					instructions_below_field="1"
+					instructions_below_field="yes"
 				}
 
 			{/if}

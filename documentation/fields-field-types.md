@@ -35,11 +35,13 @@ The following field types are available ([see below for additional Pro Field Typ
 	* A simple input field.
 		* Can be marked as required.
 		* Can contain default text and/or placeholder.
+		* Can set `maxlength` property.
 * **Textarea** (`textarea`) <a href="#fields-textarea" id="fields-textarea" class="docs-anchor">#</a>
 	* A simple multi-line input field.
 		* Specify the number of rows the textarea should have.
 		* Can be marked as required.
 		* Can contain default text and/or placeholder.
+		* Can set `maxlength` property.
 		* Will automatically convert newlines to line breaks when outputting data in templates or email notifications.
 * **Email** (`email`) <a href="#fields-email" id="fields-email" class="docs-anchor">#</a>
 	* An input field that is flagged in Freeform to expect an email address value as well as possibility for receiving email notifications.

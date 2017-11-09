@@ -138,7 +138,7 @@ A more complex example (accounting for checkbox groups, radios, etc) with Bootst
 					label_class="{if field:required}required{/if}"
 					error_class="help-block"
 					instructions_class="help-block"
-					instructions_below_field="1"
+					instructions_below_field="yes"
 				}
 
 			{/if}

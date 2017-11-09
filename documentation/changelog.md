@@ -1,5 +1,12 @@
 # Changelog
 
+### 1.2.2 (November XX, 2017) <a href="#v1-2-2" id="v1-2-2" class="docs-anchor">#</a>
+* Added Max Length option to be set inside Composer for Text and Textarea fields.
+* Updated Date & Time field to no longer switch to being handled by browser in Mobile view due to chances of incorrect formatting.
+* Fixed a bug where the Dynamic Recipients field would not remember which selection was chosen if the page reloaded after triggering an error.
+* Fixed a bug where the Date & Time field date picker was not working correctly for IE 11.
+* Fixed a bug where the 'instructions_below_field' parameter was not correctly accepting 'yes' and 'no'.
+
 ### 1.2.1 (November 1, 2017) <a href="#v1-2-1" id="v1-2-1" class="docs-anchor">#</a>
 * Fixed a bug where Pro fieldtype fields would not show as options for mapping to API integrations.
 * Fixed a bug where the SharpSpring integration would error in some cases.

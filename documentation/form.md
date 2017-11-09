@@ -134,7 +134,7 @@ If you're wanting to simply render a complete form based on Composer layout and 
 			* `label_class`
 			* `error_class`
 			* `instructions_class`
-			* `instructions_below_field="1"`
+			* `instructions_below_field="yes"`
 			* `input_attributes`
 				* Attributes to be added to the input field, e.g. `input_attributes:readonly="true"`, `input_attributes:data-field-id="test"`
 			* `override_value`
@@ -219,7 +219,7 @@ If you're wanting to simply render a complete form based on Composer layout and 
 			* `label_class`
 			* `error_class`
 			* `instructions_class`
-			* `instructions_below_field="1"`
+			* `instructions_below_field="yes"`
 			* `input_attributes`
 				* Attributes to be added to the input field, e.g. `input_attributes:readonly="true"`, `input_attributes:data-field-id="test"`
 			* `override_value`
@@ -405,7 +405,7 @@ Here is a more complex form (made to work with Bootstrap):
 						label_class="{if field:required}required{/if}"
 						error_class="help-block"
 						instructions_class="help-block"
-						instructions_below_field="1"
+						instructions_below_field="yes"
 					}
 
 				{/if}
