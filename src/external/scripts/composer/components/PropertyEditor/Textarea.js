@@ -91,7 +91,7 @@ export default class Textarea extends BasePropertyEditor {
 
         <TextProperty
           label="Rows"
-          instructions="The number of rows in height that the textarea should have"
+          instructions="The number of rows in height for this field."
           name="rows"
           value={rows ? rows : 0}
           isNumeric={true}
@@ -100,7 +100,7 @@ export default class Textarea extends BasePropertyEditor {
 
         <TextProperty
           label="Maximum Length"
-          instructions="The number that specifies the maximum length (in characters) of a text area."
+          instructions="The maximum number of characters for this field."
           name="maxLength"
           value={maxLength ? maxLength : ''}
           isNumeric={true}

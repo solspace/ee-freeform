@@ -22,6 +22,9 @@ class TextField extends AbstractField implements SingleValueInterface, Placehold
     use PlaceholderTrait;
     use SingleValueTrait;
 
+    /** @var int */
+    protected $maxLength;
+
     /**
      * Return the field TYPE
      *
@@ -30,6 +33,14 @@ class TextField extends AbstractField implements SingleValueInterface, Placehold
     public function getType()
     {
         return self::TYPE_TEXT;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getMaxLength()
+    {
+        return $this->maxLength;
     }
 
     /**
@@ -47,6 +58,7 @@ class TextField extends AbstractField implements SingleValueInterface, Placehold
             . $this->getAttributeString('type', 'text')
             . $this->getAttributeString('id', $this->getIdAttribute())
             . $this->getAttributeString('class', $classString)
+            . $this->getAttributeString("maxlength", $this->getMaxLength())
             . $this->getAttributeString(
                 'placeholder',
                 $this->translate($attributes->getPlaceholder() ?: $this->getPlaceholder())

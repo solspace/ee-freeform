@@ -26,11 +26,12 @@ export default class Text extends BasePropertyEditor {
       value: PropTypes.string,
       placeholder: PropTypes.string,
       required: PropTypes.bool,
+      maxLength: PropTypes.number,
     }).isRequired,
   };
 
   render() {
-    const {properties: {label, value, handle, placeholder, required, instructions}} = this.context;
+    const {properties: {label, value, handle, placeholder, required, instructions, maxLength}} = this.context;
 
     return (
       <div>
@@ -84,6 +85,15 @@ export default class Text extends BasePropertyEditor {
           instructions="The text that will be shown if the field doesn’t have a value."
           name="placeholder"
           value={placeholder}
+          onChangeHandler={this.update}
+        />
+
+        <TextProperty
+          label="Maximum Length"
+          instructions="The maximum number of characters for this field."
+          name="maxLength"
+          value={maxLength ? maxLength : ''}
+          isNumeric={true}
           onChangeHandler={this.update}
         />
       </div>
