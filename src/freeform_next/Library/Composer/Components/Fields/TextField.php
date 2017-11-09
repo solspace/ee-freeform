@@ -58,7 +58,7 @@ class TextField extends AbstractField implements SingleValueInterface, Placehold
             . $this->getAttributeString('type', 'text')
             . $this->getAttributeString('id', $this->getIdAttribute())
             . $this->getAttributeString('class', $classString)
-            . $this->getAttributeString("maxlength", $this->getMaxLength())
+            . $this->getAttributeString('maxlength', $this->getMaxLength())
             . $this->getAttributeString(
                 'placeholder',
                 $this->translate($attributes->getPlaceholder() ?: $this->getPlaceholder())
