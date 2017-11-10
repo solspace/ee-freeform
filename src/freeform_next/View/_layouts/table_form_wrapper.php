@@ -1,4 +1,4 @@
-<div class="box">
+<div class="box table-list-wrap">
     <div class="tbl-ctrls">
         <?php if (isset($form_url)):?>
             <?=form_open($form_url)?>

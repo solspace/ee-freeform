@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="<?php echo URL_THIRD_THEMES ?>freeform_next/css/updates.css"/>
 
 
-<div class="box">
+<div class="box table-list-wrap">
     <div class="tbl-ctrls">
 
         <fieldset class="tbl-search right">
