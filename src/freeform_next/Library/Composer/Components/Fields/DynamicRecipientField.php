@@ -130,8 +130,7 @@ class DynamicRecipientField extends SelectField implements RecipientInterface, O
             . '>';
 
         foreach ($this->getOptions() as $index => $option) {
-            $isSelected = $this->getValue() === $option->getValue();
-            $output .= '<option value="' . $index . '"' . ($isSelected ? ' selected' : '') . '>';
+            $output .= '<option value="' . $index . '"' . ($option->isChecked() ? ' selected' : '') . '>';
             $output .= $this->getForm()->getTranslator()->translate($option->getLabel());
             $output .= '</option>';
         }
@@ -150,8 +149,6 @@ class DynamicRecipientField extends SelectField implements RecipientInterface, O
         $output     = '';
 
         foreach ($this->options as $option) {
-            $isSelected = $option->getValue() === $this->getValue();
-
             $output .= '<label>';
 
             $output .= '<input '
@@ -161,7 +158,7 @@ class DynamicRecipientField extends SelectField implements RecipientInterface, O
                 . $this->getAttributeString("class", $attributes->getClass())
                 . $this->getAttributeString("value", $this->getValue(), false)
                 . $attributes->getInputAttributesAsString()
-                . ($isSelected ? 'checked ' : '')
+                . ($option->isChecked() ? 'checked ' : '')
                 . '/>';
             $output .= $this->translate($option->getLabel());
             $output .= '</label>';
