@@ -4,7 +4,7 @@ This documentation page assumes you have read over the [CRM Integration Overview
 
 SharpSpring integration includes support for the following:
 
-* Field mapping to standard and custom fields (of text/number string type only).
+* Field mapping to standard SharpSpring fields (excluding custom fields for now).
 * Maps data to **Contacts**.
 
 ## Setup Instructions <a href="#setup" id="setup" class="docs-anchor">#</a>
