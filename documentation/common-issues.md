@@ -90,7 +90,7 @@ If you're experiencing performance issues with Freeform Next, it could be due to
 
 ## Errors about missing files/pages in Freeform CP <a href="#missing-files" id="missing-files" class="docs-anchor">#</a>
 
-A surprisingly common issue is that customers will see errors in the Freeform control panel area saying that a file or page doesn't exist / is missing (e.g. when attempting to create a new email notification template, etc). This is usually a result of the file actually being missing on the site, or being blocked for some reason. Make sure that your server, site, or FTP client is not ignoring or excluding certain files and/or directories for any reason. In all known cases of this, the aforementioned solutions always resolved the issue.
+A surprisingly common issue is that customers will see errors in the Freeform control panel area saying that a file or page doesn't exist / is missing (e.g. when attempting to create a new email notification template, etc). This is usually a result of the file actually being missing on the site, or being blocked for some reason. Make sure that your server, site, or FTP client is not ignoring or excluding certain files and/or directories for any reason (e.g. an **.htaccess** rewrite rule that manipulates URL's can interfere with Freeform's POST to `/save` by redirecting it to `/save/`, etc). In all known cases of this, the aforementioned solutions always resolved the issue.
 
 
 ## Errors about Update Service <a href="#update-service-errors" id="update-service-errors" class="docs-anchor">#</a>
