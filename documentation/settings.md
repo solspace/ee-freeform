@@ -49,7 +49,7 @@ The settings allow you to adjust:
 	* This area allows you to manage and create new statuses for your forms.
 		* You can set the default status to be set for all forms here.
 
-[![Statuses](images/cp_settings-statuses.png)](images/cp_settings-statuses.png)
+[![Statuses](images/cp_settings-statuses-list.png)](images/cp_settings-statuses-list.png)
 
 [![Create a Status](images/cp_settings-statuses-create.png)](images/cp_settings-statuses-create.png)
 
