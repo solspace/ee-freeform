@@ -1,6 +1,6 @@
 # Extension Hooks
 
-If you wish to extend the capabilities of Freeform Next, you can use any of the extension hooks below:
+If you wish to extend the capabilities of Freeform, you can use any of the extension hooks below:
 
 ## Hooks for Freeform Forms <a href="#hooks-freeform-forms" id="hooks-freeform-forms" class="docs-anchor">#</a>
 
@@ -189,7 +189,7 @@ An example below using `freeform_next_form_before_save` hook using `form_before_
 	    // ... other code
 
 	    /**
-	     * Set all new Freeform Next forms to have random hash as their name and handle
+	     * Set all new Freeform forms to have random hash as their name and handle
 	     *
 	     * @param FormModel $model
 	     * @param bool      $isNew

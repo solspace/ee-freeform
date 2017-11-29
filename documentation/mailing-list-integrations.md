@@ -1,10 +1,10 @@
 # Mailing List Integrations
 
-Freeform Next Pro supports some popular mailing list integrations. Inside the **Integrations** area of Freeform, there is a Mailing List API Integration Manager, which allows you to manage your mailing list API integrations. If you currently have Freeform Next Basic, you can [purchase an upgrade to Freeform Next Pro here](https://solspace.com/expressionengine/freeform/pro).
+Freeform Pro supports some popular mailing list integrations. Inside the **Integrations** area of Freeform, there is a Mailing List API Integration Manager, which allows you to manage your mailing list API integrations. If you currently have Freeform Lite, you can [purchase an upgrade to Freeform Pro here](https://solspace.com/expressionengine/freeform/pro).
 
 [![Connect Mailing List](images/cp_api-mailinglist-create.png)](images/cp_api-mailinglist-create.png)
 
-The following Mailing List integrations are currently available for *Freeform Next Pro* (click each one for individual setup instructions):
+The following Mailing List integrations are currently available for *Freeform Pro* (click each one for individual setup instructions):
 
 * [MailChimp](mailing-list-api-mailchimp.md)
 * [Constant Contact](mailing-list-api-constant-contact.md)

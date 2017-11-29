@@ -1,5 +1,8 @@
 # Changelog
 
+### 1.3.0 (November XX, 2017) <a href="#v1-3-0" id="v1-3-0" class="docs-anchor">#</a>
+* Renamed Freeform Next and Freeform Next Pro to just Freeform Lite and Freeform Pro, respectively. Folder and namespace are still 'freeform_next' to preserve legacy with Freeform Classic.
+
 ### 1.2.2 (November 10, 2017) <a href="#v1-2-2" id="v1-2-2" class="docs-anchor">#</a>
 * Added Max Length option to be set inside Composer for Text and Textarea fields.
 * Updated CP views to be compatible with ExpressionEngine 4.

@@ -63,7 +63,7 @@ A common issue customers run into is their forms not submitting successfully. Th
 * Do you have caching on your template and/or site? Heavy caching will prevent the EE CSRF token and Freeform hash from reloading and stop the form from working. If you need to cache your page/site, you'll need to find a way to manually refresh these for each page load.
 * Do you have Javascript enabled for your browser? If you don't, and you're using Freeform's built in [Spam Protection](spam-protection.md) feature, it won't submit the form successfully.
 * Have a look at the *Blocked Spam* count for your form in the **CP** -> **Freeform** -> **Forms** list. If the count is increasing each time you attempt to submit the form, Freeform's [Spam Protection](spam-protection.md) feature is blocking your submissions.
-* Try disabling the [Spam Protection](spam-protection.md) feature (**CP** -> **Developer** -> **Add-On Manager** -> **Freeform Next** -> **Settings** -> **General** and set *Spam Protection* setting to disabled) and test again.
+* Try disabling the [Spam Protection](spam-protection.md) feature (**CP** -> **Developer** -> **Add-On Manager** -> **Freeform** -> **Settings** -> **General** and set *Spam Protection* setting to disabled) and test again.
 * Are you getting redirected correctly after form submission? Be sure that you don't have any routes or .htaccess rewrites that conflict with the form submission.
 * To be extra thorough, you can also try submitting EE's simple [Contact Form](https://docs.expressionengine.com/latest/add-ons/email/contact_form.html) feature.
 
@@ -79,7 +79,7 @@ If you plan on building several forms with matching fields (that have matching o
 
 ## Form submits very slowly <a href="#form-submits-slow" id="form-submits-slow" class="docs-anchor">#</a>
 
-If you're experiencing performance issues with Freeform Next, it could be due to a variety and combination of reasons. If forms are taking a long time to submit, consider the following options, and create a support ticket with the info below if necessary:
+If you're experiencing performance issues with Freeform, it could be due to a variety and combination of reasons. If forms are taking a long time to submit, consider the following options, and create a support ticket with the info below if necessary:
 
 * Are you using an older version of ExpressionEngine? Please update to the latest available version.
 * Does your form have a lot of fields in it? If so, try testing with a smaller and simpler form (e.g. Name, Email, and Message fields) and see if it submits faster.
@@ -100,7 +100,7 @@ If you're seeing errors referencing the Freeform Update Service, it might just b
 
 ## Composer not loading correctly <a href="#composer-issues" id="composer-issues" class="docs-anchor">#</a>
 
-If the Composer interface inside the Freeform Next control panel is not loading correctly, it's very likely to do with the Freeform Next **themes** folder missing / being old / being corrupt. Remove the **freeform_next** themes folder and try uploading it again.
+If the Composer interface inside the Freeform control panel is not loading correctly, it's very likely to do with the Freeform **themes** folder missing / being old / being corrupt. Remove the **freeform_next** themes folder and try uploading it again.
 
 
 ## Data not sending to API integrations <a href="#api-integration-issues" id="api-integration-issues" class="docs-anchor">#</a>
@@ -132,14 +132,14 @@ If you're seeing any errors as follows:
 Each purchase of Freeform entitles you to use it on one site (including dev/staging copies of the site). For every additional site you wish to use it on, you'll need to purchase additional licenses.
 
 
-## If I switch from Classic to Next, will all of my data move over with it too? <a href="#classic-next-transition" id="classic-next-transition" class="docs-anchor">#</a>
+## If I switch from Classic to the new Freeform version ("Next"), will all of my data move over with it too? <a href="#classic-next-transition" id="classic-next-transition" class="docs-anchor">#</a>
 
-Freeform Next was completely rebuilt from scratch, and while it of course contains much of the same functionality as Classic, it's actually a whole new add-on. Because of this, along with the drastic changes we made in the architecture of Next, there currently is no migration path. We are however in the process of making a migration path that will be available in the not-to-distant future. In the meantime, because Freeform Next has a different module name and the add-on folder is named `freeform_next`, it means that it won't conflict with classic Freeform installs in anyway. This allows you to explore and try Freeform Next out and/or transition from Classic to Next at a comfortable pace. You could even keep Classic around for legacy viewing of submissions too.
+The new Freeform was completely rebuilt from scratch, and while it of course contains much of the same functionality as Freeform Classic, it's actually a whole new add-on. Because of this, along with the drastic changes we made in the architecture of "Next", there currently is no migration path. We are however in the process of making a migration path that will be available in the not-to-distant future. In the meantime, because the new Freeform has a different module name and the add-on folder is named `freeform_next`, it means that it won't conflict with classic Freeform installs in anyway. This allows you to explore and try the new Freeform out and/or transition from Freeform Classic to "Next" at a comfortable pace. You can even keep Freeform Classic around for legacy viewing of submissions too.
 
 
-## Can I run Freeform Classic and Next at the same time? <a href="#classic-next" id="classic-next" class="docs-anchor">#</a>
+## Can I run Freeform Classic and the new Freeform version ("Next") at the same time? <a href="#classic-next" id="classic-next" class="docs-anchor">#</a>
 
-The simple answer is, YES! The longer answer is... Freeform Next has a different module name and the add-on folder is named `freeform_next`. This means that it won't conflict with classic Freeform installs in anyway. This allows you to explore and try Freeform Next out and/or transition from Classic to Next at a comfortable pace. You could even keep Classic around for legacy viewing of submissions too (as there currently isn't a migration path from Classic to Next yet).
+The simple answer is, YES! The longer answer is... the new Freeform has a different module name and the add-on folder is named `freeform_next`. This means that it won't conflict with classic Freeform installs in anyway. This allows you to explore and try the new Freeform out and/or transition from Classic to "Next" at a comfortable pace. You can even keep Classic around for legacy viewing of submissions too (as there currently isn't a migration path from Classic to the new Freeform yet).
 
 
 ## What kind of email notifications can I send? <a href="#email-notification-options" id="email-notification-options" class="docs-anchor">#</a>

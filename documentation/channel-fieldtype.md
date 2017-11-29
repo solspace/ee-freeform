@@ -10,14 +10,14 @@ Here's an overview on how to use this field type:
 
 
 ## Creating a Freeform field <a href="#create" id="create" class="docs-anchor">#</a>
-Creating a Freeform Next Form field is done just like any other fieldtype, here's an overview of the process:
+Creating a Freeform Form field is done just like any other fieldtype, here's an overview of the process:
 
 * Go to the **Channel Fields** area in the CP. Select the appropriate **Field Group**, and then click the **Create New** button.
-* For the Type, select *Freeform Next* (or *Freeform Next Pro*) from the list.
+* For the Type, select *Freeform Pro* (or *Freeform Lite*) from the list.
 * Name the field as you wish - for example **My Form** with short name of **my_form**.
-* There are no special field options for the Freeform Next field type.
+* There are no special field options for the Freeform field type.
 * Click *Save Field* to save the new custom field.
-* If you wish to create more Freeform Next fields, just follow the procedure above again.
+* If you wish to create more Freeform fields, just follow the procedure above again.
 
 Your Freeform Form/Submissions field is now available to be assigned to other sections.
 
@@ -25,7 +25,7 @@ Your Freeform Form/Submissions field is now available to be assigned to other se
 
 
 ## How the Fieldtype works <a href="#how-works" id="how-works" class="docs-anchor">#</a>
-Once you have a Freeform Next channel entry field setup, and you've created a form with Composer, assigning a form to a channel entry is very easy!
+Once you have a Freeform channel entry field setup, and you've created a form with Composer, assigning a form to a channel entry is very easy!
 
 * Go to the *Publish* area in the EE control panel. If the field group the Freeform field belongs to is assigned to the channel you selected, you should now see the special Freeform field.
 * To add a form, simply select the form name from the select field list.

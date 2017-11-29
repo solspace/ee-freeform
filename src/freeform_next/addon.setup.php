@@ -20,7 +20,7 @@ return [
     'author'         => 'Solspace',
     'author_url'     => 'https://solspace.com/expressionengine/freeform',
     'docs_url'       => 'https://solspace.com/expressionengine/freeform/docs',
-    'name'           => 'Freeform',
+    'name'           => 'Freeform Lite',
     'module_name'    => 'Freeform_next',
     'description'    => 'The most intuitive and powerful form builder for ExpressionEngine.',
     'version'        => '1.3.0',

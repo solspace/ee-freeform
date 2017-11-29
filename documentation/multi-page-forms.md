@@ -4,7 +4,7 @@
 
 [![Form](images/templates_form-multipage.png)](images/templates_form-multipage.png)
 
-Freeform Next allows for *multi-page* forms (a POST submit per page). Here's some important information to know about them:
+Freeform allows for *multi-page* forms (a POST submit per page). Here's some important information to know about them:
 
 * Each page is submitted through POST
 	* There is no unique URI segment per page at this time.

@@ -1,8 +1,8 @@
 # Forms & Composer
 
-What makes Freeform Next different from other form add-ons is that it includes a very intuitive, very interactive and very flexible interface for building forms. We call this, **Composer**.
+What makes Freeform different from other form add-ons is that it includes a very intuitive, very interactive and very flexible interface for building forms. We call this, **Composer**.
 
-To create your first form, visit the Forms area of the Freeform Next control panel (**Freeform Next > Forms**), and then click the **New Form** button at the top right corner of the page.
+To create your first form, visit the Forms area of the Freeform control panel (**Freeform > Forms**), and then click the **New Form** button at the top right corner of the page.
 
 The below documentation assumes that you have reviewed the [Fields & Field Types documentation](fields-field-types.md). If you have not already done so, start over there first.
 
@@ -17,7 +17,7 @@ The below documentation assumes that you have reviewed the [Fields & Field Types
 
 ## Composer <a href="#composer" id="composer" class="docs-anchor">#</a>
 
-Freeform Next Composer is an all-in-one interface that lets you take control of almost every aspect of your forms. Everything is at your fingertips. Before we get started, here's a few notes about Composer:
+Freeform Composer is an all-in-one interface that lets you take control of almost every aspect of your forms. Everything is at your fingertips. Before we get started, here's a few notes about Composer:
 
 * Composer is divided into 3 columns:
 	* **Fields** (left column) contains all of the available fields you can add to your form.
@@ -79,7 +79,7 @@ To use the latter approach, click the **Notify** button in the Property Editor (
 
 ### Fields (left column) <a href="#fields" id="fields" class="docs-anchor">#</a>
 
-The left column displays a list of fields available for use. New fields can be created in the main field creation area (**Freeform Next > Fields > New Field**) as well as directly within the *Composer* interface by clicking the **Add New Field** button. Fields created here are available globally as well (they do not just exist for that form).
+The left column displays a list of fields available for use. New fields can be created in the main field creation area (**Freeform > Fields > New Field**) as well as directly within the *Composer* interface by clicking the **Add New Field** button. Fields created here are available globally as well (they do not just exist for that form).
 
 To use any fields, simply drag the field over to the **Layout** area (center column).
 

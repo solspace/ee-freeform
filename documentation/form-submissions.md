@@ -14,7 +14,7 @@ Each form contains it's own grouping of submissions. You can view these by click
 
 ## Exporting Submissions <a href="#exporting" id="exporting" class="docs-anchor">#</a>
 
-Freeform Next includes 3 options for exporting (2 of which are Pro only). Please refer to the [Exporting](exporting.md) documentation for more information.
+Freeform includes 3 options for exporting (2 of which are Pro only). Please refer to the [Exporting](exporting.md) documentation for more information.
 
 ## In Front End Templates <a href="#templates" id="templates" class="docs-anchor">#</a>
 

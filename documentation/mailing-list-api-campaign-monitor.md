@@ -1,6 +1,6 @@
 # Campaign Monitor Mailing List API Integration
 
-This documentation page assumes you have read over the [Mailing List Integration Overview page](mailing-list-integrations.md). If you have not yet read it, please do so now. We also assume that you have a [Campaign Monitor](http://campaignmonitor.com) account already, along with mailing list(s) already created. The *Freeform Campaign Monitor* API integration requires that you have *Freeform Next Pro*. If you currently have Freeform Next Basic, you can [purchase an upgrade to Freeform Next Pro here](https://solspace.com/expressionengine/freeform/pro).
+This documentation page assumes you have read over the [Mailing List Integration Overview page](mailing-list-integrations.md). If you have not yet read it, please do so now. We also assume that you have a [Campaign Monitor](http://campaignmonitor.com) account already, along with mailing list(s) already created. The *Freeform Campaign Monitor* API integration requires that you have *Freeform Pro*. If you currently have Freeform Lite, you can [purchase an upgrade to Freeform Pro here](https://solspace.com/expressionengine/freeform/pro).
 
 Campaign Monitor integration includes support for the following:
 
@@ -20,7 +20,7 @@ Campaign Monitor integration includes support for the following:
 	* After the page reloads, click the **Show API Key** link to reveal your API key.
 	* Leave this page open and open a new tab to go to EE control panel...
 2. Setup Integration on your site:
-	* Go to the [Mailing Lists section in Freeform Integrations area](mailing-list-integrations.md) (**Freeform Next > Integrations > Mailing Lists**)
+	* Go to the [Mailing Lists section in Freeform Integrations area](mailing-list-integrations.md) (**Freeform > Integrations > Mailing Lists**)
 	* Click the **New Integration** at the top right.
 	* Select *Campaign Monitor* from the **Service Provider** select dropdown.
 	* Enter a name and handle for the integration.
