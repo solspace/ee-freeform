@@ -35,7 +35,7 @@ function buildProVersion(gulp, callback) {
 
   var addonStream = gulp
     .src(paths.deploy.addon.src)
-    .pipe(replace(/('name'\s+=>\s+')Freeform Next',/g, "$1Freeform Next Pro',"))
+    .pipe(replace(/('name'\s+=>\s+')Freeform Lite',/g, "$1Freeform Pro',"))
     .pipe(gulp.dest(paths.deploy.addon.dist));
 
   addonStream.on('end', function () {
@@ -45,7 +45,7 @@ function buildProVersion(gulp, callback) {
 
     themeStream.on('end', function () {
       del(paths.vendors.deleteList).then(function () {
-        zipFolder(paths.deploy.buildPath, "dist/FreeformNext-Pro_" + version + ".zip", function (err) {
+        zipFolder(paths.deploy.buildPath, "dist/EE-Freeform-Pro_" + version + ".zip", function (err) {
           if (err) {
             callback(err);
           } else {
@@ -82,7 +82,7 @@ function buildBasicVersion(gulp, callback) {
     themeStream.on('end', function () {
       del(paths.vendors.deleteList).then(function () {
         del(paths.deploy.addon.proFiles).then(function () {
-          zipFolder(paths.deploy.buildPath, "dist/FreeformNext_" + version + ".zip", function (err) {
+          zipFolder(paths.deploy.buildPath, "dist/EE-Freeform-Lite_" + version + ".zip", function (err) {
             if (err) {
               callback(err);
             } else {
