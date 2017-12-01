@@ -212,10 +212,10 @@ class Properties implements \JsonSerializable
         array_walk_recursive(
             $properties,
             function (&$value, $key) {
-                if (is_null($value)) {
+                if (null === $value) {
                     $value = null;
-                } else if (!in_array($key, ["value", "label"]) && is_string($value) && preg_match("/^true|false$/i", $value)) {
-                    $value = strtolower($value) === "true" ? true : false;
+                } else if (is_string($value) && !in_array($key, ['value', 'label', 'handle', 'description'], true) && preg_match('/^(true|false)$/i', $value)) {
+                    $value = strtolower($value) === 'true';
                 }
             }
         );
