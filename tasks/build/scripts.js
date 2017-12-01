@@ -11,7 +11,7 @@ module.exports = {
   fn: function (gulp, callback) {
     return gulp
       .src(paths.scripts.src)
-      .pipe(gulpif(helpers.isProd(), sourcemaps.init()))
+      .pipe(gulpif(!helpers.isProd(), sourcemaps.init()))
       .pipe(
         babel({
           presets: ['es2015']
@@ -24,7 +24,7 @@ module.exports = {
       .pipe(uglify({
         mangle: true,
       }))
-      .pipe(gulpif(helpers.isProd(), sourcemaps.write()))
+      .pipe(gulpif(!helpers.isProd(), sourcemaps.write()))
       .pipe(gulp.dest(paths.scripts.dest));
   }
 };
