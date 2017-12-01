@@ -7,7 +7,6 @@ $(() => {
       .replace(/(?:^\w|[A-Z]|\b\w)/g, (letter, index) => (letter.toLowerCase()))
       .replace(/\s+/g, '_')
       .replace(/[^a-zA-Z0-9_]/g, '')
-      .replace(/^_|_$/g, '')
   };
 
   baseField.on({
@@ -23,9 +22,26 @@ $(() => {
 
   targetField.on({
     keyup: (e) => {
-      const val = underscored($(e.target).val());
+      const target   = e.target,
+            $target  = $(e.target),
+            valLength = $target.val().length,
+            caretPos = target.selectionStart;
 
-      $(e.target).val(val);
+      const val = underscored($target.val());
+
+      $target.val(val);
+
+      if (target.createTextRange) {
+        const range = target.createTextRange();
+        range.move('character', caretPos);
+        range.select();
+
+        console.log('range');
+      } else {
+        const diff = valLength - val.length;
+
+        target.setSelectionRange(caretPos - diff, caretPos - diff);
+      }
     }
   });
 });
