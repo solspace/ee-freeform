@@ -14,7 +14,7 @@ Freeform uses its own set of fields and field types. Using a predefined set of f
 
 Fields are global and available to all forms, but they can also be overwritten per form. This allows you to save time reusing existing fields when making other forms, but also gives you flexibility to make adjustments to them when needed. So to clarify, you can create fields with labels and options that are common to all forms, but also override those on each form. For example, if you have a field named **Cell Phone**, on the form level, you can rename the field name to **Mobile Phone**, or if you have a Checkbox Group field with options: **Option 1**, **Option 2**, and **Option 3**, you could override it to just have 2 options with values of **Option A** and **Option B**. When the fields are edited at global level (in main Fields area of Freeform control panel), your customizations per form will NOT be lost.
 
-Fields can be created and managed in the main field creation area (**Freeform Next > Fields > New Field**) and can also be created directly within the *Composer* interface as well. Fields created here are available globally as well (they do not just exist for that form).
+Fields can be created and managed in the main field creation area (**Freeform > Fields > New Field**) and can also be created directly within the *Composer* interface as well. Fields created here are available globally as well (they do not just exist for that form).
 
 Some important notes:
 
@@ -117,7 +117,7 @@ The following field types are available ([see below for additional Pro Field Typ
 
 ## Pro Field Types <a href="#pro-field-types" id="pro-field-types" class="docs-anchor">#</a>
 
-The following extra field types are available with Freeform Next Pro:
+The following extra field types are available with Freeform Pro:
 
 * **Confirmation** <a href="#fields-confirmation" id="fields-confirmation" class="docs-anchor">#</a>
 	* Allows you to force a user to enter a matching value for another field (e.g. "Confirm Email Address").

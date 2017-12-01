@@ -1,6 +1,6 @@
 # Settings
 
-Freeform Next includes several settings that allow you to customize your form management experience. To adjust your settings, click the **Settings** menu item while in the Freeform Next plugin, or go to **CP > Developer > Add-On Manager > Freeform Next > Settings**.
+Freeform includes several settings that allow you to customize your form management experience. To adjust your settings, click the **Settings** menu item while in the Freeform add-on, or go to **CP > Developer > Add-On Manager > Freeform > Settings**.
 
 [![General Settings](images/cp_settings-general.png)](images/cp_settings-general.png)
 
@@ -26,7 +26,7 @@ The settings allow you to adjust:
 * *Formatting Templates* <a href="#formatting-templates" id="formatting-templates" class="docs-anchor">#</a>
 	* **Directory Path** <a href="#formatting-directory-path" id="formatting-directory-path" class="docs-anchor">#</a>
 		* When using custom formatting templates for your forms, you'll need to specify where your HTML templates are stored.
-		* Provide a full path to your Freeform Next formatting templates directory (whatever you want it to be named, wherever you want it located).
+		* Provide a full path to your Freeform formatting templates directory (whatever you want it to be named, wherever you want it located).
 			* E.g. **/home/username/www/public_html/freeform-formatting** or **/home/username/www/system/user/templates/freeform-formatting**
 		* To add a starter example template, click the "Add a sample template" button, and then edit the template after.
 
@@ -35,7 +35,7 @@ The settings allow you to adjust:
 * *Email Templates* <a href="#email-templates" id="email-templates" class="docs-anchor">#</a>
 	* This area is for users that wish to use HTML template files for email notifications. See [Email Notifications](email-notifications.md) documentation for more information about implementation.
 	* **Directory Path** <a href="#email-directory-path" id="email-directory-path" class="docs-anchor">#</a>
-		* Provide a full path to your Freeform Next email notifications templates directory (whatever you want it to be named, wherever you want it located).
+		* Provide a full path to your Freeform email notifications templates directory (whatever you want it to be named, wherever you want it located).
 			* E.g. **/home/username/www/public_html/freeform-emails** or **/home/username/www/system/user/templates/freeform-emails**
 		* To add a starter example template, click the "Add a sample template" button, and then edit the template after.
 	* **Default Email Notification Creation Method** <a href="#default-email-method" id="default-email-method" class="docs-anchor">#</a>
@@ -49,9 +49,9 @@ The settings allow you to adjust:
 	* This area allows you to manage and create new statuses for your forms.
 		* You can set the default status to be set for all forms here.
 
-[![Statuses](images/cp_settings-statuses.png)](images/cp_settings-statuses.png)
+[![Statuses](images/cp_settings-statuses-list.png)](images/cp_settings-statuses-list.png)
 
 [![Create a Status](images/cp_settings-statuses-create.png)](images/cp_settings-statuses-create.png)
 
 * *Demo Templates* <a href="#demo-templates" id="demo-templates" class="docs-anchor">#</a>
-	* Allows you to install the [Demo Templates](demo-templates.md) to get Freeform Next up and running on the front end with just a couple clicks!
+	* Allows you to install the [Demo Templates](demo-templates.md) to get Freeform up and running on the front end with just a couple clicks!

@@ -1,6 +1,6 @@
 # Formatting Templates
 
-While Freeform Next offers a very intuitive Composer interface to give you a live preview of the form you're building, there of course isn't exactly a magic way to do this on the front end for your templates. However, we have created an automated way for Freeform to figure out as much of this as possible for you.
+While Freeform offers a very intuitive Composer interface to give you a live preview of the form you're building, there of course isn't exactly a magic way to do this on the front end for your templates. However, we have created an automated way for Freeform to figure out as much of this as possible for you.
 
 Forms can be generated on the front end templates 2 different ways. There is no worse or better way, but here's an overview:
 

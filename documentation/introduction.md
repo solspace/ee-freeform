@@ -1,8 +1,8 @@
-# Introduction to Freeform Next
+# Introduction to Freeform
 
-This page provides you with an overview of how Freeform Next works without going into to much detail about each feature so it's easy to digest. You can of course click the links to learn more about each feature.
+This page provides you with an overview of how Freeform works without going into to much detail about each feature so it's easy to digest. You can of course click the links to learn more about each feature.
 
-Freeform Next centers itself around the idea of letting admins and/or clients enjoy the experience of building and managing simple or complex forms in an intuitive interface that lets you see a live preview of the forms you're building. We call this [Composer](forms-composer.md), where almost everything is at your fingertips as it aims to stay out of your way and let you do as much as possible without having to move around to other areas in the control panel. At the same time, Freeform is very powerful and flexible, so there is also a wide variety of other features, settings and options.
+Freeform centers itself around the idea of letting admins and/or clients enjoy the experience of building and managing simple or complex forms in an intuitive interface that lets you see a live preview of the forms you're building. We call this [Composer](forms-composer.md), where almost everything is at your fingertips as it aims to stay out of your way and let you do as much as possible without having to move around to other areas in the control panel. At the same time, Freeform is very powerful and flexible, so there is also a wide variety of other features, settings and options.
 
 
 * [Forms](#forms)
@@ -26,9 +26,9 @@ Freeform also allows for [multi-page forms](multi-page-forms.md), and has its ow
 
 ## Fields <a href="#fields" id="fields" class="docs-anchor">#</a>
 
-Freeform Next uses its own set of [fields and field types](fields-field-types.md). Fields are global and available to all forms, but they can also be overwritten per form. This allows you to save time reusing existing fields when making other forms, but also gives you flexibility to make adjustments to them when needed. So to clarify, you can create fields with labels and options that are common to all forms, but also override those on each form.
+Freeform uses its own set of [fields and field types](fields-field-types.md). Fields are global and available to all forms, but they can also be overwritten per form. This allows you to save time reusing existing fields when making other forms, but also gives you flexibility to make adjustments to them when needed. So to clarify, you can create fields with labels and options that are common to all forms, but also override those on each form.
 
-Fields can be created and managed in the main field creation area (**Freeform Next > Fields > New Field**) and can also be created directly within the *Composer* interface as well.
+Fields can be created and managed in the main field creation area (**Freeform > Fields > New Field**) and can also be created directly within the *Composer* interface as well.
 
 The following field types are available:
 
@@ -48,7 +48,7 @@ Additionally, you may also insert **HTML** areas into your form for you to type 
 
 ## Email Notifications <a href="#email-notifications" id="email-notifications" class="docs-anchor">#</a>
 
-[Email notifications](email-notifications.md) are global and can be reused for multiple forms, saving you time when you are managing many forms. Email notification templates can be managed within EE control panel (saved to database), or as HTML template files. Database entry templates are created and customized at **Freeform Next > Notifications**. They can also be created directly at form level within Composer. Email notification templates that are created within Composer will contain basic default content, and should be checked and updated once finished building your form.
+[Email notifications](email-notifications.md) are global and can be reused for multiple forms, saving you time when you are managing many forms. Email notification templates can be managed within EE control panel (saved to database), or as HTML template files. Database entry templates are created and customized at **Freeform > Notifications**. They can also be created directly at form level within Composer. Email notification templates that are created within Composer will contain basic default content, and should be checked and updated once finished building your form.
 
 Freeform allows you to send email notifications upon submittal of a form 5 different ways, each with their own content/template:
 
@@ -61,7 +61,7 @@ Freeform allows you to send email notifications upon submittal of a form 5 diffe
 
 ## Formatting Templates <a href="#formatting-templates" id="formatting-templates" class="docs-anchor">#</a>
 
-Freeform Next attempts to do all the heavy lifting when it comes to templating. Our looping templating approach allows you to automate all or almost all of your form formatting. This can be achieved by building [formatting templates](formatting-templates.md) for your forms.
+Freeform attempts to do all the heavy lifting when it comes to templating. Our looping templating approach allows you to automate all or almost all of your form formatting. This can be achieved by building [formatting templates](formatting-templates.md) for your forms.
 
 Forms can be generated on the front end templates 2 different ways:
 
@@ -71,7 +71,7 @@ Forms can be generated on the front end templates 2 different ways:
 
 ## Mailing List API Integrations <a href="#mailing-list-integrations" id="mailing-list-integrations" class="docs-anchor">#</a>
 
-Freeform Next supports some popular [Mailing List API integrations](mailing-list-integrations.md). The following mailing list integrations are currently available (in *Pro* version of Freeform Next):
+Freeform supports some popular [Mailing List API integrations](mailing-list-integrations.md). The following mailing list integrations are currently available (in *Freeform Pro*):
 
 * [MailChimp](mailing-list-api-mailchimp.md)
 * [Constant Contact](mailing-list-api-constant-contact.md)
@@ -80,7 +80,7 @@ Freeform Next supports some popular [Mailing List API integrations](mailing-list
 
 ## CRM API Integrations <a href="#crm-integrations" id="crm-integrations" class="docs-anchor">#</a>
 
-Freeform Next supports some popular [CRM (Customer Relationship Management) API integrations](crm-integrations.md). The following CRM integrations are currently available (in *Pro* version of Freeform Next):
+Freeform supports some popular [CRM (Customer Relationship Management) API integrations](crm-integrations.md). The following CRM integrations are currently available (in *Freeform Pro*):
 
 * [Salesforce](crm-api-salesforce.md)
 * [HubSpot](crm-api-hubspot.md)
@@ -88,7 +88,7 @@ Freeform Next supports some popular [CRM (Customer Relationship Management) API 
 
 ## Templating <a href="#templating" id="templating" class="docs-anchor">#</a>
 
-As for templating, we strived to make things as flexible as possible, while also coming up with templating that can automate much of the handling of parsing of your forms. Freeform Next is capable of figuring out as much of this as possible for you. This can be achieved by building [formatting templates](formatting-templates.md) for your forms, or simply building forms directly within the page template(s) you're placing your forms into:
+As for templating, we strived to make things as flexible as possible, while also coming up with templating that can automate much of the handling of parsing of your forms. Freeform is capable of figuring out as much of this as possible for you. This can be achieved by building [formatting templates](formatting-templates.md) for your forms, or simply building forms directly within the page template(s) you're placing your forms into:
 
 * [Freeform_Next:Form template tag](form.md) or [Freeform_Next:Render template tag](form.md#render-examples) - for displaying/parsing your forms.
 * [Freeform_Next:Submissions template tag](submissions.md) - for displaying an individual submission or list of them.

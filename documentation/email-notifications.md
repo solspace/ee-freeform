@@ -1,6 +1,6 @@
 # Email Notifications
 
-Freeform Next allows you to send email notifications upon submittal of a form. They are global and can be reused for multiple forms, saving you time when you are managing many forms.
+Freeform allows you to send email notifications upon submittal of a form. They are global and can be reused for multiple forms, saving you time when you are managing many forms.
 
 * [Assigning Notifications to Fields/Forms](#assigning-notifications)
 * [Overview of Email Notification Template Options](#notification-template-options)
@@ -20,7 +20,7 @@ Email notifications can be sent to email address(es) specified for admins (in th
 
 Email notification templates can be managed 2 different ways:
 
-1. As *[database entries](#notification-template-database)* within the EE control panel in the **Notifications** page in Freeform Next (**Freeform Next > Notifications**).
+1. As *[database entries](#notification-template-database)* within the EE control panel in the **Notifications** page in Freeform (**Freeform > Notifications**).
 2. As *[HTML template files](#notification-template-files)* within the EE Templates directory.
 
 In addition to this, email notification templates can be created directly at form level within Composer. Email templates created this way are subject to the [Default Email Notification Creation Method](settings.md#default-email-method) preference in Freeform settings. Email notification templates that are created within Composer will contain basic default content and should be checked and updated once finished building your form.
@@ -30,7 +30,7 @@ In addition to this, email notification templates can be created directly at for
 
 [![Create an Email Notification](images/cp_notifications-create.png)](images/cp_notifications-create.png)
 
-Database templates are managed within the EE control panel in the **Notifications** page in Freeform (**Freeform Next > Notifications**). Email Notification templates contain the following options:
+Database templates are managed within the EE control panel in the **Notifications** page in Freeform (**Freeform > Notifications**). Email Notification templates contain the following options:
 
 * **Name** <a href="#name" id="name" class="docs-anchor">#</a>
 	* A common name for the notification template to identify it easier.

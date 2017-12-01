@@ -1,11 +1,11 @@
 # Demo Templates
-Freeform Next includes a complete set of demo templates. These demo templates let you have a fully functioning area on your website with just a couple clicks! Further to this, it allows you to see real world examples of the template code in action, which will help you get acquainted with Freeform Next quicker.
+Freeform includes a complete set of demo templates. These demo templates let you have a fully functioning area on your website with just a couple clicks! Further to this, it allows you to see real world examples of the template code in action, which will help you get acquainted with Freeform quicker.
 
 [![Demo Templates Install](images/cp_settings-demo-templates.png)](images/cp_settings-demo-templates.png)
 
 ## Installing the Demo Templates <a href="#install" id="install" class="docs-anchor">#</a>
 
-To install the Demo Templates, simply visit the **Demo Templates** nav item in Freeform (**Freeform Next > Settings > Demo Templates**).
+To install the Demo Templates, simply visit the **Demo Templates** nav item in Freeform (**Freeform > Settings > Demo Templates**).
 
 By default, the Demo Templates page will be set to **freeform_next_demo** for template group name. You can change this to whatever you like.
 

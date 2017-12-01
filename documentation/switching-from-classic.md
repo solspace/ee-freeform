@@ -1,6 +1,6 @@
-# Switching from Freeform Classic to Freeform Next
+# Switching from Freeform Classic to Freeform Lite / Pro ("Next")
 
-**NOTE:** For the purpose of clarity in this documentation resource, any prior version of *Freeform Pro 4.x* and *Freeform Pro 5.x* is referred to as *Freeform Classic*.
+**NOTE:** For the purpose of clarity in this documentation resource, any prior version of *Freeform Pro 4.x* and *Freeform Pro 5.x* are referred to as *Freeform Classic*. The **new** versions of *Freeform Lite* and *Freeform Pro* are referred to as *Freeform Next*.
 
 Freeform has been completely rewritten from ground up. Whether you're considering switching from Freeform Classic to Freeform Next, or interesting in using Freeform Next on your next site build, this page is a resource to help you understand the differences and changes made with Freeform Next.
 

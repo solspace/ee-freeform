@@ -1,11 +1,11 @@
 <?php
 /**
- * Freeform Next for Expression Engine
+ * Freeform for Expression Engine
  *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2017, Solspace, Inc.
- * @link          https://solspace.com/expressionengine/freeform-next
+ * @link          https://solspace.com/expressionengine/freeform
  * @license       https://solspace.com/software/license-agreement
  */
 
@@ -18,12 +18,12 @@ if (!session_id()) {
 
 return [
     'author'         => 'Solspace',
-    'author_url'     => 'https://solspace.com/expressionengine',
+    'author_url'     => 'https://solspace.com/expressionengine/freeform',
     'docs_url'       => 'https://solspace.com/expressionengine/freeform/docs',
-    'name'           => 'Freeform Next',
+    'name'           => 'Freeform Lite',
     'module_name'    => 'Freeform_next',
-    'description'    => 'Advanced form creation and data collecting.',
-    'version'        => '1.2.2',
+    'description'    => 'The most intuitive and powerful form builder for ExpressionEngine.',
+    'version'        => '1.3.0',
     'namespace'      => 'Solspace\Addons\FreeformNext',
     'settings_exist' => true,
     'models'         => [
