@@ -1,7 +1,10 @@
 # Changelog
 
-### 1.3.0 (November XX, 2017) <a href="#v1-3-0" id="v1-3-0" class="docs-anchor">#</a>
+### 1.3.0 (December 4, 2017) <a href="#v1-3-0" id="v1-3-0" class="docs-anchor">#</a>
+* Updated for compatibility with both ExpressionEngine 4 and ExpressionEngine 3.
 * Renamed Freeform Next and Freeform Next Pro to just Freeform Lite and Freeform Pro, respectively. Folder and namespace are still 'freeform_next' to preserve legacy with Freeform Classic.
+* Fixed a bug where the automated handle generator JS would make you wrestle with it sometimes.
+* Fixed a bug where Composer would choke on form handles and field handles that contained `true` or `false` strings in them.
 
 ### 1.2.2 (November 10, 2017) <a href="#v1-2-2" id="v1-2-2" class="docs-anchor">#</a>
 * Added Max Length option to be set inside Composer for Text and Textarea fields.

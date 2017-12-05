@@ -9,7 +9,7 @@
 Solspace Freeform mostly meets the same requirements as listed on the [ExpressionEngine Requirements](https://docs.expressionengine.com/v3/installation/requirements.html) page.
 
 * **ExpressionEngine 4.x or 3.5.x**
-* PHP 5.4.0 or later
+* PHP 5.4.0 - PHP 7.1.x
 	* **IMPORTANT:** No support for PHP 5.3.x
 * MySQL 5.1.0 or later
 * Windows and macOS browsers:
@@ -22,9 +22,9 @@ Solspace Freeform mostly meets the same requirements as listed on the [Expressio
 
 ## Installing Instructions <a href="#install" id="install" class="docs-anchor">#</a>
 1. Unzip the download package:
-	* Copy the *freeform_next* folder to your EE sites **/system/user/addons/** directory.
-	* Open the **themes** folder and copy the *freeform_next* folder to your EE sites **/themes/user/** directory.
-2. Go to the **Developer > Add-on Manager** page and click **Install** for the *Freeform Pro* (or *Freeform Lite*) add-on.
+	* Copy the *freeform_next* folder to your EE site's **./system/user/addons/** directory.
+	* Open the **themes** folder and copy the *freeform_next* folder to your EE site's **./themes/user/** directory.
+2. Go to the *Add-Ons* area (under **Developer** navigation tab), scroll to down to the **Third Party Add-Ons** section, and find *Freeform Pro* (or *Freeform Lite*) in the list, and click the **Install** button.
 
 **NOTE:** The new Freeform can be used alongside classic Freeform/Freeform Pro (Freeform Classic) installations if you're wanting to try out Freeform.
 

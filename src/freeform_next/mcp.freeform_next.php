@@ -414,7 +414,7 @@ class Freeform_next_mcp extends ControlPanelView
                 new NavigationLink('Documentation', 'https://solspace.com/expressionengine/freeform/docs')
             )
             ->addSubNavItem(
-                new NavigationLink('Official Support', 'https://solspace.com/expressionengine/support')
+                new NavigationLink('Official Support', 'https://solspace.com/expressionengine/freeform/support')
             );
 
         $logs   = null;

@@ -11,8 +11,8 @@ Freeform has its own **Update Service** built in, which means that every time th
 
 To download the update, simply click the **Get Latest Version** button, and you'll be taken to your account area on the Solspace site where you can log in and download the updated package for Freeform. Then follow the steps below:
 
-1. Within your EE sites **/system/user/addons/** and **/themes/user/** directories, delete the *freeform_next* folders.
+1. Within your EE site's **./system/user/addons/** and **./themes/user/** directories, delete the *freeform_next* folders.
 2. Unzip the download package:
-	* Copy the *freeform_next* folder to your EE sites **/system/user/addons/** directory.
-	* Open the **themes** folder and copy the *freeform_next* folder to your EE sites **/themes/user/** directory.
-2. Go to the **Developer > Add-on Manager** page and click **Update** button for the *Freeform Pro* (or *Freeform Lite*) add-on.
+	* Copy the *freeform_next* folder to your EE site's **./system/user/addons/** directory.
+	* Open the **themes** folder and copy the *freeform_next* folder to your EE sites **./themes/user/** directory.
+3. Go to the *Add-Ons* area (under **Developer** navigation tab), scroll to down to the **Third Party Add-Ons** section, and find *Freeform Pro* (or *Freeform Lite*) in the list, and click the **Update** button.
