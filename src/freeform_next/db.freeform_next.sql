@@ -12,9 +12,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_forms` (
   `dateUpdated`    DATETIME               DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `exp_freeform_next_forms_handle_unq_idx` (`handle`)
-)
-  DEFAULT CHARSET = `utf8`
-  COLLATE = `utf8_unicode_ci`;
+) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_fields` (
@@ -42,10 +40,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_fields` (
   UNIQUE KEY `exp_freeform_next_fields_handle_unq_idx` (`handle`),
   KEY `exp_freeform_next_fields_notificationId_fk` (`notificationId`),
   KEY `exp_freeform_next_fields_assetSourceId_fk` (`assetSourceId`)
-)
-  ENGINE = InnoDB
-  DEFAULT CHARSET = `utf8`
-  COLLATE = `utf8_unicode_ci`;
+) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_integrations` (
@@ -64,10 +59,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_integrations` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `exp_freeform_next_class_handle_unq_idx` (`class`, `handle`),
   UNIQUE KEY `exp_freeform_next_handle_unq_idx` (`handle`)
-)
-  ENGINE = InnoDB
-  DEFAULT CHARSET = `utf8`
-  COLLATE = `utf8_unicode_ci`;
+) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_crm_fields` (
   `id`            INT(11)                                        NOT NULL AUTO_INCREMENT,
@@ -81,10 +73,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_crm_fields` (
   `dateUpdated`   DATETIME                                                DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `exp_freeform_next_crm_fields_integrationId_handle_unq_idx` (`integrationId`, `handle`)
-)
-  ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
-  COLLATE = utf8_unicode_ci;
+) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_mailing_list_fields` (
   `id`            INT(11)         NOT NULL  AUTO_INCREMENT,
@@ -98,10 +87,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_mailing_list_fields` (
   `dateUpdated`   DATETIME                  DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `exp_freeform_next_mailingListId_handle_unq_idx` (`mailingListId`, `handle`)
-)
-  ENGINE = InnoDB
-  DEFAULT CHARSET = `utf8`
-  COLLATE = `utf8_unicode_ci`;
+) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_mailing_lists` (
   `id`            INT(11)      NOT NULL  AUTO_INCREMENT,
@@ -114,10 +100,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_mailing_lists` (
   `dateUpdated`   DATETIME               DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `exp_freeform_next_integrationId_resourceId_unq_idx` (`integrationId`, `resourceId`)
-)
-  ENGINE = InnoDB
-  DEFAULT CHARSET = `utf8`
-  COLLATE = `utf8_unicode_ci`;
+) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_notifications` (
   `id`                 INT(11)             NOT NULL  AUTO_INCREMENT,
@@ -137,10 +120,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_notifications` (
   `dateUpdated`        DATETIME                      DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `exp_freeform_next_notifications_handle_unq_idx` (`handle`)
-)
-  ENGINE = InnoDB
-  DEFAULT CHARSET = `utf8`
-  COLLATE = `utf8_unicode_ci`;
+) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_statuses` (
   `id`          INT(11)             NOT NULL  AUTO_INCREMENT,
@@ -155,10 +135,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_statuses` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `exp_freeform_next_statuses_name_unq_idx` (`name`),
   UNIQUE KEY `exp_freeform_next_statuses_handle_unq_idx` (`handle`)
-)
-  ENGINE = InnoDB
-  DEFAULT CHARSET = `utf8`
-  COLLATE = `utf8_unicode_ci`;
+) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_submissions` (
   `id`          INT(11)      NOT NULL  AUTO_INCREMENT,
@@ -171,10 +148,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_submissions` (
   PRIMARY KEY (`id`),
   KEY `exp_freeform_next_submissions_statusId_fk` (`statusId`),
   KEY `exp_freeform_next_submissions_formId_fk` (`formId`)
-)
-  ENGINE = InnoDB
-  DEFAULT CHARSET = `utf8`
-  COLLATE = `utf8_unicode_ci`;
+) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_export_profiles` (
   `id`          INT(11)      NOT NULL  AUTO_INCREMENT,
@@ -190,10 +164,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_export_profiles` (
   `dateUpdated` DATETIME DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `exp_freeform_next_export_formId_fk` (`formId`)
-)
-  ENGINE = InnoDB
-  DEFAULT CHARSET = `utf8`
-  COLLATE = `utf8_unicode_ci`;
+) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_export_settings` (
   `id`          INT(11)      NOT NULL  AUTO_INCREMENT,
@@ -202,10 +173,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_export_settings` (
   `settings`    TEXT         NOT NULL,
   PRIMARY KEY (`id`),
   KEY `exp_freeform_next_export_userId_fk` (`userId`)
-)
-  ENGINE = InnoDB
-  DEFAULT CHARSET = `utf8`
-  COLLATE = `utf8_unicode_ci`;
+) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_unfinalized_files` (
   `id`          INT(11) NOT NULL  AUTO_INCREMENT,
@@ -215,10 +183,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_unfinalized_files` (
   `dateUpdated` DATETIME          DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `exp_freeform_next_unfinalized_files_assetId_fk` (`assetId`)
-)
-  ENGINE = InnoDB
-  DEFAULT CHARSET = `utf8`
-  COLLATE = `utf8_unicode_ci`;
+) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_settings` (
   `id`                         INT(11)                NOT NULL  AUTO_INCREMENT,
@@ -234,10 +199,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_settings` (
   `defaultTemplates`           TINYINT(1)                       DEFAULT 1,
   `formSubmitDisable`          TINYINT(1)                       DEFAULT 1,
   PRIMARY KEY (`id`)
-)
-  ENGINE = InnoDB
-  DEFAULT CHARSET = `utf8`
-  COLLATE = `utf8_unicode_ci`;
+) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_submission_preferences`
 (
@@ -248,10 +210,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_submission_preferences`
   `settings` TEXT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `site_member_form` (`siteId`, `memberId`, `formId`)
-)
-  ENGINE = InnoDB
-  DEFAULT CHARSET = `utf8`
-  COLLATE = `utf8_unicode_ci`;
+) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_session_data`
 (
@@ -260,8 +219,5 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_session_data`
   `data`        TEXT         NULL,
   `dateCreated` DATETIME     NOT NULL,
   PRIMARY KEY (`sessionId`, `key`)
-)
-  ENGINE = InnoDB
-  DEFAULT CHARSET = `utf8`
-  COLLATE = `utf8_unicode_ci`;
+) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
