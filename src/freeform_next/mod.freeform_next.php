@@ -32,6 +32,8 @@ class Freeform_Next extends Plugin
 
         $settingsService = new \Solspace\Addons\FreeformNext\Services\SettingsService();
         $settingsService->cleanUpDatabaseSessionData();
+
+        $this->loadLanguageFiles();
     }
 
     /**
