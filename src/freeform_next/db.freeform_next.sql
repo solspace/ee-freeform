@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_forms` (
   `dateCreated`    DATETIME               DEFAULT NULL,
   `dateUpdated`    DATETIME               DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `exp_freeform_next_forms_handle_unq_idx` (`handle`)
+  UNIQUE KEY `ffn_forms_handle` (`handle`)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 
@@ -37,9 +37,9 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_fields` (
   `dateCreated`          DATETIME                      DEFAULT NULL,
   `dateUpdated`          DATETIME                      DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `exp_freeform_next_fields_handle_unq_idx` (`handle`),
-  KEY `exp_freeform_next_fields_notificationId_fk` (`notificationId`),
-  KEY `exp_freeform_next_fields_assetSourceId_fk` (`assetSourceId`)
+  UNIQUE KEY `ffn_fields_handle` (`handle`),
+  KEY `ffn_fields_notificationId_fk` (`notificationId`),
+  KEY `ffn_fields_assetSourceId_fk` (`assetSourceId`)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 
@@ -57,8 +57,8 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_integrations` (
   `dateCreated` DATETIME                               DEFAULT NULL,
   `dateUpdated` DATETIME                               DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `exp_freeform_next_class_handle_unq_idx` (`class`, `handle`),
-  UNIQUE KEY `exp_freeform_next_handle_unq_idx` (`handle`)
+  UNIQUE KEY `ffn_class_handle` (`class`, `handle`),
+  UNIQUE KEY `ffn_handle` (`handle`)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_crm_fields` (
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_crm_fields` (
   `dateCreated`   DATETIME                                                DEFAULT NULL,
   `dateUpdated`   DATETIME                                                DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `exp_freeform_next_crm_fields_integrationId_handle_unq_idx` (`integrationId`, `handle`)
+  UNIQUE KEY `ffn_crm_fields_iId_handle` (`integrationId`, `handle`)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_mailing_list_fields` (
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_mailing_list_fields` (
   `dateCreated`   DATETIME                  DEFAULT NULL,
   `dateUpdated`   DATETIME                  DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `exp_freeform_next_mailingListId_handle_unq_idx` (`mailingListId`, `handle`)
+  UNIQUE KEY `ffn_mailingListId_handle` (`mailingListId`, `handle`)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_mailing_lists` (
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_mailing_lists` (
   `dateCreated`   DATETIME               DEFAULT NULL,
   `dateUpdated`   DATETIME               DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `exp_freeform_next_integrationId_resourceId_unq_idx` (`integrationId`, `resourceId`)
+  UNIQUE KEY `ffn_integrationId_resourceId` (`integrationId`, `resourceId`)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_notifications` (
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_notifications` (
   `dateCreated`        DATETIME                      DEFAULT NULL,
   `dateUpdated`        DATETIME                      DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `exp_freeform_next_notifications_handle_unq_idx` (`handle`)
+  UNIQUE KEY `ffn_notifications_handle` (`handle`)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_statuses` (
@@ -133,8 +133,8 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_statuses` (
   `dateCreated` DATETIME                      DEFAULT NULL,
   `dateUpdated` DATETIME                      DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `exp_freeform_next_statuses_name_unq_idx` (`name`),
-  UNIQUE KEY `exp_freeform_next_statuses_handle_unq_idx` (`handle`)
+  UNIQUE KEY `ffn_statuses_name` (`name`),
+  UNIQUE KEY `ffn_statuses_handle` (`handle`)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_submissions` (
@@ -146,8 +146,8 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_submissions` (
   `dateCreated` DATETIME               DEFAULT NULL,
   `dateUpdated` DATETIME               DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `exp_freeform_next_submissions_statusId_fk` (`statusId`),
-  KEY `exp_freeform_next_submissions_formId_fk` (`formId`)
+  KEY `ffn_submissions_statusId_fk` (`statusId`),
+  KEY `ffn_submissions_formId_fk` (`formId`)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_export_profiles` (
@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_export_profiles` (
   `dateCreated` DATETIME DEFAULT NULL,
   `dateUpdated` DATETIME DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `exp_freeform_next_export_formId_fk` (`formId`)
+  KEY `ffn_export_formId_fk` (`formId`)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_export_settings` (
@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_export_settings` (
   `userId`      INT(11)      NOT NULL,
   `settings`    TEXT         NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `exp_freeform_next_export_userId_fk` (`userId`)
+  KEY `ffn_export_userId_fk` (`userId`)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_unfinalized_files` (
@@ -182,7 +182,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_unfinalized_files` (
   `dateCreated` DATETIME          DEFAULT NULL,
   `dateUpdated` DATETIME          DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `exp_freeform_next_unfinalized_files_assetId_fk` (`assetId`)
+  KEY `ffn_unfinalized_files_assetId_fk` (`assetId`)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_settings` (
