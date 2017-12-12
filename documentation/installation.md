@@ -6,27 +6,29 @@
 
 
 ## Requirements <a href="#requirements" id="requirements" class="docs-anchor">#</a>
-Solspace Freeform Lite/Pro are compatible with EE4 and EE3, with mostly the same minimum requirements as listed on the [ExpressionEngine Requirements](https://docs.expressionengine.com/latest/installation/requirements.html) page:
+Solspace Freeform Lite and Pro are compatible with EE4 and EE3, with mostly the same minimum requirements as listed on the [ExpressionEngine Requirements](https://docs.expressionengine.com/latest/installation/requirements.html) page:
 
-* **ExpressionEngine 4.x**
-	* PHP 7 or newer
-	* MySQL 5.6 or newer
-	* Windows and macOS browsers:
-		* Chrome 21 or newer
-		* Firefox 28 or newer
-		* Safari 9.0 or newer
-		* Internet Explorer 11 or newer
-		* Microsoft Edge
+### ExpressionEngine 4.x
 
-* **ExpressionEngine 3.5.x**
-	* PHP 5.4 or newer
-	* MySQL 5.1 or newer
-	* Windows and macOS browsers:
-		* Chrome 21 or newer
-		* Firefox 28 or newer
-		* Safari 9.0 or newer
-		* Internet Explorer 11 or newer
-		* Microsoft Edge
+* PHP 7 or newer
+* MySQL 5.6 or newer
+* Windows and macOS browsers:
+	* Chrome 21 or newer
+	* Firefox 28 or newer
+	* Safari 9.0 or newer
+	* Internet Explorer 11 or newer
+	* Microsoft Edge
+
+### ExpressionEngine 3.5.x
+
+* PHP 5.4 or newer
+* MySQL 5.1 or newer
+* Windows and macOS browsers:
+	* Chrome 21 or newer
+	* Firefox 28 or newer
+	* Safari 9.0 or newer
+	* Internet Explorer 11 or newer
+	* Microsoft Edge
 
 ## Installing Instructions <a href="#install" id="install" class="docs-anchor">#</a>
 1. Unzip the download package:
