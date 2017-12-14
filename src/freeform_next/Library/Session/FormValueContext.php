@@ -34,6 +34,9 @@ class FormValueContext implements \JsonSerializable
     const DATA_DYNAMIC_RECIPIENTS_KEY = 'dynamicRecipients';
     const DATA_DYNAMIC_TEMPLATE_KEY   = 'dynamicTemplate';
 
+    /** @var array */
+    private static $validHoneypots = [];
+
     /** @var int */
     private $formId;
 
@@ -218,31 +221,31 @@ class FormValueContext implements \JsonSerializable
      */
     public function isHoneypotValid()
     {
-        if (null === $this->honeypotValid) {
-            /** @var array $postValues */
-            $postValues = $_POST;
+        /** @var array $postValues */
+        $postValues = $_POST;
 
-            foreach ($postValues as $key => $value) {
-                if (strpos($key, Honeypot::NAME_PREFIX) === 0) {
-                    $honeypotList = $this->getHoneypotList();
-                    foreach ($honeypotList as $honeypot) {
-                        $hasMatchingName = $key === $honeypot->getName();
-                        $hasMatchingHash = $value === $honeypot->getHash();
-                        if ($hasMatchingName && $hasMatchingHash) {
-                            $this->honeypotValid = true;
+        foreach ($postValues as $key => $value) {
+            if (strpos($key, Honeypot::NAME_PREFIX) === 0) {
+                if (in_array($key, self::$validHoneypots, true)) {
+                    return true;
+                }
 
-                            $this->removeHoneypot($honeypot);
+                $honeypotList = $this->getHoneypotList();
+                foreach ($honeypotList as $honeypot) {
+                    $hasMatchingName = $key === $honeypot->getName();
+                    $hasMatchingHash = $value === $honeypot->getHash();
+                    if ($hasMatchingName && $hasMatchingHash) {
+                        self::$validHoneypots[] = $key;
 
-                            return $this->honeypotValid;
-                        }
+                        $this->removeHoneypot($honeypot);
+
+                        return true;
                     }
                 }
             }
-
-            $this->honeypotValid = false;
         }
 
-        return $this->honeypotValid;
+        return false;
     }
 
     /**
