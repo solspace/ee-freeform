@@ -248,6 +248,11 @@ $sidebarMinWidth: 18%;
   }
 }
 
+.sticky {
+  background: $color-cp-bg-gray;
+  z-index: 1000;
+}
+
 %h3 {
   padding: 0;
 
@@ -262,17 +267,17 @@ $sidebarMinWidth: 18%;
   flex: $fieldListFlex;
 
   .field-container {
+    position: fixed;
+    box-sizing: content-box;
+
     h3 {
       @extend %h3;
     }
 
-    > div {
+    > div > div {
       margin: 0 0 20px;
 
       ul {
-        max-height: 296px;
-        overflow-y: auto;
-
         li {
           display: block;
           margin: 0 0 $spacing-short;

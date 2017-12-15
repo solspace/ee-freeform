@@ -14,9 +14,11 @@ import FieldProperties from "./FieldProperties";
 import {fetchFields} from "../../../actions/Actions"
 
 export default class AddNewField extends Component {
-    static initialState = {
-        showFieldForm: false,
-    };
+  static EVENT_AFTER_UPDATE = 'freeform_add_new_field_after_render';
+
+  static initialState = {
+    showFieldForm: false,
+  };
 
     constructor(props, context) {
         super(props, context);
@@ -25,8 +27,12 @@ export default class AddNewField extends Component {
         this.toggleFieldForm = this.toggleFieldForm.bind(this);
     }
 
-    render() {
-        const {showFieldForm} = this.state;
+  componentDidUpdate() {
+    window.dispatchEvent(new Event(AddNewField.EVENT_AFTER_UPDATE));
+  }
+
+  render() {
+    const {showFieldForm} = this.state;
 
         const className = "composer-add-new-field-wrapper" + (showFieldForm ? " active" : "");
 

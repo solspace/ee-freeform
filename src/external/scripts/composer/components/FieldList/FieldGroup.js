@@ -13,7 +13,6 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import Field from "./Field";
 import FieldHelper from "../../helpers/FieldHelper";
-import AddNewField from "./Components/AddNewField";
 
 @connect(state => ({
   currentPage: state.context.page
@@ -39,7 +38,6 @@ export default class FieldGroup extends Component {
 
   render() {
     const {title, fields, currentPage, usedFields, onFieldClick} = this.props;
-    const {canManageFields}                                      = this.context;
 
     return (
       <div className="composer-fields">
@@ -55,8 +53,6 @@ export default class FieldGroup extends Component {
             />
           )}
         </ul>
-
-        {canManageFields && <AddNewField />}
       </div>
     );
   }

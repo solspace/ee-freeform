@@ -16,6 +16,7 @@ import FieldGroup from "../components/FieldList/FieldGroup";
 import SpecialFieldGroup from "../components/FieldList/SpecialFieldGroup";
 import MailingListFieldGroup from "../components/FieldList/MailingListFieldGroup";
 import FieldHelper from "../helpers/FieldHelper";
+import AlwaysNearbyBox from "../components/AlwaysNearbyBox";
 
 @connect(
   (state) => ({
@@ -44,14 +45,18 @@ export default class FieldList extends Component {
     const usedFields = this.getUsedFields();
 
     return (
-      <div className="field-container">
+      <AlwaysNearbyBox
+        className="field-container"
+        stickyTop={
+          <SpecialFieldGroup
+            fields={specialFields}
+            onFieldClick={onFieldClick}
+          />
+        }
+      >
         <FieldGroup
           fields={fields}
           usedFields={usedFields}
-          onFieldClick={onFieldClick}
-        />
-        <SpecialFieldGroup
-          fields={specialFields}
           onFieldClick={onFieldClick}
         />
         <MailingListFieldGroup
@@ -59,7 +64,7 @@ export default class FieldList extends Component {
           usedFields={usedFields}
           onFieldClick={onFieldClick}
         />
-      </div>
+      </AlwaysNearbyBox>
     );
   }
 

@@ -13,9 +13,11 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import Field from "./Field";
 import FieldHelper from "../../helpers/FieldHelper";
+import AddNewField from "./Components/AddNewField";
+import ReactDOM from "react-dom";
 
 @connect(state => ({
-    currentPage: state.context.page
+  currentPage: state.context.page
 }))
 export default class SpecialFieldGroup extends Component {
     static propTypes = {
@@ -29,23 +31,31 @@ export default class SpecialFieldGroup extends Component {
         currentPage: PropTypes.number.isRequired
     };
 
-    render() {
-        const {fields, currentPage, onFieldClick} = this.props;
+  static contextTypes = {
+    canManageFields: PropTypes.bool.isRequired,
+    canManageNotifications: PropTypes.bool.isRequired,
+  };
 
-        return (
-            <div className="composer-special-fields">
-                <h3>Special Fields</h3>
-                <ul>
-                    {fields.map((field, index) =>
-                        <Field
-                            key={index}
-                            {...field}
-                            isUsed={false}
-                            onClick={() => onFieldClick(FieldHelper.hashField(field), field, currentPage)}
-                        />
-                    )}
-                </ul>
-            </div>
-        )
-    }
+  render() {
+    const {fields, currentPage, onFieldClick} = this.props;
+    const {canManageFields}                   = this.context;
+
+    return (
+      <div className="composer-special-fields">
+        <h3>Special Fields</h3>
+        <ul>
+          {fields.map((field, index) =>
+            <Field
+              key={index}
+              {...field}
+              isUsed={false}
+              onClick={() => onFieldClick(FieldHelper.hashField(field), field, currentPage)}
+            />
+          )}
+        </ul>
+
+        {canManageFields && <AddNewField />}
+      </div>
+    )
+  }
 }

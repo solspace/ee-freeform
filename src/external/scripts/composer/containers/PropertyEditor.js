@@ -36,7 +36,7 @@ import Rating from "../components/PropertyEditor/Rating";
 import Website from "../components/PropertyEditor/Website";
 import Confirmation from "../components/PropertyEditor/Confirmation";
 import {updateProperty, switchHash} from "../actions/Actions";
-import {titleize} from "underscore.string";
+import AlwaysNearbyBox from "../components/AlwaysNearbyBox";
 
 const propertyTypes = {
   admin_notifications: AdminNotifications,
@@ -132,32 +132,34 @@ export default class PropertyEditor extends Component {
     }
 
     return (
-      <div>
-        <div className="composer-form-settings">
-          <a onClick={editForm} className={"btn action form-settings" + (hash === FieldTypes.FORM ? " active" : "")} data-icon="settings">
-            Form Settings
-          </a>
+      <AlwaysNearbyBox
+        stickyTop={
+          <div className="composer-form-settings">
+            <a onClick={editForm} className={"btn small form-settings" + (hash === FieldTypes.FORM ? " active" : "")} data-icon="settings">
+              Form Settings
+            </a>
 
-          <a onClick={editAdminNotifications} className={"btn action notification-settings" + (hash === FieldTypes.ADMIN_NOTIFICATIONS ? " active" : "")} data-icon="mail">
-            Notify
-          </a>
+            <a onClick={editAdminNotifications} className={"btn action notification-settings" + (hash === FieldTypes.ADMIN_NOTIFICATIONS ? " active" : "")} data-icon="mail">
+              Notify
+            </a>
 
-          {integrationCount ?
-            (
-              <a onClick={editIntegrations} className={"btn action crm-settings" + (hash === FieldTypes.INTEGRATION ? " active" : "")} data-icon="settings">
-                CRM
-              </a>
-            )
-            : ""}
-        </div>
-
+            {integrationCount ?
+              (
+                <a onClick={editIntegrations} className={"btn action crm-settings" + (hash === FieldTypes.INTEGRATION ? " active" : "")} data-icon="settings">
+                  CRM
+                </a>
+              )
+              : ""}
+          </div>
+        }
+      >
         <h3>{title}</h3>
-        <h4>{props.label}</h4>
+        <h4 dangerouslySetInnerHTML={{__html: props.label}} />
 
         <hr />
 
         {form ? form : <p>Please select an element</p>}
-      </div>
+      </AlwaysNearbyBox>
     );
   }
 
