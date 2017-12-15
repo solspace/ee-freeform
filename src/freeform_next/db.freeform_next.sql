@@ -214,10 +214,9 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_submission_preferences`
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_session_data`
 (
-  `sessionId`   VARCHAR(255) NOT NULL,
-  `key`         VARCHAR(255) NOT NULL,
+  `sessionId`   VARCHAR(150) NOT NULL,
+  `key`         VARCHAR(150) NOT NULL,
   `data`        TEXT         NULL,
   `dateCreated` DATETIME     NOT NULL,
   PRIMARY KEY (`sessionId`, `key`)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
-
