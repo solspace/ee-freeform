@@ -23,7 +23,7 @@ return [
     'name'           => 'Freeform Lite',
     'module_name'    => 'Freeform_next',
     'description'    => 'The most intuitive and powerful form builder for ExpressionEngine.',
-    'version'        => '1.3.1',
+    'version'        => '1.3.2',
     'namespace'      => 'Solspace\Addons\FreeformNext',
     'settings_exist' => true,
     'models'         => [
