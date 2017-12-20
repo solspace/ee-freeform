@@ -102,6 +102,7 @@ ReactDOM.render(
       canManageSettings={canManageSettings}
       isDbEmailTemplateStorage={isDbEmailTemplateStorage}
       isWidgetsInstalled={isWidgetsInstalled}
+      formPropCleanup={formPropCleanup}
       csrf={{
         name: "csrf_token",
         token: csrfToken,

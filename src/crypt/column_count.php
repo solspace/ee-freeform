@@ -8,7 +8,7 @@ if ($version === FREEFORM_EXPRESS) {
 
     foreach ($columns as $column) {
         $data = array_slice($column, 0, count($column) - 2, true);
-        $data[1]['content'] = strip_tags($data[1]['content']);
+        $data[1]['content'] = strip_tags($data[1]['content'], '<span>');
 
         $newColumns[] = $data;
     }

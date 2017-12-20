@@ -14,31 +14,37 @@ import {connect} from "react-redux";
 import Field from "./Field";
 import FieldHelper from "../../helpers/FieldHelper";
 import AddNewField from "./Components/AddNewField";
-import ReactDOM from "react-dom";
 
 @connect(state => ({
-  currentPage: state.context.page
+  currentPage: state.context.page,
+  fieldCount: state.fields.fields.length,
 }))
 export default class SpecialFieldGroup extends Component {
-    static propTypes = {
-        fields: PropTypes.arrayOf(
-            PropTypes.shape({
-                type: PropTypes.string.isRequired,
-                label: PropTypes.string.isRequired,
-            }).isRequired
-        ).isRequired,
-        onFieldClick: PropTypes.func,
-        currentPage: PropTypes.number.isRequired
-    };
+  static propTypes = {
+    fieldCount: PropTypes.number.isRequired,
+    fields: PropTypes.arrayOf(
+      PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        label: PropTypes.string.isRequired,
+      }).isRequired
+    ).isRequired,
+    onFieldClick: PropTypes.func,
+    currentPage: PropTypes.number.isRequired
+  };
 
   static contextTypes = {
     canManageFields: PropTypes.bool.isRequired,
     canManageNotifications: PropTypes.bool.isRequired,
+    formPropCleanup: PropTypes.bool.isRequired,
   };
 
   render() {
-    const {fields, currentPage, onFieldClick} = this.props;
-    const {canManageFields}                   = this.context;
+    const {fieldCount, fields, currentPage, onFieldClick} = this.props;
+    let {canManageFields, formPropCleanup}    = this.context;
+
+    if (canManageFields) {
+      canManageFields = !formPropCleanup || fieldCount < 15;
+    }
 
     return (
       <div className="composer-special-fields">
@@ -54,7 +60,7 @@ export default class SpecialFieldGroup extends Component {
           )}
         </ul>
 
-        {canManageFields && <AddNewField />}
+        {canManageFields && <AddNewField/>}
       </div>
     )
   }

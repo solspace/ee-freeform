@@ -46,6 +46,8 @@
     var isDbEmailTemplateStorage = <?php echo $isDbEmailTemplateStorage ? 'true' : 'false' ?>;
     var isWidgetsInstalled       = <?php echo $isWidgetsInstalled ? 'true' : 'false' ?>;
 
+    var formPropCleanup = <?php echo \Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper::get('props') ? 'true' : 'false' ?>;
+
     var csrfToken = "<?php echo CSRF_TOKEN ?>";
 </script>
 

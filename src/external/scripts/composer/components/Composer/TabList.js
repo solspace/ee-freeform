@@ -24,8 +24,13 @@ export default class TabList extends Component {
     tabCount: PropTypes.number.isRequired,
   };
 
+  static contextTypes = {
+    formPropCleanup: PropTypes.bool.isRequired,
+  };
+
   render() {
     const {layout, currentPageIndex, onTabClick, onNewTab, tabCount} = this.props;
+    const {formPropCleanup} = this.context;
 
     return (
       <div className="tab-list-wrapper">
@@ -43,7 +48,7 @@ export default class TabList extends Component {
           )}
         </ul>
 
-        {tabCount < MAX_TABS && (
+        {!formPropCleanup && tabCount < MAX_TABS && (
           <div className="tab-list-controls">
             <a className="new" onClick={() => onNewTab(layout.length)}></a>
           </div>
