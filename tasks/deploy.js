@@ -16,7 +16,7 @@ function getVersionNumber() {
 }
 
 module.exports = {
-  dep: ["build:scripts", "build:styles", "build:react", "build:fonts", "build:themes", "composer", "clean:deploy"],
+  dep: ["build:scripts", "build:styles", "build:react", "build:fonts", "build:themes", "build:crypt", "composer", "clean:deploy"],
   fn: function (gulp, callback) {
     if (!helpers.isProd()) {
       console.log("!!! Deployment must be run with '--env prod' environment variable !!!");
