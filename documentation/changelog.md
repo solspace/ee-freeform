@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.3.2 (December 18, 2017) <a href="#v1-3-2" id="v1-3-2" class="docs-anchor">#</a>
+* Fixed a bug where Freeform would not install due to a 'max key length' error for some customers on EE4.
+* Fixed a bug where the Spam protection feature's "count" in control panel was incrementing incorrectly with each successful submission.
+
 ### 1.3.1 (December 12, 2017) <a href="#v1-3-1" id="v1-3-1" class="docs-anchor">#</a>
 * Updated the auto-scroll for error return handling to be more reliable.
 * Fixed a bug where Freeform would not install and error for some customers on EE4.
