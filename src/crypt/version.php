@@ -1,5 +1,4 @@
 <?php
-return FREEFORM_EXPRESS;
 
 if (file_exists(PATH_THIRD . '/freeform_next/Library/Pro')) {
     return FREEFORM_PRO;
