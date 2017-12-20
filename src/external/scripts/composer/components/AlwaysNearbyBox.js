@@ -74,14 +74,18 @@ export default class AlwaysNearbyBox extends Component {
   }
 
   updateOffsetDimensions() {
-    const body       = document.body,
-          html       = document.documentElement,
-          builder    = document.getElementById('freeform-builder'),
-          parentNode = ReactDOM.findDOMNode(this).parentNode;
-
     let offset = 0;
 
-    offset += builder.getBoundingClientRect().top;
+    offset += document.getElementsByClassName('nav-global-wrap')[0].clientHeight;
+    offset += document.getElementsByClassName('nav-main-wrap')[0].clientHeight;
+    offset += document.getElementsByClassName('breadcrumb')[0].clientHeight;
+    offset += document.getElementsByClassName('col-group')[0].clientHeight;
+    offset += 24; // padding
+    offset += 10; // padding
+
+    const body       = document.body,
+          html       = document.documentElement,
+          parentNode = ReactDOM.findDOMNode(this).parentNode;
 
     setTimeout(function(){
       AlwaysNearbyBox.footerSize = document.getElementsByClassName('footer')[0].parentNode.clientHeight;
