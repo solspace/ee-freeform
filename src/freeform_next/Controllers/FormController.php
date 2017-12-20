@@ -17,6 +17,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Composer;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
+use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Library\Session\EERequest;
 use Solspace\Addons\FreeformNext\Library\Session\EESession;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
@@ -122,12 +123,7 @@ class FormController extends Controller
             [
                 'table'            => $table->viewData(),
                 'cp_page_title'    => lang('Forms'),
-                'form_right_links' => [
-                    [
-                        'title' => lang('New Form'),
-                        'link'  => $this->getLink('forms/new'),
-                    ],
-                ],
+                'form_right_links' => FreeformHelper::get('right_links', $this),
             ]
         );
 
@@ -254,14 +250,18 @@ class FormController extends Controller
         if ($existing && $existing->id !== $form->id) {
             $view->addError(sprintf('Handle "%s" already taken', $form->handle));
         } else {
-            $form->save();
+            try {
+                $form->save();
 
-            if (!ExtensionHelper::call(ExtensionHelper::HOOK_FORM_AFTER_SAVE, $form, $isNew)) {
-                return $view;
+                if (!ExtensionHelper::call(ExtensionHelper::HOOK_FORM_AFTER_SAVE, $form, $isNew)) {
+                    return $view;
+                }
+
+                $view->addVariable('id', $form->id);
+                $view->addVariable('handle', $form->handle);
+            } catch (\Exception $e) {
+                $view->addError($e->getMessage());
             }
-
-            $view->addVariable('id', $form->id);
-            $view->addVariable('handle', $form->handle);
         }
 
         return $view;

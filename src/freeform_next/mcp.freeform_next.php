@@ -22,6 +22,7 @@ use Solspace\Addons\FreeformNext\Controllers\SettingsController;
 use Solspace\Addons\FreeformNext\Controllers\SubmissionController;
 use Solspace\Addons\FreeformNext\Controllers\UpdateController;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
+use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
 use Solspace\Addons\FreeformNext\Model\ExportProfileModel;
 use Solspace\Addons\FreeformNext\Model\FieldModel;
@@ -377,13 +378,13 @@ class Freeform_next_mcp extends ControlPanelView
     protected function buildNavigation()
     {
         $forms = new NavigationLink('Forms', 'forms');
-        $forms->setButtonLink(new NavigationLink('New', 'forms/new'));
+        FreeformHelper::get('navigation', $forms);
 
         $notifications = new NavigationLink('Notifications', 'notifications');
         $notifications->setButtonLink(new NavigationLink('New', 'notifications/new'));
 
         $fields = new NavigationLink('Fields', 'fields');
-        $fields->setButtonLink(new NavigationLink('New', 'fields/new'));
+        FreeformHelper::get('navigation', $fields);
 
         $integrations = new NavigationLink('Integrations');
         $integrations

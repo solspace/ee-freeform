@@ -12,6 +12,7 @@
 namespace Solspace\Addons\FreeformNext\Model;
 
 use EllisLab\ExpressionEngine\Service\Model\Model;
+use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 
 /**
  * @property int    $id
@@ -24,13 +25,13 @@ use EllisLab\ExpressionEngine\Service\Model\Model;
  */
 class StatusModel extends Model implements \JsonSerializable
 {
-    use TimestampableTrait;
-
     const MODEL = 'freeform_next:StatusModel';
     const TABLE = 'freeform_next_statuses';
 
     protected static $_primary_key = 'id';
     protected static $_table_name  = self::TABLE;
+
+    protected static $_events = ['beforeInsert', 'beforeUpdate', 'beforeSave'];
 
     protected $id;
     protected $siteId;
@@ -81,5 +82,42 @@ class StatusModel extends Model implements \JsonSerializable
             'isDefault' => (bool)$this->isDefault,
             'color'     => $this->color,
         ];
+    }
+
+    /**
+     * Event beforeInsert sets the $dateCreated and $dateUpdated properties
+     */
+    public function onBeforeInsert()
+    {
+        $this->set(
+            [
+                'dateCreated' => $this->getTimestampableDate(),
+                'dateUpdated' => $this->getTimestampableDate(),
+            ]
+        );
+    }
+
+    /**
+     * Event beforeUpdate sets the $dateUpdated property
+     */
+    public function onBeforeUpdate()
+    {
+        $this->set(['dateUpdated' => $this->getTimestampableDate()]);
+    }
+
+    /**
+     * @return \DateTime
+     */
+    private function getTimestampableDate()
+    {
+        return date('Y-m-d H:i:s');
+    }
+
+    /**
+     * Event beforeSave validates the form
+     */
+    public function onBeforeSave()
+    {
+        FreeformHelper::get('validate', $this);
     }
 }

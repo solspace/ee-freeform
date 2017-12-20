@@ -5,6 +5,7 @@ namespace Solspace\Addons\FreeformNext\Controllers;
 use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionAttributes;
 use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionPreferenceSetting;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
+use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
@@ -63,9 +64,14 @@ class ApiController extends Controller
         $view = new AjaxView();
 
         if (!empty($_POST)) {
-            $this->getFieldController()->save();
+            try {
+                $model = $this->getFieldController()->save();
+                FreeformHelper::get('validate', $model);
 
-            $view->addVariable('success', true);
+                $view->addVariable('success', true);
+            } catch (\Exception $e) {
+                $view->addError($e->getMessage());
+            }
 
             return $view;
         }

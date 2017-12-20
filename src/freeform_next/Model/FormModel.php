@@ -15,9 +15,8 @@ use EllisLab\ExpressionEngine\Service\Model\Model;
 use Solspace\Addons\FreeformNext\Library\Composer\Attributes\FormAttributes;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Composer\Composer;
-use Solspace\Addons\FreeformNext\Library\Session\DbSession;
+use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Library\Session\EERequest;
-use Solspace\Addons\FreeformNext\Library\Session\EESession;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Services\CrmService;
@@ -42,13 +41,13 @@ use Solspace\Addons\FreeformNext\Services\SubmissionsService;
  */
 class FormModel extends Model
 {
-    use TimestampableTrait;
-
     const MODEL = 'freeform_next:FormModel';
     const TABLE = 'freeform_next_forms';
 
     protected static $_primary_key = 'id';
     protected static $_table_name  = self::TABLE;
+
+    protected static $_events = ['beforeInsert', 'beforeUpdate', 'beforeSave', 'beforeDelete'];
 
     protected $id;
     protected $siteId;
@@ -59,6 +58,8 @@ class FormModel extends Model
     protected $layoutJson;
     protected $returnUrl;
     protected $defaultStatus;
+    protected $dateCreated;
+    protected $dateUpdated;
 
     /** @var Composer */
     private $composer;
@@ -162,5 +163,50 @@ class FormModel extends Model
             ->setCsrfTokenName(null);
 
         return $attributes;
+    }
+
+    /**
+     * Event beforeInsert sets the $dateCreated and $dateUpdated properties
+     */
+    public function onBeforeInsert()
+    {
+        $this->set(
+            [
+                'dateCreated' => $this->getTimestampableDate(),
+                'dateUpdated' => $this->getTimestampableDate(),
+            ]
+        );
+    }
+
+    /**
+     * Event beforeUpdate sets the $dateUpdated property
+     */
+    public function onBeforeUpdate()
+    {
+        $this->set(['dateUpdated' => $this->getTimestampableDate()]);
+    }
+
+    /**
+     * @return \DateTime
+     */
+    private function getTimestampableDate()
+    {
+        return date('Y-m-d H:i:s');
+    }
+
+    /**
+     * Event beforeSave validates the form
+     */
+    public function onBeforeSave()
+    {
+        FreeformHelper::get('validate', $this);
+    }
+
+    /**
+     * Event beforeSave validates the form
+     */
+    public function onBeforeDelete()
+    {
+        FreeformHelper::get('validate', $this);
     }
 }

@@ -47,6 +47,9 @@ const paths = {
         buildPath + "freeform_next/Services/ExportService.php",
         buildPath + "freeform_next/View/export",
         buildPath + "freeform_next/View/export_profiles",
+      ],
+      liteFiles: [
+        buildPath + "freeform_next/ft.freeform_next.php",
       ]
     },
     themes: {

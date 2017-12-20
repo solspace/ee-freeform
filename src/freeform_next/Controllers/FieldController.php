@@ -16,6 +16,7 @@ use EllisLab\ExpressionEngine\Service\Validation\Result;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FieldExceptions\FieldException;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
+use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Model\FieldModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FileRepository;
@@ -83,12 +84,7 @@ class FieldController extends Controller
             [
                 'table'            => $table->viewData(),
                 'cp_page_title'    => lang('Fields'),
-                'form_right_links' => [
-                    [
-                        'title' => lang('New Field'),
-                        'link'  => $this->getLink('fields/new'),
-                    ],
-                ],
+                'form_right_links' => FreeformHelper::get('right_links', $this),
             ]
         );
         $view->setHeading(lang('Fields'));
@@ -314,17 +310,27 @@ class FieldController extends Controller
             return $field;
         }
 
-        $field->save();
+        try {
+            $field->save();
 
-        ExtensionHelper::call(ExtensionHelper::HOOK_FIELD_AFTER_SAVE, $field, $isNew);
+            ExtensionHelper::call(ExtensionHelper::HOOK_FIELD_AFTER_SAVE, $field, $isNew);
 
-        ee('CP/Alert')
-            ->makeInline('shared-form')
-            ->asSuccess()
-            ->withTitle(lang('Success'))
-            ->defer();
+            ee('CP/Alert')
+                ->makeInline('shared-form')
+                ->asSuccess()
+                ->withTitle(lang('Success'))
+                ->defer();
 
-        return $field;
+            return $field;
+        } catch (\Exception $e) {
+            ee('CP/Alert')
+                ->makeInline('shared-form')
+                ->asIssue()
+                ->withTitle($e->getMessage())
+                ->defer();
+
+            return $field;
+        }
     }
 
     /**

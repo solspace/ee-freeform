@@ -26,7 +26,8 @@ class Freeform_next_upd extends AddonUpdater
     {
         if (version_compare($previousVersion, '1.0.3', '<=')) {
             ee()->db
-                ->query('
+                ->query(
+                    '
                 CREATE TABLE IF NOT EXISTS `exp_freeform_next_session_data`
                 (
                   `sessionId`   VARCHAR(255) NOT NULL,
@@ -38,13 +39,16 @@ class Freeform_next_upd extends AddonUpdater
                   ENGINE = InnoDB
                   DEFAULT CHARSET = `utf8`
                   COLLATE = `utf8_unicode_ci`
-              ');
+              '
+                );
 
             ee()->db
-                ->query('
+                ->query(
+                    '
                     ALTER TABLE exp_freeform_next_settings
                     ADD COLUMN `sessionStorage` ENUM(\'session\', \'db\') DEFAULT \'session\' AFTER `license`
-                ');
+                '
+                );
         }
 
         if (version_compare($previousVersion, '1.1.0', '<')) {
@@ -98,18 +102,31 @@ class Freeform_next_upd extends AddonUpdater
                 );
 
             ee()->db
-                ->query('
+                ->query(
+                    '
                     ALTER TABLE exp_freeform_next_settings
                     ADD COLUMN `defaultTemplates` TINYINT(1) DEFAULT 1 AFTER `sessionStorage`
-                ');
+                '
+                );
         }
 
         if (version_compare($previousVersion, '1.1.3', '<')) {
             ee()->db
-                ->query('
+                ->query(
+                    '
                     ALTER TABLE exp_freeform_next_settings
                     ADD COLUMN `formSubmitDisable` TINYINT(1) DEFAULT 1 AFTER `defaultTemplates`
-                ');
+                '
+                );
+        }
+
+        if (version_compare($previousVersion, '1.3.1', '<=')) {
+            ee()->db
+                ->query(
+                    '
+                    INSERT INTO exp_actions(`class`, `method`, `csrf_exempt`) VALUES ("Freeform_next", "validateForm", 1)
+                '
+                );
         }
 
         return true;
@@ -122,6 +139,7 @@ class Freeform_next_upd extends AddonUpdater
     {
         return [
             new PluginAction('submitForm', 'Freeform_next', true),
+            new PluginAction('validateForm', 'Freeform_next', true),
         ];
     }
 
@@ -209,28 +227,37 @@ class Freeform_next_upd extends AddonUpdater
         $field->options = $states;
         $field->save();
 
-        $status            = StatusModel::create();
-        $status->name      = 'Open';
-        $status->handle    = 'open';
-        $status->isDefault = true;
-        $status->color     = '#8cc258';
-        $status->sortOrder = 1;
-        $status->save();
+        ee()->db->insert(
+            'freeform_next_statuses',
+            [
+                'name'      => 'Open',
+                'handle'    => 'open',
+                'isDefault' => true,
+                'color'     => '#8cc258',
+                'sortOrder' => 1,
+            ]
+        );
 
-        $status            = StatusModel::create();
-        $status->name      = 'Closed';
-        $status->handle    = 'closed';
-        $status->isDefault = false;
-        $status->color     = '#df4537';
-        $status->sortOrder = 2;
-        $status->save();
+        ee()->db->insert(
+            'freeform_next_statuses',
+            [
+                'name'      => 'Closed',
+                'handle'    => 'closed',
+                'isDefault' => false,
+                'color'     => '#df4537',
+                'sortOrder' => 2,
+            ]
+        );
 
-        $status            = StatusModel::create();
-        $status->name      = 'Pending';
-        $status->handle    = 'pending';
-        $status->isDefault = false;
-        $status->color     = '#ffe35b';
-        $status->sortOrder = 3;
-        $status->save();
+        ee()->db->insert(
+            'freeform_next_statuses',
+            [
+                'name'      => 'Pending',
+                'handle'    => 'pending',
+                'isDefault' => false,
+                'color'     => '#ffe35b',
+                'sortOrder' => 3,
+            ]
+        );
     }
 }

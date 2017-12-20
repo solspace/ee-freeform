@@ -14,6 +14,7 @@ namespace Solspace\Addons\FreeformNext\Model;
 use EllisLab\ExpressionEngine\Service\Model\Model;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
+use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
 
 /**
@@ -68,7 +69,7 @@ class FieldModel extends Model implements \JsonSerializable
     protected $dateUpdated;
     protected $additionalProperties;
 
-    protected static $_events = ['afterSave', 'afterDelete', 'beforeInsert', 'beforeUpdate'];
+    protected static $_events = ['afterSave', 'afterDelete', 'beforeInsert', 'beforeUpdate', 'beforeSave'];
 
     protected static $_typed_columns = [
         'values'               => 'json',
@@ -490,6 +491,14 @@ class FieldModel extends Model implements \JsonSerializable
     private function getTimestampableDate()
     {
         return date('Y-m-d H:i:s');
+    }
+
+    /**
+     * Event beforeSave validates the form
+     */
+    public function onBeforeSave()
+    {
+        FreeformHelper::get('validate', $this);
     }
 
     /**

@@ -11,19 +11,26 @@
 
 require_once __DIR__ . '/helper_functions.php';
 require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/Library/Helpers/FreeformHelper.php';
 
 if (!session_id()) {
     session_start();
+}
+
+if (!defined('FREEFORM_EXPRESS')) {
+    define('FREEFORM_EXPRESS', 'express');
+    define('FREEFORM_LITE', 'lite');
+    define('FREEFORM_PRO', 'pro');
 }
 
 return [
     'author'         => 'Solspace',
     'author_url'     => 'https://solspace.com/expressionengine/freeform',
     'docs_url'       => 'https://solspace.com/expressionengine/freeform/docs',
-    'name'           => 'Freeform Lite',
+    'name'           => \Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper::get('name'),
     'module_name'    => 'Freeform_next',
     'description'    => 'The most intuitive and powerful form builder for ExpressionEngine.',
-    'version'        => '1.3.1',
+    'version'        => '1.3.2',
     'namespace'      => 'Solspace\Addons\FreeformNext',
     'settings_exist' => true,
     'models'         => [

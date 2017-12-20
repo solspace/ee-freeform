@@ -5,6 +5,7 @@ namespace Solspace\Addons\FreeformNext\Controllers;
 use EllisLab\ExpressionEngine\Library\CP\Table;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
+use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Model\StatusModel;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
@@ -25,16 +26,14 @@ class StatusController extends Controller
         /** @var Table $table */
         $table = ee('CP/Table', ['sortable' => false, 'searchable' => false]);
 
-        $table->setColumns(
-            [
-                'id'         => ['type' => Table::COL_ID],
-                'name'       => ['type' => Table::COL_TEXT, 'encode' => false],
-                'handle'     => ['type' => Table::COL_TEXT],
-                'is_default' => ['type' => Table::COL_TEXT],
-                'manage'     => ['type' => Table::COL_TOOLBAR],
-                ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
-            ]
-        );
+        $columns = [
+            'id'         => ['type' => Table::COL_ID],
+            'name'       => ['type' => Table::COL_TEXT, 'encode' => false],
+            'handle'     => ['type' => Table::COL_TEXT],
+            'is_default' => ['type' => Table::COL_TEXT],
+            'manage'     => ['type' => Table::COL_TOOLBAR],
+            ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
+        ];
 
         $tableData = [];
         foreach ($statuses as $status) {
@@ -70,6 +69,11 @@ class StatusController extends Controller
                 $checkbox,
             ];
         }
+
+        $tableData = FreeformHelper::get('column_count', $tableData);
+        $columns   = FreeformHelper::get('columns', $columns);
+
+        $table->setColumns($columns);
         $table->setData($tableData);
         $table->setNoResultsText('No results');
 
@@ -81,12 +85,7 @@ class StatusController extends Controller
             [
                 'table'            => $table->viewData(),
                 'cp_page_title'    => lang('Statuses'),
-                'form_right_links' => [
-                    [
-                        'title' => lang('New Status'),
-                        'link'  => $this->getLink('settings/statuses/new'),
-                    ],
-                ],
+                'form_right_links' => FreeformHelper::get('right_links', $this),
             ]
         );
         $view
@@ -218,27 +217,35 @@ class StatusController extends Controller
             return $model;
         }
 
-        $model->save();
+        try {
+            $model->save();
 
-        ExtensionHelper::call(ExtensionHelper::HOOK_STATUS_AFTER_SAVE, $model, $isNew);
+            ExtensionHelper::call(ExtensionHelper::HOOK_STATUS_AFTER_SAVE, $model, $isNew);
 
-        if ($model->isDefault) {
-            ee()
-                ->db
-                ->update(
-                    StatusModel::TABLE,
-                    ['isDefault' => 0],
-                    ['id !=' => $model->id]
-                );
-        } else {
-            $this->updateDefaults();
+            if ($model->isDefault) {
+                ee()
+                    ->db
+                    ->update(
+                        StatusModel::TABLE,
+                        ['isDefault' => 0],
+                        ['id !=' => $model->id]
+                    );
+            } else {
+                $this->updateDefaults();
+            }
+
+            ee('CP/Alert')
+                ->makeInline('shared-form')
+                ->asSuccess()
+                ->withTitle(lang('Success'))
+                ->defer();
+        } catch (\Exception $e) {
+            ee('CP/Alert')
+                ->makeInline('shared-form')
+                ->asIssue()
+                ->withTitle($e->getMessage())
+                ->defer();
         }
-
-        ee('CP/Alert')
-            ->makeInline('shared-form')
-            ->asSuccess()
-            ->withTitle(lang('Success'))
-            ->defer();
 
         return $model;
     }
@@ -269,7 +276,7 @@ class StatusController extends Controller
             $this->updateDefaults();
         }
 
-        return new RedirectView($this->getLink('statuses'));
+        return new RedirectView($this->getLink('settings/statuses'));
     }
 
     /**
