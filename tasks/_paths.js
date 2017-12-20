@@ -1,8 +1,8 @@
-var src = "src/",
+const src = "src/",
     dist = "dist/",
     buildPath = dist + "build/";
 
-var paths = {
+const paths = {
   scripts: {
     src: [src + "external/scripts/cp/**/*.js"],
     dest: src + "freeform_next/javascript/",
@@ -15,6 +15,10 @@ var paths = {
   styles: {
     src: [src + "external/styles/**/*.scss"],
     dest: src + "themes/freeform_next/css/"
+  },
+  crypt: {
+    src: [src + "crypt/**/*"],
+    dest: src + "freeform_next/Library/Helpers/Misc/"
   },
   fonts: {
     src: [src + "external/font/**/*.*"],

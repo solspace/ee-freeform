@@ -2,6 +2,7 @@
 /node_modules/
 /src/freeform_next/vendor/
 /src/freeform_next/javascript/
+/src/freeform_next/Library/Helpers/Misc/
 /src/themes/
 /dist
 npm-debug.log
