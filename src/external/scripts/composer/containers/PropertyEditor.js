@@ -135,7 +135,7 @@ export default class PropertyEditor extends Component {
       <AlwaysNearbyBox
         stickyTop={
           <div className="composer-form-settings">
-            <a onClick={editForm} className={"btn small form-settings" + (hash === FieldTypes.FORM ? " active" : "")} data-icon="settings">
+            <a onClick={editForm} className={"btn action form-settings" + (hash === FieldTypes.FORM ? " active" : "")} data-icon="settings">
               Form Settings
             </a>
 
