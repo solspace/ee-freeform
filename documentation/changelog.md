@@ -1,5 +1,12 @@
 # Changelog
 
+### 1.4.1 (December 21, 2017) <a href="#v1-4-1" id="v1-4-1" class="docs-anchor">#</a>
+* Added Fluid fieldtype compatibility for the Freeform channel entry fieldtype.
+* Updated Salesforce integration to work with checkbox fields.
+* Fixed some visual bugs in Composer interface between EE3 and EE4 versions.
+* Fixed a bug where creating new fields with options would not save any default selections.
+* Fixed a bug where the toggle switch was not displaying correctly for allowing values for fieldtypes with options in EE4.
+
 ### 1.4.0 (December 20, 2017) <a href="#v1-4-0" id="v1-4-0" class="docs-anchor">#</a>
 * Added 'Express' edition of Freeform, which is a lower cost option for smaller/simpler sites.
 * Improved Composer interface to have sticky/locking auto-scrolling side columns. This makes searching through available fields and working with longer forms easier.

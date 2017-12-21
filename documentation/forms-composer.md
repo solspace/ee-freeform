@@ -1,6 +1,6 @@
 # Forms & Composer
 
-What makes Freeform different from other form add-ons is that it includes a very intuitive, very interactive and very flexible interface for building forms. We call this, **Composer**.
+What makes Freeform different from other form add-ons is that it includes a very intuitive, very interactive and very flexible interface for building forms. We call this, **Composer**. The *Freeform Express* edition has a limit of 1 form.
 
 To create your first form, visit the Forms area of the Freeform control panel (**Freeform > Forms**), and then click the **New Form** button at the top right corner of the page.
 

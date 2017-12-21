@@ -11,6 +11,7 @@ Salesforce integration includes support for the following:
 		* Email
 		* URL
 		* Address
+		* Checkbox
 		* Picklist
 		* Multipicklist
 	* Numeric fields:

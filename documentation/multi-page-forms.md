@@ -14,3 +14,4 @@ Freeform allows for *multi-page* forms (a POST submit per page). Here's some imp
 	* Any data entered into the current page that has NOT yet been submitted "forward" will not be saved when clicking **Previous** submit button. As in, clicking the Previous button will not save any changes you made to that form page.
 * If an earlier page contains file upload field(s), files will actually be uploaded before the form is officially submitted.
 	* If the form is never completed, the submission clearing (described above) will remove the file after 3hrs.
+* Multipage forms are not available in the *Freeform Express* edition.
