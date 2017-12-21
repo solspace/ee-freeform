@@ -260,6 +260,8 @@ class FieldController extends Controller
             true
         );
 
+        $field->type = $type;
+
         if (isset($post['types'][$type])) {
             $fieldSpecificPost = $post['types'][$type];
             foreach ($fieldSpecificPost as $key => $value) {
