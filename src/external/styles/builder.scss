@@ -573,9 +573,13 @@ $sidebarMinWidth: 18%;
   }
 }
 
+.wrap .col.w-16.last {
+  position: relative;
+}
+
 .composer-alert {
   position: absolute;
-  top: 115px;
+  top: -5px;
   left: 0;
   right: 0;
   width: 700px;

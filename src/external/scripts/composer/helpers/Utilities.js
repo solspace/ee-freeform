@@ -88,9 +88,11 @@ export function showNotification(text, type) {
   notification.className = 'composer-alert alert ' + type;
   notification.innerHTML = text;
 
-  document.body.appendChild(notification);
+  const block = document.querySelectorAll('.wrap .col.w-16.last')[0];
+
+  block.appendChild(notification);
 
   setTimeout(() => {
-    document.body.removeChild(notification);
+    block.removeChild(notification);
   }, 3000)
 }
