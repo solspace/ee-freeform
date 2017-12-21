@@ -9,23 +9,39 @@
 
 <div class="option-editor-wrapper<?php echo $model->hasCustomOptionValues() ? ' show-values' : '' ?>">
     <div class="value-toggler">
-        <label class="choice mr yes <?php echo $model->hasCustomOptionValues() ? 'chosen' : '' ?>">
-            <input type="radio"
-                   name="<?php echo sprintf('types[%s][custom_values]', $type) ?>"
-                   value="1"
-                <?php echo $model->hasCustomOptionValues() ? 'checked' : '' ?>
-            >
-            <?php echo lang('Yes') ?>
-        </label>
-        <label class="choice no <?php echo $model->hasCustomOptionValues() ? '' : 'chosen' ?>">
-            <input type="radio"
-                   name="<?php echo sprintf('types[%s][custom_values]', $type) ?>"
-                   value="0"
-                <?php echo $model->hasCustomOptionValues() ? '' : 'checked' ?>
-            >
-            <?php echo lang('No') ?>
-        </label>
+        <?php if (version_compare(APP_VER, '4.0.0', '<')) : ?>
+
+            <label class="choice mr yes <?php echo $model->hasCustomOptionValues() ? 'chosen' : '' ?>">
+                <input type="radio"
+                       name="<?php echo sprintf('types[%s][custom_values]', $type) ?>"
+                       value="1"
+                    <?php echo $model->hasCustomOptionValues() ? 'checked' : '' ?>
+                >
+                <?php echo lang('Yes') ?>
+            </label>
+            <label class="choice no <?php echo $model->hasCustomOptionValues() ? '' : 'chosen' ?>">
+                <input type="radio"
+                       name="<?php echo sprintf('types[%s][custom_values]', $type) ?>"
+                       value="0"
+                    <?php echo $model->hasCustomOptionValues() ? '' : 'checked' ?>
+                >
+                <?php echo lang('No') ?>
+            </label>
+
+        <?php else: ?>
+
+            <a href="#" class="toggle-btn <?= $model->hasCustomOptionValues() ? 'on' : 'off' ?>">
+                <input type="hidden" name="<?php echo sprintf('types[%s][custom_values]', $type) ?>" value="<?= $model->hasCustomOptionValues() ? 1 : 0?>">
+                <span class="slider"></span>
+                <span class="option"></span>
+            </a>
+
+        <?php endif; ?>
     </div>
+
+
+
+
 
     <div class="no-values">
         No <b>value/label pairs</b> found.

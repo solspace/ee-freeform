@@ -178,7 +178,7 @@ class FieldController extends Controller
                     ],
                 ],
             ],
-            'settings' => $this->getFieldSettingsByType($model),
+            'Settings' => $this->getFieldSettingsByType($model),
         ];
 
         ee()->cp->add_js_script('plugin', 'minicolors');

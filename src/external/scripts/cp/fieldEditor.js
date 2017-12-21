@@ -89,14 +89,23 @@ $(() => {
       }
     }, 'a[data-add-row]');
 
-    valueToggler.on({
-      click: (event) => {
-        const element = $(event.target);
-        self.showValues(element.val() === "1");
+    valueToggler
+      .on({
+        click: (event) => {
+          const element = $(event.target);
+          self.showValues(element.val() === "1");
 
-        element.parent().addClass('chosen').siblings().removeClass('chosen');
-      }
-    }, 'input[type=radio]');
+          element.parent().addClass('chosen').siblings().removeClass('chosen');
+        }
+      }, 'input[type=radio]')
+      .on({
+        click: (event) => {
+          const element = $(event.target),
+                val = element.siblings('input[type=hidden]').val();
+
+          self.showValues(val === "0");
+        }
+      }, 'a');
 
     itemList.sortable({
       handle: 'li[data-action=reorder] > a',
@@ -104,6 +113,7 @@ $(() => {
 
     $('input:checked', valueToggler).trigger('click');
     self.showValues($('.value-toggler input:checked').val() === "1");
+    self.showValues($('.value-toggler input:hidden').val() === "1");
     self.checkValueCount();
   });
 
