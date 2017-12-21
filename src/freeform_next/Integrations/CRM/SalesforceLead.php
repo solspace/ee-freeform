@@ -296,6 +296,10 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
                     $type = FieldObject::TYPE_STRING;
                     break;
 
+                case 'boolean':
+                    $type = FieldObject::TYPE_BOOLEAN;
+                    break;
+
                 case 'multipicklist':
                     $type = FieldObject::TYPE_ARRAY;
                     break;
