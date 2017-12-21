@@ -88,4 +88,14 @@ class Freeform_next_ft extends EE_Fieldtype
 
         return $form->render();
     }
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function accepts_content_type($name)
+    {
+        return ($name == 'channel' || $name == 'fluid_field');
+    }
 }
