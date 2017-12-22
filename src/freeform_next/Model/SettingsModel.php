@@ -28,6 +28,7 @@ use Symfony\Component\Finder\SplFileInfo;
  * @property string $license
  * @property string $sessionStorage
  * @property bool   $defaultTemplates
+ * @property bool   $removeNewlines
  * @property bool   $formSubmitDisable
  */
 class SettingsModel extends Model
@@ -49,6 +50,7 @@ class SettingsModel extends Model
     const DEFAULT_NOTIFICATION_CREATION_METHOD = self::NOTIFICATION_CREATION_METHOD_DATABASE;
     const DEFAULT_LICENSE                      = null;
     const DEFAULT_DEFAULT_TEMPLATES            = true;
+    const DEFAULT_REMOVE_NEWLINES              = false;
     const DEFAULT_FORM_SUBMIT_DISABLE          = true;
 
     const SESSION_STORAGE_SESSION  = 'session';
@@ -68,6 +70,7 @@ class SettingsModel extends Model
     protected $license;
     protected $sessionStorage;
     protected $defaultTemplates;
+    protected $removeNewlines;
     protected $formSubmitDisable;
 
     /**
@@ -91,6 +94,7 @@ class SettingsModel extends Model
                 'license'                    => self::DEFAULT_LICENSE,
                 'sessionStorage'             => self::SESSION_STORAGE_SESSION,
                 'defaultTemplates'           => self::DEFAULT_DEFAULT_TEMPLATES,
+                'removeNewlines'             => self::DEFAULT_REMOVE_NEWLINES,
                 'formSubmitDisable'          => self::DEFAULT_FORM_SUBMIT_DISABLE,
             ]
         );

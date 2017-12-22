@@ -47,7 +47,7 @@ Once export profile(s) exist users can export submissions in their choice of **C
 
 ## Basic CSV Export <a href="#basic-csv" id="basic-csv" class="docs-anchor">#</a>
 
-The basic version of Freeform includes CSV exporting functionality.
+The *Lite* and *Express* editions of Freeform include CSV exporting functionality.
 
 To export all of your Freeform submissions:
 
@@ -55,4 +55,4 @@ To export all of your Freeform submissions:
 * At the top right of the page, click the **Export CSV button**.
 	* Currently you can only export ALL submissions.
 
-For more advanced and flexible exporting options, consider [upgrading to Freeform Pro](https://solspace.com/expressionengine/freeform/pro)!
+For more advanced and flexible exporting options, consider [upgrading to Freeform Pro](https://solspace.com/expressionengine/freeform/#compare)!

@@ -223,6 +223,16 @@ class SettingsController extends Controller
                                 ],
                             ],
                             [
+                                'title'  => 'Remove Newlines from Textareas for Exporting',
+                                'desc'   => 'Enable this to have newlines removed from Textarea fields in submissions when exporting.',
+                                'fields' => [
+                                    'removeNewlines' => [
+                                        'type'  => 'yes_no',
+                                        'value' => $settings->removeNewlines ? 'y' : 'n',
+                                    ],
+                                ],
+                            ],
+                            [
                                 'title'  => 'Disable Submit Button on Form Submit',
                                 'desc'   => 'Enable this to automatically disable the form\'s submit button when the user submits the form. This will prevent the form from double-submitting.',
                                 'fields' => [

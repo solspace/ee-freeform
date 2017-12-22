@@ -48,6 +48,7 @@ The settings allow you to adjust:
 * *Statuses* <a href="#statuses" id="statuses" class="docs-anchor">#</a>
 	* This area allows you to manage and create new statuses for your forms.
 		* You can set the default status to be set for all forms here.
+		* Ability to add/edit/remove statuses is not available in the *Freeform Express* edition.
 
 [![Statuses](images/cp_settings-statuses-list.png)](images/cp_settings-statuses-list.png)
 

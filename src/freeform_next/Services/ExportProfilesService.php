@@ -3,10 +3,12 @@
 namespace Solspace\Addons\FreeformNext\Services;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\TextareaField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\DataExport\ExportDataCSV;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
+use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 
 class ExportProfilesService
 {
@@ -197,6 +199,8 @@ class ExportProfilesService
      */
     private function normalizeArrayData(Form $form, array $data, $flattenArrays = true)
     {
+        $isRemoveNewlines = (bool) SettingsRepository::getInstance()->getOrCreate()->removeNewlines;
+
         foreach ($data as $index => $item) {
             foreach ($item as $fieldId => $value) {
                 if (!preg_match('/^' . SubmissionModel::FIELD_COLUMN_PREFIX . '(\d+)$/', $fieldId, $matches)) {
@@ -213,6 +217,10 @@ class ExportProfilesService
                         }
 
                         $data[$index][$fieldId] = $value;
+                    }
+
+                    if ($isRemoveNewlines && $field instanceof TextareaField) {
+                        $data[$index][$fieldId] = trim(preg_replace('/\s+/', ' ', $value));
                     }
                 } catch (FreeformException $e) {
                     continue;
