@@ -311,10 +311,10 @@ $sidebarMinWidth: 18%;
   background: $color-cp-bg-gray;
   flex: $propertyEditorFlex;
 
-  overflow: hidden;
+  //overflow: hidden;
 
   .composer-form-settings {
-    margin-bottom: $spacing-wide;
+    margin: 5px 0 $spacing-wide;
 
     > a {
       margin-right: $spacing-short;
