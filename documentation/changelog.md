@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.4.2 (January 9, 2018) <a href="#v1-4-2" id="v1-4-2" class="docs-anchor">#</a>
+* Added setting to remove newlines from textarea fields for exporting.
+* Fixed a visual bug for right column buttons in Composer interface for EE3.
+
 ### 1.4.1 (December 21, 2017) <a href="#v1-4-1" id="v1-4-1" class="docs-anchor">#</a>
 * Added Fluid fieldtype compatibility for the Freeform channel entry fieldtype.
 * Updated Salesforce integration to work with checkbox fields.

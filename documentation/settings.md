@@ -21,6 +21,8 @@ The settings allow you to adjust:
 		* This setting allows you to set the display order for the list of available fields in Composer.
 	* **Include Default Freeform Formatting Templates** <a href="#include-default-templates" id="include-default-templates" class="docs-anchor">#</a>
 		* Disable this to hide the default Freeform formatting templates in the Formatting Template options list inside Composer.
+	* **Remove Newlines from Textareas for Exporting** <a href="#remove-newlines-exporting" id="remove-newlines-exporting" class="docs-anchor">#</a>
+		* Enable this to have newlines removed from Textarea fields in submissions when exporting.
 	* **Disable Submit Button on Form Submit?** <a href="#disable-submit" id="disable-submit" class="docs-anchor">#</a>
 		* Enable this to automatically disable the form's submit button when the user submits the form. This will prevent the form from double-submitting.
 * *Formatting Templates* <a href="#formatting-templates" id="formatting-templates" class="docs-anchor">#</a>
