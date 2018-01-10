@@ -129,7 +129,7 @@ class SettingsController extends Controller
                         [
                             [
                                 'title'  => 'License',
-                                'desc'   => 'Enter your Freeform Next license key here.',
+                                'desc'   => 'Enter your Freeform license key here.',
                                 'fields' => [
                                     'license' => [
                                         'type'  => 'text',

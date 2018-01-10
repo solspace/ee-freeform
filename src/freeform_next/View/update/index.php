@@ -24,7 +24,7 @@
             <section class="item-wrap">
                 <div class="item">
                     <h3>
-                        Freeform Next <b><?= $item->getVersion() ?></b>
+                        Freeform <b><?= $item->getVersion() ?></b>
                         <i>
                             (released on
                             <?= ee()->localize->format_date($format, $item->getDate()->getTimestamp()) ?>)
