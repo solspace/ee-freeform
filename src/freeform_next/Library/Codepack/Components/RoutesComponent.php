@@ -12,7 +12,6 @@
 namespace Solspace\Addons\FreeformNext\Library\Codepack\Components;
 
 use Solspace\Addons\FreeformNext\Library\Codepack\Codepack;
-use Craft\RoutesService;
 
 class RoutesComponent extends AbstractJsonComponent
 {
@@ -23,9 +22,6 @@ class RoutesComponent extends AbstractJsonComponent
      */
     public function install($prefix = null)
     {
-        /** @var RoutesService $routeService */
-        $routeService = \Craft\craft()->routes;
-
         $data       = $this->getData();
         $demoFolder = $prefix . "/";
 
@@ -42,7 +38,7 @@ class RoutesComponent extends AbstractJsonComponent
                 $pattern  = "/(\/?)(.*)/";
                 $template = preg_replace($pattern, "$1$demoFolder$2", $route->template, 1);
 
-                $routeService->saveRoute($urlParts, $template);
+                // $routeService->saveRoute($urlParts, $template);
             }
         }
     }
@@ -53,6 +49,6 @@ class RoutesComponent extends AbstractJsonComponent
      */
     protected function setProperties()
     {
-        $this->fileName = "routes.json";
+        $this->fileName = 'routes.json';
     }
 }

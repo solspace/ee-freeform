@@ -65,7 +65,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@solspace.git.beanstalkapp.com:/solspace/craft-freeform.git"
+    "url": "git@solspace.git.beanstalkapp.com:/solspace/ee-freeform.git"
   },
   "author": "",
   "license": "ISC",

@@ -11,7 +11,6 @@
 
 namespace Solspace\Addons\FreeformNext\Library\Database;
 
-use Craft\Freeform_NotificationModel;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 

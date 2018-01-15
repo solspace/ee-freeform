@@ -451,17 +451,7 @@ class MailingListsController extends Controller
         $model->accessToken = $accessToken;
         $model->settings    = $integration->getSettings();
 
-        if ($this->save($model)) {
-            //// Return JSON response if the request is an AJAX request
-            //craft()->userSession->setNotice(Craft::t("Mailing List Integration saved"));
-            //craft()->userSession->setFlash(Craft::t("Mailing List Integration saved"), true);
-            //
-            //craft()->request->redirect(UrlHelper::getCpUrl("freeform/settings/mailing-lists/" . $model->handle));
-        } else {
-            //craft()->userSession->setError(Craft::t("Mailing List Integration not saved"));
-            //
-            //craft()->request->redirect(UrlHelper::getCpUrl("freeform/settings/mailing-lists/" . $model->handle));
-        }
+        $this->save($model);
     }
 
     /**

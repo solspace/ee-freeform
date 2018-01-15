@@ -12,7 +12,6 @@
 namespace Solspace\Addons\FreeformNext\Library\Codepack\Components;
 
 use Solspace\Addons\FreeformNext\Library\Codepack\Exceptions\FileObject\FileNotFoundException;
-use Craft\IOHelper;
 
 class TemplatesFileComponent extends AbstractFileComponent
 {

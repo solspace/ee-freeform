@@ -16,7 +16,6 @@ use Solspace\Addons\FreeformNext\Library\Codepack\Components\TemplatesFileCompon
 use Solspace\Addons\FreeformNext\Library\Codepack\Exceptions\CodepackException;
 use Solspace\Addons\FreeformNext\Library\Codepack\Exceptions\FileObject\FileObjectException;
 use Solspace\Addons\FreeformNext\Library\Codepack\Exceptions\Manifest\ManifestNotPresentException;
-use Craft\IOHelper;
 use Solspace\Addons\FreeformNext\Library\Codepack\Components\AssetsFileComponent;
 
 class Codepack

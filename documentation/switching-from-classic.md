@@ -65,7 +65,7 @@ Multi-page forms still work similar to how they did with Freeform Classic, with 
 
 
 ## Changes to Spam Protection <a href="#spam-protection" id="spam-protection" class="docs-anchor">#</a>
-One of the greatest shortcomings in Freeform Classic was spam control. It used to be that you had to either live with out of control spam submissions, or purchase and install another add-on to combat the issue. This is why Freeform Next no longer has *Ban Keywords* feature and does NOT use [EE's native CAPTCHA feature](https://docs.expressionengine.com/latest/security/captchas.html) as it has always proven ineffective. Instead, it includes its own [Javascript-based honeypot spam protection](spam-protection.md), which is immeasurably more effective (and we've had excellent success with it in Freeform for Craft CMS). This is enabled by default, but can be disabled in the [Freeform Settings](settings.md#spam-protection).
+One of the greatest shortcomings in Freeform Classic was spam control. It used to be that you had to either live with out of control spam submissions, or purchase and install another add-on to combat the issue. This is why Freeform Next no longer has *Ban Keywords* feature and does NOT use [EE's native CAPTCHA feature](https://docs.expressionengine.com/latest/security/captchas.html) as it has always proven ineffective. Instead, it includes its own [Javascript-based honeypot spam protection](spam-protection.md), which is immeasurably more effective (and we've had excellent success with it in Freeform for Expression Engine CMS). This is enabled by default, but can be disabled in the [Freeform Settings](settings.md#spam-protection).
 
 
 ## Changes to Permissions <a href="#permissions" id="permissions" class="docs-anchor">#</a>
@@ -73,7 +73,7 @@ Freeform Next currently does not have any module-level permissions like Freeform
 
 
 ## Addition of API Integrations <a href="#api-integrations" id="api-integrations" class="docs-anchor">#</a>
-The *Pro* version of Freeform Next includes integrations with several popular [Mailing List](mailing-list-integrations.md) and [CRM (Customer Relationship Management)](crm-integrations.md) API's, including [MailChimp](mailing-list-api-mailchimp.md), [Constant Contact](https://solspace.com/craft/freeform/marketplace/mailinglist), [Campaign Monitor](https://solspace.com/craft/freeform/marketplace/mailinglist), [Salesforce](https://solspace.com/craft/freeform/marketplace/crm) and [HubSpot](https://solspace.com/craft/freeform/marketplace/crm). We plan to add support for other API's in the future as well.
+The *Pro* version of Freeform Next includes integrations with several popular [Mailing List](mailing-list-integrations.md) and [CRM (Customer Relationship Management)](crm-integrations.md) API's, including [MailChimp](mailing-list-api-mailchimp.md), [Constant Contact](https://solspace.com/expressionengine/freeform/marketplace/mailinglist), [Campaign Monitor](https://solspace.com/expressionengine/freeform/marketplace/mailinglist), [Salesforce](https://solspace.com/expressionengine/freeform/marketplace/crm) and [HubSpot](https://solspace.com/expressionengine/freeform/marketplace/crm). We plan to add support for other API's in the future as well.
 
 
 ## Are There Migration Options? <a href="#migration" id="migration" class="docs-anchor">#</a>

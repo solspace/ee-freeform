@@ -12,7 +12,6 @@
 namespace Solspace\Addons\FreeformNext\Library\Codepack\Components;
 
 use Solspace\Addons\FreeformNext\Library\Codepack\Exceptions\CodepackException;
-use Craft\IOHelper;
 
 abstract class AbstractJsonComponent implements ComponentInterface
 {
@@ -29,12 +28,12 @@ abstract class AbstractJsonComponent implements ComponentInterface
      *
      * @throws CodepackException
      */
-    public final function __construct($location)
+    final public function __construct($location)
     {
         $this->setProperties();
 
-        if (is_null($this->fileName)) {
-            throw new CodepackException("JSON file name not specified");
+        if (null === $this->fileName) {
+            throw new CodepackException('JSON file name not specified');
         }
 
         $this->parseJson($location);
@@ -72,7 +71,7 @@ abstract class AbstractJsonComponent implements ComponentInterface
     private final function parseJson($location)
     {
         $jsonFile = $location . '/' . $this->fileName;
-        if (!IOHelper::fileExists($jsonFile)) {
+        if (!file_exists($jsonFile)) {
             return false;
         }
 
@@ -80,7 +79,7 @@ abstract class AbstractJsonComponent implements ComponentInterface
         $parsedData = json_decode($content);
 
         if (json_last_error()) {
-            throw new CodepackException("Codepack JSON component: " . json_last_error_msg());
+            throw new CodepackException('Codepack JSON component: ' . json_last_error_msg());
         }
 
         if ($parsedData) {

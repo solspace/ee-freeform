@@ -11,7 +11,6 @@
 
 namespace Solspace\Addons\FreeformNext\Library\Mailing;
 
-use Craft\Freeform_SubmissionModel;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;

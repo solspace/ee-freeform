@@ -18,7 +18,7 @@ php -r "unlink('composer-setup.php');"
 mv composer.phar /usr/local/bin/composer
 ```
 
-4. After the installation is complete, you can run `gulp` to install all dependencies, build JS and CSS files and have a working package you can link inside your Craft plugins directory.  
-The dev environment files are located in `[..]/craft-freeform/src/freeform` folder
+4. After the installation is complete, you can run `gulp` to install all dependencies, build JS and CSS files and have a working package you can link inside your EE plugins directory.  
+The dev environment files are located in `[..]/ee-freeform/src/freeform` folder
 
-5. To prepare a deployment package, run `gulp deploy`, which will compile everything into the `[..]/craft-freeform/dist` folder.
+5. To prepare a deployment package, run `gulp deploy`, which will compile everything into the `[..]/ee-freeform/dist` folder.

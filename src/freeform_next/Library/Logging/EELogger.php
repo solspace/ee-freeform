@@ -11,9 +11,6 @@
 
 namespace Solspace\Addons\FreeformNext\Library\Logging;
 
-use Craft\Craft;
-use Craft\LogLevel;
-
 class EELogger implements LoggerInterface
 {
     /** @var \Logger[] */
