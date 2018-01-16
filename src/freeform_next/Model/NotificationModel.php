@@ -28,6 +28,7 @@ use Solspace\Addons\FreeformNext\Library\DataObjects\EmailTemplate;
  * @property string $bodyHtml
  * @property string $bodyText
  * @property int    $sortOrder
+ * @property int    $legacyId
  */
 class NotificationModel extends Model implements \JsonSerializable
 {
@@ -52,6 +53,7 @@ class NotificationModel extends Model implements \JsonSerializable
     protected $bodyHtml;
     protected $bodyText;
     protected $sortOrder;
+    protected $legacyId;
 
     /**
      * @return array
@@ -133,6 +135,14 @@ EOT;
     public function isFileTemplate()
     {
         return !is_numeric($this->id);
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setLegacyId($id)
+    {
+        $this->set(['legacyId' => $id]);
     }
 
     /**

@@ -110,6 +110,18 @@ class StatusRepository extends Repository
     }
 
     /**
+     * @param $handle
+     * @return mixed
+     */
+    public function getStatusByHandle($handle)
+    {
+        return ee('Model')
+            ->get(StatusModel::MODEL)
+            ->filter('handle', $handle)
+            ->first();
+    }
+
+    /**
      * @param array $ids
      *
      * @return StatusModel[]

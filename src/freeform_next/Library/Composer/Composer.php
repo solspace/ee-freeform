@@ -1,11 +1,11 @@
 <?php
 /**
- * Freeform for ExpressionEngine
+ * Freeform Next for Expression Engine
  *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2018, Solspace, Inc.
- * @link          https://solspace.com/expressionengine/freeform
+ * @link          https://solspace.com/expressionengine/freeform-next
  * @license       https://solspace.com/software/license-agreement
  */
 
@@ -24,6 +24,7 @@ use Solspace\Addons\FreeformNext\Library\Database\SubmissionHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
 use Solspace\Addons\FreeformNext\Library\FileUploads\FileUploadHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Mailing\MailHandlerInterface;
+use Solspace\Addons\FreeformNext\Library\Migrations\Objects\ComposerState;
 use Solspace\Addons\FreeformNext\Library\Session\DbSession;
 use Solspace\Addons\FreeformNext\Library\Session\EERequest;
 use Solspace\Addons\FreeformNext\Library\Session\EESession;
@@ -74,6 +75,9 @@ class Composer
     /** @var StatusHandlerInterface */
     private $statusHandler;
 
+    /** @var ComposerState */
+    private $customComposerState;
+
     /**
      * Composer constructor.
      *
@@ -87,6 +91,9 @@ class Composer
      * @param CRMHandlerInterface         $crmHandler
      * @param StatusHandlerInterface      $statusHandler
      * @param TranslatorInterface         $translator
+     * @param ComposerState|null          $customComposerState
+     *
+     * @throws ComposerException
      */
     public function __construct(
         array $composerState = null,
@@ -98,7 +105,8 @@ class Composer
         MailingListHandlerInterface $mailingListHandler,
         CRMHandlerInterface $crmHandler,
         StatusHandlerInterface $statusHandler,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        ComposerState $customComposerState = null
     ) {
         $this->formHandler        = $formHandler;
         $this->submissionHandler  = $submissionHandler;
@@ -109,7 +117,8 @@ class Composer
         $this->statusHandler      = $statusHandler;
         $this->translator         = $translator;
 
-        $this->composerState = $composerState;
+        $this->composerState       = $composerState;
+        $this->customComposerState = $customComposerState;
         $this->validateComposerData($formAttributes);
     }
 
@@ -159,7 +168,13 @@ class Composer
     {
         $composerState = $this->composerState;
 
-        if (is_null($composerState)) {
+        if ($this->customComposerState) {
+            $this->attachCustomComposerState();
+
+            return;
+        }
+
+        if (null === $composerState) {
             $this->setDefaults();
 
             return;
@@ -220,7 +235,6 @@ class Composer
     /**
      * This method sets defaults for all composer items
      * It happens if a new Form Model is created
-     * @throws \Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException
      */
     private function setDefaults()
     {
@@ -264,6 +278,72 @@ class Composer
             $this->properties,
             $formAttributes,
             [[]],
+            $this->formHandler,
+            $this->submissionHandler,
+            $this->mailHandler,
+            $this->fileUploadHandler,
+            $this->mailingListHandler,
+            $this->crmHandler,
+            $this->translator
+        );
+    }
+
+    private function attachCustomComposerState()
+    {
+        $properties = [
+            Properties::PAGE_PREFIX . '0'        => [
+                'type'  => Properties::PAGE_PREFIX,
+                'label' => 'Page 1',
+            ],
+            Properties::FORM_HASH                => [
+                'type'                  => Properties::FORM_HASH,
+                'name'                  => $this->customComposerState->name,
+                'handle'                => $this->customComposerState->handle,
+                'submissionTitleFormat' => '{current_time format="%D, %F %d, %Y - %g:%i:%s"}',
+                'description'           => $this->customComposerState->description,
+                'formTemplate'          => 'flexbox.html',
+                'returnUrl'             => '/',
+                'storeData'             => true,
+                'defaultStatus'         => $this->customComposerState->defaultStatus->id,
+            ],
+            Properties::INTEGRATION_HASH         => [
+                'type'          => Properties::INTEGRATION_HASH,
+                'integrationId' => 0,
+                'mapping'       => new \stdClass(),
+            ],
+            Properties::ADMIN_NOTIFICATIONS_HASH => [
+                'type'           => Properties::ADMIN_NOTIFICATIONS_HASH,
+                'notificationId' => $this->customComposerState->notificationId,
+                'recipients'     => $this->customComposerState->notificationEmails,
+            ],
+        ];
+
+        $pageCounter = 1;
+
+        foreach ($this->customComposerState->fields as $field) {
+            $properties[$field['hash']] = $field;
+            $properties[Properties::PAGE_PREFIX . $pageCounter] = [
+                'type'  => Properties::PAGE_PREFIX,
+                'label' => 'Page ' . ($pageCounter + 1),
+            ];
+
+            $pageCounter++;
+        }
+
+        $this->properties = new Properties(
+            $properties,
+            $this->translator
+        );
+
+        $sessionImplementation = (new SettingsService())->getSessionStorageImplementation();
+
+        $formAttributes = new FormAttributes(null, $sessionImplementation, new EERequest());
+
+        $this->context = new Context([]);
+        $this->form    = new Form(
+            $this->properties,
+            $formAttributes,
+            $this->customComposerState->layout,
             $this->formHandler,
             $this->submissionHandler,
             $this->mailHandler,

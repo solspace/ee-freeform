@@ -1,0 +1,606 @@
+{
+  "composer": {
+    "layout": [
+      [
+        {
+          "id": "6l1Zwq0QP",
+          "columns": [
+            "n0l2A68BZ"
+          ]
+        },
+        {
+          "id": "8oWe9jZpP",
+          "columns": [
+            "Nn41EQ4x3",
+            "Gv0Y32Zd7",
+            "gLeALg026",
+            "DMZQ2L43y"
+          ]
+        },
+        {
+          "id": "5KM0OK02p",
+          "columns": [
+            "21ZpKweEr",
+            "BOZ78q46y",
+            "vb4mq946X"
+          ]
+        },
+        {
+          "id": "d1EeG8Z68",
+          "columns": [
+            "wZ3LDRmA4"
+          ]
+        }
+      ],
+      [
+        {
+          "id": "Va34kjZPq",
+          "columns": [
+            "EeGGp7oVe"
+          ]
+        },
+        {
+          "id": "1wq0WR4bD",
+          "columns": [
+            "lj0BNV07x",
+            "B1engGZYl",
+            "Aoe57y46P",
+            "yV42wx0LY"
+          ]
+        },
+        {
+          "id": "KNn41Q4x3",
+          "columns": [
+            "5r0J2M0Xa",
+            "a34kMjePq",
+            "RgeDp3eLq"
+          ]
+        },
+        {
+          "id": "EGv0Y2ed7",
+          "columns": [
+            "n41PjKyMZ"
+          ]
+        }
+      ],
+      [
+        {
+          "id": "jDMZQLe3y",
+          "columns": [
+            "Gp46r14wQ",
+            "lRZRzwZXA"
+          ]
+        },
+        {
+          "id": "A21ZpweEr",
+          "columns": [
+            "b10j7EeK3"
+          ]
+        },
+        {
+          "id": "QBOZ7q06y",
+          "columns": [
+            "V8ZMl8eob"
+          ]
+        },
+        {
+          "id": "NLOZrP0nX",
+          "columns": [
+            "V34djye7p"
+          ]
+        },
+        {
+          "id": "Bb10jE4K3",
+          "columns": [
+            "j0BJdBAV0"
+          ]
+        }
+      ]
+    ],
+    "properties": {
+      "page0": {
+        "type": "page",
+        "label": "Page 1"
+      },
+      "form": {
+        "type": "form",
+        "name": "Composington A",
+        "handle": "composington_a",
+        "submissionTitleFormat": "{current_time format=\"%D, %F %d, %Y - %g:%i:%s\"}",
+        "description": "Composer based form for A.\nDefault status Open, admin emails to kelsey@solspace.com, pantsuitlaroo@aol.com with Notif C",
+        "formTemplate": "flexbox.html",
+        "returnUrl": "\/",
+        "storeData": true,
+        "defaultStatus": 1
+      },
+      "integration": {
+        "type": "integration",
+        "integrationId": 0,
+        "mapping": []
+      },
+      "admin_notifications": {
+        "type": "admin_notifications",
+        "notificationId": 0,
+        "recipients": ""
+      },
+      "n0l2A68BZ": {
+        "hash": "n0l2A68BZ",
+        "type": "html",
+        "value": "<h4>Good Day Multi-page form<\/h4>\n<p>This is a paragraph with <b>things<\/b> and other things.<\/p>",
+        "label": "HTML"
+      },
+      "page1": {
+        "type": "page",
+        "label": "Page 2"
+      },
+      "Nn41EQ4x3": {
+        "hash": "Nn41EQ4x3",
+        "id": 51,
+        "type": "checkbox_group",
+        "handle": "checkbox_group_a_list",
+        "label": "Checkbox Group A - List",
+        "required": 0,
+        "instructions": "",
+        "value": null,
+        "placeholder": null,
+        "options": [
+          {
+            "value": "Option A",
+            "label": "Option A"
+          },
+          {
+            "value": "Option B",
+            "label": "Option B"
+          },
+          {
+            "value": "Option C",
+            "label": "Option C"
+          },
+          {
+            "value": "Option D",
+            "label": "Option D"
+          },
+          {
+            "value": "Option E",
+            "label": "Option E"
+          }
+        ]
+      },
+      "page2": {
+        "type": "page",
+        "label": "Page 3"
+      },
+      "Gv0Y32Zd7": {
+        "hash": "Gv0Y32Zd7",
+        "id": 52,
+        "type": "checkbox_group",
+        "handle": "checkbox_group_b_-_value_label",
+        "label": "Checkbox Group B - Value \/ Label",
+        "required": 0,
+        "instructions": "",
+        "value": null,
+        "placeholder": null,
+        "options": [
+          {
+            "value": "opt_a",
+            "label": "Option A"
+          },
+          {
+            "value": "opt_b",
+            "label": "Option B"
+          },
+          {
+            "value": "opt_c",
+            "label": "Option C"
+          }
+        ]
+      },
+      "page3": {
+        "type": "page",
+        "label": "Page 4"
+      },
+      "gLeALg026": {
+        "hash": "gLeALg026",
+        "id": 53,
+        "type": "checkbox_group",
+        "handle": "checkbox_group_c_-_nl_textarea",
+        "label": "Checkbox Group C - NL Textarea",
+        "required": 0,
+        "instructions": "",
+        "value": null,
+        "placeholder": null,
+        "options": [
+          {
+            "value": "Option A",
+            "label": "Option A"
+          },
+          {
+            "value": "Option B",
+            "label": "Option B"
+          },
+          {
+            "value": "Option C",
+            "label": "Option C"
+          },
+          {
+            "value": "Option D",
+            "label": "Option D"
+          },
+          {
+            "value": "Option E",
+            "label": "Option E"
+          },
+          {
+            "value": "Option F",
+            "label": "Option F"
+          },
+          {
+            "value": "Option G",
+            "label": "Option G"
+          },
+          {
+            "value": "Option H",
+            "label": "Option H"
+          },
+          {
+            "value": "Option I",
+            "label": "Option I"
+          },
+          {
+            "value": "Option J",
+            "label": "Option J"
+          },
+          {
+            "value": "Option K",
+            "label": "Option K"
+          }
+        ]
+      },
+      "page4": {
+        "type": "page",
+        "label": "Page 5"
+      },
+      "DMZQ2L43y": {
+        "hash": "DMZQ2L43y",
+        "id": 54,
+        "type": "checkbox_group",
+        "handle": "checkbox_group_d_-_channel_field",
+        "label": "Checkbox Group D - Channel Field",
+        "required": 0,
+        "instructions": "",
+        "value": null,
+        "placeholder": null,
+        "options": [
+          {
+            "value": "Could not migrate channel options",
+            "label": "Could not migrate channel options"
+          }
+        ]
+      },
+      "page5": {
+        "type": "page",
+        "label": "Page 6"
+      },
+      "21ZpKweEr": {
+        "hash": "21ZpKweEr",
+        "id": 55,
+        "type": "checkbox",
+        "handle": "checky_mcboxington_a",
+        "label": "Checky McBoxington A",
+        "required": 0,
+        "instructions": "",
+        "value": 0,
+        "placeholder": null
+      },
+      "page6": {
+        "type": "page",
+        "label": "Page 7"
+      },
+      "BOZ78q46y": {
+        "hash": "BOZ78q46y",
+        "id": 56,
+        "type": "checkbox",
+        "handle": "checky_mcboxington_b",
+        "label": "Checky McBoxington B",
+        "required": 0,
+        "instructions": "",
+        "value": 0,
+        "placeholder": null
+      },
+      "page7": {
+        "type": "page",
+        "label": "Page 8"
+      },
+      "vb4mq946X": {
+        "hash": "vb4mq946X",
+        "id": 63,
+        "type": "hidden",
+        "handle": "hidey_ofieldington",
+        "label": "Hidey O'Fieldington",
+        "required": 0,
+        "instructions": "",
+        "value": "I can't put these pants on",
+        "placeholder": null
+      },
+      "page8": {
+        "type": "page",
+        "label": "Page 9"
+      },
+      "wZ3LDRmA4": {
+        "hash": "wZ3LDRmA4",
+        "type": "submit",
+        "label": "Continue",
+        "labelNext": "Continue",
+        "labelPrev": "Previous",
+        "position": "left",
+        "disablePrev": true
+      },
+      "page9": {
+        "type": "page",
+        "label": "Page 10"
+      },
+      "EeGGp7oVe": {
+        "hash": "EeGGp7oVe",
+        "type": "html",
+        "value": "<h4>This is page 2 of 3<\/h4>\n<p>Hello because you can't.<\/p>",
+        "label": "HTML"
+      },
+      "page10": {
+        "type": "page",
+        "label": "Page 11"
+      },
+      "lj0BNV07x": {
+        "hash": "lj0BNV07x",
+        "id": 71,
+        "type": "radio_group",
+        "handle": "radio_a_-_list",
+        "label": "Radio A - List",
+        "required": 0,
+        "instructions": "",
+        "value": null,
+        "placeholder": null,
+        "options": [
+          {
+            "value": "Option A",
+            "label": "Option A"
+          },
+          {
+            "value": "Option B",
+            "label": "Option B"
+          },
+          {
+            "value": "Option C",
+            "label": "Option C"
+          },
+          {
+            "value": "Option Don't Touch",
+            "label": "Option Don't Touch"
+          }
+        ]
+      },
+      "page11": {
+        "type": "page",
+        "label": "Page 12"
+      },
+      "B1engGZYl": {
+        "hash": "B1engGZYl",
+        "id": 72,
+        "type": "radio_group",
+        "handle": "radio_b_-_value_label",
+        "label": "Radio B - Value \/ Label",
+        "required": 0,
+        "instructions": "",
+        "value": null,
+        "placeholder": null,
+        "options": [
+          {
+            "value": "Option A",
+            "label": "Option A"
+          },
+          {
+            "value": "Option B",
+            "label": "Option B"
+          },
+          {
+            "value": "Option C",
+            "label": "Option C"
+          }
+        ]
+      },
+      "page12": {
+        "type": "page",
+        "label": "Page 13"
+      },
+      "Aoe57y46P": {
+        "hash": "Aoe57y46P",
+        "id": 73,
+        "type": "radio_group",
+        "handle": "radio_c_-_nl_textarea",
+        "label": "Radio C - NL Textarea",
+        "required": 0,
+        "instructions": "",
+        "value": null,
+        "placeholder": null
+      },
+      "page13": {
+        "type": "page",
+        "label": "Page 14"
+      },
+      "yV42wx0LY": {
+        "hash": "yV42wx0LY",
+        "id": 74,
+        "type": "radio_group",
+        "handle": "radio_d_-_channel_field",
+        "label": "Radio D - Channel Field",
+        "required": 0,
+        "instructions": "",
+        "value": null,
+        "placeholder": null
+      },
+      "page14": {
+        "type": "page",
+        "label": "Page 15"
+      },
+      "5r0J2M0Xa": {
+        "hash": "5r0J2M0Xa",
+        "id": 75,
+        "type": "radio_group",
+        "handle": "radio_e",
+        "label": "Radio E - True False",
+        "required": 0,
+        "instructions": "",
+        "value": null,
+        "placeholder": null,
+        "options": [
+          {
+            "value": "true",
+            "label": "true"
+          },
+          {
+            "value": "false",
+            "label": "false"
+          }
+        ]
+      },
+      "page15": {
+        "type": "page",
+        "label": "Page 16"
+      },
+      "a34kMjePq": {
+        "hash": "a34kMjePq",
+        "id": 49,
+        "type": "text",
+        "handle": "boris_wheres_muh_cash_at",
+        "label": "Boris Where's Muh Ca$h At?",
+        "required": 0,
+        "instructions": "",
+        "value": 0,
+        "placeholder": 0
+      },
+      "page16": {
+        "type": "page",
+        "label": "Page 17"
+      },
+      "RgeDp3eLq": {
+        "hash": "RgeDp3eLq",
+        "id": 82,
+        "type": "text",
+        "handle": "foreign_char_field",
+        "label": "\u043c\u0430\u0441\u0442\u0443\u0440\u0431\u0430\u0442\u0446\u0447\u0435\u0440",
+        "required": 0,
+        "instructions": "",
+        "value": 0,
+        "placeholder": 0
+      },
+      "page17": {
+        "type": "page",
+        "label": "Page 18"
+      },
+      "n41PjKyMZ": {
+        "hash": "n41PjKyMZ",
+        "type": "submit",
+        "label": "Continue",
+        "labelNext": "Continue",
+        "labelPrev": "Previous",
+        "position": "left",
+        "disablePrev": false
+      },
+      "page18": {
+        "type": "page",
+        "label": "Page 19"
+      },
+      "Gp46r14wQ": {
+        "hash": "Gp46r14wQ",
+        "id": 62,
+        "type": "text",
+        "handle": "first_name",
+        "label": "First Name",
+        "required": 0,
+        "instructions": "First name.",
+        "value": 0,
+        "placeholder": 0
+      },
+      "page19": {
+        "type": "page",
+        "label": "Page 20"
+      },
+      "lRZRzwZXA": {
+        "hash": "lRZRzwZXA",
+        "id": 65,
+        "type": "text",
+        "handle": "last_name",
+        "label": "Last Name",
+        "required": 0,
+        "instructions": "The Last name",
+        "value": 0,
+        "placeholder": 0
+      },
+      "page20": {
+        "type": "page",
+        "label": "Page 21"
+      },
+      "b10j7EeK3": {
+        "hash": "b10j7EeK3",
+        "id": 59,
+        "type": "text",
+        "handle": "email",
+        "label": "Email",
+        "required": 0,
+        "instructions": "A basic email field",
+        "value": 0,
+        "placeholder": 0
+      },
+      "page21": {
+        "type": "page",
+        "label": "Page 22"
+      },
+      "V8ZMl8eob": {
+        "hash": "V8ZMl8eob",
+        "id": 66,
+        "type": "textarea",
+        "handle": "user_message",
+        "label": "Message",
+        "required": 0,
+        "instructions": "User's message",
+        "value": 0,
+        "placeholder": 0
+      },
+      "page22": {
+        "type": "page",
+        "label": "Page 23"
+      },
+      "V34djye7p": {
+        "hash": "V34djye7p",
+        "id": 60,
+        "type": "file",
+        "handle": "file_upload_a",
+        "label": "File Upload A",
+        "required": 0,
+        "instructions": "",
+        "value": null,
+        "placeholder": null
+      },
+      "page23": {
+        "type": "page",
+        "label": "Page 24"
+      },
+      "j0BJdBAV0": {
+        "hash": "j0BJdBAV0",
+        "type": "submit",
+        "label": "Finished",
+        "labelNext": "Finished",
+        "labelPrev": "Previous",
+        "position": "left",
+        "disablePrev": false
+      },
+      "page24": {
+        "type": "page",
+        "label": "Page 25"
+      }
+    }
+  },
+  "context": {
+    "page": 0,
+    "hash": "form"
+  }
+}

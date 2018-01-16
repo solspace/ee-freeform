@@ -114,4 +114,24 @@ class FieldRepository extends Repository
 
         return self::$fieldCache;
     }
+
+    /**
+     * @return array
+     */
+    public function getAllFieldsByLegacyId()
+    {
+        $result = [];
+        $fields = $this->getAllFields();
+
+        if (!$fields) {
+            return $result;
+        }
+
+        foreach ($fields as $field) {
+            $legacyId = $field->getAdditionalProperty('legacyId');
+            $result[$legacyId] = $field;
+        }
+
+        return $result;
+    }
 }
