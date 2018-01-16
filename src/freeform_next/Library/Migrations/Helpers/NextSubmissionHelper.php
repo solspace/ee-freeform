@@ -16,6 +16,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxGroupField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\EmailField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\RadioGroupField;
@@ -104,6 +105,10 @@ class NextSubmissionHelper
 
         if ($field instanceof CheckboxField) {
             $formattedValue = $value === 'y' ? 'yes' : 'no';
+        }
+
+        if ($field instanceof EmailField) {
+            $formattedValue = [$value];
         }
 
         if ($field instanceof CheckboxGroupField) {
