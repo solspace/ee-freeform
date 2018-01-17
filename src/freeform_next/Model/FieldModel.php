@@ -252,6 +252,11 @@ class FieldModel extends Model implements \JsonSerializable
             $returnArray['pattern']     = $this->getAdditionalProperty('pattern');
         }
 
+        if ($this->type === FieldInterface::TYPE_WEBSITE) {
+            $returnArray['value']       = $this->value ?: '';
+            $returnArray['placeholder'] = $this->placeholder ?: '';
+        }
+
         if (in_array(
             $this->type,
             [FieldInterface::TYPE_HIDDEN, FieldInterface::TYPE_HTML, FieldInterface::TYPE_SUBMIT],
