@@ -4,6 +4,8 @@ namespace Solspace\Addons\FreeformNext\Services;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
+use Solspace\Addons\FreeformNext\Model\FieldModel;
+use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -57,5 +59,25 @@ class FieldsService
         }
 
         return $fieldTypes;
+    }
+
+    /**
+     * @param FieldModel $model
+     *
+     * @throws \Exception
+     */
+    public function deleteFieldFromForms(FieldModel $model)
+    {
+        $forms = FormRepository::getInstance()->getAllForms();
+
+        foreach ($forms as $form) {
+            try {
+                $composer = $form->getComposer();
+                $composer->removeFieldById($model->id);
+                $form->layoutJson = $composer->getComposerStateJSON();
+                $form->save();
+            } catch (\Exception $e) {
+            }
+        }
     }
 }
