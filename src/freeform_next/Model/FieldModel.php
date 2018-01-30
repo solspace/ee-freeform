@@ -16,6 +16,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
 use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
+use Solspace\Addons\FreeformNext\Services\FieldsService;
 
 /**
  * @property int       $id
@@ -252,6 +253,11 @@ class FieldModel extends Model implements \JsonSerializable
             $returnArray['pattern']     = $this->getAdditionalProperty('pattern');
         }
 
+        if ($this->type === FieldInterface::TYPE_WEBSITE) {
+            $returnArray['value']       = $this->value ?: '';
+            $returnArray['placeholder'] = $this->placeholder ?: '';
+        }
+
         if (in_array(
             $this->type,
             [FieldInterface::TYPE_HIDDEN, FieldInterface::TYPE_HTML, FieldInterface::TYPE_SUBMIT],
@@ -462,6 +468,14 @@ class FieldModel extends Model implements \JsonSerializable
             ee()->db->query("ALTER TABLE exp_freeform_next_submissions DROP COLUMN $columnName");
         } catch (\Exception $e) {
         }
+
+        static $fieldsService;
+
+        if (null === $fieldsService) {
+            $fieldsService = new FieldsService();
+        }
+
+        $fieldsService->deleteFieldFromForms($this);
     }
 
     /**
