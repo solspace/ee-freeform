@@ -15,7 +15,7 @@ $this->extend('_layouts/table_form_wrapper')?>
 <div id="reinstall-wrapper">
     <div id="reinstall-title"><i class="fa fa-ban" aria-hidden="true"></i>Cannot Perform Migration</div>
     <div id="reinstall-text">Freeform Classic migration cannot be performed. The new Freeform version must be a fresh install.
-        To resolve this issue please uninstall the new Freeform version and install again, then attempt to run the
+        To resolve this issue please uninstall the new Freeform version and install it again, then attempt to run the
         Migration again without modifying Freeform. If this error persists, please contact Solspace support.
     </div>
 </div>

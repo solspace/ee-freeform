@@ -21,7 +21,7 @@ $this->extend('_layouts/table_form_wrapper')?>
 <div id="ready-wrapper">
     <div id="ready-title">Ready for Migration</div>
     <div id="ready-text">Freeform has detected a Freeform Classic on this site, and a migration is available!<br/>
-        Be sure to read and follow the <a href="http://solspace.com">miration documentation</a> carefully in order to
+        Be sure to read and follow the <a href="http://solspace.com">migration documentation</a> carefully in order to
         properly prepare and clean up your site afterward.
     </div>
     <div id="ready-text">This migration utility will attempt to migrate your Freeform Classic fields, email notification templates,
@@ -40,7 +40,7 @@ $this->extend('_layouts/table_form_wrapper')?>
 <div id="in-progress-wrapper" style="display: none">
     <div id="in-progress-title">Migration In Progress</div>
     <div id="in-progress-text">Freeform is now migrating Freeform Classic. Please do not click anywhere else on this page
-        and wait until it is finished. If you have a lot of data, you may see the migration performed in batches.
+        and wait until the migration is finished. If you have a lot of data, you may see the migration performed in batches.
     </div>
     <div id="in-progress-status-wrapper">
 
@@ -52,14 +52,14 @@ $this->extend('_layouts/table_form_wrapper')?>
     <div id="in-progress-error-wrapper" style="display: none">
         <div id="in-progress-error-title"><i class="fa fa-ban" aria-hidden="true"></i>Cannot Perform Migration</div>
         <div id="in-progress-error-text">Freeform Classic migration cannot be performed. The new Freeform version must be a fresh install.
-            To resolve this issue please uninstall the new Freeform version and install again, then attempt to run the
+            To resolve this issue please uninstall the new Freeform version and install it again, then attempt to run the
             Migration again without modifying Freeform. If this error persists, please contact Solspace support.
         </div>
     </div>
 
     <div id="in-progress-success-wrapper" style="display: none">
         <div id="in-progress-success-title">Migration successful!</div>
-        <div id="in-progress-success-text">All fields, email notification tempaltes, submission statuses, and forms
+        <div id="in-progress-success-text">All fields, email notification templates, submission statuses, and forms
             were successfully migrated.
         </div>
     </div>

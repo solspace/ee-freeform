@@ -263,11 +263,11 @@ class MigrationsService
             ],
             self::STATUS__FORM_STATUSES => [
                 'type-name' => self::STATUS__FORM_STATUSES,
-                'in-progress-text' => 'Form Statuses',
+                'in-progress-text' => 'Migrating Form Statuses',
             ],
             self::STATUS__FORM_NOTIFICATIONS => [
                 'type-name' => self::STATUS__FORM_NOTIFICATIONS,
-                'in-progress-text' => 'Form Notifications',
+                'in-progress-text' => 'Migrating Form Notifications',
             ],
             self::STATUS__FORMS => [
                 'type-name' => self::STATUS__FORMS,
