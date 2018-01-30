@@ -3,10 +3,11 @@
 namespace Solspace\Addons\FreeformNext\Controllers;
 
 use Guzzle\Http\Exception\BadResponseException;
-use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Library\Migrations\Objects\MigrationResultObject;
 use Solspace\Addons\FreeformNext\Model\IntegrationModel;
+use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
+use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Repositories\MailingListRepository;
 use Solspace\Addons\FreeformNext\Services\MailingListsService;
 use Solspace\Addons\FreeformNext\Services\MigrationsService;
@@ -54,6 +55,24 @@ class MigrationsController extends Controller
                 [
                     'cp_page_title'    => $pageTitle,
                     'form_right_links' => [],
+                ]
+            );
+            $view->setHeading($pageTitle);
+
+            return $view;
+        }
+
+        if (!$this->getMigrationService()->isExpressCompatible()) {
+            $formCount  = (int) ee()->db->count_all('freeform_forms');
+            $fieldCount = (int) ee()->db->count_all('freeform_fields');
+
+            $view = new CpView(
+                'migrations/express-incompatible',
+                [
+                    'cp_page_title'    => $pageTitle,
+                    'form_right_links' => [],
+                    'formCount'        => $formCount,
+                    'fieldCount'       => $fieldCount,
                 ]
             );
             $view->setHeading($pageTitle);

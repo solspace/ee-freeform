@@ -12,6 +12,7 @@
 namespace Solspace\Addons\FreeformNext\Services;
 
 use Solspace\Addons\Freeform\Library\AddonBuilder;
+use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Library\Migrations\Helpers\ClassicFieldHelper;
 use Solspace\Addons\FreeformNext\Library\Migrations\Helpers\ClassicFormHelper;
 use Solspace\Addons\FreeformNext\Library\Migrations\Helpers\ClassicFormNotificationsHelper;
@@ -23,7 +24,9 @@ use Solspace\Addons\FreeformNext\Library\Migrations\Helpers\NextFormNotification
 use Solspace\Addons\FreeformNext\Library\Migrations\Helpers\NextFormStatusHelper;
 use Solspace\Addons\FreeformNext\Library\Migrations\Helpers\NextSubmissionHelper;
 use Solspace\Addons\FreeformNext\Library\Migrations\Objects\MigrationResultObject;
+use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
+use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 
 class MigrationsService
 {
@@ -39,15 +42,19 @@ class MigrationsService
     /** @var ClassicSubmissionHelper */
     public $classicSubmissionHelper;
 
+    /**
+     * @return bool
+     */
     public function isFreeformClassicMigrateable()
     {
-        if ($this->isClassicFreeformInstalled() && $this->isFreeformNextFreshlyInstalled()) {
-            return true;
-        }
-
-        return false;
+        return $this->isClassicFreeformInstalled()
+            && $this->isFreeformNextFreshlyInstalled()
+            && $this->isExpressCompatible();
     }
 
+    /**
+     * @return bool
+     */
     public function isClassicFreeformInstalled()
     {
         $installed = ee()->addons->get_installed('modules', TRUE);
@@ -59,17 +66,36 @@ class MigrationsService
         return false;
     }
 
+    /**
+     * @return bool
+     */
     public function isFreeformNextFreshlyInstalled()
     {
-        $forms = FormRepository::getInstance()->getAllForms();
+        $forms    = FormRepository::getInstance()->getAllForms();
+        $fields   = FieldRepository::getInstance()->getAllFields();
+        $statuses = StatusRepository::getInstance()->getAllStatuses();
 
-        if (empty($forms)) {
+        return empty($forms) && count($fields) === 12 && count($statuses) === 3;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExpressCompatible()
+    {
+        if (FreeformHelper::get('version') !== FREEFORM_EXPRESS) {
             return true;
         }
 
-        return false;
+        $formCount  = (int) ee()->db->count_all('freeform_forms');
+        $fieldCount = (int) ee()->db->count_all('freeform_fields');
+
+        return $formCount <= 1 && $fieldCount <= 20;
     }
 
+    /**
+     * @return bool
+     */
     public function migrateFreeformClassicFields()
     {
         $nextFieldHelper = $this->getNextFieldHelper();
@@ -92,7 +118,9 @@ class MigrationsService
         return true;
     }
 
-
+    /**
+     * @return bool
+     */
     public function migrateFreeformClassicFormStatuses()
     {
         $classicStatuses = $this->getClassicFormStatuses();
@@ -113,6 +141,9 @@ class MigrationsService
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function migrateFreeformClassicFormNotifications()
     {
         $classicNotifications = $this->getClassicFormNotifications();
@@ -133,6 +164,9 @@ class MigrationsService
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function migrateFreeformClassicForms()
     {
         $classicForms = $this->getClassicForms();
@@ -153,6 +187,12 @@ class MigrationsService
         return true;
     }
 
+    /**
+     * @param int $formId
+     * @param int $page
+     *
+     * @return bool
+     */
     public function migrateFreeformClassicSubmissions($formId, $page)
     {
         $classicSubmissions = $this->getClassicSubmissions($formId, $page);
@@ -173,6 +213,9 @@ class MigrationsService
         return true;
     }
 
+    /**
+     * @return mixed
+     */
     public function getClassicFields()
     {
         $classicFieldHelper = $this->getClassicFieldHelper();
@@ -180,6 +223,11 @@ class MigrationsService
         return $classicFieldHelper->getClassicFields();
     }
 
+    /**
+     * @param $classicField
+     *
+     * @return bool|\Solspace\Addons\FreeformNext\Model\FieldModel
+     */
     public function saveNextField($classicField)
     {
         $nextFieldHelper = $this->getNextFieldHelper();
@@ -187,6 +235,9 @@ class MigrationsService
         return $nextFieldHelper->saveField($classicField);
     }
 
+    /**
+     * @return mixed
+     */
     public function getClassicFormStatuses()
     {
         $classicFormStatusHelper = $this->getClassicFormStatusHelper();
@@ -194,6 +245,9 @@ class MigrationsService
         return $classicFormStatusHelper->getClassicFormStatuses();
     }
 
+    /**
+     * @return mixed
+     */
     public function getClassicFormNotifications()
     {
         $classicFormNotificationsHelper = $this->getClassicFormNotificationsHelper();
@@ -201,6 +255,12 @@ class MigrationsService
         return $classicFormNotificationsHelper->getClassicFormNotifications();
     }
 
+    /**
+     * @param string $handle
+     * @param string $name
+     *
+     * @return bool|\Solspace\Addons\FreeformNext\Model\StatusModel
+     */
     public function saveNextFormStatus($handle, $name)
     {
         $nextFormStatusHelper = $this->getNextFormStatusHelper();
@@ -208,6 +268,11 @@ class MigrationsService
         return $nextFormStatusHelper->saveStatus($handle, $name);
     }
 
+    /**
+     * @param $notification
+     *
+     * @return bool|\Solspace\Addons\FreeformNext\Model\NotificationModel
+     */
     public function saveNextFormNotification($notification)
     {
         $nextFormNotificationHelper = $this->getNextFormNotificationHelper();
@@ -215,6 +280,9 @@ class MigrationsService
         return $nextFormNotificationHelper->saveNotification($notification);
     }
 
+    /**
+     * @return mixed
+     */
     public function getClassicForms()
     {
         $classicFormHelper = $this->getClassicFormHelper();
@@ -222,6 +290,13 @@ class MigrationsService
         return $classicFormHelper->getClassicForms();
     }
 
+    /**
+     * @param $classicForm
+     *
+     * @return bool
+     * @throws \Exception
+     * @throws \Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException
+     */
     public function saveNextForms($classicForm)
     {
         $nextFormHelper = $this->getNextFormHelper();
@@ -229,6 +304,12 @@ class MigrationsService
         return $nextFormHelper->saveForm($classicForm);
     }
 
+    /**
+     * @param int $formId
+     * @param int $page
+     *
+     * @return array
+     */
     public function getClassicSubmissions($formId, $page)
     {
         $this->classicSubmissionHelper = $this->getClassicSubmissionHelper();
@@ -236,6 +317,13 @@ class MigrationsService
         return $this->classicSubmissionHelper->getClassicSubmissions($formId, $page);
     }
 
+    /**
+     * @param $classicSubmission
+     * @param int $formId
+     *
+     * @return bool
+     * @throws \Exception
+     */
     public function saveNextSubmission($classicSubmission, $formId)
     {
         $nextFormHelper = $this->getNextSubmissionHelper();
@@ -243,6 +331,9 @@ class MigrationsService
         return $nextFormHelper->saveSubmission($classicSubmission, $formId);
     }
 
+    /**
+     * @return array
+     */
     public function getStages()
     {
         return [
@@ -254,6 +345,9 @@ class MigrationsService
         ];
     }
 
+    /**
+     * @return array
+     */
     public function getStagesInfo()
     {
         return [
@@ -280,11 +374,21 @@ class MigrationsService
         ];
     }
 
+    /**
+     * @param string $stageName
+     *
+     * @return mixed
+     */
     public function getStageInfo($stageName)
     {
         return $this->getStagesInfo()[$stageName];
     }
 
+    /**
+     * @param string $currentStage
+     *
+     * @return bool|mixed
+     */
     public function getNextStageInfo($currentStage)
     {
         foreach ($this->getStages() as $key => $stage) {
@@ -298,15 +402,23 @@ class MigrationsService
         return false;
     }
 
+    /**
+     * @param string $stage
+     *
+     * @return bool
+     */
     public function stageExists($stage)
     {
-        if (!in_array($stage, $this->getStages())) {
+        if (!in_array($stage, $this->getStages(), false)) {
             return false;
         }
 
         return true;
     }
 
+    /**
+     * @return mixed
+     */
     public function getFirstStageInfo()
     {
         return $this->getStagesInfo()[$this->getStages()[0]];
@@ -352,6 +464,9 @@ class MigrationsService
         return $this->result;
     }
 
+    /**
+     * @return array
+     */
     private function getSubmissionInfo()
     {
         if (!$this->classicSubmissionHelper) {
@@ -387,6 +502,11 @@ class MigrationsService
         return $result;
     }
 
+    /**
+     * @param string $stage
+     *
+     * @return bool
+     */
     private function isFinished($stage)
     {
         if (!$this->result->isMigrationSuccessful()) {
