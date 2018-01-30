@@ -323,9 +323,10 @@ class NextFormHelper
                         $fieldId = $composerField['fieldId'];
 
                         if (array_key_exists($fieldId, $this->currentNewFieldsByLegacyId)) {
+                            $required = isset($composerField['required']) ? $composerField['required'] === 'yes' : false;
 
                             $nextFormField = $this->currentNewFieldsByLegacyId[$fieldId];
-                            $preparedField = $this->getPreparedField($nextFormField);
+                            $preparedField = $this->getPreparedField($nextFormField, $required);
 
                             $preparedFields[] = $preparedField;
                             $row['columns'][] = $preparedField['hash'];
@@ -374,7 +375,7 @@ class NextFormHelper
      *
      * @return array
      */
-    private function getPreparedField(FieldModel $nextFormField)
+    private function getPreparedField(FieldModel $nextFormField, $required = false)
     {
         $preparedField                 = [];
         $preparedField['hash']         = $nextFormField->getHash();
@@ -382,7 +383,7 @@ class NextFormHelper
         $preparedField['type']         = $nextFormField->type;
         $preparedField['handle']       = $nextFormField->handle;
         $preparedField['label']        = $nextFormField->label;
-        $preparedField['required']     = $nextFormField->required;
+        $preparedField['required']     = $required;
         $preparedField['instructions'] = $nextFormField->instructions;
         $preparedField['value']        = $nextFormField->value;
         $preparedField['placeholder']  = $nextFormField->placeholder;
