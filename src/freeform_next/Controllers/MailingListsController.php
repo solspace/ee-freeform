@@ -204,7 +204,7 @@ class MailingListsController extends Controller
                     'group'  => $hash,
                     'fields' => [
                         $hash . '-' . $item->getHandle() => [
-                            'type'     => 'text',
+                            'type'     => $item->getType() === SettingBlueprint::TYPE_BOOL ? 'yes_no' : 'text',
                             'required' => $item->isRequired(),
                             'value'    => isset($settings[$item->getHandle()]) ? $settings[$item->getHandle()] : null,
                         ],

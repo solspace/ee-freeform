@@ -126,7 +126,7 @@ abstract class AbstractIntegration implements IntegrationInterface
      *
      * @param bool $value
      */
-    public final function setForceUpdate($value)
+    final public function setForceUpdate($value)
     {
         $this->forceUpdate = (bool)$value;
     }
@@ -134,7 +134,7 @@ abstract class AbstractIntegration implements IntegrationInterface
     /**
      * @return bool
      */
-    public final function isForceUpdate()
+    final public function isForceUpdate()
     {
         return (bool)$this->forceUpdate;
     }
@@ -178,7 +178,7 @@ abstract class AbstractIntegration implements IntegrationInterface
     /**
      * @return array
      */
-    public final function getSettings()
+    final public function getSettings()
     {
         return $this->settings ?: [];
     }
@@ -186,7 +186,7 @@ abstract class AbstractIntegration implements IntegrationInterface
     /**
      * @return string
      */
-    public final function getAccessToken()
+    final public function getAccessToken()
     {
         return $this->accessToken;
     }
@@ -270,7 +270,7 @@ abstract class AbstractIntegration implements IntegrationInterface
     /**
      * @return string
      */
-    protected abstract function getApiRootUrl();
+    abstract protected function getApiRootUrl();
 
     /**
      * Returns a combined URL of api root + endpoint
@@ -279,7 +279,7 @@ abstract class AbstractIntegration implements IntegrationInterface
      *
      * @return string
      */
-    protected final function getEndpoint($endpoint)
+    final protected function getEndpoint($endpoint)
     {
         $root     = rtrim($this->getApiRootUrl(), "/");
         $endpoint = ltrim($endpoint, "/");
@@ -295,7 +295,7 @@ abstract class AbstractIntegration implements IntegrationInterface
      * @return mixed|null
      * @throws IntegrationException
      */
-    protected final function getSetting($handle)
+    final protected function getSetting($handle)
     {
         $blueprint = $this->getSettingBlueprint($handle);
 
@@ -305,7 +305,7 @@ abstract class AbstractIntegration implements IntegrationInterface
 
         if (isset($this->settings[$handle])) {
             if ($blueprint->getType() === SettingBlueprint::TYPE_BOOL) {
-                return (bool) $this->settings[$handle];
+                return strtolower($this->settings[$handle]) === "y";
             }
 
             return $this->settings[$handle];
@@ -329,7 +329,7 @@ abstract class AbstractIntegration implements IntegrationInterface
      *
      * @return $this
      */
-    protected final function setSetting($handle, $value)
+    final protected function setSetting($handle, $value)
     {
         // Check for blueprint validity
         $this->getSettingBlueprint($handle);
