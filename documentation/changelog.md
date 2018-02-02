@@ -1,5 +1,12 @@
 # Changelog
 
+### 1.4.3 (February XX, 2018) <a href="#v1-4-3" id="v1-4-3" class="docs-anchor">#</a>
+* Added a 'Use Double Opt-in?' setting for MailChimp integrations.
+* Fixed a bug where dashboard widget names would not match the plugin rename setting.
+* Fixed a bug where the default value and placeholder attributes were not applied to Website fields when added to form in Composer.
+* Fixed a bug where cleaning up assets service could sometimes trigger an error.
+* Fixed a bug where Number fields without a Min length and Max length set would not accept any values when submitting a form.
+
 ### 1.4.2 (January 9, 2018) <a href="#v1-4-2" id="v1-4-2" class="docs-anchor">#</a>
 * Added setting to remove newlines from textarea fields for exporting.
 * Fixed a visual bug for right column buttons in Composer interface for EE3.
