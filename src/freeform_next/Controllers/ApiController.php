@@ -220,7 +220,8 @@ class ApiController extends Controller
             throw new FreeformException('Form not found');
         }
 
-        $fileName = sprintf('%s_submissions_%s.csv', $form->getHandle(), date('Y-m-d_H-i'));
+        $isRemoveNewlines = (bool) SettingsRepository::getInstance()->getOrCreate()->removeNewlines;
+        $fileName         = sprintf('%s_submissions_%s.csv', $form->getHandle(), date('Y-m-d_H-i'));
 
         $headers = $data = [];
 
@@ -244,7 +245,7 @@ class ApiController extends Controller
 
         fputcsv($output, $headers);
 
-        $limit = 20;
+        $limit  = 20;
         $offset = 0;
 
         $attributes = new SubmissionAttributes($form);
@@ -253,7 +254,7 @@ class ApiController extends Controller
             ->setOffset($offset);
 
         $submissionRepository = SubmissionRepository::getInstance();
-        $submissions = $submissionRepository->getAllSubmissionsFor($attributes);
+        $submissions          = $submissionRepository->getAllSubmissionsFor($attributes);
 
         while (!empty($submissions)) {
             foreach ($submissions as $submission) {
@@ -264,10 +265,16 @@ class ApiController extends Controller
                     }
 
                     if (is_numeric($item->getId())) {
-                        $row[] = $submission->getFieldValueAsString($item->getHandle());
+                        $value = $submission->getFieldValueAsString($item->getHandle());
                     } else {
-                        $row[] = $submission->{$item->getHandle()};
+                        $value = $submission->{$item->getHandle()};
                     }
+
+                    if ($isRemoveNewlines) {
+                        $value = trim(preg_replace('/\s+/', ' ', $value));
+                    }
+
+                    $row[] = $value;
                 }
 
                 fputcsv($output, $row);

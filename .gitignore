@@ -8,3 +8,4 @@
 npm-debug.log
 /src/freeform_next/logs/*.log*
 /src/freeform_next/changelog.json
+/package-lock.json
