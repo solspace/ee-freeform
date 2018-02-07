@@ -1,0 +1,87 @@
+{
+  "composer": {
+    "layout": [
+      [
+        {
+          "id": "lda6aWxgg",
+          "columns": [
+            "n5deb50bB"
+          ]
+        },
+        {
+          "id": "xkaGa6px1",
+          "columns": [
+            "jNXexj4WV"
+          ]
+        }
+      ]
+    ],
+    "properties": {
+      "page0": {
+        "type": "page",
+        "label": "Page 1"
+      },
+      "form": {
+        "type": "form",
+        "name": "Composer Form",
+        "handle": "composer_form",
+        "submissionTitleFormat": "{current_time format=\"%D, %F %d, %Y - %g:%i:%s\"}",
+        "description": "",
+        "formTemplate": "flexbox.html",
+        "returnUrl": "/",
+        "storeData": true,
+        "defaultStatus": 1
+      },
+      "integration": {
+        "type": "integration",
+        "integrationId": 0,
+        "mapping": {}
+      },
+      "admin_notifications": {
+        "type": "admin_notifications",
+        "notificationId": 0,
+        "recipients": ""
+      },
+      "n5deb50bB": {
+        "hash": "n5deb50bB",
+        "id": 20,
+        "type": "checkbox",
+        "handle": "checky_mcboxington_a",
+        "label": "Checky McBoxington A",
+        "required": false,
+        "instructions": "",
+        "value": "yes",
+        "checked": false
+      },
+      "jNXexj4WV": {
+        "hash": "jNXexj4WV",
+        "id": 34,
+        "type": "checkbox_group",
+        "handle": "multiselect_c_-_value_label",
+        "label": "Multiselect C - Value Label",
+        "required": false,
+        "instructions": "",
+        "showCustomValues": true,
+        "values": [],
+        "options": [
+          {
+            "label": "Cheese Burger",
+            "value": "Cheese Burger"
+          },
+          {
+            "label": "Pants",
+            "value": "Pants"
+          },
+          {
+            "label": "El Stinko",
+            "value": "El Stinko"
+          }
+        ]
+      }
+    }
+  },
+  "context": {
+    "page": 0,
+    "hash": "jNXexj4WV"
+  }
+}

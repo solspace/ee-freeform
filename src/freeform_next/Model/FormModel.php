@@ -38,6 +38,7 @@ use Solspace\Addons\FreeformNext\Services\SubmissionsService;
  * @property string $layoutJson
  * @property string $returnUrl
  * @property string $defaultStatus
+ * @property int    $legacyId
  */
 class FormModel extends Model
 {
@@ -58,6 +59,7 @@ class FormModel extends Model
     protected $layoutJson;
     protected $returnUrl;
     protected $defaultStatus;
+    protected $legacyId;
     protected $dateCreated;
     protected $dateUpdated;
 
@@ -146,6 +148,14 @@ class FormModel extends Model
     public function getForm()
     {
         return $this->getComposer()->getForm();
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setLegacyId($id)
+    {
+        $this->set(['legacyId' => $id]);
     }
 
     /**

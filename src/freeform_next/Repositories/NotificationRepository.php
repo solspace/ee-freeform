@@ -124,6 +124,45 @@ class NotificationRepository extends Repository
     }
 
     /**
+     * @param int $id
+     *
+     * @return NotificationModel|null
+     */
+    public function getNotificationByLegacyId($id)
+    {
+        if (null === self::$notificationCache || !isset(self::$notificationCache[$id])) {
+            if (is_numeric($id)) {
+                $notification = ee('Model')
+                    ->get(NotificationModel::MODEL)
+                    ->filter('legacyId', $id)
+                    ->first();
+            } else {
+                $notification = ee('Model')
+                    ->get(NotificationModel::MODEL)
+                    ->filter('legacyId', $id)
+                    ->first();
+            }
+
+            self::$notificationCache[$id] = null;
+
+            if ($notification) {
+                self::$notificationCache[$id] = $notification;
+            } else {
+                $settings = SettingsRepository::getInstance()->getOrCreate();
+
+                foreach ($settings->listTemplatesInEmailTemplateDirectory() as $filePath => $name) {
+                    if ($id === $name) {
+                        $model = NotificationModel::createFromTemplate($filePath);
+                        self::$notificationCache[$id] = $model;
+                    }
+                }
+            }
+        }
+
+        return self::$notificationCache[$id];
+    }
+
+    /**
      * @param array $ids
      *
      * @return NotificationModel[]

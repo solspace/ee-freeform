@@ -17,6 +17,7 @@ use Solspace\Addons\FreeformNext\Controllers\FieldController;
 use Solspace\Addons\FreeformNext\Controllers\FormController;
 use Solspace\Addons\FreeformNext\Controllers\LogController;
 use Solspace\Addons\FreeformNext\Controllers\MailingListsController;
+use Solspace\Addons\FreeformNext\Controllers\MigrationsController;
 use Solspace\Addons\FreeformNext\Controllers\NotificationController;
 use Solspace\Addons\FreeformNext\Controllers\SettingsController;
 use Solspace\Addons\FreeformNext\Controllers\SubmissionController;
@@ -31,6 +32,7 @@ use Solspace\Addons\FreeformNext\Model\NotificationModel;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
+use Solspace\Addons\FreeformNext\Services\MigrationsService;
 use Solspace\Addons\FreeformNext\Services\SettingsService;
 use Solspace\Addons\FreeformNext\Services\UpdateService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
@@ -360,6 +362,20 @@ class Freeform_next_mcp extends ControlPanelView
     }
 
     /**
+     * @param string $type
+     * @param null   $id
+     *
+     * @return array
+     */
+    public function migrations($type, $id = null)
+    {
+        switch (strtolower($type)) {
+            case 'ff_classic':
+                return $this->renderView($this->getMigrationController()->handle($id));
+        }
+    }
+
+    /**
      * @param string      $logName
      * @param string|null $action
      *
@@ -390,6 +406,16 @@ class Freeform_next_mcp extends ControlPanelView
         $integrations
             ->addSubNavItem(new NavigationLink('Mailing Lists', 'integrations/mailing_lists'))
             ->addSubNavItem(new NavigationLink('CRM', 'integrations/crm'));
+
+        $isMigrationAvailable = false;
+
+        $migrations = new NavigationLink('Migrations');
+
+        if ($this->isClassicFreeformInstalled()) {
+            $isMigrationAvailable = true;
+            $migrations
+                ->addSubNavItem(new NavigationLink('Migrate Freeform Classic', 'migrations/ff_classic'));
+        }
 
 
         $exportProfiles = null;
@@ -462,8 +488,13 @@ class Freeform_next_mcp extends ControlPanelView
             ->addLink($notifications)
             ->addLink($exportProfiles)
             ->addLink($settings)
-            ->addLink($integrations)
-            ->addLink($resources);
+            ->addLink($integrations);
+
+        if ($isMigrationAvailable) {
+            $nav->addLink($migrations);
+        }
+
+        $nav->addLink($resources);
 
         if ($logs) {
             $nav->addLink($logs);
@@ -586,5 +617,27 @@ class Freeform_next_mcp extends ControlPanelView
         }
 
         return $instance;
+    }
+
+    /**
+     * @return MigrationsController
+     */
+    private function getMigrationController()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new MigrationsController();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isClassicFreeformInstalled()
+    {
+        return (new MigrationsService())->isClassicFreeformInstalled();
     }
 }
