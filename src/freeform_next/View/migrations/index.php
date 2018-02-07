@@ -64,7 +64,7 @@ $this->extend('_layouts/table_form_wrapper')?>
     <div id="in-progress-success-wrapper" style="display: none">
         <div id="in-progress-success-title">Migration successful!</div>
         <div id="in-progress-success-text">
-            All forms, fields, email notification templates, and submission statuses
+            All forms, fields, email notification templates, and form statuses
             were successfully migrated.
         </div>
     </div>

@@ -134,7 +134,7 @@ $(document).ready(function () {
       return title + '...';
     }
 
-    return title + '... <span class="in-progress-error">error!</span>';
+    return title + '...<span class="in-progress-error">error!</span>';
   }
 
   function addToStatus(title) {
