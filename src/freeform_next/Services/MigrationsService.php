@@ -148,15 +148,10 @@ class MigrationsService
     {
         $classicNotifications = $this->getClassicFormNotifications();
 
-        if (!$classicNotifications) {
-            $this->result->success = false;
-            $this->result->addError('No classic Form Notifications found');
-
-            return false;
-        }
-
-        foreach ($classicNotifications as $classicNotification) {
-            $this->saveNextFormNotification($classicNotification);
+        if (!empty($classicNotifications)) {
+            foreach ($classicNotifications as $classicNotification) {
+                $this->saveNextFormNotification($classicNotification);
+            }
         }
 
         $this->result->success = true;
@@ -197,15 +192,10 @@ class MigrationsService
     {
         $classicSubmissions = $this->getClassicSubmissions($formId, $page);
 
-        if (!$classicSubmissions) {
-            $this->result->success = false;
-            $this->result->addError('No classic Submissions found');
-
-            return false;
-        }
-
-        foreach ($classicSubmissions as $submissionFormId => $classicSubmission) {
-            $this->saveNextSubmission($classicSubmission, $submissionFormId );
+        if (!empty($classicSubmissions)) {
+            foreach ($classicSubmissions as $submissionFormId => $classicSubmission) {
+                $this->saveNextSubmission($classicSubmission, $submissionFormId);
+            }
         }
 
         $this->result->success = true;

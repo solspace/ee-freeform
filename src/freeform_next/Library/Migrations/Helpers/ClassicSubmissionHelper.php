@@ -38,7 +38,7 @@ class ClassicSubmissionHelper extends AddonBuilder
 
         $submissions = [];
 
-        $form = $this->getForm($formId);
+        $form   = $this->getForm($formId);
         $result = $this->getSubmissions($form->legacyId, $page);
 
         $realEntries = [];
@@ -115,393 +115,49 @@ class ClassicSubmissionHelper extends AddonBuilder
         return FormRepository::getInstance()->getFormById($formId);
     }
 
+    /**
+     * @param int $formId
+     * @param int $page
+     *
+     * @return array
+     */
     private function getSubmissions($formId, $page)
     {
-        $moderate = FALSE;
+        $fieldsByName = $fieldsByType = $fieldsById = [];
+        $form         = $this->model('form')->get_info($formId);
 
-        // -------------------------------------
-        //	moderate
-        // -------------------------------------
+        foreach ($form['fields'] as $field) {
+            $identificator = 'form_field_' . $field['field_id'];
 
-        $search_status = ee()->input->get_post('search_status');
-
-        $moderate = (
-            $moderate AND
-            ($search_status == 'pending' OR
-                $search_status === FALSE
-            )
-        );
-
-        //if moderate and search status was not submitted, fake into pending
-        if ($moderate AND $search_status === FALSE)
-        {
-            $_POST['search_status'] = 'pending';
+            $fieldsByName[$field['field_name']] = $identificator;
+            $fieldsByType[$identificator]       = $field['field_type'];
+            $fieldsById[$identificator]         = $field['field_id'];
         }
 
-        $this->cached_vars['moderate']	= $moderate;
-        $this->cached_vars['method']	= $method = (
-        $moderate ? 'moderate_entries' : 'entries'
-        );
+        $table = 'exp_freeform_form_entries_' . $formId;
 
-        // -------------------------------------
-        //	form data? legit? GTFO?
-        // -------------------------------------
+        $limit = $this->row_limit;
+        $offset = ($page - 1) * $limit;
 
-        $form_id = $formId;
+        $submissions = ee()->db
+            ->query("SELECT * FROM $table ORDER BY entry_id ASC LIMIT $offset, $limit")
+            ->result_array();
 
-        //form data does all of the proper id validity checks for us
-        $form_data = $this->model('form')->get_info($form_id);
+        $totalEntries = ee()->db->query("SELECT COUNT(*) as `count` FROM $table")->row()->count;
 
-        if ( ! $form_data)
-        {
-            throw new \Exception('Something is wrong');
-        }
-
-        $this->cached_vars['form_id']		= $form_id;
-        $this->cached_vars['form_label']	= $form_data['form_label'];
-
-        // -------------------------------------
-        //	status prefs
-        // -------------------------------------
-
-        $form_statuses = $this->model('preference')->get_form_statuses();
-
-        $this->cached_vars['form_statuses'] = $form_statuses;
-
-        // -------------------------------------
-        //	rest of models
-        // -------------------------------------
-
-        $this->model('entry')->id($form_id);
-
-        // -------------------------------------
-        //	custom field labels
-        // -------------------------------------
-
-        $standard_columns	= $this->get_standard_column_names();
-
-        //we want author instead of author id until we get data
-        $possible_columns	= $standard_columns;
-        //key = value
-        $all_columns		= array_combine($standard_columns, $standard_columns);
-        $column_labels		= array();
-        $field_column_names = array();
-        $field_column_types = array();
-        $field_column_ids   = array();
-        $field_column_form_ids   = array();
-
-        //field prefix
-        $f_prefix			= $this->model('form')->form_field_prefix;
-
-        //keyed labels for the front end
-        foreach ($standard_columns as $column_name)
-        {
-            $column_labels[$column_name] = lang($column_name);
-        }
-
-        // -------------------------------------
-        //	check for fields with custom views for entry tables
-        // -------------------------------------
-
-        $right_links = array();
-
-        //fields in this form
-        foreach ($form_data['fields'] as $field_id => $field_data)
-        {
-            // -------------------------------------
-            //	add custom column names and labels
-            // -------------------------------------
-
-            //outputs form_field_1, form_field_2, etc for ->select()
-            $field_id_name = $f_prefix . $field_id;
-
-            $field_column_names[$field_id_name]			= $field_data['field_name'];
-            $field_column_types[$field_id_name]			= $field_data['field_type'];
-            $field_column_ids[$field_id_name]			= $field_data['field_id'];
-            $all_columns[$field_id_name]				= $field_data['field_name'];
-
-            $column_labels[$field_data['field_name']]	= $field_data['field_label'];
-            $column_labels[$field_id_name]				= $field_data['field_label'];
-
-
-            // -------------------------------------
-            //	get field instance
-            // -------------------------------------
-
-            $fieldsInstance = $this->lib('Fields')->get_field_instance(
-                array(
-                    'field_id'   => $field_id,
-                    'field_data' => $field_data
-                )
-            );
-            $instance       =& $fieldsInstance;
-
-            $showInSubmissions = $field_data["submissions_page"] == "y";
-            $showInModeration  = $field_data["moderation_page"] == "y";
-            if (($moderate && $showInModeration) || (!$moderate && $showInSubmissions)) {
-                $possible_columns[] = $field_id;
-            }
-
-            // -------------------------------------
-            //	do any fields have custom views
-            //	to add?
-            // -------------------------------------
-
-            if ( ! empty($instance->entry_views))
-            {
-                foreach ($instance->entry_views as $e_lang => $e_method)
-                {
-                    $right_links[] = array(
-                        'link'	=> $this->mcp_link(array(
-                            'method'		=> 'field_method',
-                            'field_id'		=> $field_id,
-                            'field_method'	=> $e_method,
-                            'form_id'		=> $form_id
-                        )),
-                        'title'	=> $e_lang
-                    );
-                }
-            }
-        }
-
-        // -------------------------------------
-        //	visible columns
-        // -------------------------------------
-
-        $visible_columns = $this->visible_columns($standard_columns, $possible_columns);
-
-        $this->cached_vars['visible_columns']	= $visible_columns;
-        $this->cached_vars['column_labels']		= $column_labels;
-        $this->cached_vars['possible_columns']	= $possible_columns;
-        $this->cached_vars['all_columns']		= $all_columns;
-
-        // -------------------------------------
-        //	prep unused from from possible
-        // -------------------------------------
-
-        //so so used
-        $un_used = array();
-
-        foreach ($possible_columns as $pcid)
-        {
-            $check = ($this->is_positive_intlike($pcid)) ?
-                $f_prefix . $pcid :
-                $pcid;
-
-            if ( ! in_array($check, $visible_columns))
-            {
-                $un_used[] = $check;
-            }
-        }
-
-        $this->cached_vars['unused_columns'] = $un_used;
-
-        // -------------------------------------
-        //	build query
-        // -------------------------------------
-
-        //base url for pagination
-        $pag_url		= array(
-            'method'	=> $method,
-            'form_id'	=> $form_id
-        );
-
-        //cleans out blank keys from unset
-        $find_columns	= array_merge(array(), $visible_columns);
-        $must_haves		= array('entry_id');
-
-        // -------------------------------------
-        //	search criteria
-        //	building query
-        // -------------------------------------
-
-        $has_search = FALSE;
-
-        $search_vars = array(
-            'search_keywords',
-            'search_status',
-            'search_date_range',
-            'search_date_range_start',
-            'search_date_range_end',
-            'search_on_field'
-        );
-
-        foreach ($search_vars as $search_var)
-        {
-            $$search_var = ee()->input->get_post($search_var, TRUE);
-
-            $$search_var = urldecode($$search_var);
-
-            //set for output
-            $this->cached_vars[$search_var] = (
-            ($$search_var) ? trim($$search_var) : ''
-            );
-        }
-
-        // -------------------------------------
-        //	search keywords
-        // -------------------------------------
-
-        if ($search_keywords AND
-            trim($search_keywords) !== '' AND
-            $search_on_field AND
-            in_array($search_on_field, $visible_columns))
-        {
-            $this->model('entry')->like(
-                $search_on_field,
-                $search_keywords
-            );
-
-            //pagination
-            $pag_url['search_keywords'] = $search_keywords;
-            $pag_url['search_on_field'] = $search_on_field;
-
-            $has_search = TRUE;
-        }
-        //no search on field? guess we had better search it all *gulp*
-        else if ($search_keywords AND trim($search_keywords) !== '')
-        {
-            $first = TRUE;
-
-            $this->model('entry')->group_like(
-                $search_keywords,
-                array_values($visible_columns)
-            );
-
-            $pag_url['search_keywords'] = $search_keywords;
-
-            $has_search = TRUE;
-        }
-
-        //status search?
-        if ($moderate)
-        {
-            $this->model('entry')->where('status', 'pending');
-        }
-        else if ($search_status AND in_array($search_status, array_flip( $form_statuses)))
-        {
-            $this->model('entry')->where('status', $search_status);
-
-            //pagination
-            $pag_url['search_status'] = $search_status;
-
-            $has_search = TRUE;
-        }
-
-        // -------------------------------------
-        //	date range?
-        // -------------------------------------
-
-        //pagination
-        if ($search_date_range == 'date_range')
-        {
-
-
-            if ($search_date_range_start !== FALSE)
-            {
-                $pag_url['search_date_range_start'] = $search_date_range_start;
-            }
-
-            if ($search_date_range_end !== FALSE)
-            {
-                $pag_url['search_date_range_end'] = $search_date_range_end;
-            }
-
-            //add timestamps so dates encompass from the beginning
-            //to the end of said dates and not midnight am to midnight am
-            $search_date_range_start .= ' 00:00';
-            $search_date_range_end .= ' 23:59';
-
-            //pagination
-            if ($search_date_range_start OR $search_date_range_end)
-            {
-                $pag_url['search_date_range'] = 'date_range';
-                $has_search = TRUE;
-            }
-        }
-        else if ($search_date_range !== FALSE)
-        {
-            $pag_url['search_date_range'] = $search_date_range;
-            $has_search = TRUE;
-        }
-
-        $this->model('entry')->date_where(
-            $search_date_range,
-            $search_date_range_start,
-            $search_date_range_end
-        );
-
-        //we need the counts for exports and end results
-        $total_entries		= $this->model('entry')->count(array(), FALSE);
-
-        $order_by	= 'entry_date';
-        $sort		= 'asc';
-
-        $this->model('entry')->order_by($order_by, $sort);
-
-        // -------------------------------------
-        //	selects
-        // -------------------------------------
-
-        $needed_selects = array_unique(array_merge($must_haves, $find_columns));
-
-        $this->model('entry')->select(implode(', ', $needed_selects));
-
-        if ($total_entries > $this->row_limit)
-        {
-            $current_page				= $page;
-
-            $this->model('entry')->limit(
-                $this->row_limit,
-                ($current_page - 1) * $this->row_limit
-            );
-        }
-
-        $result_array	= $this->model('entry')->get();
-
-        $this->formPagesCount = $this->getFormPages($total_entries, $this->row_limit);
+        $this->formPagesCount = $this->getFormPages($totalEntries, $limit);
         $this->finished = false;
 
-        if ((int) $page == $this->formPagesCount) {
+        if ((int) $page === (int)$this->formPagesCount) {
             $this->finished = true;
         }
 
-
-        $fields_by_name = array_flip($field_column_names);
-        $fields_by_type = $field_column_types;
-        $fields_by_id = $field_column_ids;
-
         return [
-            'submissions' => $result_array,
-            'fieldsByName' => $fields_by_name,
-            'fieldsByType' => $fields_by_type,
-            'fieldsById' => $fields_by_id,
+            'submissions'  => $submissions,
+            'fieldsByName' => $fieldsByName,
+            'fieldsByType' => $fieldsByType,
+            'fieldsById'   => $fieldsById,
         ];
-    }
-
-    /**
-     * get_standard_column_names
-     *
-     * gets the standard column names and replaces author_id with author
-     *
-     * @access	private
-     * @return	null
-     */
-
-    private function get_standard_column_names()
-    {
-        $standard_columns	= array_keys(
-            $this->model('form')->default_form_table_columns
-        );
-
-        array_splice(
-            $standard_columns,
-            array_search('author_id', $standard_columns),
-            1,
-            'author'
-        );
-
-        return $standard_columns;
     }
 
     /**

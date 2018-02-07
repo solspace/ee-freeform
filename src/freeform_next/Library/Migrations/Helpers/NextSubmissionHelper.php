@@ -78,7 +78,7 @@ class NextSubmissionHelper
                     continue;
                 }
 
-                if (!array_key_exists($fieldName, $legacySubmission)) {
+                 if (!array_key_exists($fieldName, $legacySubmission)) {
                     throw new \Exception('Cannot find field "' . $fieldName . '"" in legacy submission ' . print_r($legacySubmission, true));
                 }
 
@@ -97,9 +97,7 @@ class NextSubmissionHelper
     {
         $formattedValue = $value;
 
-        if ($field instanceof SelectField ||
-            $field instanceof RadioGroupField
-        ) {
+        if ($field instanceof RadioGroupField) {
             $formattedValue = substr($value, 0, strpos($value, '|~|'));
         }
 
