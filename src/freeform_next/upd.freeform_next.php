@@ -113,7 +113,27 @@ class Freeform_next_upd extends AddonUpdater
                 ');
         }
 
-        if (version_compare($previousVersion, '1.4.2', '<=')) {
+        if (version_compare($previousVersion, '1.5.0', '<')) {
+            $columnMap = [
+                'exp_freeform_next_forms'               => ['name', 'handle'],
+                'exp_freeform_next_fields'              => ['label', 'handle'],
+                'exp_freeform_next_integrations'        => ['name', 'handle', 'class'],
+                'exp_freeform_next_crm_fields'          => ['label', 'handle'],
+                'exp_freeform_next_mailing_list_fields' => ['label', 'handle'],
+                'exp_freeform_next_mailing_lists'       => ['resourceId'],
+                'exp_freeform_next_notifications'       => ['name', 'handle'],
+                'exp_freeform_next_statuses'            => ['name', 'handle'],
+                'exp_freeform_next_session_data'        => ['sessionId', 'key'],
+            ];
+
+            foreach ($columnMap as $table => $columns) {
+                foreach ($columns as $column) {
+                    $extra = $table === 'exp_freeform_next_notifications' && $column === 'name' ? '' : ' NOT NULL';
+
+                    ee()->db->query("ALTER TABLE `$table` MODIFY `$column` VARCHAR (150)$extra");
+                }
+            }
+
             $map = [
                 [
                     'table'   => 'freeform_next_forms',
