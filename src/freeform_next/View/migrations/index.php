@@ -18,12 +18,10 @@
 </script>
 
 
-<div class="form-standard">
+<div class="form-standard <?php echo version_compare(APP_VER, '4.0.0', '<') ? 'box' : '' ?>">
     <div class="form-btns form-btns-top">
         <h1><?= $cp_page_title ?></h1>
-
     </div>
-
 
     <div id="ready-wrapper" class="migration-info-block">
         <div id="ready-title">Ready for Migration</div>
@@ -41,9 +39,12 @@
             <label for="migrate-submissions">Migrate Submissions</label>
         </div>
 
-        <div id="ready-buttons-wrapper">
-            <button class="btn submit" id="start-migration-button">Start Migration</button>
-        </div>
+        <fieldset class="form-ctrls">
+
+            <div id="ready-buttons-wrapper">
+                <button class="btn submit" id="start-migration-button">Start Migration</button>
+            </div>
+        </fieldset>
     </div>
 
     <div id="in-progress-wrapper" class="migration-info-block" style="display: none">
