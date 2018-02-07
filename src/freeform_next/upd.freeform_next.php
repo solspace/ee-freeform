@@ -114,6 +114,9 @@ class Freeform_next_upd extends AddonUpdater
         }
 
         if (version_compare($previousVersion, '1.5.0', '<')) {
+            ee()->db->query("ALTER TABLE exp_freeform_next_forms ADD COLUMN `legacyId` INT(11) DEFAULT NULL");
+            ee()->db->query("ALTER TABLE exp_freeform_next_notifications ADD COLUMN `legacyId` INT(11) DEFAULT NULL");
+
             $columnMap = [
                 'exp_freeform_next_forms'               => ['name', 'handle'],
                 'exp_freeform_next_fields'              => ['label', 'handle'],
