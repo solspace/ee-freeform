@@ -86,10 +86,18 @@ class DynamicRecipientField extends SelectField implements RecipientInterface, O
         $options = $this->getOptions();
         $value   = $this->getValue();
 
-        if (!is_null($value) && array_key_exists($value, $options)) {
-            $option = $options[$value];
+        if (!is_null($value)) {
+            if (is_numeric($value) && array_key_exists($value, $options)) {
+                $option = $options[$value];
 
-            return [$option->getLabel() => $option->getValue()];
+                return [$option->getLabel() => $option->getValue()];
+            } else {
+                foreach ($options as $option) {
+                    if ($option->getValue() === $value) {
+                        return [$option->getLabel() => $this->getValue()];
+                    }
+                }
+            }
         }
 
         return [];
