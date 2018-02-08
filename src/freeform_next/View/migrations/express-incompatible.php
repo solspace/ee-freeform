@@ -23,7 +23,7 @@
             and 15 fields.
             Your Freeform Classic installation contains <?php echo $formCount ?> forms and <?php echo $fieldCount ?>
             fields.
-            To resolve this issue please consider using Freeform Lite edition instead, or remove forms and fields you do
+            To resolve this issue, please consider using Freeform Lite edition instead, or remove forms and fields you do
             not require.
         </div>
     </div>

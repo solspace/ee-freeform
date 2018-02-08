@@ -17,7 +17,7 @@ use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 
 class ClassicSubmissionHelper extends AddonBuilder
 {
-    public $row_limit = 2;
+    public $row_limit = 100;
     public $finished = false;
     public $formId;
     public $page;

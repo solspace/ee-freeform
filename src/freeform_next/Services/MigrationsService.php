@@ -90,7 +90,7 @@ class MigrationsService
         $formCount  = (int) ee()->db->count_all('freeform_forms');
         $fieldCount = (int) ee()->db->count_all('freeform_fields');
 
-        return $formCount <= 1 && $fieldCount <= 20;
+        return $formCount <= 1 && $fieldCount <= 15;
     }
 
     /**

@@ -26,7 +26,7 @@
     <div id="ready-wrapper" class="migration-info-block">
         <div id="ready-title">Ready for Migration</div>
         <div id="ready-text">
-            Freeform has detected Freeform Classic on this site the migration utility is available!<br/>
+            Freeform has detected Freeform Classic on this site, so the migration utility is available!<br/>
             Be sure to read and follow the <a href="https://solspace.com/expressionengine/freeform/docs/classic-migration/">migration documentation</a>
             carefully in order to properly prepare and clean up your site afterward.
         </div>
