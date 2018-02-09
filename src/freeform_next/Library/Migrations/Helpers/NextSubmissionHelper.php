@@ -97,8 +97,10 @@ class NextSubmissionHelper
     {
         $formattedValue = $value;
 
-        if ($field instanceof RadioGroupField) {
-            $formattedValue = substr($value, 0, strpos($value, '|~|'));
+        if ($field instanceof SelectField || $field instanceof RadioGroupField) {
+            if (strpos($value, '|~|') !== false) {
+                $formattedValue = substr($value, 0, strpos($value, '|~|'));
+            }
         }
 
         if ($field instanceof CheckboxField) {
