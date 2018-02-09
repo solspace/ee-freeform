@@ -1,7 +1,7 @@
 # Updates
 
 ## Updating Instructions <a href="#update" id="update" class="docs-anchor">#</a>
-**NOTE:** There is currently no migration path from classic Freeform Classic to Freeform. Freeform can be used alongside classic Freeform/Freeform Pro (Freeform Classic) installations if you're wanting to try out and/or switch to Freeform. We recommend you read the [Switching from Freeform Classic](switching-from-classic.md) documentation to learn more about the differences.
+**NOTE:** If you're switching from Freeform Classic to the new Freeform, please see the [Switching from Freeform Classic](switching-from-classic.md) documentation to learn more about the differences, and then view the [Migration utility](classic-migration.md) documentation to prepare your site for migration. Freeform can be used alongside classic Freeform/Freeform Pro (Freeform Classic) installations if you're wanting to try out and/or switch to Freeform.
 
 **NOTE:** If you're upgrading from Freeform **Lite** to Freeform **Pro**, you can follow these same instructions below. There will be no **update** button/process as it is not required, though you may see the **Update** button if the version number is greater (e.g. Lite 1.1.3 to Pro 1.1.6).
 

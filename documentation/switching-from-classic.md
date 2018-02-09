@@ -12,7 +12,7 @@ Freeform has been completely rewritten from ground up. Whether you're considerin
 * [Changes to Spam Protection](#spam-protection)
 * [Changes to Permissions](#permissions)
 * [Addition of API Integrations](#api-integrations)
-* [Are There Migration Options?](#migration)
+* [Migrating from Classic](#migration)
 
 
 ## Changes to Composer <a href="#composer" id="composer" class="docs-anchor">#</a>
@@ -76,5 +76,5 @@ Freeform Next currently does not have any module-level permissions like Freeform
 The *Pro* version of Freeform Next includes integrations with several popular [Mailing List](mailing-list-integrations.md) and [CRM (Customer Relationship Management)](crm-integrations.md) API's, including [MailChimp](mailing-list-api-mailchimp.md), [Constant Contact](mailing-list-api-campaign-monitor.md), [Campaign Monitor](mailing-list-api-constant-contact.md), [Salesforce](crm-api-salesforce.md) and [HubSpot](crm-api-hubspot.md). We plan to add support for other API's in the future as well.
 
 
-## Are There Migration Options? <a href="#migration" id="migration" class="docs-anchor">#</a>
-There currently is no migration options from Freeform Classic to Freeform Next. This is something we are looking into developing in the future though. However, Freeform Next can be used alongside classic Freeform/Freeform Pro installations if you're wanting to try out and/or switch to Freeform Next.
+## Migrating from Freeform Classic <a href="#migration" id="migration" class="docs-anchor">#</a>
+Migration from Freeform Classic to the new Freeform is now available. Once you have installed the new Freeform, don't make any modifications to it, and then review the [Migration utility documentation](classic-migration.md) before running the migration utility. Freeform Next can be used alongside classic Freeform/Freeform Pro installations if you're wanting to try out and/or switch to Freeform Next.

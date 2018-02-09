@@ -1,7 +1,10 @@
 # Changelog
 
-### 1.4.3 (February XX, 2018) <a href="#v1-4-3" id="v1-4-3" class="docs-anchor">#</a>
+### 1.5.0 (February 9, 2018) <a href="#v1-5-0" id="v1-5-0" class="docs-anchor">#</a>
+* Added Migration utility (beta) for migrating Freeform Classic data.
 * Added a 'Use Double Opt-in?' setting for MailChimp integrations.
+* Included an update that adjusts database key lengths of fields for compatibility with utf8mb4 character set in EE4.
+* Fixed a bug where Dynamic Recipients notifications sometimes would not work correctly.
 * Fixed a bug where the default value and placeholder attributes were not applied to Website fields when added to form in Composer.
 * Fixed a bug where deleting fields was not removing them from forms.
 
