@@ -31,7 +31,7 @@ class StatusModel extends Model implements \JsonSerializable
     protected static $_primary_key = 'id';
     protected static $_table_name  = self::TABLE;
 
-    protected static $_events = ['beforeInsert', 'beforeUpdate', 'beforeSave'];
+    protected static $_events = ['beforeInsert', 'beforeUpdate'];
 
     protected $id;
     protected $siteId;
@@ -111,13 +111,5 @@ class StatusModel extends Model implements \JsonSerializable
     private function getTimestampableDate()
     {
         return date('Y-m-d H:i:s');
-    }
-
-    /**
-     * Event beforeSave validates the form
-     */
-    public function onBeforeSave()
-    {
-        FreeformHelper::get('validate', $this);
     }
 }

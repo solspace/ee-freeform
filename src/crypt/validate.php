@@ -28,8 +28,4 @@ if ($version === FREEFORM_EXPRESS) {
             throw new \Exception('Maximum limit of 15 fields reached.');
         }
     }
-
-    if ($item instanceof \Solspace\Addons\FreeformNext\Model\StatusModel) {
-        throw new \Exception('Cannot edit statuses in Freeform Express');
-    }
 }

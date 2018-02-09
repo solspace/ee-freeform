@@ -125,15 +125,10 @@ class MigrationsService
     {
         $classicStatuses = $this->getClassicFormStatuses();
 
-        if (!$classicStatuses) {
-            $this->result->success = false;
-            $this->result->addError('No classic Form Statuses found');
-
-            return false;
-        }
-
-        foreach ($classicStatuses as $classicStatusHandle => $classicStatusName) {
-            $this->saveNextFormStatus($classicStatusHandle, $classicStatusName);
+        if (!empty($classicStatuses)) {
+            foreach ($classicStatuses as $classicStatusHandle => $classicStatusName) {
+                $this->saveNextFormStatus($classicStatusHandle, $classicStatusName);
+            }
         }
 
         $this->result->success = true;
