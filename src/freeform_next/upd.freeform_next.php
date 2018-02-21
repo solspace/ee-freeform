@@ -10,6 +10,7 @@
  */
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
+use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Utilities\AddonUpdater;
 use Solspace\Addons\FreeformNext\Utilities\AddonUpdater\PluginAction;
@@ -245,6 +246,23 @@ class Freeform_next_upd extends AddonUpdater
                     }
                 }
             } catch (\Exception $exception) {}
+        }
+
+
+        if (version_compare($previousVersion, '1.5.1', '<')) {
+            $table = 'exp_freeform_next_submissions';
+
+            $rows = ee()->db
+                ->select('id')
+                ->where(['type' => AbstractField::TYPE_FILE])
+                ->get('exp_freeform_next_fields')
+                ->result();
+
+            foreach ($rows as $row) {
+                $column = SubmissionModel::getFieldColumnName($row->id);
+
+                ee()->db->query("ALTER TABLE `$table` MODIFY `$column` TEXT NULL");
+            }
         }
 
         return true;

@@ -542,6 +542,16 @@ class FieldController extends Controller
                     ],
                 ],
                 [
+                    'title'  => 'File Count',
+                    'desc'   => 'Specify the maximum uploadable file count',
+                    'fields' => [
+                        'fileCount' => [
+                            'type'  => 'text',
+                            'value' => $model->getProperty('fileCount'),
+                        ],
+                    ],
+                ],
+                [
                     'title'  => 'Maximum filesize',
                     'desc'   => 'Specify the default maximum file size, in KB.',
                     'fields' => [

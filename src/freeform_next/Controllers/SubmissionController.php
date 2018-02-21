@@ -112,7 +112,7 @@ class SubmissionController extends Controller
                     $label  = $field->getLabel();
 
                     if ($field->getType() === AbstractField::TYPE_FILE) {
-                        $type   = Table::COL_TOOLBAR;
+                        $type   = Table::COL_TEXT;
                         $encode = false;
                     }
                 } catch (FreeformException $e) {
@@ -182,18 +182,34 @@ class SubmissionController extends Controller
                         $value = $submission->getFieldValueAsString($field->getHandle());
 
                         if ($field instanceof FileUploadField) {
-                            if ($value) {
+                            $assetIds = $submission->getFieldValue($field->getHandle());
+                            if ($assetIds) {
+                                if (!is_array($assetIds)) {
+                                    $assetIds = [$assetIds];
+                                }
+
+                                $content = '';
+                                $content .= '<div class="file-previews">';
+
+                                foreach ($assetIds as $assetId) {
+                                    /** @var File $asset */
+                                    $asset = ee('Model')
+                                        ->get('File')
+                                        ->filter('file_id', $assetId)
+                                        ->first();
+
+                                    $content .= '<div class="' . ($asset->isImage() ? 'has-img' : '') . '">';
+                                    if ($asset->isImage()) {
+                                        $content .= '<img src="' . $asset->getAbsoluteURL() . '" />';
+                                    }
+                                    $content .= '<div>' . $asset->file_name . '</div>';
+                                    $content .= '</div>';
+                                }
+
+                                $content .= '</div>';
+
                                 $data[] = [
-                                    'toolbar_items' => [
-                                        'edit'     => [
-                                            'href'  => ee('CP/URL', 'cp/files/file/edit/' . $value),
-                                            'title' => lang('edit'),
-                                        ],
-                                        'download' => [
-                                            'href'  => ee('CP/URL')->make('files/file/download/' . $value),
-                                            'title' => lang('download'),
-                                        ],
-                                    ],
+                                    'content' => $content,
                                 ];
                             } else {
                                 $data[] = ['toolbar_items' => []];
@@ -414,32 +430,44 @@ class SubmissionController extends Controller
                             ],
                         ];
                     } else if ($field instanceof FileUploadField) {
-                        $assetId = $submission->getFieldValue($field->getHandle());
+                        $assetIds = $submission->getFieldValue($field->getHandle());
 
                         $content = '';
-                        if ($assetId) {
-                            /** @var File $asset */
-                            $asset = ee('Model')
-                                ->get('File')
-                                ->filter('file_id', $assetId)
-                                ->first();
-
-                            $content .= '<div style="margin: 5px 0;">' . $asset->file_name . '</div>';
-                            $content .= '<div class="toolbar-wrap"><ul class="toolbar">';
-                            $content .= '<li class="edit"><a href="' . ee(
-                                    'CP/URL',
-                                    'cp/files/file/edit/' . $value
-                                )->compile() . '"></a></li>';
-                            $content .= '<li class="download"><a href="' . ee(
-                                    'CP/URL',
-                                    'files/file/download/' . $value
-                                )->compile() . '"></a></li>';
-                            $content .= '</ul></div>';
-
-                            if ($asset->isImage()) {
-                                $content .= '<img style="border: 1px solid black; padding: 1px;" width="100" src="' . $asset->getAbsoluteURL(
-                                    ) . '" />';
+                        if ($assetIds) {
+                            if (!is_array($assetIds)) {
+                                $assetIds = [$assetIds];
                             }
+
+                            $content .= '<div class="file-previews">';
+
+                            foreach ($assetIds as $assetId) {
+                                /** @var File $asset */
+                                $asset = ee('Model')
+                                    ->get('File')
+                                    ->filter('file_id', $assetId)
+                                    ->first();
+
+                                $content .= '<div>';
+                                $content .= '<div style="margin: 5px 0;">' . $asset->file_name . '</div>';
+                                $content .= '<div class="toolbar-wrap"><ul class="toolbar">';
+                                $content .= '<li class="edit"><a href="' . ee(
+                                        'CP/URL',
+                                        'cp/files/file/edit/' . $assetId
+                                    )->compile() . '"></a></li>';
+                                $content .= '<li class="download"><a href="' . ee(
+                                        'CP/URL',
+                                        'files/file/download/' . $assetId
+                                    )->compile() . '"></a></li>';
+                                $content .= '</ul></div>';
+
+                                if ($asset->isImage()) {
+                                    $content .= '<img style="border: 1px solid black; padding: 1px;" width="100" src="'
+                                        . $asset->getAbsoluteURL() . '" />';
+                                }
+                                $content .= '</div>';
+                            }
+
+                            $content .= '</div>';
                         }
 
                         $fields = [

@@ -13,16 +13,19 @@ namespace Solspace\Addons\FreeformNext\Library\Composer\Components\Fields;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\FileUploadInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\SingleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits\FileUploadTrait;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits\MultipleValueTrait;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits\SingleValueTrait;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FieldExceptions\FileUploadException;
 
-class FileUploadField extends AbstractField implements SingleValueInterface, FileUploadInterface
+class FileUploadField extends AbstractField implements MultipleValueInterface, FileUploadInterface
 {
     const DEFAULT_MAX_FILESIZE_KB = 2048;
+    const DEFAULT_FILE_COUNT      = 1;
 
-    use SingleValueTrait;
+    use MultipleValueTrait;
     use FileUploadTrait;
 
     /** @var array */
@@ -30,6 +33,9 @@ class FileUploadField extends AbstractField implements SingleValueInterface, Fil
 
     /** @var int */
     protected $maxFileSizeKB;
+
+    /** @var int */
+    protected $fileCount;
 
     /**
      * Cache for handles meant for preventing duplicate file uploads when calling ::validate() and ::uploadFile()
@@ -73,6 +79,16 @@ class FileUploadField extends AbstractField implements SingleValueInterface, Fil
     }
 
     /**
+     * @return int
+     */
+    public function getFileCount()
+    {
+        $fileCount = (int) $this->fileCount;
+
+        return $fileCount < 1 ? 1 : $fileCount;
+    }
+
+    /**
      * @return string
      */
     public function getInputHtml()
@@ -80,10 +96,11 @@ class FileUploadField extends AbstractField implements SingleValueInterface, Fil
         $attributes = $this->getCustomAttributes();
 
         return '<input '
-            . $this->getAttributeString('name', $this->getHandle())
+            . $this->getAttributeString('name', $this->getHandle() . '[]')
             . $this->getAttributeString('type', $this->getType())
             . $this->getAttributeString('id', $this->getIdAttribute())
             . $this->getAttributeString('class', $attributes->getClass())
+            . $this->getAttributeString('multiple', $this->getFileCount() > 1)
             . $this->getRequiredAttribute()
             . $attributes->getInputAttributesAsString()
             . '/>';
@@ -100,39 +117,50 @@ class FileUploadField extends AbstractField implements SingleValueInterface, Fil
 
         if (!array_key_exists($this->handle, self::$filesUploaded)) {
             if (isset($_FILES[$this->handle]) && !empty($_FILES[$this->handle]['name'])) {
-                $extension       = pathinfo($_FILES[$this->handle]['name'], PATHINFO_EXTENSION);
-                $validExtensions = $this->getValidExtensions();
+                $fileCount = count($_FILES[$this->handle]['name']);
 
-                if (empty($_FILES[$this->handle]['tmp_name'])) {
-                    $errorCode = $_FILES[$this->handle]['error'];
+                if ($fileCount > $this->getFileCount()) {
+                    $uploadErrors[] = $this->translate(
+                        'Tried uploading {count} files. Maximum {max} files allowed.',
+                        ['max' => $this->getFileCount(), 'count' => $fileCount]
+                    );
+                }
 
-                    switch ($errorCode) {
-                        case UPLOAD_ERR_INI_SIZE:
-                        case UPLOAD_ERR_FORM_SIZE:
-                            $uploadErrors[] = $this->translate('File size too large');
-                            break;
+                foreach ($_FILES[$this->handle]['name'] as $index => $name) {
+                    $extension       = pathinfo($name, PATHINFO_EXTENSION);
+                    $validExtensions = $this->getValidExtensions();
 
-                        case UPLOAD_ERR_PARTIAL:
-                            $uploadErrors[] = $this->translate('The file was only partially uploaded');
-                            break;
+                    if (empty($_FILES[$this->handle]['tmp_name'][$index])) {
+                        $errorCode = $_FILES[$this->handle]['error'][$index];
+
+                        switch ($errorCode) {
+                            case UPLOAD_ERR_INI_SIZE:
+                            case UPLOAD_ERR_FORM_SIZE:
+                                $uploadErrors[] = $this->translate('File size too large');
+                                break;
+
+                            case UPLOAD_ERR_PARTIAL:
+                                $uploadErrors[] = $this->translate('The file was only partially uploaded');
+                                break;
+                        }
+                        $uploadErrors[] = $this->translate('Could not upload file');
                     }
-                    $uploadErrors[] = $this->translate('Could not upload file');
-                }
 
-                // Check for the correct file extension
-                if (!in_array(strtolower($extension), $validExtensions)) {
-                    $uploadErrors[] = $this->translate(
-                        '"{extension}" is not an allowed file extension',
-                        ['extension' => $extension]
-                    );
-                }
+                    // Check for the correct file extension
+                    if (!in_array(strtolower($extension), $validExtensions)) {
+                        $uploadErrors[] = $this->translate(
+                            '"{extension}" is not an allowed file extension',
+                            ['extension' => $extension]
+                        );
+                    }
 
-                $fileSizeKB = ceil($_FILES[$this->handle]['size'] / 1024);
-                if ($fileSizeKB > $this->getMaxFileSizeKB()) {
-                    $uploadErrors[] = $this->translate(
-                        'You tried uploading {fileSize}KB, but the maximum file upload size is {maxFileSize}KB',
-                        ['fileSize' => $fileSizeKB, 'maxFileSize' => $this->getMaxFileSizeKB()]
-                    );
+                    $fileSizeKB = ceil($_FILES[$this->handle]['size'][$index] / 1024);
+                    if ($fileSizeKB > $this->getMaxFileSizeKB()) {
+                        $uploadErrors[] = $this->translate(
+                            'You tried uploading {fileSize}KB, but the maximum file upload size is {maxFileSize}KB',
+                            ['fileSize' => $fileSizeKB, 'maxFileSize' => $this->getMaxFileSizeKB()]
+                        );
+                    }
                 }
             } else if ($this->isRequired()) {
                 $uploadErrors[] = $this->translate('This field is required');
@@ -152,7 +180,7 @@ class FileUploadField extends AbstractField implements SingleValueInterface, Fil
     /**
      * Attempt to upload the file to its respective location
      *
-     * @return int - asset ID
+     * @return int[] - asset ID
      * @throws FileUploadException
      */
     public function uploadFile()
@@ -168,17 +196,17 @@ class FileUploadField extends AbstractField implements SingleValueInterface, Fil
 
             $response = $this->getForm()->getFileUploadHandler()->uploadFile($this);
 
-            self::$filesUploaded[$this->handle] = null;
+            self::$filesUploaded[$this->handle]       = null;
             self::$filesUploadedErrors[$this->handle] = null;
 
             if ($response) {
                 $errors = $this->getErrors() ?: [];
 
-                if ($response->getAssetId()) {
-                    $this->value = $response->getAssetId();
-                    self::$filesUploaded[$this->handle] = $response->getAssetId();
+                if ($response->getAssetIds()) {
+                    $this->values                       = $response->getAssetIds();
+                    self::$filesUploaded[$this->handle] = $response->getAssetIds();
 
-                    return $this->value;
+                    return $this->values;
                 }
 
                 if ($response->getErrors()) {

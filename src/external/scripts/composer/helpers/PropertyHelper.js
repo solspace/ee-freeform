@@ -33,6 +33,7 @@ const validProperties = [
   "mapping",
   "fileKinds",
   "maxFileSizeKB",
+  "fileCount",
   "rows",
   "showCustomValues",
   "source",

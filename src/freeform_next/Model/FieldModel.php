@@ -181,6 +181,7 @@ class FieldModel extends Model implements \JsonSerializable
         if ($this->type === FieldInterface::TYPE_FILE) {
             $returnArray['assetSourceId'] = (int) $this->assetSourceId ?: 0;
             $returnArray['maxFileSizeKB'] = (int) $this->maxFileSizeKB ?: FileUploadField::DEFAULT_MAX_FILESIZE_KB;
+            $returnArray['fileCount']     = (int) $this->getAdditionalProperty('fileCount', FileUploadField::DEFAULT_FILE_COUNT);
             $returnArray['fileKinds']     = $this->fileKinds ?: ['image', 'pdf'];
         }
 
@@ -375,6 +376,7 @@ class FieldModel extends Model implements \JsonSerializable
         $columnType = 'VARCHAR(255)';
 
         switch ($this->type) {
+            case FieldInterface::TYPE_FILE:
             case FieldInterface::TYPE_CHECKBOX_GROUP:
             case FieldInterface::TYPE_EMAIL:
             case FieldInterface::TYPE_TEXTAREA:
@@ -392,6 +394,7 @@ class FieldModel extends Model implements \JsonSerializable
     public function isSerializable()
     {
         switch ($this->type) {
+            case FieldInterface::TYPE_FILE:
             case FieldInterface::TYPE_CHECKBOX_GROUP:
             case FieldInterface::TYPE_DYNAMIC_RECIPIENTS:
             case FieldInterface::TYPE_EMAIL:
@@ -536,6 +539,7 @@ class FieldModel extends Model implements \JsonSerializable
             'minValue'            => 'int',
             'maxValue'            => 'int',
             'decimalCount'        => 'int',
+            'fileCount'           => 'int',
         ];
 
         if (isset($customTypes[$name])) {

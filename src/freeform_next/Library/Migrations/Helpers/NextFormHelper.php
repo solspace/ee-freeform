@@ -372,6 +372,7 @@ class NextFormHelper
 
     /**
      * @param FieldModel $nextFormField
+     * @param bool       $required
      *
      * @return array
      */

@@ -49,6 +49,7 @@ export default class File extends BasePropertyEditor {
       required: PropTypes.bool,
       fileKinds: PropTypes.array,
       maxFileSizeKB: PropTypes.number,
+      fileCount: PropTypes.number,
     }).isRequired,
   };
 
@@ -61,7 +62,7 @@ export default class File extends BasePropertyEditor {
   render() {
     const {assetSources} = this.props;
 
-    const {properties: {type, label, handle, required, assetSourceId, fileKinds, maxFileSizeKB, instructions}} = this.context;
+    const {properties: {type, label, handle, required, assetSourceId, fileKinds, maxFileSizeKB, fileCount, instructions}} = this.context;
 
     const assetSourceList = [];
     assetSources.map((source) => {
@@ -117,6 +118,16 @@ export default class File extends BasePropertyEditor {
           isNumeric={true}
           emptyOption="Select an Upload Directory..."
           options={assetSourceList}
+        />
+
+        <TextProperty
+          label="File Count"
+          instructions="Specify the maximum uploadable file count"
+          name="fileCount"
+          placeholder="1"
+          value={fileCount}
+          onChangeHandler={this.update}
+          isNumeric={true}
         />
 
         <TextProperty

@@ -40,7 +40,7 @@ class FilesService implements FileUploadHandlerInterface
                 'max_size'      => (int) $data['max_size'] * 1024,
                 'max_width'     => $data['max_width'],
                 'max_height'    => $data['max_height'],
-                'allowed_types' => $data['allowed_types'] === 'all' ? '*' : $data['allowed_types'],
+                'allowed_types' => '*',
                 'upload_path'   => $data['server_path'],
             ]
         );
@@ -49,30 +49,53 @@ class FilesService implements FileUploadHandlerInterface
             return new FileUploadResponse(null, 'Could not upload file');
         }
 
-        if (!ee()->upload->do_upload($field->getHandle())) {
-            return new FileUploadResponse(null, ee()->upload->error_msg);
+        $assetIds = $errors = [];
+        foreach ($_FILES[$field->getHandle()]['name'] as $index => $name) {
+            $type    = $_FILES[$field->getHandle()]['type'][$index];
+            $tmpName = $_FILES[$field->getHandle()]['tmp_name'][$index];
+            $error   = $_FILES[$field->getHandle()]['error'][$index];
+            $size    = $_FILES[$field->getHandle()]['size'][$index];
+
+            $identificator = sha1(uniqid(time() . rand(1, 9999), true) . $tmpName);
+
+            $_FILES[$identificator]['name']     = $name;
+            $_FILES[$identificator]['type']     = $type;
+            $_FILES[$identificator]['tmp_name'] = $tmpName;
+            $_FILES[$identificator]['error']    = $error;
+            $_FILES[$identificator]['size']     = $size;
+
+            if (!ee()->upload->do_upload($identificator)) {
+                $errors = array_merge($errors, ee()->upload->error_msg);
+
+                continue;
+            }
+
+            $uploadData = ee()->upload->data();
+
+            // Insert the file metadata into the database
+            ee()->load->model('file_model');
+            $assetId = ee()->file_model->save_file(
+                [
+                    'upload_location_id' => $field->getAssetSourceId(),
+                    'title'              => $uploadData['file_name'],
+                    'file_name'          => $uploadData['file_name'],
+                    'file_size'          => $uploadData['file_size'] * 1024,
+                    'mime_type'          => $uploadData['file_type'],
+                    'file_hw_original'   => $uploadData['image_width'] . ' ' . $uploadData['image_height'],
+                ]
+            );
+
+            $assetIds[] = $assetId;
+            $this->markAssetUnfinalized($assetId);
         }
 
-        $uploadData = ee()->upload->data();
+        if (!empty($errors)) {
+            return new FileUploadResponse(null, $errors);
+        }
 
-        // Insert the file metadata into the database
-        ee()->load->model('file_model');
-        $fileId = ee()->file_model->save_file(
-            [
-                'upload_location_id' => $field->getAssetSourceId(),
-                'title'              => $uploadData['file_name'],
-                'file_name'          => $uploadData['file_name'],
-                'file_size'          => $uploadData['file_size'] * 1024,
-                'mime_type'          => $uploadData['file_type'],
-                'file_hw_original'   => $uploadData['image_width'] . ' ' . $uploadData['image_height'],
-            ]
-        );
+        ExtensionHelper::call(ExtensionHelper::HOOK_FILE_AFTER_UPLOAD, $field, $assetIds);
 
-        $this->markAssetUnfinalized($fileId);
-
-        ExtensionHelper::call(ExtensionHelper::HOOK_FILE_AFTER_UPLOAD, $field, $fileId);
-
-        return new FileUploadResponse($fileId);
+        return new FileUploadResponse($assetIds);
     }
 
     /**
@@ -89,7 +112,7 @@ class FilesService implements FileUploadHandlerInterface
             ->insert(
                 'freeform_next_unfinalized_files',
                 [
-                    'assetId' => $assetId,
+                    'assetId'     => $assetId,
                     'dateCreated' => $date->format('Y-m-d H:i:s'),
                     'dateUpdated' => $date->format('Y-m-d H:i:s'),
                 ]

@@ -13,8 +13,8 @@ namespace Solspace\Addons\FreeformNext\Library\FileUploads;
 
 class FileUploadResponse
 {
-    /** @var int */
-    private $assetId;
+    /** @var int[] */
+    private $assetIds;
 
     /** @var array */
     private $errors;
@@ -22,21 +22,21 @@ class FileUploadResponse
     /**
      * FileUploadResponse constructor.
      *
-     * @param null  $assetId
+     * @param int[] $assetIds
      * @param array $errors
      */
-    public function __construct($assetId = null, $errors = [])
+    public function __construct(array $assetIds = null, array $errors = [])
     {
-        $this->assetId = $assetId;
-        $this->errors  = $errors;
+        $this->assetIds = $assetIds ?: [];
+        $this->errors   = $errors;
     }
 
     /**
-     * @return int
+     * @return int[]
      */
-    public function getAssetId()
+    public function getAssetIds()
     {
-        return $this->assetId;
+        return $this->assetIds;
     }
 
     /**
