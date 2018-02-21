@@ -1,6 +1,6 @@
 # Introduction to Freeform
 
-This page provides you with an overview of how Freeform works without going into to much detail about each feature so it's easy to digest. You can of course click the links to learn more about each feature.
+This page provides you with an overview of how Freeform works without going into to much detail about each feature so it's easy to digest. You can of course click the links to learn more about each feature. Be sure to check out the [Getting Started](getting-started.md) documentation after reading this page.
 
 Freeform centers itself around the idea of letting admins and/or clients enjoy the experience of building and managing simple or complex forms in an intuitive interface that lets you see a live preview of the forms you're building. We call this [Composer](forms-composer.md), where almost everything is at your fingertips as it aims to stay out of your way and let you do as much as possible without having to move around to other areas in the control panel. At the same time, Freeform is very powerful and flexible, so there is also a wide variety of other features, settings and options.
 
