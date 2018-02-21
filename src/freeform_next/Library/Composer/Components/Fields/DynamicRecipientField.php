@@ -89,12 +89,25 @@ class DynamicRecipientField extends SelectField implements RecipientInterface, O
         if (!is_null($value)) {
             if (is_numeric($value) && array_key_exists($value, $options)) {
                 $option = $options[$value];
+                $emails = explode(',', $option->getValue());
 
-                return [$option->getLabel() => $option->getValue()];
+                $batch = [];
+                foreach ($emails as $email) {
+                    $batch[] = trim($email);
+                }
+
+                return $batch;
             } else {
                 foreach ($options as $option) {
                     if ($option->getValue() === $value) {
-                        return [$option->getLabel() => $this->getValue()];
+                        $emails = explode(',', $this->getValue());
+
+                        $batch = [];
+                        foreach ($emails as $email) {
+                            $batch[] = trim($email);
+                        }
+
+                        return $batch;
                     }
                 }
             }

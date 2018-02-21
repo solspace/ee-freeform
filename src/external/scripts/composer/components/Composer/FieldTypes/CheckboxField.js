@@ -8,13 +8,14 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React from "react";
-import PropTypes from "prop-types";
-import {CHECKBOX} from "../../../constants/FieldTypes";
-import HtmlInput from "./HtmlInput";
-import Checkbox from "./Components/Checkbox";
+import React        from "react";
+import PropTypes    from "prop-types";
+import { CHECKBOX } from "../../../constants/FieldTypes";
+import HtmlInput    from "./HtmlInput";
+import Checkbox     from "./Components/Checkbox";
 import Instructions from "./Components/Instructions";
-import {connect} from "react-redux";
+import { connect }  from "react-redux";
+import Badge        from './Components/Badge'
 
 @connect(
   (state) => ({
@@ -47,10 +48,18 @@ export default class CheckboxField extends HtmlInput {
     return CHECKBOX;
   }
 
-  render() {
-    const {properties} = this.props;
+  getBadges() {
+    const { value } = this.props.properties;
 
-    const {label, required, checked, instructions} = properties;
+    if (!value) {
+      return <Badge label="No Value set" type={Badge.WARNING}/>;
+    }
+  }
+
+  render() {
+    const { properties } = this.props;
+
+    const { label, required, checked, instructions } = properties;
 
     return (
       <div className={this.prepareWrapperClass()}>
@@ -60,7 +69,9 @@ export default class CheckboxField extends HtmlInput {
           isChecked={!!checked}
           properties={properties}
           isRequired={required}
-        />
+        >
+          {this.getBadges()}
+        </Checkbox>
       </div>
     );
   }
