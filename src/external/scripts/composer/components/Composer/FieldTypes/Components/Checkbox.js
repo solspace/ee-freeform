@@ -8,10 +8,10 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {CHECKBOX} from "../../../../constants/FieldTypes";
-import HtmlInput from "../HtmlInput";
+import React        from "react";
+import PropTypes    from "prop-types";
+import { CHECKBOX } from "../../../../constants/FieldTypes";
+import HtmlInput    from "../HtmlInput";
 
 export default class Checkbox extends HtmlInput {
   static propTypes = {
@@ -26,7 +26,7 @@ export default class Checkbox extends HtmlInput {
   }
 
   render() {
-    const {label, isChecked, value, isRequired} = this.props;
+    const { label, isChecked, value, isRequired } = this.props;
 
     const labelClass = ["composer-field-checkbox-single"];
     if (isRequired) {
@@ -45,8 +45,9 @@ export default class Checkbox extends HtmlInput {
             checked={isChecked}
             {...this.getCleanProperties()}
           />
-          <span dangerouslySetInnerHTML={{__html: label}} />
-          {isRequired ? <span className="required" /> : ""}
+          <span dangerouslySetInnerHTML={{ __html: label }}/>
+          {isRequired ? <span className="required"/> : ""}
+          {this.props.children}
         </label>
       </div>
     );

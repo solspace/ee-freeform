@@ -6,8 +6,9 @@
 	* [Demo Templates](demo-templates.md)
 	* [Common Issues](common-issues.md)
 
-* ### Getting Started
+* ### Overview
 	* [Introduction](introduction.md)
+	* [Getting Started](getting-started.md)
 	* [Fields & Field Types](fields-field-types.md)
 	* [Email Notifications](email-notifications.md)
 	* [Forms & Composer](forms-composer.md)
