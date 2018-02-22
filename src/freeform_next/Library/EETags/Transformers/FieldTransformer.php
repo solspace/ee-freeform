@@ -42,7 +42,11 @@ class FieldTransformer
 
         if (!is_string($value)) {
             if (is_array($value)) {
-                $value = implode(', ', $value);
+                if ($field instanceof FileUploadField) {
+                    $value = implode('|', $value);
+                } else {
+                    $value = implode(', ', $value);
+                }
             }
 
             $value = (string) $value;
