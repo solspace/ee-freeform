@@ -100,7 +100,7 @@ class FileUploadField extends AbstractField implements MultipleValueInterface, F
             . $this->getAttributeString('type', $this->getType())
             . $this->getAttributeString('id', $this->getIdAttribute())
             . $this->getAttributeString('class', $attributes->getClass())
-            . $this->getAttributeString('multiple', $this->getFileCount() > 1)
+            . $this->getParameterString('multiple', $this->getFileCount() > 1)
             . $this->getRequiredAttribute()
             . $attributes->getInputAttributesAsString()
             . '/>';

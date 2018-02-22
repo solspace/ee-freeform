@@ -568,7 +568,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
     protected function getAttributeString($name, $value, $escapeValue = true)
     {
         $value = trim($value);
-        if (!empty($value)) {
+        if ('' !== $value) {
             return sprintf(
                 ' %s="%s"',
                 $name,
@@ -577,6 +577,19 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
         }
 
         return '';
+    }
+
+    /**
+     * Outputs ' $name' if $enabled is true
+     *
+     * @param string $name
+     * @param bool   $enabled
+     *
+     * @return string
+     */
+    protected function getParameterString($name, $enabled)
+    {
+        return $enabled ? sprintf(' %s', $name) : '';
     }
 
     /**
