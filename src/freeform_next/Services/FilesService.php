@@ -51,6 +51,10 @@ class FilesService implements FileUploadHandlerInterface
 
         $assetIds = $errors = [];
         foreach ($_FILES[$field->getHandle()]['name'] as $index => $name) {
+            if (empty($name)) {
+                continue;
+            }
+
             $type    = $_FILES[$field->getHandle()]['type'][$index];
             $tmpName = $_FILES[$field->getHandle()]['tmp_name'][$index];
             $error   = $_FILES[$field->getHandle()]['error'][$index];

@@ -65,6 +65,7 @@ class MailerService implements MailHandlerInterface
             ee()->load->library('email');
             ee()->load->helper('text');
 
+            ee()->email->clear(true);
             ee()->email->wordwrap = true;
             ee()->email->mailtype = 'html';
             ee()->email->from($fromEmail, $fromName);
@@ -76,18 +77,20 @@ class MailerService implements MailHandlerInterface
             if ($notification->includeAttachments) {
                 foreach ($fields as $field) {
                     if ($field instanceof FileUploadInterface) {
-                        $assetId = $field->getValue();
+                        $assetIds = $field->getValue();
 
-                        if ($assetId) {
-                            $file = ee('Model')
-                                ->get('File')
-                                ->filter('file_id', $assetId)
-                                ->first();
+                        if ($assetIds) {
+                            foreach ($assetIds as $assetId) {
+                                $file = ee('Model')
+                                    ->get('File')
+                                    ->filter('file_id', $assetId)
+                                    ->first();
 
-                            if ($file) {
-                                $filePath = $file->getAbsolutePath();
+                                if ($file) {
+                                    $filePath = $file->getAbsolutePath();
 
-                                ee()->email->attach($filePath);
+                                    ee()->email->attach($filePath);
+                                }
                             }
                         }
                     }

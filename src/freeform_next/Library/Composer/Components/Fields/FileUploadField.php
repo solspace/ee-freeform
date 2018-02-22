@@ -116,7 +116,8 @@ class FileUploadField extends AbstractField implements MultipleValueInterface, F
         $uploadErrors = [];
 
         if (!array_key_exists($this->handle, self::$filesUploaded)) {
-            if (isset($_FILES[$this->handle]) && !empty($_FILES[$this->handle]['name'])) {
+            $exists = isset($_FILES[$this->handle]) && !empty($_FILES[$this->handle]['name']);
+            if ($exists && $_FILES[$this->handle]['name'][0]) {
                 $fileCount = count($_FILES[$this->handle]['name']);
 
                 if ($fileCount > $this->getFileCount()) {
@@ -202,7 +203,7 @@ class FileUploadField extends AbstractField implements MultipleValueInterface, F
             if ($response) {
                 $errors = $this->getErrors() ?: [];
 
-                if ($response->getAssetIds()) {
+                if ($response->getAssetIds() || empty($response->getErrors())) {
                     $this->values                       = $response->getAssetIds();
                     self::$filesUploaded[$this->handle] = $response->getAssetIds();
 
