@@ -39,7 +39,7 @@ class SubmissionTransformer
         $attachmentCount = 0;
         foreach ($this->getFieldList($model) as $field) {
             if ($field instanceof FileUploadField && count($model->getFieldValue($field->getHandle()))) {
-                $attachmentCount++;
+                $attachmentCount += count($model->getFieldValue($field->getHandle()));
             }
         }
 

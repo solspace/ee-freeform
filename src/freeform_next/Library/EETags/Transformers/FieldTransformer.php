@@ -5,6 +5,7 @@ namespace Solspace\Addons\FreeformNext\Library\EETags\Transformers;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecipientField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\OptionsInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\PlaceholderInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SubmitField;
@@ -32,6 +33,13 @@ class FieldTransformer
         $columnIndex = null,
         $columnCount = null
     ) {
+        $files = [];
+        if ($field instanceof FileUploadField && is_array($value)) {
+            foreach ($value as $fileId) {
+                $files[] = ['file_id' => $fileId];
+            }
+        }
+
         if (!is_string($value)) {
             if (is_array($value)) {
                 $value = implode(', ', $value);
@@ -66,6 +74,7 @@ class FieldTransformer
             $prefix . 'position'             => $field instanceof SubmitField ? $field->getPosition() : '',
             $prefix . 'marker:open'          => '##FFN:' . $field->getHash() . ':FFN##',
             $prefix . 'options'              => $this->getOptions($field),
+            $prefix . 'files'                => $files,
             $prefix . 'show_as_radio'        => $field instanceof DynamicRecipientField
                 ? $field->isShowAsRadio() : false,
             $prefix . 'checked'              => $field instanceof CheckboxField ? $field->isChecked() : false,
