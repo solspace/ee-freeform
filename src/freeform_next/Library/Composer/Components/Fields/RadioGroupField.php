@@ -42,7 +42,7 @@ class RadioGroupField extends AbstractField implements SingleValueInterface, Opt
         $attributes = $this->getCustomAttributes();
         $output     = '';
 
-        foreach ($this->options as $option) {
+        foreach ($this->options as $index => $option) {
             $isSelected = $option->getValue() === $this->getValue();
 
             $output .= '<label>';
@@ -50,8 +50,8 @@ class RadioGroupField extends AbstractField implements SingleValueInterface, Opt
             $output .= '<input '
                 . $this->getAttributeString("name", $this->getHandle())
                 . $this->getAttributeString("type", "radio")
-                . $this->getAttributeString("id", $this->getIdAttribute())
                 . $this->getAttributeString("class", $attributes->getClass())
+                . $this->getAttributeString("id", $this->getIdAttribute($index + 1))
                 . $this->getAttributeString("value", $option->getValue(), false)
                 . $this->getParameterString('checked', $isSelected)
                 . $attributes->getInputAttributesAsString()
