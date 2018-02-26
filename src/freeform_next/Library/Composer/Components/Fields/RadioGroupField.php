@@ -50,7 +50,6 @@ class RadioGroupField extends AbstractField implements SingleValueInterface, Opt
             $output .= '<input '
                 . $this->getAttributeString("name", $this->getHandle())
                 . $this->getAttributeString("type", "radio")
-                . $this->getAttributeString("id", $this->getIdAttribute())
                 . $this->getAttributeString("class", $attributes->getClass())
                 . $this->getAttributeString("value", $option->getValue(), false)
                 . $attributes->getInputAttributesAsString()
