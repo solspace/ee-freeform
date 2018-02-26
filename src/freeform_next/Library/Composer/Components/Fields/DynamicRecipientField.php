@@ -169,13 +169,13 @@ class DynamicRecipientField extends SelectField implements RecipientInterface, O
         $attributes = $this->getCustomAttributes();
         $output     = '';
 
-        foreach ($this->options as $option) {
+        foreach ($this->options as $index => $option) {
             $output .= '<label>';
 
             $output .= '<input '
                 . $this->getAttributeString("name", $this->getHandle())
                 . $this->getAttributeString("type", "radio")
-                . $this->getAttributeString("id", $this->getIdAttribute())
+                . $this->getAttributeString("id", $this->getIdAttribute() . '-' . ($index + 1))
                 . $this->getAttributeString("class", $attributes->getClass())
                 . $this->getAttributeString("value", $this->getValue(), false)
                 . $attributes->getInputAttributesAsString()
