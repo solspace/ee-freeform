@@ -79,7 +79,9 @@ The following field types are available ([see below for additional Pro Field Typ
 		* Can be marked as required.
 		* Can specify which (if any) option to be selected by default.
 * **File Upload** (`file`) <a href="#fields-file-upload" id="fields-file-upload" class="docs-anchor">#</a>
-	* A single file upload field, using [EE File Uploads](https://docs.expressionengine.com/v3/add-ons/file/file_tag.html).
+	* A file upload field, using [EE File Uploads](https://docs.expressionengine.com/v3/add-ons/file/file_tag.html).
+	* Can allow a single file or multiple files (applies `multiple` attribute to the single file upload input) to be uploaded.
+		* Specify a number larger than `1` in the **File Count** setting to allow multiple files to be uploaded at the same time.
 		* Must have an Upload Directory Preference where the file will be uploaded to.
 		* Be sure that the EE Upload Directory's *Allowed file types?* preference is set to **All file types**, even if you're only using images.
 		* Define maximum file size (in KB). Default is 2048 KB (2MB). Is subject to:
@@ -218,9 +220,6 @@ The following extra field types are available with Freeform Pro:
 		* Can contain default text and/or placeholder.
 
 [![Website fieldtype](images/cp_field-website.png)](images/cp_field-website.png)
-
-
-## Field Specific Properties <a href="#field-specific-props" id="field-specific-props" class="docs-anchor">#</a>
 
 
 ## Field Specific Properties <a href="#field-specific-properties" id="field-specific-properties" class="docs-anchor">#</a>
