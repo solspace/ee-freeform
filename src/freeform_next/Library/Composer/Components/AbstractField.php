@@ -420,15 +420,23 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
      * Either gets the ID attribute specified in custom attributes
      * or generates a new one: 'form-input-{handle}'
      *
+     * @param string $suffix
+     *
      * @return string
      */
-    public function getIdAttribute()
+    public function getIdAttribute($suffix = null)
     {
         if ($this->getCustomAttributes()->getId()) {
-            return $this->getCustomAttributes()->getId();
+            $attribute = $this->getCustomAttributes()->getId();
+        } else {
+            $attribute = sprintf('form-input-%s', $this->getHandle());
         }
 
-        return sprintf('form-input-%s', $this->getHandle());
+        if ($attribute && $suffix) {
+            $attribute .= '-' . $suffix;
+        }
+
+        return $attribute;
     }
 
     /**
