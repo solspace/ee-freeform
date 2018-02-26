@@ -547,7 +547,7 @@ class FieldController extends Controller
                     'fields' => [
                         'fileCount' => [
                             'type'  => 'text',
-                            'value' => $model->getProperty('fileCount'),
+                            'value' => $model->getAdditionalProperty('fileCount'),
                         ],
                     ],
                 ],
