@@ -11,7 +11,7 @@ Freeform allows you to send email notifications upon submittal of a form. They a
 
 ## Assigning Notifications to Fields/Forms <a href="#assigning-notifications" id="assigning-notifications" class="docs-anchor">#</a>
 
-Email notifications can be sent to email address(es) specified for admins (in the **Notify** section of Composer (right column) as well as email addresses specified/selected in the [Email](fields-field-types.md#fields-email) and [Dynamic Recipients](fields-field-types.md#fields-dynamic-recipients) field types. To assign an email notification template to these fields, click on the field in Composer, and then in the Property Editor (right column), select a notification template you want used to generate an email notification for the entered/selected email address. Email notifications can even be done [dynamically at template level](form.md#param-dynamicnotification).
+Email notifications can be sent to email address(es) specified for admins (in the **Notify** section of Composer (right column) as well as email addresses specified/selected in the [Email](fields-field-types.md#fields-email) and [Dynamic Recipients](fields-field-types.md#fields-dynamic-recipients) field types. To assign an email notification template to these fields, click on the field in Composer, and then in the Property Editor (right column), select a notification template you want used to generate an email notification for the entered/selected email address. Email notifications can even be done [dynamically at template level](form.md#param-dynamicnotificationrecipients).
 
 
 ## Overview of Email Notification Template Options <a href="#notification-template-options" id="notification-template-options" class="docs-anchor">#</a>

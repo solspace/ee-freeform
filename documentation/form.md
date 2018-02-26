@@ -129,12 +129,12 @@ If you're wanting to simply render a complete form based on Composer layout and 
 				```
 	* Also available are automated rendering options for manually constructed forms:
 		* `{field:field_name:render}` - renders complete field (label, input, etc). The following override parameters are available:
-			* `id`
-			* `class`
-			* `label_class`
-			* `error_class`
-			* `instructions_class`
-			* `instructions_below_field="yes"`
+			* `id` - overrides ID for input(s)
+			* `class` - overrides class for input(s)
+			* `label_class` - overrides class for label
+			* `error_class` - adds class to `ul` generated for error(s)
+			* `instructions_class` - adds class to `div` generated for instructions
+			* `instructions_below_field="yes"` - loads instructions below input rather than above
 			* `input_attributes`
 				* Attributes to be added to the input field, e.g. `input_attributes:readonly="true"`, `input_attributes:data-field-id="test"`
 			* `override_value`
@@ -142,7 +142,7 @@ If you're wanting to simply render a complete form based on Composer layout and 
 		* `{field:field_name:render_label}` - renders the complete label. The following override parameters are available:
 			* `label_class`
 		* `{field:field_name:render_input}` - renders the complete input. The following override parameters are available:
-			* `input_class`
+			* `class`
 			* `input_attributes`
 				* Attributes to be added to the input field, e.g. `input_attributes:readonly="true"`, `input_attributes:data-field-id="test"`
 			* `override_value`

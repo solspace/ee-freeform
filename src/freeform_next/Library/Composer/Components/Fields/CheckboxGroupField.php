@@ -42,7 +42,7 @@ class CheckboxGroupField extends AbstractField implements MultipleValueInterface
         $attributes = $this->getCustomAttributes();
         $output     = '';
 
-        foreach ($this->options as $option) {
+        foreach ($this->options as $index => $option) {
             $isSelected = in_array($option->getValue(), $this->getValue());
 
             $output .= '<label>';
@@ -50,8 +50,8 @@ class CheckboxGroupField extends AbstractField implements MultipleValueInterface
             $output .= '<input '
                 . $this->getAttributeString("name", $this->getHandle() . "[]")
                 . $this->getAttributeString("type", "checkbox")
-                . $this->getAttributeString("id", $this->getIdAttribute())
                 . $this->getAttributeString("class", $attributes->getClass())
+                . $this->getAttributeString("id", $this->getIdAttribute($index + 1))
                 . $this->getAttributeString("value", $option->getValue(), false)
                 . $this->getParameterString('checked', $isSelected)
                 . $attributes->getInputAttributesAsString()
