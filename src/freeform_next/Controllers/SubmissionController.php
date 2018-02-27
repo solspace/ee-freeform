@@ -198,12 +198,14 @@ class SubmissionController extends Controller
                                         ->filter('file_id', $assetId)
                                         ->first();
 
-                                    $content .= '<div class="' . ($asset->isImage() ? 'has-img' : '') . '">';
-                                    if ($asset->isImage()) {
-                                        $content .= '<img src="' . $asset->getAbsoluteURL() . '" />';
+                                    if ($asset) {
+                                        $content .= '<div class="' . ($asset->isImage() ? 'has-img' : '') . '">';
+                                        if ($asset->isImage()) {
+                                            $content .= '<img src="' . $asset->getAbsoluteURL() . '" />';
+                                        }
+                                        $content .= '<div>' . $asset->file_name . '</div>';
+                                        $content .= '</div>';
                                     }
-                                    $content .= '<div>' . $asset->file_name . '</div>';
-                                    $content .= '</div>';
                                 }
 
                                 $content .= '</div>';
