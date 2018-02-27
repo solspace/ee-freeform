@@ -81,7 +81,7 @@ The following example assumes you're including necessary [Bootstrap JS and CSS](
 				{field:render_instructions instructions_class="help-block"}
 				{field:render_errors error_class="help-block"}
 
-			{if:elseif field:type == 'radio_group' OR (field:type == 'dynamic_recipients' AND field:show_as_radio)}
+			{if:elseif field:type == 'radio_group'}
 
 				{field:render_label label_class="{if field:required}required{/if}"}
 
@@ -98,6 +98,24 @@ The following example assumes you're including necessary [Bootstrap JS and CSS](
 					</div>
 				{/field:options}
 
+				{field:render_instructions instructions_class="help-block"}
+				{field:render_errors error_class="help-block"}
+
+			{if:elseif field:type == 'dynamic_recipients' AND field:show_as_radio}
+
+				{field:render_label label_class="{if field:required}required{/if}"}
+				{field:options}
+					<div class="radio">
+						<label>
+							<input type="radio"
+								   name="{field:handle}"
+								   value="{option:index}"
+								   {if option:checked}checked{/if}
+							/>
+							{option:label}
+						</label>
+					</div>
+				{/field:options}
 				{field:render_instructions instructions_class="help-block"}
 				{field:render_errors error_class="help-block"}
 
@@ -202,7 +220,7 @@ The following example assumes you're including necessary [Foundation JS and CSS]
 				{field:render_instructions instructions_class="help-block"}
 				{field:render_errors error_class="help-block"}
 
-			{if:elseif field:type == 'radio_group' OR (field:type == 'dynamic_recipients' AND field:show_as_radio)}
+			{if:elseif field:type == 'radio_group'}
 
 				{field:render_label label_class="{if field:required}required{/if}"}
 
@@ -219,6 +237,24 @@ The following example assumes you're including necessary [Foundation JS and CSS]
 					</div>
 				{/field:options}
 
+				{field:render_instructions instructions_class="help-block"}
+				{field:render_errors error_class="help-block"}
+
+			{if:elseif field:type == 'dynamic_recipients' AND field:show_as_radio}
+
+				{field:render_label label_class="{if field:required}required{/if}"}
+				{field:options}
+					<div class="radio">
+						<label>
+							<input type="radio"
+								   name="{field:handle}"
+								   value="{option:index}"
+								   {if option:checked}checked{/if}
+							/>
+							{option:label}
+						</label>
+					</div>
+				{/field:options}
 				{field:render_instructions instructions_class="help-block"}
 				{field:render_errors error_class="help-block"}
 
@@ -285,7 +321,7 @@ The following example assumes you're including necessary [Materialize JS and CSS
 						{field:render_instructions}
 						{field:render_errors}
 					</div>
-				{if:elseif field:type == 'radio_group' OR (field:type == 'dynamic_recipients' AND field:show_as_radio)}
+				{if:elseif field:type == 'radio_group'}
 
 					<div class="{form:column_class} s12 col m{column:grid_width}{if field:has_errors} has-error{/if}" style="margin-bottom: 20px;">
 						{field:render_label label_class="{if field:required}required{/if}"}
@@ -348,6 +384,25 @@ The following example assumes you're including necessary [Materialize JS and CSS
 							/>
 						</div>
 
+						{field:render_instructions}
+						{field:render_errors}
+					</div>
+
+				{if:elseif field:type == 'dynamic_recipients' AND field:show_as_radio}
+
+					<div class="{form:column_class} s12 col m{column:grid_width}{if field:has_errors} has-error{/if}" style="margin-bottom: 20px;">
+						{field:render_label label_class="{if field:required}required{/if}"}
+						{field:options}
+								<p>
+									<input type="radio"
+										   id="{form:hash}{field:handle}{option:index}"
+										   name="{field:handle}"
+										   value="{option:index}"
+										   {if option:checked}checked{/if}
+									/>
+									<label for="{form:hash}{field:handle}{option:value}">{option:label}</label>
+								</p>
+						{/field:options}
 						{field:render_instructions}
 						{field:render_errors}
 					</div>

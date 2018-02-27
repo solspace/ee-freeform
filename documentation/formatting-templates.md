@@ -107,7 +107,7 @@ A more complex example (accounting for checkbox groups, radios, etc) with Bootst
 				{field:render_instructions instructions_class="help-block"}
 				{field:render_errors error_class="help-block"}
 
-			{if:elseif field:type == 'radio_group' OR (field:type == 'dynamic_recipients' AND field:show_as_radio)}
+			{if:elseif field:type == 'radio_group'}
 
 				{field:render_label label_class="{if field:required}required{/if}"}
 
@@ -124,6 +124,24 @@ A more complex example (accounting for checkbox groups, radios, etc) with Bootst
 					</div>
 				{/field:options}
 
+				{field:render_instructions instructions_class="help-block"}
+				{field:render_errors error_class="help-block"}
+
+			{if:elseif field:type == 'dynamic_recipients' AND field:show_as_radio}
+
+				{field:render_label label_class="{if field:required}required{/if}"}
+				{field:options}
+					<div class="radio">
+						<label>
+							<input type="radio"
+								   name="{field:handle}"
+								   value="{option:index}"
+								   {if option:checked}checked{/if}
+							/>
+							{option:label}
+						</label>
+					</div>
+				{/field:options}
 				{field:render_instructions instructions_class="help-block"}
 				{field:render_errors error_class="help-block"}
 

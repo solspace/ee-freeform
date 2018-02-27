@@ -20,7 +20,7 @@ We figured it'd be helpful to place some of the large limitations of the migrati
 * Classic Freeform fields that are loaded with Channel Entry data will be migrated over as empty fields, as support for this does not yet exist in the new Freeform.
 * Manually built EE Template based forms will be loaded into a new Composer-based form for the new Freeform, as all forms are now setup inside Composer.
 * Composer Templates (formatting templates for Composer-based forms) in Classic will not be migrated over. The new Freeform has these as well, but the templating syntax is much more improved and very different.
-* File Upload fields with *multiple files* will only have the first file migrated to the new Freeform File Upload field, due to the current limitation of 1 file per field.
+* File Upload fields with *multiple files* will be converted to having a single file upload input that can select multiple files at once (rather than showing multiple inputs).
 * All associated *member data* in Classic will not be migrated over, as the new Freeform does not currently store any of that information.
 * Currently not compatible with Multiple Site Manager (MSM). The migration will only migrate Classic data from Site 1. A future version might allow MSM compatibility.
 * Freeform Express edition has a limitation of 1 form and up to 15 fields. If you're migrating from Classic to Express, you'll need to prepare your Classic site to only have 1 form and no more than 15 fields, or otherwise consider using Freeform Lite edition instead.
@@ -56,7 +56,7 @@ The following mapping of data will happen for each field during migration (*Clas
 		* *Load from Channel Field* -> [IGNORED]
 		* *Newline Delimited Textarea* -> **List of Labels**
 	* **File Upload** fields:
-		* *Allowed upload count* -> [IGNORED]
+		* *Allowed upload count* -> **File Count**
 		* *File Upload Location* -> **Upload Directory**
 		* *Allowed File Types** (string) -> **Allowed File Types** (checkboxes)
 		* *Overwrite On Edit* -> [IGNORED]
@@ -136,7 +136,7 @@ Submissions can be migrated from Classic as well. However, this is an optional s
 All field data will be mapped over. Some exceptions to this are:
 
 * Classic Freeform fields that are **loaded with Channel Entry data** will be migrated over as empty fields, as support for this does not yet exist in the new Freeform.
-* **File Upload** fields with *multiple files* will only have the first file migrated to the new Freeform **File Upload** field, due to the current limitation of 1 file per field.
+* **File Upload** fields with *multiple files* will be converted to having a single file upload input that can select multiple files at once (rather than showing multiple inputs).
 * All associated **member data** in Classic will not be migrated over, as the new Freeform does not currently store any of that information.
 * **Field Layouts** (submissions list page) in Classic will be ignored and need to be recreated.
 

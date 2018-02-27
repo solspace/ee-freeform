@@ -2,7 +2,9 @@
 
 ### 1.5.1 (February XX, 2018) <a href="#v1-5-1" id="v1-5-1" class="docs-anchor">#</a>
 * Updated File Upload fields to have the ability to accept multiple files.
+* Updated Classic migration utility to migrate File Upload fields with multiple files correctly now.
 * Updated Dynamic Recipients field to have the ability to accept multiple recipients.
+* Updated demo templates and default formatting templates to correctly handle Dynamic Recipients field as a radio group.
 * Updated Checkbox fieldtype to show a warning in Composer when no value is set.
 * Fixed a bug where using Dynamic Recipients fieldtype as Radio display would not send email notifications.
 * Fixed a bug where multi-option field types had ID attributes that were not unique for each option by default.
