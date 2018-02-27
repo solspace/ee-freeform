@@ -405,6 +405,10 @@ class NextFormHelper
             $preparedField['assetSourceId'] = $nextFormField->assetSourceId;
         }
 
+        if ($nextFormField->getAdditionalProperty('fileCount')) {
+            $preparedField['fileCount'] = $nextFormField->getAdditionalProperty('fileCount');
+        }
+
         if ($nextFormField->checked) {
             $preparedField['checked'] = $nextFormField->checked;
         }
@@ -675,6 +679,7 @@ class NextFormHelper
                 'value' => '',
             ],
             'file'         => [
+                'fileCount'     => '',
                 'assetSourceId' => '',
                 'maxFileSizeKB' => '',
             ],
