@@ -27,6 +27,11 @@ class ClassicFieldHelper extends AddonBuilder
 
         foreach ($fields as $key => $field) {
 
+            if ($field['field_type'] === 'file_upload') {
+                $instance =& $oldFieldsLibrary->get_field_instance($field['field_id']);
+                $fields[$key]['file_count'] = (int) $instance->settings['allowed_upload_count'];
+            }
+
             if ($field['field_type'] == 'country_select') {
 
                 /** @var \Country_select_freeform_ft $instance */

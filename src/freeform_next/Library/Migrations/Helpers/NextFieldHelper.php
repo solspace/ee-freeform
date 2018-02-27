@@ -134,6 +134,9 @@ class NextFieldHelper
 
         $validValues['additionalProperties'] = empty($additionalProperties) ? null : $additionalProperties;
         $validValues['additionalProperties']['legacyId'] = $classicField['field_id'];
+        if (isset($classicField['file_count'])) {
+            $validValues['additionalProperties']['fileCount'] = $classicField['file_count'];
+        }
 
         $field->set($validValues);
 
