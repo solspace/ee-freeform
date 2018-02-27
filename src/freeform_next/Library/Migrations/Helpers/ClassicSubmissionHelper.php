@@ -66,11 +66,13 @@ class ClassicSubmissionHelper extends AddonBuilder
                 }
 
                 if ($fieldType == 'file_upload') {
-                    $fileIds = $this->getFieldUpload($form->legacyId, $entryId, $fieldId, $value);
+                    $fileIds = $this->getFieldUpload($form->legacyId, $entryId, $fieldId);
                     $value = null;
-
-                    if ($fileIds && array_key_exists(0, $fileIds) && array_key_exists('file_id', $fileIds[0])) {
-                        $value = $fileIds[0]['file_id'];
+                    if (is_array($fileIds) && !empty($fileIds)) {
+                        $value = [];
+                        foreach ($fileIds as $fileId) {
+                            $value[] = $fileId['file_id'];
+                        }
                     }
                 }
 
@@ -458,7 +460,7 @@ class ClassicSubmissionHelper extends AddonBuilder
         return ceil($total_entries / $rowLimit);
     }
 
-    private function getFieldUpload($formId, $entryId, $fieldId, $fileName)
+    private function getFieldUpload($formId, $entryId, $fieldId)
     {
         ee()->load->model('freeform_file_upload_model');
 
@@ -467,7 +469,6 @@ class ClassicSubmissionHelper extends AddonBuilder
             ->where('entry_id', $entryId)
             ->where('field_id', $fieldId)
             ->where('form_id', $formId)
-            ->where('filename', $fileName)
             ->get();
     }
 
