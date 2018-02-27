@@ -113,7 +113,8 @@ The following field types are available ([see below for additional Pro Field Typ
 			* Users/groups need to have permissions access for **Email Notifications** to create new formatting templates.
 		* Can be marked as required.
 		* Can specify default option to be selected.
-		* Currently only 1 recipient can be selected at this time.
+		* Currently only 1 recipient(s) option can be selected at this time.
+		* Multiple email addresses can be specified for each option, separated by commas.
 		* Can include more than 1 of this field type in your forms, allowing for multiple sets of recipients to be notified.
 
 
