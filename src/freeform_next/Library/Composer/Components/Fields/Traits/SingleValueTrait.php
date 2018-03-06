@@ -54,7 +54,7 @@ trait SingleValueTrait
                         $checked = $option->getValue() === $this->getValue();
                     }
                 } else {
-                    $checked = (int) $option->getValue() === (int) $objectValue;
+                    $checked = $option->getValue() == $objectValue;
                 }
 
                 $updatedOptions[] = new Option(
