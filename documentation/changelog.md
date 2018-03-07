@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.5.2 (March 7, 2018) <a href="#v1-5-2" id="v1-5-2" class="docs-anchor">#</a>
+* Updated multi-page limit in Composer to 100 pages.
+* Fixed a bug where Radio Group fields would have their last option selected no matter what, when using sample formatting templates.
+* Fixed a bug where Select fields would not send data in email notifications.
+
 ### 1.5.1 (February 27, 2018) <a href="#v1-5-1" id="v1-5-1" class="docs-anchor">#</a>
 * Updated File Upload fields to have the ability to accept multiple files.
 * Updated Classic migration utility to migrate File Upload fields with multiple files correctly now.
