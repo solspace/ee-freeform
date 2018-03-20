@@ -31,6 +31,7 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
     const SETTING_USER_LOGIN    = 'salesforce_username';
     const SETTING_USER_PASSWORD = 'salesforce_password';
     const SETTING_SANDBOX       = 'salesforce_sandbox';
+    const SETTING_CUSTOM_URL    = 'salesforce_custom_url';
     const SETTING_INSTANCE      = 'instance';
 
     /**
@@ -47,6 +48,13 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
                 self::SETTING_SANDBOX,
                 'Sandbox Mode',
                 'Enabling this connects to "test.salesforce.com" instead of "login.salesforce.com"',
+                false
+            ),
+            new SettingBlueprint(
+                SettingBlueprint::TYPE_BOOL,
+                self::SETTING_CUSTOM_URL,
+                'Using custom URL?',
+                '',
                 false
             ),
             new SettingBlueprint(
@@ -115,7 +123,7 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
             throw new IntegrationException('Some or all of the configuration values are missing');
         }
 
-        $payload      = [
+        $payload = [
             'grant_type'    => 'password',
             'client_id'     => $clientId,
             'client_secret' => $clientSecret,
@@ -403,9 +411,14 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
      */
     protected function getApiRootUrl()
     {
-        $instance = $this->getSetting(self::SETTING_INSTANCE);
+        $instance        = $this->getSetting(self::SETTING_INSTANCE);
+        $usingCustomUrls = $this->getSetting(self::SETTING_CUSTOM_URL);
 
-        return sprintf('https://%s.salesforce.com/services/data/v20.0/', $instance);
+        return sprintf(
+            'https://%s%s.salesforce.com/services/data/v20.0/',
+            $instance,
+            ($usingCustomUrls ? '.my' : '')
+        );
     }
 
     /**
