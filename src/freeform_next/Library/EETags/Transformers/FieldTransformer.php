@@ -138,7 +138,7 @@ class FieldTransformer
         foreach ($field->getOptions() as $option) {
             $options[] = [
                 'option:index'   => $index++,
-                'option:label'   => $option->getLabel(),
+                'option:label'   => lang($option->getLabel()),
                 'option:value'   => $option->getValue(),
                 'option:checked' => $option->isChecked(),
             ];
