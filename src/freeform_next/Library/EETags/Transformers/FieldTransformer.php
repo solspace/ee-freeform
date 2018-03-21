@@ -59,6 +59,7 @@ class FieldTransformer
             $prefix . 'type'                 => $field->getType(),
             $prefix . 'label'                => $field->getLabel(),
             $prefix . 'value'                => $value,
+            $prefix . 'option_value'         => $this->getOptionValues($field),
             $prefix . 'placeholder'          => $field instanceof PlaceholderInterface ? $field->getPlaceholder(
             ) : null,
             $prefix . 'instructions'         => $field->getInstructions(),
@@ -145,5 +146,26 @@ class FieldTransformer
         }
 
         return $options;
+    }
+
+    /**
+     * @param AbstractField $field
+     *
+     * @return string|null
+     */
+    private function getOptionValues(AbstractField $field)
+    {
+        if (!$field instanceof OptionsInterface) {
+            return null;
+        }
+
+        $values = [];
+        foreach ($field->getOptions() as $option) {
+            if ($option->isChecked()) {
+                $values[] = $option->getValue();
+            }
+        }
+
+        return $values ? implode(', ', $values) : '';
     }
 }
