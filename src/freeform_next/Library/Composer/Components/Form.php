@@ -26,6 +26,7 @@ use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FieldExceptions\FileUploadException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\FileUploads\FileUploadHandlerInterface;
+use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
 use Solspace\Addons\FreeformNext\Library\Mailing\MailHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
@@ -421,6 +422,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
     public function submit()
     {
         $formValueContext = $this->getFormValueContext();
+        $onBeforeSubmit   = ExtensionHelper::call(ExtensionHelper::HOOK_FORM_BEFORE_SUBMIT, $this);
 
         if ($formValueContext->shouldFormWalkToPreviousPage()) {
             $formValueContext->retreatToPreviousPage();
@@ -452,6 +454,10 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         $formValueContext->appendStoredValues($submittedValues);
 
         if ($formValueContext->getCurrentPageIndex() === (count($this->getPages()) - 1)) {
+            if (!$onBeforeSubmit) {
+                return false;
+            }
+
             if ($this->storeData) {
                 $submission = $this->saveStoredStateToDatabase();
             } else {
@@ -464,6 +470,8 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
             $this->pushToCRM();
 
             $formValueContext->cleanOutCurrentSession();
+
+            ExtensionHelper::call(ExtensionHelper::HOOK_FORM_AFTER_SUBMIT, $this, $submission);
 
             return $submission;
         }

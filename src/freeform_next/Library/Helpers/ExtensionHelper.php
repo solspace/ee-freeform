@@ -4,6 +4,8 @@ namespace Solspace\Addons\FreeformNext\Library\Helpers;
 
 class ExtensionHelper
 {
+    const HOOK_FORM_BEFORE_SUBMIT = 'freeform_next_form_before_submit';
+    const HOOK_FORM_AFTER_SUBMIT  = 'freeform_next_form_after_submit';
     const HOOK_FORM_BEFORE_SAVE   = 'freeform_next_form_before_save';
     const HOOK_FORM_AFTER_SAVE    = 'freeform_next_form_after_save';
     const HOOK_FORM_BEFORE_DELETE = 'freeform_next_form_before_delete';
