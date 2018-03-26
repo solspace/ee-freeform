@@ -96,6 +96,6 @@ class Freeform_next_ft extends EE_Fieldtype
      */
     public function accepts_content_type($name)
     {
-        return ($name == 'channel' || $name == 'fluid_field');
+        return in_array($name, ['channel', 'fluid_field', 'grid'], true);
     }
 }
