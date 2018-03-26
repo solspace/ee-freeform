@@ -188,19 +188,20 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_unfinalized_files` (
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_settings` (
-  `id`                         INT(11)                NOT NULL  AUTO_INCREMENT,
-  `siteId`                     INT(11)                NOT NULL  DEFAULT '1',
-  `spamProtectionEnabled`      TINYINT(1) UNSIGNED    NOT NULL  DEFAULT '0',
-  `showTutorial`               TINYINT(1) UNSIGNED    NOT NULL  DEFAULT '0',
-  `fieldDisplayOrder`          VARCHAR(30)            NULL      DEFAULT NULL,
-  `formattingTemplatePath`     VARCHAR(255)           NULL      DEFAULT NULL,
-  `notificationTemplatePath`   VARCHAR(255)           NULL      DEFAULT NULL,
-  `notificationCreationMethod` VARCHAR(30)            NULL      DEFAULT NULL,
-  `license`                    VARCHAR(100)           NULL      DEFAULT NULL,
-  `sessionStorage`             ENUM ('session', 'db') NULL      DEFAULT 'session',
-  `defaultTemplates`           TINYINT(1)                       DEFAULT 1,
-  `removeNewlines`             TINYINT(1)                       DEFAULT 0,
-  `formSubmitDisable`          TINYINT(1)                       DEFAULT 1,
+  `id`                          INT(11)                NOT NULL  AUTO_INCREMENT,
+  `siteId`                      INT(11)                NOT NULL  DEFAULT '1',
+  `spamProtectionEnabled`       TINYINT(1) UNSIGNED    NOT NULL  DEFAULT '0',
+  `spamBlockLikeSuccessfulPost` TINYINT(1) UNSIGNED    NOT NULL  DEFAULT '0',
+  `showTutorial`                TINYINT(1) UNSIGNED    NOT NULL  DEFAULT '0',
+  `fieldDisplayOrder`           VARCHAR(30)            NULL      DEFAULT NULL,
+  `formattingTemplatePath`      VARCHAR(255)           NULL      DEFAULT NULL,
+  `notificationTemplatePath`    VARCHAR(255)           NULL      DEFAULT NULL,
+  `notificationCreationMethod`  VARCHAR(30)            NULL      DEFAULT NULL,
+  `license`                     VARCHAR(100)           NULL      DEFAULT NULL,
+  `sessionStorage`              ENUM ('session', 'db') NULL      DEFAULT 'session',
+  `defaultTemplates`            TINYINT(1)                       DEFAULT 1,
+  `removeNewlines`              TINYINT(1)                       DEFAULT 0,
+  `formSubmitDisable`           TINYINT(1)                       DEFAULT 1,
   PRIMARY KEY (`id`)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
