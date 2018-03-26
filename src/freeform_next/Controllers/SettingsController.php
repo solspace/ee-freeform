@@ -174,6 +174,16 @@ class SettingsController extends Controller
                                     ],
                                 ],
                             ],
+                            [
+                                'title'  => 'Blocked Spam Looks Like Successful Page Post?',
+                                'desc'   => 'Enable this to make the blocked spam submission look like it was a successful post.',
+                                'fields' => [
+                                    'spamBlockLikeSuccessfulPost' => [
+                                        'type'  => 'yes_no',
+                                        'value' => $settings->isSpamBlockLikeSuccessfulPost(),
+                                    ],
+                                ],
+                            ],
                             // [
                             //     'title'  => 'Show Composer Tutorial',
                             //     'desc'   => 'Enable this to show the interactive tutorial again in Composer. This setting disables again when the tutorial is completed or skipped.',

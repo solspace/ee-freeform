@@ -80,6 +80,14 @@ class FormsService implements FormHandlerInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isSpamBlockLikeSuccessfulPost()
+    {
+        return SettingsRepository::getInstance()->getOrCreate()->isSpamBlockLikeSuccessfulPost();
+    }
+
+    /**
      * @param Form $form
      *
      * @return int

@@ -20,6 +20,7 @@ use Symfony\Component\Finder\SplFileInfo;
  * @property int    $id
  * @property int    $siteId
  * @property bool   $spamProtectionEnabled
+ * @property bool   $spamBlockLikeSuccessfulPost
  * @property bool   $showTutorial
  * @property string $fieldDisplayOrder
  * @property string $formattingTemplatePath
@@ -42,16 +43,17 @@ class SettingsModel extends Model
     const FIELD_DISPLAY_ORDER_TYPE = 'type';
     const FIELD_DISPLAY_ORDER_NAME = 'name';
 
-    const DEFAULT_SPAM_PROTECTION_ENABLED      = true;
-    const DEFAULT_SHOW_TUTORIAL                = true;
-    const DEFAULT_FIELD_DISPLAY_ORDER          = self::FIELD_DISPLAY_ORDER_TYPE;
-    const DEFAULT_FORMATTING_TEMPLATE_PATH     = null;
-    const DEFAULT_NOTIFICATION_TEMPLATE_PATH   = null;
-    const DEFAULT_NOTIFICATION_CREATION_METHOD = self::NOTIFICATION_CREATION_METHOD_DATABASE;
-    const DEFAULT_LICENSE                      = null;
-    const DEFAULT_DEFAULT_TEMPLATES            = true;
-    const DEFAULT_REMOVE_NEWLINES              = false;
-    const DEFAULT_FORM_SUBMIT_DISABLE          = true;
+    const DEFAULT_SPAM_PROTECTION_ENABLED         = true;
+    const DEFAULT_SPAM_BLOCK_LIKE_SUCCESSFUL_POST = false;
+    const DEFAULT_SHOW_TUTORIAL                   = true;
+    const DEFAULT_FIELD_DISPLAY_ORDER             = self::FIELD_DISPLAY_ORDER_TYPE;
+    const DEFAULT_FORMATTING_TEMPLATE_PATH        = null;
+    const DEFAULT_NOTIFICATION_TEMPLATE_PATH      = null;
+    const DEFAULT_NOTIFICATION_CREATION_METHOD    = self::NOTIFICATION_CREATION_METHOD_DATABASE;
+    const DEFAULT_LICENSE                         = null;
+    const DEFAULT_DEFAULT_TEMPLATES               = true;
+    const DEFAULT_REMOVE_NEWLINES                 = false;
+    const DEFAULT_FORM_SUBMIT_DISABLE             = true;
 
     const SESSION_STORAGE_SESSION  = 'session';
     const SESSION_STORAGE_DATABASE = 'db';
@@ -62,6 +64,7 @@ class SettingsModel extends Model
     protected $id;
     protected $siteId;
     protected $spamProtectionEnabled;
+    protected $spamBlockLikeSuccessfulPost;
     protected $showTutorial;
     protected $fieldDisplayOrder;
     protected $formattingTemplatePath;
@@ -84,18 +87,19 @@ class SettingsModel extends Model
         $settings = ee('Model')->make(
             self::MODEL,
             [
-                'siteId'                     => ee()->config->item('site_id'),
-                'spamProtectionEnabled'      => self::DEFAULT_SPAM_PROTECTION_ENABLED,
-                'showTutorial'               => self::DEFAULT_SHOW_TUTORIAL,
-                'fieldDisplayOrder'          => self::DEFAULT_FIELD_DISPLAY_ORDER,
-                'formattingTemplatePath'     => self::DEFAULT_FORMATTING_TEMPLATE_PATH,
-                'notificationTemplatePath'   => self::DEFAULT_NOTIFICATION_TEMPLATE_PATH,
-                'notificationCreationMethod' => self::DEFAULT_NOTIFICATION_CREATION_METHOD,
-                'license'                    => self::DEFAULT_LICENSE,
-                'sessionStorage'             => self::SESSION_STORAGE_SESSION,
-                'defaultTemplates'           => self::DEFAULT_DEFAULT_TEMPLATES,
-                'removeNewlines'             => self::DEFAULT_REMOVE_NEWLINES,
-                'formSubmitDisable'          => self::DEFAULT_FORM_SUBMIT_DISABLE,
+                'siteId'                      => ee()->config->item('site_id'),
+                'spamProtectionEnabled'       => self::DEFAULT_SPAM_PROTECTION_ENABLED,
+                'spamBlockLikeSuccessfulPost' => self::DEFAULT_SPAM_BLOCK_LIKE_SUCCESSFUL_POST,
+                'showTutorial'                => self::DEFAULT_SHOW_TUTORIAL,
+                'fieldDisplayOrder'           => self::DEFAULT_FIELD_DISPLAY_ORDER,
+                'formattingTemplatePath'      => self::DEFAULT_FORMATTING_TEMPLATE_PATH,
+                'notificationTemplatePath'    => self::DEFAULT_NOTIFICATION_TEMPLATE_PATH,
+                'notificationCreationMethod'  => self::DEFAULT_NOTIFICATION_CREATION_METHOD,
+                'license'                     => self::DEFAULT_LICENSE,
+                'sessionStorage'              => self::SESSION_STORAGE_SESSION,
+                'defaultTemplates'            => self::DEFAULT_DEFAULT_TEMPLATES,
+                'removeNewlines'              => self::DEFAULT_REMOVE_NEWLINES,
+                'formSubmitDisable'           => self::DEFAULT_FORM_SUBMIT_DISABLE,
             ]
         );
 
@@ -238,6 +242,14 @@ class SettingsModel extends Model
     public function isSpamProtectionEnabled()
     {
         return (bool) $this->spamProtectionEnabled;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSpamBlockLikeSuccessfulPost()
+    {
+        return (bool) $this->spamBlockLikeSuccessfulPost;
     }
 
     /**
