@@ -175,8 +175,8 @@ class SettingsController extends Controller
                                 ],
                             ],
                             [
-                                'title'  => 'Blocked Spam Looks Like Successful Page Post?',
-                                'desc'   => 'Enable this to make the blocked spam submission look like it was a successful post.',
+                                'title'  => 'Spam protection simulates a successful submission?',
+                                'desc'   => 'Enable this to change the spam protection behavior to simulate a successful submission instead of just reloading the form.',
                                 'fields' => [
                                     'spamBlockLikeSuccessfulPost' => [
                                         'type'  => 'yes_no',
