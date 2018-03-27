@@ -634,7 +634,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
     {
         $honeypot = $this->getHoneypot();
 
-        return 'document.getElementById("' . $honeypot->getName() . '").value = "' . $honeypot->getHash() . 'd";';
+        return 'document.getElementById("' . $honeypot->getName() . '").value = "' . $honeypot->getHash() . '";';
     }
 
     /**
