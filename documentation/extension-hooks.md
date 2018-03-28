@@ -4,6 +4,15 @@ If you wish to extend the capabilities of Freeform, you can use any of the exten
 
 ## Hooks for Freeform Forms <a href="#hooks-freeform-forms" id="hooks-freeform-forms" class="docs-anchor">#</a>
 
+* `freeform_next_form_before_submit` <a href="#hook-onbeforesubmit-form" id="hook-onbeforesubmit-form" class="docs-anchor">#</a>
+	* Called before submitting a form
+	* Contains these parameters:
+		*  `form` - the `Form` object
+* `freeform_next_form_after_submit` <a href="#hook-onaftersubmit-form" id="hook-onaftersubmit-form" class="docs-anchor">#</a>
+	* Called after submitting a form
+	* Contains these parameters:
+		*  `form` - the `Form` object
+		*  `submission` - the `SubmissionModel` object if the form is set to store data
 * `freeform_next_form_before_save` <a href="#form_before_save" id="form_before_save" class="docs-anchor">#</a>
 	* Called before saving a form.
 	* Contains these parameters:
