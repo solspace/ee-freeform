@@ -23,16 +23,6 @@ If you wish to extend the capabilities of Freeform, you can use any of the exten
 	* Contains these parameters:
 		*  `model` - the `FormModel`
 		*  `isNew` - boolean value
-* `freeform_next_form_before_submit` <a href="#form_before_submit" id="form_before_submit" class="docs-anchor">#</a>
-	* Called before submitting a form.
-	* Contains these parameters:
-		*  `model` - the `FormModel`
-		*  `isNew` - boolean value
-* `freeform_next_form_after_submit` <a href="#form_after_submit" id="form_after_submit" class="docs-anchor">#</a>
-	* Called after submitting a form.
-	* Contains these parameters:
-		*  `model` - the `FormModel`
-		*  `isNew` - boolean value
 *  `freeform_next_form_before_delete` <a href="#form_before_delete" id="form_before_delete" class="docs-anchor">#</a>
 	*  Called before deleting a form.
 	*  Contains these parameters:
