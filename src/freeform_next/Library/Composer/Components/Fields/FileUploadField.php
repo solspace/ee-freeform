@@ -14,10 +14,8 @@ namespace Solspace\Addons\FreeformNext\Library\Composer\Components\Fields;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\FileUploadInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\SingleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits\FileUploadTrait;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits\MultipleValueTrait;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits\SingleValueTrait;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FieldExceptions\FileUploadException;
 
 class FileUploadField extends AbstractField implements MultipleValueInterface, FileUploadInterface
@@ -201,22 +199,25 @@ class FileUploadField extends AbstractField implements MultipleValueInterface, F
             self::$filesUploadedErrors[$this->handle] = null;
 
             if ($response) {
-                $errors = $this->getErrors() ?: [];
+                $errors         = $this->getErrors() ?: [];
+                $responseErrors = $response->getErrors();
 
-                if ($response->getAssetIds() || empty($response->getErrors())) {
+                if ($response->getAssetIds() || empty($responseErrors)) {
                     $this->values                       = $response->getAssetIds();
                     self::$filesUploaded[$this->handle] = $response->getAssetIds();
 
                     return $this->values;
                 }
 
-                if ($response->getErrors()) {
-                    $this->errors = array_merge($errors, $response->getErrors());
+                if ($responseErrors) {
+                    $this->errors = array_merge($errors, $responseErrors);
+                    
                     self::$filesUploadedErrors[$this->handle] = $this->errors;
-                    throw new FileUploadException(implode('. ', $response->getErrors()));
+                    throw new FileUploadException(implode('. ', $responseErrors));
                 }
 
-                $this->errors = array_merge($errors, $response->getErrors());
+                $this->errors = array_merge($errors, $responseErrors);
+
                 self::$filesUploadedErrors[$this->handle] = $this->errors;
                 throw new FileUploadException($this->translate('Could not upload file'));
             }
