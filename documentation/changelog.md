@@ -1,5 +1,16 @@
 # Changelog
 
+### 1.6.0 (March XX, 2018) <a href="#v1-6-0" id="v1-6-0" class="docs-anchor">#</a>
+* Added Pipedrive CRM integration for Freeform Pro edition.
+* Added new setting for Salesforce CRM integration for accounts using custom URLs in Salesforce.
+* Added a setting for spam protection that allows you to control the behavior of submit return (to simulate a successful submit).
+* Added Freeform fieldtype support for the Grid fieldtype.
+* Added a {field:option_value} variable for email notification templates (for accessing the field option value instead of option label).
+* Added 'form_before_submit' and 'form_after_submit' extension hooks.
+* Fixed a bug where checkbox an radio group field type option labels were not translatable.
+* Fixed a bug where the File Upload fieldtype was not fully compatible with PHP 5.4.
+* Fixed a bug where Freeform might conflict with other add-ons when editing fields.
+
 ### 1.5.2 (March 7, 2018) <a href="#v1-5-2" id="v1-5-2" class="docs-anchor">#</a>
 * Updated multi-page limit in Composer to 100 pages.
 * Fixed a bug where Radio Group fields would have their last option selected no matter what, when using sample formatting templates.

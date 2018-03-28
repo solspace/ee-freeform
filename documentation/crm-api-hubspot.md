@@ -1,8 +1,8 @@
 # HubSpot CRM API Integration
 
-This documentation page assumes you have read over the [CRM Integration Overview page](crm-integrations.md). If you have not yet read it, please do so now. We also assume that you have a [HubSpot](http://hubspot.com) account already. The *Freeform HubSpot* API integration requires that you have *Freeform Pro*. If you currently have Freeform Lite, you can [purchase an upgrade to Freeform Pro here](https://solspace.com/expressionengine/freeform/pro).
+This documentation page assumes you have read over the [CRM Integration Overview page](crm-integrations.md). If you have not yet read it, please do so now. We also assume that you have a [HubSpot](http://hubspot.com) account already. This integration requires that you have *Freeform Pro*. If you currently have Freeform Lite, you can purchase an upgrade to Freeform Pro by visiting your account area.
 
-HubSpot integration includes support for the following:
+Includes support for the following:
 
 * Field mapping to standard and custom fields (of text/number string type only).
 * Maps data to [Deals](http://developers.hubspot.com/docs/methods/deals/deals_overview), [Contacts](http://developers.hubspot.com/docs/methods/contacts/contacts-overview) and [Companies](http://developers.hubspot.com/docs/methods/companies/companies-overview) API's.

@@ -1,8 +1,8 @@
 # MailChimp Mailing List API Integration
 
-This documentation page assumes you have read over the [Mailing List Integration Overview page](mailing-list-integrations.md). If you have not yet read it, please do so now. We also assume that you have a [MailChimp](http://mailchimp.com) account already, along with mailing list(s) already created. The *Freeform MailChimp* API integration requires that you have *Freeform Pro*. If you currently have Freeform Lite, you can [purchase an upgrade to Freeform Pro here](https://solspace.com/expressionengine/freeform/pro).
+This documentation page assumes you have read over the [Mailing List Integration Overview page](mailing-list-integrations.md). If you have not yet read it, please do so now. We also assume that you have a [MailChimp](http://mailchimp.com) account already, along with mailing list(s) already created. This integration requires that you have *Freeform Pro*. If you currently have Freeform Lite, you can purchase an upgrade to Freeform Pro by visiting your account area.
 
-MailChimp integration includes support for the following:
+Includes support for the following:
 
 * Field mapping to standard and custom fields (of text type and dropdown only), per list.
 

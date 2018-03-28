@@ -10,6 +10,7 @@ The following CRM integrations are currently available for *Freeform Pro* (click
 
 * [Salesforce](crm-api-salesforce.md)
 * [HubSpot](crm-api-hubspot.md)
+* [Pipedrive](crm-api-pipedrive.md)
 * [SharpSpring](crm-api-sharpspring.md)
 
 Some important things to know about CRM integrations are:
