@@ -18,6 +18,7 @@ class Freeform_next_ft extends EE_Fieldtype
     {
         parent::__construct();
 
+        ee()->load->library('api');
         ee()->lang->loadfile('freeform_next');
         $this->info = include __DIR__ . '/addon.setup.php';
 
