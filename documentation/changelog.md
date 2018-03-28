@@ -5,7 +5,7 @@
 * Added new setting for Salesforce CRM integration for accounts using custom URLs in Salesforce.
 * Added a setting for spam protection that allows you to control the behavior of submit return (to simulate a successful submit).
 * Added Freeform fieldtype support for the Grid fieldtype.
-* Added a {field:option_value} variable for email notification templates (for accessing the field option value instead of option label).
+* Added a {field:option_value} variable for multi-option field types in email notification templates (for accessing the field option value instead of option label).
 * Added 'form_before_submit' and 'form_after_submit' extension hooks.
 * Fixed a bug where checkbox an radio group field type option labels were not translatable.
 * Fixed a bug where the File Upload fieldtype was not fully compatible with PHP 5.4.

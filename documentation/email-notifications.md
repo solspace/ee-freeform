@@ -65,7 +65,11 @@ Database templates are managed within the EE control panel in the **Notification
 				* `{field:field_name:value}` - displays the option label(s) submitted.
 					* Example: `Apples`
 					* Array of data example: `Apples, Oranges`
+				* `{field:field_name:option_value}` - displays the option value(s) submitted for multi-option fields (checkbox groups, radio groups, select fields).
+					* Example: `CA`
+					* Array of data example: `CA, ID, NY`
 				* `{field:field_name:handle}` - displays the handle of the field.
+				* `{field:field_name:type}` - displays the type of field it is.
 			*  <a id="email-body-file-uploads" class="docs-anchor"></a>For displaying URL's to uploaded files, you'll want to pair this with the [EE File Entries tag](https://docs.expressionengine.com/v3/add-ons/file/file_tag.html). The file upload field value will parse as the uploaded file ID, which can then be fed to the `{exp:file:entries}` template tag. A final solution might look something like this:
 
 				```{if my_file_upload_field}
@@ -83,7 +87,12 @@ Database templates are managed within the EE control panel in the **Notification
 				* `{field:value}` - displays the option label(s) submitted.
 					* Example: `Apples`
 					* Array of data example: `Apples, Oranges`
+				* `{field:option_value}` - displays the option value(s) submitted for multi-option fields (checkbox groups, radio groups, select fields).
+					* Example: `CA`
+					* Array of data example: `CA, ID, NY`
 				* `{field:handle}` - displays the handle of the field.
+				* `{field:type}` - displays the type of field it is.
+					* Likely used as a conditional which can be helpful for displaying different formatting for certain field types.
 
 
 ## Managing Email Templates as HTML Files <a href="#notification-template-files" id="notification-template-files" class="docs-anchor">#</a>
