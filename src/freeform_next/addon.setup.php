@@ -13,8 +13,8 @@ require_once __DIR__ . '/helper_functions.php';
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/Library/Helpers/FreeformHelper.php';
 
-if (!session_id()) {
-    session_start();
+if (REQ !== 'CP' && !session_id()) {
+    @session_start();
 }
 
 if (!defined('FREEFORM_EXPRESS')) {
