@@ -8,16 +8,14 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import HtmlInput from "./HtmlInput";
+import PropTypes from 'prop-types';
+import React from "react";
+import { connect } from "react-redux";
 import * as FieldTypes from "../../../constants/FieldTypes";
-import Label from "./Components/Label";
-import Instructions from "./Components/Instructions";
 import Badge from "./Components/Badge";
-import Radio from "./Components/Radio";
 import Option from "./Components/Option";
-import {connect} from "react-redux";
+import Radio from "./Components/Radio";
+import HtmlInput from "./HtmlInput";
 
 @connect(
   (state) => ({
@@ -48,11 +46,14 @@ export default class DynamicRecipients extends HtmlInput {
   }
 
   getBadges() {
-    const {notificationId} = this.props.properties;
+    const badges             = super.getBadges();
+    const { notificationId } = this.props.properties;
 
     if (!notificationId) {
-      return <Badge label="No Template" type={Badge.WARNING} />;
+      badges.push(<Badge key={"template"} label="No Template" type={Badge.WARNING}/>);
     }
+
+    return badges;
   }
 
   renderInput() {

@@ -8,22 +8,20 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {MAILING_LIST} from "../../../constants/FieldTypes";
-import HtmlInput from "./HtmlInput";
-import Checkbox from "./Components/Checkbox";
-import Label from "./Components/Label";
-import Instructions from "./Components/Instructions";
+import PropTypes from 'prop-types';
+import React from "react";
+import { connect } from "react-redux";
+import { MAILING_LIST } from "../../../constants/FieldTypes";
 import Badge from "./Components/Badge";
-import {connect} from "react-redux";
+import Checkbox from "./Components/Checkbox";
+import HtmlInput from "./HtmlInput";
 
 @connect(
   (state) => ({
     hash: state.context.hash,
     composerProperties: state.composer.properties,
     mailingListIntegrations: state.mailingLists.list,
-  })
+  }),
 )
 export default class MailingList extends HtmlInput {
   static propTypes = {
@@ -47,8 +45,9 @@ export default class MailingList extends HtmlInput {
   }
 
   getBadges() {
-    const {properties, mailingListIntegrations}             = this.props;
-    const {name, integrationId, resourceId, emailFieldHash} = properties;
+    const badges                                              = super.getBadges();
+    const { properties, mailingListIntegrations }             = this.props;
+    const { name, integrationId, resourceId, emailFieldHash } = properties;
 
     let resourceName = "";
     if (resourceId) {
@@ -64,24 +63,22 @@ export default class MailingList extends HtmlInput {
       }
     }
 
-    const badges = [];
-
     if (resourceName) {
-      badges.push(<Badge key={resourceId} label={`"${resourceName}" list for ${name}`} />)
+      badges.push(<Badge key={resourceId} label={`"${resourceName}" list for ${name}`}/>)
     } else {
-      badges.push(<Badge key="no-resource-id" label={`No mailing list for ${name}`} type={Badge.WARNING} />)
+      badges.push(<Badge key="no-resource-id" label={`No mailing list for ${name}`} type={Badge.WARNING}/>)
     }
 
     if (!emailFieldHash) {
-      badges.push(<Badge key="no-email-field-hash" label="No email field" type={Badge.WARNING} />)
+      badges.push(<Badge key="no-email-field-hash" label="No email field" type={Badge.WARNING}/>)
     }
 
     return badges;
   }
 
   renderInput() {
-    const {properties}   = this.props;
-    const {label, value} = properties;
+    const { properties }   = this.props;
+    const { label, value } = properties;
 
     return (
       <Checkbox

@@ -8,14 +8,12 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import BasePropertyEditor from "./BasePropertyEditor";
 import TextProperty from "./PropertyItems/TextProperty";
 import TextareaProperty from "./PropertyItems/TextareaProperty";
 import CheckboxProperty from "./PropertyItems/CheckboxProperty";
-import SelectProperty from "./PropertyItems/SelectProperty";
-import countries from "./Data/countries";
 
 export default class Phone extends BasePropertyEditor {
   static contextTypes = {

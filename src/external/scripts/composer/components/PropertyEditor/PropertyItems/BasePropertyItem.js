@@ -9,7 +9,7 @@
  */
 
 import React, {Component} from "react";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 export default class BasePropertyItem extends Component {
   static propTypes = {
@@ -25,6 +25,7 @@ export default class BasePropertyItem extends Component {
     isNumeric: PropTypes.bool,
     couldBeNumeric: PropTypes.bool,
     required: PropTypes.bool,
+    nullable: PropTypes.bool,
   };
 
   constructor(props, context) {

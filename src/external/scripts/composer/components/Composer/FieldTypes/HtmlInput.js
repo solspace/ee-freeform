@@ -8,12 +8,13 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {TEXT} from "../../../constants/FieldTypes";
-import Label from "./Components/Label";
+import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import { slugify, underscored } from "underscore.string";
+import { TEXT } from "../../../constants/FieldTypes";
+import Badge from "./Components/Badge"
 import Instructions from "./Components/Instructions";
-import {slugify, underscored} from "underscore.string";
+import Label from "./Components/Label";
 
 const allowedProperties = [
   "name",
@@ -35,12 +36,12 @@ const allowedProperties = [
   "step",
   "value",
   "width",
-  "inputId"
+  "inputId",
 ];
 
 export default class HtmlInput extends Component {
   static propTypes = {
-    properties: PropTypes.object.isRequired
+    properties: PropTypes.object.isRequired,
   };
 
   constructor(props, context) {
@@ -62,9 +63,9 @@ export default class HtmlInput extends Component {
   }
 
   getCleanProperties() {
-    const {properties} = this.props;
+    const { properties } = this.props;
 
-    const clean = {...properties};
+    const clean = { ...properties };
 
     for (let key in clean) {
       if (allowedProperties.indexOf(key) === -1) {
@@ -80,17 +81,8 @@ export default class HtmlInput extends Component {
     return clean;
   }
 
-  renderInput() {
-    return (
-      <input readOnly={true} className={this.prepareInputClass()}
-             type={this.getType()}
-             {...this.getCleanProperties()}
-      />
-    );
-  }
-
   render() {
-    const {properties: {label, type, required, instructions}} = this.props;
+    const { properties: { label, type, required, instructions } } = this.props;
 
     return (
       <div className={this.prepareWrapperClass()}>
@@ -101,10 +93,28 @@ export default class HtmlInput extends Component {
     );
   }
 
+  renderInput() {
+    return (
+      <input readOnly={true} className={this.prepareInputClass()}
+             type={this.getType()}
+             {...this.getCleanProperties()}
+      />
+    );
+  }
+
   /**
    * Return any Badge objects if applicable
    */
   getBadges() {
+    const { properties: { handle } } = this.props;
+
+    if (!handle) {
+      return [
+        <Badge key={"handle"} label={"Handle is not set"} type={Badge.WARNING}/>,
+      ]
+    }
+
+    return []
   }
 
   /**

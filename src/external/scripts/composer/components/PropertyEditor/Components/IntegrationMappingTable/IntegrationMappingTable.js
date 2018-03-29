@@ -9,7 +9,7 @@
  */
 
 import React, {Component} from "react";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import MappingRow from "./MappingRow";
 
 export default class IntegrationMappingTable extends Component {

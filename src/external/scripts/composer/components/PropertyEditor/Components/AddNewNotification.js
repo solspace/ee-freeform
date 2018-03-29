@@ -9,7 +9,6 @@
  */
 
 import React, {Component} from "react";
-import PropTypes from "prop-types";
 import NotificationProperties from "./NotificationProperties";
 
 export default class AddNewNotification extends Component {

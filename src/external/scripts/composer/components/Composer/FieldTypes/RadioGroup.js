@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from "prop-types";
+import React from "react";
+import PropTypes from 'prop-types';
 import {RADIO_GROUP} from "../../../constants/FieldTypes";
 import HtmlInput from "./HtmlInput";
 import Radio from "./Components/Radio";

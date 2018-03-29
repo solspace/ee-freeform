@@ -9,7 +9,6 @@
  */
 
 import React, {Component} from "react";
-import PropTypes from "prop-types";
 import FieldProperties from "./FieldProperties";
 import {fetchFields} from "../../../actions/Actions"
 
@@ -20,12 +19,12 @@ export default class AddNewField extends Component {
     showFieldForm: false,
   };
 
-    constructor(props, context) {
-        super(props, context);
+  constructor(props, context) {
+    super(props, context);
 
-        this.state           = AddNewField.initialState;
-        this.toggleFieldForm = this.toggleFieldForm.bind(this);
-    }
+    this.state           = AddNewField.initialState;
+    this.toggleFieldForm = this.toggleFieldForm.bind(this);
+  }
 
   componentDidUpdate() {
     window.dispatchEvent(new Event(AddNewField.EVENT_AFTER_UPDATE));
@@ -34,26 +33,26 @@ export default class AddNewField extends Component {
   render() {
     const {showFieldForm} = this.state;
 
-        const className = "composer-add-new-field-wrapper" + (showFieldForm ? " active" : "");
+    const className = "composer-add-new-field-wrapper" + (showFieldForm ? " active" : "");
 
-        return (
-            <div className={className}>
-                {!showFieldForm &&
-                <button className="btn action" data-icon="add" onClick={this.toggleFieldForm}>
-                    Add New Field
-                </button>
-                }
+    return (
+      <div className={className}>
+        {!showFieldForm &&
+        <button className="btn add icon" onClick={this.toggleFieldForm}>
+          Add New Field
+        </button>
+        }
 
-                {showFieldForm &&
-                <FieldProperties toggleFieldForm={this.toggleFieldForm} />
-                }
-            </div>
-        );
-    }
+        {showFieldForm &&
+        <FieldProperties toggleFieldForm={this.toggleFieldForm}/>
+        }
+      </div>
+    );
+  }
 
-    toggleFieldForm() {
-        this.setState({
-            showFieldForm: !this.state.showFieldForm
-        });
-    }
+  toggleFieldForm() {
+    this.setState({
+      showFieldForm: !this.state.showFieldForm
+    });
+  }
 }

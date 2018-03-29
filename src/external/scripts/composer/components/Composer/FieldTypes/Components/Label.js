@@ -9,7 +9,7 @@
  */
 
 import React, {Component} from "react";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import {HIDDEN} from "../../../../constants/FieldTypes";
 
 export default class Label extends Component {
@@ -33,7 +33,7 @@ export default class Label extends Component {
 
     return (
       <label className={labelClass.join(" ")}>
-        <span dangerouslySetInnerHTML={{__html: label}} /> {type == HIDDEN ? " (Hidden field)" : ""}
+        <span dangerouslySetInnerHTML={{__html: label}} /> {type === HIDDEN ? " (Hidden field)" : ""}
         {label && isRequired ? <span className="required" /> : ""}
         {this.props.children}
         {!label && isRequired ? <span className="required" /> : ""}

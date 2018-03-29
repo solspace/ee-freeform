@@ -1,4 +1,4 @@
-var gutil     = require("gulp-util");
+const gutil = require("gulp-util");
 
 module.exports = {
   isProd: function isProd() {

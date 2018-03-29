@@ -9,7 +9,7 @@
  */
 
 import React, {Component} from "react";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 export default class Instructions extends Component {
   static propTypes = {

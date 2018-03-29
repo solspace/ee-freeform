@@ -8,19 +8,25 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {TEXT} from "../../../constants/FieldTypes";
+import React from "react";
+import { TEXT } from "../../../constants/FieldTypes";
 import Badge from "./Components/Badge";
-import Label from "./Components/Label";
-import HtmlInput from "./HtmlInput";
+import Text from "./Text";
 
-export default class Hidden extends HtmlInput {
+export default class Hidden extends Text {
   getClassName() {
     return 'Hidden';
   }
 
+  getType() {
+    return TEXT;
+  }
+
   getBadges() {
-    return <Badge label="Hidden field" type={Badge.VISIBILITY}/>;
+    const badges = super.getBadges();
+
+    badges.push(<Badge key={"hidden"} label="Hidden field" type={Badge.VISIBILITY}/>);
+
+    return badges;
   }
 }

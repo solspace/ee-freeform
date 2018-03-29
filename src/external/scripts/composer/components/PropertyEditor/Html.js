@@ -9,7 +9,7 @@
  */
 
 import React from "react";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import BasePropertyEditor from "./BasePropertyEditor";
 import AceEditor from "react-ace";
 import TextProperty from "./PropertyItems/TextProperty";

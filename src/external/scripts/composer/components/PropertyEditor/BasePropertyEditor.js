@@ -9,9 +9,8 @@
  */
 
 import React, {Component} from "react";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import {getHandleValue} from "../../helpers/Utilities";
-import {camelize} from "underscore.string";
 
 export default class BasePropertyEditor extends Component {
   static contextTypes = {
@@ -72,6 +71,17 @@ export default class BasePropertyEditor extends Component {
       if (/^[0-9]+$/.test(postValue)) {
         postValue = postValue ? parseInt(postValue) : 0;
       }
+    }
+
+    let isNullable = false;
+    if (event.target.dataset.nullable) {
+      if (event.target.dataset.nullable !== "false") {
+        isNullable = true;
+      }
+    }
+
+    if (isNullable) {
+      postValue = postValue !== '' ? postValue : null;
     }
 
     updateField({[name]: postValue});

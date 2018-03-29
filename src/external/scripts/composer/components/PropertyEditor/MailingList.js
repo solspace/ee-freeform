@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from "prop-types";
+import React from "react";
+import PropTypes from 'prop-types';
 import BasePropertyEditor from "./BasePropertyEditor";
 import * as FieldTypes from "../../constants/FieldTypes";
 import {connect} from "react-redux";
@@ -82,22 +82,23 @@ export default class MailingList extends BasePropertyEditor {
 
     let selectedIntegration = null;
     let lists = [];
-    for (let i in mailingLists) {
-      const integration = mailingLists[i];
+
+    for (const integration of mailingLists) {
       if (integration.integrationId === integrationId) {
-        selectedIntegration = mailingLists[i];
-        selectedIntegration.lists.map(item => {
+        selectedIntegration = integration;
+        integration.lists.map(item => {
           lists.push({
             key: item.id,
             value: item.name,
           });
         });
+
         break;
       }
     }
 
     let emailFields = [];
-    for (var key in composerProperties) {
+    for (let key in composerProperties) {
       if (!composerProperties.hasOwnProperty(key)) continue;
 
       const prop = composerProperties[key];

@@ -9,7 +9,7 @@
  */
 
 import React from "react";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import {CHECKBOX_GROUP} from "../../../constants/FieldTypes";
 import HtmlInput from "./HtmlInput";
 import Checkbox from "./Components/Checkbox";
@@ -54,7 +54,7 @@ export default class CheckboxGroup extends HtmlInput {
             label={label}
             value={value}
             isChecked={values ? (values.indexOf(value) !== -1) : false}
-            properties={properties}/>
+            properties={properties} />
         );
       }
     }

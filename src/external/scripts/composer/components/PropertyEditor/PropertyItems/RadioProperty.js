@@ -2,23 +2,19 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import CustomProperty from './CustomProperty';
 
-export default class RadioProperty extends Component {
+export default class RadioProperty extends BasePropertyItem {
   static propTypes = {
-    label: PropTypes.string.isRequired,
-    instructions: PropTypes.string,
-    name: PropTypes.string.isRequired,
-    value: PropTypes.any.isRequired,
+    ...BasePropertyItem.propTypes,
     options: PropTypes.arrayOf(
       PropTypes.shape({
         key: PropTypes.string.isRequired,
         value: PropTypes.any.isRequired,
       })
     ).isRequired,
-    onChangeHandler: PropTypes.func.isRequired,
   };
 
-  render() {
-    const {label, instructions, name, value, options, onChangeHandler} = this.props;
+  renderInput() {
+    const { label, instructions, name, value, options, onChangeHandler } = this.props;
 
     return (
       <CustomProperty

@@ -1,28 +1,28 @@
-const src = "src/",
-    dist = "dist/",
-    buildPath = dist + "build/";
+const src       = "src/",
+      dist      = "dist/",
+      buildPath = dist + "build/";
 
 const paths = {
   scripts: {
     src: [src + "external/scripts/cp/**/*.js"],
     dest: src + "freeform_next/javascript/",
-    deleteList: [src + "freeform_next/javascript/**/*.js"]
+    deleteList: [src + "freeform_next/javascript/**/*.js"],
   },
   react: {
     src: [src + "external/scripts/composer/**/*.js"],
-    dest: src + "themes/freeform_next/javascript/composer/"
+    dest: src + "themes/freeform_next/javascript/composer/",
   },
   styles: {
     src: [src + "external/styles/**/*.scss"],
-    dest: src + "themes/freeform_next/css/"
+    dest: src + "themes/freeform_next/css/",
   },
   crypt: {
     src: [src + "crypt/**/*"],
-    dest: src + "freeform_next/Library/Helpers/Misc/"
+    dest: src + "freeform_next/Library/Helpers/Misc/",
   },
   fonts: {
     src: [src + "external/font/**/*.*"],
-    dest: src + "themes/freeform_next/font/"
+    dest: src + "themes/freeform_next/font/",
   },
   themes: {
     src: [src + "external/themes/**/*.*"],
@@ -50,12 +50,12 @@ const paths = {
       ],
       liteFiles: [
         buildPath + "freeform_next/ft.freeform_next.php",
-      ]
+      ],
     },
     themes: {
       src: src + "themes/**/*",
-      dist: buildPath + "themes/"
-    }
+      dist: buildPath + "themes/",
+    },
   },
   vendors: {
     dist: buildPath + "freeform_next/vendor/",
@@ -65,8 +65,8 @@ const paths = {
       buildPath + "freeform_next/vendor/**/test",
       buildPath + "freeform_next/vendor/**/doc",
       buildPath + "freeform_next/composer.lock",
-      buildPath + "freeform_next/composer.json"
-    ]
+      buildPath + "freeform_next/composer.json",
+    ],
   },
 };
 

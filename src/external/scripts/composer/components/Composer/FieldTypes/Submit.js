@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from "prop-types";
+import React from "react";
+import PropTypes from 'prop-types';
 import HtmlInput from "./HtmlInput";
 import FieldHelper from "../../../helpers/FieldHelper";
 import * as SubmitPositions  from "../../../constants/SubmitPositions";

@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from "prop-types";
+import React from "react";
+import PropTypes from 'prop-types';
 import BasePropertyEditor from "./BasePropertyEditor";
 import TextareaProperty from "./PropertyItems/TextareaProperty";
 import SelectProperty from "./PropertyItems/SelectProperty";

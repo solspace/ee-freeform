@@ -1,9 +1,9 @@
-var paths        = require("../_paths");
+const paths = require("../_paths");
 
 module.exports = {
-  dep: ['clean:fonts'],
+  deps: ['clean:fonts'],
   fn: function (gulp, callback) {
     return gulp.src(paths.fonts.src)
       .pipe(gulp.dest(paths.fonts.dest))
-  }
+  },
 };

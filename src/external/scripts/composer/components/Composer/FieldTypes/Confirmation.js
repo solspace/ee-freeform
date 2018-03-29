@@ -29,10 +29,13 @@ export default class Confirmation extends Text {
   }
 
   getBadges() {
+    const badges    = super.getBadges();
     const {properties: {targetFieldHash}} = this.props;
 
     if (!targetFieldHash) {
-      return <Badge label="No Target Field" type={Badge.WARNING} />
+      badges.push(<Badge key={"target"} label="No Target Field" type={Badge.WARNING} />);
     }
+
+    return badges;
   }
 }

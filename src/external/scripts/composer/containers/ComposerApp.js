@@ -9,7 +9,7 @@
  */
 
 import React, {Component} from "react";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import FieldList from "../containers/FieldList";
 import Composer from "../containers/Composer";
 import PropertyEditor from "../containers/PropertyEditor";
