@@ -77,9 +77,3 @@ Includes support for the following:
 	* Click into the newly created integration.
 	* Confirm that there is green circle with **Authorized** in the middle of the page.
 	* That's it! You can now use this integration inside Composer.
-
-
-## Seeing an Error? <a href="#errors" id="errors" class="docs-anchor">#</a>
-
-* No 'refresh_token' present in auth response for SalesforceLead. Enable offline-access for your app.
-	* Make sure that the **Perform requests on your behalf at any time (refresh_token, offline_access)** setting is added to the **Selected OAuth Scopes** field for your app in Salesforce.

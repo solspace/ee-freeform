@@ -47,22 +47,22 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
             new SettingBlueprint(
                 SettingBlueprint::TYPE_BOOL,
                 self::SETTING_LEAD_OWNER,
-                'Assign Lead Owner?',
-                'Enabling this will make Salesforce assign a lead owner based on lead owner assignment rules',
+                'Assign lead owner?',
+                'Enabling this will have leads assigned to a lead owner based on lead owner assignment rules in Salesforce.',
                 false
             ),
             new SettingBlueprint(
                 SettingBlueprint::TYPE_BOOL,
                 self::SETTING_SANDBOX,
-                'Sandbox Mode',
-                'Enabling this connects to "test.salesforce.com" instead of "login.salesforce.com"',
+                'Sandbox mode',
+                'Enabling this connects to "test.salesforce.com" instead of "login.salesforce.com".',
                 false
             ),
             new SettingBlueprint(
                 SettingBlueprint::TYPE_BOOL,
                 self::SETTING_CUSTOM_URL,
                 'Using custom URL?',
-                '',
+                'Enable this if your Salesforce account uses a custom URL to login.',
                 false
             ),
             new SettingBlueprint(
