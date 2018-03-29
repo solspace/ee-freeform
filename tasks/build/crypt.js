@@ -3,7 +3,7 @@ const paths  = require("../_paths"),
       base64_encode = require('gulp-base64-encode');
 
 module.exports = {
-  dep: ['clean:crypt'],
+  deps: ['clean:crypt'],
   fn: function (gulp, callback) {
     return gulp
       .src(paths.crypt.src)

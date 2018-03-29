@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from "prop-types";
+import React from "react";
+import PropTypes from 'prop-types';
 import {RADIO} from "../../../../constants/FieldTypes";
 import HtmlInput from "../HtmlInput";
 
@@ -38,7 +38,7 @@ export default class Radio extends HtmlInput {
                            checked={isChecked}
                         {...this.getCleanProperties()}
                     />
-                    {label}
+                    <span dangerouslySetInnerHTML={{__html: label}} />
                 </label>
             </div>
         );

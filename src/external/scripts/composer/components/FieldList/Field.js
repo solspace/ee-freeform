@@ -9,7 +9,7 @@
  */
 
 import React, {Component} from "react";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import {FIELD} from "../../constants/DraggableTypes";
 import {connect} from "react-redux";
 import {DragSource} from "react-dnd";

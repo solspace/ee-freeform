@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from "prop-types";
+import React from "react";
+import PropTypes from 'prop-types';
 import BasePropertyEditor from "./BasePropertyEditor";
 import TextProperty from "./PropertyItems/TextProperty";
 import TextareaProperty from "./PropertyItems/TextareaProperty";
@@ -40,6 +40,7 @@ export default class Checkbox extends BasePropertyEditor {
       <div>
         <TextProperty
           label="Handle"
+          name="handle"
           instructions="How you’ll refer to this field in the templates."
           value={handle}
           onChangeHandler={this.updateHandle}

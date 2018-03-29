@@ -8,13 +8,10 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import Label from "./Components/Label";
-import Instructions from "./Components/Instructions";
-import HtmlInput from "./HtmlInput";
+import React from "react";
+import Text from "./Text";
 
-export default class Textarea extends HtmlInput {
+export default class Textarea extends Text {
   getClassName() {
     return 'Textarea';
   }

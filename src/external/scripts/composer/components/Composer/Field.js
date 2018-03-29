@@ -22,14 +22,14 @@ import RadioGroup from "./FieldTypes/RadioGroup";
 import Select from "./FieldTypes/Select";
 import DynamicRecipients from "./FieldTypes/DynamicRecipients";
 import MailingList from "./FieldTypes/MailingList";
-import Number from "./FieldTypes/Number";
+import File from "./FieldTypes/File";
 import Datetime from "./FieldTypes/Datetime";
+import Number from "./FieldTypes/Number";
 import Phone from "./FieldTypes/Phone";
 import Rating from "./FieldTypes/Rating";
 import Website from "./FieldTypes/Website";
 import Regex from "./FieldTypes/Regex";
 import Confirmation from "./FieldTypes/Confirmation";
-import File from "./FieldTypes/File";
 
 const fieldTypes = {
   checkbox: Checkbox,
@@ -55,29 +55,29 @@ const fieldTypes = {
 };
 
 export default class Field extends Component {
-    static propTypes = {
-        type: PropTypes.string.isRequired,
-        properties: PropTypes.shape({
-            type: PropTypes.string.isRequired,
-            id: PropTypes.number,
-            placeholder: PropTypes.string
-        }).isRequired,
-        hash: PropTypes.string.isRequired,
-        index: PropTypes.number.isRequired,
-        rowIndex: PropTypes.number.isRequired,
-    };
+  static propTypes = {
+    type: PropTypes.string.isRequired,
+    properties: PropTypes.shape({
+      type: PropTypes.string.isRequired,
+      id: PropTypes.number,
+      placeholder: PropTypes.string
+    }).isRequired,
+    hash: PropTypes.string.isRequired,
+    index: PropTypes.number.isRequired,
+    rowIndex: PropTypes.number.isRequired,
+  };
 
-    static childContextTypes = {
-        hash: PropTypes.string.isRequired,
-        index: PropTypes.number.isRequired,
-        rowIndex: PropTypes.number.isRequired,
-    };
+  static childContextTypes = {
+    hash: PropTypes.string.isRequired,
+    index: PropTypes.number.isRequired,
+    rowIndex: PropTypes.number.isRequired,
+  };
 
-    getChildContext = () => ({
-        hash: this.props.hash,
-        index: this.props.index,
-        rowIndex: this.props.rowIndex,
-    });
+  getChildContext = () => ({
+    hash: this.props.hash,
+    index: this.props.index,
+    rowIndex: this.props.rowIndex,
+  });
 
   render() {
     const {type, properties} = this.props;

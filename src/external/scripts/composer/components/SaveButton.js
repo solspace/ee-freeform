@@ -9,7 +9,7 @@
  */
 
 import React, {Component} from "react";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import qwest from "qwest";
 import {connect} from "react-redux";
 import {updateFormId, updateProperty} from "../actions/Actions";

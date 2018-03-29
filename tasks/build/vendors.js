@@ -1,10 +1,10 @@
-var paths = require("../_paths");
-var del   = require("del");
+const paths = require("../_paths"),
+      del   = require("del");
 
 module.exports = {
-  dep: ['clean:vendors', 'composer'],
+  deps: ['clean:vendors', 'composer'],
   fn: function (gulp, callback) {
-    var stream = gulp.src(paths.vendors.dist);
+    const stream = gulp.src(paths.vendors.dist);
 
     stream.on('end', function () {
       del(paths.vendors.deleteList);
@@ -14,5 +14,5 @@ module.exports = {
     stream.on('error', function (err) {
       callback(err);
     });
-  }
+  },
 };

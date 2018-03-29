@@ -8,13 +8,12 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from "prop-types";
+import React            from "react";
 import BasePropertyItem from "./BasePropertyItem";
 
 export default class TextareaProperty extends BasePropertyItem {
   renderInput() {
-    const {name, readOnly, disabled, onChangeHandler, value, className, rows} = this.props;
+    const { name, readOnly, disabled, onChangeHandler, value, className, rows, nullable } = this.props;
 
     const classes = [className];
     if (readOnly && disabled) {
@@ -30,6 +29,7 @@ export default class TextareaProperty extends BasePropertyItem {
         rows={rows ? rows : 2}
         onChange={onChangeHandler}
         value={value}
+        data-nullable={!!nullable}
       />
     );
   }

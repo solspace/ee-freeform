@@ -1,8 +1,8 @@
-var paths = require("../_paths");
-var del   = require("del");
+const paths = require("../_paths"),
+      del   = require("del");
 
 module.exports = {
-    fn: function (gulp, callback) {
-        return del(paths.scripts.deleteList);
-    }
+  fn: function (gulp, callback) {
+    return del(paths.scripts.deleteList);
+  },
 };

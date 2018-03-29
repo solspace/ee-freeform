@@ -1,22 +1,30 @@
-var paths     = require("./_paths");
-var del       = require("del");
-var zip       = require("gulp-zip");
-var zipFolder = require('zip-folder');
-var helpers   = require("./_helpers");
-var fs        = require("fs");
-var replace   = require("gulp-replace");
+const paths     = require("./_paths"),
+      del       = require("del"),
+      zip       = require("gulp-zip"),
+      zipFolder = require('zip-folder'),
+      helpers   = require("./_helpers"),
+      fs        = require("fs"),
+      replace   = require("gulp-replace");
 
 
 function getVersionNumber() {
-  var fileContent = fs.readFileSync("src/freeform_next/addon.setup.php", "utf8");
-
-  const regex = /['"]version['"]\s*=>\s*['"]([0-9\.]+)['"]/g;
+  const fileContent = fs.readFileSync("src/freeform_next/addon.setup.php", "utf8");
+  const regex       = /['"]version['"]\s*=>\s*['"]([0-9\.]+)['"]/g;
 
   return regex.exec(fileContent)[1];
 }
 
 module.exports = {
-  dep: ["build:scripts", "build:styles", "build:react", "build:fonts", "build:themes", "build:crypt", "composer", "clean:deploy"],
+  deps: [
+    "build:scripts",
+    "build:styles",
+    "build:react",
+    "build:fonts",
+    "build:themes",
+    "build:crypt",
+    "composer",
+    "clean:deploy",
+  ],
   fn: function (gulp, callback) {
     if (!helpers.isProd()) {
       console.log("!!! Deployment must be run with '--env prod' environment variable !!!");
@@ -24,7 +32,7 @@ module.exports = {
     }
 
     buildProVersion(gulp, callback);
-  }
+  },
 };
 
 /**

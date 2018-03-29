@@ -8,13 +8,12 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from "prop-types";
+import React            from "react";
 import BasePropertyItem from "./BasePropertyItem";
 
 export default class TextProperty extends BasePropertyItem {
   renderInput() {
-    const {name, readOnly, disabled, onChangeHandler, value, className, placeholder, isNumeric} = this.props;
+    const { name, readOnly, disabled, onChangeHandler, value, className, placeholder, isNumeric, nullable } = this.props;
 
     const classes = [className];
     if (readOnly && disabled) {
@@ -31,6 +30,7 @@ export default class TextProperty extends BasePropertyItem {
         disabled={disabled}
         onChange={onChangeHandler}
         data-is-numeric={!!isNumeric}
+        data-nullable={!!nullable}
         value={value}
       />
     );

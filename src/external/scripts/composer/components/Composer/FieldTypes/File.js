@@ -8,11 +8,9 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {FILE} from "./../../../constants/FieldTypes";
-import Label from "./Components/Label";
-import Instructions from "./Components/Instructions";
+import PropTypes from 'prop-types';
+import React from "react";
+import { FILE } from "./../../../constants/FieldTypes";
 import Badge from "./Components/Badge";
 import HtmlInput from "./HtmlInput";
 
@@ -34,10 +32,13 @@ export default class File extends HtmlInput {
   }
 
   getBadges() {
-    const {properties: {assetSourceId}} = this.props;
+    const badges                            = super.getBadges();
+    const { properties: { assetSourceId } } = this.props;
 
     if (!assetSourceId) {
-      return <Badge label="No Asset Source" type={Badge.WARNING} />;
+      badges.push(<Badge key={"asset"} label="No Asset Source" type={Badge.WARNING}/>);
     }
+
+    return badges;
   }
 }

@@ -1,6 +1,6 @@
-var paths    = require("./_paths");
-var composer = require("gulp-composer");
-var helpers  = require("./_helpers");
+const paths    = require("./_paths"),
+      composer = require("gulp-composer"),
+      helpers  = require("./_helpers");
 
 module.exports = {
   fn: function (gulp, callback) {
@@ -13,5 +13,5 @@ module.exports = {
     }
 
     return composer(options);
-  }
+  },
 };

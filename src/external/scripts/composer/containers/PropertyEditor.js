@@ -9,7 +9,7 @@
  */
 
 import React, {Component} from "react";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import * as FieldTypes from "../constants/FieldTypes";
 import Form from "../components/PropertyEditor/Form";

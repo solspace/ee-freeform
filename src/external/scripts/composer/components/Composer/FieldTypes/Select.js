@@ -8,13 +8,11 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from "prop-types";
+import React from "react";
+import PropTypes from 'prop-types';
 import {SELECT} from "../../../constants/FieldTypes";
 import HtmlInput from "./HtmlInput";
 import Option from "./Components/Option";
-import Label from "./Components/Label";
-import Instructions from "./Components/Instructions";
 import {connect} from "react-redux";
 
 @connect(

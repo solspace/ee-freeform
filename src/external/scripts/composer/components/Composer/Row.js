@@ -9,7 +9,7 @@
  */
 
 import React, {Component} from "react";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import Column from "./Column";
 import PlaceholderColumn from "./Placeholders/PlaceholderColumn";
 import PlaceholderRow from "./Placeholders/PlaceholderRow";

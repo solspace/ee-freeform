@@ -9,7 +9,6 @@
  */
 
 import React, {Component} from "react";
-import PropTypes from "prop-types";
 import TemplateProperties from "./TemplateProperties";
 
 export default class AddNewTemplate extends Component {

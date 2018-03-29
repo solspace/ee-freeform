@@ -8,21 +8,21 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React        from "react";
-import PropTypes    from "prop-types";
+import PropTypes from 'prop-types';
+import React from "react";
+import { connect } from "react-redux";
 import { CHECKBOX } from "../../../constants/FieldTypes";
-import HtmlInput    from "./HtmlInput";
-import Checkbox     from "./Components/Checkbox";
+import Badge from './Components/Badge'
+import Checkbox from "./Components/Checkbox";
 import Instructions from "./Components/Instructions";
-import { connect }  from "react-redux";
-import Badge        from './Components/Badge'
+import HtmlInput from "./HtmlInput";
 
 @connect(
   (state) => ({
     hash: state.context.hash,
     composerProperties: state.composer.properties,
     mailingListIntegrations: state.mailingLists.list,
-  })
+  }),
 )
 export default class CheckboxField extends HtmlInput {
   static propTypes = {
@@ -49,11 +49,14 @@ export default class CheckboxField extends HtmlInput {
   }
 
   getBadges() {
+    const badges    = super.getBadges();
     const { value } = this.props.properties;
 
     if (!value) {
-      return <Badge label="No Value set" type={Badge.WARNING}/>;
+      badges.push(<Badge key={"value"} label="No Value set" type={Badge.WARNING}/>);
     }
+
+    return badges;
   }
 
   render() {

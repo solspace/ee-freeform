@@ -9,7 +9,7 @@
  */
 
 import React        from "react";
-import PropTypes    from "prop-types";
+import PropTypes    from 'prop-types';
 import { CHECKBOX } from "../../../../constants/FieldTypes";
 import HtmlInput    from "../HtmlInput";
 

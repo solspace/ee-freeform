@@ -8,17 +8,15 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import HtmlInput from "./HtmlInput";
+import React from "react";
+import PropTypes from 'prop-types';
+import Text from "./Text";
 import * as FieldTypes from "../../../constants/FieldTypes";
-import Label from "./Components/Label";
-import Instructions from "./Components/Instructions";
 import Badge from "./Components/Badge";
 
-export default class Email extends HtmlInput {
+export default class Email extends Text {
   static propTypes = {
-    ...HtmlInput.propTypes,
+    ...Text.propTypes,
     notificationId: PropTypes.number,
   };
 
@@ -31,10 +29,13 @@ export default class Email extends HtmlInput {
   }
 
   getBadges() {
+    const badges    = super.getBadges();
     const {properties: {notificationId}} = this.props;
 
     if (!notificationId) {
-      return <Badge label="No Template" />;
+      badges.push(<Badge key={"template"} label="No Template" />);
     }
+
+    return badges;
   }
 }

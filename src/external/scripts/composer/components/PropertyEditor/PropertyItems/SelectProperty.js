@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
+import React from "react";
 import BasePropertyItem from "./BasePropertyItem";
 
 export default class SelectProperty extends BasePropertyItem {
@@ -20,7 +20,7 @@ export default class SelectProperty extends BasePropertyItem {
       PropTypes.shape({
         key: PropTypes.node.isRequired,
         value: PropTypes.node.isRequired,
-      })
+      }),
     ),
     optionGroups: PropTypes.arrayOf(
       PropTypes.shape({
@@ -29,25 +29,30 @@ export default class SelectProperty extends BasePropertyItem {
           PropTypes.shape({
             key: PropTypes.node.isRequired,
             value: PropTypes.node.isRequired,
-          })
+          }),
         ).isRequired,
-      })
+      }),
     ),
   };
 
   renderInput() {
-    const {name, readOnly, disabled, onChangeHandler, value, className, isNumeric, couldBeNumeric, emptyOption, options, optionGroups} = this.props;
+    const {
+            name, readOnly, disabled, onChangeHandler, value,
+            className, isNumeric, couldBeNumeric, emptyOption,
+            options, optionGroups, nullable,
+          } = this.props;
 
     return (
       <div className="select">
         <select
           className={className}
           name={name}
-          value={value}
+          value={value ? value : ''}
           readOnly={readOnly}
           disabled={disabled}
           data-is-numeric={!!isNumeric}
           data-could-be-numeric={!!couldBeNumeric}
+          data-nullable={!!nullable}
           onChange={onChangeHandler}
         >
           {emptyOption && <option value={isNumeric ? 0 : ""}>{emptyOption}</option>}
