@@ -235,9 +235,9 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
 
         try {
             $headers = [
-                'Authorization' => 'Bearer ' . $this->getAccessToken(),
-                'Accept'        => 'application/json',
-                'Content-Type' => 'application/json',
+                'Authorization'      => 'Bearer ' . $this->getAccessToken(),
+                'Accept'             => 'application/json',
+                'Content-Type'       => 'application/json',
                 'Sforce-Auto-Assign' => $setOwner ? 'TRUE' : 'FALSE',
             ];
 
