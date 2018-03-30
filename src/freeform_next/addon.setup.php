@@ -25,7 +25,7 @@ if (!defined('FREEFORM_EXPRESS')) {
     define('FREEFORM_PRO', 'pro');
 }
 
-if (FreeformHelper::get('version') !== FREEFORM_LITE && !file_exists(__DIR__ . '/ft_check')) {
+if (FreeformHelper::get('version') !== FREEFORM_EXPRESS && !file_exists(__DIR__ . '/ft_check')) {
     $ftExists = ee()->db->where(['name' => 'freeform_next'])->get('exp_fieldtypes')->num_rows();
     if (!$ftExists) {
         ee()->db->insert('exp_fieldtypes', [
