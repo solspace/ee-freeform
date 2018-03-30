@@ -9,6 +9,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
+use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
+
 require_once __DIR__ . '/helper_functions.php';
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/Library/Helpers/FreeformHelper.php';
@@ -23,11 +25,25 @@ if (!defined('FREEFORM_EXPRESS')) {
     define('FREEFORM_PRO', 'pro');
 }
 
+if (FreeformHelper::get('version') !== FREEFORM_LITE && !file_exists(__DIR__ . '/ft_check')) {
+    $ftExists = ee()->db->where(['name' => 'freeform_next'])->get('exp_fieldtypes')->num_rows();
+    if (!$ftExists) {
+        ee()->db->insert('exp_fieldtypes', [
+            'name'                => 'freeform_next',
+            'version'             => '6.0.1',
+            'settings'            => 'YTowOnt9',
+            'has_global_settings' => 'n',
+        ]);
+    }
+
+    touch(__DIR__ . '/ft_check');
+}
+
 return [
     'author'         => 'Solspace',
     'author_url'     => 'https://solspace.com/expressionengine/freeform',
     'docs_url'       => 'https://solspace.com/expressionengine/freeform/docs',
-    'name'           => \Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper::get('name'),
+    'name'           => FreeformHelper::get('name'),
     'module_name'    => 'Freeform_next',
     'description'    => 'The most intuitive and powerful form builder for ExpressionEngine.',
     'version'        => '1.6.0',
