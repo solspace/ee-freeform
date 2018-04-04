@@ -15,14 +15,44 @@ use Guzzle\Http\Client;
 use Guzzle\Http\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
+use Solspace\Addons\FreeformNext\Library\Integrations\IntegrationStorageInterface;
+use Solspace\Addons\FreeformNext\Library\Integrations\MailingLists\AbstractMailingListIntegration;
 use Solspace\Addons\FreeformNext\Library\Integrations\MailingLists\DataObjects\ListObject;
-use Solspace\Addons\FreeformNext\Library\Integrations\MailingLists\MailingListOAuthConnector;
-use Solspace\Addons\FreeformNext\Library\Logging\LoggerInterface;
+use Solspace\Addons\FreeformNext\Library\Integrations\SettingBlueprint;
 
-class ConstantContact extends MailingListOAuthConnector
+class ConstantContact extends AbstractMailingListIntegration
 {
     const TITLE        = 'Constant Contact';
     const LOG_CATEGORY = 'ConstantContact';
+
+    const SETTING_API_KEY      = 'api_key';
+    const SETTING_ACCESS_TOKEN = 'access_token';
+
+    /**
+     * Returns a list of additional settings for this integration
+     * Could be used for anything, like - AccessTokens
+     *
+     * @return SettingBlueprint[]
+     */
+    public static function getSettingBlueprints()
+    {
+        return [
+            new SettingBlueprint(
+                SettingBlueprint::TYPE_TEXT,
+                self::SETTING_API_KEY,
+                'API Key',
+                'Enter your App API key here.',
+                true
+            ),
+            new SettingBlueprint(
+                SettingBlueprint::TYPE_TEXT,
+                self::SETTING_ACCESS_TOKEN,
+                'Access Token',
+                'Enter your access token here.',
+                true
+            ),
+        ];
+    }
 
     /**
      * Returns the MailingList service provider short name
@@ -43,8 +73,8 @@ class ConstantContact extends MailingListOAuthConnector
      */
     public function checkConnection()
     {
-        $client   = new Client();
-        $client->setDefaultOption('query', ['api_key' => $this->getClientId()]);
+        $client = new Client();
+        $client->setDefaultOption('query', ['api_key' => $this->getApiKey()]);
 
         $endpoint = $this->getEndpoint('/account/info');
 
@@ -68,6 +98,32 @@ class ConstantContact extends MailingListOAuthConnector
         }
     }
 
+    public function initiateAuthentication()
+    {
+    }
+
+    /**
+     * @return string
+     * @throws IntegrationException
+     */
+    public function fetchAccessToken()
+    {
+        return $this->getSetting(self::SETTING_ACCESS_TOKEN);
+    }
+
+    /**
+     * Perform anything necessary before this integration is saved
+     *
+     * @param IntegrationStorageInterface $model
+     *
+     * @throws IntegrationException
+     */
+    public function onBeforeSave(IntegrationStorageInterface $model)
+    {
+        $model->updateAccessToken($this->getSetting(self::SETTING_ACCESS_TOKEN));
+        $model->updateSettings($this->getSettings());
+    }
+
     /**
      * Push emails to a specific mailing list for the service provider
      *
@@ -81,7 +137,7 @@ class ConstantContact extends MailingListOAuthConnector
     public function pushEmails(ListObject $mailingList, array $emails, array $mappedValues)
     {
         $client = new Client();
-        $client->setDefaultOption('query', ['api_key' => $this->getClientId()]);
+        $client->setDefaultOption('query', ['api_key' => $this->getApiKey()]);
 
         try {
             $emailAddresses = [];
@@ -136,8 +192,8 @@ class ConstantContact extends MailingListOAuthConnector
      */
     protected function fetchLists()
     {
-        $client   = new Client();
-        $client->setDefaultOption('query', ['api_key' => $this->getClientId()]);
+        $client = new Client();
+        $client->setDefaultOption('query', ['api_key' => $this->getApiKey()]);
 
         $endpoint = $this->getEndpoint('/lists');
 
@@ -220,22 +276,11 @@ class ConstantContact extends MailingListOAuthConnector
     }
 
     /**
-     * URL pointing to the OAuth2 authorization endpoint
-     *
      * @return string
+     * @throws IntegrationException
      */
-    protected function getAuthorizeUrl()
+    protected function getApiKey()
     {
-        return 'https://oauth2.constantcontact.com/oauth2/oauth/siteowner/authorize';
-    }
-
-    /**
-     * URL pointing to the OAuth2 access token endpoint
-     *
-     * @return string
-     */
-    protected function getAccessTokenUrl()
-    {
-        return 'https://oauth2.constantcontact.com/oauth2/oauth/token';
+        return $this->getSetting(self::SETTING_API_KEY);
     }
 }
