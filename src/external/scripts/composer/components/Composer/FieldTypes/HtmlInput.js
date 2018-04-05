@@ -11,7 +11,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from "react";
 import { slugify, underscored } from "underscore.string";
-import { TEXT } from "../../../constants/FieldTypes";
+import { TEXT, MAILING_LIST } from "../../../constants/FieldTypes";
 import Badge from "./Components/Badge"
 import Instructions from "./Components/Instructions";
 import Label from "./Components/Label";
@@ -106,9 +106,9 @@ export default class HtmlInput extends Component {
    * Return any Badge objects if applicable
    */
   getBadges() {
-    const { properties: { handle } } = this.props;
+    const { properties: { handle, type } } = this.props;
 
-    if (!handle) {
+    if (!handle && type !== MAILING_LIST) {
       return [
         <Badge key={"handle"} label={"Handle is not set"} type={Badge.WARNING}/>,
       ]
