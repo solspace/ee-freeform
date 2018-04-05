@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.6.1 (April 4, 2018) <a href="#v1-6-1" id="v1-6-1" class="docs-anchor">#</a>
+* Updated Constant Contact API integration to no longer use OAuth and fixed a bug with it not connecting correctly.
+* Fixed a bug where upgrading from Express edition to Lite/Pro edition would not install the Freeform fieldtype for channel entries.
+
 ### 1.6.0 (March 29, 2018) <a href="#v1-6-0" id="v1-6-0" class="docs-anchor">#</a>
 * Added Pipedrive CRM integration for Freeform Pro edition.
 * Added new settings for Salesforce CRM integration for assignment rules and accounts with custom URLs in Salesforce.
