@@ -26,3 +26,6 @@ Includes support for the following:
 	* Click into the newly created integration.
 	* Confirm that there is green circle with **Authorized** in the middle of the page.
 	* That's it! You can now use this integration inside Composer.
+
+If you want to specify which user and/or deal stage the leads go into, you can specify the unique ID's for each of those in the **User ID** and **Stage ID** fields, but this is optional. There seems to be no visual way in Pipedrive to see what the ID's are, so you'll likely need to do something like right-clicking on a Stage name / User name link to view the ID in a URL. So for example, to get the Stage ID, go to the **Settings** area and click on **Pipelines**. Right-click on a stage name and copy the link. You'll get something like:
+`https://yourcompany.pipedrive.com/stages/edit/3.json` (where `3` is the stage ID in this case). The stage ID is unique, so Pipedrive will automatically know which pipeline you're referring to when you specify the stage ID.
