@@ -14,7 +14,7 @@ Our understanding of GDPR compliance within the context of Freeform, is that you
 
 It's also worth noting that not all types of forms require consent. If you're conducting an anonymous survey, quiz or poll, that does not collect any personally identifying information, you likely shouldn't need to worry about GDPR.
 
-That said, updating your forms to be compliant shouldn't be too much work to do. Just follow this guide below:
+That said, updating your forms to be compliant shouldn't be too much work. Just follow this guide below:
 
 
 - [Definition of Stored Data](#stored-data)
