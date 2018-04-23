@@ -475,7 +475,7 @@ class FormValueContext implements \JsonSerializable
 
         $hashedPageIndex = $this->hashPageIndex();
 
-        return sprintf(
+        $hash = sprintf(
             '%s%s%s%s%s',
             $formIdHash,
             self::FORM_HASH_DELIMITER,
@@ -483,6 +483,9 @@ class FormValueContext implements \JsonSerializable
             self::FORM_HASH_DELIMITER,
             $payload
         );
+        $hash = htmlspecialchars($hash, ENT_QUOTES, 'UTF-8');
+
+        return $hash;
     }
 
     /**
