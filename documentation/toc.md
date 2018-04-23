@@ -18,6 +18,7 @@
 	* [Exporting](exporting.md)
 	* [Spam Protection](spam-protection.md)
 	* [Channel Fieldtype](channel-fieldtype.md)
+	* [GDPR Compliance](gdpr-compliance.md)
 	* [Switching from Freeform Classic](switching-from-classic.md)
 
 * ### API Integrations
