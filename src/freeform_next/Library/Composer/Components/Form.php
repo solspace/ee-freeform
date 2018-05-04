@@ -611,16 +611,17 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         $random = time() . mt_rand(111, 999) . (time() + 999);
         $hash   = substr(sha1($random), 0, 6);
 
-        $honeypot = $this->getHoneypot();
-        $output   = '<input '
+        $honeypot     = $this->getHoneypot();
+        $honeypotName = $honeypot->getName();
+        $output       = '<input '
             . 'type="text" '
             . 'value="' . $hash . '" '
-            . 'id="' . $honeypot->getName() . '" '
-            . 'name="' . $honeypot->getName() . '" '
+            . 'id="' . $honeypotName . '" '
+            . 'name="' . $honeypotName . '" '
             . '/>';
 
         $output = '<div style="position: absolute !important; width: 0 !important; height: 0 !important; overflow: hidden !important;" aria-hidden="true">'
-            . '<label>Leave this field blank</label>'
+            . '<label for="' . $honeypotName . '">Leave this field blank</label>'
             . $output
             . '</div>';
 
