@@ -25,7 +25,8 @@ if (!defined('FREEFORM_EXPRESS')) {
     define('FREEFORM_PRO', 'pro');
 }
 
-if (FreeformHelper::get('version') !== FREEFORM_EXPRESS && !file_exists(__DIR__ . '/ft_check')) {
+$cacheDir = PATH_CACHE . '/freeform_next';
+if (FreeformHelper::get('version') !== FREEFORM_EXPRESS && !file_exists($cacheDir . '/ft_check')) {
     $ftExists = ee()->db->where(['name' => 'freeform_next'])->get('exp_fieldtypes')->num_rows();
     if (!$ftExists) {
         ee()->db->insert('exp_fieldtypes', [
@@ -36,7 +37,14 @@ if (FreeformHelper::get('version') !== FREEFORM_EXPRESS && !file_exists(__DIR__ 
         ]);
     }
 
-    touch(__DIR__ . '/ft_check');
+
+    if (!file_exists($cacheDir)) {
+        if (@mkdir($cacheDir) || is_dir($cacheDir)) {
+            @touch($cacheDir . '/ft_check');
+        }
+    } else {
+        @touch($cacheDir . '/ft_check');
+    }
 }
 
 return [
