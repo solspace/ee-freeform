@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.6.2 (April 25, 2018) <a href="#v1-6-2" id="v1-6-2" class="docs-anchor">#</a>
+* Fixed an XSS security vulnerability with submitting forms.
+* Fixed a bug where a 'Handle Missing' error would display incorrectly for Mailing List fields in Composer layout.
+
 ### 1.6.1 (April 4, 2018) <a href="#v1-6-1" id="v1-6-1" class="docs-anchor">#</a>
 * Updated Constant Contact API integration to no longer use OAuth and fixed a bug with it not connecting correctly.
 * Fixed a bug where upgrading from Express edition to Lite/Pro edition would not install the Freeform fieldtype for channel entries.
