@@ -159,6 +159,34 @@ class FormsService implements FormHandlerInterface
     }
 
     /**
+     * @return null|string
+     */
+    public function getSubmitUrl()
+    {
+        try {
+            $actionId = ee()->db
+                ->where(
+                    array(
+                        'class'  => 'Freeform_next',
+                        'method' => 'submitForm',
+                    )
+                )
+                ->get('actions')
+                ->row()
+                ->action_id;
+        } catch (\Exception $e) {
+            return null;
+        }
+
+        return sprintf(
+            '%s%s?ACT=%d',
+            ee()->config->item('base_url'),
+            ee()->config->item('site_index'),
+            $actionId
+        );
+    }
+
+    /**
      * @return SettingsService
      */
     private function getSettingsService()

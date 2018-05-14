@@ -19,6 +19,8 @@ class TemplateHelper
      */
     public static function renderString($string, array $variables = null)
     {
+        self::loadTemplateLib();
+
         return ee()->TMPL->parse_variables($string, [$variables]);
     }
 
@@ -72,10 +74,22 @@ class TemplateHelper
         $dataTransformer = new FormToTagDataTransformer($form, $string, $skipHelperFields);
         $string          = $dataTransformer->getOutputWithoutWrappingFormTags();
 
+        self::loadTemplateLib();
+
         ee()->TMPL->parse($string);
         $string = ee()->TMPL->template;
         $string = ee()->TMPL->parse_globals($string);
 
         return $string;
+    }
+
+    /**
+     * Loads the TMPL if it's not initialized
+     */
+    private static function loadTemplateLib()
+    {
+        if (!isset(ee()->TMPL)) {
+            ee()->load->library('template', null, 'TMPL');
+        }
     }
 }

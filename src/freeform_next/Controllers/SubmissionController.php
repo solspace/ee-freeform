@@ -452,7 +452,7 @@ class SubmissionController extends Controller
                                 if (!$asset) {
                                     continue;
                                 }
-                                
+
                                 $content .= '<div>';
                                 $content .= '<div style="margin: 5px 0;">' . $asset->file_name . '</div>';
                                 $content .= '<div class="toolbar-wrap"><ul class="toolbar">';

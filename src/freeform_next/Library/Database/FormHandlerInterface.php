@@ -48,4 +48,9 @@ interface FormHandlerInterface
      * @return string
      */
     public function addScriptsToPage(Form $form);
+
+    /**
+     * @return string|null
+     */
+    public function getSubmitUrl();
 }

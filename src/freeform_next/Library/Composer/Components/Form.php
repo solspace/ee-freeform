@@ -537,7 +537,14 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         $classAttribute = $classAttribute ? ' class="' . $classAttribute . '"' : '';
 
         $actionAttribute = $customAttributes->getAction();
-        $actionAttribute = $actionAttribute ? ' action="' . $actionAttribute . '"' : '';
+        if ($actionAttribute) {
+            $actionAttribute = ' action="' . $actionAttribute . '"';
+        } else {
+            $submitUrl = $this->formHandler->getSubmitUrl();
+            if ($submitUrl) {
+                $actionAttribute = ' action="' . $submitUrl . '"';
+            }
+        }
 
         $output = sprintf(
                 '<form %s%s%s%s%s%s%s>',
