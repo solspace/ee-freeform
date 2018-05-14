@@ -76,6 +76,9 @@ class CustomFormAttributes extends AbstractAttributes
     /** @var array */
     protected $inputAttributes;
 
+    /** @var bool */
+    protected $useActionUrl;
+
     /**
      * @return string
      */
@@ -226,6 +229,24 @@ class CustomFormAttributes extends AbstractAttributes
     public function getUseRequiredAttribute()
     {
         return $this->useRequiredAttribute;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUseActionUrl()
+    {
+        $val = $this->useActionUrl;
+        if (
+            $val === null ||
+            $val === false ||
+            strtolower($val) === 'n' ||
+            strtolower($val) === 'no'
+        ) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

@@ -81,8 +81,8 @@ class Freeform_Next extends Plugin
             $handles = $this->getParam('form_name');
         }
 
-        $transformer      = new FormTransformer();
-        $forms            = FormRepository::getInstance()->getAllForms($ids, $handles);
+        $transformer = new FormTransformer();
+        $forms       = FormRepository::getInstance()->getAllForms($ids, $handles);
 
         $formIds = [];
         foreach ($forms as $form) {
@@ -243,6 +243,11 @@ class Freeform_Next extends Plugin
         $handle = $this->getParam('form');
         if (!$handle) {
             $handle = $this->getParam('form_name');
+        }
+
+        $hash = $this->getPost(FormValueContext::FORM_HASH_KEY, null);
+        if (null !== $hash) {
+            $this->submitForm();
         }
 
         $formModel = FormRepository::getInstance()->getFormByIdOrHandle($id ? $id : $handle);

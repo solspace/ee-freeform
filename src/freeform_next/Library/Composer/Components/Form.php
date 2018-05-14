@@ -539,7 +539,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         $actionAttribute = $customAttributes->getAction();
         if ($actionAttribute) {
             $actionAttribute = ' action="' . $actionAttribute . '"';
-        } else {
+        } else if ($customAttributes->isUseActionUrl()) {
             $submitUrl = $this->formHandler->getSubmitUrl();
             if ($submitUrl) {
                 $actionAttribute = ' action="' . $submitUrl . '"';
