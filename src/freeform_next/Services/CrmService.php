@@ -18,6 +18,7 @@ use Solspace\Addons\FreeformNext\Library\Database\CRMHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\CRMIntegrationNotFoundException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
+use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Library\Integrations\AbstractIntegration;
 use Solspace\Addons\FreeformNext\Library\Integrations\CRM\AbstractCRMIntegration;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
@@ -265,9 +266,17 @@ class CrmService implements CRMHandlerInterface
             }
         }
 
+        if (!ExtensionHelper::call(ExtensionHelper::HOOK_CRM_BEFORE_PUSH, $integration, $objectValues)) {
+            return false;
+        }
+
         if (!empty($objectValues)) {
             try {
-                return $integration->pushObject($objectValues);
+                $result = $integration->pushObject($objectValues);
+
+                ExtensionHelper::call(ExtensionHelper::HOOK_CRM_AFTER_PUSH, $integration, $objectValues);
+
+                return $result;
             } catch (BadResponseException $e) {
                 if ($integration instanceof TokenRefreshInterface) {
                     if ($integration->refreshToken() && $integration->isAccessTokenUpdated()) {
@@ -275,7 +284,11 @@ class CrmService implements CRMHandlerInterface
                             $this->updateAccessToken($integration);
 
                             try {
-                                return $integration->pushObject($objectValues);
+                                $result = $integration->pushObject($objectValues);
+
+                                ExtensionHelper::call(ExtensionHelper::HOOK_CRM_AFTER_PUSH, $integration, $objectValues);
+
+                                return $result;
                             } catch (\Exception $e) {
                                 $logger->log(LoggerInterface::LEVEL_ERROR, $e->getMessage());
                             }
@@ -300,7 +313,7 @@ class CrmService implements CRMHandlerInterface
     public function getAllCrmServiceProviders()
     {
         if (null === self::$integrations) {
-            $interface = 'Solspace\Addons\FreeformNext\Library\Integrations\CRM\CRMIntegrationInterface';
+            $interface    = 'Solspace\Addons\FreeformNext\Library\Integrations\CRM\CRMIntegrationInterface';
             $integrations = $validIntegrations = [];
 
             $addonIntegrations = [];
