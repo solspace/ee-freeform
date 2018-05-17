@@ -1,6 +1,6 @@
 # Changelog
 
-### 1.6.3 (May XX, 2018) <a href="#v1-6-3" id="v1-6-3" class="docs-anchor">#</a>
+### 1.6.3 (May 17, 2018) <a href="#v1-6-3" id="v1-6-3" class="docs-anchor">#</a>
 * Added `beforePush` and `afterPush` developer hooks for API integrations.
 * Added `use_action_url="yes"` parameter to Form tag as a workaround when loading a form with AJAX and submitting normally.
 * Fixed a bug where the Salesforce fetch token URL regex restriction was not allowing for less common URLs to pass through.

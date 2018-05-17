@@ -31,7 +31,7 @@ if (FreeformHelper::get('version') !== FREEFORM_EXPRESS && !file_exists($cacheDi
     if (!$ftExists) {
         ee()->db->insert('exp_fieldtypes', [
             'name'                => 'freeform_next',
-            'version'             => '1.6.2',
+            'version'             => '1.6.3',
             'settings'            => 'YTowOnt9',
             'has_global_settings' => 'n',
         ]);

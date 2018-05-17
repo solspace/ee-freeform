@@ -48,6 +48,8 @@ If you're wanting to simply render a complete form based on Composer layout and 
 	* Overrides the `<form>` name attribute.
 * `action` <a href="#param-action" id="param-action" class="docs-anchor">#</a>
 	* Overrides the `<form>` action attribute.
+* `use_action_url="yes"` <a href="#param-useactionurl" id="param-useactionurl" class="docs-anchor">#</a>
+	* Available as a workaround when loading a form with AJAX and submitting normally, etc.
 * `override_values` <a href="#param-overridevalues" id="param-overridevalues" class="docs-anchor">#</a>
 	* Allows overriding the default values for any field:
 		* Specify the field `handle` and provide the custom value override as its value.

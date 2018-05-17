@@ -162,6 +162,17 @@ If you wish to extend the capabilities of Freeform, you can use any of the exten
 	*  Called after deleting an integration.
 	*  Contains these parameters:
 		*  `model` - the `IntegrationModel`
+*  `freeform_next_crm_before_push` <a href="#crm_before_push" id="crm_before_push" class="docs-anchor">#</a>
+	*  Called before pushing data to an integration.
+	*  Contains these parameters:
+		*  `integration` - the `AbstractIntegration`
+		*  `values` - a key-value object of all values to be pushed to the integration.
+*  `freeform_next_crm_after_push` <a href="#crm_after_push" id="crm_after_push" class="docs-anchor">#</a>
+	*  Called after pushing data to an integration.
+	*  Contains these parameters:
+		*  `integration` - the `AbstractIntegration`
+		*  `values` - a key-value object of all values that were pushed to the integration.
+
 
 ## Hooks for Freeform Mailing-List Integrations <a href="#hooks-freeform-mailing-list-integrations" id="hooks-freeform-mailing-list-integrations" class="docs-anchor">#</a>
 
