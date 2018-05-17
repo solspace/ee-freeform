@@ -98,4 +98,18 @@ class Freeform_next_ft extends EE_Fieldtype
     {
         return in_array($name, ['channel', 'fluid_field', 'grid'], true);
     }
+
+    /**
+     * @param mixed $data
+     *
+     * @return string
+     */
+    public function save($data)
+    {
+        if ((int) $data === 0) {
+            return parent::save(null);
+        }
+
+        return parent::save($data);
+    }
 }

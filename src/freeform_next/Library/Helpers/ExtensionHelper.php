@@ -41,6 +41,8 @@ class ExtensionHelper
     const HOOK_CRM_AFTER_SAVE    = 'freeform_next_crm_after_save';
     const HOOK_CRM_BEFORE_DELETE = 'freeform_next_crm_before_delete';
     const HOOK_CRM_AFTER_DELETE  = 'freeform_next_crm_after_delete';
+    const HOOK_CRM_BEFORE_PUSH   = 'freeform_next_crm_before_push';
+    const HOOK_CRM_AFTER_PUSH    = 'freeform_next_crm_after_push';
 
     const HOOK_MAILING_LISTS_BEFORE_SAVE   = 'freeform_next_mailing_lists_before_save';
     const HOOK_MAILING_LISTS_AFTER_SAVE    = 'freeform_next_mailing_lists_after_save';
