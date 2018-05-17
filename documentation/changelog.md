@@ -1,5 +1,14 @@
 # Changelog
 
+### 1.6.3 (May XX, 2018) <a href="#v1-6-3" id="v1-6-3" class="docs-anchor">#</a>
+* Added `beforePush` and `afterPush` developer hooks for API integrations.
+* Added `use_action_url="yes"` parameter to Form tag as a workaround when loading a form with AJAX and submitting normally.
+* Fixed a bug where the Salesforce fetch token URL regex restriction was not allowing for less common URLs to pass through.
+* Fixed a bug where saving a channel entry with no Freeform form selected in the fieldtype would store a `0` instead of `NULL`.
+* Fixed a bug where viewing submissions in the CP with an upload field with missing files could result in an error shown.
+* Fixed a bug where the 'Express' edition check was writing files to the add-on directory and not the cache directory.
+* Fixed a bug where the hidden Spam honeypot field label was missing the 'for' attribute.
+
 ### 1.6.2 (April 25, 2018) <a href="#v1-6-2" id="v1-6-2" class="docs-anchor">#</a>
 * Fixed an XSS security vulnerability with submitting forms.
 * Fixed a bug where a 'Handle Missing' error would display incorrectly for Mailing List fields in Composer layout.
