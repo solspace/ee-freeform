@@ -40,10 +40,12 @@ class TemplateHelper
     ) {
         $form = clone $form;
 
+        $replaceValues = [
+            'date_created' => ee()->localize->now,
+        ];
+
         if ($submissionModel) {
             $submissionTransformer = new SubmissionTransformer();
-
-            $replaceValues = [];
             foreach ($form->getLayout()->getFields() as $field) {
                 if ($field instanceof NoStorageInterface) {
                     continue;
@@ -58,7 +60,6 @@ class TemplateHelper
             $string = self::renderString($string, $submissionTransformer->transformSubmission($submissionModel));
             $string = self::renderString($string, $replaceValues);
         } else {
-            $replaceValues = [];
             foreach ($form->getLayout()->getFields() as $field) {
                 if ($field instanceof NoStorageInterface || $field instanceof FileUploadInterface) {
                     continue;
