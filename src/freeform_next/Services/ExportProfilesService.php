@@ -2,6 +2,7 @@
 
 namespace Solspace\Addons\FreeformNext\Services;
 
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\TextareaField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
@@ -209,6 +210,33 @@ class ExportProfilesService
 
                 try {
                     $field = $form->getLayout()->getFieldById($matches[1]);
+
+                    if ($field instanceof FileUploadField) {
+                        $value = (array) json_decode($value ?: '[]', true);
+                        $combo = [];
+
+                        foreach ($value as $assetId) {
+                            /** @var File $asset */
+                            $asset = ee('Model')
+                                ->get('File')
+                                ->filter('file_id', (int) $assetId)
+                                ->first();
+
+                            if ($asset) {
+                                $assetValue = $asset->file_name;
+                                if ($asset->getAbsoluteURL()) {
+                                    $assetValue = $asset->getAbsoluteURL();
+                                }
+
+                                $combo[] = $assetValue;
+                            }
+                        }
+
+                        $data[$index][$fieldId] = implode(', ', $combo);
+
+                        continue;
+                    }
+
 
                     if ($field instanceof MultipleValueInterface) {
                         $value = json_decode($value ?: '[]', true);
