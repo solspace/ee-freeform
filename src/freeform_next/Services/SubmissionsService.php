@@ -85,7 +85,13 @@ class SubmissionsService implements SubmissionHandlerInterface
         $assetIds = [];
 
         foreach ($form->getLayout()->getFileUploadFields() as $field) {
-            $assetIds[] = $field->getValue();
+            $fieldAssetIds = $field->getValue();
+
+            foreach ($fieldAssetIds as $assetId) {
+                if (!in_array($assetId, $assetIds)) {
+                    $assetIds[] = $assetId;
+                }
+            }
         }
 
         if (empty($assetIds)) {
