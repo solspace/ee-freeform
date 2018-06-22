@@ -11,3 +11,4 @@ npm-debug.log
 /package-lock.json
 /Deploy.sh
 /src/freeform_next/ft_check
+.DS_Store

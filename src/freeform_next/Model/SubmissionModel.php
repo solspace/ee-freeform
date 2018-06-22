@@ -17,6 +17,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
+use Solspace\Addons\FreeformNext\Library\Helpers\TemplateHelper;
 
 /**
  * @property int       $id
@@ -100,6 +101,8 @@ class SubmissionModel extends Model
                 $submission->setFieldValue($key, $value);
             }
         }
+
+        $submission->setTitle($form, $fetchedValues);
 
         return $submission;
     }
@@ -296,6 +299,42 @@ class SubmissionModel extends Model
 
             $this->id = ee()->db->insert_id();
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTitleBlank()
+    {
+        if (
+            ctype_space($this->title) ||
+            empty($this->title)
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Form $form
+     * @param $savableFields
+     * @return $this
+     */
+    public function setTitle(Form $form, $savableFields)
+    {
+        $this->title = '';
+
+        if (!$form->isSubmissionTitleFormatBlank()) {
+            $this->title = TemplateHelper::renderStringWithForm($form->getSubmissionTitleFormat(), $form);
+            $this->title = TemplateHelper::renderString($this->title, $savableFields);
+
+            if ($this->isTitleBlank()) {
+                $this->title = TemplateHelper::renderString($form->getSubmissionTitleFormat(), $savableFields);
+            }
+        }
+
+        return $this;
     }
 
     /**
