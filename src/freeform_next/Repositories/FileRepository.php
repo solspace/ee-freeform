@@ -46,16 +46,19 @@ class FileRepository extends Repository
     public function getAllAssetSources()
     {
         $results = ee()->db
-            ->select('id, name')
+            ->select('id, name, site_id')
             ->from('exp_upload_prefs')
             ->where(
                 [
-                    'site_id'   => ee()->config->item('site_id'),
                     'module_id' => 0,
                 ]
             )
             ->get()
             ->result_array();
+
+        foreach ($results as $key => $assetSource) {
+            $results[$key]['name'] = $assetSource['name'] . ' (Site ID: ' . $assetSource['site_id'] . ')';
+        }
 
         return $results;
     }
