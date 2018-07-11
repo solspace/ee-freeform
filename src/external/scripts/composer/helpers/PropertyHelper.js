@@ -21,6 +21,7 @@ const validProperties = [
   "values",
   "options",
   "showAsRadio",
+  "showAsCheckboxes",
   "notificationId",
   "assetSourceId",
   "integrationId",
@@ -68,6 +69,9 @@ const validProperties = [
   "colorIdle",
   "colorHover",
   "colorSelected",
+  "source",
+  "target",
+  "configuration",
 ];
 
 export default class PropertyHelper {
@@ -85,8 +89,12 @@ export default class PropertyHelper {
   static getCleanProperties(properties) {
     let cleanProps = {};
     for (let key in properties) {
-      if (!properties.hasOwnProperty(key)) continue;
-      if (validProperties.indexOf(key) === -1) continue;
+      if (!properties.hasOwnProperty(key)) {
+        continue;
+      }
+      if (validProperties.indexOf(key) === -1) {
+        continue;
+      }
 
       cleanProps[key] = properties[key];
     }
@@ -101,9 +109,9 @@ export default class PropertyHelper {
    * @returns {Array}
    */
   static getNotificationList(notifications) {
-    const dbNotificationList = [];
+    const dbNotificationList       = [];
     const templateNotificationList = [];
-    const notificationList = [];
+    const notificationList         = [];
 
     // If notifications is an array - it contains only DB notifications
     if (notifications.constructor === Array) {
@@ -117,7 +125,9 @@ export default class PropertyHelper {
       // If it is an object - it might have mixed values
     } else if (typeof notifications === "object") {
       for (let key in notifications) {
-        if (!notifications.hasOwnProperty(key)) continue;
+        if (!notifications.hasOwnProperty(key)) {
+          continue;
+        }
         let notification = notifications[key];
 
         const data = {

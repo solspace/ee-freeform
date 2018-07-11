@@ -8,14 +8,15 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React from "react";
-import PropTypes from 'prop-types';
-import BasePropertyEditor from "./BasePropertyEditor";
-import OptionTable from "./Components/OptionTable/OptionTable";
-import TextProperty from "./PropertyItems/TextProperty";
-import TextareaProperty from "./PropertyItems/TextareaProperty";
-import CheckboxProperty from "./PropertyItems/CheckboxProperty";
-import CustomProperty from "./PropertyItems/CustomProperty";
+import PropTypes               from "prop-types";
+import React                   from "react";
+import BasePropertyEditor      from "./BasePropertyEditor";
+import OptionTable             from "./Components/OptionTable/OptionTable";
+import CheckboxProperty        from "./PropertyItems/CheckboxProperty";
+import CustomProperty          from "./PropertyItems/CustomProperty";
+import ExternalOptionsProperty from "./PropertyItems/ExternalOptionsProperty";
+import TextareaProperty        from "./PropertyItems/TextareaProperty";
+import TextProperty            from "./PropertyItems/TextProperty";
 
 export default class CheckboxGroup extends BasePropertyEditor {
   static contextTypes = {
@@ -29,11 +30,15 @@ export default class CheckboxGroup extends BasePropertyEditor {
       showCustomValues: PropTypes.bool.isRequired,
       values: PropTypes.array,
       options: PropTypes.array.isRequired,
+      source: PropTypes.string,
+      target: PropTypes.node,
+      configuration: PropTypes.object,
     }).isRequired,
   };
 
   render() {
-    const {properties: {label, handle, values, options, required, showCustomValues, instructions}} = this.context;
+    const { label, handle, values, options, required, showCustomValues, instructions } = this.context.properties;
+    const { source, target, configuration } = this.context.properties;
 
     return (
       <div>
@@ -74,17 +79,14 @@ export default class CheckboxGroup extends BasePropertyEditor {
 
         <hr />
 
-        <CustomProperty
-          label="Options"
-          instructions="Options for this checkbox group"
-          content={
-            <OptionTable
-              values={values}
-              options={options}
-              triggerCustomValues={this.update}
-              showCustomValues={showCustomValues}
-            />
-          }
+        <ExternalOptionsProperty
+          values={values}
+          customOptions={options}
+          showCustomValues={showCustomValues}
+          source={source}
+          target={target}
+          configuration={configuration}
+          onChangeHandler={this.update}
         />
       </div>
     );

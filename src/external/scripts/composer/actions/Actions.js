@@ -13,140 +13,161 @@ import * as ActionTypes from "../constants/ActionTypes";
 export function switchPage(index) {
   return {
     type: ActionTypes.SWITCH_PAGE,
-    index: index,
-  }
+    index,
+  };
 }
 
 export function addPage(index) {
   return {
     type: ActionTypes.ADD_PAGE,
-    index: index,
+    index,
     properties: {
       type: "page",
-      label: `Page ${index + 1}`
-    }
-  }
+      label: `Page ${index + 1}`,
+    },
+  };
 }
 
 export function removePage(index) {
   return {
     type: ActionTypes.REMOVE_PAGE,
     index,
-  }
+  };
 }
 
 export function switchHash(hash) {
   return {
     type: ActionTypes.SWITCH_HASH,
-    hash: hash,
-  }
+    hash,
+  };
 }
 
 export function addFieldToNewRow(hash, properties, pageIndex) {
   return {
     type: ActionTypes.ADD_FIELD_TO_NEW_ROW,
-    hash: hash,
-    properties: properties,
-    pageIndex: pageIndex,
-  }
+    hash,
+    properties,
+    pageIndex,
+  };
 }
 
 export function addColumnToRow(rowIndex, columnIndex, hash, properties, pageIndex) {
   return {
     type: ActionTypes.ADD_COLUMN_TO_ROW,
-    rowIndex: rowIndex,
-    columnIndex: columnIndex,
-    hash: hash,
-    properties: properties,
-    pageIndex: pageIndex,
-  }
+    rowIndex,
+    columnIndex,
+    hash,
+    properties,
+    pageIndex,
+  };
 }
 
-export function addColumnToNewRow(rowIndex, hash, properties, pageIndex) {
+export function addColumnToNewRow(rowIndex, hash, properties, pageIndex, prevPageIndex = null) {
   return {
     type: ActionTypes.ADD_COLUMN_TO_NEW_ROW,
-    rowIndex: rowIndex,
-    hash: hash,
-    properties: properties,
-    pageIndex: pageIndex,
-  }
+    rowIndex,
+    hash,
+    properties,
+    pageIndex,
+    prevPageIndex,
+  };
 }
 
 export function repositionColumn(columnIndex, rowIndex, newColumnIndex, newRowIndex, pageIndex) {
   return {
     type: ActionTypes.REPOSITION_COLUMN,
-    columnIndex: columnIndex,
-    rowIndex: rowIndex,
-    newColumnIndex: newColumnIndex,
-    newRowIndex: newRowIndex,
-    pageIndex: pageIndex,
-  }
+    columnIndex,
+    rowIndex,
+    newColumnIndex,
+    newRowIndex,
+    pageIndex,
+  };
 }
 
 export function removeColumn(hash, columnIndex, rowIndex, pageIndex) {
   return {
     type: ActionTypes.REMOVE_COLUMN,
-    columnIndex: columnIndex,
-    rowIndex: rowIndex,
-    pageIndex: pageIndex,
-    hash: hash,
-  }
+    columnIndex,
+    rowIndex,
+    pageIndex,
+    hash,
+  };
 }
 
 export function updateProperty(hash, keyValueObject) {
   return {
     type: ActionTypes.UPDATE_PROPERTY,
-    hash: hash,
-    keyValueObject: keyValueObject,
-  }
+    hash,
+    keyValueObject,
+  };
+}
+
+export function resetProperties(hash, defaultProperties) {
+  return {
+    type: ActionTypes.RESET_PROPERTIES,
+    hash,
+    defaultProperties,
+  };
 }
 
 export function removeProperty(hash) {
   return {
     type: ActionTypes.REMOVE_PROPERTY,
-    hash: hash,
-  }
+    hash,
+  };
 }
 
 export function addValueSet(hash) {
   return {
     type: ActionTypes.ADD_VALUE_SET,
-    hash: hash,
-  }
+    hash,
+  };
 }
 
 export function cleanUpValues(hash) {
   return {
     type: ActionTypes.CLEAN_UP_VALUES,
-    hash: hash,
-  }
+    hash,
+  };
 }
 
 export function updateValueSet(hash, index, value, label) {
   return {
     type: ActionTypes.UPDATE_VALUE_SET,
-    hash: hash,
-    index: index,
-    value: value,
-    label: label,
-  }
+    hash,
+    index,
+    value,
+    label,
+  };
 }
 
 export function updateIsChecked(hash, index, isChecked) {
   return {
     type: ActionTypes.UPDATE_IS_CHECKED,
-    hash: hash,
-    index: index,
-    isChecked: isChecked,
-  }
+    hash,
+    index,
+    isChecked,
+  };
 }
+
+export const insertValue = (hash, value) => ({
+  type: ActionTypes.INSERT_VALUE,
+  hash,
+  value,
+});
+
+export const removeValue = (hash, value) => ({
+  type: ActionTypes.REMOVE_VALUE,
+  hash,
+  value,
+});
 
 export function toggleCustomValues(hash, isChecked) {
   return {
     type: ActionTypes.TOGGLE_CUSTOM_VALUES,
-    hash: hash,
-    isChecked: isChecked,
-  }
+    hash,
+    isChecked,
+  };
 }
 
 export function reorderValueSet(hash, index, newIndex) {
@@ -155,7 +176,7 @@ export function reorderValueSet(hash, index, newIndex) {
     hash,
     index,
     newIndex,
-  }
+  };
 }
 
 export function removeValueSet(hash, index) {
@@ -163,14 +184,14 @@ export function removeValueSet(hash, index) {
     type: ActionTypes.REMOVE_VALUE_SET,
     hash,
     index,
-  }
+  };
 }
 
 export function updateFormId(formId) {
   return {
     type: ActionTypes.UPDATE_FORM_ID,
     id: formId,
-  }
+  };
 }
 
 export function addPlaceholderRow(rowIndex, targetHash) {
@@ -178,7 +199,7 @@ export function addPlaceholderRow(rowIndex, targetHash) {
     type: ActionTypes.ADD_PLACEHOLDER_ROW,
     rowIndex,
     targetHash,
-  }
+  };
 }
 
 export function addPlaceholderColumn(rowIndex, index, targetHash) {
@@ -187,11 +208,11 @@ export function addPlaceholderColumn(rowIndex, index, targetHash) {
     rowIndex,
     index,
     targetHash,
-  }
+  };
 }
 
 export function clearPlaceholders() {
   return {
     type: ActionTypes.CLEAR_PLACEHOLDERS,
-  }
+  };
 }

@@ -19,7 +19,6 @@ use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Library\Session\EERequest;
-use Solspace\Addons\FreeformNext\Library\Session\EESession;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
 use Solspace\Addons\FreeformNext\Model\FormModel;
 use Solspace\Addons\FreeformNext\Repositories\CrmRepository;
@@ -171,6 +170,7 @@ class FormController extends Controller
                         ->getSettingsModel()
                         ->isDbEmailTemplateStorage(),
                     'isWidgetsInstalled'       => false,
+                    'sourceTargets'            => $this->getSourceTargetsList(),
                 ]
             );
 
@@ -293,5 +293,105 @@ class FormController extends Controller
         }
 
         return new RedirectView($this->getLink(''));
+    }
+
+    /**
+     * @return array
+     */
+    private function getSourceTargetsList()
+    {
+        $entryTypes = (new Query())
+            ->select(['id', 'sectionId', 'name', 'hasTitleField', 'fieldLayoutId'])
+            ->from('{{%entrytypes}}')
+            ->orderBy(['sectionId' => SORT_ASC, 'sortOrder' => SORT_ASC])
+            ->all();
+
+        $fieldLayoutFields = (new Query())
+            ->select(['fieldId', 'layoutId'])
+            ->from('{{%fieldlayoutfields}}')
+            ->orderBy(['sortOrder' => SORT_ASC])
+            ->all();
+
+        $fieldByLayoutGroupId = [];
+        foreach ($fieldLayoutFields as $field) {
+            $layoutId = $field['layoutId'];
+
+            if (!isset($fieldByLayoutGroupId[$layoutId])) {
+                $fieldByLayoutGroupId[$layoutId] = [];
+            }
+
+            $fieldByLayoutGroupId[$layoutId][] = (int) $field['fieldId'];
+        }
+
+        $entryTypesBySectionId = [];
+        foreach ($entryTypes as $entryType) {
+            $fieldLayoutId = $entryType['fieldLayoutId'];
+            $fieldIds      = [];
+            if (isset($fieldByLayoutGroupId[$fieldLayoutId])) {
+                $fieldIds = $fieldByLayoutGroupId[$fieldLayoutId];
+            }
+
+            $entryTypesBySectionId[$entryType['sectionId']][] = [
+                'key'                 => $entryType['id'],
+                'value'               => $entryType['name'],
+                'hasTitleField'       => (bool) $entryType['hasTitleField'],
+                'fieldLayoutFieldIds' => $fieldIds,
+            ];
+        }
+        $sections    = \Craft::$app->sections->getAllSections();
+        $sectionList = [0 => ['key' => '', 'value' => Freeform::t('All Sections')]];
+
+        foreach ($sections as $group) {
+            $sectionList[] = [
+                'key'        => $group->id,
+                'value'      => $group->name,
+                'entryTypes' => $entryTypesBySectionId[$group->id] ?? [],
+            ];
+        }
+
+        $categories   = \Craft::$app->categories->getAllGroups();
+        $categoryList = [0 => ['key' => '', 'value' => Freeform::t('All Category Groups')]];
+        foreach ($categories as $group) {
+            $categoryList[] = [
+                'key'   => $group->id,
+                'value' => $group->name,
+            ];
+        }
+
+        $tags    = \Craft::$app->tags->getAllTagGroups();
+        $tagList = [0 => ['key' => '', 'value' => Freeform::t('All Tag Groups')]];
+        foreach ($tags as $group) {
+            $tagList[] = [
+                'key'   => $group->id,
+                'value' => $group->name,
+            ];
+        }
+
+        $userFieldLayoutId = (int) (new Query())
+            ->select('id')
+            ->from('fieldlayouts')
+            ->where(['type' => User::class])
+            ->scalar();
+        $userGroups        = \Craft::$app->userGroups->getAllGroups();
+        $userList          = [0 => ['key' => '', 'value' => Freeform::t('All User Groups')]];
+        foreach ($userGroups as $group) {
+            $fieldIds = [];
+            if (isset($fieldByLayoutGroupId[$userFieldLayoutId])) {
+                $fieldIds = $fieldByLayoutGroupId[$userFieldLayoutId];
+            }
+
+            $userList[] = [
+                'key'                 => $group->id,
+                'value'               => $group->name,
+                'fieldLayoutFieldIds' => $fieldIds,
+            ];
+        }
+
+        return [
+            ExternalOptionsInterface::SOURCE_ENTRIES    => $sectionList,
+            ExternalOptionsInterface::SOURCE_CATEGORIES => $categoryList,
+            ExternalOptionsInterface::SOURCE_TAGS       => $tagList,
+            ExternalOptionsInterface::SOURCE_USERS      => $userList,
+        ];
     }
 }

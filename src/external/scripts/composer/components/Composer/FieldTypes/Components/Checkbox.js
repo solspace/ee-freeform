@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
+import PropTypes    from "prop-types";
 import React        from "react";
-import PropTypes    from 'prop-types';
 import { CHECKBOX } from "../../../../constants/FieldTypes";
 import HtmlInput    from "../HtmlInput";
 
@@ -45,8 +45,8 @@ export default class Checkbox extends HtmlInput {
             checked={isChecked}
             {...this.getCleanProperties()}
           />
-          <span dangerouslySetInnerHTML={{ __html: label }}/>
-          {isRequired ? <span className="required"/> : ""}
+          <span dangerouslySetInnerHTML={{ __html: label }} />
+          {isRequired ? <span className="required" /> : ""}
           {this.props.children}
         </label>
       </div>

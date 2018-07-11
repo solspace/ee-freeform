@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import TemplateProperties from "./TemplateProperties";
+import React, { Component } from "react";
+import TemplateProperties   from "./TemplateProperties";
 
 export default class AddNewTemplate extends Component {
   static initialState = {
@@ -24,7 +24,7 @@ export default class AddNewTemplate extends Component {
   }
 
   render() {
-    const {showForm} = this.state;
+    const { showForm } = this.state;
 
     const className = "composer-add-new-template-wrapper" + (showForm ? " active" : "");
 
@@ -45,7 +45,7 @@ export default class AddNewTemplate extends Component {
 
   toggleForm() {
     this.setState({
-      showForm: !this.state.showForm
+      showForm: !this.state.showForm,
     });
   }
 }

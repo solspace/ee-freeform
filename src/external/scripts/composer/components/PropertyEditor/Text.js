@@ -8,12 +8,12 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes          from "prop-types";
+import React              from "react";
 import BasePropertyEditor from "./BasePropertyEditor";
-import TextProperty from "./PropertyItems/TextProperty";
-import TextareaProperty from "./PropertyItems/TextareaProperty";
-import CheckboxProperty from "./PropertyItems/CheckboxProperty";
+import CheckboxProperty   from "./PropertyItems/CheckboxProperty";
+import TextareaProperty   from "./PropertyItems/TextareaProperty";
+import TextProperty       from "./PropertyItems/TextProperty";
 
 export default class Text extends BasePropertyEditor {
   static contextTypes = {
@@ -31,7 +31,7 @@ export default class Text extends BasePropertyEditor {
   };
 
   render() {
-    const {properties: {label, value, handle, placeholder, required, instructions, maxLength}} = this.context;
+    const { properties: { label, value, handle, placeholder, required, instructions, maxLength } } = this.context;
 
     return (
       <div>
@@ -92,7 +92,7 @@ export default class Text extends BasePropertyEditor {
           label="Maximum Length"
           instructions="The maximum number of characters for this field."
           name="maxLength"
-          value={maxLength ? maxLength : ''}
+          value={maxLength ? maxLength : ""}
           isNumeric={true}
           onChangeHandler={this.update}
         />

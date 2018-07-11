@@ -8,9 +8,9 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import * as ActionTypes from "../constants/ActionTypes";
-import fetch from 'isomorphic-fetch'
-import {urlBuilder, notificator} from "../app";
+import fetch                       from "isomorphic-fetch";
+import { notificator, urlBuilder } from "../app";
+import * as ActionTypes            from "../constants/ActionTypes";
 
 const requestCrmIntegrations = () => ({
   type: ActionTypes.REQUEST_CRM_INTEGRATIONS,
@@ -30,7 +30,7 @@ const endRequestCrmIntegrations = () => ({
 });
 
 export function fetchCrmIntegrationsIfNeeded() {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     if (shouldFetchCrmIntegrations(getState())) {
       dispatch(requestCrmIntegrations());
 
@@ -48,14 +48,14 @@ export function fetchCrmIntegrationsIfNeeded() {
             notificator("error", error);
             dispatch(endRequestCrmIntegrations());
           } else {
-            dispatch(receiveCrmIntegrations(json))
+            dispatch(receiveCrmIntegrations(json));
           }
         });
     } else {
       dispatch(endRequestCrmIntegrations());
       Promise.resolve();
     }
-  }
+  };
 }
 
 const shouldFetchCrmIntegrations = (state) => {

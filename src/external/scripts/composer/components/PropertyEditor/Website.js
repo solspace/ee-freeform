@@ -8,12 +8,12 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React from "react";
-import PropTypes from "prop-types";
+import PropTypes          from "prop-types";
+import React              from "react";
 import BasePropertyEditor from "./BasePropertyEditor";
-import TextProperty from "./PropertyItems/TextProperty";
-import TextareaProperty from "./PropertyItems/TextareaProperty";
-import CheckboxProperty from "./PropertyItems/CheckboxProperty";
+import CheckboxProperty   from "./PropertyItems/CheckboxProperty";
+import TextareaProperty   from "./PropertyItems/TextareaProperty";
+import TextProperty       from "./PropertyItems/TextProperty";
 
 export default class Website extends BasePropertyEditor {
   static contextTypes = {
@@ -30,7 +30,7 @@ export default class Website extends BasePropertyEditor {
   };
 
   render() {
-    const {properties: {label, value, handle, placeholder, required, instructions}} = this.context;
+    const { properties: { label, value, handle, placeholder, required, instructions } } = this.context;
 
     return (
       <div>

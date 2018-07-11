@@ -8,10 +8,10 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
-import Joyride from "react-joyride";
-import {notificator} from "../app";
+import PropTypes            from "prop-types";
+import React, { Component } from "react";
+import Joyride              from "react-joyride";
+import { notificator }      from "../app";
 
 export default class Tutorials extends Component {
   static propTypes = {

@@ -29,8 +29,8 @@ import {invalidateCrmIntegrations, fetchCrmIntegrationsIfNeeded} from "../../act
     fetchCrmIntegrations: () => {
       dispatch(invalidateCrmIntegrations());
       dispatch(fetchCrmIntegrationsIfNeeded());
-    }
-  })
+    },
+  }),
 )
 export default class Integrations extends BasePropertyEditor {
   static propTypes = {
@@ -48,7 +48,7 @@ export default class Integrations extends BasePropertyEditor {
       type: PropTypes.string.isRequired,
       integrationId: PropTypes.node,
       mapping: PropTypes.any,
-    })
+    }),
   };
 
   constructor(props, context) {
@@ -58,11 +58,11 @@ export default class Integrations extends BasePropertyEditor {
   }
 
   render() {
-    const {integrationList, properties, integrationProperties: {integrationId, mapping}} = this.props;
+    const { integrationList, properties, integrationProperties: { integrationId, mapping } } = this.props;
 
-    const {isFetching, fetchCrmIntegrations} = this.props;
+    const { isFetching, fetchCrmIntegrations } = this.props;
 
-    let fieldList = [];
+    let fieldList            = [];
     const integrationOptions = [];
     integrationList.map(item => {
       integrationOptions.push({
@@ -77,15 +77,19 @@ export default class Integrations extends BasePropertyEditor {
 
     const formFields = [];
     for (let key in properties) {
-      if (!properties.hasOwnProperty(key)) continue;
+      if (!properties.hasOwnProperty(key)) {
+        continue;
+      }
 
       const prop = properties[key];
-      if (FieldTypes.INTEGRATION_SUPPORTED_TYPES.indexOf(prop.type) === -1) continue;
+      if (FieldTypes.INTEGRATION_SUPPORTED_TYPES.indexOf(prop.type) === -1) {
+        continue;
+      }
 
       formFields.push({
         handle: prop.handle,
         label: prop.label,
-      })
+      });
     }
 
     let mappingField = "";
@@ -133,8 +137,8 @@ export default class Integrations extends BasePropertyEditor {
   }
 
   updateIntegration(event) {
-    const {updateField} = this.context;
-    const integration   = event.target;
+    const { updateField } = this.context;
+    const integration     = event.target;
 
     const integrationId = parseInt(integration.value);
 

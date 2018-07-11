@@ -11,9 +11,9 @@
 import * as ActionTypes from "../constants/ActionTypes";
 
 const initialState = {
-    isFetching: false,
-    didInvalidate: false,
-    fields: [],
+  isFetching: false,
+  didInvalidate: false,
+  fields: [],
 };
 
 /**
@@ -25,25 +25,25 @@ const initialState = {
  * @returns {object}
  */
 export function fields(state = initialState, action) {
-    switch (action.type) {
-        case ActionTypes.REQUEST_FIELDS:
-            return state;
+  switch (action.type) {
+    case ActionTypes.REQUEST_FIELDS:
+      return state;
 
-        case ActionTypes.RECEIVE_FIELDS:
-            return {
-                ...state,
-                fields: action.fieldData
-            };
+    case ActionTypes.RECEIVE_FIELDS:
+      return {
+        ...state,
+        fields: action.fieldData,
+      };
 
-        case ActionTypes.INVALIDATE_FIELDS:
-            return {
-                ...state,
-                didInvalidate: true,
-            };
+    case ActionTypes.INVALIDATE_FIELDS:
+      return {
+        ...state,
+        didInvalidate: true,
+      };
 
-        default:
-            return state;
-    }
+    default:
+      return state;
+  }
 }
 
 /**
@@ -51,7 +51,7 @@ export function fields(state = initialState, action) {
  * @returns {Array}
  */
 export function specialFields(state = []) {
-    return state;
+  return state;
 }
 
 /**
@@ -59,7 +59,7 @@ export function specialFields(state = []) {
  * @returns {Array}
  */
 export function formStatuses(state = []) {
-    return state;
+  return state;
 }
 
 /**
@@ -67,7 +67,7 @@ export function formStatuses(state = []) {
  * @returns {Array}
  */
 export function assetSources(state = []) {
-    return state;
+  return state;
 }
 
 /**
@@ -75,5 +75,5 @@ export function assetSources(state = []) {
  * @returns {Array}
  */
 export function fileKinds(state = []) {
-    return state;
+  return state;
 }

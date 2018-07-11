@@ -8,9 +8,9 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
-import MappingRow from "./MappingRow";
+import PropTypes            from "prop-types";
+import React, { Component } from "react";
+import MappingRow           from "./MappingRow";
 
 export default class IntegrationMappingTable extends Component {
   static propTypes = {
@@ -62,7 +62,7 @@ export default class IntegrationMappingTable extends Component {
    * @returns {Array}
    */
   renderRows() {
-    const {fields, mapping, formFields} = this.props;
+    const { fields, mapping, formFields } = this.props;
 
     const children = [];
     fields.map((field, i) => {
@@ -75,26 +75,28 @@ export default class IntegrationMappingTable extends Component {
           formFields={formFields}
           mappedFormField={mapping && mapping[field.handle] ? mapping[field.handle] : ""}
           onChangeHandler={this.updateMappings}
-        />
-      )
+        />,
+      );
     });
 
     return children;
   }
 
   updateMappings() {
-    const {updateField} = this.context;
-    const selectList    = this.refs.items.querySelectorAll("select");
+    const { updateField } = this.context;
+    const selectList      = this.refs.items.querySelectorAll("select");
 
     const mapping = {};
     for (let i = 0; i < selectList.length; i++) {
       const select = selectList[i];
 
-      if (!select.value) continue;
+      if (!select.value) {
+        continue;
+      }
 
       mapping[select.name] = select.value;
     }
 
-    updateField({mapping: mapping});
+    updateField({ mapping: mapping });
   }
 }

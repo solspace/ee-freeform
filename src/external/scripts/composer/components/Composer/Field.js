@@ -8,28 +8,30 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import Checkbox from "./FieldTypes/CheckboxField";
-import CheckboxGroup from "./FieldTypes/CheckboxGroup";
-import Text from "./FieldTypes/Text";
-import Textarea from "./FieldTypes/Textarea";
-import Email from "./FieldTypes/Email";
-import Hidden from "./FieldTypes/Hidden";
-import Html from "./FieldTypes/Html";
-import Submit from "./FieldTypes/Submit";
-import RadioGroup from "./FieldTypes/RadioGroup";
-import Select from "./FieldTypes/Select";
-import DynamicRecipients from "./FieldTypes/DynamicRecipients";
-import MailingList from "./FieldTypes/MailingList";
-import File from "./FieldTypes/File";
-import Datetime from "./FieldTypes/Datetime";
-import Number from "./FieldTypes/Number";
-import Phone from "./FieldTypes/Phone";
-import Rating from "./FieldTypes/Rating";
-import Website from "./FieldTypes/Website";
-import Regex from "./FieldTypes/Regex";
-import Confirmation from "./FieldTypes/Confirmation";
+import PropTypes            from "prop-types";
+import React, { Component } from "react";
+import Checkbox             from "./FieldTypes/CheckboxField";
+import CheckboxGroup        from "./FieldTypes/CheckboxGroup";
+import Confirmation         from "./FieldTypes/Confirmation";
+import Datetime             from "./FieldTypes/Datetime";
+import DynamicRecipients    from "./FieldTypes/DynamicRecipients";
+import Email                from "./FieldTypes/Email";
+import File                 from "./FieldTypes/File";
+import Hidden               from "./FieldTypes/Hidden";
+import Html                 from "./FieldTypes/Html";
+import MailingList          from "./FieldTypes/MailingList";
+import MultipleSelect       from "./FieldTypes/MultipleSelect";
+import Number               from "./FieldTypes/Number";
+import Phone                from "./FieldTypes/Phone";
+import RadioGroup           from "./FieldTypes/RadioGroup";
+import Rating               from "./FieldTypes/Rating";
+import Recaptcha            from "./FieldTypes/Recaptcha";
+import Regex                from "./FieldTypes/Regex";
+import Select               from "./FieldTypes/Select";
+import Submit               from "./FieldTypes/Submit";
+import Text                 from "./FieldTypes/Text";
+import Textarea             from "./FieldTypes/Textarea";
+import Website              from "./FieldTypes/Website";
 
 const fieldTypes = {
   checkbox: Checkbox,
@@ -42,6 +44,7 @@ const fieldTypes = {
   submit: Submit,
   radio_group: RadioGroup,
   select: Select,
+  multiple_select: MultipleSelect,
   dynamic_recipients: DynamicRecipients,
   mailing_list: MailingList,
   file: File,
@@ -52,6 +55,7 @@ const fieldTypes = {
   website: Website,
   regex: Regex,
   confirmation: Confirmation,
+  recaptcha: Recaptcha,
 };
 
 export default class Field extends Component {
@@ -60,7 +64,7 @@ export default class Field extends Component {
     properties: PropTypes.shape({
       type: PropTypes.string.isRequired,
       id: PropTypes.number,
-      placeholder: PropTypes.string
+      placeholder: PropTypes.string,
     }).isRequired,
     hash: PropTypes.string.isRequired,
     index: PropTypes.number.isRequired,
@@ -80,12 +84,12 @@ export default class Field extends Component {
   });
 
   render() {
-    const {type, properties} = this.props;
+    const { type, properties } = this.props;
 
     if (fieldTypes[type]) {
       const DynamicClassName = fieldTypes[type];
 
-      return <DynamicClassName properties={properties}/>
+      return <DynamicClassName properties={properties} />;
     }
 
     return <div>Field type "{type}" not found</div>;

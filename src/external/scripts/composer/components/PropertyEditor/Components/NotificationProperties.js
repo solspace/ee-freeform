@@ -8,13 +8,13 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
-import ReactDOM from "react-dom";
-import {connect} from "react-redux";
-import {getHandleValue} from "../../../helpers/Utilities";
-import {fetchNotificationsIfNeeded, invalidateNotifications} from "../../../actions/Notifications";
-import fetch from "isomorphic-fetch";
+import fetch                                                   from "isomorphic-fetch";
+import PropTypes                                               from "prop-types";
+import React, { Component }                                    from "react";
+import ReactDOM                                                from "react-dom";
+import { connect }                                             from "react-redux";
+import { fetchNotificationsIfNeeded, invalidateNotifications } from "../../../actions/Notifications";
+import { getHandleValue }                                      from "../../../helpers/Utilities";
 
 @connect(
   null,
@@ -22,8 +22,8 @@ import fetch from "isomorphic-fetch";
     fetchNotifications: (hash, id) => {
       dispatch(invalidateNotifications());
       dispatch(fetchNotificationsIfNeeded(hash, id));
-    }
-  })
+    },
+  }),
 )
 export default class NotificationProperties extends Component {
   static initialState = {
@@ -66,9 +66,9 @@ export default class NotificationProperties extends Component {
   }
 
   render() {
-    const {name, handle, errors} = this.state;
-    const {toggleForm}           = this.props;
-    const {isDbEmailTemplateStorage} = this.context;
+    const { name, handle, errors }     = this.state;
+    const { toggleForm }               = this.props;
+    const { isDbEmailTemplateStorage } = this.context;
 
     return (
       <div className="composer-new-field-form">
@@ -118,7 +118,7 @@ export default class NotificationProperties extends Component {
   }
 
   updateName(event) {
-    const {target: {value}} = event;
+    const { target: { value } } = event;
     this.setState({
       name: value,
       handle: this.getHandle(value),
@@ -126,7 +126,7 @@ export default class NotificationProperties extends Component {
   }
 
   updateHandle(event) {
-    this.setState({handle: this.getHandle(event.target.value)});
+    this.setState({ handle: this.getHandle(event.target.value) });
   }
 
   /**
@@ -163,9 +163,9 @@ export default class NotificationProperties extends Component {
    * @returns {boolean}
    */
   addNotification() {
-    const {name, handle}                                                             = this.refs;
-    const {toggleForm, fetchNotifications}                                           = this.props;
-    const {csrf, notificator, createNotificationUrl, hash, isDbEmailTemplateStorage} = this.context;
+    const { name, handle }                                                             = this.refs;
+    const { toggleForm, fetchNotifications }                                           = this.props;
+    const { csrf, notificator, createNotificationUrl, hash, isDbEmailTemplateStorage } = this.context;
 
     const nameValue   = ReactDOM.findDOMNode(name).value;
     const handleValue = isDbEmailTemplateStorage ? ReactDOM.findDOMNode(handle).value : null;
@@ -193,7 +193,7 @@ export default class NotificationProperties extends Component {
 
     fetch(createNotificationUrl, {
       method: "post",
-      credentials: 'same-origin',
+      credentials: "same-origin",
       body: formData,
     })
       .then(response => response.json())
@@ -218,10 +218,10 @@ export default class NotificationProperties extends Component {
   }
 
   setErrors(errors) {
-    this.setState({errors: errors});
+    this.setState({ errors: errors });
   }
 
   cleanErrors() {
-    this.setState({errors: []});
+    this.setState({ errors: [] });
   }
 }

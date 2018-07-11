@@ -8,14 +8,14 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React from "react";
-import PropTypes from "prop-types";
+import PropTypes          from "prop-types";
+import React              from "react";
 import BasePropertyEditor from "./BasePropertyEditor";
-import TextProperty from "./PropertyItems/TextProperty";
-import TextareaProperty from "./PropertyItems/TextareaProperty";
-import CheckboxProperty from "./PropertyItems/CheckboxProperty";
-import SelectProperty from "./PropertyItems/SelectProperty";
-import CustomProperty from "./PropertyItems/CustomProperty";
+import CheckboxProperty   from "./PropertyItems/CheckboxProperty";
+import CustomProperty     from "./PropertyItems/CustomProperty";
+import SelectProperty     from "./PropertyItems/SelectProperty";
+import TextareaProperty   from "./PropertyItems/TextareaProperty";
+import TextProperty       from "./PropertyItems/TextProperty";
 
 export default class Number extends BasePropertyEditor {
   static contextTypes = {
@@ -40,11 +40,11 @@ export default class Number extends BasePropertyEditor {
   };
 
   render() {
-    const {properties: {label, value, handle, placeholder, required, instructions}} = this.context;
-    const {properties: {minLength, maxLength, minValue, maxValue}} = this.context;
-    const {properties: {decimalCount, decimalSeparator, thousandsSeparator, allowNegative}} = this.context;
+    const { properties: { label, value, handle, placeholder, required, instructions } }         = this.context;
+    const { properties: { minLength, maxLength, minValue, maxValue } }                          = this.context;
+    const { properties: { decimalCount, decimalSeparator, thousandsSeparator, allowNegative } } = this.context;
 
-    let decimalSeparatorInput = '';
+    let decimalSeparatorInput = "";
     if (decimalCount && parseInt(decimalCount)) {
       decimalSeparatorInput = (
         <SelectProperty
@@ -54,8 +54,8 @@ export default class Number extends BasePropertyEditor {
           value={decimalSeparator}
           onChangeHandler={this.update}
           options={[
-            {key: '.', value: '.'},
-            {key: ',', value: ','},
+            { key: ".", value: "." },
+            { key: ",", value: "," },
           ]}
         />
       );
@@ -131,14 +131,14 @@ export default class Number extends BasePropertyEditor {
         >
           <div className="composer-property-input composer-property-flex">
             <input name="minValue"
-                   value={minValue ? minValue : ''}
+                   value={minValue ? minValue : ""}
                    placeholder="Min"
                    className=""
                    onChange={this.update}
                    data-is-numeric={true}
             />
             <input name="maxValue"
-                   value={maxValue ? maxValue : ''}
+                   value={maxValue ? maxValue : ""}
                    placeholder="Max"
                    onChange={this.update}
                    data-is-numeric={true}
@@ -152,14 +152,14 @@ export default class Number extends BasePropertyEditor {
         >
           <div className="composer-property-input composer-property-flex">
             <input name="minLength"
-                   value={minLength ? minLength : ''}
+                   value={minLength ? minLength : ""}
                    placeholder="Min"
                    className=""
                    onChange={this.update}
                    data-is-numeric={true}
             />
             <input name="maxLength"
-                   value={maxLength ? maxLength : ''}
+                   value={maxLength ? maxLength : ""}
                    placeholder="Max"
                    onChange={this.update}
                    data-is-numeric={true}
@@ -173,7 +173,7 @@ export default class Number extends BasePropertyEditor {
           instructions="The number of decimal places allowed."
           name="decimalCount"
           placeholder="Leave blank for no decimals."
-          value={decimalCount}
+          value={decimalCount ? decimalCount : ""}
           isNumeric={true}
           onChangeHandler={this.update}
         />
@@ -188,9 +188,9 @@ export default class Number extends BasePropertyEditor {
           onChangeHandler={this.update}
           emptyOption="None"
           options={[
-            {key: ' ', value: 'Space'},
-            {key: ',', value: ','},
-            {key: '.', value: '.'},
+            { key: " ", value: "Space" },
+            { key: ",", value: "," },
+            { key: ".", value: "." },
           ]}
         />
       </div>

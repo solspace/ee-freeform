@@ -8,20 +8,20 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes from 'prop-types';
-import React from "react";
-import { connect } from "react-redux";
+import PropTypes       from "prop-types";
+import React           from "react";
+import { connect }     from "react-redux";
 import * as FieldTypes from "../../../constants/FieldTypes";
-import Badge from "./Components/Badge";
-import Option from "./Components/Option";
-import Radio from "./Components/Radio";
-import HtmlInput from "./HtmlInput";
+import Badge           from "./Components/Badge";
+import Option          from "./Components/Option";
+import Radio           from "./Components/Radio";
+import HtmlInput       from "./HtmlInput";
 
 @connect(
   (state) => ({
     hash: state.context.hash,
     composerProperties: state.composer.properties,
-  })
+  }),
 )
 export default class DynamicRecipients extends HtmlInput {
   static propTypes = {
@@ -31,7 +31,7 @@ export default class DynamicRecipients extends HtmlInput {
   };
 
   getClassName() {
-    return 'DynamicRecipients';
+    return "DynamicRecipients";
   }
 
   constructor(props, context) {
@@ -46,11 +46,11 @@ export default class DynamicRecipients extends HtmlInput {
   }
 
   getBadges() {
-    const badges             = super.getBadges();
+    const badges = super.getBadges();
     const { notificationId } = this.props.properties;
 
     if (!notificationId) {
-      badges.push(<Badge key={"template"} label="No Template" type={Badge.WARNING}/>);
+      badges.push(<Badge key={"template"} label="No Template" type={Badge.WARNING} />);
     }
 
     return badges;

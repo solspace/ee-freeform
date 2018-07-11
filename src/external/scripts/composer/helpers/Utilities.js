@@ -9,7 +9,7 @@
  */
 
 import Hashids from "hashids";
-import {underscored} from "underscore.string";
+import { underscored } from "underscore.string";
 
 const minHashLength = 9;
 const hashids       = new Hashids("composer", minHashLength);

@@ -8,21 +8,26 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import {combineReducers} from "redux";
-import {composer, context, formId} from "./Composer";
-import {fields, specialFields, formStatuses, assetSources, fileKinds} from "./Fields";
-import {notifications} from "./Notifications";
-import {mailingLists} from "./MailingLists";
-import {templates} from "./FormTemplates";
-import {placeholders} from "./Placeholders";
-import {integrations} from "./Integrations";
+import { combineReducers }                                              from "redux";
+import { composer, context, formId }                                    from "./Composer";
+import { customFields }                                                 from "./CustomFields";
+import { assetSources, fields, fileKinds, formStatuses, specialFields } from "./Fields";
+import { templates }                                                    from "./FormTemplates";
+import { generatedOptionLists }                                         from "./GeneratedOptionLists";
+import { integrations }                                                 from "./Integrations";
+import { mailingLists }                                                 from "./MailingLists";
+import { notifications }                                                from "./Notifications";
+import { placeholders }                                                 from "./Placeholders";
+import { sourceTargets }                                                from "./SourceTargets";
 
 export default combineReducers({
   formId,
   fields,
   specialFields,
   mailingLists,
+  sourceTargets,
   formStatuses,
+  generatedOptionLists,
   composer,
   context,
   notifications,
@@ -31,4 +36,5 @@ export default combineReducers({
   placeholders,
   integrations,
   fileKinds,
+  customFields,
 });

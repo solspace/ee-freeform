@@ -39,11 +39,11 @@ export default class CheckboxProperty extends BasePropertyItem {
   }
 
   renderInput() {
-    const {label, name, readOnly, disabled, onChangeHandler, className, checked, bold} = this.props;
+    const { label, name, readOnly, disabled, onChangeHandler, className, checked, bold } = this.props;
 
     const randId = Math.random().toString(36).substring(2, 9);
 
-    let style = {fontWeight: "normal"};
+    let style = { fontWeight: "normal" };
 
     if (!!bold) {
       style.fontWeight = "bold";

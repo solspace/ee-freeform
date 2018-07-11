@@ -32,8 +32,8 @@ import {invalidateMailingLists, fetchMailingListsIfNeeded} from "../../actions/M
     fetchMailingLists: () => {
       dispatch(invalidateMailingLists());
       dispatch(fetchMailingListsIfNeeded());
-    }
-  })
+    },
+  }),
 )
 export default class MailingList extends BasePropertyEditor {
   static propTypes = {
@@ -49,7 +49,7 @@ export default class MailingList extends BasePropertyEditor {
         source: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         label: PropTypes.string,
-      })
+      }),
     ).isRequired,
   };
 
@@ -76,12 +76,12 @@ export default class MailingList extends BasePropertyEditor {
   }
 
   render() {
-    const {hash, properties: {value, label, integrationId, resourceId, emailFieldHash, mapping, instructions}} = this.context;
+    const { hash, properties: { value, label, integrationId, resourceId, emailFieldHash, mapping, instructions } } = this.context;
 
-    const {composerProperties, mailingLists, fetchMailingLists, isFetching} = this.props;
+    const { composerProperties, mailingLists, fetchMailingLists, isFetching } = this.props;
 
     let selectedIntegration = null;
-    let lists = [];
+    let lists               = [];
 
     for (const integration of mailingLists) {
       if (integration.integrationId === integrationId) {
@@ -99,11 +99,15 @@ export default class MailingList extends BasePropertyEditor {
 
     let emailFields = [];
     for (let key in composerProperties) {
-      if (!composerProperties.hasOwnProperty(key)) continue;
+      if (!composerProperties.hasOwnProperty(key)) {
+        continue;
+      }
 
       const prop = composerProperties[key];
 
-      if (prop.type !== FieldTypes.EMAIL) continue;
+      if (prop.type !== FieldTypes.EMAIL) {
+        continue;
+      }
 
       emailFields.push({
         key: key,
@@ -120,10 +124,14 @@ export default class MailingList extends BasePropertyEditor {
 
       const formFields = [];
       for (let key in composerProperties) {
-        if (!composerProperties.hasOwnProperty(key)) continue;
+        if (!composerProperties.hasOwnProperty(key)) {
+          continue;
+        }
 
         const prop = composerProperties[key];
-        if (FieldTypes.INTEGRATION_SUPPORTED_TYPES.indexOf(prop.type) === -1) continue;
+        if (FieldTypes.INTEGRATION_SUPPORTED_TYPES.indexOf(prop.type) === -1) {
+          continue;
+        }
 
         formFields.push({
           handle: prop.handle,
@@ -223,8 +231,8 @@ export default class MailingList extends BasePropertyEditor {
   }
 
   updateIntegration(event) {
-    const {updateField} = this.context;
-    const resource      = event.target;
+    const { updateField } = this.context;
+    const resource        = event.target;
 
     const resourceId = resource.value;
 

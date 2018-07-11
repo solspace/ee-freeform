@@ -74,7 +74,7 @@ export default class Form extends BasePropertyEditor {
       templateList.push({
         key: item.fileName,
         value: item.name,
-      })
+      });
     });
 
     let optionGroups = [];

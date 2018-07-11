@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import {ROW, COLUMN} from "../constants/DraggableTypes";
-import {findDOMNode} from "react-dom";
+import { findDOMNode } from "react-dom";
+import { COLUMN, ROW } from "../constants/DraggableTypes";
 
 export const NEW_ROW_HANDLE_SIZE = 20;
 
@@ -23,8 +23,8 @@ export const NEW_ROW_HANDLE_SIZE = 20;
 export function handleColumnDrag(props, monitor, component) {
   const item = monitor.getItem();
 
-  const shouldShowRowPlaceholder = shouldCreateNewRow(props, monitor, component);
-  const {rowIndex, index, type}  = props.placeholders;
+  const shouldShowRowPlaceholder  = shouldCreateNewRow(props, monitor, component);
+  const { rowIndex, index, type } = props.placeholders;
 
   const newRowIndex = props.index;
 
@@ -155,9 +155,9 @@ export function handleOptionRowDrag(props, monitor, component) {
  * @returns {number|null}
  */
 function calculateNewColumnIndex(props, monitor, component) {
-  const item        = monitor.getItem();
-  const columnCount = props.columns.length;
-  const {rowIndex}  = props.placeholders;
+  const item         = monitor.getItem();
+  const columnCount  = props.columns.length;
+  const { rowIndex } = props.placeholders;
 
   if (columnCount >= 4 && props.index !== item.rowIndex) {
     return null;
@@ -190,7 +190,7 @@ function calculateNewColumnIndex(props, monitor, component) {
  * @returns {boolean|null}
  */
 function shouldCreateNewRow(props, monitor, component) {
-  const item        = monitor.getItem();
+  const item = monitor.getItem();
 
   if (item.columnCountInRow === 1 && (item.rowIndex === props.index || (item.rowIndex + 1) === props.index)) {
     return null;

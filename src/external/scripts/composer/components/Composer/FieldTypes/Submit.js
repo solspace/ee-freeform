@@ -8,17 +8,17 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React from "react";
-import PropTypes from 'prop-types';
-import HtmlInput from "./HtmlInput";
-import FieldHelper from "../../../helpers/FieldHelper";
-import * as SubmitPositions  from "../../../constants/SubmitPositions";
-import {connect} from "react-redux";
+import PropTypes            from "prop-types";
+import React                from "react";
+import { connect }          from "react-redux";
+import * as SubmitPositions from "../../../constants/SubmitPositions";
+import FieldHelper          from "../../../helpers/FieldHelper";
+import HtmlInput            from "./HtmlInput";
 
 @connect(
   state => ({
     layout: state.composer.layout,
-  })
+  }),
 )
 export default class Submit extends HtmlInput {
   static propTypes = {
@@ -37,11 +37,11 @@ export default class Submit extends HtmlInput {
   };
 
   getClassName() {
-    return 'Submit';
+    return "Submit";
   }
 
   render() {
-    const {layout, properties: {labelNext, labelPrev, disablePrev}} = this.props;
+    const { layout, properties: { labelNext, labelPrev, disablePrev } } = this.props;
 
     let {properties: {position}} = this.props;
     const {hash} = this.context;
@@ -71,7 +71,7 @@ export default class Submit extends HtmlInput {
   }
 
   getWrapperClassNames() {
-    let {properties: {position, disablePrev}} = this.props;
+    let { properties: { position, disablePrev } } = this.props;
 
     if (disablePrev) {
       const allowedPositions = [SubmitPositions.LEFT, SubmitPositions.RIGHT, SubmitPositions.CENTER];

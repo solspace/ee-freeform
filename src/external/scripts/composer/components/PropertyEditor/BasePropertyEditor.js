@@ -8,9 +8,9 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
-import {getHandleValue} from "../../helpers/Utilities";
+import PropTypes            from "prop-types";
+import React, { Component } from "react";
+import { getHandleValue }   from "../../helpers/Utilities";
 
 export default class BasePropertyEditor extends Component {
   static contextTypes = {
@@ -27,8 +27,8 @@ export default class BasePropertyEditor extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.update = this.update.bind(this);
-    this.updateHandle = this.updateHandle.bind(this);
+    this.update         = this.update.bind(this);
+    this.updateHandle   = this.updateHandle.bind(this);
     this.updateKeyValue = this.updateKeyValue.bind(this);
   }
 
@@ -38,8 +38,8 @@ export default class BasePropertyEditor extends Component {
    * @param event
    */
   update(event) {
-    const {updateField}       = this.context;
-    const {name, value, type} = event.target;
+    const { updateField }       = this.context;
+    const { name, value, type } = event.target;
 
     let postValue = value;
     switch (type) {
@@ -81,10 +81,10 @@ export default class BasePropertyEditor extends Component {
     }
 
     if (isNullable) {
-      postValue = postValue !== '' ? postValue : null;
+      postValue = postValue !== "" ? postValue : null;
     }
 
-    updateField({[name]: postValue});
+    updateField({ [name]: postValue });
   }
 
   /**
@@ -93,12 +93,12 @@ export default class BasePropertyEditor extends Component {
    * @param event
    */
   updateHandle(event) {
-    const {updateField} = this.context;
-    const {name, value} = event.target;
+    const { updateField } = this.context;
+    const { name, value } = event.target;
 
     const handleValue = getHandleValue(value, false);
 
-    updateField({[name]: handleValue});
+    updateField({ [name]: handleValue });
   }
 
   /**
@@ -108,8 +108,8 @@ export default class BasePropertyEditor extends Component {
    * @param value
    */
   updateKeyValue(key, value) {
-    const {updateField} = this.context;
+    const { updateField } = this.context;
 
-    updateField({[key]: value});
+    updateField({ [key]: value });
   }
 }

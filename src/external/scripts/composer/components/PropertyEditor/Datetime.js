@@ -8,14 +8,14 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React from "react";
-import PropTypes from "prop-types";
+import PropTypes          from "prop-types";
+import React              from "react";
+import * as FieldTypes    from "../../constants/FieldTypes";
 import BasePropertyEditor from "./BasePropertyEditor";
-import TextProperty from "./PropertyItems/TextProperty";
-import TextareaProperty from "./PropertyItems/TextareaProperty";
-import CheckboxProperty from "./PropertyItems/CheckboxProperty";
-import SelectProperty from "./PropertyItems/SelectProperty";
-import * as FieldTypes from "../../constants/FieldTypes";
+import CheckboxProperty   from "./PropertyItems/CheckboxProperty";
+import SelectProperty     from "./PropertyItems/SelectProperty";
+import TextareaProperty   from "./PropertyItems/TextareaProperty";
+import TextProperty       from "./PropertyItems/TextProperty";
 
 export default class Datetime extends BasePropertyEditor {
   static contextTypes = {
@@ -44,10 +44,10 @@ export default class Datetime extends BasePropertyEditor {
   };
 
   render() {
-    const {properties: {label, initialValue, handle, placeholder, required, instructions}} = this.context;
-    const {properties: {dateTimeType, generatePlaceholder, useDatepicker}} = this.context;
-    const {properties: {dateOrder, date4DigitYear, dateLeadingZero, dateSeparator}} = this.context;
-    const {properties: {clock24h, lowercaseAMPM, clockSeparator, clockAMPMSeparate}} = this.context;
+    const { properties: { label, initialValue, handle, placeholder, required, instructions } } = this.context;
+    const { properties: { dateTimeType, generatePlaceholder, useDatepicker } }                 = this.context;
+    const { properties: { dateOrder, date4DigitYear, dateLeadingZero, dateSeparator } }        = this.context;
+    const { properties: { clock24h, lowercaseAMPM, clockSeparator, clockAMPMSeparate } }       = this.context;
 
     const showDate = dateTimeType === FieldTypes.DATE_TIME_TYPE_BOTH || dateTimeType === FieldTypes.DATE_TIME_TYPE_DATE;
     const showTime = dateTimeType === FieldTypes.DATE_TIME_TYPE_BOTH || dateTimeType === FieldTypes.DATE_TIME_TYPE_TIME;
@@ -97,9 +97,9 @@ export default class Datetime extends BasePropertyEditor {
           name="dateTimeType"
           value={dateTimeType}
           options={[
-            {key: FieldTypes.DATE_TIME_TYPE_BOTH, value: 'Both'},
-            {key: FieldTypes.DATE_TIME_TYPE_DATE, value: 'Date'},
-            {key: FieldTypes.DATE_TIME_TYPE_TIME, value: 'Time'},
+            { key: FieldTypes.DATE_TIME_TYPE_BOTH, value: "Both" },
+            { key: FieldTypes.DATE_TIME_TYPE_DATE, value: "Date" },
+            { key: FieldTypes.DATE_TIME_TYPE_TIME, value: "Time" },
           ]}
           onChangeHandler={this.update}
         />
@@ -108,7 +108,7 @@ export default class Datetime extends BasePropertyEditor {
           label="Default Value"
           instructions="You can use 'now', 'today', '5 days ago', '2017-01-01 20:00:00', etc, which will format the default value according to the chosen format."
           name="initialValue"
-          value={initialValue ? initialValue : ''}
+          value={initialValue ? initialValue : ""}
           onChangeHandler={this.update}
         />
 
@@ -127,13 +127,13 @@ export default class Datetime extends BasePropertyEditor {
         />
 
         {!generatePlaceholder &&
-          <TextProperty
-            label="Placeholder"
-            instructions="The text that will be shown if the field doesn’t have a value."
-            name="placeholder"
-            value={placeholder}
-            onChangeHandler={this.update}
-          />
+        <TextProperty
+          label="Placeholder"
+          instructions="The text that will be shown if the field doesn’t have a value."
+          name="placeholder"
+          value={placeholder}
+          onChangeHandler={this.update}
+        />
         }
 
         {showDate && (
@@ -145,9 +145,9 @@ export default class Datetime extends BasePropertyEditor {
               value={dateOrder}
               onChangeHandler={this.update}
               options={[
-                {key: 'ymd', value: 'year month day'},
-                {key: 'mdy', value: 'month day year'},
-                {key: 'dmy', value: 'day month year'},
+                { key: "ymd", value: "year month day" },
+                { key: "mdy", value: "month day year" },
+                { key: "dmy", value: "day month year" },
               ]}
             />
 
@@ -174,10 +174,10 @@ export default class Datetime extends BasePropertyEditor {
               onChangeHandler={this.update}
               emptyOption="None"
               options={[
-                {key: ' ', value: 'Space'},
-                {key: '/', value: '/'},
-                {key: '-', value: '-'},
-                {key: '.', value: '.'},
+                { key: " ", value: "Space" },
+                { key: "/", value: "/" },
+                { key: "-", value: "-" },
+                { key: ".", value: "." },
               ]}
             />
           </div>
@@ -200,29 +200,29 @@ export default class Datetime extends BasePropertyEditor {
               onChangeHandler={this.update}
               emptyOption="None"
               options={[
-                {key: ' ', value: 'Space'},
-                {key: ':', value: ':'},
-                {key: '-', value: '-'},
-                {key: '.', value: '.'},
+                { key: " ", value: "Space" },
+                { key: ":", value: ":" },
+                { key: "-", value: "-" },
+                { key: ".", value: "." },
               ]}
             />
 
             {!clock24h &&
-              <CheckboxProperty
-                label="Lowercase AM/PM?"
-                name="lowercaseAMPM"
-                checked={lowercaseAMPM}
-                onChangeHandler={this.update}
-              />
+            <CheckboxProperty
+              label="Lowercase AM/PM?"
+              name="lowercaseAMPM"
+              checked={lowercaseAMPM}
+              onChangeHandler={this.update}
+            />
             }
 
             {!clock24h &&
-              <CheckboxProperty
-                label="Separate AM/PM with a space?"
-                name="clockAMPMSeparate"
-                checked={!!clockAMPMSeparate}
-                onChangeHandler={this.update}
-              />
+            <CheckboxProperty
+              label="Separate AM/PM with a space?"
+              name="clockAMPMSeparate"
+              checked={!!clockAMPMSeparate}
+              onChangeHandler={this.update}
+            />
             }
 
           </div>

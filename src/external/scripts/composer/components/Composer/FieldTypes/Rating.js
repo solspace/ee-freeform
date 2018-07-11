@@ -8,24 +8,24 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React from "react";
+import React     from "react";
 import HtmlInput from "./HtmlInput";
 
 export default class Rating extends HtmlInput {
   getClassName() {
-    return 'Rating';
+    return "Rating";
   }
 
   renderInput() {
-    const {properties: {maxValue, value, colorIdle, colorSelected}} = this.props;
+    const { properties: { maxValue, value, colorIdle, colorSelected } } = this.props;
 
     let stars = [];
     for (let i = 1; i <= maxValue; i++) {
       stars.push(
         <span
           key={i}
-          style={{color: value >= i ? colorSelected : colorIdle}}
-        />
+          style={{ color: value >= i ? colorSelected : colorIdle }}
+        />,
       );
     }
 

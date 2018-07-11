@@ -8,10 +8,10 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
-import CustomProperty from "../../PropertyItems/CustomProperty";
+import PropTypes            from "prop-types";
+import React, { Component } from "react";
 import * as SubmitPositions from "../../../../constants/SubmitPositions";
+import CustomProperty       from "../../PropertyItems/CustomProperty";
 
 export default class DualPositionProperty extends Component {
   static propTypes = {
@@ -20,7 +20,7 @@ export default class DualPositionProperty extends Component {
   };
 
   render() {
-    let {position, onChangeHandler} = this.props;
+    let { position, onChangeHandler } = this.props;
 
     return (
       <CustomProperty

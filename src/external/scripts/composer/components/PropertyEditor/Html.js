@@ -34,7 +34,7 @@ export default class Html extends BasePropertyEditor {
   }
 
   render() {
-    const {hash, properties: {value}} = this.context;
+    const { hash, properties: { value } } = this.context;
 
     return (
       <div>
@@ -72,7 +72,7 @@ export default class Html extends BasePropertyEditor {
    * @param value
    */
   updateHtmlValue(value) {
-    const {updateField}       = this.context;
+    const { updateField } = this.context;
 
     updateField({
       value: value,

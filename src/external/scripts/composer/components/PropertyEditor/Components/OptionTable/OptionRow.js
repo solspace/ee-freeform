@@ -8,12 +8,12 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
-import ReactDOM from "react-dom";
-import {DropTarget, DragSource} from "react-dnd";
-import {handleOptionRowDrag} from "../../../../actions/DragDrop";
-import {OPTION_ROW} from "../../../../constants/DraggableTypes";
+import PropTypes                  from "prop-types";
+import React, { Component }       from "react";
+import { DragSource, DropTarget } from "react-dnd";
+import ReactDOM                   from "react-dom";
+import { handleOptionRowDrag }    from "../../../../actions/DragDrop";
+import { OPTION_ROW }             from "../../../../constants/DraggableTypes";
 
 const optionRowSource = {
   beginDrag: (props) => ({
@@ -26,7 +26,7 @@ const optionRowSource = {
 const optionRowTarget = {
   hover(props, monitor, component) {
     return handleOptionRowDrag(props, monitor, component);
-  }
+  },
 };
 
 @DropTarget([OPTION_ROW], optionRowTarget, (connect, monitor) => ({
@@ -67,8 +67,8 @@ export default class OptionRow extends Component {
   }
 
   render() {
-    const {connectDropTarget, connectDragSource, connectDragPreview} = this.props;
-    const {label, value, isChecked, showCustomValues, isDragging}    = this.props;
+    const { connectDropTarget, connectDragSource, connectDragPreview } = this.props;
+    const { label, value, isChecked, showCustomValues, isDragging }    = this.props;
 
     return connectDropTarget(
       connectDragPreview(
@@ -105,19 +105,19 @@ export default class OptionRow extends Component {
           </td>
           <td className="action">
             {connectDragSource(
-              <a className="move" title="Reorder"></a>
+              <a className="move" title="Reorder"></a>,
             )}
           </td>
           <td className="action">
             <a className="delete" title="Remove" onClick={this.removeValueSetHandler}></a>
           </td>
-        </tr>
-      )
+        </tr>,
+      ),
     );
   }
 
   updateValues(event) {
-    const {hash, index} = this.props;
+    const { hash, index } = this.props;
 
     const label = ReactDOM.findDOMNode(this.refs.label).value;
     let value   = label;
@@ -131,19 +131,19 @@ export default class OptionRow extends Component {
   }
 
   updateIsChecked(event) {
-    const {hash, index}       = this.props;
-    const {target: {checked}} = event;
+    const { hash, index }         = this.props;
+    const { target: { checked } } = event;
 
     this.props.updateIsChecked(hash, index, checked);
   }
 
   cleanUpNodes() {
-    const {hash} = this.props;
+    const { hash } = this.props;
     this.props.cleanUp(hash);
   }
 
   removeValueSetHandler() {
-    const {hash, index, removeValueSet} = this.props;
+    const { hash, index, removeValueSet } = this.props;
 
     removeValueSet(hash, index);
   }

@@ -8,13 +8,13 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
-import Field from "./Field";
-import {COLUMN} from "../../constants/DraggableTypes";
-import {connect} from "react-redux";
-import {DragSource} from "react-dnd";
-import {removeColumn, removeProperty, switchHash, clearPlaceholders} from "../../actions/Actions";
+import PropTypes                                                       from "prop-types";
+import React, { Component }                                            from "react";
+import { DragSource }                                                  from "react-dnd";
+import { connect }                                                     from "react-redux";
+import { clearPlaceholders, removeColumn, removeProperty, switchHash } from "../../actions/Actions";
+import { COLUMN }                                                      from "../../constants/DraggableTypes";
+import Field                                                           from "./Field";
 
 const columnSource = {
   beginDrag(props) {
@@ -25,8 +25,8 @@ const columnSource = {
       pageIndex: props.pageIndex,
       hash: props.hash,
       columnCountInRow: props.columnCountInRow,
-      clearPlaceholders: props.clearPlaceholders
-    }
+      clearPlaceholders: props.clearPlaceholders,
+    };
   },
   endDrag(props) {
     props.clearPlaceholders();
@@ -47,7 +47,7 @@ const columnSource = {
     },
     openProperties: (hash) => dispatch(switchHash(hash)),
     clearPlaceholders: () => dispatch(clearPlaceholders()),
-  })
+  }),
 )
 @DragSource(COLUMN, columnSource, (connect, monitor) => ({
   connectDragSource: connect.dragSource(),
@@ -80,14 +80,14 @@ export default class Column extends Component {
   }
 
   componentDidMount() {
-    const {connectDragPreview} = this.props;
+    const { connectDragPreview } = this.props;
 
     connectDragPreview(this.buildPreview());
   }
 
   render() {
-    const {hash, index, rowIndex, currentHash} = this.props;
-    const {connectDragSource, properties}      = this.props;
+    const { hash, index, rowIndex, currentHash } = this.props;
+    const { connectDragSource, properties }      = this.props;
 
     const className = ["composer-column"];
     if (currentHash === hash) {
@@ -107,7 +107,7 @@ export default class Column extends Component {
           index={index}
           rowIndex={rowIndex}
         />
-      </div>
+      </div>,
     );
   }
 
@@ -115,7 +115,7 @@ export default class Column extends Component {
    * Handles opening the properties in props editor for this column
    */
   openPropertiesHandler() {
-    const {hash, openProperties}  = this.props;
+    const { hash, openProperties } = this.props;
 
     openProperties(hash);
   }
@@ -126,7 +126,7 @@ export default class Column extends Component {
    * @param event
    */
   removeColumnHandler(event) {
-    const {removeColumn, pageIndex, hash, index, rowIndex} = this.props;
+    const { removeColumn, pageIndex, hash, index, rowIndex } = this.props;
 
     removeColumn(hash, index, rowIndex, pageIndex);
 
@@ -140,8 +140,8 @@ export default class Column extends Component {
    * @returns {Image}
    */
   buildPreview() {
-    const {properties: {label}} = this.props;
-    let [width, height]         = [200, 30];
+    const { properties: { label } } = this.props;
+    let [width, height]             = [200, 30];
 
     let canvas = document.createElement("canvas");
 
@@ -161,7 +161,7 @@ export default class Column extends Component {
 
     const ratio = devicePixelRatio / backingStoreRatio;
 
-    width = width * ratio;
+    width  = width * ratio;
     height = height * ratio;
 
     canvas.width  = width;
@@ -170,7 +170,7 @@ export default class Column extends Component {
     ctx.fillStyle = "#FFFFFF";
     ctx.fillRect(0, 0, width, height);
 
-    const lineDashWidth = Math.ceil(4 * ratio);
+    const lineDashWidth   = Math.ceil(4 * ratio);
     const lineDashSpacing = Math.ceil(2 * ratio);
 
     ctx.setLineDash([lineDashWidth, lineDashSpacing]);

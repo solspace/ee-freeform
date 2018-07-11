@@ -30,19 +30,19 @@ export default class AlwaysNearbyBox extends Component {
   }
 
   componentDidMount() {
-    const {wrapper, stickyTop, children} = this.refs;
+    const { wrapper, stickyTop, children } = this.refs;
 
-    wrapper.style.position  = 'fixed';
-    wrapper.style.top       = '0px';
-    wrapper.style.overflowY = 'auto';
-    wrapper.style.width     = '0px';
+    wrapper.style.position  = "fixed";
+    wrapper.style.top       = "0px";
+    wrapper.style.overflowY = "auto";
+    wrapper.style.width     = "0px";
 
-    children.style.position  = 'relative';
-    stickyTop.style.position = 'fixed';
-    stickyTop.style.width    = '0px';
+    children.style.position  = "relative";
+    stickyTop.style.position = "fixed";
+    stickyTop.style.width    = "0px";
 
-    window.addEventListener('scroll', this.handleScroll);
-    window.addEventListener('resize', this.handleWindowResize);
+    window.addEventListener("scroll", this.handleScroll);
+    window.addEventListener("resize", this.handleWindowResize);
     window.addEventListener(AddNewField.EVENT_AFTER_UPDATE, this.handleScroll);
 
     this.updateOffsetDimensions();
@@ -57,19 +57,19 @@ export default class AlwaysNearbyBox extends Component {
   }
 
   componentWillUnmount() {
-    const {wrapper, stickyTop, children} = this.refs;
+    const { wrapper, stickyTop, children } = this.refs;
 
-    wrapper.style.position  = '';
-    wrapper.style.top       = '';
-    wrapper.style.overflowY = '';
-    wrapper.style.width     = '';
+    wrapper.style.position  = "";
+    wrapper.style.top       = "";
+    wrapper.style.overflowY = "";
+    wrapper.style.width     = "";
 
-    children.style.position  = '';
-    stickyTop.style.position = '';
-    stickyTop.style.width    = '';
+    children.style.position  = "";
+    stickyTop.style.position = "";
+    stickyTop.style.width    = "";
 
-    window.removeEventListener('scroll', this.handleScroll);
-    window.removeEventListener('resize', this.handleWindowResize);
+    window.removeEventListener("scroll", this.handleScroll);
+    window.removeEventListener("resize", this.handleWindowResize);
     window.removeEventListener(AddNewField.EVENT_AFTER_UPDATE, this.handleScroll);
   }
 

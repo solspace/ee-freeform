@@ -8,20 +8,20 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React from "react";
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import * as FieldTypes from "../../constants/FieldTypes";
+import PropTypes          from "prop-types";
+import React              from "react";
+import { connect }        from "react-redux";
+import * as FieldTypes    from "../../constants/FieldTypes";
 import BasePropertyEditor from "./BasePropertyEditor";
-import TextProperty from "./PropertyItems/TextProperty";
-import TextareaProperty from "./PropertyItems/TextareaProperty";
-import CheckboxProperty from "./PropertyItems/CheckboxProperty";
-import SelectProperty from "./PropertyItems/SelectProperty";
+import CheckboxProperty   from "./PropertyItems/CheckboxProperty";
+import SelectProperty     from "./PropertyItems/SelectProperty";
+import TextareaProperty   from "./PropertyItems/TextareaProperty";
+import TextProperty       from "./PropertyItems/TextProperty";
 
 @connect(
   (state) => ({
     composerProperties: state.composer.properties,
-  })
+  }),
 )
 export default class Confirmation extends BasePropertyEditor {
   static contextTypes = {
@@ -43,16 +43,20 @@ export default class Confirmation extends BasePropertyEditor {
   };
 
   render() {
-    const {composerProperties} = this.props;
+    const { composerProperties } = this.props;
 
-    const {properties: {label, value, handle, placeholder, required, instructions, targetFieldHash}} = this.context;
+    const { properties: { label, value, handle, placeholder, required, instructions, targetFieldHash } } = this.context;
 
     let allowedFields = [];
     for (let key in composerProperties) {
-      if (!composerProperties.hasOwnProperty(key)) continue;
+      if (!composerProperties.hasOwnProperty(key)) {
+        continue;
+      }
 
       const prop = composerProperties[key];
-      if (FieldTypes.CONFIRMATION_SUPPORTED_TYPES.indexOf(prop.type) === -1) continue;
+      if (FieldTypes.CONFIRMATION_SUPPORTED_TYPES.indexOf(prop.type) === -1) {
+        continue;
+      }
 
       allowedFields.push({
         key: key,

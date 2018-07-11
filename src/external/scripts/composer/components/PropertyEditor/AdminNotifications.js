@@ -8,21 +8,21 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes          from "prop-types";
+import React              from "react";
+import { connect }        from "react-redux";
+import PropertyHelper     from "../../helpers/PropertyHelper";
 import BasePropertyEditor from "./BasePropertyEditor";
-import TextareaProperty from "./PropertyItems/TextareaProperty";
-import SelectProperty from "./PropertyItems/SelectProperty";
 import AddNewNotification from "./Components/AddNewNotification";
-import PropertyHelper from "../../helpers/PropertyHelper";
-import {connect} from "react-redux";
+import SelectProperty     from "./PropertyItems/SelectProperty";
+import TextareaProperty   from "./PropertyItems/TextareaProperty";
 
 @connect(
   (state) => ({
     hash: state.context.hash,
     globalProperties: state.composer.properties,
     notifications: state.notifications.list,
-  })
+  }),
 )
 export default class AdminNotifications extends BasePropertyEditor {
   static propTypes = {
@@ -47,11 +47,11 @@ export default class AdminNotifications extends BasePropertyEditor {
   };
 
   render() {
-    const {properties: {notificationId, recipients}} = this.context;
+    const { properties: { notificationId, recipients } } = this.context;
 
-    const {canManageNotifications} = this.context;
+    const { canManageNotifications } = this.context;
 
-    const {notifications}  = this.props;
+    const { notifications } = this.props;
 
     return (
       <div>
@@ -69,15 +69,15 @@ export default class AdminNotifications extends BasePropertyEditor {
         </SelectProperty>
 
         {notificationId ? (
-            <TextareaProperty
-              label="Admin Recipients"
-              instructions="Email address(es) to receive an email notification. Enter each on a new line."
-              name="recipients"
-              rows={10}
-              value={recipients}
-              onChangeHandler={this.update}
-            />
-          ) : ""
+          <TextareaProperty
+            label="Admin Recipients"
+            instructions="Email address(es) to receive an email notification. Enter each on a new line."
+            name="recipients"
+            rows={10}
+            value={recipients}
+            onChangeHandler={this.update}
+          />
+        ) : ""
         }
       </div>
     );

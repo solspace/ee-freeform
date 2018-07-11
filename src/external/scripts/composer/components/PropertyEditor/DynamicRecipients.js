@@ -1,3 +1,4 @@
+import PropTypes          from "prop-types";
 /*
  * Freeform Next for Expression Engine
  *
@@ -7,25 +8,25 @@
  * @link          https://solspace.com/expressionengine/freeform-next
  * @license       https://solspace.com/software/license-agreement
  */
-import React from "react";
-import PropTypes from 'prop-types';
+import React              from "react";
+import { connect }        from "react-redux";
+import PropertyHelper     from "../../helpers/PropertyHelper";
 import BasePropertyEditor from "./BasePropertyEditor";
-import OptionTable from "./Components/OptionTable/OptionTable";
-import TextProperty from "./PropertyItems/TextProperty";
-import TextareaProperty from "./PropertyItems/TextareaProperty";
-import SelectProperty from "./PropertyItems/SelectProperty";
-import CheckboxProperty from "./PropertyItems/CheckboxProperty";
-import CustomProperty from "./PropertyItems/CustomProperty";
 import AddNewNotification from "./Components/AddNewNotification";
-import PropertyHelper from "../../helpers/PropertyHelper";
-import {connect} from "react-redux";
+import OptionTable        from "./Components/OptionTable/OptionTable";
+import CheckboxProperty   from "./PropertyItems/CheckboxProperty";
+import CustomProperty     from "./PropertyItems/CustomProperty";
+import SelectProperty     from "./PropertyItems/SelectProperty";
+import TextareaProperty   from "./PropertyItems/TextareaProperty";
+import TextProperty       from "./PropertyItems/TextProperty";
+import RadioProperty       from "./PropertyItems/RadioProperty";
 
 @connect(
   (state) => ({
     hash: state.context.hash,
     properties: state.composer.properties,
     notifications: state.notifications.list,
-  })
+  }),
 )
 export default class DynamicRecipients extends BasePropertyEditor {
   static propTypes = {

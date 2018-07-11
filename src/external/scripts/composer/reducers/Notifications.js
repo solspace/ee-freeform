@@ -32,7 +32,7 @@ export function notifications(state = initialState, action) {
     case ActionTypes.RECEIVE_NOTIFICATIONS:
       return {
         ...state,
-        list: action.notificationData
+        list: action.notificationData,
       };
 
     case ActionTypes.INVALIDATE_NOTIFICATIONS:

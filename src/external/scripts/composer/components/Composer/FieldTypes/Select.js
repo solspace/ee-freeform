@@ -8,30 +8,37 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React from "react";
-import PropTypes from 'prop-types';
-import {SELECT} from "../../../constants/FieldTypes";
-import HtmlInput from "./HtmlInput";
-import Option from "./Components/Option";
-import {connect} from "react-redux";
+import PropTypes            from "prop-types";
+import React                from "react";
+import { connect }          from "react-redux";
+import * as ExternalOptions from "../../../constants/ExternalOptions";
+import { SELECT }           from "../../../constants/FieldTypes";
+import Option               from "./Components/Option";
+import HtmlInput            from "./HtmlInput";
 
 @connect(
   (state) => ({
     globalProps: state.composer.properties,
-  })
+    isFetchingOptions: state.generatedOptionLists.isFetching,
+    generatedOptions: state.generatedOptionLists.cache,
+  }),
 )
 export default class Select extends HtmlInput {
   static propTypes = {
     properties: PropTypes.shape({
+      hash: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
       required: PropTypes.bool.isRequired,
       options: PropTypes.array.isRequired,
-      value: PropTypes.string,
+      value: PropTypes.node,
     }).isRequired,
+    isFetchingOptions: PropTypes.bool.isRequired,
   };
 
+  cachedOptions = null;
+
   getClassName() {
-    return 'Select';
+    return "Select";
   }
 
   getType() {
@@ -39,28 +46,39 @@ export default class Select extends HtmlInput {
   }
 
   renderInput() {
-    const {properties} = this.props;
-    const {options}    = properties;
+    const { properties, generatedOptions, isFetchingOptions } = this.props;
+    const { options, source, hash } = properties;
 
-    if (!options) {
+    if (isFetchingOptions && this.cachedOptions) {
+      return this.cachedOptions;
+    }
+
+    let listOptions = [];
+    if (!source || source === ExternalOptions.SOURCE_CUSTOM) {
+      listOptions = options;
+    } else if (generatedOptions && generatedOptions[hash]) {
+      listOptions = generatedOptions[hash];
+    }
+
+    if (!listOptions) {
       return;
     }
 
     let selectOptions = [];
-    for (let i = 0; i < options.length; i++) {
-      const {label, value} = options[i];
+    for (let i = 0; i < listOptions.length; i++) {
+      const { label, value } = listOptions[i];
 
       selectOptions.push(
         <Option
           key={i}
-          label={label}
-          value={value}
+          label={label + ''}
+          value={value + ''}
           properties={properties}
-        />
+        />,
       );
     }
 
-    return (
+    const field = (
       <div className="select">
         <select
           className={this.prepareInputClass()}
@@ -72,5 +90,9 @@ export default class Select extends HtmlInput {
         </select>
       </div>
     );
+
+    this.cachedOptions = field;
+
+    return field;
   }
 }

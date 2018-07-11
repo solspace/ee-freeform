@@ -35,7 +35,7 @@ export default class BasePropertyItem extends Component {
   }
 
   render() {
-    const {label, instructions, required} = this.props;
+    const { label, instructions, required } = this.props;
 
     return (
       <div className="composer-property-item">

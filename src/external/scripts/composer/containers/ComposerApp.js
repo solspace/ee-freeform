@@ -8,15 +8,15 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
-import FieldList from "../containers/FieldList";
-import Composer from "../containers/Composer";
-import PropertyEditor from "../containers/PropertyEditor";
-import {DragDropContext} from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
-import SaveButton from "../components/SaveButton";
-import Tutorials from "../components/Tutorials";
+import PropTypes            from "prop-types";
+import React, { Component } from "react";
+import { DragDropContext }  from "react-dnd";
+import HTML5Backend         from "react-dnd-html5-backend";
+import SaveButton           from "../components/SaveButton";
+import Tutorials            from "../components/Tutorials";
+import Composer             from "../containers/Composer";
+import FieldList            from "../containers/FieldList";
+import PropertyEditor       from "../containers/PropertyEditor";
 
 @DragDropContext(HTML5Backend)
 export default class ComposerApp extends Component {
@@ -76,7 +76,7 @@ export default class ComposerApp extends Component {
   });
 
   render() {
-    const {saveUrl, formUrl, showTutorial, finishTutorialUrl} = this.props;
+    const { saveUrl, formUrl, showTutorial, finishTutorialUrl } = this.props;
 
     // <Tutorials showTutorial={showTutorial} finishTutorialUrl={finishTutorialUrl} />
 

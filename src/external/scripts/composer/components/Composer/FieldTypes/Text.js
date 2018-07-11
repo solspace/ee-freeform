@@ -8,18 +8,18 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React from "react";
+import React     from "react";
 import HtmlInput from "./HtmlInput";
 
 export default class Text extends HtmlInput {
   getClassName() {
-    return 'Text';
+    return "Text";
   }
 
   getInputClassNames() {
     return [
-      'text',
-      'fullwidth',
-    ]
+      "text",
+      "fullwidth",
+    ];
   }
 }

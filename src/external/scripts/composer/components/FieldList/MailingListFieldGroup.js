@@ -8,14 +8,14 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
-import {connect} from "react-redux";
-import Field from "./Field";
-import FieldHelper from "../../helpers/FieldHelper";
+import PropTypes            from "prop-types";
+import React, { Component } from "react";
+import { connect }          from "react-redux";
+import FieldHelper          from "../../helpers/FieldHelper";
+import Field                from "./Field";
 
 @connect(state => ({
-  currentPage: state.context.page
+  currentPage: state.context.page,
 }))
 export default class MailingListFieldGroup extends Component {
   static propTypes = {
@@ -24,7 +24,7 @@ export default class MailingListFieldGroup extends Component {
         type: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         lists: PropTypes.array.isRequired,
-      }).isRequired
+      }).isRequired,
     ).isRequired,
     usedFields: PropTypes.array.isRequired,
     onFieldClick: PropTypes.func,
@@ -32,7 +32,7 @@ export default class MailingListFieldGroup extends Component {
   };
 
   render() {
-    const {fields, currentPage, usedFields, onFieldClick} = this.props;
+    const { fields, currentPage, usedFields, onFieldClick } = this.props;
 
     if (!fields.length) {
       return null;
@@ -51,7 +51,7 @@ export default class MailingListFieldGroup extends Component {
               type="mailing_list"
               isUsed={usedFields.indexOf(field.id) !== -1}
               onClick={() => onFieldClick(FieldHelper.hashField(field), field, currentPage)}
-            />
+            />,
           )}
         </ul>
       </div>

@@ -66,6 +66,12 @@ let store = createStore(
       solspaceTemplates: solspaceFormTemplates,
       list: formTemplateList,
     },
+    sourceTargets,
+    generatedOptionLists: {
+      isFetching: false,
+      didInvalidate: false,
+      cache: generatedOptions,
+    },
     formStatuses: formStatuses,
     assetSources: assetSources,
     fileKinds: fileKinds,

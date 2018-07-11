@@ -8,32 +8,32 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import * as ActionTypes from "../constants/ActionTypes";
-import fetch from 'isomorphic-fetch';
-import {urlBuilder} from "../app";
-import {updateProperty, switchHash} from "../actions/Actions";
+import fetch                          from "isomorphic-fetch";
+import { switchHash, updateProperty } from "../actions/Actions";
+import { urlBuilder }                 from "../app";
+import * as ActionTypes               from "../constants/ActionTypes";
 
 function requestFormTemplates() {
   return {
     type: ActionTypes.REQUEST_FORM_TEMPLATES,
-  }
+  };
 }
 
 function receiveFormTemplates(templateData) {
   return {
     type: ActionTypes.RECEIVE_FORM_TEMPLATES,
     templateData,
-  }
+  };
 }
 
 export function invalidateFormTemplates() {
   return {
     type: ActionTypes.INVALIDATE_FORM_TEMPLATES,
-  }
+  };
 }
 
 export function fetchFormTemplatesIfNeeded(hash = null, autoselectId = null) {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     if (shouldFetchFormTemplates(getState())) {
       dispatch(requestFormTemplates());
 
@@ -43,7 +43,7 @@ export function fetchFormTemplatesIfNeeded(hash = null, autoselectId = null) {
         .then(json => {
           dispatch(receiveFormTemplates(json));
           if (hash && autoselectId) {
-            dispatch(updateProperty(hash, {formTemplate: autoselectId}));
+            dispatch(updateProperty(hash, { formTemplate: autoselectId }));
 
             // For some reason, the property update alone isn't enough
             // for React to refresh the select box, so I have to do a quick back-and-forth
@@ -55,7 +55,7 @@ export function fetchFormTemplatesIfNeeded(hash = null, autoselectId = null) {
     } else {
       Promise.resolve();
     }
-  }
+  };
 }
 
 function shouldFetchFormTemplates(state) {

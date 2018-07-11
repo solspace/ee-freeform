@@ -12,6 +12,7 @@ export const HIDDEN             = "hidden";
 export const TEXT               = "text";
 export const TEXTAREA           = "textarea";
 export const SELECT             = "select";
+export const MULTIPLE_SELECT    = "multiple_select";
 export const RADIO              = "radio";
 export const RADIO_GROUP        = "radio_group";
 export const CHECKBOX           = "checkbox";
@@ -31,6 +32,7 @@ export const CONFIRMATION = "confirmation";
 export const HTML         = "html";
 export const MAILING_LIST = "mailing_list";
 export const SUBMIT       = "submit";
+export const RECAPTCHA    = "recaptcha";
 
 export const FORM                = "form";
 export const PAGE                = "page";
@@ -42,6 +44,7 @@ export const INTEGRATION_SUPPORTED_TYPES = [
   TEXT,
   TEXTAREA,
   SELECT,
+  MULTIPLE_SELECT,
   RADIO_GROUP,
   CHECKBOX,
   CHECKBOX_GROUP,
@@ -67,6 +70,6 @@ export const CONFIRMATION_SUPPORTED_TYPES = [
   REGEX,
 ];
 
-export const DATE_TIME_TYPE_BOTH = 'both';
-export const DATE_TIME_TYPE_DATE = 'date';
-export const DATE_TIME_TYPE_TIME = 'time';
+export const DATE_TIME_TYPE_BOTH = "both";
+export const DATE_TIME_TYPE_DATE = "date";
+export const DATE_TIME_TYPE_TIME = "time";

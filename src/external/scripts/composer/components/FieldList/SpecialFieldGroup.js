@@ -8,12 +8,12 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
-import {connect} from "react-redux";
-import Field from "./Field";
-import FieldHelper from "../../helpers/FieldHelper";
-import AddNewField from "./Components/AddNewField";
+import PropTypes            from "prop-types";
+import React, { Component } from "react";
+import { connect }          from "react-redux";
+import FieldHelper          from "../../helpers/FieldHelper";
+import AddNewField          from "./Components/AddNewField";
+import Field                from "./Field";
 
 @connect(state => ({
   currentPage: state.context.page,
@@ -26,10 +26,10 @@ export default class SpecialFieldGroup extends Component {
       PropTypes.shape({
         type: PropTypes.string.isRequired,
         label: PropTypes.string.isRequired,
-      }).isRequired
+      }).isRequired,
     ).isRequired,
     onFieldClick: PropTypes.func,
-    currentPage: PropTypes.number.isRequired
+    currentPage: PropTypes.number.isRequired,
   };
 
   static contextTypes = {
@@ -56,12 +56,12 @@ export default class SpecialFieldGroup extends Component {
               {...field}
               isUsed={false}
               onClick={() => onFieldClick(FieldHelper.hashField(field), field, currentPage)}
-            />
+            />,
           )}
         </ul>
 
-        {canManageFields && <AddNewField/>}
+        {canManageFields && <AddNewField />}
       </div>
-    )
+    );
   }
 }

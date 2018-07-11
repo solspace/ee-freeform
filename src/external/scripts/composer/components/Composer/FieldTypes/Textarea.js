@@ -9,15 +9,15 @@
  */
 
 import React from "react";
-import Text from "./Text";
+import Text  from "./Text";
 
 export default class Textarea extends Text {
   getClassName() {
-    return 'Textarea';
+    return "Textarea";
   }
 
   renderInput() {
-    const {value, rows} = this.props.properties;
+    const { value, rows } = this.props.properties;
 
     return (
       <textarea
@@ -27,6 +27,6 @@ export default class Textarea extends Text {
         className={this.prepareInputClass()}
         {...this.getCleanProperties()}
       >{value}</textarea>
-    )
+    );
   }
 }

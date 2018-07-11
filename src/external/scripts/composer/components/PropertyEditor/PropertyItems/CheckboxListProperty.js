@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes        from "prop-types";
+import React            from "react";
 import BasePropertyItem from "./BasePropertyItem";
 
 export default class CheckboxListProperty extends BasePropertyItem {
@@ -20,7 +20,7 @@ export default class CheckboxListProperty extends BasePropertyItem {
       PropTypes.shape({
         key: PropTypes.node.isRequired,
         value: PropTypes.node.isRequired,
-      })
+      }),
     ),
     values: PropTypes.array,
     updateField: PropTypes.func.isRequired,
@@ -33,7 +33,7 @@ export default class CheckboxListProperty extends BasePropertyItem {
   }
 
   renderInput() {
-    const {name, readOnly, disabled, values, className, isNumeric, options} = this.props;
+    const { name, readOnly, disabled, values, className, isNumeric, options } = this.props;
 
     const classNames = ["composer-property-checkbox-list"];
     if (className) {
@@ -62,18 +62,20 @@ export default class CheckboxListProperty extends BasePropertyItem {
   }
 
   handleUpdate() {
-    const {updateField, name} = this.props;
-    const checkboxList = this.refs.container.querySelectorAll("input");
+    const { updateField, name } = this.props;
+    const checkboxList          = this.refs.container.querySelectorAll("input");
 
     const values = [];
     for (let i = 0; i < checkboxList.length; i++) {
       const checkbox = checkboxList[i];
 
-      if (!checkbox.checked) continue;
+      if (!checkbox.checked) {
+        continue;
+      }
 
       values.push(checkbox.value);
     }
 
-    updateField({[name]: values});
+    updateField({ [name]: values });
   }
 }

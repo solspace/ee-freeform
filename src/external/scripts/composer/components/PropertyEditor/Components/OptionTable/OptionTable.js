@@ -8,19 +8,19 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
-import OptionRow from "./OptionRow";
-import {connect} from "react-redux";
+import PropTypes            from "prop-types";
+import React, { Component } from "react";
+import { connect }          from "react-redux";
 import {
-  updateValueSet,
-  updateIsChecked,
   addValueSet,
   cleanUpValues,
-  toggleCustomValues,
+  removeValueSet,
   reorderValueSet,
-  removeValueSet
-} from "../../../../actions/Actions";
+  toggleCustomValues,
+  updateIsChecked,
+  updateValueSet,
+}                           from "../../../../actions/Actions";
+import OptionRow            from "./OptionRow";
 
 @connect(
   (state) => ({
@@ -34,7 +34,7 @@ import {
     customValuesHandler: (hash, isChecked) => (dispatch(toggleCustomValues(hash, isChecked))),
     reorderValueSet: (hash, index, newIndex) => dispatch(reorderValueSet(hash, index, newIndex)),
     removeValueSet: (hash, index) => dispatch(removeValueSet(hash, index)),
-  })
+  }),
 )
 export default class OptionTable extends Component {
   static propTypes = {
@@ -66,8 +66,8 @@ export default class OptionTable extends Component {
   }
 
   render() {
-    const {labelTitle, valueTitle} = this.props;
-    let {showCustomValues}         = this.props;
+    const { labelTitle, valueTitle } = this.props;
+    let { showCustomValues }         = this.props;
 
     let showCustomValueToggler = true;
     if (showCustomValues === undefined) {
@@ -113,8 +113,8 @@ export default class OptionTable extends Component {
    * Adds a new value set and focuses the newest element input
    */
   addNewValues() {
-    const {hash}           = this.context;
-    const {addNewValueSet} = this.props;
+    const { hash }           = this.context;
+    const { addNewValueSet } = this.props;
 
     addNewValueSet(hash);
 
@@ -129,8 +129,8 @@ export default class OptionTable extends Component {
    * @param event
    */
   toggleCustomValues(event) {
-    const {customValuesHandler} = this.props;
-    const {hash}                = this.context;
+    const { customValuesHandler } = this.props;
+    const { hash }                = this.context;
 
     customValuesHandler(hash, event.target.checked);
   }
@@ -141,14 +141,14 @@ export default class OptionTable extends Component {
    * @returns {Array}
    */
   renderRows() {
-    const {options, values} = this.props;
-    let {showCustomValues}  = this.props;
+    const { options, values } = this.props;
+    let { showCustomValues }  = this.props;
 
     if (showCustomValues === undefined) {
       showCustomValues = true;
     }
 
-    const {hash}   = this.context;
+    const { hash } = this.context;
     const children = [];
 
     if (!options) {
@@ -156,21 +156,21 @@ export default class OptionTable extends Component {
     }
 
     for (let i = 0; i < options.length; i++) {
-      const {label, value} = options[i];
+      const { label, value } = options[i];
 
       let isChecked = false;
       if (values) {
         isChecked = values.indexOf(value) !== -1;
-      } else if (this.props.value) {
-        isChecked = value == this.props.value;
+      } else {
+        isChecked = (value + '') === (this.props.value + '');
       }
 
       children.push(
         <OptionRow
           key={i}
           hash={hash}
-          label={label}
-          value={value}
+          label={label + ''}
+          value={value + ''}
           index={i}
           isChecked={isChecked}
           showCustomValues={showCustomValues}
@@ -180,7 +180,7 @@ export default class OptionTable extends Component {
           reorderValueSet={this.props.reorderValueSet}
           removeValueSet={this.props.removeValueSet}
           cleanUp={this.props.cleanUp}
-        />
+        />,
       );
     }
 

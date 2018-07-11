@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes from 'prop-types';
-import React from "react";
+import PropTypes        from "prop-types";
+import React            from "react";
 import BasePropertyItem from "./BasePropertyItem";
 
 export default class SelectProperty extends BasePropertyItem {
@@ -37,17 +37,17 @@ export default class SelectProperty extends BasePropertyItem {
 
   renderInput() {
     const {
-            name, readOnly, disabled, onChangeHandler, value,
-            className, isNumeric, couldBeNumeric, emptyOption,
-            options, optionGroups, nullable,
-          } = this.props;
+      name, readOnly, disabled, onChangeHandler, value,
+      className, isNumeric, couldBeNumeric, emptyOption,
+      options, optionGroups, nullable,
+    } = this.props;
 
     return (
       <div className="select">
         <select
           className={className}
           name={name}
-          value={value ? value : ''}
+          value={value ? value : ""}
           readOnly={readOnly}
           disabled={disabled}
           data-is-numeric={!!isNumeric}

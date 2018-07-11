@@ -8,14 +8,15 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React from "react";
-import PropTypes from 'prop-types';
-import BasePropertyEditor from "./BasePropertyEditor";
-import OptionTable from "./Components/OptionTable/OptionTable";
-import TextProperty from "./PropertyItems/TextProperty";
-import TextareaProperty from "./PropertyItems/TextareaProperty";
-import CheckboxProperty from "./PropertyItems/CheckboxProperty";
-import CustomProperty from "./PropertyItems/CustomProperty";
+import PropTypes               from "prop-types";
+import React                   from "react";
+import BasePropertyEditor      from "./BasePropertyEditor";
+import OptionTable             from "./Components/OptionTable/OptionTable";
+import CheckboxProperty        from "./PropertyItems/CheckboxProperty";
+import CustomProperty          from "./PropertyItems/CustomProperty";
+import ExternalOptionsProperty from "./PropertyItems/ExternalOptionsProperty";
+import TextareaProperty        from "./PropertyItems/TextareaProperty";
+import TextProperty            from "./PropertyItems/TextProperty";
 
 export default class RadioGroup extends BasePropertyEditor {
   static contextTypes = {
@@ -27,13 +28,17 @@ export default class RadioGroup extends BasePropertyEditor {
       label: PropTypes.string.isRequired,
       required: PropTypes.bool.isRequired,
       showCustomValues: PropTypes.bool.isRequired,
-      value: PropTypes.string,
+      value: PropTypes.node,
       options: PropTypes.array,
+      source: PropTypes.string,
+      target: PropTypes.node,
+      configuration: PropTypes.object,
     }).isRequired,
   };
 
   render() {
-    const {properties: {label, handle, value, options, required, showCustomValues, instructions}} = this.context;
+    const { label, handle, value, options, required, showCustomValues, instructions } = this.context.properties;
+    const { source, target, configuration } = this.context.properties;
 
     return (
       <div>
@@ -74,17 +79,14 @@ export default class RadioGroup extends BasePropertyEditor {
 
         <hr />
 
-        <CustomProperty
-          label="Options"
-          instructions="Options for this radio group"
-          content={
-            <OptionTable
-              value={value}
-              options={options}
-              triggerCustomValues={this.update}
-              showCustomValues={showCustomValues}
-            />
-          }
+        <ExternalOptionsProperty
+          value={value}
+          customOptions={options}
+          showCustomValues={showCustomValues}
+          source={source}
+          target={target}
+          configuration={configuration}
+          onChangeHandler={this.update}
         />
       </div>
     );
