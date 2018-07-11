@@ -8,15 +8,13 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes               from "prop-types";
-import React                   from "react";
-import BasePropertyEditor      from "./BasePropertyEditor";
-import OptionTable             from "./Components/OptionTable/OptionTable";
-import CheckboxProperty        from "./PropertyItems/CheckboxProperty";
-import CustomProperty          from "./PropertyItems/CustomProperty";
+import PropTypes from "prop-types";
+import React from "react";
+import BasePropertyEditor from "./BasePropertyEditor";
+import CheckboxProperty from "./PropertyItems/CheckboxProperty";
 import ExternalOptionsProperty from "./PropertyItems/ExternalOptionsProperty";
-import TextareaProperty        from "./PropertyItems/TextareaProperty";
-import TextProperty            from "./PropertyItems/TextProperty";
+import TextareaProperty from "./PropertyItems/TextareaProperty";
+import TextProperty from "./PropertyItems/TextProperty";
 
 export default class RadioGroup extends BasePropertyEditor {
   static contextTypes = {

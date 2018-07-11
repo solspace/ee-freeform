@@ -8,22 +8,22 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes             from "prop-types";
-import React, { Component }  from "react";
-import { DragSource }        from "react-dnd";
-import { connect }           from "react-redux";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { DragSource } from "react-dnd";
+import { connect } from "react-redux";
 import { clearPlaceholders } from "../../actions/Actions";
-import { FIELD }             from "../../constants/DraggableTypes";
-import FieldHelper           from "../../helpers/FieldHelper";
-import PropertyHelper        from "../../helpers/PropertyHelper";
-import Badge                 from "../Composer/FieldTypes/Components/Badge";
+import { FIELD } from "../../constants/DraggableTypes";
+import FieldHelper from "../../helpers/FieldHelper";
+import PropertyHelper from "../../helpers/PropertyHelper";
+import Badge from "../Composer/FieldTypes/Components/Badge";
 
 const fieldSource = {
   canDrag(props, monitor) {
     return !props.isUsed;
   },
   beginDrag(props) {
-    let hash       = props.hash;
+    let hash = props.hash;
     let properties = PropertyHelper.getCleanProperties(props);
 
     if (!hash) {

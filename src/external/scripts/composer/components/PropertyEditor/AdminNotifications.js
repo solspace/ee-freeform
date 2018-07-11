@@ -8,14 +8,14 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes          from "prop-types";
-import React              from "react";
-import { connect }        from "react-redux";
-import PropertyHelper     from "../../helpers/PropertyHelper";
+import PropTypes from "prop-types";
+import React from "react";
+import { connect } from "react-redux";
+import PropertyHelper from "../../helpers/PropertyHelper";
 import BasePropertyEditor from "./BasePropertyEditor";
 import AddNewNotification from "./Components/AddNewNotification";
-import SelectProperty     from "./PropertyItems/SelectProperty";
-import TextareaProperty   from "./PropertyItems/TextareaProperty";
+import SelectProperty from "./PropertyItems/SelectProperty";
+import TextareaProperty from "./PropertyItems/TextareaProperty";
 
 @connect(
   (state) => ({

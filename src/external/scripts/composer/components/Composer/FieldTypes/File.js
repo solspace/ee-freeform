@@ -9,9 +9,9 @@
  */
 
 import PropTypes from "prop-types";
-import React     from "react";
-import { FILE }  from "./../../../constants/FieldTypes";
-import Badge     from "./Components/Badge";
+import React from "react";
+import { FILE } from "./../../../constants/FieldTypes";
+import Badge from "./Components/Badge";
 import HtmlInput from "./HtmlInput";
 
 export default class File extends HtmlInput {
@@ -32,7 +32,7 @@ export default class File extends HtmlInput {
   }
 
   getBadges() {
-    const badges                            = super.getBadges();
+    const badges = super.getBadges();
     const { properties: { assetSourceId } } = this.props;
 
     if (!assetSourceId) {

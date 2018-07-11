@@ -8,10 +8,10 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React    from "react";
+import React from "react";
 import { TEXT } from "../../../constants/FieldTypes";
-import Badge    from "./Components/Badge";
-import Text     from "./Text";
+import Badge from "./Components/Badge";
+import Text from "./Text";
 
 export default class Hidden extends Text {
   getClassName() {

@@ -8,15 +8,15 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes                                               from "prop-types";
-import React, { Component }                                    from "react";
-import { DropTarget }                                          from "react-dnd";
-import { connect }                                             from "react-redux";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { DropTarget } from "react-dnd";
+import { connect } from "react-redux";
 import { handleColumnDrag, handleColumnDrop, handleFieldDrop } from "../../actions/DragDrop";
-import { COLUMN, FIELD, ROW }                                  from "../../constants/DraggableTypes";
-import Column                                                  from "./Column";
-import PlaceholderColumn                                       from "./Placeholders/PlaceholderColumn";
-import PlaceholderRow                                          from "./Placeholders/PlaceholderRow";
+import { COLUMN, FIELD, ROW } from "../../constants/DraggableTypes";
+import Column from "./Column";
+import PlaceholderColumn from "./Placeholders/PlaceholderColumn";
+import PlaceholderRow from "./Placeholders/PlaceholderRow";
 
 const rowRowTarget = {
   hover(props, monitor, component) {
@@ -74,14 +74,14 @@ export default class Row extends Component {
   render() {
     const { connectDropTarget } = this.props;
 
-    const { columns, index }                    = this.props;
+    const { columns, index } = this.props;
     const { addColumn, moveColumn, properties } = this.props;
 
     const { placeholders } = this.props;
 
-    const placeholderType     = placeholders.type;
+    const placeholderType = placeholders.type;
     const placeholderRowIndex = placeholders.rowIndex;
-    const placeholderIndex    = placeholders.index;
+    const placeholderIndex = placeholders.index;
     const draggableTargetHash = placeholders.targetHash;
 
     const isDraggingColumnFromThisRow = placeholderRowIndex === index;

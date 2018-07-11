@@ -8,18 +8,18 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
+import PropTypes from "prop-types";
 import React from "react";
-import PropTypes from 'prop-types';
-import BasePropertyEditor from "./BasePropertyEditor";
+import { connect } from "react-redux";
+import { fetchMailingListsIfNeeded, invalidateMailingLists } from "../../actions/MailingLists";
 import * as FieldTypes from "../../constants/FieldTypes";
-import {connect} from "react-redux";
-import TextProperty from "./PropertyItems/TextProperty";
-import TextareaProperty from "./PropertyItems/TextareaProperty";
+import BasePropertyEditor from "./BasePropertyEditor";
+import IntegrationMappingTable from "./Components/IntegrationMappingTable/IntegrationMappingTable";
 import CheckboxProperty from "./PropertyItems/CheckboxProperty";
 import CustomProperty from "./PropertyItems/CustomProperty";
 import SelectProperty from "./PropertyItems/SelectProperty";
-import IntegrationMappingTable from "./Components/IntegrationMappingTable/IntegrationMappingTable";
-import {invalidateMailingLists, fetchMailingListsIfNeeded} from "../../actions/MailingLists";
+import TextareaProperty from "./PropertyItems/TextareaProperty";
+import TextProperty from "./PropertyItems/TextProperty";
 
 @connect(
   (state) => ({
@@ -81,7 +81,7 @@ export default class MailingList extends BasePropertyEditor {
     const { composerProperties, mailingLists, fetchMailingLists, isFetching } = this.props;
 
     let selectedIntegration = null;
-    let lists               = [];
+    let lists = [];
 
     for (const integration of mailingLists) {
       if (integration.integrationId === integrationId) {
@@ -232,7 +232,7 @@ export default class MailingList extends BasePropertyEditor {
 
   updateIntegration(event) {
     const { updateField } = this.context;
-    const resource        = event.target;
+    const resource = event.target;
 
     const resourceId = resource.value;
 

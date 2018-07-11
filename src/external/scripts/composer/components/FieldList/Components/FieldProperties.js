@@ -8,14 +8,14 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import fetch                                     from "isomorphic-fetch";
-import PropTypes                                 from "prop-types";
-import React, { Component }                      from "react";
-import ReactDOM                                  from "react-dom";
-import { connect }                               from "react-redux";
+import fetch from "isomorphic-fetch";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
+import { connect } from "react-redux";
 import { fetchFieldsIfNeeded, invalidateFields } from "../../../actions/Fields";
-import * as FieldTypes                           from "../../../constants/FieldTypes";
-import { getHandleValue }                        from "../../../helpers/Utilities";
+import * as FieldTypes from "../../../constants/FieldTypes";
+import { getHandleValue } from "../../../helpers/Utilities";
 
 @connect(
   (state) => ({
@@ -53,15 +53,15 @@ export default class FieldProperties extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state        = FieldProperties.initialState;
-    this.updateLabel  = this.updateLabel.bind(this);
+    this.state = FieldProperties.initialState;
+    this.updateLabel = this.updateLabel.bind(this);
     this.updateHandle = this.updateHandle.bind(this);
-    this.updateType   = this.updateType.bind(this);
-    this.updateState  = this.updateState.bind(this);
-    this.getHandle    = this.getHandle.bind(this);
-    this.addField     = this.addField.bind(this);
-    this.setErrors    = this.setErrors.bind(this);
-    this.cleanErrors  = this.cleanErrors.bind(this);
+    this.updateType = this.updateType.bind(this);
+    this.updateState = this.updateState.bind(this);
+    this.getHandle = this.getHandle.bind(this);
+    this.addField = this.addField.bind(this);
+    this.setErrors = this.setErrors.bind(this);
+    this.cleanErrors = this.cleanErrors.bind(this);
   }
 
   componentDidMount() {
@@ -69,7 +69,7 @@ export default class FieldProperties extends Component {
   }
 
   render() {
-    const { label, handle, type, errors }    = this.state;
+    const { label, handle, type, errors } = this.state;
     const { toggleFieldForm, fieldTypeList } = this.props;
 
     let options = [];
@@ -152,7 +152,7 @@ export default class FieldProperties extends Component {
   }
 
   updateHandle(event) {
-    this.setState({handle: this.getHandle(event.target.value)});
+    this.setState({ handle: this.getHandle(event.target.value) });
   }
 
   updateType(event) {
@@ -195,13 +195,13 @@ export default class FieldProperties extends Component {
    * @returns {boolean}
    */
   addField() {
-    const { label, handle, type }               = this.refs;
-    const { toggleFieldForm, fetchFields }      = this.props;
+    const { label, handle, type } = this.refs;
+    const { toggleFieldForm, fetchFields } = this.props;
     const { csrf, notificator, createFieldUrl } = this.context;
 
-    const labelValue  = ReactDOM.findDOMNode(label).value;
+    const labelValue = ReactDOM.findDOMNode(label).value;
     const handleValue = ReactDOM.findDOMNode(handle).value;
-    const typeValue   = ReactDOM.findDOMNode(type).value;
+    const typeValue = ReactDOM.findDOMNode(type).value;
 
     const errors = [];
 

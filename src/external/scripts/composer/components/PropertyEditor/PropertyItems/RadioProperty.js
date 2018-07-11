@@ -1,7 +1,7 @@
-import PropTypes        from "prop-types";
-import React            from "react";
+import PropTypes from "prop-types";
+import React from "react";
 import BasePropertyItem from "./BasePropertyItem";
-import CustomProperty   from "./CustomProperty";
+import CustomProperty from "./CustomProperty";
 
 export default class RadioProperty extends BasePropertyItem {
   static propTypes = {

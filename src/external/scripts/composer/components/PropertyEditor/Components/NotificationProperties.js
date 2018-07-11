@@ -8,13 +8,13 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import fetch                                                   from "isomorphic-fetch";
-import PropTypes                                               from "prop-types";
-import React, { Component }                                    from "react";
-import ReactDOM                                                from "react-dom";
-import { connect }                                             from "react-redux";
+import fetch from "isomorphic-fetch";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
+import { connect } from "react-redux";
 import { fetchNotificationsIfNeeded, invalidateNotifications } from "../../../actions/Notifications";
-import { getHandleValue }                                      from "../../../helpers/Utilities";
+import { getHandleValue } from "../../../helpers/Utilities";
 
 @connect(
   null,
@@ -51,14 +51,14 @@ export default class NotificationProperties extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state           = NotificationProperties.initialState;
-    this.updateName      = this.updateName.bind(this);
-    this.updateHandle    = this.updateHandle.bind(this);
-    this.updateState     = this.updateState.bind(this);
-    this.getHandle       = this.getHandle.bind(this);
+    this.state = NotificationProperties.initialState;
+    this.updateName = this.updateName.bind(this);
+    this.updateHandle = this.updateHandle.bind(this);
+    this.updateState = this.updateState.bind(this);
+    this.getHandle = this.getHandle.bind(this);
     this.addNotification = this.addNotification.bind(this);
-    this.setErrors       = this.setErrors.bind(this);
-    this.cleanErrors     = this.cleanErrors.bind(this);
+    this.setErrors = this.setErrors.bind(this);
+    this.cleanErrors = this.cleanErrors.bind(this);
   }
 
   componentDidMount() {
@@ -66,8 +66,8 @@ export default class NotificationProperties extends Component {
   }
 
   render() {
-    const { name, handle, errors }     = this.state;
-    const { toggleForm }               = this.props;
+    const { name, handle, errors } = this.state;
+    const { toggleForm } = this.props;
     const { isDbEmailTemplateStorage } = this.context;
 
     return (
@@ -163,11 +163,11 @@ export default class NotificationProperties extends Component {
    * @returns {boolean}
    */
   addNotification() {
-    const { name, handle }                                                             = this.refs;
-    const { toggleForm, fetchNotifications }                                           = this.props;
+    const { name, handle } = this.refs;
+    const { toggleForm, fetchNotifications } = this.props;
     const { csrf, notificator, createNotificationUrl, hash, isDbEmailTemplateStorage } = this.context;
 
-    const nameValue   = ReactDOM.findDOMNode(name).value;
+    const nameValue = ReactDOM.findDOMNode(name).value;
     const handleValue = isDbEmailTemplateStorage ? ReactDOM.findDOMNode(handle).value : null;
 
     const errors = [];

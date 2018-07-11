@@ -1,4 +1,4 @@
-import PropTypes          from "prop-types";
+import PropTypes from "prop-types";
 /*
  * Freeform Next for Expression Engine
  *
@@ -8,18 +8,17 @@ import PropTypes          from "prop-types";
  * @link          https://solspace.com/expressionengine/freeform-next
  * @license       https://solspace.com/software/license-agreement
  */
-import React              from "react";
-import { connect }        from "react-redux";
-import PropertyHelper     from "../../helpers/PropertyHelper";
+import React from "react";
+import { connect } from "react-redux";
+import PropertyHelper from "../../helpers/PropertyHelper";
 import BasePropertyEditor from "./BasePropertyEditor";
 import AddNewNotification from "./Components/AddNewNotification";
-import OptionTable        from "./Components/OptionTable/OptionTable";
-import CheckboxProperty   from "./PropertyItems/CheckboxProperty";
-import CustomProperty     from "./PropertyItems/CustomProperty";
-import SelectProperty     from "./PropertyItems/SelectProperty";
-import TextareaProperty   from "./PropertyItems/TextareaProperty";
-import TextProperty       from "./PropertyItems/TextProperty";
-import RadioProperty       from "./PropertyItems/RadioProperty";
+import OptionTable from "./Components/OptionTable/OptionTable";
+import CheckboxProperty from "./PropertyItems/CheckboxProperty";
+import CustomProperty from "./PropertyItems/CustomProperty";
+import SelectProperty from "./PropertyItems/SelectProperty";
+import TextareaProperty from "./PropertyItems/TextareaProperty";
+import TextProperty from "./PropertyItems/TextProperty";
 
 @connect(
   (state) => ({
@@ -55,10 +54,10 @@ export default class DynamicRecipients extends BasePropertyEditor {
   };
 
   render() {
-    const {properties: {required, label, handle, value, options, showAsRadio, notificationId, instructions}} = this.context;
+    const { properties: { required, label, handle, value, options, showAsRadio, notificationId, instructions } } = this.context;
 
-    const {canManageNotifications} = this.context;
-    const {notifications}          = this.props;
+    const { canManageNotifications } = this.context;
+    const { notifications } = this.props;
 
     return (
       <div>

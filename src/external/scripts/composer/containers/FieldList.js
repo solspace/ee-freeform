@@ -8,15 +8,15 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes             from "prop-types";
-import React, { Component }  from "react";
-import { connect }           from "react-redux";
-import { addFieldToNewRow }  from "../actions/Actions";
-import AlwaysNearbyBox       from "../components/AlwaysNearbyBox";
-import FieldGroup            from "../components/FieldList/FieldGroup";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { addFieldToNewRow } from "../actions/Actions";
+import AlwaysNearbyBox from "../components/AlwaysNearbyBox";
+import FieldGroup from "../components/FieldList/FieldGroup";
 import MailingListFieldGroup from "../components/FieldList/MailingListFieldGroup";
-import SpecialFieldGroup     from "../components/FieldList/SpecialFieldGroup";
-import FieldHelper           from "../helpers/FieldHelper";
+import SpecialFieldGroup from "../components/FieldList/SpecialFieldGroup";
+import FieldHelper from "../helpers/FieldHelper";
 
 @connect(
   (state) => ({
@@ -70,7 +70,7 @@ export default class FieldList extends Component {
 
   getUsedFields() {
     const { layout, fields } = this.props;
-    const fieldIds           = fields.map(field => (field.id));
+    const fieldIds = fields.map(field => (field.id));
 
     const usedFields = [];
 

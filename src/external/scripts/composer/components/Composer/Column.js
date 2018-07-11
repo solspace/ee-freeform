@@ -8,13 +8,13 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes                                                       from "prop-types";
-import React, { Component }                                            from "react";
-import { DragSource }                                                  from "react-dnd";
-import { connect }                                                     from "react-redux";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { DragSource } from "react-dnd";
+import { connect } from "react-redux";
 import { clearPlaceholders, removeColumn, removeProperty, switchHash } from "../../actions/Actions";
-import { COLUMN }                                                      from "../../constants/DraggableTypes";
-import Field                                                           from "./Field";
+import { COLUMN } from "../../constants/DraggableTypes";
+import Field from "./Field";
 
 const columnSource = {
   beginDrag(props) {
@@ -75,8 +75,8 @@ export default class Column extends Component {
     super(props, context);
 
     this.openPropertiesHandler = this.openPropertiesHandler.bind(this);
-    this.removeColumnHandler   = this.removeColumnHandler.bind(this);
-    this.buildPreview          = this.buildPreview.bind(this);
+    this.removeColumnHandler = this.removeColumnHandler.bind(this);
+    this.buildPreview = this.buildPreview.bind(this);
   }
 
   componentDidMount() {
@@ -87,7 +87,7 @@ export default class Column extends Component {
 
   render() {
     const { hash, index, rowIndex, currentHash } = this.props;
-    const { connectDragSource, properties }      = this.props;
+    const { connectDragSource, properties } = this.props;
 
     const className = ["composer-column"];
     if (currentHash === hash) {
@@ -141,7 +141,7 @@ export default class Column extends Component {
    */
   buildPreview() {
     const { properties: { label } } = this.props;
-    let [width, height]             = [200, 30];
+    let [width, height] = [200, 30];
 
     let canvas = document.createElement("canvas");
 
@@ -152,7 +152,7 @@ export default class Column extends Component {
 
     const ctx = canvas.getContext("2d");
 
-    const devicePixelRatio  = window.devicePixelRatio || 1;
+    const devicePixelRatio = window.devicePixelRatio || 1;
     const backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
       ctx.mozBackingStorePixelRatio ||
       ctx.msBackingStorePixelRatio ||
@@ -161,26 +161,26 @@ export default class Column extends Component {
 
     const ratio = devicePixelRatio / backingStoreRatio;
 
-    width  = width * ratio;
+    width = width * ratio;
     height = height * ratio;
 
-    canvas.width  = width;
+    canvas.width = width;
     canvas.height = height;
 
     ctx.fillStyle = "#FFFFFF";
     ctx.fillRect(0, 0, width, height);
 
-    const lineDashWidth   = Math.ceil(4 * ratio);
+    const lineDashWidth = Math.ceil(4 * ratio);
     const lineDashSpacing = Math.ceil(2 * ratio);
 
     ctx.setLineDash([lineDashWidth, lineDashSpacing]);
-    ctx.strokeStyle    = "#c9c9c9";
+    ctx.strokeStyle = "#c9c9c9";
     ctx.lineDashOffset = 0;
     ctx.strokeRect(0, 0, width, height);
 
     const fontSize = Math.ceil(13 * ratio);
 
-    ctx.font      = `normal ${fontSize}px HelveticaNeue, sans-serif`;
+    ctx.font = `normal ${fontSize}px HelveticaNeue, sans-serif`;
     ctx.fillStyle = "#000000";
     ctx.fillText(label, Math.ceil(10 * ratio), Math.ceil(20 * ratio));
 

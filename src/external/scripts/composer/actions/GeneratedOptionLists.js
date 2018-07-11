@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import qwest            from "qwest";
-import { urlBuilder }   from "../app";
+import qwest from "qwest";
+import { urlBuilder } from "../app";
 import * as ActionTypes from "../constants/ActionTypes";
 
 const requestGeneratedOptions = () => ({

@@ -8,12 +8,12 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import fetch                                                   from "isomorphic-fetch";
-import PropTypes                                               from "prop-types";
-import React, { Component }                                    from "react";
-import ReactDOM                                                from "react-dom";
-import { connect }                                             from "react-redux";
-import { underscored }                                         from "underscore.string";
+import fetch from "isomorphic-fetch";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
+import { connect } from "react-redux";
+import { underscored } from "underscore.string";
 import { fetchFormTemplatesIfNeeded, invalidateFormTemplates } from "../../../actions/FormTemplates";
 
 @connect(
@@ -49,14 +49,14 @@ export default class NotificationProperties extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state          = NotificationProperties.initialState;
-    this.updateName     = this.updateName.bind(this);
+    this.state = NotificationProperties.initialState;
+    this.updateName = this.updateName.bind(this);
     this.updateFileName = this.updateFileName.bind(this);
-    this.updateState    = this.updateState.bind(this);
-    this.getFileName    = this.getFileName.bind(this);
-    this.addTemplate    = this.addTemplate.bind(this);
-    this.setErrors      = this.setErrors.bind(this);
-    this.cleanErrors    = this.cleanErrors.bind(this);
+    this.updateState = this.updateState.bind(this);
+    this.getFileName = this.getFileName.bind(this);
+    this.addTemplate = this.addTemplate.bind(this);
+    this.setErrors = this.setErrors.bind(this);
+    this.cleanErrors = this.cleanErrors.bind(this);
   }
 
   componentDidMount() {
@@ -65,7 +65,7 @@ export default class NotificationProperties extends Component {
 
   render() {
     const { name, fileName, errors } = this.state;
-    const { toggleForm }             = this.props;
+    const { toggleForm } = this.props;
 
     return (
       <div className="composer-new-field-form">
@@ -158,8 +158,8 @@ export default class NotificationProperties extends Component {
    * @returns {boolean}
    */
   addTemplate() {
-    const { name }                                 = this.refs;
-    const { toggleForm, fetchTemplates }           = this.props;
+    const { name } = this.refs;
+    const { toggleForm, fetchTemplates } = this.props;
     const { csrf, notificator, createTemplateUrl } = this.context;
 
     const nameValue = ReactDOM.findDOMNode(name).value;

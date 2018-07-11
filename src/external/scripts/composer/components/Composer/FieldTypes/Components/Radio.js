@@ -9,7 +9,7 @@
  */
 
 import PropTypes from "prop-types";
-import React     from "react";
+import React from "react";
 import { RADIO } from "../../../../constants/FieldTypes";
 import HtmlInput from "../HtmlInput";
 

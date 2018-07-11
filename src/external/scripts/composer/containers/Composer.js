@@ -8,10 +8,10 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes              from "prop-types";
-import React, { Component }   from "react";
-import { DropTarget }         from "react-dnd";
-import { connect }            from "react-redux";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { DropTarget } from "react-dnd";
+import { connect } from "react-redux";
 import {
   addColumnToNewRow,
   addColumnToRow,
@@ -20,12 +20,12 @@ import {
   addPlaceholderRow,
   clearPlaceholders,
   repositionColumn,
-}                             from "../actions/Actions";
-import PlaceholderRow         from "../components/Composer/Placeholders/PlaceholderRow";
-import Row                    from "../components/Composer/Row";
+} from "../actions/Actions";
+import PlaceholderRow from "../components/Composer/Placeholders/PlaceholderRow";
+import Row from "../components/Composer/Row";
 import { COLUMN, FIELD, ROW } from "../constants/DraggableTypes";
-import { hashFromTime }       from "../helpers/Utilities";
-import TabListContainer       from "./TabListContainer";
+import { hashFromTime } from "../helpers/Utilities";
+import TabListContainer from "./TabListContainer";
 
 const composerTarget = {
   hover(props, monitor) {
@@ -108,10 +108,10 @@ export default class Composer extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.moveColumn     = this.moveColumn.bind(this);
-    this.addColumn      = this.addColumn.bind(this);
+    this.moveColumn = this.moveColumn.bind(this);
+    this.addColumn = this.addColumn.bind(this);
     this.columnToNewRow = this.columnToNewRow.bind(this);
-    this.removeColumn   = this.removeColumn.bind(this);
+    this.removeColumn = this.removeColumn.bind(this);
   }
 
   render() {
@@ -119,11 +119,11 @@ export default class Composer extends Component {
 
     const rows = layout[pageIndex] ? layout[pageIndex] : [];
 
-    const { type, rowIndex }    = this.props.placeholders;
+    const { type, rowIndex } = this.props.placeholders;
     const shouldShowPlaceholder = type === ROW && rowIndex === -1;
 
     return connectDropTarget(
-      <div style={{minHeight: 600}}>
+      <div style={{ minHeight: 600 }}>
         <div className="tabs">
           <TabListContainer />
         </div>

@@ -8,14 +8,14 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes       from "prop-types";
-import React           from "react";
-import { connect }     from "react-redux";
+import PropTypes from "prop-types";
+import React from "react";
+import { connect } from "react-redux";
 import * as FieldTypes from "../../../constants/FieldTypes";
-import Badge           from "./Components/Badge";
-import Option          from "./Components/Option";
-import Radio           from "./Components/Radio";
-import HtmlInput       from "./HtmlInput";
+import Badge from "./Components/Badge";
+import Option from "./Components/Option";
+import Radio from "./Components/Radio";
+import HtmlInput from "./HtmlInput";
 
 @connect(
   (state) => ({
@@ -57,19 +57,19 @@ export default class DynamicRecipients extends HtmlInput {
   }
 
   renderInput() {
-    const {showAsRadio} = this.props.properties;
+    const { showAsRadio } = this.props.properties;
 
     return showAsRadio ? this.renderAsRadios() : this.renderAsSelect();
   }
 
   renderAsSelect() {
-    const {properties} = this.props;
-    const {options}    = properties;
+    const { properties } = this.props;
+    const { options } = properties;
 
     let selectOptions = [];
     if (options) {
       for (let i = 0; i < options.length; i++) {
-        const {label, value} = options[i];
+        const { label, value } = options[i];
 
         selectOptions.push(
           <Option
@@ -92,13 +92,13 @@ export default class DynamicRecipients extends HtmlInput {
   }
 
   renderAsRadios() {
-    const {properties} = this.props;
-    const {options}    = properties;
+    const { properties } = this.props;
+    const { options } = properties;
 
     let radioOptions = [];
     if (options) {
       for (let i = 0; i < options.length; i++) {
-        const {label, value} = options[i];
+        const { label, value } = options[i];
 
         radioOptions.push(
           <Radio

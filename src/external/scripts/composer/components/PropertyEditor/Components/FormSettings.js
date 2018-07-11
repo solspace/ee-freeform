@@ -1,5 +1,5 @@
-import PropTypes       from "prop-types";
-import React           from "react";
+import PropTypes from "prop-types";
+import React from "react";
 import * as FieldTypes from "../../../constants/FieldTypes";
 
 export const FormSettings = ({ hash, integrationCount, editForm, editAdminNotifications, editIntegrations }) => (

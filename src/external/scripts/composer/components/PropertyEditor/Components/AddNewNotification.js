@@ -8,7 +8,7 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, { Component }   from "react";
+import React, { Component } from "react";
 import NotificationProperties from "./NotificationProperties";
 
 export default class AddNewNotification extends Component {
@@ -19,7 +19,7 @@ export default class AddNewNotification extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state      = AddNewNotification.initialState;
+    this.state = AddNewNotification.initialState;
     this.toggleForm = this.toggleForm.bind(this);
   }
 

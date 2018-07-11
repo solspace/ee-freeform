@@ -8,12 +8,12 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes                  from "prop-types";
-import React, { Component }       from "react";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import { DragSource, DropTarget } from "react-dnd";
-import ReactDOM                   from "react-dom";
-import { handleOptionRowDrag }    from "../../../../actions/DragDrop";
-import { OPTION_ROW }             from "../../../../constants/DraggableTypes";
+import ReactDOM from "react-dom";
+import { handleOptionRowDrag } from "../../../../actions/DragDrop";
+import { OPTION_ROW } from "../../../../constants/DraggableTypes";
 
 const optionRowSource = {
   beginDrag: (props) => ({
@@ -60,15 +60,15 @@ export default class OptionRow extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.updateValues          = this.updateValues.bind(this);
-    this.updateIsChecked       = this.updateIsChecked.bind(this);
-    this.cleanUpNodes          = this.cleanUpNodes.bind(this);
+    this.updateValues = this.updateValues.bind(this);
+    this.updateIsChecked = this.updateIsChecked.bind(this);
+    this.cleanUpNodes = this.cleanUpNodes.bind(this);
     this.removeValueSetHandler = this.removeValueSetHandler.bind(this);
   }
 
   render() {
     const { connectDropTarget, connectDragSource, connectDragPreview } = this.props;
-    const { label, value, isChecked, showCustomValues, isDragging }    = this.props;
+    const { label, value, isChecked, showCustomValues, isDragging } = this.props;
 
     return connectDropTarget(
       connectDragPreview(
@@ -120,7 +120,7 @@ export default class OptionRow extends Component {
     const { hash, index } = this.props;
 
     const label = ReactDOM.findDOMNode(this.refs.label).value;
-    let value   = label;
+    let value = label;
 
     const valueInput = ReactDOM.findDOMNode(this.refs.value);
     if (valueInput && event.target.dataset.type === "value") {
@@ -131,7 +131,7 @@ export default class OptionRow extends Component {
   }
 
   updateIsChecked(event) {
-    const { hash, index }         = this.props;
+    const { hash, index } = this.props;
     const { target: { checked } } = event;
 
     this.props.updateIsChecked(hash, index, checked);

@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes        from "prop-types";
-import React            from "react";
+import PropTypes from "prop-types";
+import React from "react";
 import BasePropertyItem from "./BasePropertyItem";
 
 export default class CustomProperty extends BasePropertyItem {

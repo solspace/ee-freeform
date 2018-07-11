@@ -8,9 +8,9 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes                    from "prop-types";
-import React, { Component }         from "react";
-import { connect }                  from "react-redux";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import { insertValue, removeValue } from "../../../../actions/Actions";
 
 @connect(

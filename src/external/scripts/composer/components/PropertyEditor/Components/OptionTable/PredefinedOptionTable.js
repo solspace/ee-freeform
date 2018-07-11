@@ -8,10 +8,10 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes            from "prop-types";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { connect }          from "react-redux";
-import PredefinedOptionRow  from "./PredefinedOptionRow";
+import { connect } from "react-redux";
+import PredefinedOptionRow from "./PredefinedOptionRow";
 
 @connect(
   (state) => ({
@@ -76,7 +76,7 @@ export default class PredefinedOptionTable extends Component {
       if (values) {
         isChecked = values.indexOf(value) !== -1;
       } else {
-        isChecked = (value + '') === (this.props.value + '');
+        isChecked = (value + "") === (this.props.value + "");
       }
 
       children.push(

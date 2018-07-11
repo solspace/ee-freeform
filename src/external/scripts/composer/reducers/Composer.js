@@ -8,9 +8,9 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import * as ActionTypes      from "../constants/ActionTypes";
-import * as FieldTypes       from "../constants/FieldTypes";
-import { hashFromTime }      from "../helpers/Utilities";
+import * as ActionTypes from "../constants/ActionTypes";
+import * as FieldTypes from "../constants/FieldTypes";
+import { hashFromTime } from "../helpers/Utilities";
 import { modifyGroupValues } from "./PropertyEditor";
 
 function layout(state = [[]], action) {
@@ -18,7 +18,7 @@ function layout(state = [[]], action) {
 
   switch (action.type) {
     case ActionTypes.ADD_FIELD_TO_NEW_ROW:
-      clonedState  = [...state];
+      clonedState = [...state];
       const newRow = {
         id: hashFromTime(),
         columns: [action.hash],
@@ -110,7 +110,7 @@ function properties(state = {}, action) {
 
     case ActionTypes.REMOVE_PROPERTY:
       const clonedState = { ...state };
-      const propData    = clonedState[action.hash];
+      const propData = clonedState[action.hash];
 
       // If this is an email field property
       // Clean out all MailingList fields which have it
@@ -139,7 +139,7 @@ function repositionColumn(state = [], action) {
   const clonedState = [...state];
 
   const { pageIndex, rowIndex, columnIndex, newRowIndex, newColumnIndex } = action;
-  const column                                                            = clonedState[pageIndex][rowIndex].columns[columnIndex];
+  const column = clonedState[pageIndex][rowIndex].columns[columnIndex];
 
   clonedState[pageIndex][rowIndex].columns.splice(columnIndex, 1);
   clonedState[pageIndex][newRowIndex].columns.splice(newColumnIndex, 0, column);
@@ -150,7 +150,7 @@ function repositionColumn(state = [], action) {
 }
 
 function addColumnToNewRow(state = [], action) {
-  const clonedState                   = [...state];
+  const clonedState = [...state];
   const { pageIndex, rowIndex, hash, prevPageIndex = null } = action;
 
   for (let pageRowIndex of clonedState[pageIndex].keys()) {
@@ -258,7 +258,7 @@ function removePage(state = [], action) {
 }
 
 export function composer(state = [], action) {
-  let idx         = null;
+  let idx = null;
   let clonedState = null;
 
   switch (action.type) {
@@ -267,7 +267,7 @@ export function composer(state = [], action) {
     case ActionTypes.ADD_COLUMN_TO_ROW:
     case ActionTypes.ADD_COLUMN_TO_NEW_ROW:
     case ActionTypes.SWAP_PAGE:
-      clonedState        = { ...state };
+      clonedState = { ...state };
       clonedState.layout = layout(state.layout, action);
       if (action.properties) {
         clonedState.properties = properties(state.properties, action);

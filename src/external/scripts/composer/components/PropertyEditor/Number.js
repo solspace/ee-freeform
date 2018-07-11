@@ -8,14 +8,14 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes          from "prop-types";
-import React              from "react";
+import PropTypes from "prop-types";
+import React from "react";
 import BasePropertyEditor from "./BasePropertyEditor";
-import CheckboxProperty   from "./PropertyItems/CheckboxProperty";
-import CustomProperty     from "./PropertyItems/CustomProperty";
-import SelectProperty     from "./PropertyItems/SelectProperty";
-import TextareaProperty   from "./PropertyItems/TextareaProperty";
-import TextProperty       from "./PropertyItems/TextProperty";
+import CheckboxProperty from "./PropertyItems/CheckboxProperty";
+import CustomProperty from "./PropertyItems/CustomProperty";
+import SelectProperty from "./PropertyItems/SelectProperty";
+import TextareaProperty from "./PropertyItems/TextareaProperty";
+import TextProperty from "./PropertyItems/TextProperty";
 
 export default class Number extends BasePropertyEditor {
   static contextTypes = {
@@ -40,8 +40,8 @@ export default class Number extends BasePropertyEditor {
   };
 
   render() {
-    const { properties: { label, value, handle, placeholder, required, instructions } }         = this.context;
-    const { properties: { minLength, maxLength, minValue, maxValue } }                          = this.context;
+    const { properties: { label, value, handle, placeholder, required, instructions } } = this.context;
+    const { properties: { minLength, maxLength, minValue, maxValue } } = this.context;
     const { properties: { decimalCount, decimalSeparator, thousandsSeparator, allowNegative } } = this.context;
 
     let decimalSeparatorInput = "";

@@ -8,9 +8,9 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes            from "prop-types";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
-import Tab                  from "./Tab";
+import Tab from "./Tab";
 
 const MAX_TABS = 100;
 
@@ -30,7 +30,7 @@ export default class TabList extends Component {
 
   render() {
     const { layout, currentPageIndex, onTabClick, onNewTab, tabCount } = this.props;
-    const {formPropCleanup} = this.context;
+    const { formPropCleanup } = this.context;
 
     return (
       <div className="tab-list-wrapper">

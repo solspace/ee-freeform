@@ -8,7 +8,7 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React            from "react";
+import React from "react";
 import BasePropertyItem from "./BasePropertyItem";
 
 export default class TextProperty extends BasePropertyItem {

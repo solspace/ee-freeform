@@ -8,11 +8,11 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes       from "prop-types";
-import React           from "react";
+import PropTypes from "prop-types";
+import React from "react";
 import * as FieldTypes from "../../../constants/FieldTypes";
-import Badge           from "./Components/Badge";
-import Text            from "./Text";
+import Badge from "./Components/Badge";
+import Text from "./Text";
 
 export default class Email extends Text {
   static propTypes = {
@@ -29,7 +29,7 @@ export default class Email extends Text {
   }
 
   getBadges() {
-    const badges                             = super.getBadges();
+    const badges = super.getBadges();
     const { properties: { notificationId } } = this.props;
 
     if (!notificationId) {

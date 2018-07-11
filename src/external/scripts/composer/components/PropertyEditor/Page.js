@@ -8,9 +8,9 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React              from "react";
+import React from "react";
 import BasePropertyEditor from "./BasePropertyEditor";
-import TextProperty       from "./PropertyItems/TextProperty";
+import TextProperty from "./PropertyItems/TextProperty";
 
 export default class Page extends BasePropertyEditor {
   render() {

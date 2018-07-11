@@ -8,9 +8,9 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import fetch                       from "isomorphic-fetch";
+import fetch from "isomorphic-fetch";
 import { notificator, urlBuilder } from "../app";
-import * as ActionTypes            from "../constants/ActionTypes";
+import * as ActionTypes from "../constants/ActionTypes";
 
 const requestCrmIntegrations = () => ({
   type: ActionTypes.REQUEST_CRM_INTEGRATIONS,
@@ -35,7 +35,7 @@ export function fetchCrmIntegrationsIfNeeded() {
       dispatch(requestCrmIntegrations());
 
       const url = urlBuilder("freeform_next/integrations/crm/get");
-      return fetch(url, {credentials: 'same-origin'})
+      return fetch(url, { credentials: "same-origin" })
         .then(response => response.json())
         .then(json => {
           if (json.errors || json.error) {

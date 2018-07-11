@@ -8,15 +8,15 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React              from "react";
-import PropTypes          from 'prop-types';
+import PropTypes from "prop-types";
+import React from "react";
+import { connect } from "react-redux";
 import BasePropertyEditor from "./BasePropertyEditor";
-import { connect }        from "react-redux";
-import AddNewTemplate     from "./Components/AddNewTemplate";
-import TextProperty       from "./PropertyItems/TextProperty";
-import CheckboxProperty   from "./PropertyItems/CheckboxProperty";
-import SelectProperty     from "./PropertyItems/SelectProperty";
-import TextareaProperty   from "./PropertyItems/TextareaProperty";
+import AddNewTemplate from "./Components/AddNewTemplate";
+import CheckboxProperty from "./PropertyItems/CheckboxProperty";
+import SelectProperty from "./PropertyItems/SelectProperty";
+import TextareaProperty from "./PropertyItems/TextareaProperty";
+import TextProperty from "./PropertyItems/TextProperty";
 
 @connect(
   (state) => ({
@@ -50,16 +50,16 @@ export default class Form extends BasePropertyEditor {
   };
 
   render() {
-    const {isDefaultTemplates} = this.context;
-    const {properties: {name, handle, submissionTitleFormat, defaultStatus, returnUrl, description, formTemplate}} = this.context;
+    const { isDefaultTemplates } = this.context;
+    const { properties: { name, handle, submissionTitleFormat, defaultStatus, returnUrl, description, formTemplate } } = this.context;
 
     let storeData = this.context.properties.storeData;
     if (storeData === undefined) {
       storeData = true;
     }
 
-    const {formStatuses, solspaceTemplates, templates} = this.props;
-    const {canManageSettings}                          = this.context;
+    const { formStatuses, solspaceTemplates, templates } = this.props;
+    const { canManageSettings } = this.context;
 
     const solspaceTemplateList = [];
     solspaceTemplates.map((item, i) => {

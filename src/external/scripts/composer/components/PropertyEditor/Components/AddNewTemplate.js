@@ -9,7 +9,7 @@
  */
 
 import React, { Component } from "react";
-import TemplateProperties   from "./TemplateProperties";
+import TemplateProperties from "./TemplateProperties";
 
 export default class AddNewTemplate extends Component {
   static initialState = {
@@ -19,7 +19,7 @@ export default class AddNewTemplate extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state      = AddNewTemplate.initialState;
+    this.state = AddNewTemplate.initialState;
     this.toggleForm = this.toggleForm.bind(this);
   }
 

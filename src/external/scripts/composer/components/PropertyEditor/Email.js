@@ -1,4 +1,4 @@
-import PropTypes          from "prop-types";
+import PropTypes from "prop-types";
 /*
  * Freeform Next for Expression Engine
  *
@@ -8,15 +8,15 @@ import PropTypes          from "prop-types";
  * @link          https://solspace.com/expressionengine/freeform-next
  * @license       https://solspace.com/software/license-agreement
  */
-import React              from "react";
-import { connect }        from "react-redux";
-import PropertyHelper     from "../../helpers/PropertyHelper";
+import React from "react";
+import { connect } from "react-redux";
+import PropertyHelper from "../../helpers/PropertyHelper";
 import BasePropertyEditor from "./BasePropertyEditor";
 import AddNewNotification from "./Components/AddNewNotification";
-import CheckboxProperty   from "./PropertyItems/CheckboxProperty";
-import SelectProperty     from "./PropertyItems/SelectProperty";
-import TextareaProperty   from "./PropertyItems/TextareaProperty";
-import TextProperty       from "./PropertyItems/TextProperty";
+import CheckboxProperty from "./PropertyItems/CheckboxProperty";
+import SelectProperty from "./PropertyItems/SelectProperty";
+import TextareaProperty from "./PropertyItems/TextareaProperty";
+import TextProperty from "./PropertyItems/TextProperty";
 
 @connect(
   (state) => ({
@@ -56,7 +56,7 @@ export default class Email extends BasePropertyEditor {
     const { properties: { label, handle, placeholder, required, notificationId, instructions } } = this.context;
 
     const { canManageNotifications } = this.context;
-    const { notifications }          = this.props;
+    const { notifications } = this.props;
 
     return (
       <div>

@@ -8,16 +8,16 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React from "react";
-import {compose, createStore, applyMiddleware} from "redux";
-import ReactDOM from "react-dom";
-import {Provider} from "react-redux";
-import ComposerApp from "./containers/ComposerApp";
-import thunkMiddleware from "redux-thunk";
-import composerReducers from "./reducers/index";
-import * as FieldTypes from "./constants/FieldTypes";
 import "babel-polyfill";
-import {showNotification} from "./helpers/Utilities";
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { applyMiddleware, compose, createStore } from "redux";
+import thunkMiddleware from "redux-thunk";
+import * as FieldTypes from "./constants/FieldTypes";
+import ComposerApp from "./containers/ComposerApp";
+import { showNotification } from "./helpers/Utilities";
+import composerReducers from "./reducers/index";
 
 const enhancer = compose(
   applyMiddleware(thunkMiddleware),
@@ -35,7 +35,7 @@ let store = createStore(
       types: fieldTypeList,
     },
     specialFields: [
-      {type: FieldTypes.HTML, label: "HTML", value: "<div>Html content</div>"},
+      { type: FieldTypes.HTML, label: "HTML", value: "<div>Html content</div>" },
       {
         type: FieldTypes.SUBMIT,
         label: "Submit",
@@ -83,12 +83,12 @@ let store = createStore(
 const rootElement = document.getElementById("freeform-builder");
 export const notificator = (type, message) => (showNotification(message, type));
 export const urlBuilder = (url) => {
-  const index = baseUrl.indexOf('&');
+  const index = baseUrl.indexOf("&");
   if (index === -1 || index === false) {
-    return baseUrl + '/' + url;
+    return baseUrl + "/" + url;
   }
 
-  return baseUrl.substring(0, index) + '/' + url + baseUrl.substring(index, baseUrl.length);
+  return baseUrl.substring(0, index) + "/" + url + baseUrl.substring(index, baseUrl.length);
 };
 
 ReactDOM.render(

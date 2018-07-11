@@ -20,7 +20,7 @@ export function properties(state = [], action) {
 
 export function modifyGroupValues(state = [], action) {
   const { hash, isChecked, value = null } = action;
-  let clonedState           = { ...state };
+  let clonedState = { ...state };
 
   switch (action.type) {
     case ActionTypes.ADD_VALUE_SET:
@@ -64,7 +64,7 @@ export function modifyGroupValues(state = [], action) {
 
         if (hasModifications) {
           clonedState[hash].options = options;
-          clonedState[hash].values  = values;
+          clonedState[hash].values = values;
 
           return clonedState;
         }
@@ -76,16 +76,16 @@ export function modifyGroupValues(state = [], action) {
       if (state[hash] && state[hash].options) {
         let { label, index } = action;
 
-        const options       = [...state[hash].options];
+        const options = [...state[hash].options];
         const previousValue = options[index].value;
 
-        options[index].value = value + '';
-        options[index].label = label + '';
+        options[index].value = value + "";
+        options[index].label = label + "";
 
         clonedState[hash].options = options;
 
         if (state[hash].values !== undefined) {
-          const values             = [...state[hash].values];
+          const values = [...state[hash].values];
           const previousValueIndex = values.indexOf(previousValue);
           if (previousValueIndex !== -1) {
             values[previousValueIndex] = value;
@@ -172,7 +172,7 @@ export function modifyGroupValues(state = [], action) {
           break;
 
         default:
-          clonedState[hash].value = '';
+          clonedState[hash].value = "";
           break;
       }
 
@@ -214,7 +214,7 @@ export function modifyGroupValues(state = [], action) {
  */
 function reorderValueSet(state, action) {
   const { index, newIndex, hash } = action;
-  const clonedState               = { ...state };
+  const clonedState = { ...state };
 
   const item = clonedState[hash].options[index];
 
@@ -233,7 +233,7 @@ function reorderValueSet(state, action) {
  */
 function removeValueSet(state, action) {
   const { hash, index } = action;
-  const clonedState     = { ...state };
+  const clonedState = { ...state };
 
   clonedState[hash].options = [
     ...clonedState[hash].options.slice(0, index),

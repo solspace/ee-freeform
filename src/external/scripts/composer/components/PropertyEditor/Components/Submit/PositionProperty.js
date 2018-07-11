@@ -8,10 +8,10 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes            from "prop-types";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import * as SubmitPositions from "../../../../constants/SubmitPositions";
-import CustomProperty       from "../../PropertyItems/CustomProperty";
+import CustomProperty from "../../PropertyItems/CustomProperty";
 
 export default class PositionProperty extends Component {
   static propTypes = {

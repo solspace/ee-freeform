@@ -8,15 +8,15 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes            from "prop-types";
-import React                from "react";
-import { connect }          from "react-redux";
-import BasePropertyEditor   from "./BasePropertyEditor";
+import PropTypes from "prop-types";
+import React from "react";
+import { connect } from "react-redux";
+import BasePropertyEditor from "./BasePropertyEditor";
 import CheckboxListProperty from "./PropertyItems/CheckboxListProperty";
-import CheckboxProperty     from "./PropertyItems/CheckboxProperty";
-import SelectProperty       from "./PropertyItems/SelectProperty";
-import TextareaProperty     from "./PropertyItems/TextareaProperty";
-import TextProperty         from "./PropertyItems/TextProperty";
+import CheckboxProperty from "./PropertyItems/CheckboxProperty";
+import SelectProperty from "./PropertyItems/SelectProperty";
+import TextareaProperty from "./PropertyItems/TextareaProperty";
+import TextProperty from "./PropertyItems/TextProperty";
 
 @connect(
   (state) => ({

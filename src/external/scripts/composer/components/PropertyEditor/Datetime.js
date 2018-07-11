@@ -8,14 +8,14 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes          from "prop-types";
-import React              from "react";
-import * as FieldTypes    from "../../constants/FieldTypes";
+import PropTypes from "prop-types";
+import React from "react";
+import * as FieldTypes from "../../constants/FieldTypes";
 import BasePropertyEditor from "./BasePropertyEditor";
-import CheckboxProperty   from "./PropertyItems/CheckboxProperty";
-import SelectProperty     from "./PropertyItems/SelectProperty";
-import TextareaProperty   from "./PropertyItems/TextareaProperty";
-import TextProperty       from "./PropertyItems/TextProperty";
+import CheckboxProperty from "./PropertyItems/CheckboxProperty";
+import SelectProperty from "./PropertyItems/SelectProperty";
+import TextareaProperty from "./PropertyItems/TextareaProperty";
+import TextProperty from "./PropertyItems/TextProperty";
 
 export default class Datetime extends BasePropertyEditor {
   static contextTypes = {
@@ -45,9 +45,9 @@ export default class Datetime extends BasePropertyEditor {
 
   render() {
     const { properties: { label, initialValue, handle, placeholder, required, instructions } } = this.context;
-    const { properties: { dateTimeType, generatePlaceholder, useDatepicker } }                 = this.context;
-    const { properties: { dateOrder, date4DigitYear, dateLeadingZero, dateSeparator } }        = this.context;
-    const { properties: { clock24h, lowercaseAMPM, clockSeparator, clockAMPMSeparate } }       = this.context;
+    const { properties: { dateTimeType, generatePlaceholder, useDatepicker } } = this.context;
+    const { properties: { dateOrder, date4DigitYear, dateLeadingZero, dateSeparator } } = this.context;
+    const { properties: { clock24h, lowercaseAMPM, clockSeparator, clockAMPMSeparate } } = this.context;
 
     const showDate = dateTimeType === FieldTypes.DATE_TIME_TYPE_BOTH || dateTimeType === FieldTypes.DATE_TIME_TYPE_DATE;
     const showTime = dateTimeType === FieldTypes.DATE_TIME_TYPE_BOTH || dateTimeType === FieldTypes.DATE_TIME_TYPE_TIME;

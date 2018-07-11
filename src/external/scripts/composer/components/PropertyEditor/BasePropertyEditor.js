@@ -8,9 +8,9 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes            from "prop-types";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { getHandleValue }   from "../../helpers/Utilities";
+import { getHandleValue } from "../../helpers/Utilities";
 
 export default class BasePropertyEditor extends Component {
   static contextTypes = {
@@ -27,8 +27,8 @@ export default class BasePropertyEditor extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.update         = this.update.bind(this);
-    this.updateHandle   = this.updateHandle.bind(this);
+    this.update = this.update.bind(this);
+    this.updateHandle = this.updateHandle.bind(this);
     this.updateKeyValue = this.updateKeyValue.bind(this);
   }
 
@@ -38,7 +38,7 @@ export default class BasePropertyEditor extends Component {
    * @param event
    */
   update(event) {
-    const { updateField }       = this.context;
+    const { updateField } = this.context;
     const { name, value, type } = event.target;
 
     let postValue = value;

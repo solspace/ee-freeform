@@ -8,9 +8,9 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes            from "prop-types";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { connect }          from "react-redux";
+import { connect } from "react-redux";
 import {
   addValueSet,
   cleanUpValues,
@@ -19,8 +19,8 @@ import {
   toggleCustomValues,
   updateIsChecked,
   updateValueSet,
-}                           from "../../../../actions/Actions";
-import OptionRow            from "./OptionRow";
+} from "../../../../actions/Actions";
+import OptionRow from "./OptionRow";
 
 @connect(
   (state) => ({
@@ -60,18 +60,18 @@ export default class OptionTable extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.addNewValues       = this.addNewValues.bind(this);
+    this.addNewValues = this.addNewValues.bind(this);
     this.toggleCustomValues = this.toggleCustomValues.bind(this);
-    this.renderRows         = this.renderRows.bind(this);
+    this.renderRows = this.renderRows.bind(this);
   }
 
   render() {
     const { labelTitle, valueTitle } = this.props;
-    let { showCustomValues }         = this.props;
+    let { showCustomValues } = this.props;
 
     let showCustomValueToggler = true;
     if (showCustomValues === undefined) {
-      showCustomValues       = true;
+      showCustomValues = true;
       showCustomValueToggler = false;
     }
 
@@ -113,7 +113,7 @@ export default class OptionTable extends Component {
    * Adds a new value set and focuses the newest element input
    */
   addNewValues() {
-    const { hash }           = this.context;
+    const { hash } = this.context;
     const { addNewValueSet } = this.props;
 
     addNewValueSet(hash);
@@ -130,7 +130,7 @@ export default class OptionTable extends Component {
    */
   toggleCustomValues(event) {
     const { customValuesHandler } = this.props;
-    const { hash }                = this.context;
+    const { hash } = this.context;
 
     customValuesHandler(hash, event.target.checked);
   }
@@ -142,7 +142,7 @@ export default class OptionTable extends Component {
    */
   renderRows() {
     const { options, values } = this.props;
-    let { showCustomValues }  = this.props;
+    let { showCustomValues } = this.props;
 
     if (showCustomValues === undefined) {
       showCustomValues = true;
@@ -162,15 +162,15 @@ export default class OptionTable extends Component {
       if (values) {
         isChecked = values.indexOf(value) !== -1;
       } else {
-        isChecked = (value + '') === (this.props.value + '');
+        isChecked = (value + "") === (this.props.value + "");
       }
 
       children.push(
         <OptionRow
           key={i}
           hash={hash}
-          label={label + ''}
-          value={value + ''}
+          label={label + ""}
+          value={value + ""}
           index={i}
           isChecked={isChecked}
           showCustomValues={showCustomValues}

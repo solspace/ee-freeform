@@ -8,13 +8,13 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes            from "prop-types";
-import React                from "react";
-import { connect }          from "react-redux";
+import PropTypes from "prop-types";
+import React from "react";
+import { connect } from "react-redux";
 import * as ExternalOptions from "../../../constants/ExternalOptions";
-import { MULTIPLE_SELECT }  from "../../../constants/FieldTypes";
-import Option               from "./Components/Option";
-import HtmlInput            from "./HtmlInput";
+import { MULTIPLE_SELECT } from "../../../constants/FieldTypes";
+import Option from "./Components/Option";
+import HtmlInput from "./HtmlInput";
 
 @connect(
   (state) => ({
@@ -71,8 +71,8 @@ export default class Select extends HtmlInput {
       selectOptions.push(
         <Option
           key={i}
-          label={label + ''}
-          value={value + ''}
+          label={label + ""}
+          value={value + ""}
           properties={properties}
         />,
       );
@@ -86,7 +86,7 @@ export default class Select extends HtmlInput {
           disabled={true}
           multiple={true}
           value={this.props.properties.values}
-          style={{width: '100%'}}
+          style={{ width: "100%" }}
         >
           {selectOptions}
         </select>

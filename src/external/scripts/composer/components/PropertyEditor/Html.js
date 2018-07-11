@@ -8,13 +8,13 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React from "react";
-import PropTypes from 'prop-types';
-import BasePropertyEditor from "./BasePropertyEditor";
-import AceEditor from "react-ace";
-import TextProperty from "./PropertyItems/TextProperty";
 import "brace/mode/html";
 import "brace/theme/chrome";
+import PropTypes from "prop-types";
+import React from "react";
+import AceEditor from "react-ace";
+import BasePropertyEditor from "./BasePropertyEditor";
+import TextProperty from "./PropertyItems/TextProperty";
 
 export default class Html extends BasePropertyEditor {
   static contextTypes = {
@@ -60,7 +60,7 @@ export default class Html extends BasePropertyEditor {
           showGutter={false}
           fontSize={12}
           width="250px"
-          editorProps={{$blockScrolling: true}}
+          editorProps={{ $blockScrolling: true }}
         />
       </div>
     );

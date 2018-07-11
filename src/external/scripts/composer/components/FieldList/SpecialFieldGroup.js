@@ -8,12 +8,12 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes            from "prop-types";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { connect }          from "react-redux";
-import FieldHelper          from "../../helpers/FieldHelper";
-import AddNewField          from "./Components/AddNewField";
-import Field                from "./Field";
+import { connect } from "react-redux";
+import FieldHelper from "../../helpers/FieldHelper";
+import AddNewField from "./Components/AddNewField";
+import Field from "./Field";
 
 @connect(state => ({
   currentPage: state.context.page,
@@ -39,8 +39,8 @@ export default class SpecialFieldGroup extends Component {
   };
 
   render() {
-    const {fieldCount, fields, currentPage, onFieldClick} = this.props;
-    let {canManageFields, formPropCleanup}    = this.context;
+    const { fieldCount, fields, currentPage, onFieldClick } = this.props;
+    let { canManageFields, formPropCleanup } = this.context;
 
     if (canManageFields) {
       canManageFields = !formPropCleanup || fieldCount < 15;

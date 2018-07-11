@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import fetch            from "isomorphic-fetch";
-import { urlBuilder }   from "../app";
+import fetch from "isomorphic-fetch";
+import { urlBuilder } from "../app";
 import * as ActionTypes from "../constants/ActionTypes";
 
 const requestMailingLists = () => ({
@@ -31,7 +31,7 @@ export function fetchMailingListsIfNeeded() {
       dispatch(requestMailingLists());
 
       const url = urlBuilder("freeform_next/integrations/mailing_lists/get");
-      return fetch(url, {credentials: 'same-origin'})
+      return fetch(url, { credentials: "same-origin" })
         .then(response => response.json())
         .then(json => dispatch(receiveMailingLists(json)));
     } else {

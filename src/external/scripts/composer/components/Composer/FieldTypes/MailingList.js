@@ -8,13 +8,13 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes        from "prop-types";
-import React            from "react";
-import { connect }      from "react-redux";
+import PropTypes from "prop-types";
+import React from "react";
+import { connect } from "react-redux";
 import { MAILING_LIST } from "../../../constants/FieldTypes";
-import Badge            from "./Components/Badge";
-import Checkbox         from "./Components/Checkbox";
-import HtmlInput        from "./HtmlInput";
+import Badge from "./Components/Badge";
+import Checkbox from "./Components/Checkbox";
+import HtmlInput from "./HtmlInput";
 
 @connect(
   (state) => ({
@@ -49,19 +49,20 @@ export default class MailingList extends HtmlInput {
   };
 
   getBadges() {
-    const badges                   = super.getBadges();
-    const { properties }           = this.props;
+    const badges = super.getBadges();
+    const { properties } = this.props;
     const { name, emailFieldHash, resourceId } = properties;
 
 
     if (this.getResourceName()) {
-      badges.push(<Badge key={resourceId} label={`"${this.getResourceName()}" list for ${name}`} type={Badge.LOUDSPEAKER} />);
+      badges.push(<Badge key={resourceId} label={`"${this.getResourceName()}" list for ${name}`}
+                         type={Badge.LOUDSPEAKER} />);
     } else {
-      badges.push(<Badge key="no-resource-id" label={`No mailing list for ${name}`} type={Badge.WARNING}/>);
+      badges.push(<Badge key="no-resource-id" label={`No mailing list for ${name}`} type={Badge.WARNING} />);
     }
 
     if (!emailFieldHash) {
-      badges.push(<Badge key="no-email-field-hash" label="No email field" type={Badge.WARNING}/>);
+      badges.push(<Badge key="no-email-field-hash" label="No email field" type={Badge.WARNING} />);
     }
 
     return badges;
@@ -69,7 +70,7 @@ export default class MailingList extends HtmlInput {
 
   getResourceName = () => {
     const { properties, mailingListIntegrations } = this.props;
-    const { resourceId, integrationId }           = properties;
+    const { resourceId, integrationId } = properties;
 
     let resourceName = "";
     if (resourceId) {
@@ -86,10 +87,10 @@ export default class MailingList extends HtmlInput {
     }
 
     return resourceName;
-  }
+  };
 
   renderInput() {
-    const { properties }   = this.props;
+    const { properties } = this.props;
     const { label, value } = properties;
 
     return (

@@ -8,10 +8,10 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import fetch                          from "isomorphic-fetch";
+import fetch from "isomorphic-fetch";
 import { switchHash, updateProperty } from "../actions/Actions";
-import { urlBuilder }                 from "../app";
-import * as ActionTypes               from "../constants/ActionTypes";
+import { urlBuilder } from "../app";
+import * as ActionTypes from "../constants/ActionTypes";
 
 function requestFormTemplates() {
   return {
@@ -38,7 +38,7 @@ export function fetchFormTemplatesIfNeeded(hash = null, autoselectId = null) {
       dispatch(requestFormTemplates());
 
       const url = urlBuilder("freeform_next/form_templates");
-      return fetch(url, {credentials: 'same-origin'})
+      return fetch(url, { credentials: "same-origin" })
         .then(response => response.json())
         .then(json => {
           dispatch(receiveFormTemplates(json));

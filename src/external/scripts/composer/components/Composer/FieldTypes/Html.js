@@ -8,10 +8,10 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes            from "prop-types";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
-import Badge                from "./Components/Badge";
-import Label                from "./Components/Label";
+import Badge from "./Components/Badge";
+import Label from "./Components/Label";
 
 export default class Html extends Component {
   static propTypes = {

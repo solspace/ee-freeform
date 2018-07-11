@@ -8,14 +8,14 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes          from "prop-types";
-import React              from "react";
+import PropTypes from "prop-types";
+import React from "react";
 import BasePropertyEditor from "./BasePropertyEditor";
-import CheckboxProperty   from "./PropertyItems/CheckboxProperty";
-import ColorProperty      from "./PropertyItems/ColorProperty";
-import SelectProperty     from "./PropertyItems/SelectProperty";
-import TextareaProperty   from "./PropertyItems/TextareaProperty";
-import TextProperty       from "./PropertyItems/TextProperty";
+import CheckboxProperty from "./PropertyItems/CheckboxProperty";
+import ColorProperty from "./PropertyItems/ColorProperty";
+import SelectProperty from "./PropertyItems/SelectProperty";
+import TextareaProperty from "./PropertyItems/TextareaProperty";
+import TextProperty from "./PropertyItems/TextProperty";
 
 export default class Rating extends BasePropertyEditor {
   static contextTypes = {
@@ -37,7 +37,7 @@ export default class Rating extends BasePropertyEditor {
 
   render() {
     const { properties: { label, value, handle, required, instructions, maxValue } } = this.context;
-    const { properties: { colorIdle, colorHover, colorSelected } }                   = this.context;
+    const { properties: { colorIdle, colorHover, colorSelected } } = this.context;
 
     let starOptions = [];
     for (let i = 3; i <= 10; i++) {

@@ -8,10 +8,10 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import fetch                          from "isomorphic-fetch";
+import fetch from "isomorphic-fetch";
 import { switchHash, updateProperty } from "../actions/Actions";
-import { urlBuilder }                 from "../app";
-import * as ActionTypes               from "../constants/ActionTypes";
+import { urlBuilder } from "../app";
+import * as ActionTypes from "../constants/ActionTypes";
 
 function requestNotifications() {
   return {
@@ -38,7 +38,7 @@ export function fetchNotificationsIfNeeded(hash = null, autoselectId = null) {
       dispatch(requestNotifications());
 
       const url = urlBuilder("freeform_next/api/notifications/list");
-      return fetch(url, {credentials: 'same-origin'})
+      return fetch(url, { credentials: "same-origin" })
         .then(response => response.json())
         .then(json => {
             dispatch(receiveNotifications(json));

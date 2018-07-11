@@ -9,8 +9,8 @@
  */
 
 import React, { Component } from "react";
-import { fetchFields }      from "../../../actions/Actions";
-import FieldProperties      from "./FieldProperties";
+import { fetchFields } from "../../../actions/Actions";
+import FieldProperties from "./FieldProperties";
 
 export default class AddNewField extends Component {
   static EVENT_AFTER_UPDATE = "freeform_add_new_field_after_render";
@@ -22,7 +22,7 @@ export default class AddNewField extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state           = AddNewField.initialState;
+    this.state = AddNewField.initialState;
     this.toggleFieldForm = this.toggleFieldForm.bind(this);
   }
 

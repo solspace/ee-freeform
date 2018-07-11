@@ -12,7 +12,7 @@ import Hashids from "hashids";
 import { underscored } from "underscore.string";
 
 const minHashLength = 9;
-const hashids       = new Hashids("composer", minHashLength);
+const hashids = new Hashids("composer", minHashLength);
 
 /**
  * Get a hash from the current time
@@ -63,7 +63,7 @@ export function getHandleValue(value, autoUnderscore = true) {
     handleValue = underscored(value, true);
   }
 
-  handleValue = handleValue.replace(/[^a-zA-Z0-9\-_]/g, '');
+  handleValue = handleValue.replace(/[^a-zA-Z0-9\-_]/g, "");
 
   return handleValue;
 }
@@ -76,23 +76,23 @@ export function getHandleValue(value, autoUnderscore = true) {
  */
 export function showNotification(text, type) {
   switch (type) {
-    case 'error':
-      type = 'issue';
+    case "error":
+      type = "issue";
       break;
 
     default:
-      type = 'success';
+      type = "success";
   }
 
-  let notification = document.createElement('div');
-  notification.className = 'composer-alert alert ' + type;
+  let notification = document.createElement("div");
+  notification.className = "composer-alert alert " + type;
   notification.innerHTML = text;
 
-  const block = document.querySelectorAll('.wrap .col.w-16.last')[0];
+  const block = document.querySelectorAll(".wrap .col.w-16.last")[0];
 
   block.appendChild(notification);
 
   setTimeout(() => {
     block.removeChild(notification);
-  }, 3000)
+  }, 3000);
 }

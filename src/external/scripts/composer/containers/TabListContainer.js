@@ -8,10 +8,10 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React                   from "react";
-import { connect }             from "react-redux";
+import React from "react";
+import { connect } from "react-redux";
 import { addPage, switchPage } from "../actions/Actions";
-import TabList                 from "../components/Composer/TabList";
+import TabList from "../components/Composer/TabList";
 
 export default connect(
   (state) => ({

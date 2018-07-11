@@ -8,10 +8,10 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes       from "prop-types";
-import React           from "react";
+import PropTypes from "prop-types";
+import React from "react";
 import * as FieldTypes from "../../../constants/FieldTypes";
-import Text            from "./Text";
+import Text from "./Text";
 
 export default class Datetime extends Text {
   static propTypes = {
@@ -44,7 +44,7 @@ export default class Datetime extends Text {
   constructor(props, context) {
     super(props, context);
 
-    this.getFormat              = this.getFormat.bind(this);
+    this.getFormat = this.getFormat.bind(this);
     this.getHumanReadableFormat = this.getHumanReadableFormat.bind(this);
   }
 
@@ -102,8 +102,8 @@ export default class Datetime extends Text {
    * @returns {string}
    */
   getFormat() {
-    const { properties: { dateTimeType } }                                               = this.props;
-    const { properties: { dateOrder, date4DigitYear, dateLeadingZero, dateSeparator } }  = this.props;
+    const { properties: { dateTimeType } } = this.props;
+    const { properties: { dateOrder, date4DigitYear, dateLeadingZero, dateSeparator } } = this.props;
     const { properties: { clock24h, lowercaseAMPM, clockSeparator, clockAMPMSeparate } } = this.props;
 
     let formatParts = [];
@@ -113,30 +113,30 @@ export default class Datetime extends Text {
 
     if (showDate) {
       let month = dateLeadingZero ? "m" : "n",
-          day   = dateLeadingZero ? "d" : "j",
-          year  = date4DigitYear ? "Y" : "y";
+        day = dateLeadingZero ? "d" : "j",
+        year = date4DigitYear ? "Y" : "y";
 
       let first, second, third;
 
       switch (dateOrder) {
         case "mdy":
-          first  = month;
+          first = month;
           second = day;
-          third  = year;
+          third = year;
 
           break;
 
         case "dmy":
-          first  = day;
+          first = day;
           second = month;
-          third  = year;
+          third = year;
 
           break;
 
         case "ymd":
-          first  = year;
+          first = year;
           second = month;
-          third  = day;
+          third = day;
 
           break;
       }
@@ -146,15 +146,15 @@ export default class Datetime extends Text {
 
     if (showTime) {
       let hours,
-          minutes = "i",
-          ampm;
+        minutes = "i",
+        ampm;
 
       if (clock24h) {
         hours = "H";
-        ampm  = "";
+        ampm = "";
       } else {
         hours = "g";
-        ampm  = (clockAMPMSeparate ? " " : "") + (lowercaseAMPM ? "a" : "A");
+        ampm = (clockAMPMSeparate ? " " : "") + (lowercaseAMPM ? "a" : "A");
       }
 
       formatParts.push(hours + clockSeparator + minutes + ampm);

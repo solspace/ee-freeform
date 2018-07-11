@@ -8,11 +8,11 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes            from "prop-types";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { connect }          from "react-redux";
-import FieldHelper          from "../../helpers/FieldHelper";
-import Field                from "./Field";
+import { connect } from "react-redux";
+import FieldHelper from "../../helpers/FieldHelper";
+import Field from "./Field";
 
 @connect(state => ({
   currentPage: state.context.page,

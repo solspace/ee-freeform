@@ -8,15 +8,15 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
+import PropTypes from "prop-types";
 import React from "react";
-import PropTypes from 'prop-types';
+import { connect } from "react-redux";
+import { fetchCrmIntegrationsIfNeeded, invalidateCrmIntegrations } from "../../actions/Integrations";
 import * as FieldTypes from "../../constants/FieldTypes";
 import BasePropertyEditor from "./BasePropertyEditor";
+import IntegrationMappingTable from "./Components/IntegrationMappingTable/IntegrationMappingTable";
 import CustomProperty from "./PropertyItems/CustomProperty";
 import SelectProperty from "./PropertyItems/SelectProperty";
-import IntegrationMappingTable from "./Components/IntegrationMappingTable/IntegrationMappingTable";
-import {connect} from "react-redux";
-import {invalidateCrmIntegrations, fetchCrmIntegrationsIfNeeded} from "../../actions/Integrations";
 
 @connect(
   (state) => ({
@@ -62,7 +62,7 @@ export default class Integrations extends BasePropertyEditor {
 
     const { isFetching, fetchCrmIntegrations } = this.props;
 
-    let fieldList            = [];
+    let fieldList = [];
     const integrationOptions = [];
     integrationList.map(item => {
       integrationOptions.push({
@@ -138,7 +138,7 @@ export default class Integrations extends BasePropertyEditor {
 
   updateIntegration(event) {
     const { updateField } = this.context;
-    const integration     = event.target;
+    const integration = event.target;
 
     const integrationId = parseInt(integration.value);
 

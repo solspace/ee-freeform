@@ -8,14 +8,14 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes    from "prop-types";
-import React        from "react";
-import { connect }  from "react-redux";
+import PropTypes from "prop-types";
+import React from "react";
+import { connect } from "react-redux";
 import { CHECKBOX } from "../../../constants/FieldTypes";
-import Badge        from "./Components/Badge";
-import Checkbox     from "./Components/Checkbox";
+import Badge from "./Components/Badge";
+import Checkbox from "./Components/Checkbox";
 import Instructions from "./Components/Instructions";
-import HtmlInput    from "./HtmlInput";
+import HtmlInput from "./HtmlInput";
 
 @connect(
   (state) => ({
@@ -49,7 +49,7 @@ export default class CheckboxField extends HtmlInput {
   }
 
   getBadges() {
-    const badges    = super.getBadges();
+    const badges = super.getBadges();
     const { value } = this.props.properties;
 
     if (!value) {

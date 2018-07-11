@@ -76,7 +76,7 @@ const validProperties = [
 
 export default class PropertyHelper {
   static getProperties(hash, store) {
-    const state        = store.getState();
+    const state = store.getState();
     const propertyList = state.composer.properties;
 
     if (propertyList[hash]) {
@@ -109,9 +109,9 @@ export default class PropertyHelper {
    * @returns {Array}
    */
   static getNotificationList(notifications) {
-    const dbNotificationList       = [];
+    const dbNotificationList = [];
     const templateNotificationList = [];
-    const notificationList         = [];
+    const notificationList = [];
 
     // If notifications is an array - it contains only DB notifications
     if (notifications.constructor === Array) {

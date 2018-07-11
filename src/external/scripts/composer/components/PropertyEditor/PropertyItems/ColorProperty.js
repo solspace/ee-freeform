@@ -8,7 +8,7 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React            from "react";
+import React from "react";
 import { SketchPicker } from "react-color";
 import BasePropertyItem from "./BasePropertyItem";
 
@@ -23,14 +23,14 @@ export default class ColorProperty extends BasePropertyItem {
       ...ColorProperty.initialState,
     };
 
-    this.handleClick  = this.handleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleClose  = this.handleClose.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   renderInput() {
     const { value, readOnly, disabled, className } = this.props;
-    const { displayColorPicker }                   = this.state;
+    const { displayColorPicker } = this.state;
 
     const classes = [className];
     if (readOnly && disabled) {

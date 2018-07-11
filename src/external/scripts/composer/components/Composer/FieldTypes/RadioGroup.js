@@ -8,13 +8,13 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes            from "prop-types";
-import React                from "react";
-import { connect }          from "react-redux";
+import PropTypes from "prop-types";
+import React from "react";
+import { connect } from "react-redux";
 import * as ExternalOptions from "../../../constants/ExternalOptions";
-import { RADIO_GROUP }      from "../../../constants/FieldTypes";
-import Radio                from "./Components/Radio";
-import HtmlInput            from "./HtmlInput";
+import { RADIO_GROUP } from "../../../constants/FieldTypes";
+import Radio from "./Components/Radio";
+import HtmlInput from "./HtmlInput";
 
 @connect(
   (state) => ({
@@ -70,9 +70,9 @@ export default class RadioGroup extends HtmlInput {
         radios.push(
           <Radio
             key={i}
-            label={label + ''}
-            value={value + ''}
-            isChecked={(value + '') === (this.props.properties.value + '')}
+            label={label + ""}
+            value={value + ""}
+            isChecked={(value + "") === (this.props.properties.value + "")}
             properties={properties} />,
         );
       }

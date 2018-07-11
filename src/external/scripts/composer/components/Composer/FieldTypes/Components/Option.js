@@ -9,7 +9,7 @@
  */
 
 import PropTypes from "prop-types";
-import React     from "react";
+import React from "react";
 import HtmlInput from "../HtmlInput";
 
 export default class Radio extends HtmlInput {

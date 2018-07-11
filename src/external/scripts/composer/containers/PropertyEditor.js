@@ -8,38 +8,38 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes                                        from "prop-types";
-import React, { Component }                             from "react";
-import { connect }                                      from "react-redux";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import { resetProperties, switchHash, updateProperty, } from "../actions/Actions";
-import AlwaysNearbyBox                                  from "../components/AlwaysNearbyBox";
-import AdminNotifications                               from "../components/PropertyEditor/AdminNotifications";
-import Checkbox                                         from "../components/PropertyEditor/Checkbox";
-import CheckboxGroup                                    from "../components/PropertyEditor/CheckboxGroup";
-import FormSettings                                     from "../components/PropertyEditor/Components/FormSettings";
-import Confirmation                                     from "../components/PropertyEditor/Confirmation";
-import DateTime                                         from "../components/PropertyEditor/Datetime";
-import DynamicRecipients                                from "../components/PropertyEditor/DynamicRecipients";
-import Email                                            from "../components/PropertyEditor/Email";
-import File                                             from "../components/PropertyEditor/File";
-import Form                                             from "../components/PropertyEditor/Form";
-import Hidden                                           from "../components/PropertyEditor/Hidden";
-import Html                                             from "../components/PropertyEditor/Html";
-import Integrations                                     from "../components/PropertyEditor/Integrations";
-import MailingList                                      from "../components/PropertyEditor/MailingList";
-import Number                                           from "../components/PropertyEditor/Number";
-import Page                                             from "../components/PropertyEditor/Page";
-import Phone                                            from "../components/PropertyEditor/Phone";
-import RadioGroup                                       from "../components/PropertyEditor/RadioGroup";
-import Rating                                           from "../components/PropertyEditor/Rating";
-import Recaptcha                                        from "../components/PropertyEditor/Recaptcha";
-import Regex                                            from "../components/PropertyEditor/Regex";
-import Select                                           from "../components/PropertyEditor/Select";
-import Submit                                           from "../components/PropertyEditor/Submit";
-import Text                                             from "../components/PropertyEditor/Text";
-import Textarea                                         from "../components/PropertyEditor/Textarea";
-import Website                                          from "../components/PropertyEditor/Website";
-import * as FieldTypes                                  from "../constants/FieldTypes";
+import AlwaysNearbyBox from "../components/AlwaysNearbyBox";
+import AdminNotifications from "../components/PropertyEditor/AdminNotifications";
+import Checkbox from "../components/PropertyEditor/Checkbox";
+import CheckboxGroup from "../components/PropertyEditor/CheckboxGroup";
+import FormSettings from "../components/PropertyEditor/Components/FormSettings";
+import Confirmation from "../components/PropertyEditor/Confirmation";
+import DateTime from "../components/PropertyEditor/Datetime";
+import DynamicRecipients from "../components/PropertyEditor/DynamicRecipients";
+import Email from "../components/PropertyEditor/Email";
+import File from "../components/PropertyEditor/File";
+import Form from "../components/PropertyEditor/Form";
+import Hidden from "../components/PropertyEditor/Hidden";
+import Html from "../components/PropertyEditor/Html";
+import Integrations from "../components/PropertyEditor/Integrations";
+import MailingList from "../components/PropertyEditor/MailingList";
+import Number from "../components/PropertyEditor/Number";
+import Page from "../components/PropertyEditor/Page";
+import Phone from "../components/PropertyEditor/Phone";
+import RadioGroup from "../components/PropertyEditor/RadioGroup";
+import Rating from "../components/PropertyEditor/Rating";
+import Recaptcha from "../components/PropertyEditor/Recaptcha";
+import Regex from "../components/PropertyEditor/Regex";
+import Select from "../components/PropertyEditor/Select";
+import Submit from "../components/PropertyEditor/Submit";
+import Text from "../components/PropertyEditor/Text";
+import Textarea from "../components/PropertyEditor/Textarea";
+import Website from "../components/PropertyEditor/Website";
+import * as FieldTypes from "../constants/FieldTypes";
 
 const propertyTypes = {
   admin_notifications: AdminNotifications,

@@ -8,10 +8,10 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes          from "prop-types";
-import React              from "react";
+import PropTypes from "prop-types";
+import React from "react";
 import BasePropertyEditor from "./BasePropertyEditor";
-import TextProperty       from "./PropertyItems/TextProperty";
+import TextProperty from "./PropertyItems/TextProperty";
 
 export default class Hidden extends BasePropertyEditor {
   static contextTypes = {

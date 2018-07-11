@@ -8,7 +8,7 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import * as ActionTypes      from "../constants/ActionTypes";
+import * as ActionTypes from "../constants/ActionTypes";
 import { COLUMN, PAGE, ROW } from "../constants/DraggableTypes";
 
 const initialState = {

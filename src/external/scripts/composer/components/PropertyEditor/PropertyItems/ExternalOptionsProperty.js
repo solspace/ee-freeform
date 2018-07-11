@@ -1,15 +1,14 @@
-import PropTypes                                                     from "prop-types";
-import React                                                         from "react";
-import { connect }                                                   from "react-redux";
+import PropTypes from "prop-types";
+import React from "react";
+import { connect } from "react-redux";
 import { fetchGeneratedOptionsIfNeeded, invalidateGeneratedOptions } from "../../../actions/GeneratedOptionLists";
-import * as ExternalOptions                                          from "../../../constants/ExternalOptions";
-import OptionTable                                                   from "../Components/OptionTable/OptionTable";
-import PredefinedOptionTable
-                                                                     from "../Components/OptionTable/PredefinedOptionTable";
-import BasePropertyItem                                              from "./BasePropertyItem";
-import CustomProperty                                                from "./CustomProperty";
-import SelectProperty                                                from "./SelectProperty";
-import TextProperty                                                  from "./TextProperty";
+import * as ExternalOptions from "../../../constants/ExternalOptions";
+import OptionTable from "../Components/OptionTable/OptionTable";
+import PredefinedOptionTable from "../Components/OptionTable/PredefinedOptionTable";
+import BasePropertyItem from "./BasePropertyItem";
+import CustomProperty from "./CustomProperty";
+import SelectProperty from "./SelectProperty";
+import TextProperty from "./TextProperty";
 
 const initialState = {
   emptyOption: "",

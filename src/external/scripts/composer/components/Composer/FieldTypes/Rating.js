@@ -8,7 +8,7 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React     from "react";
+import React from "react";
 import HtmlInput from "./HtmlInput";
 
 export default class Rating extends HtmlInput {

@@ -8,13 +8,13 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes          from "prop-types";
-import React              from "react";
-import { connect }        from "react-redux";
+import PropTypes from "prop-types";
+import React from "react";
+import { connect } from "react-redux";
+import * as ExternalOptions from "../../../constants/ExternalOptions";
 import { CHECKBOX_GROUP } from "../../../constants/FieldTypes";
-import Checkbox           from "./Components/Checkbox";
-import HtmlInput          from "./HtmlInput";
-import * as ExternalOptions    from "../../../constants/ExternalOptions";
+import Checkbox from "./Components/Checkbox";
+import HtmlInput from "./HtmlInput";
 
 @connect(
   (state) => ({

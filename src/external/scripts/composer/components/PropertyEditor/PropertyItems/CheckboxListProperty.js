@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes        from "prop-types";
-import React            from "react";
+import PropTypes from "prop-types";
+import React from "react";
 import BasePropertyItem from "./BasePropertyItem";
 
 export default class CheckboxListProperty extends BasePropertyItem {
@@ -63,7 +63,7 @@ export default class CheckboxListProperty extends BasePropertyItem {
 
   handleUpdate() {
     const { updateField, name } = this.props;
-    const checkboxList          = this.refs.container.querySelectorAll("input");
+    const checkboxList = this.refs.container.querySelectorAll("input");
 
     const values = [];
     for (let i = 0; i < checkboxList.length; i++) {

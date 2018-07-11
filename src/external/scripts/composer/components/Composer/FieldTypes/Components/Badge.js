@@ -8,22 +8,22 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes            from "prop-types";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 
-export const INFO        = "info";
-export const WARNING     = "warning";
-export const ATTRIBUTE   = "attribute";
-export const TEMPLATE    = "template";
-export const VISIBILITY  = "visibility";
+export const INFO = "info";
+export const WARNING = "warning";
+export const ATTRIBUTE = "attribute";
+export const TEMPLATE = "template";
+export const VISIBILITY = "visibility";
 export const LOUDSPEAKER = "loudspeaker";
 
 export default class Badge extends Component {
-  static INFO        = INFO;
-  static WARNING     = WARNING;
-  static ATTRIBUTE   = ATTRIBUTE;
-  static TEMPLATE    = TEMPLATE;
-  static VISIBILITY  = VISIBILITY;
+  static INFO = INFO;
+  static WARNING = WARNING;
+  static ATTRIBUTE = ATTRIBUTE;
+  static TEMPLATE = TEMPLATE;
+  static VISIBILITY = VISIBILITY;
   static LOUDSPEAKER = LOUDSPEAKER;
 
   static propTypes = {
@@ -33,7 +33,7 @@ export default class Badge extends Component {
 
   render() {
     const { label } = this.props;
-    let { type }    = this.props;
+    let { type } = this.props;
 
     if (!type) {
       type = INFO;

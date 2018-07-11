@@ -8,14 +8,14 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes                                                                    from "prop-types";
-import React, { Component }                                                         from "react";
-import { DragSource, DropTarget }                                                   from "react-dnd";
-import { findDOMNode }                                                              from "react-dom";
-import { connect }                                                                  from "react-redux";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { DragSource, DropTarget } from "react-dnd";
+import { findDOMNode } from "react-dom";
+import { connect } from "react-redux";
 import { addColumnToNewRow, clearPlaceholders, removePage, switchHash, switchPage } from "../../actions/Actions";
-import { swapPage, placeholderPage }                                                from "../../actions/PageDragDrop";
-import { COLUMN, PAGE }                                                             from "../../constants/DraggableTypes";
+import { placeholderPage, swapPage } from "../../actions/PageDragDrop";
+import { COLUMN, PAGE } from "../../constants/DraggableTypes";
 
 const passablePageDragOffset = 15;
 

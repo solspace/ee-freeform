@@ -8,14 +8,14 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes                from "prop-types";
-import React, { Component }     from "react";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import { slugify, underscored } from "underscore.string";
-import { MAILING_LIST, TEXT }   from "../../../constants/FieldTypes";
-import Badge                    from "./Components/Badge";
-import Instructions             from "./Components/Instructions";
-import Label                    from "./Components/Label";
-import { reservedKeywords }     from "../../../constants/Fields";
+import { reservedKeywords } from "../../../constants/Fields";
+import { MAILING_LIST, TEXT } from "../../../constants/FieldTypes";
+import Badge from "./Components/Badge";
+import Instructions from "./Components/Instructions";
+import Label from "./Components/Label";
 
 const allowedProperties = [
   "name",
@@ -48,11 +48,11 @@ export default class HtmlInput extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.getBadges            = this.getBadges.bind(this);
+    this.getBadges = this.getBadges.bind(this);
     this.getWrapperClassNames = this.getWrapperClassNames.bind(this);
-    this.prepareWrapperClass  = this.prepareWrapperClass.bind(this);
-    this.renderInput          = this.renderInput.bind(this);
-    this.getClassName         = this.getClassName.bind(this);
+    this.prepareWrapperClass = this.prepareWrapperClass.bind(this);
+    this.renderInput = this.renderInput.bind(this);
+    this.getClassName = this.getClassName.bind(this);
   }
 
   getClassName() {
@@ -117,7 +117,7 @@ export default class HtmlInput extends Component {
     }
 
     if (reservedKeywords.indexOf(handle) !== -1) {
-      badges.push(<Badge key={"handle"} label={"Handle is a reserved keyword"} type={Badge.WARNING} />)
+      badges.push(<Badge key={"handle"} label={"Handle is a reserved keyword"} type={Badge.WARNING} />);
     }
 
     return badges;

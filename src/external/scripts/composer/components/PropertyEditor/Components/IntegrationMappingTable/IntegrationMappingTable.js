@@ -8,9 +8,9 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes            from "prop-types";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
-import MappingRow           from "./MappingRow";
+import MappingRow from "./MappingRow";
 
 export default class IntegrationMappingTable extends Component {
   static propTypes = {
@@ -84,7 +84,7 @@ export default class IntegrationMappingTable extends Component {
 
   updateMappings() {
     const { updateField } = this.context;
-    const selectList      = this.refs.items.querySelectorAll("select");
+    const selectList = this.refs.items.querySelectorAll("select");
 
     const mapping = {};
     for (let i = 0; i < selectList.length; i++) {
