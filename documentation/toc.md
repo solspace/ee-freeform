@@ -20,6 +20,7 @@
 	* [Channel Fieldtype](channel-fieldtype.md)
 	* [GDPR Compliance](gdpr-compliance.md)
 	* [Switching from Freeform Classic](switching-from-classic.md)
+	* [Classic Migration Utility](classic-migration.md)
 
 * ### API Integrations
 	* [CRM Integrations](crm-integrations.md)

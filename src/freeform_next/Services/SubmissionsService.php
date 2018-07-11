@@ -53,9 +53,6 @@ class SubmissionsService implements SubmissionHandlerInterface
 
         $submission = SubmissionModel::create($form, $savableFields);
 
-        $submission->title = TemplateHelper::renderStringWithForm($form->getSubmissionTitleFormat(), $form);
-        $submission->title = TemplateHelper::renderString($submission->title, $savableFields);
-
         foreach ($savableFields as $handle => $value) {
             $submission->setFieldValue($handle, $value);
         }
@@ -85,7 +82,13 @@ class SubmissionsService implements SubmissionHandlerInterface
         $assetIds = [];
 
         foreach ($form->getLayout()->getFileUploadFields() as $field) {
-            $assetIds[] = $field->getValue();
+            $fieldAssetIds = $field->getValue();
+
+            foreach ($fieldAssetIds as $assetId) {
+                if (!in_array($assetId, $assetIds)) {
+                    $assetIds[] = $assetId;
+                }
+            }
         }
 
         if (empty($assetIds)) {
