@@ -186,23 +186,12 @@ class HubSpot extends AbstractCRMIntegration
             $fieldList
         );
 
-        $fieldList[] = new FieldObject('contact___email', 'Email (Contact)', FieldObject::TYPE_STRING, false);
-        $fieldList[] = new FieldObject('contact___firstname', 'First Name (Contact)', FieldObject::TYPE_STRING, false);
-        $fieldList[] = new FieldObject('contact___lastname', 'Last Name (Contact)', FieldObject::TYPE_STRING, false);
-        $fieldList[] = new FieldObject('contact___website', 'Website (Contact)', FieldObject::TYPE_STRING, false);
-        $fieldList[] = new FieldObject('contact___phone', 'Phone (Contact)', FieldObject::TYPE_NUMERIC, false);
-        $fieldList[] = new FieldObject('contact___address', 'Address (Contact)', FieldObject::TYPE_STRING, false);
-        $fieldList[] = new FieldObject('contact___city', 'City (Contact)', FieldObject::TYPE_STRING, false);
-        $fieldList[] = new FieldObject('contact___state', 'State (Contact)', FieldObject::TYPE_STRING, false);
-        $fieldList[] = new FieldObject('contact___zip', 'Zip (Contact)', FieldObject::TYPE_NUMERIC, false);
         $this->extractCustomFields(
             '/properties/v1/contacts/properties/',
             'contact',
             $fieldList
         );
 
-        $fieldList[] = new FieldObject('company___name', 'Name (Company)', FieldObject::TYPE_STRING, false);
-        $fieldList[] = new FieldObject('company___description', 'Description (Company)', FieldObject::TYPE_STRING, false);
         $this->extractCustomFields(
             '/properties/v1/companies/properties/',
             'company',
