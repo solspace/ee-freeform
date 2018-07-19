@@ -182,7 +182,7 @@ class HubSpot extends AbstractCRMIntegration
         $fieldList = [];
         $this->extractCustomFields(
             '/properties/v1/deals/properties/',
-            'deals',
+            'deal',
             $fieldList
         );
 
