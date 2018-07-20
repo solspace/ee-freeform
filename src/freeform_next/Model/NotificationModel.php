@@ -76,7 +76,7 @@ class NotificationModel extends Model implements \JsonSerializable
     public static function create()
     {
         $body = <<<EOT
-<p>Submitted on: {current_time format="%l, %F %j, %Y at %g:%i%a"}</p>
+<p>Submitted on: {date_created format="%l, %F %j, %Y at %g:%i%a"}</p>
 <ul>
     {form:fields}
         <li>{field:label}: {field:value}</li>
@@ -89,9 +89,9 @@ EOT;
             self::MODEL,
             [
                 'siteId'    => ee()->config->item('site_id'),
-                'fromName'  => ee()->config->item('webmaster_email'),
+                'fromName'  => ee()->config->item('site_name'),
                 'fromEmail' => ee()->config->item('webmaster_email'),
-                'subject'   => 'Submitted on: {current_time format="%D, %F %d, %Y - %g:%i:%s"}',
+                'subject'   => 'New submission from your {form:name} form',
                 'bodyHtml'  => $body,
                 'bodyText'  => $body,
             ]

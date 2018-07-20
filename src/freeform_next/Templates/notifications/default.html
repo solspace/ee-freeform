@@ -1,13 +1,11 @@
-{!-- subject: Submitted on: {current_time format="%D, %F %d, %Y - %g:%i:%s"} --}
+{!-- subject: New submission from your {form:name} form --}
 {!-- fromEmail: {webmaster_email} --}
-{!-- fromName: {webmaster_email} --}
+{!-- fromName: {site_name} --}
 {!-- replyToEmail: {webmaster_email} --}
 {!-- includeAttachments: y --}
 {!-- description: New submission sample email template --}
 
-<h2>New submission from {form:name}</h2>
-
-<p>Submitted on: {current_time format="%D, %F %d, %Y - %g:%i:%s"}</p>
+<p>Submitted on: {date_created format="%l, %F %j, %Y at %g:%i%a"}</p>
 <ul>
 {form:fields}
     <li>{field:label}: {field:value}</li>
