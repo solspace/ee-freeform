@@ -27,7 +27,7 @@ export default class Confirmation extends BasePropertyEditor {
   static contextTypes = {
     ...BasePropertyEditor.contextTypes,
     properties: PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      id: PropTypes.number,
       type: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
       handle: PropTypes.string.isRequired,

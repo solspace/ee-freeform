@@ -29,6 +29,7 @@ import Integrations from "../components/PropertyEditor/Integrations";
 import MailingList from "../components/PropertyEditor/MailingList";
 import Number from "../components/PropertyEditor/Number";
 import Page from "../components/PropertyEditor/Page";
+import Password from "../components/PropertyEditor/Password";
 import Phone from "../components/PropertyEditor/Phone";
 import RadioGroup from "../components/PropertyEditor/RadioGroup";
 import Rating from "../components/PropertyEditor/Rating";
@@ -67,6 +68,7 @@ const propertyTypes = {
   regex: Regex,
   confirmation: Confirmation,
   recaptcha: Recaptcha,
+  password: Password,
 };
 
 @connect(

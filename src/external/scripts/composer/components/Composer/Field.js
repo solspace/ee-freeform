@@ -22,6 +22,7 @@ import Html from "./FieldTypes/Html";
 import MailingList from "./FieldTypes/MailingList";
 import MultipleSelect from "./FieldTypes/MultipleSelect";
 import Number from "./FieldTypes/Number";
+import Password from "./FieldTypes/Password";
 import Phone from "./FieldTypes/Phone";
 import RadioGroup from "./FieldTypes/RadioGroup";
 import Rating from "./FieldTypes/Rating";
@@ -56,6 +57,7 @@ const fieldTypes = {
   regex: Regex,
   confirmation: Confirmation,
   recaptcha: Recaptcha,
+  password: Password,
 };
 
 export default class Field extends Component {

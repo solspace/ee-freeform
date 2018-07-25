@@ -28,6 +28,7 @@ class FieldsService implements FieldHandlerInterface
             FieldInterface::TYPE_EMAIL              => 'Email',
             FieldInterface::TYPE_HIDDEN             => 'Hidden',
             FieldInterface::TYPE_SELECT             => 'Select',
+            FieldInterface::TYPE_MULTIPLE_SELECT    => 'Multiple Select',
             FieldInterface::TYPE_CHECKBOX           => 'Checkbox',
             FieldInterface::TYPE_CHECKBOX_GROUP     => 'Checkbox Group',
             FieldInterface::TYPE_RADIO_GROUP        => 'Radio Group',

@@ -248,7 +248,7 @@ $minRowHeight: 60px;
             > span {
               display: block;
               margin: 0 5px 5px 0;
-              cursor:pointer;
+              cursor: pointer;
 
               font-size: 200%;
 
@@ -317,4 +317,14 @@ $minRowHeight: 60px;
       content: "\f121";
     }
   }
+}
+
+.icon-solspace-multiple_select:before {
+  font-family: FontAwesome !important;
+  content: "\f0c9";
+}
+
+.icon-solspace-password:before {
+  font-family: FontAwesome !important;
+  content: "\f023";
 }

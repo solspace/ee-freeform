@@ -23,13 +23,13 @@ import HtmlInput from "./HtmlInput";
     generatedOptions: state.generatedOptionLists.cache,
   }),
 )
-export default class Select extends HtmlInput {
+export default class MultipleSelect extends HtmlInput {
   static propTypes = {
     properties: PropTypes.shape({
       hash: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
       required: PropTypes.bool.isRequired,
-      options: PropTypes.array.isRequired,
+      options: PropTypes.array,
       values: PropTypes.array,
     }).isRequired,
     isFetchingOptions: PropTypes.bool.isRequired,
@@ -47,7 +47,7 @@ export default class Select extends HtmlInput {
 
   renderInput() {
     const { properties, generatedOptions, isFetchingOptions } = this.props;
-    const { options, source, hash } = properties;
+    const { options = [], source, hash } = properties;
 
     if (isFetchingOptions && this.cachedOptions) {
       return this.cachedOptions;
@@ -61,7 +61,15 @@ export default class Select extends HtmlInput {
     }
 
     if (!listOptions) {
-      return;
+      return (
+        <select
+          className={this.prepareInputClass()}
+          readOnly={true}
+          disabled={true}
+          multiple={true}
+          style={{ width: "100%" }}
+        />
+      );
     }
 
     let selectOptions = [];

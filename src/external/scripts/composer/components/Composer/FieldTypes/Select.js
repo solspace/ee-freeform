@@ -29,7 +29,7 @@ export default class Select extends HtmlInput {
       hash: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
       required: PropTypes.bool.isRequired,
-      options: PropTypes.array.isRequired,
+      options: PropTypes.array,
       value: PropTypes.node,
     }).isRequired,
     isFetchingOptions: PropTypes.bool.isRequired,
@@ -47,7 +47,7 @@ export default class Select extends HtmlInput {
 
   renderInput() {
     const { properties, generatedOptions, isFetchingOptions } = this.props;
-    const { options, source, hash } = properties;
+    const { options = [], source, hash } = properties;
 
     if (isFetchingOptions && this.cachedOptions) {
       return this.cachedOptions;
@@ -61,7 +61,15 @@ export default class Select extends HtmlInput {
     }
 
     if (!listOptions) {
-      return;
+      return (
+        <div className="select">
+          <select
+            className={this.prepareInputClass()}
+            readOnly={true}
+            disabled={true}
+          />
+        </div>
+      );
     }
 
     let selectOptions = [];

@@ -255,6 +255,7 @@ class FieldController extends Controller
                 FieldInterface::TYPE_RADIO_GROUP,
                 FieldInterface::TYPE_CHECKBOX_GROUP,
                 FieldInterface::TYPE_SELECT,
+                FieldInterface::TYPE_MULTIPLE_SELECT,
                 FieldInterface::TYPE_DYNAMIC_RECIPIENTS,
             ],
             true
@@ -504,6 +505,22 @@ class FieldController extends Controller
                                 $model,
                                 'custom_values',
                                 FieldInterface::TYPE_CHECKBOX_GROUP
+                            ),
+                        ],
+                    ],
+                ],
+            ],
+            FieldInterface::TYPE_MULTIPLE_SELECT     => [
+                [
+                    'title'  => 'Custom values',
+                    'desc'   => 'Enable this to specify custom values for each option label.',
+                    'fields' => [
+                        'value_list' => [
+                            'type'    => 'html',
+                            'content' => $this->getFieldHtml(
+                                $model,
+                                'custom_values',
+                                FieldInterface::TYPE_MULTIPLE_SELECT
                             ),
                         ],
                     ],

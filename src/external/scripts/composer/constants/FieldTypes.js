@@ -20,6 +20,8 @@ export const CHECKBOX_GROUP = "checkbox_group";
 export const EMAIL = "email";
 export const DYNAMIC_RECIPIENTS = "dynamic_recipients";
 export const FILE = "file";
+export const CONFIRMATION = "confirmation";
+export const PASSWORD = "password";
 
 export const DATETIME = "datetime";
 export const NUMBER = "number";
@@ -27,7 +29,6 @@ export const PHONE = "phone";
 export const WEBSITE = "website";
 export const RATING = "rating";
 export const REGEX = "regex";
-export const CONFIRMATION = "confirmation";
 
 export const HTML = "html";
 export const MAILING_LIST = "mailing_list";
@@ -68,6 +69,7 @@ export const CONFIRMATION_SUPPORTED_TYPES = [
   PHONE,
   WEBSITE,
   REGEX,
+  PASSWORD,
 ];
 
 export const DATE_TIME_TYPE_BOTH = "both";

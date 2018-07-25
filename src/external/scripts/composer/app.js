@@ -24,7 +24,30 @@ const enhancer = compose(
   window.devToolsExtension ? window.devToolsExtension() : f => f
 );
 
-//noinspection JSUnresolvedVariable
+const specialFields = [
+  { type: FieldTypes.HTML, label: "HTML", value: "<div>Html content</div>" },
+  {
+    type: FieldTypes.SUBMIT,
+    label: "Submit",
+    labelNext: "Submit",
+    labelPrev: "Previous",
+    disablePrev: false,
+    position: "left",
+  },
+  {
+    type: FieldTypes.CONFIRMATION,
+    label: "Confirm",
+    handle: "confirm",
+    placeholder: "",
+  },
+  {
+    type: FieldTypes.PASSWORD,
+    label: "Password",
+    handle: "password",
+    placeholder: "",
+  },
+];
+
 let store = createStore(
   composerReducers, {
     csrfToken: {
@@ -38,17 +61,7 @@ let store = createStore(
       fields: fieldList,
       types: fieldTypeList,
     },
-    specialFields: [
-      { type: FieldTypes.HTML, label: "HTML", value: "<div>Html content</div>" },
-      {
-        type: FieldTypes.SUBMIT,
-        label: "Submit",
-        labelNext: "Submit",
-        labelPrev: "Previous",
-        disablePrev: false,
-        position: "left",
-      },
-    ],
+    specialFields,
     mailingLists: {
       isFetching: false,
       didInvalidate: false,

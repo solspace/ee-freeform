@@ -53,7 +53,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
         value: PropTypes.any.isRequired,
         label: PropTypes.any.isRequired,
       }),
-    ).isRequired,
+    ),
     sourceTargets: PropTypes.object,
     customFields: PropTypes.array,
     fetchGeneratedOptions: PropTypes.func.isRequired,
