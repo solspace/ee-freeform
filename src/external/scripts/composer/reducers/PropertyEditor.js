@@ -109,7 +109,6 @@ export function modifyGroupValues(state = [], action) {
 
       switch (clonedState[hash].type) {
         case FieldTypes.CHECKBOX_GROUP:
-        case FieldTypes.DYNAMIC_RECIPIENTS:
         case FieldTypes.MULTIPLE_SELECT:
           const truncateValues = clonedState[hash].type === FieldTypes.DYNAMIC_RECIPIENTS && !clonedState[hash].showAsCheckboxes;
           if (clonedState[hash].values === undefined || truncateValues) {
