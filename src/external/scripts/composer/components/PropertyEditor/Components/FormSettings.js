@@ -7,25 +7,22 @@ export const FormSettings = ({ hash, integrationCount, editForm, editAdminNotifi
     <a onClick={editForm}
        className={"btn action form-settings" + (hash === FieldTypes.FORM ? " active" : "")}
        data-icon="settings"
-    >
-      Form Settings
-    </a>
+       title="Form Settings"
+    />
 
     <a onClick={editAdminNotifications}
        className={"btn action notification-settings" + (hash === FieldTypes.ADMIN_NOTIFICATIONS ? " active" : "")}
        data-icon="mail"
-    >
-      Notify
-    </a>
+       title="Admin Notifications"
+    />
 
     {integrationCount ?
       (
         <a onClick={editIntegrations}
            className={"btn action crm-settings" + (hash === FieldTypes.INTEGRATION ? " active" : "")}
-           data-icon="settings"
-        >
-          CRM
-        </a>
+           data-icon="crm"
+           title="CRM"
+        />
       )
       : ""}
   </div>

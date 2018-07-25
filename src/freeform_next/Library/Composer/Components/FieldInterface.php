@@ -17,6 +17,7 @@ interface FieldInterface
     const TYPE_TEXTAREA           = 'textarea';
     const TYPE_HIDDEN             = 'hidden';
     const TYPE_SELECT             = 'select';
+    const TYPE_MULTIPLE_SELECT    = 'multiple_select';
     const TYPE_CHECKBOX           = 'checkbox';
     const TYPE_CHECKBOX_GROUP     = 'checkbox_group';
     const TYPE_RADIO_GROUP        = 'radio_group';
@@ -26,6 +27,7 @@ interface FieldInterface
     const TYPE_EMAIL              = 'email';
     const TYPE_MAILING_LIST       = 'mailing_list';
     const TYPE_FILE               = 'file';
+    const TYPE_PASSWORD           = 'password';
 
     const TYPE_DATETIME     = 'datetime';
     const TYPE_NUMBER       = 'number';
@@ -34,6 +36,7 @@ interface FieldInterface
     const TYPE_RATING       = 'rating';
     const TYPE_REGEX        = 'regex';
     const TYPE_CONFIRMATION = 'confirmation';
+    const TYPE_RECAPTCHA    = 'recaptcha';
 
     /**
      * Returns the INPUT type

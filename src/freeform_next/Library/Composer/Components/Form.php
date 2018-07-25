@@ -19,6 +19,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\N
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\StaticValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Properties\FormProperties;
 use Solspace\Addons\FreeformNext\Library\Database\CRMHandlerInterface;
+use Solspace\Addons\FreeformNext\Library\Database\FieldHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Database\FormHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Database\MailingListHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Database\SubmissionHandlerInterface;
@@ -108,6 +109,9 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
     /** @var FileUploadHandlerInterface */
     private $fileUploadHandler;
 
+    /** @var FieldHandlerInterface */
+    private $fieldHandler;
+
     /** @var MailingListHandlerInterface */
     private $mailingListHandler;
 
@@ -130,6 +134,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      * @param FormAttributes              $formAttributes
      * @param array                       $layoutData
      * @param FormHandlerInterface        $formHandler
+     * @param FieldHandlerInterface       $fieldHandler
      * @param SubmissionHandlerInterface  $submissionHandler
      * @param MailHandlerInterface        $mailHandler
      * @param FileUploadHandlerInterface  $fileUploadHandler
@@ -144,6 +149,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         FormAttributes $formAttributes,
         array $layoutData,
         FormHandlerInterface $formHandler,
+        FieldHandlerInterface $fieldHandler,
         SubmissionHandlerInterface $submissionHandler,
         MailHandlerInterface $mailHandler,
         FileUploadHandlerInterface $fileUploadHandler,
@@ -153,6 +159,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
     ) {
         $this->properties         = $properties;
         $this->formHandler        = $formHandler;
+        $this->fieldHandler       = $fieldHandler;
         $this->submissionHandler  = $submissionHandler;
         $this->mailHandler        = $mailHandler;
         $this->fileUploadHandler  = $fileUploadHandler;
@@ -658,6 +665,14 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         $honeypot = $this->getHoneypot();
 
         return 'document.getElementById("' . $honeypot->getName() . '").value = "' . $honeypot->getHash() . '";';
+    }
+
+    /**
+     * @return FieldHandlerInterface
+     */
+    public function getFieldHandler()
+    {
+        return $this->fieldHandler;
     }
 
     /**

@@ -12,11 +12,11 @@
 namespace Solspace\Addons\FreeformNext\Library\Composer;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Attributes\FormAttributes;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Attributes\CustomFormAttributes;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Context;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Properties;
 use Solspace\Addons\FreeformNext\Library\Database\CRMHandlerInterface;
+use Solspace\Addons\FreeformNext\Library\Database\FieldHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Database\FormHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Database\MailingListHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Database\StatusHandlerInterface;
@@ -25,9 +25,7 @@ use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
 use Solspace\Addons\FreeformNext\Library\FileUploads\FileUploadHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Mailing\MailHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Migrations\Objects\ComposerState;
-use Solspace\Addons\FreeformNext\Library\Session\DbSession;
 use Solspace\Addons\FreeformNext\Library\Session\EERequest;
-use Solspace\Addons\FreeformNext\Library\Session\EESession;
 use Solspace\Addons\FreeformNext\Library\Translations\TranslatorInterface;
 use Solspace\Addons\FreeformNext\Services\SettingsService;
 
@@ -75,6 +73,9 @@ class Composer
     /** @var StatusHandlerInterface */
     private $statusHandler;
 
+    /** @var FieldHandlerInterface */
+    private $fieldHandler;
+
     /** @var ComposerState */
     private $customComposerState;
 
@@ -84,6 +85,7 @@ class Composer
      * @param array                       $composerState
      * @param FormAttributes              $formAttributes
      * @param FormHandlerInterface        $formHandler
+     * @param FieldHandlerInterface       $fieldHandler
      * @param SubmissionHandlerInterface  $submissionHandler
      * @param MailHandlerInterface        $mailHandler
      * @param FileUploadHandlerInterface  $fileUploadHandler
@@ -99,6 +101,7 @@ class Composer
         array $composerState = null,
         FormAttributes $formAttributes = null,
         FormHandlerInterface $formHandler,
+        FieldHandlerInterface $fieldHandler,
         SubmissionHandlerInterface $submissionHandler,
         MailHandlerInterface $mailHandler,
         FileUploadHandlerInterface $fileUploadHandler,
@@ -109,6 +112,7 @@ class Composer
         ComposerState $customComposerState = null
     ) {
         $this->formHandler        = $formHandler;
+        $this->fieldHandler       = $fieldHandler;
         $this->submissionHandler  = $submissionHandler;
         $this->mailHandler        = $mailHandler;
         $this->fileUploadHandler  = $fileUploadHandler;
@@ -223,6 +227,7 @@ class Composer
             $formAttributes,
             $composer[self::KEY_LAYOUT],
             $this->formHandler,
+            $this->fieldHandler,
             $this->submissionHandler,
             $this->mailHandler,
             $this->fileUploadHandler,
@@ -279,6 +284,7 @@ class Composer
             $formAttributes,
             [[]],
             $this->formHandler,
+            $this->fieldHandler,
             $this->submissionHandler,
             $this->mailHandler,
             $this->fileUploadHandler,
@@ -321,7 +327,7 @@ class Composer
         $pageCounter = 1;
 
         foreach ($this->customComposerState->fields as $field) {
-            $properties[$field['hash']] = $field;
+            $properties[$field['hash']]                         = $field;
             $properties[Properties::PAGE_PREFIX . $pageCounter] = [
                 'type'  => Properties::PAGE_PREFIX,
                 'label' => 'Page ' . ($pageCounter + 1),
@@ -345,6 +351,7 @@ class Composer
             $formAttributes,
             $this->customComposerState->layout,
             $this->formHandler,
+            $this->fieldHandler,
             $this->submissionHandler,
             $this->mailHandler,
             $this->fileUploadHandler,

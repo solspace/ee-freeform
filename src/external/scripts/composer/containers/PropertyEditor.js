@@ -153,7 +153,6 @@ export default class PropertyEditor extends Component {
     ].indexOf(props.type) === -1;
 
     return (
-      <div className="property-editor">
         <AlwaysNearbyBox
           stickyTop={
             <FormSettings
@@ -186,7 +185,6 @@ export default class PropertyEditor extends Component {
 
 
         </AlwaysNearbyBox>
-      </div>
     );
   }
 

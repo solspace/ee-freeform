@@ -29,10 +29,10 @@ export const invalidateGeneratedOptions = (hash) => ({
 
 export function fetchGeneratedOptionsIfNeeded(hash, source, target, configuration) {
   return function (dispatch, getState) {
-    if (shouldFetchMailingLists(hash, getState())) {
+    if (shouldFetchGeneratedOptions(hash, getState())) {
       dispatch(requestGeneratedOptions());
 
-      const url = urlBuilder("freeform/api/options-from-source");
+      const url = urlBuilder("freeform_next/options-from-source");
       return qwest.post(
         url,
         {
@@ -46,6 +46,12 @@ export function fetchGeneratedOptionsIfNeeded(hash, source, target, configuratio
         .then((xhr, response) => {
           if (response.data) {
             dispatch(receiveGeneratedOptions(hash, response.data));
+
+            // Trigger a window resize event, so that the UI adjusts itself
+            const event = window.document.createEvent('UIEvents');
+            event.initUIEvent('resize', true, false, window, 0);
+            window.dispatchEvent(event);
+
             return true;
           }
         });
@@ -55,7 +61,7 @@ export function fetchGeneratedOptionsIfNeeded(hash, source, target, configuratio
   };
 }
 
-const shouldFetchMailingLists = (hash, state) => {
+const shouldFetchGeneratedOptions = (hash, state) => {
   const generatedOptions = state.generatedOptionLists.cache;
 
   if (!generatedOptions || !generatedOptions[hash]) {

@@ -11,8 +11,8 @@
 
 namespace Composer\Components\Attributes;
 
-use Solspace\Freeform\Library\Composer\Components\Attributes\CustomFieldAttributes;
-use Solspace\Freeform\Library\Composer\Components\Attributes\CustomFormAttributes;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Attributes\CustomFieldAttributes;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Attributes\CustomFormAttributes;
 
 class CustomFieldAttributesTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,7 +25,7 @@ class CustomFieldAttributesTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->fieldMock = $this
-            ->getMockBuilder('Solspace\Freeform\Library\Composer\Components\Fields\TextField')
+            ->getMockBuilder('Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\TextField')
             ->disableOriginalConstructor()
             ->getMock();
     }

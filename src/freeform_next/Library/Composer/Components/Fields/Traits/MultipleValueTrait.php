@@ -12,6 +12,8 @@
 namespace Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DataContainers\Option;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\ObscureValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\OptionsInterface;
 
 trait MultipleValueTrait
@@ -53,15 +55,19 @@ trait MultipleValueTrait
      */
     public function setValue($value)
     {
+        if ($this instanceof MultipleValueInterface && !\is_array($value)) {
+            $value = [$value];
+        }
+
         $this->values = $value;
 
         if ($this instanceof OptionsInterface) {
             $updatedOptions = [];
-            foreach ($this->getOptions() as $option) {
-                if (is_numeric($option->getValue())) {
-                    $checked = in_array((int) $option->getValue(), $this->getValue(), false);
+            foreach ($this->getOptions() as $index => $option) {
+                if ($this instanceof ObscureValueInterface) {
+                    $checked = \in_array($index, $value, false);
                 } else {
-                    $checked = in_array($option->getValue(), $this->getValue(), true);
+                    $checked = \in_array($option->getValue(), $value, false);
                 }
 
                 $updatedOptions[] = new Option(

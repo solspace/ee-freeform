@@ -10,7 +10,6 @@
 
 import { combineReducers } from "redux";
 import { composer, context, formId } from "./Composer";
-import { customFields } from "./CustomFields";
 import { assetSources, fields, fileKinds, formStatuses, specialFields } from "./Fields";
 import { templates } from "./FormTemplates";
 import { generatedOptionLists } from "./GeneratedOptionLists";
@@ -21,6 +20,7 @@ import { placeholders } from "./Placeholders";
 import { sourceTargets } from "./SourceTargets";
 
 export default combineReducers({
+  csrfToken: (state = {}) => state,
   formId,
   fields,
   specialFields,
@@ -36,5 +36,7 @@ export default combineReducers({
   placeholders,
   integrations,
   fileKinds,
-  customFields,
+  channelFields: (state = []) => state,
+  categoryFields: (state = []) => state,
+  memberFields: (state = []) => state,
 });

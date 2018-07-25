@@ -18,8 +18,7 @@ export const SORT_DESC = "desc";
 export const SOURCE_CUSTOM = "custom";
 export const SOURCE_ENTRIES = "entries";
 export const SOURCE_CATEGORIES = "categories";
-export const SOURCE_TAGS = "tags";
-export const SOURCE_USERS = "users";
+export const SOURCE_MEMBERS = "members";
 export const SOURCE_PREDEFINED = "predefined";
 
 export const PREDEFINED_DAYS = "days";

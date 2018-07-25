@@ -26,6 +26,7 @@ use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Services\CrmService;
+use Solspace\Addons\FreeformNext\Services\FieldsService;
 use Solspace\Addons\FreeformNext\Services\FilesService;
 use Solspace\Addons\FreeformNext\Services\FormsService;
 use Solspace\Addons\FreeformNext\Services\MailerService;
@@ -93,6 +94,7 @@ class NextFormHelper
             $composerState,
             $formAttributes,
             $formsService,
+            new FieldsService(),
             new SubmissionsService(),
             new MailerService(),
             new FilesService(),
@@ -176,6 +178,7 @@ class NextFormHelper
             null,
             $formAttributes,
             $formsService,
+            new FieldsService(),
             new SubmissionsService(),
             new MailerService(),
             new FilesService(),

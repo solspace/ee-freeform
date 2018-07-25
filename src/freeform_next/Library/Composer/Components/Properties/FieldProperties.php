@@ -171,6 +171,18 @@ class FieldProperties extends AbstractProperties
     /** @var string */
     protected $colorSelected;
 
+    /** @var string */
+    protected $source;
+
+    /** @var string */
+    protected $target;
+
+    /** @var array */
+    protected $configuration;
+
+    /** @var bool */
+    protected $useJsMask;
+
     /**
      * @return string
      */
@@ -602,6 +614,38 @@ class FieldProperties extends AbstractProperties
     }
 
     /**
+     * @return string|null
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTarget()
+    {
+        return $this->target;
+    }
+
+    /**
+     * @return array
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration ?: [];
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isUseJsMask()
+    {
+        return $this->useJsMask;
+    }
+
+    /**
      * Return a list of all property fields and their type
      * [propertyKey => propertyType, ..]
      * E.g. ["name" => "string", ..]
@@ -663,6 +707,10 @@ class FieldProperties extends AbstractProperties
             'colorIdle'           => self::TYPE_STRING,
             'colorHover'          => self::TYPE_STRING,
             'colorSelected'       => self::TYPE_STRING,
+            'source'              => self::TYPE_STRING,
+            'target'              => self::TYPE_STRING,
+            'configuration'       => self::TYPE_ARRAY,
+            'useJsMask'           => self::TYPE_BOOLEAN,
         ];
     }
 }

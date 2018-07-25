@@ -11,7 +11,7 @@
 
 namespace Composer\Components\Attributes;
 
-use Solspace\Freeform\Library\Composer\Components\Attributes\CustomFormAttributes;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Attributes\CustomFormAttributes;
 
 class CustomFormAttributesTest extends \PHPUnit_Framework_TestCase
 {

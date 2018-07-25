@@ -8,13 +8,13 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import "brace/mode/html";
-import "brace/theme/chrome";
 import PropTypes from "prop-types";
 import React from "react";
 import AceEditor from "react-ace";
 import BasePropertyEditor from "./BasePropertyEditor";
 import TextProperty from "./PropertyItems/TextProperty";
+import "brace/mode/html";
+import "brace/theme/chrome";
 
 export default class Html extends BasePropertyEditor {
   static contextTypes = {

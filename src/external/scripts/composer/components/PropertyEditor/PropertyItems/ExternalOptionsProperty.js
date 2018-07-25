@@ -20,6 +20,9 @@ const initialState = {
     customFields: state.customFields,
     isFetchingOptions: state.generatedOptionLists.isFetching,
     generatedOptions: state.generatedOptionLists.cache,
+    channelFields: state.channelFields,
+    categoryFields: state.categoryFields,
+    memberFields: state.memberFields,
   }),
   (dispatch) => ({
     fetchGeneratedOptions: (hash, source, target, configuration) => {
@@ -56,6 +59,9 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
     fetchGeneratedOptions: PropTypes.func.isRequired,
     isFetchingOptions: PropTypes.bool.isRequired,
     generatedOptions: PropTypes.object,
+    channelFields: PropTypes.array,
+    categoryFields: PropTypes.array,
+    memberFields: PropTypes.array,
   };
 
   static contextTypes = {
@@ -67,8 +73,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
     { key: ExternalOptions.SOURCE_CUSTOM, value: "Custom Options" },
     { key: ExternalOptions.SOURCE_ENTRIES, value: "Entries" },
     { key: ExternalOptions.SOURCE_CATEGORIES, value: "Categories" },
-    { key: ExternalOptions.SOURCE_TAGS, value: "Tags" },
-    { key: ExternalOptions.SOURCE_USERS, value: "Users" },
+    { key: ExternalOptions.SOURCE_MEMBERS, value: "Members" },
     { key: ExternalOptions.SOURCE_PREDEFINED, value: "Predefined Options" },
   ];
 
@@ -94,6 +99,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
     this.onUpdateConfig = this.onUpdateConfig.bind(this);
     this.onUpdateEmptyOption = this.onUpdateEmptyOption.bind(this);
     this.persistEmptyOption = this.persistEmptyOption.bind(this);
+    this.onChangeTarget = this.onChangeTarget.bind(this);
   }
 
   render() {
@@ -124,8 +130,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
     switch (source) {
       case ExternalOptions.SOURCE_ENTRIES:
       case ExternalOptions.SOURCE_CATEGORIES:
-      case ExternalOptions.SOURCE_TAGS:
-      case ExternalOptions.SOURCE_USERS:
+      case ExternalOptions.SOURCE_MEMBERS:
         return this.getExternalSourceComponents();
 
       case ExternalOptions.SOURCE_CUSTOM:
@@ -141,10 +146,30 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
    */
   getExternalSourceComponents() {
     const { target = null, source, sourceTargets } = this.props;
-    const { onChangeHandler, customFields, showEmptyOptionInput } = this.props;
+    const { showEmptyOptionInput } = this.props;
+    const { channelFields, categoryFields, memberFields } = this.props;
     const list = sourceTargets[source];
 
-    const isUserSource = source === ExternalOptions.SOURCE_USERS;
+    let defaultLabelField, defaultValueField, fields = [];
+    switch (source) {
+      case ExternalOptions.SOURCE_MEMBERS:
+        defaultLabelField = "username";
+        defaultValueField = "member_id";
+        fields = memberFields;
+        break;
+
+      case ExternalOptions.SOURCE_CATEGORIES:
+        defaultLabelField = "cat_name";
+        defaultValueField = "cat_id";
+        fields = categoryFields;
+        break;
+
+      default:
+        defaultLabelField = "title";
+        defaultValueField = "entry_id";
+        fields = channelFields;
+        break;
+    }
 
     let emptyOptionComponent = null;
     if (showEmptyOptionInput) {
@@ -166,22 +191,22 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
           name='target'
           value={target}
           options={list}
-          onChangeHandler={onChangeHandler}
+          onChangeHandler={this.onChangeTarget}
         />
 
         <SelectProperty
           label='Option Label'
           name='labelField'
-          value={this.getConfigProperty("labelField", isUserSource ? "username" : "title")}
-          options={ExternalOptionsProperty.getSourceSpecificValueFieldChoices(source, customFields)}
+          value={this.getConfigProperty("labelField", defaultLabelField)}
+          options={fields}
           onChangeHandler={this.onUpdateConfig}
         />
 
         <SelectProperty
           label='Option Value'
           name='valueField'
-          value={this.getConfigProperty("valueField", "id")}
-          options={ExternalOptionsProperty.getSourceSpecificValueFieldChoices(source, customFields)}
+          value={this.getConfigProperty("valueField", defaultValueField)}
+          options={fields}
           onChangeHandler={this.onUpdateConfig}
         />
 
@@ -478,28 +503,6 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
   }
 
   /**
-   * @param source
-   * @param customFields
-   * @returns {Array}
-   */
-  static getSourceSpecificValueFieldChoices(source, customFields) {
-    const isUserSource = source === ExternalOptions.SOURCE_USERS;
-    const excludedFields = isUserSource ?
-      ["title", "slug", "uri"] :
-      ["username", "firstName", "lastName", "fullName", "email"]
-    ;
-
-    const exportList = [];
-    for (const item of customFields) {
-      if (excludedFields.indexOf(item.key) === -1) {
-        exportList.push(item);
-      }
-    }
-
-    return exportList;
-  }
-
-  /**
    * @param prop
    * @param defaultValue
    * @returns {*}
@@ -528,8 +531,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
     switch (value) {
       case ExternalOptions.SOURCE_ENTRIES:
       case ExternalOptions.SOURCE_CATEGORIES:
-      case ExternalOptions.SOURCE_TAGS:
-      case ExternalOptions.SOURCE_USERS:
+      case ExternalOptions.SOURCE_MEMBERS:
         options = {
           source: value,
           target: null,
@@ -571,6 +573,15 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
     if (value !== ExternalOptions.SOURCE_CUSTOM) {
       fetchGeneratedOptions(hash, options.source, options.target, options.configuration);
     }
+  }
+
+  onChangeTarget(event) {
+    const { hash } = this.context;
+    const { fetchGeneratedOptions, configuration, source, onChangeHandler } = this.props;
+    const { value } = event.target;
+
+    onChangeHandler(event);
+    fetchGeneratedOptions(hash, source, value, configuration);
   }
 
   onChangePredefinedTarget(event) {

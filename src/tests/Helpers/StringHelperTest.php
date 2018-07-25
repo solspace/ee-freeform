@@ -12,7 +12,7 @@
 namespace Helpers;
 
 use PHPUnit\Framework\TestCase;
-use Solspace\Freeform\Library\Helpers\StringHelper;
+use Solspace\Addons\FreeformNext\Library\Helpers\StringHelper;
 
 class StringHelperTest extends TestCase
 {

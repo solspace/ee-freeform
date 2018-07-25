@@ -28,6 +28,11 @@
     var assetSources = <?php echo json_encode($assetSources) ?>;
     var fileKinds = <?php echo json_encode($fileKinds) ?>;
     var composerState = <?php echo $form->getComposer()->getComposerStateJSON() ?>;
+    var sourceTargets = <?php echo json_encode($sourceTargets) ?>;
+    var generatedOptions = <?php echo json_encode($generatedOptions) ?>;
+    var channelFields = <?php echo json_encode($channelFields) ?>;
+    var categoryFields = <?php echo json_encode($categoryFields) ?>;
+    var memberFields = <?php echo json_encode($memberFields) ?>;
 
     var baseUrl = "<?php echo ee('CP/URL', 'addons/settings/') ?>";
     var saveUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/forms') ?>";

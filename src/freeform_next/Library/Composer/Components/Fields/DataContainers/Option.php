@@ -11,7 +11,7 @@
 
 namespace Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DataContainers;
 
-class Option
+class Option implements \JsonSerializable
 {
     /** @var string */
     private $label;
@@ -58,5 +58,16 @@ class Option
     public function isChecked()
     {
         return $this->checked;
+    }
+
+    /**
+     * @return array|mixed
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'label'   => $this->getLabel(),
+            'value'   => $this->getValue(),
+        ];
     }
 }

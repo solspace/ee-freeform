@@ -1,11 +1,11 @@
 <?php
 /**
- * Freeform for ExpressionEngine
+ * Freeform for Craft
  *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2018, Solspace, Inc.
- * @link          https://solspace.com/expressionengine/freeform
+ * @link          https://solspace.com/craft/freeform
  * @license       https://solspace.com/software/license-agreement
  */
 
@@ -17,7 +17,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\O
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits\MultipleValueTrait;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits\OptionsTrait;
 
-class CheckboxGroupField extends AbstractExternalOptionsField implements MultipleValueInterface
+class MultipleSelectField extends AbstractExternalOptionsField implements MultipleValueInterface
 {
     use MultipleValueTrait;
 
@@ -28,7 +28,7 @@ class CheckboxGroupField extends AbstractExternalOptionsField implements Multipl
      */
     public function getType()
     {
-        return self::TYPE_CHECKBOX_GROUP;
+        return self::TYPE_MULTIPLE_SELECT;
     }
 
     /**
@@ -39,25 +39,23 @@ class CheckboxGroupField extends AbstractExternalOptionsField implements Multipl
     public function getInputHtml()
     {
         $attributes = $this->getCustomAttributes();
-        $output     = '';
 
-        foreach ($this->options as $index => $option) {
-            $isSelected = in_array($option->getValue(), $this->getValue());
+        $output = '<select '
+            . $this->getAttributeString('name', $this->getHandle() . '[]')
+            . $this->getAttributeString('id', $this->getIdAttribute())
+            . $this->getAttributeString('class', $attributes->getClass())
+            . $this->getParameterString('multiple', true)
+            . $attributes->getInputAttributesAsString()
+            . $this->getRequiredAttribute()
+            . '>';
 
-            $output .= '<label>';
-
-            $output .= '<input '
-                . $this->getAttributeString("name", $this->getHandle() . "[]")
-                . $this->getAttributeString("type", "checkbox")
-                . $this->getAttributeString("class", $attributes->getClass())
-                . $this->getAttributeString("id", $this->getIdAttribute($index + 1))
-                . $this->getAttributeString("value", $option->getValue(), false)
-                . $this->getParameterString('checked', $isSelected)
-                . $attributes->getInputAttributesAsString()
-                . '/>';
+        foreach ($this->getOptions() as $option) {
+            $output .= '<option value="' . $option->getValue() . '"' . ($option->isChecked() ? ' selected' : '') . '>';
             $output .= $this->translate($option->getLabel());
-            $output .= '</label>';
+            $output .= '</option>';
         }
+
+        $output .= '</select>';
 
         return $output;
     }

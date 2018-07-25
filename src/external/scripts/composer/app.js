@@ -27,7 +27,11 @@ const enhancer = compose(
 //noinspection JSUnresolvedVariable
 let store = createStore(
   composerReducers, {
-    formId: formId,
+    csrfToken: {
+      name: "csrf_token",
+      value: csrfToken,
+    },
+    formId,
     fields: {
       isFetching: false,
       didInvalidate: false,
@@ -72,9 +76,12 @@ let store = createStore(
       didInvalidate: false,
       cache: generatedOptions,
     },
-    formStatuses: formStatuses,
-    assetSources: assetSources,
-    fileKinds: fileKinds,
+    formStatuses,
+    assetSources,
+    fileKinds,
+    channelFields,
+    categoryFields,
+    memberFields,
     ...composerState,
   },
   enhancer
