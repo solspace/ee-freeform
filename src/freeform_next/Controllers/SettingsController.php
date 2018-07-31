@@ -23,6 +23,7 @@ class SettingsController extends Controller
     const TYPE_FORMATTING_TEMPLATES = 'formatting_templates';
     const TYPE_EMAIL_TEMPLATES      = 'email_templates';
     const TYPE_DEMO_TEMPLATES       = 'demo_templates';
+    const TYPE_RECAPTCHA            = 'recaptcha';
 
     /** @var array */
     private static $allowedTypes = [
@@ -32,6 +33,7 @@ class SettingsController extends Controller
         self::TYPE_FORMATTING_TEMPLATES,
         self::TYPE_EMAIL_TEMPLATES,
         self::TYPE_DEMO_TEMPLATES,
+        self::TYPE_RECAPTCHA,
     ];
 
     /**
@@ -72,6 +74,9 @@ class SettingsController extends Controller
 
             case self::TYPE_DEMO_TEMPLATES:
                 return $this->demoTemplatesAction();
+
+            case self::TYPE_RECAPTCHA:
+                return $this->recaptchaAction();
 
             case self::TYPE_GENERAL:
             default:
@@ -403,6 +408,60 @@ class SettingsController extends Controller
         $controller = new DemoTemplatesController();
 
         return $controller->index();
+    }
+
+    /**
+     * @return View
+     */
+    private function recaptchaAction()
+    {
+        $settings = $this->getSettings();
+
+        $variables = [
+            'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),
+            'cp_page_title'         => lang('reCAPTCHA'),
+            'save_btn_text'         => 'btn_save_settings',
+            'save_btn_text_working' => 'btn_saving',
+            'sections'              => [
+                [
+                    [
+                        'title'  => 'reCAPTCHA enabled?',
+                        'fields' => [
+                            'recaptchaEnabled' => [
+                                'type'        => 'yes_no',
+                                'value'       => $settings->isRecaptchaEnabled() ? 'y' : 'n',
+                            ],
+                        ],
+                    ],
+                    [
+                        'title'  => 'reCAPTCHA Site Key',
+                        'fields' => [
+                            'recaptchaKey' => [
+                                'type'        => 'text',
+                                'value'       => $settings->getRecaptchaKey(),
+                            ],
+                        ],
+                    ],
+                    [
+                        'title'  => 'reCAPTCHA Secret Key',
+                        'fields' => [
+                            'recaptchaSecret' => [
+                                'type'        => 'text',
+                                'value'       => $settings->getRecaptchaSecret(),
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $view = new CpView('settings/common', $variables);
+        $view
+            ->setHeading(lang('reCAPTCHA'))
+            ->addBreadcrumb(new NavigationLink('Settings', 'settings/general'))
+            ->addJavascript('settings');
+
+        return $view;
     }
 
     /**

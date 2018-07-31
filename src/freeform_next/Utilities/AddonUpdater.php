@@ -13,6 +13,7 @@ namespace Solspace\Addons\FreeformNext\Utilities;
 
 
 use Solspace\Addons\FreeformNext\Utilities\AddonUpdater\PluginAction;
+use Solspace\Addons\FreeformNext\Utilities\AddonUpdater\PluginExtension;
 
 abstract class AddonUpdater
 {
@@ -40,13 +41,14 @@ abstract class AddonUpdater
     /**
      * @return bool
      */
-    public function install()
+    final public function install()
     {
         $this->onBeforeInstall();
 
         $this->insertSqlTables();
+        $this->checkAndInstallActions();
+        $this->checkAndInstallExtensions();
         $this->installModule();
-        $this->installActions();
 
         $this->onAfterInstall();
 
@@ -58,15 +60,19 @@ abstract class AddonUpdater
      *
      * @return bool
      */
-    public function update($previousVersion = null)
+    final public function update($previousVersion = null)
     {
-        return false;
+        $this->runMigrations($previousVersion);
+        $this->checkAndInstallActions();
+        $this->checkAndInstallExtensions();
+
+        return true;
     }
 
     /**
      * @return bool
      */
-    public function uninstall()
+    final public function uninstall()
     {
         $this->onBeforeUninstall();
 
@@ -155,11 +161,23 @@ abstract class AddonUpdater
     }
 
     /**
+     * Runs all migrations that a plugin has
+     */
+    abstract protected function runMigrations();
+
+    /**
      * Get an array of PluginAction objects
      *
      * @return PluginAction[]
      */
-    protected abstract function getInstallableActions();
+    abstract protected function getInstallableActions();
+
+    /**
+     * Get an array of PluginExtension objects
+     *
+     * @return PluginExtension[]
+     */
+    abstract protected function getInstallableExtensions();
 
     /**
      * @return AddonInfo
@@ -187,19 +205,74 @@ abstract class AddonUpdater
     }
 
     /**
-     * Installs the module actions if any provided
+     * Check all actions if they should be updated or installed
      */
-    private function installActions()
+    private function checkAndInstallActions()
     {
         foreach ($this->getInstallableActions() as $action) {
-            ee()->db->insert(
-                'actions',
-                [
-                    'method'      => $action->getMethodName(),
-                    'class'       => $action->getClassName(),
-                    'csrf_exempt' => $action->isCsrfExempt(),
-                ]
-            );
+            $data = [
+                'method'      => $action->getMethodName(),
+                'class'       => $action->getClassName(),
+                'csrf_exempt' => $action->isCsrfExempt(),
+            ];
+
+            $existing = ee()->db
+                ->select('action_id')
+                ->where([
+                    'method'  => $action->getMethodName(),
+                    'class' => $action->getClassName(),
+                ])
+                ->get('actions')
+                ->row();
+
+            if ($existing) {
+                ee()->db
+                    ->where('action_id', $existing->action_id)
+                    ->update('actions', $data);
+            } else {
+                ee()->db->insert('actions', $data);
+            }
+        }
+    }
+
+    /**
+     * Check all extensions if they should be updated or installed
+     */
+    private function checkAndInstallExtensions()
+    {
+        $className = $this->getAddonInfo()->getModuleName() . '_ext';
+        $version   = $this->getAddonInfo()->getVersion();
+
+        foreach ($this->getInstallableExtensions() as $extension) {
+            $data = [
+                'class'    => $className,
+                'method'   => $extension->getMethodName(),
+                'hook'     => $extension->getHookName(),
+                'settings' => serialize($extension->getSettings()),
+                'priority' => $extension->getPriority(),
+                'version'  => $version,
+                'enabled'  => $extension->isEnabled() ? 'y' : 'n',
+            ];
+
+            $existing = ee()->db
+                ->select('extension_id')
+                ->where([
+                    'class'  => $className,
+                    'method' => $extension->getMethodName(),
+                    'hook'   => $extension->getHookName(),
+                ])
+                ->get('extensions')
+                ->row();
+
+            if ($existing) {
+                unset($data['settings'], $data['priority'], $data['enabled']);
+
+                ee()->db
+                    ->where('extension_id', $existing->extension_id)
+                    ->update('extensions', $data);
+            } else {
+                ee()->db->insert('extensions', $data);
+            }
         }
     }
 

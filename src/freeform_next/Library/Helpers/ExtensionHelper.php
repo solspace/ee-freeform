@@ -4,17 +4,22 @@ namespace Solspace\Addons\FreeformNext\Library\Helpers;
 
 class ExtensionHelper
 {
-    const HOOK_FORM_BEFORE_SUBMIT = 'freeform_next_form_before_submit';
-    const HOOK_FORM_AFTER_SUBMIT  = 'freeform_next_form_after_submit';
-    const HOOK_FORM_BEFORE_SAVE   = 'freeform_next_form_before_save';
-    const HOOK_FORM_AFTER_SAVE    = 'freeform_next_form_after_save';
-    const HOOK_FORM_BEFORE_DELETE = 'freeform_next_form_before_delete';
-    const HOOK_FORM_AFTER_DELETE  = 'freeform_next_form_after_delete';
+    const HOOK_FORM_BEFORE_SUBMIT      = 'freeform_next_form_before_submit';
+    const HOOK_FORM_AFTER_SUBMIT       = 'freeform_next_form_after_submit';
+    const HOOK_FORM_BEFORE_SAVE        = 'freeform_next_form_before_save';
+    const HOOK_FORM_AFTER_SAVE         = 'freeform_next_form_after_save';
+    const HOOK_FORM_BEFORE_DELETE      = 'freeform_next_form_before_delete';
+    const HOOK_FORM_AFTER_DELETE       = 'freeform_next_form_after_delete';
+    const HOOK_FORM_RENDER_OPENING_TAG = 'freeform_next_form_render_opening_tag';
+    const HOOK_FORM_RENDER_CLOSING_TAG = 'freeform_next_form_render_closing_tag';
+    const HOOK_FORM_VALIDATE           = 'freeform_next_form_validate';
 
-    const HOOK_FIELD_BEFORE_SAVE   = 'freeform_next_field_before_save';
-    const HOOK_FIELD_AFTER_SAVE    = 'freeform_next_field_after_save';
-    const HOOK_FIELD_BEFORE_DELETE = 'freeform_next_field_before_delete';
-    const HOOK_FIELD_AFTER_DELETE  = 'freeform_next_field_after_delete';
+    const HOOK_FIELD_BEFORE_SAVE     = 'freeform_next_field_before_save';
+    const HOOK_FIELD_AFTER_SAVE      = 'freeform_next_field_after_save';
+    const HOOK_FIELD_BEFORE_VALIDATE = 'freeform_next_field_before_validate';
+    const HOOK_FIELD_AFTER_VALIDATE  = 'freeform_next_field_after_validate';
+    const HOOK_FIELD_BEFORE_DELETE   = 'freeform_next_field_before_delete';
+    const HOOK_FIELD_AFTER_DELETE    = 'freeform_next_field_after_delete';
 
     const HOOK_SUBMISSION_BEFORE_SAVE   = 'freeform_next_submission_before_save';
     const HOOK_SUBMISSION_AFTER_SAVE    = 'freeform_next_submission_after_save';

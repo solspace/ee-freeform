@@ -10,6 +10,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Configuration\ExternalOptionsConfiguration;
 use Solspace\Addons\FreeformNext\Library\Database\FieldHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Factories\PredefinedOptionsFactory;
+use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Model\FieldModel;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Symfony\Component\Finder\Finder;
@@ -94,6 +95,7 @@ class FieldsService implements FieldHandlerInterface
      */
     public function beforeValidate(AbstractField $field, Form $form)
     {
+        ExtensionHelper::call(ExtensionHelper::HOOK_FIELD_BEFORE_VALIDATE, $field, $form);
     }
 
     /**
@@ -102,6 +104,7 @@ class FieldsService implements FieldHandlerInterface
      */
     public function afterValidate(AbstractField $field, Form $form)
     {
+        ExtensionHelper::call(ExtensionHelper::HOOK_FIELD_AFTER_VALIDATE, $field, $form);
     }
 
     /**

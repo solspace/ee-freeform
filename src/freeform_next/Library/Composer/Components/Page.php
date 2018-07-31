@@ -11,6 +11,9 @@
 
 namespace Solspace\Addons\FreeformNext\Library\Composer\Components;
 
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\RememberPostedValueInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\StaticValueInterface;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 
 class Page implements \JsonSerializable, \Iterator, \ArrayAccess
@@ -76,6 +79,29 @@ class Page implements \JsonSerializable, \Iterator, \ArrayAccess
     }
 
     /**
+     * @return array
+     */
+    public function getStorableFieldValues()
+    {
+        $submittedValues = [];
+
+        foreach ($this->getFields() as $field) {
+            if ($field instanceof NoStorageInterface && !$field instanceof RememberPostedValueInterface) {
+                continue;
+            }
+
+            $value = $field->getValue();
+            if ($field instanceof StaticValueInterface && !empty($value)) {
+                $value = $field->getStaticValue();
+            }
+
+            $submittedValues[$field->getHandle()] = $value;
+        }
+
+        return $submittedValues;
+    }
+
+    /**
      * Specify data which should be serialized to JSON
      *
      * @return mixed
@@ -122,7 +148,7 @@ class Page implements \JsonSerializable, \Iterator, \ArrayAccess
      */
     public function valid()
     {
-        return !is_null($this->key()) && $this->key() !== false;
+        return $this->key() !== null && $this->key() !== false;
     }
 
     /**

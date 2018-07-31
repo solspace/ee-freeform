@@ -43,10 +43,11 @@
     var finishTutorialUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/finish_tutorial') ?>";
 
     var showTutorial = <?php echo $showTutorial ? 'true' : 'false' ?>;
-    var defaultTemplates = <?php echo $defaultTemplates ? "true" : "false" ?>;
+    var defaultTemplates = <?php echo $defaultTemplates ? 'true' : 'false' ?>;
     var canManageFields = true;
     var canManageNotifications = true;
     var canManageSettings = true;
+    var isRecaptchaEnabled = <?php echo $isRecaptchaEnabled ? 'true' : 'false' ?>;
 
     var isDbEmailTemplateStorage = <?php echo $isDbEmailTemplateStorage ? 'true' : 'false' ?>;
     var isWidgetsInstalled       = <?php echo $isWidgetsInstalled ? 'true' : 'false' ?>;

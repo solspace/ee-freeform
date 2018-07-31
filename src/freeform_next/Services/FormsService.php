@@ -14,10 +14,13 @@ namespace Solspace\Addons\FreeformNext\Services;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SubmitField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Database\FormHandlerInterface;
+use Solspace\Addons\FreeformNext\Library\DataObjects\FormRenderObject;
 use Solspace\Addons\FreeformNext\Library\EETags\FormToTagDataTransformer;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
+use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
 use Solspace\Addons\FreeformNext\Model\SettingsModel;
+use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 
 class FormsService implements FormHandlerInterface
@@ -74,6 +77,22 @@ class FormsService implements FormHandlerInterface
     /**
      * @return bool
      */
+    public function isSpamBehaviourSimulateSuccess()
+    {
+        return SettingsRepository::getInstance()->getOrCreate()->isSpamBlockLikeSuccessfulPost();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSpamBehaviourReloadForm()
+    {
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
     public function isSpamProtectionEnabled()
     {
         return SettingsRepository::getInstance()->getOrCreate()->isSpamProtectionEnabled();
@@ -111,54 +130,6 @@ class FormsService implements FormHandlerInterface
     }
 
     /**
-     * @inheritDoc
-     */
-    public function addScriptsToPage(Form $form)
-    {
-        $output = '';
-
-        if ($this->isSpamProtectionEnabled()) {
-            $output .= '<script type="text/javascript">' . $form->getHoneypotJavascriptScript() . '</script>';
-        }
-
-        if ($this->getSettingsService()->isFormSubmitDisable()) {
-            // Add the form submit disable logic
-            $formSubmitJs = file_get_contents(__DIR__ . '/../javascript/form-submit.js');
-            $formSubmitJs = str_replace(
-                ['{{FORM_ANCHOR}}', '{{PREV_BUTTON_NAME}}'],
-                [$form->getAnchor(), SubmitField::PREVIOUS_PAGE_INPUT_NAME],
-                $formSubmitJs
-            );
-            $output       .= '<script type="text/javascript">' . $formSubmitJs . '</script>';
-        }
-
-        if ($form->getLayout()->hasDatepickerEnabledFields()) {
-            static $datepickerLoaded;
-
-            if (null === $datepickerLoaded) {
-                $flatpickrCss = file_get_contents(PATH_THIRD_THEMES . 'freeform_next/css/fields/datepicker.css');
-                $output .= "<style>$flatpickrCss</style>";
-
-                $flatpickrJs = file_get_contents(__DIR__ . '/../javascript/fields/flatpickr.js');
-                $datepickerJs = file_get_contents(__DIR__ . '/../javascript/fields/datepicker.js');
-
-                $output .= '<script type="text/javascript">' . $flatpickrJs . '</script>';
-                $output .= '<script type="text/javascript">' . $datepickerJs . '</script>';
-
-                $datepickerLoaded = true;
-            }
-        }
-
-        if ($form->isPagePosted() && !$form->isValid()) {
-            $anchorJs = file_get_contents(__DIR__ . '/../javascript/invalid-form.js');
-            $anchorJs = str_replace('{{FORM_ANCHOR}}', $form->getAnchor(), $anchorJs);
-            $output .= '<script type="text/javascript">' . $anchorJs . '</script>';
-        }
-
-        return $output;
-    }
-
-    /**
      * @return null|string
      */
     public function getSubmitUrl()
@@ -184,6 +155,52 @@ class FormsService implements FormHandlerInterface
             ee()->config->item('site_index'),
             $actionId
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function onBeforeSubmit(Form $form)
+    {
+        return ExtensionHelper::call(ExtensionHelper::HOOK_FORM_BEFORE_SUBMIT, $form);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function onAfterSubmit(Form $form, SubmissionModel $submission = null)
+    {
+        ExtensionHelper::call(ExtensionHelper::HOOK_FORM_AFTER_SUBMIT, $form, $submission);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function onRenderOpeningTag(Form $form, array $outputChunks = [])
+    {
+        $renderObject = new FormRenderObject($form);
+        ExtensionHelper::call(ExtensionHelper::HOOK_FORM_RENDER_OPENING_TAG, $form, $renderObject);
+
+        return $renderObject->getCompiledOutput();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function onRenderClosingTag(Form $form)
+    {
+        $renderObject = new FormRenderObject($form);
+        ExtensionHelper::call(ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG, $form, $renderObject);
+
+        return $renderObject->getCompiledOutput();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function onFormValidate(Form $form)
+    {
+        ExtensionHelper::call(ExtensionHelper::HOOK_FORM_VALIDATE, $form);
     }
 
     /**

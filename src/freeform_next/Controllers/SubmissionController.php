@@ -20,6 +20,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecip
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\EmailField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\MultipleSelectField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\RadioGroupField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SelectField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\TextareaField;
@@ -34,7 +35,6 @@ use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionPreferencesRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
-use Solspace\Addons\FreeformNext\Services\ExportService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Extras\ConfirmRemoveModal;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationLink;
@@ -216,7 +216,7 @@ class SubmissionController extends Controller
                             } else {
                                 $data[] = ['toolbar_items' => []];
                             }
-                        } elseif ($field instanceof RatingField) {
+                        } else if ($field instanceof RatingField) {
                             $data[] = (int) $value . '/' . $field->getMaxValue();
                         } else {
                             $data[] = $value;
@@ -392,6 +392,16 @@ class SubmissionController extends Controller
                                 'choices'  => $field->getOptionsAsArray(),
                             ],
                         ];
+                    } else if ($field instanceof MultipleSelectField) {
+                        $fields = [
+                            $handle => [
+                                'type'     => 'select',
+                                'value'    => $value,
+                                'required' => $isRequired,
+                                'multiple' => true,
+                                'choices'  => $field->getOptionsAsArray(),
+                            ],
+                        ];
                     } else if ($field instanceof CheckboxField) {
                         $fields = [
                             $handle => [
@@ -401,8 +411,7 @@ class SubmissionController extends Controller
                                 'choices'  => [$field->getValue() => $field->getLabel()],
                             ],
                         ];
-                    } else if ($field instanceof SelectField || ($field instanceof DynamicRecipientField && !$field->isShowAsRadio(
-                            ))
+                    } else if ($field instanceof SelectField || ($field instanceof DynamicRecipientField && !$field->isShowAsRadio())
                     ) {
                         $fields = [
                             $handle => [
@@ -412,8 +421,7 @@ class SubmissionController extends Controller
                                 'choices'  => $field->getOptionsAsArray(),
                             ],
                         ];
-                    } else if ($field instanceof RadioGroupField || ($field instanceof DynamicRecipientField && $field->isShowAsRadio(
-                            ))
+                    } else if ($field instanceof RadioGroupField || ($field instanceof DynamicRecipientField && $field->isShowAsRadio())
                     ) {
                         $fields = [
                             $handle => [

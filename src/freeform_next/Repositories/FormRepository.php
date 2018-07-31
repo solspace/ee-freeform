@@ -17,7 +17,10 @@ use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 class FormRepository extends Repository
 {
     /** @var FormModel[] */
-    private static $cache;
+    private static $cacheById;
+
+    /** @var FormModel[] */
+    private static $cacheByHandle;
 
     /**
      * @return FormRepository
@@ -93,14 +96,17 @@ class FormRepository extends Repository
      */
     public function getFormById($id)
     {
-        if (!isset(self::$cache[$id])) {
-            self::$cache[$id] = ee('Model')
+        if (!isset(self::$cacheById[$id])) {
+            $form = ee('Model')
                 ->get(FormModel::MODEL)
                 ->filter('id', $id)
                 ->first();
+
+            self::$cacheById[$id]               = $form;
+            self::$cacheByHandle[$form->handle] = $form;
         }
 
-        return self::$cache[$id];
+        return self::$cacheById[$id];
     }
 
     /**
@@ -128,11 +134,24 @@ class FormRepository extends Repository
      */
     public function getFormByIdOrHandle($idOrHandle)
     {
-        return ee('Model')
+        if (isset(self::$cacheById[$idOrHandle])) {
+            return self::$cacheById[$idOrHandle];
+        }
+
+        if (isset(self::$cacheByHandle[$idOrHandle])) {
+            return self::$cacheByHandle[$idOrHandle];
+        }
+
+        $form = ee('Model')
             ->get(FormModel::MODEL)
             ->filter('id', $idOrHandle)
             ->orFilter('handle', $idOrHandle)
             ->first();
+
+        self::$cacheById[$form->id]         = $form;
+        self::$cacheByHandle[$form->handle] = $form;
+
+        return $form;
     }
 
     /**

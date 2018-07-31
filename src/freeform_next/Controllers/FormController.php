@@ -178,6 +178,7 @@ class FormController extends Controller
                     'channelFields'            => $this->getChannelFields(),
                     'categoryFields'           => $this->getCategoryFields(),
                     'memberFields'             => $this->getMemberFields(),
+                    'isRecaptchaEnabled'       => $settingsService->getSettingsModel()->isRecaptchaEnabled(),
                 ]
             );
 

@@ -202,6 +202,9 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_settings` (
   `defaultTemplates`            TINYINT(1)                       DEFAULT 1,
   `removeNewlines`              TINYINT(1)                       DEFAULT 0,
   `formSubmitDisable`           TINYINT(1)                       DEFAULT 1,
+  `recaptchaEnabled`            TINYINT(1)                       DEFAULT 1,
+  `recaptchaKey`                VARCHAR(50)            NULL      DEFAULT NULL,
+  `recaptchaSecret`             VARCHAR(50)            NULL      DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
 

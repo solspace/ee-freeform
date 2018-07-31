@@ -75,6 +75,9 @@ class SettingsModel extends Model
     protected $defaultTemplates;
     protected $removeNewlines;
     protected $formSubmitDisable;
+    protected $recaptchaEnabled;
+    protected $recaptchaKey;
+    protected $recaptchaSecret;
 
     /**
      * Creates a Settings Model
@@ -87,19 +90,22 @@ class SettingsModel extends Model
         $settings = ee('Model')->make(
             self::MODEL,
             [
-                'siteId'                      => ee()->config->item('site_id'),
-                'spamProtectionEnabled'       => self::DEFAULT_SPAM_PROTECTION_ENABLED,
-                'spamBlockLikeSuccessfulPost' => self::DEFAULT_SPAM_BLOCK_LIKE_SUCCESSFUL_POST,
-                'showTutorial'                => self::DEFAULT_SHOW_TUTORIAL,
-                'fieldDisplayOrder'           => self::DEFAULT_FIELD_DISPLAY_ORDER,
-                'formattingTemplatePath'      => self::DEFAULT_FORMATTING_TEMPLATE_PATH,
-                'notificationTemplatePath'    => self::DEFAULT_NOTIFICATION_TEMPLATE_PATH,
-                'notificationCreationMethod'  => self::DEFAULT_NOTIFICATION_CREATION_METHOD,
-                'license'                     => self::DEFAULT_LICENSE,
-                'sessionStorage'              => self::SESSION_STORAGE_SESSION,
-                'defaultTemplates'            => self::DEFAULT_DEFAULT_TEMPLATES,
-                'removeNewlines'              => self::DEFAULT_REMOVE_NEWLINES,
-                'formSubmitDisable'           => self::DEFAULT_FORM_SUBMIT_DISABLE,
+                'siteId'                        => ee()->config->item('site_id'),
+                'spamProtectionEnabled'         => self::DEFAULT_SPAM_PROTECTION_ENABLED,
+                'spamBlockLikeSuccessfulPost'   => self::DEFAULT_SPAM_BLOCK_LIKE_SUCCESSFUL_POST,
+                'showTutorial'                  => self::DEFAULT_SHOW_TUTORIAL,
+                'fieldDisplayOrder'             => self::DEFAULT_FIELD_DISPLAY_ORDER,
+                'formattingTemplatePath'        => self::DEFAULT_FORMATTING_TEMPLATE_PATH,
+                'notificationTemplatePath'      => self::DEFAULT_NOTIFICATION_TEMPLATE_PATH,
+                'notificationCreationMethod'    => self::DEFAULT_NOTIFICATION_CREATION_METHOD,
+                'license'                       => self::DEFAULT_LICENSE,
+                'sessionStorage'                => self::SESSION_STORAGE_SESSION,
+                'defaultTemplates'              => self::DEFAULT_DEFAULT_TEMPLATES,
+                'removeNewlines'                => self::DEFAULT_REMOVE_NEWLINES,
+                'formSubmitDisable'             => self::DEFAULT_FORM_SUBMIT_DISABLE,
+                'recaptchaEnabled'              => false,
+                'recaptchaKey'                  => null,
+                'recaptchaSecret'               => null,
             ]
         );
 
@@ -322,6 +328,30 @@ class SettingsModel extends Model
     public function isFormSubmitDisable()
     {
         return (bool) $this->formSubmitDisable;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function isRecaptchaEnabled()
+    {
+        return (bool) $this->recaptchaEnabled;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRecaptchaKey()
+    {
+        return $this->recaptchaKey;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRecaptchaSecret()
+    {
+        return $this->recaptchaSecret;
     }
 
     /**

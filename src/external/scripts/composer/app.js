@@ -48,6 +48,10 @@ const specialFields = [
   },
 ];
 
+if (isRecaptchaEnabled) {
+  specialFields.push({ type: FieldTypes.RECAPTCHA, label: "reCAPTCHA" });
+}
+
 let store = createStore(
   composerReducers, {
     csrfToken: {
