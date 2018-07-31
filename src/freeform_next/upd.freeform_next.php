@@ -316,6 +316,9 @@ class Freeform_next_upd extends AddonUpdater
             new PluginExtension('validateHoneypot', ExtensionHelper::HOOK_FORM_VALIDATE),
             new PluginExtension('addHoneypotInputToForm', ExtensionHelper::HOOK_FORM_RENDER_OPENING_TAG),
             new PluginExtension('addHoneypotJavascriptToForm', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG),
+            new PluginExtension('addDateTimeJavascript', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG, [], 6),
+            new PluginExtension('addFormDisabledJavascript', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG, [], 7),
+            new PluginExtension('addFormAnchorJavascript', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG, [], 8),
         ];
     }
 
