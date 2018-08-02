@@ -142,11 +142,15 @@ Salesforce usually disables the API access entirely with their Trial version. Yo
 
 If you're seeing any errors as follows:
 
-> 'Client error response [status code] 400 [reason phrase] Bad Request [url] https://login.salesforce.com/services/oauth2/token'
+```
+'Client error response [status code] 400 [reason phrase] Bad Request [url] https://login.salesforce.com/services/oauth2/token'
+```
 
 * This is because Salesforce runs differently when in Sandbox mode, so be sure to enable the **Sandbox Mode** option inside the CRM integration setting in the Freeform control panel.
 
-> No 'refresh_token' present in auth response for SalesforceLead. Enable offline-access for your app.
+```
+No 'refresh_token' present in auth response for SalesforceLead. Enable offline-access for your app.
+```
 
 * Make sure that the **Perform requests on your behalf at any time (refresh_token, offline_access)** setting is added to the **Selected OAuth Scopes** field for your app in Salesforce.
 
@@ -192,11 +196,15 @@ Unfortunately you cannot because that data is cleared upon submission, which is 
 
 You can however, consider another approach. Freeform allows you to [display submissions on the front end](submissions.md). It also allows you to set the return URL to include the future submission ID. You can set this either in the **Return URL** field for the form in Composer, or at template level like:
 
-    return="{site_url}your-page/success/SUBMISSION_ID"
+```
+return="{site_url}your-page/success/SUBMISSION_ID"
+```
 
 **NOTE:** Using this approach can be a security risk as site visitors could try out other ID's in the URL and view submission data for those submissions. It's strongly recommended that you refrain from displaying any sensitive data, but instead use this for anonymous polls or something simple like:
 
-> Thanks {submission:first_name:value}, we've received your message and will get back to you shortly!
+```
+Thanks {submission:first_name:value}, we've received your message and will get back to you shortly!
+```
 
 
 ## How do I return form submit to same page with success message? <a href="#form-return-success" id="form-return-success" class="docs-anchor">#</a>
