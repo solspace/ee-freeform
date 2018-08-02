@@ -8,6 +8,7 @@ Check out this documentation resource to troubleshoot common problems or find an
 * [Form not submitting](#form-not-submitting)
 * [Updated field options aren't showing](#field-options)
 * [Form submits very slowly](#form-submits-slow)
+* [Error when loading form in templates](#errors-templates)
 * [Errors about missing files/pages in Freeform CP](#missing-files)
 * [Errors about Update Service](#update-service-errors)
 * [Composer not loading correctly](#composer-issues)
@@ -67,6 +68,28 @@ A common issue customers run into is their forms not submitting successfully. Th
 * Try disabling the [Spam Protection](spam-protection.md) feature (**CP** -> **Developer** -> **Add-On Manager** -> **Freeform** -> **Settings** -> **General** and set *Spam Protection* setting to disabled) and test again.
 * Are you getting redirected correctly after form submission? Be sure that you don't have any routes or .htaccess rewrites that conflict with the form submission.
 * To be extra thorough, you can also try submitting EE's simple [Contact Form](https://docs.expressionengine.com/latest/add-ons/email/contact_form.html) feature.
+
+
+## Error when loading form in templates <a href="#errors-templates" id="errors-templates" class="docs-anchor">#</a>
+
+If you're getting an error that looks something like this:
+
+```
+Exception Caught
+Form template 'some-template.html' not found
+user/addons/freeform_next/Services/FormsService.php:65
+```
+
+This is very likely because you assigned a custom **Formatting Template** to your form, and then at some point did one of the following:
+
+* Renamed the formatting template file.
+* Deleted the formatting template file.
+* Specified an incorrect Formatting Template directory path in your settings.
+* Switched environments and the Formatting Template directory path setting is incorrect.
+
+To correct this issue, ensure the path to your Formatting Templates directory path is correct, and that the formatting template the form was assigned (at some point) exists.
+
+> NOTE: If you want to change the name of the formatting template file while it already is in use for form(s), you should first assign all other form(s) another formatting template, then rename the formatting template file, and then reassign the form(s) to that newly renamed formatting template.
 
 
 ## Updated field options aren't showing <a href="#field-options" id="field-options" class="docs-anchor">#</a>
