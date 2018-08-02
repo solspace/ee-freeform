@@ -11,7 +11,7 @@
 ?>
 <link rel="stylesheet" href="<?php echo URL_THIRD_THEMES ?>freeform_next/css/migrations.css"/>
 
-<script type="text/javascript">
+<script>
     window.runUrl = "<?=$migrate_url?>";
     window.firstStage =<?php echo json_encode($first_stage );?>;
     window.finishedRedirectUrl = "<?=$finished_redirect_url?>";

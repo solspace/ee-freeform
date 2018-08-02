@@ -58,7 +58,7 @@ class FormRenderObject
      */
     public function appendJsToOutput($value)
     {
-        $this->outputChunks[] = "<script type=\"text/javascript\">$value</script>";
+        $this->outputChunks[] = "<script>$value</script>";
 
         return $this;
     }
@@ -70,7 +70,7 @@ class FormRenderObject
      */
     public function appendCssToOutput($value)
     {
-        $this->outputChunks[] = "<style rel=\"stylesheet\">$value</style>";
+        $this->outputChunks[] = "<style>$value</style>";
 
         return $this;
     }
