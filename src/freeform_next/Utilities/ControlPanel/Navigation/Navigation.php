@@ -14,6 +14,7 @@ namespace Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation;
 use EllisLab\ExpressionEngine\Library\CP\URL;
 use EllisLab\ExpressionEngine\Service\Sidebar\Header;
 use EllisLab\ExpressionEngine\Service\Sidebar\Sidebar;
+use Solspace\Addons\FreeformNext\Services\PermissionsService;
 
 class Navigation
 {
@@ -44,7 +45,13 @@ class Navigation
         /** @var Sidebar $sidebar */
         $sidebar = ee('CP/Sidebar')->make();
 
+        $permissionsService = $this->getPermissionsService();
+        $groupId = ee()->session->userdata('group_id');
+
         foreach ($this->stack as $item) {
+
+            if (!$permissionsService->canUserAccessSection($item->getMethod(), $groupId)) continue;
+
             $link = $item->getLink();
 
             /** @var Header $header */
@@ -125,5 +132,19 @@ class Navigation
         }
 
         return $currentUrl;
+    }
+
+    /**
+     * @return PermissionsService
+     */
+    private function getPermissionsService()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new PermissionsService();
+        }
+
+        return $instance;
     }
 }

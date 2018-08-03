@@ -273,6 +273,20 @@ class Freeform_next_upd extends AddonUpdater
                 ');
         }
 
+        if (version_compare($previousVersion, '1.6.4', '<')) {
+            ee()->db
+                ->query('
+                                    CREATE TABLE IF NOT EXISTS `exp_freeform_next_permissions` (
+                  `id`                          INT(11)                NOT NULL  AUTO_INCREMENT,
+                  `siteId`                      INT(11)                NOT NULL  DEFAULT \'1\',
+                  `defaultPermissions`          VARCHAR (11)           NOT NULL  DEFAULT \'allow_all\',
+                  `formsPermissions`            TEXT                   NULL      DEFAULT NULL,
+                  `fieldsPermissions`           TEXT                   NULL      DEFAULT NULL,
+                  PRIMARY KEY (`id`)
+                ) CHARACTER SET utf8 COLLATE utf8_general_ci;
+                ');
+        }
+
         return true;
     }
 

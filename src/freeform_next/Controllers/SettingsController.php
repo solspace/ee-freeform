@@ -4,8 +4,10 @@ namespace Solspace\Addons\FreeformNext\Controllers;
 
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
+use Solspace\Addons\FreeformNext\Model\PermissionsModel;
 use Solspace\Addons\FreeformNext\Model\SettingsModel;
 use Solspace\Addons\FreeformNext\Model\StatusModel;
+use Solspace\Addons\FreeformNext\Repositories\PermissionsRepository;
 use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Utilities\AddonInfo;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
@@ -14,12 +16,14 @@ use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 use Stringy\Stringy;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use EllisLab\ExpressionEngine\Model\Member\MemberGroup;
 
 class SettingsController extends Controller
 {
     const TYPE_STATUSES             = 'statuses';
     const TYPE_LICENSE              = 'license';
     const TYPE_GENERAL              = 'general';
+    const TYPE_PERMISSIONS          = 'permissions';
     const TYPE_FORMATTING_TEMPLATES = 'formatting_templates';
     const TYPE_EMAIL_TEMPLATES      = 'email_templates';
     const TYPE_DEMO_TEMPLATES       = 'demo_templates';
@@ -29,6 +33,7 @@ class SettingsController extends Controller
         self::TYPE_STATUSES,
         self::TYPE_LICENSE,
         self::TYPE_GENERAL,
+        self::TYPE_PERMISSIONS,
         self::TYPE_FORMATTING_TEMPLATES,
         self::TYPE_EMAIL_TEMPLATES,
         self::TYPE_DEMO_TEMPLATES,
@@ -47,7 +52,7 @@ class SettingsController extends Controller
             throw new FreeformException('Page does not exist');
         }
 
-        if ($type !== 'statuses' && $this->handlePost()) {
+        if ($type !== 'statuses' && $this->handlePost(self::TYPE_PERMISSIONS)) {
             ee('CP/Alert')
                 ->makeInline('shared-form')
                 ->asSuccess()
@@ -72,6 +77,9 @@ class SettingsController extends Controller
 
             case self::TYPE_DEMO_TEMPLATES:
                 return $this->demoTemplatesAction();
+
+            case self::TYPE_PERMISSIONS:
+                return $this->permissionsAction();
 
             case self::TYPE_GENERAL:
             default:
@@ -141,6 +149,25 @@ class SettingsController extends Controller
                     ],
                 ]
             );
+
+        return $view;
+    }
+
+    /**
+     * @return View
+     */
+    public function permissionDenied()
+    {
+        $pageTitle = lang('Permission Denied');
+
+        $view = new CpView(
+            'settings/permission-denied',
+            [
+                'cp_page_title'    => $pageTitle,
+                'form_right_links' => [],
+            ]
+        );
+        $view->setHeading($pageTitle);
 
         return $view;
     }
@@ -249,6 +276,81 @@ class SettingsController extends Controller
                                     'formSubmitDisable' => [
                                         'type'  => 'yes_no',
                                         'value' => $settings->isFormSubmitDisable() ? 'y' : 'n',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            );
+
+        return $view;
+    }
+
+    /**
+     * @return CpView
+     */
+    private function permissionsAction()
+    {
+        $permissionsModel = $this->getPermissionsModel();
+
+        $member_groups = ee('Model')->get('MemberGroup')
+            ->with('AssignedChannels')
+            ->fields('group_id')
+            ->fields('group_title')
+            ->all();
+
+        $memberGroupChoices = [];
+
+        foreach ($member_groups as $group) {
+            /** @var MemberGroup $group */
+            $memberGroupChoices[$group->group_id] = $group->group_title;
+        }
+
+        $view = new CpView('settings/common', []);
+        $view
+            ->setHeading(lang('Permissions'))
+            ->addBreadcrumb(new NavigationLink('Permissions', 'settings/permissions'))
+            ->setTemplateVariables(
+                [
+                    'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),
+                    'cp_page_title'         => $view->getHeading(),
+                    'save_btn_text'         => 'btn_save_settings',
+                    'save_btn_text_working' => 'btn_saving',
+                    'sections'              => [
+                        [
+                            [
+                                'title'  => 'Default permissions for New Groups',
+                                'fields' => [
+                                    'defaultPermissions' => [
+                                        'type'    => 'radio',
+                                        'value'   => $permissionsModel->defaultPermissions,
+                                        'choices' => [
+                                            'allow_all' => 'Allow All access',
+                                            'deny_all' => 'Deny All access',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            [
+                                'title'  => 'Forms',
+                                'desc'   => 'Chose which user groups have an access to forms',
+                                'fields' => [
+                                    'formsPermissions' => [
+                                        'type'    => 'checkbox',
+                                        'value'   => $permissionsModel->formsPermissions,
+                                        'choices' => $memberGroupChoices,
+                                    ],
+                                ],
+                            ],
+                            [
+                                'title'  => 'Fields',
+                                'desc'   => 'Chose which user groups have an access to fields',
+                                'fields' => [
+                                    'fieldsPermissions' => [
+                                        'type'    => 'checkbox',
+                                        'value'   => $permissionsModel->fieldsPermissions,
+                                        'choices' => $memberGroupChoices,
                                     ],
                                 ],
                             ],
@@ -413,9 +515,13 @@ class SettingsController extends Controller
      *
      * @return bool
      */
-    private function handlePost()
+    private function handlePost($type)
     {
-        $settings = $this->getSettings();
+        if ($type == self::TYPE_PERMISSIONS) {
+            $settings = $this->getPermissionsModel();
+        } else {
+            $settings = $this->getSettings();
+        }
 
         if (!empty($_POST) && !isset($_POST['prefix'])) {
             $accessor = PropertyAccess::createPropertyAccessor();
@@ -445,6 +551,14 @@ class SettingsController extends Controller
     private function getSettings()
     {
         return SettingsRepository::getInstance()->getOrCreate();
+    }
+
+    /**
+     * @return PermissionsModel
+     */
+    private function getPermissionsModel()
+    {
+        return PermissionsRepository::getInstance()->getOrCreate();
     }
 
     /**

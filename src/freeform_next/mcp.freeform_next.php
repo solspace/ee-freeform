@@ -62,6 +62,10 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function forms($formId = null)
     {
+        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
+            return $this->renderView(new RedirectView($this->getLink('denied')));
+        }
+
         if (isset($_POST['composerState'])) {
             $this->renderView($this->getFormController()->save());
         }
@@ -92,6 +96,7 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function api($type)
     {
+        var_dump($type);die();
         $apiController = new ApiController();
         $args          = func_get_args();
 
@@ -105,6 +110,10 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function fields($id = null)
     {
+        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
+            return $this->renderView(new RedirectView($this->getLink('denied')));
+        }
+
         if (strtolower($id) === 'delete') {
             return $this->renderView($this->getFieldController()->batchDelete());
         }
@@ -138,6 +147,10 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function notifications($notificationId = null)
     {
+        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
+            return $this->renderView(new RedirectView($this->getLink('denied')));
+        }
+
         if (strtolower($notificationId) === 'delete') {
             return $this->renderView($this->getNotificationController()->batchDelete());
         }
@@ -171,6 +184,10 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function export_profiles($seg1 = null, $seg2 = null)
     {
+        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
+            return $this->renderView(new RedirectView($this->getLink('denied')));
+        }
+
         if (strtolower($seg1) === 'delete') {
             return $this->renderView($this->getExportProfilesController()->batchDelete());
         }
@@ -206,6 +223,10 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function export($id = null)
     {
+        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
+            return $this->renderView(new RedirectView($this->getLink('denied')));
+        }
+
         $controller = new ExportController();
         if ($id === 'dialogue') {
             return $this->renderView($controller->exportDialogue());
@@ -223,6 +244,10 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function submissions($formHandle, $submissionId = null)
     {
+        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
+            return $this->renderView(new RedirectView($this->getLink('denied')));
+        }
+
         $formModel = FormRepository::getInstance()->getFormByIdOrHandle($formHandle);
         $form      = $formModel->getForm();
 
@@ -258,6 +283,10 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function templates()
     {
+        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
+            return $this->renderView(new RedirectView($this->getLink('denied')));
+        }
+
         $ajaxView = new AjaxView();
         $ajaxView->addVariable('success', true);
 
@@ -300,6 +329,10 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function formTemplates()
     {
+        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
+            return $this->renderView(new RedirectView($this->getLink('denied')));
+        }
+
         $settings = new SettingsService();
         $ajaxView = new AjaxView();
         $ajaxView->setVariables($settings->getCustomFormTemplates());
@@ -329,6 +362,10 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function settings($type, $id = null)
     {
+        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
+            return $this->renderView(new RedirectView($this->getLink('denied')));
+        }
+
         return $this->renderView($this->getSettingsController()->index($type, $id));
     }
 
@@ -350,6 +387,10 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function integrations($type, $id = null)
     {
+        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
+            return $this->renderView(new RedirectView($this->getLink('denied')));
+        }
+
         switch (strtolower($type)) {
             case 'mailing_lists':
                 return $this->renderView($this->getMailingListsController()->handle($id));
@@ -369,6 +410,10 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function migrations($type, $id = null)
     {
+        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
+            return $this->renderView(new RedirectView($this->getLink('denied')));
+        }
+
         switch (strtolower($type)) {
             case 'ff_classic':
                 return $this->renderView($this->getMigrationController()->handle($id));
@@ -383,9 +428,18 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function logs($logName, $action = null)
     {
+        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
+            return $this->renderView(new RedirectView($this->getLink('denied')));
+        }
+
         $controller = new LogController();
 
         return $this->renderView($controller->view($logName, $action));
+    }
+
+    public function denied()
+    {
+        return $this->renderView($this->getSettingsController()->permissionDenied());
     }
 
     /**
@@ -427,6 +481,7 @@ class Freeform_next_mcp extends ControlPanelView
         $settings
             ->addSubNavItem(new NavigationLink('License', 'settings/license'))
             ->addSubNavItem(new NavigationLink('General', 'settings/general'))
+            ->addSubNavItem(new NavigationLink('Permissions', 'settings/permissions'))
             ->addSubNavItem(new NavigationLink('Formatting Templates', 'settings/formatting_templates'))
             ->addSubNavItem(new NavigationLink('Email Templates', 'settings/email_templates'))
             ->addSubNavItem(new NavigationLink('Statuses', 'settings/statuses'))
@@ -639,5 +694,19 @@ class Freeform_next_mcp extends ControlPanelView
     private function isClassicFreeformInstalled()
     {
         return (new MigrationsService())->isClassicFreeformInstalled();
+    }
+
+    /**
+     * @return \Solspace\Addons\FreeformNext\Services\PermissionsService
+     */
+    private function getPermissionsService()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new \Solspace\Addons\FreeformNext\Services\PermissionsService();
+        }
+
+        return $instance;
     }
 }

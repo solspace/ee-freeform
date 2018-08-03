@@ -17,7 +17,113 @@ $this->extend('_layouts/table_form_wrapper');
 
 ?>
 
-<form>
+<form method="get" action="#" id="entry-filters" data-action="<?=isset($entries_filter_uri) ? $entries_filter_uri : ""?>">
+
+    <div class="filters" id="custom-filters">
+        <b><?= lang('filters') ?>:</b>
+
+        <ul>
+            <li>
+                <input type="hidden" name="search_status" value="<?= $currentSearchStatus ?>">
+                <a href="" class="has-sub" data-filter-label="status">
+                    <?= lang('status') ?>
+                    <span class="faded">
+                    <?= $currentSearchStatus ? '(' . lang($currentSearchStatus) . ')' : '' ?>
+                </span>
+                </a>
+                <div class="sub-menu">
+                    <ul data-target="search_status">
+                        <?php foreach ($formStatuses as $status => $status_label): ?>
+                            <li>
+                                <a data-value="<?= $status ?>">
+                                    <?= $status_label ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <input type="hidden" name="search_date_range" value="<?= $currentDateRange ?>">
+                <a href="" class="has-sub" data-filter-label="date">
+                    <?= lang('entry_date') ?>
+                    <span class="faded">
+                    <?= $currentDateRange ? '(' . lang($currentDateRange) . ')' : '' ?>
+                </span>
+                </a>
+                <div class="sub-menu">
+                    <ul data-target="search_date_range">
+                        <li><a data-value="today"><?= lang('today') ?></a></li>
+                        <li><a data-value="this_week"><?= lang('this_week') ?></a></li>
+                        <li><a data-value="this_month"><?= lang('this_month') ?></a></li>
+                        <li><a data-value="last_month"><?= lang('last_month') ?></a></li>
+                        <li><a data-value="this_year"><?= lang('this_year') ?></a></li>
+                        <li><a data-value="date_range" data-prevent-trigger="1"><?= lang('choose_date_range') ?></a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li id="date-range-inputs" style="display: none">
+
+                <input type="text"
+                       name="search_date_range_start"
+                       class="datepicker"
+                       rel="date-picker"
+                       data-timestamp="<?= $currentDateRangeStart ? strtotime($currentDateRangeStart) : time() ?>"
+                       value="<?= $currentDateRangeStart ?>"
+                       placeholder="<?= lang('start_date') ?>"
+                       style="width: 70px;"
+                />
+                <input type="text"
+                       name="search_date_range_end"
+                       class="datepicker"
+                       rel="date-picker"
+                       data-timestamp="<?= $currentDateRangeStart ? strtotime($currentDateRangeStart) : time() ?>"
+                       value="<?= $currentDateRangeEnd ?>"
+                       placeholder="<?= lang('end_date') ?>"
+                       style="width: 70px;"
+                />
+            </li>
+
+            <li>
+                <input type="text"
+                       name="search_keywords"
+                       placeholder="<?= lang('keywords') ?>"
+                       style="width: 90px;"
+                       value="<?= $currentKeyword ?>"
+                />
+            </li>
+            <li>
+                <input type="hidden" name="search_on_field" value="<?= $currentSearchOnField ?>">
+                <a href="" class="has-sub" data-filter-label="date">
+                    <?= lang('field') ?>
+                    <span class="faded">
+                    (<?= $currentSearchOnField ? $columnLabels[$currentSearchOnField] : lang('all_fields') ?>)
+                </span>
+                </a>
+                <div class="sub-menu">
+                    <ul data-target="search_on_field">
+                        <li>
+                            <a data-value=""><?= lang('all_fields') ?></a>
+                        </li>
+                        <?php foreach ($visibleColumns as $column_name): ?>
+                            <li>
+                                <a data-value="<?= $column_name ?>">
+                                    <?= $columnLabels[$column_name] ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="filter-clear">
+                <a href="<?= $mainUrl ?>"><?= lang('clear_filters') ?></a>
+            </li>
+        </ul>
+    </div>
+
+
     <?php $this->embed('ee:_shared/table', $table); ?>
 
 

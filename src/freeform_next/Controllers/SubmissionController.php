@@ -51,6 +51,11 @@ class SubmissionController extends Controller
      */
     public function index(Form $form)
     {
+        $filters = ee('CP/Filter')->add('Date');
+
+        $columnLabels = [];
+        $visibleColumns = [];
+
         $preferences = SubmissionPreferencesRepository::getInstance()->getOrCreate(
             $form,
             ee()->session->userdata('member_id')
@@ -58,39 +63,13 @@ class SubmissionController extends Controller
 
         $layout = $preferences->getLayout();
 
-        $page = (int) ee()->input->get('page') ?: 1;
-
-        $sortDirection = ee()->input->get('sort_dir');
-        $sortDirection = !$sortDirection || $sortDirection === '0' ? 'desc' : $sortDirection;
-        $sortColumn    = ee()->input->get('sort_col');
-        $sortColumn    = !$sortColumn || $sortColumn === '0' ? 'dateCreated' : $sortColumn;
-
-        $sortVars = [
-            'sort_col' => $sortColumn,
-            'sort_dir' => $sortDirection,
-        ];
-
-
-        $attributes = new SubmissionAttributes($form);
-        $attributes
-            ->setOrderBy($sortColumn)
-            ->setSort($sortDirection)
-            ->setLimit(self::MAX_PER_PAGE)
-            ->setOffset(self::MAX_PER_PAGE * ($page - 1));
-
-        $submissions          = SubmissionRepository::getInstance()->getAllSubmissionsFor($attributes);
-        $totalSubmissionCount = SubmissionRepository::getInstance()->getAllSubmissionCountFor($attributes);
-
-        $pagination = ee('CP/Pagination', $totalSubmissionCount)
-            ->perPage(self::MAX_PER_PAGE)
-            ->currentPage($page)
-            ->render(
-                $this->getLink('submissions/' . $form->getHandle() . '&' . http_build_query($sortVars))
-            );
-
         $columns = [];
         $index   = 0;
+
         foreach ($layout as $setting) {
+
+            $fieldType = null;
+
             if (!$setting->isChecked()) {
                 continue;
             }
@@ -110,6 +89,7 @@ class SubmissionController extends Controller
                     $field  = $form->getLayout()->getFieldById($setting->getId());
                     $handle = $field->getHandle();
                     $label  = $field->getLabel();
+                    $fieldType = $field->getType();
 
                     if ($field->getType() === AbstractField::TYPE_FILE) {
                         $type   = Table::COL_TEXT;
@@ -129,6 +109,22 @@ class SubmissionController extends Controller
                 'encode' => $encode,
                 'sort'   => true,
             ];
+
+            $fieldId = $setting->getId();
+
+            if (is_int($fieldId)) {
+
+                if (!in_array($fieldType, $this->getFilterableFieldTypes())) {
+                    continue;
+                }
+
+                $fieldId = 'field_' . $fieldId;
+            }
+
+            if (!in_array($fieldId, ['statusName', 'dateCreated', 'dateUpdated'])) {
+                $visibleColumns[] = $fieldId;
+                $columnLabels[$fieldId] = $label;
+            }
         }
 
         $columns = array_merge(
@@ -138,6 +134,114 @@ class SubmissionController extends Controller
                 ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
             ]
         );
+
+        $attributes = new SubmissionAttributes($form);
+
+        $currentKeyword = '';
+        $currentSearchStatus = 'Pending';
+        $currentDateRangeStart = '';
+        $currentDateRangeEnd = '';
+        $currentDateRange = '';
+        $currentSearchOnField = '';
+
+        $statuses = StatusRepository::getInstance()->getAllStatuses();
+        $formStatuses = [];
+
+        foreach ($statuses as $status) {
+            $formStatuses[$status->id] = $status->name;
+        }
+
+        $search_vars = array(
+            'search_keywords',
+            'search_status',
+            'search_date_range',
+            'search_date_range_start',
+            'search_date_range_end',
+            'search_on_field'
+        );
+
+        $searchVars = [];
+
+        foreach ($search_vars as $searchVarible) {
+            $searchValue = ee()->input->get_post($searchVarible, TRUE);
+            $searchVars[$searchVarible] = trim($searchValue);
+        }
+
+        $searchOnField = $searchVars['search_on_field'];
+        $searchKeywords = $searchVars['search_keywords'];
+
+        if (($searchOnField == '' OR in_array($searchOnField, $visibleColumns)) AND $searchKeywords AND trim($searchKeywords) !== '') {
+
+            $currentSearchOnField = $searchOnField;
+
+            if ($searchOnField === '') {
+                foreach ($visibleColumns as $column) {
+                    $attributes->addOrLikeFilter($column, $searchKeywords);
+                }
+
+            } elseif ($searchOnField == 'id') {
+                $attributes->addIdFilter($searchOnField, $searchKeywords);
+            } else {
+                $attributes->addLikeFilter($searchOnField, $searchKeywords);
+            }
+
+            $currentKeyword = $searchKeywords;
+        }
+
+        $searchStatus = $searchVars['search_status'];
+
+        if ($searchStatus AND in_array($searchStatus, array_flip($formStatuses))) {
+            $currentSearchStatus = $formStatuses[$searchStatus];
+            $attributes->addFilter('statusId', $searchStatus);
+        }
+
+        $dateRange = str_replace('_', ' ', $searchVars['search_date_range']);
+
+        if ($dateRange) {
+            $currentDateRange = $searchVars['search_date_range'];
+            $attributes->setDateRange($dateRange);
+        }
+
+        $page = (int) ee()->input->get('page') ?: 1;
+
+        $sortDirection = ee()->input->get('sort_dir');
+        $sortDirection = !$sortDirection || $sortDirection === '0' ? 'desc' : $sortDirection;
+        $sortColumn    = ee()->input->get('sort_col');
+        $sortColumn    = !$sortColumn || $sortColumn === '0' ? 'dateCreated' : $sortColumn;
+
+        $sortVars = [
+            'sort_col' => $sortColumn,
+            'sort_dir' => $sortDirection,
+        ];
+
+
+        $attributes
+            ->setOrderBy($sortColumn)
+            ->setSort($sortDirection)
+            ->setLimit(self::MAX_PER_PAGE)
+            ->setOffset(self::MAX_PER_PAGE * ($page - 1));
+
+        $submissions          = SubmissionRepository::getInstance()->getAllSubmissionsFor($attributes);
+        $totalSubmissionCount = SubmissionRepository::getInstance()->getAllSubmissionCountFor($attributes);
+
+        $pagination = ee('CP/Pagination', $totalSubmissionCount)
+            ->perPage(self::MAX_PER_PAGE)
+            ->currentPage($page)
+            ->render(
+                $this->getLink('submissions/' . $form->getHandle() . '&' . http_build_query($sortVars) . '?' . http_build_query($searchVars))
+            );
+
+//        if (is_array($date_value))
+//        {
+//            $model->filter('some_date', '>=', $date_value[0]);
+//            $model->filter('some_date', '<', $date_value[1]);
+//        }
+//        else
+//        {
+//            $model->filter('some_date', '>=', ee()->localize->now - $date_value);
+//        }
+
+
 
         /** @var Table $table */
         $table = ee(
@@ -280,17 +384,27 @@ class SubmissionController extends Controller
             ]);
         }
 
-
         $view = new CpView(
             'submissions/listing',
             [
-                'table'            => $table->viewData($this->getLink('submissions/' . $form->getHandle())),
-                'cp_page_title'    => 'Submissions for ' . $form->getName(),
-                'layout'           => $layout,
-                'form'             => $form,
-                'form_right_links' => $formRightLinks,
-                'pagination'       => $pagination,
-                'exportLink'       => $this->getLink('export'),
+                'table'                 => $table->viewData($this->getLink('submissions/' . $form->getHandle())),
+                'cp_page_title'         => 'Submissions for ' . $form->getName(),
+                'layout'                => $layout,
+                'form'                  => $form,
+                'form_right_links'      => $formRightLinks,
+                'pagination'            => $pagination,
+                'exportLink'            => $this->getLink('export'),
+                'formStatuses'          => $formStatuses,
+                'mainUrl'               => $this->getLink('submissions/' . $form->getHandle()),
+                'columnLabels'          => $columnLabels,
+                'visibleColumns'        => $visibleColumns,
+
+                'currentSearchOnField'  => $currentSearchOnField,
+                'currentKeyword'        => $currentKeyword,
+                'currentSearchStatus'   => $currentSearchStatus,
+                'currentDateRangeStart' => $currentDateRangeStart,
+                'currentDateRangeEnd'   => $currentDateRangeEnd,
+                'currentDateRange'      => $currentDateRange,
             ]
         );
 
@@ -612,5 +726,18 @@ class SubmissionController extends Controller
         }
 
         return new RedirectView($this->getLink('submissions/' . $form->getHandle()));
+    }
+
+    private function getFilterableFieldTypes()
+    {
+        return [
+            AbstractField::TYPE_EMAIL,
+            AbstractField::TYPE_HTML,
+            AbstractField::TYPE_NUMBER,
+            AbstractField::TYPE_PHONE,
+            AbstractField::TYPE_TEXT,
+            AbstractField::TYPE_TEXTAREA,
+            AbstractField::TYPE_WEBSITE,
+        ];
     }
 }
