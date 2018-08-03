@@ -8,6 +8,7 @@ Check out this documentation resource to troubleshoot common problems or find an
 * [Form not submitting](#form-not-submitting)
 * [Updated field options aren't showing](#field-options)
 * [Form submits very slowly](#form-submits-slow)
+* [Error when loading form in templates](#errors-templates)
 * [Errors about missing files/pages in Freeform CP](#missing-files)
 * [Errors about Update Service](#update-service-errors)
 * [Composer not loading correctly](#composer-issues)
@@ -69,6 +70,28 @@ A common issue customers run into is their forms not submitting successfully. Th
 * To be extra thorough, you can also try submitting EE's simple [Contact Form](https://docs.expressionengine.com/latest/add-ons/email/contact_form.html) feature.
 
 
+## Error when loading form in templates <a href="#errors-templates" id="errors-templates" class="docs-anchor">#</a>
+
+If you're getting an error that looks something like this:
+
+```
+Exception Caught
+Form template 'some-template.html' not found
+user/addons/freeform_next/Services/FormsService.php:65
+```
+
+This is very likely because you assigned a custom **Formatting Template** to your form, and then at some point did one of the following:
+
+* Renamed the formatting template file.
+* Deleted the formatting template file.
+* Specified an incorrect Formatting Template directory path in your settings.
+* Switched environments and the Formatting Template directory path setting is incorrect.
+
+To correct this issue, ensure the path to your Formatting Templates directory path is correct, and that the formatting template the form was assigned (at some point) exists.
+
+> NOTE: If you want to change the name of the formatting template file while it already is in use for form(s), you should first assign all other form(s) another formatting template, then rename the formatting template file, and then reassign the form(s) to that newly renamed formatting template.
+
+
 ## Updated field options aren't showing <a href="#field-options" id="field-options" class="docs-anchor">#</a>
 
 Freeform takes a bit of a unique - but flexible - approach to [fields](fields-field-types.md). Fields are global and available to all forms, but they can also be overwritten per form. This allows you to save time reusing existing fields when making other forms, but also gives you flexibility to make adjustments to them when needed. So to clarify, you can create fields with labels and options that are common to all forms, but also override those on each form. For example, if you have a field named Cell Phone, on the form level, you can rename the field name to Mobile Phone, or if you have a Checkbox Group field with options: Option A, Option B, and Option C, you could override it to just have 2 options with values of Option A and Option B, and/or add Option D.
@@ -119,11 +142,15 @@ Salesforce usually disables the API access entirely with their Trial version. Yo
 
 If you're seeing any errors as follows:
 
-> 'Client error response [status code] 400 [reason phrase] Bad Request [url] https://login.salesforce.com/services/oauth2/token'
+```
+'Client error response [status code] 400 [reason phrase] Bad Request [url] https://login.salesforce.com/services/oauth2/token'
+```
 
 * This is because Salesforce runs differently when in Sandbox mode, so be sure to enable the **Sandbox Mode** option inside the CRM integration setting in the Freeform control panel.
 
-> No 'refresh_token' present in auth response for SalesforceLead. Enable offline-access for your app.
+```
+No 'refresh_token' present in auth response for SalesforceLead. Enable offline-access for your app.
+```
 
 * Make sure that the **Perform requests on your behalf at any time (refresh_token, offline_access)** setting is added to the **Selected OAuth Scopes** field for your app in Salesforce.
 
@@ -169,11 +196,15 @@ Unfortunately you cannot because that data is cleared upon submission, which is 
 
 You can however, consider another approach. Freeform allows you to [display submissions on the front end](submissions.md). It also allows you to set the return URL to include the future submission ID. You can set this either in the **Return URL** field for the form in Composer, or at template level like:
 
-    return="{site_url}your-page/success/SUBMISSION_ID"
+```
+return="{site_url}your-page/success/SUBMISSION_ID"
+```
 
 **NOTE:** Using this approach can be a security risk as site visitors could try out other ID's in the URL and view submission data for those submissions. It's strongly recommended that you refrain from displaying any sensitive data, but instead use this for anonymous polls or something simple like:
 
-> Thanks {submission:first_name:value}, we've received your message and will get back to you shortly!
+```
+Thanks {submission:first_name:value}, we've received your message and will get back to you shortly!
+```
 
 
 ## How do I return form submit to same page with success message? <a href="#form-return-success" id="form-return-success" class="docs-anchor">#</a>

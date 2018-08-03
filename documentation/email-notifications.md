@@ -103,7 +103,7 @@ To clarify, your template code would look no different than how it does for Data
 
 	{!-- subject: New submission from the {form:name} form --}
 	{!-- fromEmail: {webmaster_email} --}
-	{!-- fromName: {webmaster_email} --}
+	{!-- fromName: {site_name} --}
 	{!-- replyToEmail: {webmaster_email} --}
 	{!-- includeAttachments: y --}
 	{!-- description: A description of what this template does. --}
@@ -117,7 +117,7 @@ Below is a basic automated example for database method:
 
 	<h2>New submission from the {form:name} form</h2>
 
-	<p>Submitted on: {date_created format="%D, %F %d, %Y - %g:%i:%s"}</p>
+	<p>Submitted on: {date_created format="%l, %F %j, %Y at %g:%i%a"}</p>
 	<ul>
 	{form:fields}
 		<li>{field:label}: {field:value}</li>
@@ -128,14 +128,14 @@ And here is the same example but for HTML file method:
 
 	{!-- subject: New submission from the {form:name} form --}
 	{!-- fromEmail: {webmaster_email} --}
-	{!-- fromName: {webmaster_email} --}
+	{!-- fromName: {site_name} --}
 	{!-- replyToEmail: {webmaster_email} --}
 	{!-- includeAttachments: y --}
 	{!-- description: New submission sample email template --}
 
 	<h2>New submission from the {form:name} form</h2>
 
-	<p>Submitted on: {date_created format="%D, %F %d, %Y - %g:%i:%s"}</p>
+	<p>Submitted on: {date_created format="%l, %F %j, %Y at %g:%i%a"}</p>
 	<ul>
 	{form:fields}
 		<li>{field:label}: {field:value}</li>
@@ -146,7 +146,7 @@ And here is the same example but for HTML file method:
 
 Below is a manually built example for database method:
 
-	<p>The following submission came in on {date_created format="%D, %F %d, %Y - %g:%i:%s"}.</p>
+	<p>The following submission came in on {date_created format="%l, %F %j, %Y at %g:%i%a"}.</p>
 	<p>Here are the details:</p>
 	<ul>
 		<li>Name: {first_name} {last_name}
