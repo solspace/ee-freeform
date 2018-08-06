@@ -33,7 +33,7 @@
     a.add-template {
         position: absolute;
         right: 5px;
-        top: 5px;
+        top: <?php echo version_compare(APP_VER, '4.0.0', '<') ? '5px' : '-6px' ?>;
 
         display: inline-block;
         font-weight:normal;
