@@ -24,7 +24,7 @@ import TextProperty from "./PropertyItems/TextProperty";
     templates: state.templates.list,
     composerProperties: state.composer.properties,
     currentFormHandle: state.composer.properties.form.handle,
-  })
+  }),
 )
 export default class Form extends BasePropertyEditor {
   static propTypes = {

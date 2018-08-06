@@ -152,6 +152,12 @@ export default class PropertyEditor extends Component {
       FieldTypes.ADMIN_NOTIFICATIONS,
       FieldTypes.PAGE,
       FieldTypes.SUBMIT,
+      FieldTypes.CONNECTIONS,
+      FieldTypes.HTML,
+      FieldTypes.MAILING_LIST,
+      FieldTypes.RECAPTCHA,
+      FieldTypes.PASSWORD,
+      FieldTypes.CONFIRMATION,
     ].indexOf(props.type) === -1;
 
     return (

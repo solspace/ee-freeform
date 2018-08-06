@@ -25,7 +25,6 @@ const enhancer = compose(
 );
 
 const specialFields = [
-  { type: FieldTypes.HTML, label: "HTML", value: "<div>Html content</div>" },
   {
     type: FieldTypes.SUBMIT,
     label: "Submit",
@@ -33,6 +32,11 @@ const specialFields = [
     labelPrev: "Previous",
     disablePrev: false,
     position: "left",
+  },
+  {
+    type: FieldTypes.HTML,
+    label: "HTML",
+    value: "<div>Html content</div>",
   },
   {
     type: FieldTypes.CONFIRMATION,

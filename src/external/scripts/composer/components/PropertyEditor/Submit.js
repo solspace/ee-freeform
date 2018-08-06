@@ -22,6 +22,7 @@ import TextProperty from "./PropertyItems/TextProperty";
   state => ({
     layout: state.composer.layout,
     properties: state.composer.properties,
+    hash: state.context.hash,
   }),
 )
 export default class Submit extends BasePropertyEditor {

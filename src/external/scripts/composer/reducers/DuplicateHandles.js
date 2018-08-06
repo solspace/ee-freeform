@@ -8,22 +8,14 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React     from "react";
-import HtmlInput from "./HtmlInput";
+import { UPDATE_DUPLICATE_HANDLE_LIST } from "../constants/ActionTypes";
 
-export default class Password extends HtmlInput {
-  getClassName() {
-    return "Password";
-  }
+export const duplicateHandles = (state = [], action) => {
+  switch (action.type) {
+    case UPDATE_DUPLICATE_HANDLE_LIST:
+      return action.duplicateHandles;
 
-  getType() {
-    return "password";
+    default:
+      return state;
   }
-
-  getInputClassNames() {
-    return [
-      "text",
-      "fullwidth",
-    ];
-  }
-}
+};

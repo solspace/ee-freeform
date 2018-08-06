@@ -21,13 +21,13 @@ import TextProperty from "./PropertyItems/TextProperty";
 @connect(
   (state) => ({
     composerProperties: state.composer.properties,
+    hash: state.context.hash,
   }),
 )
 export default class Confirmation extends BasePropertyEditor {
   static contextTypes = {
     ...BasePropertyEditor.contextTypes,
     properties: PropTypes.shape({
-      id: PropTypes.number,
       type: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
       handle: PropTypes.string.isRequired,

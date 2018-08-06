@@ -18,6 +18,7 @@ import {
   addFieldToNewRow,
   addPlaceholderColumn,
   addPlaceholderRow,
+  checkForDuplicateHandles,
   clearPlaceholders,
   repositionColumn,
 } from "../actions/Actions";
@@ -81,6 +82,7 @@ const composerTarget = {
     addColumnPlaceholder: (rowIndex, index, hash) => dispatch(addPlaceholderColumn(rowIndex, index, hash)),
     addFieldToNewRow: (hash, properties, pageIndex) => dispatch(addFieldToNewRow(hash, properties, pageIndex)),
     clearPlaceholders: () => dispatch(clearPlaceholders()),
+    checkForDuplicateHandles: () => dispatch(checkForDuplicateHandles()),
   }),
 )
 @DropTarget([FIELD, COLUMN], composerTarget, (connect) => ({ connectDropTarget: connect.dropTarget() }))
@@ -97,6 +99,7 @@ export default class Composer extends Component {
     addRowPlaceholder: PropTypes.func.isRequired,
     addColumnPlaceholder: PropTypes.func.isRequired,
     clearPlaceholders: PropTypes.func.isRequired,
+    checkForDuplicateHandles: PropTypes.func.isRequired,
     properties: PropTypes.object.isRequired,
     placeholders: PropTypes.object.isRequired,
   };
@@ -112,6 +115,12 @@ export default class Composer extends Component {
     this.addColumn = this.addColumn.bind(this);
     this.columnToNewRow = this.columnToNewRow.bind(this);
     this.removeColumn = this.removeColumn.bind(this);
+  }
+
+  componentDidMount() {
+    const { checkForDuplicateHandles } = this.props;
+
+    checkForDuplicateHandles();
   }
 
   render() {

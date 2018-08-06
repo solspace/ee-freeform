@@ -29,10 +29,14 @@ export function addPage(index) {
 }
 
 export function removePage(index) {
-  return {
-    type: ActionTypes.REMOVE_PAGE,
-    index,
-  };
+  return function (dispatch) {
+    dispatch({
+      type: ActionTypes.REMOVE_PAGE,
+      index,
+    });
+
+    dispatch(checkForDuplicateHandles());
+  }
 }
 
 export function switchHash(hash) {
@@ -43,34 +47,46 @@ export function switchHash(hash) {
 }
 
 export function addFieldToNewRow(hash, properties, pageIndex) {
-  return {
-    type: ActionTypes.ADD_FIELD_TO_NEW_ROW,
-    hash,
-    properties,
-    pageIndex,
-  };
+  return function (dispatch) {
+    dispatch({
+      type: ActionTypes.ADD_FIELD_TO_NEW_ROW,
+      hash,
+      properties,
+      pageIndex,
+    });
+
+    dispatch(checkForDuplicateHandles());
+  }
 }
 
 export function addColumnToRow(rowIndex, columnIndex, hash, properties, pageIndex) {
-  return {
-    type: ActionTypes.ADD_COLUMN_TO_ROW,
-    rowIndex,
-    columnIndex,
-    hash,
-    properties,
-    pageIndex,
-  };
+  return function (dispatch) {
+    dispatch({
+      type: ActionTypes.ADD_COLUMN_TO_ROW,
+      rowIndex,
+      columnIndex,
+      hash,
+      properties,
+      pageIndex,
+    });
+
+    dispatch(checkForDuplicateHandles());
+  }
 }
 
 export function addColumnToNewRow(rowIndex, hash, properties, pageIndex, prevPageIndex = null) {
-  return {
-    type: ActionTypes.ADD_COLUMN_TO_NEW_ROW,
-    rowIndex,
-    hash,
-    properties,
-    pageIndex,
-    prevPageIndex,
-  };
+  return function (dispatch) {
+    dispatch({
+      type: ActionTypes.ADD_COLUMN_TO_NEW_ROW,
+      rowIndex,
+      hash,
+      properties,
+      pageIndex,
+      prevPageIndex,
+    });
+
+    dispatch(checkForDuplicateHandles());
+  }
 }
 
 export function repositionColumn(columnIndex, rowIndex, newColumnIndex, newRowIndex, pageIndex) {
@@ -85,36 +101,84 @@ export function repositionColumn(columnIndex, rowIndex, newColumnIndex, newRowIn
 }
 
 export function removeColumn(hash, columnIndex, rowIndex, pageIndex) {
-  return {
-    type: ActionTypes.REMOVE_COLUMN,
-    columnIndex,
-    rowIndex,
-    pageIndex,
-    hash,
+  return function (dispatch) {
+    dispatch({
+      type: ActionTypes.REMOVE_COLUMN,
+      columnIndex,
+      rowIndex,
+      pageIndex,
+      hash,
+    });
+
+    dispatch(checkForDuplicateHandles());
   };
 }
 
 export function updateProperty(hash, keyValueObject) {
-  return {
-    type: ActionTypes.UPDATE_PROPERTY,
-    hash,
-    keyValueObject,
-  };
+  return function (dispatch) {
+    dispatch({
+      type: ActionTypes.UPDATE_PROPERTY,
+      hash,
+      keyValueObject,
+    });
+
+    if (keyValueObject.hasOwnProperty("handle")) {
+      dispatch(checkForDuplicateHandles());
+    }
+  }
+}
+
+export function checkForDuplicateHandles() {
+  return function (dispatch, getState) {
+    const properties = getState().composer.properties;
+
+    const allHandles = [];
+    const duplicateHandles = [];
+    for (const key in properties) {
+      if (!properties.hasOwnProperty(key)) {
+        continue;
+      }
+
+      const prop = properties[key];
+      if (prop.hasOwnProperty("handle")) {
+        let handle = prop.handle;
+
+        if (allHandles.indexOf(handle) !== -1) {
+          duplicateHandles.push(handle);
+        } else {
+          allHandles.push(handle);
+        }
+      }
+    }
+
+    dispatch({
+      type: ActionTypes.UPDATE_DUPLICATE_HANDLE_LIST,
+      duplicateHandles,
+    });
+  }
 }
 
 export function resetProperties(hash, defaultProperties) {
-  return {
-    type: ActionTypes.RESET_PROPERTIES,
-    hash,
-    defaultProperties,
-  };
+  return function (dispatch) {
+    dispatch({
+      type: ActionTypes.RESET_PROPERTIES,
+      hash,
+      defaultProperties,
+    });
+
+    dispatch(checkForDuplicateHandles());
+  }
 }
 
 export function removeProperty(hash) {
-  return {
-    type: ActionTypes.REMOVE_PROPERTY,
-    hash,
-  };
+  return function (dispatch) {
+    dispatch({
+      type: ActionTypes.REMOVE_PROPERTY,
+      hash,
+    });
+
+    dispatch(checkForDuplicateHandles());
+  }
 }
 
 export function addValueSet(hash) {

@@ -20,8 +20,6 @@ export const CHECKBOX_GROUP = "checkbox_group";
 export const EMAIL = "email";
 export const DYNAMIC_RECIPIENTS = "dynamic_recipients";
 export const FILE = "file";
-export const CONFIRMATION = "confirmation";
-export const PASSWORD = "password";
 
 export const DATETIME = "datetime";
 export const NUMBER = "number";
@@ -29,15 +27,18 @@ export const PHONE = "phone";
 export const WEBSITE = "website";
 export const RATING = "rating";
 export const REGEX = "regex";
+export const CONFIRMATION = "confirmation";
 
 export const HTML = "html";
 export const MAILING_LIST = "mailing_list";
 export const SUBMIT = "submit";
 export const RECAPTCHA = "recaptcha";
+export const PASSWORD = "password";
 
 export const FORM = "form";
 export const PAGE = "page";
 export const INTEGRATION = "integration";
+export const CONNECTIONS = "connections";
 export const ADMIN_NOTIFICATIONS = "admin_notifications";
 
 export const INTEGRATION_SUPPORTED_TYPES = [
@@ -59,6 +60,7 @@ export const INTEGRATION_SUPPORTED_TYPES = [
   RATING,
   REGEX,
   CONFIRMATION,
+  PASSWORD,
 ];
 
 export const CONFIRMATION_SUPPORTED_TYPES = [

@@ -51,6 +51,9 @@ class FieldProperties extends AbstractProperties
     /** @var bool */
     protected $showAsRadio;
 
+    /** @var bool */
+    protected $showAsCheckboxes;
+
     /** @var int */
     protected $notificationId;
 
@@ -236,7 +239,16 @@ class FieldProperties extends AbstractProperties
      */
     public function getValues()
     {
-        return $this->values;
+        if (null === $this->values) {
+            return null;
+        }
+
+        $values = $this->values;
+        array_walk($values, function (&$value) {
+            $value = (string) $value;
+        });
+
+        return $values;
     }
 
     /**
@@ -249,12 +261,12 @@ class FieldProperties extends AbstractProperties
             foreach ($this->options as $option) {
                 $isChecked = false;
                 if (null !== $this->getValue()) {
-                    $isChecked = $option['value'] === $this->getValue();
+                    $isChecked = (string) $option['value'] === (string) $this->getValue();
                 } else if (null !== $this->getValues()) {
-                    $isChecked = in_array($option['value'], $this->getValues(), true);
+                    $isChecked = \in_array($option['value'], $this->getValues(), true);
                 }
 
-                $return[] = new Option($option['label'], $option['value'], $isChecked);
+                $return[] = new Option((string) $option['label'], (string) $option['value'], $isChecked);
             }
         }
 
@@ -278,7 +290,15 @@ class FieldProperties extends AbstractProperties
     }
 
     /**
-     * @return string
+     * @return boolean|null
+     */
+    public function isShowAsCheckboxes()
+    {
+        return $this->showAsCheckboxes;
+    }
+
+    /**
+     * @return string|null
      */
     public function getPlaceholder()
     {
@@ -667,6 +687,7 @@ class FieldProperties extends AbstractProperties
             'options'             => self::TYPE_ARRAY,
             'checked'             => self::TYPE_BOOLEAN,
             'showAsRadio'         => self::TYPE_BOOLEAN,
+            'showAsCheckboxes'    => self::TYPE_BOOLEAN,
             'notificationId'      => self::TYPE_STRING,
             'assetSourceId'       => self::TYPE_INTEGER,
             'integrationId'       => self::TYPE_INTEGER,

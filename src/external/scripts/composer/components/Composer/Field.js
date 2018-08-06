@@ -71,6 +71,7 @@ export default class Field extends Component {
     hash: PropTypes.string.isRequired,
     index: PropTypes.number.isRequired,
     rowIndex: PropTypes.number.isRequired,
+    duplicateHandles: PropTypes.array.isRequired,
   };
 
   static childContextTypes = {
@@ -86,12 +87,15 @@ export default class Field extends Component {
   });
 
   render() {
-    const { type, properties } = this.props;
+    const { type, properties, duplicateHandles } = this.props;
 
     if (fieldTypes[type]) {
       const DynamicClassName = fieldTypes[type];
 
-      return <DynamicClassName properties={properties} />;
+      return <DynamicClassName
+        properties={properties}
+        duplicateHandles={duplicateHandles}
+      />;
     }
 
     return <div>Field type "{type}" not found</div>;

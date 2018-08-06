@@ -433,15 +433,9 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         $this->formHandler->onFormValidate($this);
 
         $isFormValid = true;
-        foreach ($this->getLayout()->getPages() as $page) {
-            if ($page->getIndex() > $this->getCurrentPage()->getIndex()) {
-                break;
-            }
-
-            foreach ($page->getFields() as $field) {
-                if (!$field->isValid()) {
-                    $isFormValid = false;
-                }
+        foreach ($currentPageFields as $field) {
+            if (!$field->isValid()) {
+                $isFormValid = false;
             }
         }
 

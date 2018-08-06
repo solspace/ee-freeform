@@ -16,6 +16,7 @@ import AddNewNotification from "./Components/AddNewNotification";
 import OptionTable from "./Components/OptionTable/OptionTable";
 import CheckboxProperty from "./PropertyItems/CheckboxProperty";
 import CustomProperty from "./PropertyItems/CustomProperty";
+import RadioProperty from "./PropertyItems/RadioProperty";
 import SelectProperty from "./PropertyItems/SelectProperty";
 import TextareaProperty from "./PropertyItems/TextareaProperty";
 import TextProperty from "./PropertyItems/TextProperty";
@@ -49,15 +50,31 @@ export default class DynamicRecipients extends BasePropertyEditor {
         PropTypes.number,
       ]),
       showAsRadio: PropTypes.bool,
+      showAsCheckboxes: PropTypes.bool,
     }).isRequired,
     canManageNotifications: PropTypes.bool.isRequired,
   };
 
+  static RENDER_AS_SELECT = "select";
+  static RENDER_AS_RADIOS = "radios";
+  static RENDER_AS_CHECKBOXES = "checkboxes";
+
   render() {
-    const { properties: { required, label, handle, value, options, showAsRadio, notificationId, instructions } } = this.context;
+    const { properties } = this.context;
+    const {
+      required, label, handle, values, options,
+      showAsRadio, showAsCheckboxes, notificationId, instructions
+    } = properties;
 
     const { canManageNotifications } = this.context;
     const { notifications } = this.props;
+
+    let renderAsValue = DynamicRecipients.RENDER_AS_SELECT;
+    if (showAsRadio) {
+      renderAsValue = DynamicRecipients.RENDER_AS_RADIOS;
+    } else if (showAsCheckboxes) {
+      renderAsValue = DynamicRecipients.RENDER_AS_CHECKBOXES;
+    }
 
     return (
       <div>
@@ -109,11 +126,15 @@ export default class DynamicRecipients extends BasePropertyEditor {
           onChangeHandler={this.update}
         />
 
-        <CheckboxProperty
-          label="Show as radio buttons?"
-          name="showAsRadio"
-          checked={!!showAsRadio}
-          onChangeHandler={this.update}
+        <RadioProperty
+          label="Render as"
+          value={renderAsValue}
+          options={[
+            {key: DynamicRecipients.RENDER_AS_SELECT, value: "Select"},
+            {key: DynamicRecipients.RENDER_AS_RADIOS, value: "Radios"},
+            {key: DynamicRecipients.RENDER_AS_CHECKBOXES, value: "Checkboxes"},
+          ]}
+          onChangeHandler={this.handleRenderSwap}
         />
 
         <hr />
@@ -123,7 +144,7 @@ export default class DynamicRecipients extends BasePropertyEditor {
           instructions="Options for this checkbox group"
           content={
             <OptionTable
-              value={value}
+              values={values}
               options={options}
               labelTitle="Label"
               valueTitle="Email"
@@ -133,4 +154,20 @@ export default class DynamicRecipients extends BasePropertyEditor {
       </div>
     );
   }
+
+  handleRenderSwap = (event) => {
+    const { value } = event.target;
+    const { updateField, properties } = this.context;
+
+    let { values } = properties;
+    if (value !== DynamicRecipients.RENDER_AS_CHECKBOXES && values && values.length > 1) {
+      values = [values[0]];
+    }
+
+    updateField({
+      showAsRadio: value === DynamicRecipients.RENDER_AS_RADIOS,
+      showAsCheckboxes: value === DynamicRecipients.RENDER_AS_CHECKBOXES,
+      values,
+    });
+  };
 }

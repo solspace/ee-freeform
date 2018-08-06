@@ -300,7 +300,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
      */
     public function isValid()
     {
-        $this->errors = $this->validate();
+        $this->addErrors($this->validate());
 
         return empty($this->errors);
     }
@@ -320,6 +320,10 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
      */
     public function getErrors()
     {
+        if (null === $this->errors) {
+            $this->errors = [];
+        }
+
         return $this->errors;
     }
 
@@ -459,10 +463,10 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
      */
     public function getIdAttribute($suffix = null)
     {
+        $attribute = sprintf('form-input-%s', $this->getHandle());
+
         if ($this->getCustomAttributes()->getId()) {
             $attribute = $this->getCustomAttributes()->getId();
-        } else {
-            $attribute = sprintf('form-input-%s', $this->getHandle());
         }
 
         if ($attribute && $suffix) {

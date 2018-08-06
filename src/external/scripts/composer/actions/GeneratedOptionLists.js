@@ -29,7 +29,7 @@ export const invalidateGeneratedOptions = (hash) => ({
 
 export function fetchGeneratedOptionsIfNeeded(hash, source, target, configuration) {
   return function (dispatch, getState) {
-    if (shouldFetchGeneratedOptions(hash, getState())) {
+    if (shouldFetchMailingLists(hash, getState())) {
       dispatch(requestGeneratedOptions());
 
       const url = urlBuilder("freeform_next/options-from-source");
@@ -61,7 +61,7 @@ export function fetchGeneratedOptionsIfNeeded(hash, source, target, configuratio
   };
 }
 
-const shouldFetchGeneratedOptions = (hash, state) => {
+const shouldFetchMailingLists = (hash, state) => {
   const generatedOptions = state.generatedOptionLists.cache;
 
   if (!generatedOptions || !generatedOptions[hash]) {

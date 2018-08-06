@@ -38,6 +38,7 @@ const columnSource = {
     pageIndex: state.context.page,
     currentHash: state.context.hash,
     layout: state.composer.layout,
+    duplicateHandles: state.duplicateHandles,
   }),
   (dispatch) => ({
     openFieldSettings: (hash) => dispatch(switchHash(hash)),
@@ -69,6 +70,7 @@ export default class Column extends Component {
     openFieldSettings: PropTypes.func.isRequired,
     openProperties: PropTypes.func.isRequired,
     connectDragPreview: PropTypes.func.isRequired,
+    duplicateHandles: PropTypes.array.isRequired,
   };
 
   constructor(props, context) {
@@ -86,7 +88,7 @@ export default class Column extends Component {
   }
 
   render() {
-    const { hash, index, rowIndex, currentHash } = this.props;
+    const { hash, index, rowIndex, currentHash, duplicateHandles } = this.props;
     const { connectDragSource, properties } = this.props;
 
     const className = ["composer-column"];
@@ -106,6 +108,7 @@ export default class Column extends Component {
           hash={hash}
           index={index}
           rowIndex={rowIndex}
+          duplicateHandles={duplicateHandles}
         />
       </div>,
     );
