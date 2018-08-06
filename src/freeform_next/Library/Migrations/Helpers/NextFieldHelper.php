@@ -18,6 +18,9 @@ use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
+use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
+use Solspace\Addons\FreeformNext\Library\Logging\EELogger;
+use Solspace\Addons\FreeformNext\Library\Logging\LoggerInterface;
 
 class NextFieldHelper
 {
@@ -25,6 +28,8 @@ class NextFieldHelper
 
     /** @var array */
     public $errors;
+
+    private $restrictedHandleCounter = 0;
 
     /** @var ClassicFieldHelper */
     private $classicFieldHelper;
@@ -44,6 +49,10 @@ class NextFieldHelper
     {
         $this->classicFieldHelper = $this->getClassicFieldHelper();
         $data = $this->convertData($classicField);
+
+        if (!$data) {
+            return false;
+        }
 
         $field = FieldRepository::getInstance()->getOrCreateField(null);
         $isNew = !$field->id;
@@ -167,9 +176,15 @@ class NextFieldHelper
             $classicField['field_type'] = 'email';
         }
 
+        $newHandle = $this->getValidHandle($classicField);
+
+        if (!$newHandle) {
+            return false;
+        }
+
         $data = [
             'label' => $this->getNextValueFromClassicValue('label', $classicField),
-            'handle' => $this->getNextValueFromClassicValue('handle', $classicField),
+            'handle' => $newHandle,
             'instructions' => $this->getNextValueFromClassicValue('instructions', $classicField),
             'required' => $this->getNextValueFromClassicValue('required', $classicField),
             'type' => $this->getNextFieldTypeFromClassicFieldType($this->getClassicFieldType($classicField)),
@@ -177,6 +192,37 @@ class NextFieldHelper
         ];
 
         return $data;
+    }
+
+    private function getValidHandle($classicField)
+    {
+        $logger = new EELogger();
+        $handle = $this->getNextValueFromClassicValue('handle', $classicField);
+
+        if (!$handle) {
+            $logger->log(LoggerInterface::LEVEL_ERROR, 'Did not find a handle for classic field | ' . print_r($classicField, true));
+            return false;
+        }
+
+        if (in_array($handle, $this->getRestrictedHandles())) {
+            $handle = $this->generateValidHandleFromRestrictedHandle($handle);
+        }
+
+        return $handle;
+    }
+
+    private function getRestrictedHandles()
+    {
+        return [
+            'id',
+        ];
+    }
+
+    private function generateValidHandleFromRestrictedHandle($handle)
+    {
+        $this->restrictedHandleCounter = $this->restrictedHandleCounter + 1;
+
+        return $handle  . '_' . HashHelper::hash($this->restrictedHandleCounter);
     }
 
     private function containsEmail($handle)
