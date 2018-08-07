@@ -8,18 +8,18 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
+import PropTypes from "prop-types";
 import React from "react";
-import PropTypes from 'prop-types';
-import BasePropertyEditor from "./BasePropertyEditor";
+import { connect } from "react-redux";
+import { fetchMailingListsIfNeeded, invalidateMailingLists } from "../../actions/MailingLists";
 import * as FieldTypes from "../../constants/FieldTypes";
-import {connect} from "react-redux";
-import TextProperty from "./PropertyItems/TextProperty";
-import TextareaProperty from "./PropertyItems/TextareaProperty";
+import BasePropertyEditor from "./BasePropertyEditor";
+import IntegrationMappingTable from "./Components/IntegrationMappingTable/IntegrationMappingTable";
 import CheckboxProperty from "./PropertyItems/CheckboxProperty";
 import CustomProperty from "./PropertyItems/CustomProperty";
 import SelectProperty from "./PropertyItems/SelectProperty";
-import IntegrationMappingTable from "./Components/IntegrationMappingTable/IntegrationMappingTable";
-import {invalidateMailingLists, fetchMailingListsIfNeeded} from "../../actions/MailingLists";
+import TextareaProperty from "./PropertyItems/TextareaProperty";
+import TextProperty from "./PropertyItems/TextProperty";
 
 @connect(
   (state) => ({
@@ -32,8 +32,8 @@ import {invalidateMailingLists, fetchMailingListsIfNeeded} from "../../actions/M
     fetchMailingLists: () => {
       dispatch(invalidateMailingLists());
       dispatch(fetchMailingListsIfNeeded());
-    }
-  })
+    },
+  }),
 )
 export default class MailingList extends BasePropertyEditor {
   static propTypes = {
@@ -49,7 +49,7 @@ export default class MailingList extends BasePropertyEditor {
         source: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         label: PropTypes.string,
-      })
+      }),
     ).isRequired,
   };
 
@@ -66,7 +66,8 @@ export default class MailingList extends BasePropertyEditor {
         PropTypes.array,
         PropTypes.object,
       ]),
-    }).isRequired
+      hidden: PropTypes.bool,
+    }).isRequired,
   };
 
   constructor(props, context) {
@@ -76,9 +77,8 @@ export default class MailingList extends BasePropertyEditor {
   }
 
   render() {
-    const {hash, properties: {value, label, integrationId, resourceId, emailFieldHash, mapping, instructions}} = this.context;
-
-    const {composerProperties, mailingLists, fetchMailingLists, isFetching} = this.props;
+    const { hash, properties: { value, label, integrationId, resourceId, emailFieldHash, mapping = {}, instructions, hidden } } = this.context;
+    const { composerProperties, mailingLists, fetchMailingLists, isFetching } = this.props;
 
     let selectedIntegration = null;
     let lists = [];
@@ -99,11 +99,15 @@ export default class MailingList extends BasePropertyEditor {
 
     let emailFields = [];
     for (let key in composerProperties) {
-      if (!composerProperties.hasOwnProperty(key)) continue;
+      if (!composerProperties.hasOwnProperty(key)) {
+        continue;
+      }
 
       const prop = composerProperties[key];
 
-      if (prop.type !== FieldTypes.EMAIL) continue;
+      if (prop.type !== FieldTypes.EMAIL) {
+        continue;
+      }
 
       emailFields.push({
         key: key,
@@ -120,10 +124,14 @@ export default class MailingList extends BasePropertyEditor {
 
       const formFields = [];
       for (let key in composerProperties) {
-        if (!composerProperties.hasOwnProperty(key)) continue;
+        if (!composerProperties.hasOwnProperty(key)) {
+          continue;
+        }
 
         const prop = composerProperties[key];
-        if (FieldTypes.INTEGRATION_SUPPORTED_TYPES.indexOf(prop.type) === -1) continue;
+        if (FieldTypes.INTEGRATION_SUPPORTED_TYPES.indexOf(prop.type) === -1) {
+          continue;
+        }
 
         formFields.push({
           handle: prop.handle,
@@ -187,6 +195,14 @@ export default class MailingList extends BasePropertyEditor {
           onChangeHandler={this.update}
         />
 
+        <CheckboxProperty
+          label="Hide field"
+          instructions="Hide the mailing list checkbox from the form and make it always trigger a subscription"
+          name="hidden"
+          checked={hidden}
+          onChangeHandler={this.update}
+        />
+
         <hr />
 
         <SelectProperty
@@ -223,8 +239,8 @@ export default class MailingList extends BasePropertyEditor {
   }
 
   updateIntegration(event) {
-    const {updateField} = this.context;
-    const resource      = event.target;
+    const { updateField } = this.context;
+    const resource = event.target;
 
     const resourceId = resource.value;
 

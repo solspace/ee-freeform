@@ -33,6 +33,7 @@ export default class MailingList extends HtmlInput {
       emailFieldHash: PropTypes.node,
       name: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
+      hidden: PropTypes.bool,
     }).isRequired,
   };
 
@@ -47,7 +48,7 @@ export default class MailingList extends HtmlInput {
   getBadges() {
     const badges                                              = super.getBadges();
     const { properties, mailingListIntegrations }             = this.props;
-    const { name, integrationId, resourceId, emailFieldHash } = properties;
+    const { name, integrationId, resourceId, emailFieldHash, hidden } = properties;
 
     let resourceName = "";
     if (resourceId) {
@@ -71,6 +72,10 @@ export default class MailingList extends HtmlInput {
 
     if (!emailFieldHash) {
       badges.push(<Badge key="no-email-field-hash" label="No email field" type={Badge.WARNING}/>)
+    }
+
+    if (hidden) {
+      badges.push(<Badge key={"hidden"} label="Hidden field" type={Badge.VISIBILITY} />);
     }
 
     return badges;
