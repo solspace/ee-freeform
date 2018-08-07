@@ -116,7 +116,7 @@ class MailChimp extends AbstractMailingListIntegration
                 $members[] = [
                     'email_address' => $email,
                     'status'        => $isDoubleOptIn ? 'pending' : 'subscribed',
-                    'merge_fields'  => $mappedValues,
+                    'merge_fields'  => (object) $mappedValues,
                 ];
             }
 
