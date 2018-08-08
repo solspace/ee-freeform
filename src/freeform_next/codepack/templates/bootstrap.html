@@ -13,9 +13,10 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="{path='demo/bootstrap'}">Bootstrap</a></li>
+                <li class="{if segment_2 == 'bootstrap'}active{/if}"><a href="{path='demo/bootstrap'}">Bootstrap</a></li>
                 <li><a href="{path='demo/foundation'}">Foundation</a></li>
                 <li><a href="{path='demo/materialize'}">Materialize</a></li>
+                <li class="{if segment_2 == 'bootstrap_ajax'}active{/if}"><a href="{path='demo/bootstrap_ajax'}">AJAX</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
