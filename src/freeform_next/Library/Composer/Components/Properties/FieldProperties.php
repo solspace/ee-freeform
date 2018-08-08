@@ -186,6 +186,9 @@ class FieldProperties extends AbstractProperties
     /** @var bool */
     protected $useJsMask;
 
+    /** @var bool */
+    protected $hidden;
+
     /**
      * @return string
      */
@@ -666,6 +669,14 @@ class FieldProperties extends AbstractProperties
     }
 
     /**
+     * @return bool|null
+     */
+    public function isHidden()
+    {
+        return $this->hidden;
+    }
+
+    /**
      * Return a list of all property fields and their type
      * [propertyKey => propertyType, ..]
      * E.g. ["name" => "string", ..]
@@ -732,6 +743,7 @@ class FieldProperties extends AbstractProperties
             'target'              => self::TYPE_STRING,
             'configuration'       => self::TYPE_ARRAY,
             'useJsMask'           => self::TYPE_BOOLEAN,
+            'hidden'              => self::TYPE_BOOLEAN,
         ];
     }
 }

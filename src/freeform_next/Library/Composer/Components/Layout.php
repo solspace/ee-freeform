@@ -16,6 +16,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\F
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MailingListInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoRenderInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\RecipientInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\MailingListField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\TextField;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
@@ -338,7 +339,7 @@ class Layout implements \JsonSerializable, \Iterator
                         $pageIndex
                     );
 
-                    if ($field instanceof NoRenderInterface) {
+                    if ($field instanceof NoRenderInterface || ($field instanceof MailingListField && $field->isHidden())) {
                         $hiddenFields[] = $field;
                     } else {
                         $fields[] = $field;

@@ -66,7 +66,8 @@ export default class MailingList extends BasePropertyEditor {
         PropTypes.array,
         PropTypes.object,
       ]),
-    }).isRequired
+      hidden: PropTypes.bool,
+    }).isRequired,
   };
 
   constructor(props, context) {
@@ -76,8 +77,7 @@ export default class MailingList extends BasePropertyEditor {
   }
 
   render() {
-    const { hash, properties: { value, label, integrationId, resourceId, emailFieldHash, mapping, instructions } } = this.context;
-
+    const { hash, properties: { value, label, integrationId, resourceId, emailFieldHash, mapping = {}, instructions, hidden } } = this.context;
     const { composerProperties, mailingLists, fetchMailingLists, isFetching } = this.props;
 
     let selectedIntegration = null;
@@ -192,6 +192,14 @@ export default class MailingList extends BasePropertyEditor {
           label="Checked by default"
           name="value"
           checked={value}
+          onChangeHandler={this.update}
+        />
+
+        <CheckboxProperty
+          label="Hide field"
+          instructions="Hide the mailing list checkbox from the form and make it always trigger a subscription"
+          name="hidden"
+          checked={hidden}
           onChangeHandler={this.update}
         />
 
