@@ -64,7 +64,7 @@ class MailingListField extends AbstractField implements NoStorageInterface, Sing
      */
     public function isHidden()
     {
-        return $this->hidden;
+        return (bool) $this->hidden;
     }
 
     /**
@@ -77,17 +77,27 @@ class MailingListField extends AbstractField implements NoStorageInterface, Sing
         $attributes = $this->getCustomAttributes();
         $output     = '';
 
+        if ($this->isHidden()) {
+            return '<input '
+                . $this->getAttributeString('name', $this->getHash())
+                . $this->getAttributeString('type', 'hidden')
+                . $this->getAttributeString('id', $this->getIdAttribute())
+                . $this->getAttributeString('class', $attributes->getClass())
+                . $this->getAttributeString('value', 1, false)
+                . $this->getRequiredAttribute()
+                . $attributes->getInputAttributesAsString()
+                . '/>';
+        }
+
         $isSelected = (bool) $this->getValue();
 
-        if (!$this->isHidden()) {
-            $output .= '<label'
-                . $this->getAttributeString('class', $attributes->getLabelClass())
-                . '>';
-        }
+        $output .= '<label'
+            . $this->getAttributeString('class', $attributes->getLabelClass())
+            . '>';
 
         $output .= '<input '
             . $this->getAttributeString('name', $this->getHash())
-            . $this->getAttributeString('type', $this->isHidden() ? 'hidden' : 'checkbox')
+            . $this->getAttributeString('type', 'checkbox')
             . $this->getAttributeString('id', $this->getIdAttribute())
             . $this->getAttributeString('class', $attributes->getClass())
             . $this->getAttributeString('value', 1, false)
@@ -96,10 +106,8 @@ class MailingListField extends AbstractField implements NoStorageInterface, Sing
             . ($isSelected ? 'checked ' : '')
             . '/>';
 
-        if (!$this->isHidden()) {
-            $output .= $this->getLabel();
-            $output .= '</label>';
-        }
+        $output .= $this->getLabel();
+        $output .= '</label>';
 
         return $output;
     }

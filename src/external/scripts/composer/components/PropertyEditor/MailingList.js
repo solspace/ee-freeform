@@ -189,19 +189,21 @@ export default class MailingList extends BasePropertyEditor {
         />
 
         <CheckboxProperty
-          label="Checked by default"
-          name="value"
-          checked={value}
-          onChangeHandler={this.update}
-        />
-
-        <CheckboxProperty
           label="Hide field"
           instructions="Hide the mailing list checkbox from the form and make it always trigger a subscription"
           name="hidden"
           checked={hidden}
           onChangeHandler={this.update}
         />
+
+        {!hidden &&
+        <CheckboxProperty
+          label="Checked by default"
+          name="value"
+          checked={value}
+          onChangeHandler={this.update}
+        />
+        }
 
         <hr />
 
