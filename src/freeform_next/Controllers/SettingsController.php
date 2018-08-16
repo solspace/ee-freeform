@@ -48,6 +48,12 @@ class SettingsController extends Controller
      */
     public function index($type, $id)
     {
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+
+        if (!$canAccessSettings) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         if (!in_array($type, self::$allowedTypes, true)) {
             throw new FreeformException('Page does not exist');
         }
@@ -95,6 +101,12 @@ class SettingsController extends Controller
      */
     public function statusesAction($id = null)
     {
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+
+        if (!$canAccessSettings) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         if (strtolower($id) === 'delete') {
             return $this->getStatusController()->batchDelete();
         }
@@ -121,6 +133,12 @@ class SettingsController extends Controller
      */
     private function licenseAction()
     {
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+
+        if (!$canAccessSettings) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         $settings = $this->getSettings();
 
         $view = new CpView('settings/common', []);
@@ -292,6 +310,8 @@ class SettingsController extends Controller
      */
     private function permissionsAction()
     {
+        $version = \Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper::get('version');
+
         $permissionsModel = $this->getPermissionsModel();
 
         $member_groups = ee('Model')->get('MemberGroup')
@@ -301,63 +321,155 @@ class SettingsController extends Controller
             ->all();
 
         $memberGroupChoices = [];
+        $memberGroupChoicesWithoutSuperAdmin = [];
 
         foreach ($member_groups as $group) {
             /** @var MemberGroup $group */
+
+            if ($group->group_id != 1) {
+                $memberGroupChoicesWithoutSuperAdmin[$group->group_id] = $group->group_title;
+            }
+
             $memberGroupChoices[$group->group_id] = $group->group_title;
         }
 
         $view = new CpView('settings/common', []);
+
+        $sections = [
+            [
+                'title'  => 'Default permissions for New Groups',
+                'fields' => [
+                    'defaultPermissions' => [
+                        'type'    => 'radio',
+                        'value'   => $permissionsModel->defaultPermissions,
+                        'choices' => [
+                            'allow_all' => 'Allow All access',
+                            'deny_all' => 'Deny All access',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'title'  => 'Manage Forms',
+                'desc'   => 'Chose which user groups can manage forms',
+                'fields' => [
+                    'formsPermissions' => [
+                        'type'    => 'checkbox',
+                        'value'   => $permissionsModel->formsPermissions,
+                        'choices' => $memberGroupChoices,
+                    ],
+                ],
+            ],
+            [
+                'title'  => 'Access Submissions',
+                'desc'   => 'Chose which user groups can access submissions',
+                'fields' => [
+                    'submissionsPermissions' => [
+                        'type'    => 'checkbox',
+                        'value'   => $permissionsModel->submissionsPermissions,
+                        'choices' => $memberGroupChoices,
+                    ],
+                ],
+            ],
+            [
+                'title'  => 'Manage Submissions',
+                'desc'   => 'Chose which user groups can manage submissions',
+                'fields' => [
+                    'manageSubmissionsPermissions' => [
+                        'type'    => 'checkbox',
+                        'value'   => $permissionsModel->manageSubmissionsPermissions,
+                        'choices' => $memberGroupChoices,
+                    ],
+                ],
+            ],
+            [
+                'title'  => 'Access Fields',
+                'desc'   => 'Chose which user groups have an access to fields',
+                'fields' => [
+                    'fieldsPermissions' => [
+                        'type'    => 'checkbox',
+                        'value'   => $permissionsModel->fieldsPermissions,
+                        'choices' => $memberGroupChoices,
+                    ],
+                ],
+            ],
+        ];
+
+        if ($version === 'pro') {
+            $sections[] = [
+                'title'  => 'Access Export',
+                'desc'   => 'Chose which user groups have an access to export',
+                'fields' => [
+                    'exportPermissions' => [
+                        'type'    => 'checkbox',
+                        'value'   => $permissionsModel->exportPermissions,
+                        'choices' => $memberGroupChoices,
+                    ],
+                ],
+            ];
+        }
+
+        $additionalSections = [
+            [
+                'title'  => 'Access Settings',
+                'desc'   => 'Chose which user groups have an access to settings',
+                'fields' => [
+                    'settingsPermissions' => [
+                        'type'    => 'checkbox',
+                        'value'   => $permissionsModel->settingsPermissions,
+                        'choices' => $memberGroupChoicesWithoutSuperAdmin,
+                    ],
+                ],
+            ],
+            [
+                'title'  => 'Access Integrations',
+                'desc'   => 'Chose which user groups have an access to integrations',
+                'fields' => [
+                    'integrationsPermissions' => [
+                        'type'    => 'checkbox',
+                        'value'   => $permissionsModel->integrationsPermissions,
+                        'choices' => $memberGroupChoices,
+                    ],
+                ],
+            ],
+            [
+                'title'  => 'Access Resources',
+                'desc'   => 'Chose which user groups have an access to resources',
+                'fields' => [
+                    'resourcesPermissions' => [
+                        'type'    => 'checkbox',
+                        'value'   => $permissionsModel->resourcesPermissions,
+                        'choices' => $memberGroupChoices,
+                    ],
+                ],
+            ],
+            [
+                'title'  => 'Access Logs',
+                'desc'   => 'Chose which user groups have an access to logs',
+                'fields' => [
+                    'logsPermissions' => [
+                        'type'    => 'checkbox',
+                        'value'   => $permissionsModel->logsPermissions,
+                        'choices' => $memberGroupChoices,
+                    ],
+                ],
+            ],
+        ];
+
+        $sections = array_merge($sections, $additionalSections);
+
+        $fields = [
+            'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),
+            'cp_page_title'         => $view->getHeading(),
+            'save_btn_text'         => 'btn_save_settings',
+            'save_btn_text_working' => 'btn_saving',
+            'sections'              => [$sections],
+        ];
+
         $view
             ->setHeading(lang('Permissions'))
             ->addBreadcrumb(new NavigationLink('Permissions', 'settings/permissions'))
-            ->setTemplateVariables(
-                [
-                    'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),
-                    'cp_page_title'         => $view->getHeading(),
-                    'save_btn_text'         => 'btn_save_settings',
-                    'save_btn_text_working' => 'btn_saving',
-                    'sections'              => [
-                        [
-                            [
-                                'title'  => 'Default permissions for New Groups',
-                                'fields' => [
-                                    'defaultPermissions' => [
-                                        'type'    => 'radio',
-                                        'value'   => $permissionsModel->defaultPermissions,
-                                        'choices' => [
-                                            'allow_all' => 'Allow All access',
-                                            'deny_all' => 'Deny All access',
-                                        ],
-                                    ],
-                                ],
-                            ],
-                            [
-                                'title'  => 'Forms',
-                                'desc'   => 'Chose which user groups have an access to forms',
-                                'fields' => [
-                                    'formsPermissions' => [
-                                        'type'    => 'checkbox',
-                                        'value'   => $permissionsModel->formsPermissions,
-                                        'choices' => $memberGroupChoices,
-                                    ],
-                                ],
-                            ],
-                            [
-                                'title'  => 'Fields',
-                                'desc'   => 'Chose which user groups have an access to fields',
-                                'fields' => [
-                                    'fieldsPermissions' => [
-                                        'type'    => 'checkbox',
-                                        'value'   => $permissionsModel->fieldsPermissions,
-                                        'choices' => $memberGroupChoices,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ]
-            );
+            ->setTemplateVariables($fields);
 
         return $view;
     }
@@ -583,6 +695,20 @@ class SettingsController extends Controller
 
         if (null === $instance) {
             $instance = new StatusController();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @return \Solspace\Addons\FreeformNext\Services\PermissionsService
+     */
+    private function getPermissionsService()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new \Solspace\Addons\FreeformNext\Services\PermissionsService();
         }
 
         return $instance;

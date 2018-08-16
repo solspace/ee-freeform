@@ -1,15 +1,3 @@
-/*
- * Freeform Next for Expression Engine
- *
- * @package       Solspace:Freeform
- * @author        Solspace, Inc.
- * @copyright     Copyright (c) 2008-2018, Solspace, Inc.
- * @link          https://solspace.com/expressionengine/freeform-next
- * @license       https://solspace.com/software/license-agreement
- */
-
-console.log('filters init');
-
 var $context = $('#custom-filters');
 var $valueLinks = $('a[data-value]', $context);
 var $inputs = $('input[type=text]', $context);
@@ -56,11 +44,6 @@ $valueLinks
 
 $inputs.on({
   keypress: function(event) {
-
-
-    console.log('filters keypress');
-
-    var $self = $(this);
     var which = event.which ? event.which : event.charCode;
 
     if (which == 13) {
@@ -73,7 +56,7 @@ $inputs.on({
 
 function postFilter() {
   event.preventDefault();
-  var form = $('#testid');
+  var form = $('#entry-filters');
   var url = window.location.href.split('?')[0];
   var parameters = window.location.href.split('?')[1];
   var endpoint = parameters.split('&')[0];

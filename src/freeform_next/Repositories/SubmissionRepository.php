@@ -166,6 +166,20 @@ class SubmissionRepository extends Repository
      */
     public function getAllSubmissionCountFor(SubmissionAttributes $attributes)
     {
+        $submissionTable = SubmissionModel::TABLE;
+
+        foreach ($attributes->getLikeFilters() as $key => $value) {
+            ee()->db->like($key, $value);
+        }
+
+        foreach ($attributes->getOrLikeFilters() as $key => $value) {
+            if ($key == 'id') {
+                ee()->db->or_like($submissionTable . '.id', $value);
+            } else {
+                ee()->db->or_like($key, $value);
+            }
+        }
+
         foreach ($attributes->getFilters() as $key => $value) {
             ee()->db->where($key, $value);
         }
@@ -176,6 +190,18 @@ class SubmissionRepository extends Repository
 
         foreach ($attributes->getNotInFilters() as $key => $value) {
             ee()->db->where_not_in($key, $value);
+        }
+
+        foreach ($attributes->getIdFilters() as $key => $value) {
+            ee()->db->where($submissionTable . '.id', $value);
+        }
+
+        if ($attributes->getLimit()) {
+            ee()->db->limit($attributes->getLimit());
+        }
+
+        if (null !== $attributes->getOffset()) {
+            ee()->db->offset($attributes->getOffset());
         }
 
         $prefix = ee()->db->dbprefix;

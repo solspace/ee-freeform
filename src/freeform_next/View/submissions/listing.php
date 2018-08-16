@@ -22,6 +22,8 @@ $this->extend('_layouts/table_form_wrapper');
     <div class="filters" id="custom-filters">
         <b><?= lang('filters') ?>:</b>
 
+        <?php // echo $filters->render($baseUrl); ?>
+
         <ul>
             <li>
                 <input type="hidden" name="search_status" value="<?= $currentSearchStatus ?>">

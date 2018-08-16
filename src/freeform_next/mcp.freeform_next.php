@@ -62,10 +62,6 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function forms($formId = null)
     {
-        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
-            return $this->renderView(new RedirectView($this->getLink('denied')));
-        }
-
         if (isset($_POST['composerState'])) {
             $this->renderView($this->getFormController()->save());
         }
@@ -96,7 +92,6 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function api($type)
     {
-        var_dump($type);die();
         $apiController = new ApiController();
         $args          = func_get_args();
 
@@ -244,10 +239,6 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function submissions($formHandle, $submissionId = null)
     {
-        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
-            return $this->renderView(new RedirectView($this->getLink('denied')));
-        }
-
         $formModel = FormRepository::getInstance()->getFormByIdOrHandle($formHandle);
         $form      = $formModel->getForm();
 
@@ -283,10 +274,6 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function templates()
     {
-        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
-            return $this->renderView(new RedirectView($this->getLink('denied')));
-        }
-
         $ajaxView = new AjaxView();
         $ajaxView->addVariable('success', true);
 
@@ -329,10 +316,6 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function formTemplates()
     {
-        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
-            return $this->renderView(new RedirectView($this->getLink('denied')));
-        }
-
         $settings = new SettingsService();
         $ajaxView = new AjaxView();
         $ajaxView->setVariables($settings->getCustomFormTemplates());
@@ -362,10 +345,6 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function settings($type, $id = null)
     {
-        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
-            return $this->renderView(new RedirectView($this->getLink('denied')));
-        }
-
         return $this->renderView($this->getSettingsController()->index($type, $id));
     }
 
@@ -410,10 +389,6 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function migrations($type, $id = null)
     {
-        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
-            return $this->renderView(new RedirectView($this->getLink('denied')));
-        }
-
         switch (strtolower($type)) {
             case 'ff_classic':
                 return $this->renderView($this->getMigrationController()->handle($id));

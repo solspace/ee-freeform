@@ -15,4 +15,5 @@ $lang = [
     'choose_date_range' => 'Choose Date Range',
     'all_fields' => 'All Fields',
     'field' => 'Field',
+    'date_range' => 'Date Range',
 ];

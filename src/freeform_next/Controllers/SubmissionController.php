@@ -42,7 +42,7 @@ use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 
 class SubmissionController extends Controller
 {
-    const MAX_PER_PAGE = 20;
+    const MAX_PER_PAGE = 1;
 
     /**
      * @param Form $form
@@ -51,7 +51,16 @@ class SubmissionController extends Controller
      */
     public function index(Form $form)
     {
+        $canAccessSubmissions = $this->getPermissionsService()->canAccessSubmissions(ee()->session->userdata('group_id'));
+
+        if (!$canAccessSubmissions) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
+        $baseUrl = ee('CP/URL', 'addons/settings/freeform_next/submissions/' . $form->getHandle());
         $filters = ee('CP/Filter')->add('Date');
+
+        $canManageSubmissions = $this->getPermissionsService()->canManageSubmissions(ee()->session->userdata('group_id'));
 
         $columnLabels = [];
         $visibleColumns = [];
@@ -127,13 +136,15 @@ class SubmissionController extends Controller
             }
         }
 
-        $columns = array_merge(
-            $columns,
-            [
-                'manage' => ['type' => Table::COL_TOOLBAR],
-                ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
-            ]
-        );
+        if ($canManageSubmissions) {
+            $columns = array_merge(
+                $columns,
+                [
+                    'manage' => ['type' => Table::COL_TOOLBAR],
+                    ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
+                ]
+            );
+        }
 
         $attributes = new SubmissionAttributes($form);
 
@@ -197,9 +208,26 @@ class SubmissionController extends Controller
 
         $dateRange = str_replace('_', ' ', $searchVars['search_date_range']);
 
-        if ($dateRange) {
-            $currentDateRange = $searchVars['search_date_range'];
+        $currentDateRange = $searchVars['search_date_range'];
+
+        if ($dateRange !== 'date range') {
             $attributes->setDateRange($dateRange);
+        } else {
+            $dateRangeStart = $searchVars['search_date_range_start'];
+
+            if ($dateRangeStart) {
+                $currentDateRangeStart = $dateRangeStart;
+                $dateRangeStart = date($dateRangeStart);
+                $attributes->setDateRangeStart($dateRangeStart);
+            }
+
+            $dateRangeEnd = $searchVars['search_date_range_end'];
+
+            if ($dateRangeEnd) {
+                $currentDateRangeEnd = $dateRangeEnd;
+                $dateRangeEnd = date($dateRangeEnd);
+                $attributes->setDateRangeEnd($dateRangeEnd);
+            }
         }
 
         $page = (int) ee()->input->get('page') ?: 1;
@@ -214,6 +242,7 @@ class SubmissionController extends Controller
             'sort_dir' => $sortDirection,
         ];
 
+        $totalSubmissionCount = SubmissionRepository::getInstance()->getAllSubmissionCountFor($attributes);
 
         $attributes
             ->setOrderBy($sortColumn)
@@ -221,35 +250,22 @@ class SubmissionController extends Controller
             ->setLimit(self::MAX_PER_PAGE)
             ->setOffset(self::MAX_PER_PAGE * ($page - 1));
 
-        $submissions          = SubmissionRepository::getInstance()->getAllSubmissionsFor($attributes);
-        $totalSubmissionCount = SubmissionRepository::getInstance()->getAllSubmissionCountFor($attributes);
+        $submissions = SubmissionRepository::getInstance()->getAllSubmissionsFor($attributes);
 
         $pagination = ee('CP/Pagination', $totalSubmissionCount)
             ->perPage(self::MAX_PER_PAGE)
             ->currentPage($page)
             ->render(
-                $this->getLink('submissions/' . $form->getHandle() . '&' . http_build_query($sortVars) . '?' . http_build_query($searchVars))
+                $this->getLink('submissions/' . $form->getHandle() . '&' . http_build_query($sortVars) . '&' . http_build_query($searchVars))
             );
-
-//        if (is_array($date_value))
-//        {
-//            $model->filter('some_date', '>=', $date_value[0]);
-//            $model->filter('some_date', '<', $date_value[1]);
-//        }
-//        else
-//        {
-//            $model->filter('some_date', '>=', ee()->localize->now - $date_value);
-//        }
-
-
 
         /** @var Table $table */
         $table = ee(
             'CP/Table',
             [
+                'autosearch' => true,
                 'sortable' => true,
-                'search'   => true,
-                'limit'    => 5,
+                'limit' => 5,
             ]
         );
 
@@ -263,6 +279,12 @@ class SubmissionController extends Controller
             $link = $this->getLink('submissions/' . $form->getHandle() . '/' . $submission->id);
             $data = [];
 
+            $titleElement = '<p style="margin: 0">' . $submission->title . '</p>';
+
+            if ($canManageSubmissions) {
+                $titleElement = '<a href="' . $link . '">' . $submission->title . '</a>';
+            }
+
             foreach ($layout as $setting) {
                 if (!$setting->isChecked()) {
                     continue;
@@ -272,7 +294,7 @@ class SubmissionController extends Controller
                     $data[] = $submission->id;
                 } else if ($setting->getId() === 'title') {
                     $data[] = [
-                        'content' => '<a href="' . $link . '">' . $submission->title . '</a>',
+                        'content' => $titleElement,
                     ];
                 } else if ($setting->getId() === 'statusName') {
                     $data[] = [
@@ -331,22 +353,30 @@ class SubmissionController extends Controller
                 }
             }
 
-            $data[] = [
-                'toolbar_items' => [
+            $toolbarItems = [];
+
+            if ($canManageSubmissions) {
+                $toolbarItems = [
                     'edit' => [
                         'href'  => $this->getLink('submissions/' . $form->getHandle() . '/' . $submission->id),
                         'title' => lang('edit'),
                     ],
-                ],
-            ];
+                ];
+            }
 
-            $data[] = [
-                'name'  => 'id_list[]',
-                'value' => $submission->id,
-                'data'  => [
-                    'confirm' => lang('Submission') . ': <b>' . htmlentities($submission->title, ENT_QUOTES) . '</b>',
-                ],
-            ];
+            if ($canManageSubmissions) {
+                $data[] = [
+                    'toolbar_items' => $toolbarItems,
+                ];
+
+                $data[] = [
+                    'name'  => 'id_list[]',
+                    'value' => $submission->id,
+                    'data'  => [
+                        'confirm' => lang('Submission') . ': <b>' . htmlentities($submission->title, ENT_QUOTES) . '</b>',
+                    ],
+                ];
+            }
 
             $tableData[] = $data;
         }
@@ -405,6 +435,9 @@ class SubmissionController extends Controller
                 'currentDateRangeStart' => $currentDateRangeStart,
                 'currentDateRangeEnd'   => $currentDateRangeEnd,
                 'currentDateRange'      => $currentDateRange,
+
+                'baseUrl'               => $baseUrl,
+                'filters'               => $filters,
             ]
         );
 
@@ -434,6 +467,12 @@ class SubmissionController extends Controller
      */
     public function edit(Form $form, SubmissionModel $submission)
     {
+        $canManageSubmissions = $this->getPermissionsService()->canManageSubmissions(ee()->session->userdata('group_id'));
+
+        if (!$canManageSubmissions) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         $view = new CpView('submissions/edit');
 
         $sectionData = [
@@ -657,6 +696,12 @@ class SubmissionController extends Controller
      */
     public function save(Form $form, SubmissionModel $submission)
     {
+        $canManageSubmissions = $this->getPermissionsService()->canManageSubmissions(ee()->session->userdata('group_id'));
+
+        if (!$canManageSubmissions) {
+            return false;
+        }
+
         $submission->title    = ee()->input->post('title', true);
         $submission->statusId = ee()->input->post('statusId', StatusRepository::getInstance()->getDefaultStatusId());
 
@@ -705,6 +750,12 @@ class SubmissionController extends Controller
      */
     public function batchDelete(Form $form)
     {
+        $canManageSubmissions = $this->getPermissionsService()->canManageSubmissions(ee()->session->userdata('group_id'));
+
+        if (!$canManageSubmissions) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         if (isset($_POST['id_list'])) {
             $ids = [];
             foreach ($_POST['id_list'] as $id) {
@@ -739,5 +790,19 @@ class SubmissionController extends Controller
             AbstractField::TYPE_TEXTAREA,
             AbstractField::TYPE_WEBSITE,
         ];
+    }
+
+    /**
+     * @return \Solspace\Addons\FreeformNext\Services\PermissionsService
+     */
+    private function getPermissionsService()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new \Solspace\Addons\FreeformNext\Services\PermissionsService();
+        }
+
+        return $instance;
     }
 }
