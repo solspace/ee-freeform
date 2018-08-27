@@ -9,8 +9,7 @@ $valueLinks
   .unbind('click')
   .on({
     click: function () {
-
-      console.log('filters click');
+      
       var $self = $(this);
       var $menu = $self.parents('div.sub-menu');
       var target = $self.parents('ul:first[data-target]').data('target');

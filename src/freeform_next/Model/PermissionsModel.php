@@ -20,7 +20,7 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * @property int    $id
  * @property int    $siteId
- * @property string   $defaultPermissions
+ * @property string $defaultPermissions
  * @property text   $formsPermissions
  * @property text   $submissionsPermissions
  * @property text   $manageSubmissionsPermissions
