@@ -413,12 +413,12 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      */
     public function isSubmissionTitleFormatBlank()
     {
-        if (
-            empty($this->getSubmissionTitleFormat()) ||
-            ctype_space($this->getSubmissionTitleFormat())
-        ) {
-            return true;
-        }
+//        if (
+//            empty($this->getSubmissionTitleFormat()) ||
+//            ctype_space($this->getSubmissionTitleFormat())
+//        ) {
+//            return true;
+//        }
 
         return false;
     }

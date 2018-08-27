@@ -89,6 +89,21 @@ class SubmissionRepository extends Repository
      */
     public function getAllSubmissionsFor(SubmissionAttributes $attributes)
     {
+        $submissionTable = SubmissionModel::TABLE;
+        $statusTable     = StatusModel::TABLE;
+
+        foreach ($attributes->getLikeFilters() as $key => $value) {
+            ee()->db->like($key, $value);
+        }
+
+        foreach ($attributes->getOrLikeFilters() as $key => $value) {
+            if ($key == 'id') {
+                ee()->db->or_like($submissionTable . '.id', $value);
+            } else {
+                ee()->db->or_like($key, $value);
+            }
+        }
+
         foreach ($attributes->getFilters() as $key => $value) {
             ee()->db->where($key, $value);
         }
@@ -99,6 +114,10 @@ class SubmissionRepository extends Repository
 
         foreach ($attributes->getNotInFilters() as $key => $value) {
             ee()->db->where_not_in($key, $value);
+        }
+
+        foreach ($attributes->getIdFilters() as $key => $value) {
+            ee()->db->where($submissionTable . '.id', $value);
         }
 
         ee()->db->order_by($attributes->getOrderBy(), $attributes->getSort());
@@ -112,15 +131,16 @@ class SubmissionRepository extends Repository
         }
 
         try {
-            $submissionTable = SubmissionModel::TABLE;
-            $statusTable     = StatusModel::TABLE;
 
-            $result = ee()->db
-                ->select("$submissionTable.*, $statusTable.name AS statusName, $statusTable.handle AS statusHandle, $statusTable.color AS statusColor")
+
+            $query = ee()->db
+                ->select("$submissionTable.*, $submissionTable.id AS submissionId, $statusTable.name AS statusName, $statusTable.handle AS statusHandle, $statusTable.color AS statusColor")
                 ->from($submissionTable)
                 ->join($statusTable, "$submissionTable.statusId = $statusTable.id")
-                ->get()
-                ->result_array();
+                ->get();
+
+            $result = $query->result_array();
+
         } catch (\Exception $e) {
             if (preg_match("/Column not found: 1054.*in 'order clause'/", $e->getMessage())) {
                 throw new \Exception(sprintf('Cannot order by %s', $attributes->getOrderBy()));
@@ -146,6 +166,20 @@ class SubmissionRepository extends Repository
      */
     public function getAllSubmissionCountFor(SubmissionAttributes $attributes)
     {
+        $submissionTable = SubmissionModel::TABLE;
+
+        foreach ($attributes->getLikeFilters() as $key => $value) {
+            ee()->db->like($key, $value);
+        }
+
+        foreach ($attributes->getOrLikeFilters() as $key => $value) {
+            if ($key == 'id') {
+                ee()->db->or_like($submissionTable . '.id', $value);
+            } else {
+                ee()->db->or_like($key, $value);
+            }
+        }
+
         foreach ($attributes->getFilters() as $key => $value) {
             ee()->db->where($key, $value);
         }
@@ -156,6 +190,18 @@ class SubmissionRepository extends Repository
 
         foreach ($attributes->getNotInFilters() as $key => $value) {
             ee()->db->where_not_in($key, $value);
+        }
+
+        foreach ($attributes->getIdFilters() as $key => $value) {
+            ee()->db->where($submissionTable . '.id', $value);
+        }
+
+        if ($attributes->getLimit()) {
+            ee()->db->limit($attributes->getLimit());
+        }
+
+        if (null !== $attributes->getOffset()) {
+            ee()->db->offset($attributes->getOffset());
         }
 
         $prefix = ee()->db->dbprefix;
@@ -188,5 +234,56 @@ class SubmissionRepository extends Repository
         }
 
         return $totals;
+    }
+
+    private function groupLike($values) {
+
+        $where = '';
+
+        if (is_array($values))
+        {
+            $first	= TRUE;
+            $and	= "\nAND ";
+            $or		= "\nOR ";
+            $where	.= '(';
+
+            //a LIKE or LIKE for every shown column
+            foreach ($values as $name => $value)
+            {
+                $joiner = $or;
+                $start	= $or;
+
+                if ($first)
+                {
+                    $first	= FALSE;
+                    $start	= '';
+                    $joiner	= $and;
+                }
+
+                $where .= $start . implode(
+                        $joiner,
+                        call_user_func_array(
+                            array($this, '_like'),
+                            array($name, $value)
+                        )
+                    );
+            }
+
+            $where .= ')';
+        }
+
+        if ($return_sql)
+        {
+            return $where;
+        }
+        else
+        {
+            if ($where)
+            {
+                $this->where($where);
+            }
+
+            return $this;
+        }
     }
 }

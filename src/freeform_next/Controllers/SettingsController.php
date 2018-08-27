@@ -4,8 +4,10 @@ namespace Solspace\Addons\FreeformNext\Controllers;
 
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
+use Solspace\Addons\FreeformNext\Model\PermissionsModel;
 use Solspace\Addons\FreeformNext\Model\SettingsModel;
 use Solspace\Addons\FreeformNext\Model\StatusModel;
+use Solspace\Addons\FreeformNext\Repositories\PermissionsRepository;
 use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Utilities\AddonInfo;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\CpView;
@@ -14,12 +16,14 @@ use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 use Stringy\Stringy;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use EllisLab\ExpressionEngine\Model\Member\MemberGroup;
 
 class SettingsController extends Controller
 {
     const TYPE_STATUSES             = 'statuses';
     const TYPE_LICENSE              = 'license';
     const TYPE_GENERAL              = 'general';
+    const TYPE_PERMISSIONS          = 'permissions';
     const TYPE_FORMATTING_TEMPLATES = 'formatting_templates';
     const TYPE_EMAIL_TEMPLATES      = 'email_templates';
     const TYPE_DEMO_TEMPLATES       = 'demo_templates';
@@ -29,6 +33,7 @@ class SettingsController extends Controller
         self::TYPE_STATUSES,
         self::TYPE_LICENSE,
         self::TYPE_GENERAL,
+        self::TYPE_PERMISSIONS,
         self::TYPE_FORMATTING_TEMPLATES,
         self::TYPE_EMAIL_TEMPLATES,
         self::TYPE_DEMO_TEMPLATES,
@@ -43,11 +48,17 @@ class SettingsController extends Controller
      */
     public function index($type, $id)
     {
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+
+        if (!$canAccessSettings) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         if (!in_array($type, self::$allowedTypes, true)) {
             throw new FreeformException('Page does not exist');
         }
 
-        if ($type !== 'statuses' && $this->handlePost()) {
+        if ($type !== 'statuses' && $this->handlePost(self::TYPE_PERMISSIONS)) {
             ee('CP/Alert')
                 ->makeInline('shared-form')
                 ->asSuccess()
@@ -73,6 +84,9 @@ class SettingsController extends Controller
             case self::TYPE_DEMO_TEMPLATES:
                 return $this->demoTemplatesAction();
 
+            case self::TYPE_PERMISSIONS:
+                return $this->permissionsAction();
+
             case self::TYPE_GENERAL:
             default:
                 return $this->generalAction();
@@ -87,6 +101,12 @@ class SettingsController extends Controller
      */
     public function statusesAction($id = null)
     {
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+
+        if (!$canAccessSettings) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         if (strtolower($id) === 'delete') {
             return $this->getStatusController()->batchDelete();
         }
@@ -113,6 +133,12 @@ class SettingsController extends Controller
      */
     private function licenseAction()
     {
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+
+        if (!$canAccessSettings) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         $settings = $this->getSettings();
 
         $view = new CpView('settings/common', []);
@@ -141,6 +167,25 @@ class SettingsController extends Controller
                     ],
                 ]
             );
+
+        return $view;
+    }
+
+    /**
+     * @return View
+     */
+    public function permissionDenied()
+    {
+        $pageTitle = lang('Permission Denied');
+
+        $view = new CpView(
+            'settings/permission-denied',
+            [
+                'cp_page_title'    => $pageTitle,
+                'form_right_links' => [],
+            ]
+        );
+        $view->setHeading($pageTitle);
 
         return $view;
     }
@@ -256,6 +301,175 @@ class SettingsController extends Controller
                     ],
                 ]
             );
+
+        return $view;
+    }
+
+    /**
+     * @return CpView
+     */
+    private function permissionsAction()
+    {
+        $version = \Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper::get('version');
+
+        $permissionsModel = $this->getPermissionsModel();
+
+        $member_groups = ee('Model')->get('MemberGroup')
+            ->with('AssignedChannels')
+            ->fields('group_id')
+            ->fields('group_title')
+            ->all();
+
+        $memberGroupChoices = [];
+        $memberGroupChoicesWithoutSuperAdmin = [];
+
+        foreach ($member_groups as $group) {
+            /** @var MemberGroup $group */
+
+            if ($group->group_id != 1) {
+                $memberGroupChoicesWithoutSuperAdmin[$group->group_id] = $group->group_title;
+            }
+
+            $memberGroupChoices[$group->group_id] = $group->group_title;
+        }
+
+        $view = new CpView('settings/common', []);
+
+        $sections = [
+            [
+                'title'  => 'Default permissions for New Groups',
+                'fields' => [
+                    'defaultPermissions' => [
+                        'type'    => 'radio',
+                        'value'   => $permissionsModel->defaultPermissions,
+                        'choices' => [
+                            'allow_all' => 'Allow All access',
+                            'deny_all' => 'Deny All access',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'title'  => 'Manage Forms',
+                'desc'   => 'Chose which user groups can manage forms',
+                'fields' => [
+                    'formsPermissions' => [
+                        'type'    => 'checkbox',
+                        'value'   => $permissionsModel->formsPermissions,
+                        'choices' => $memberGroupChoices,
+                    ],
+                ],
+            ],
+            [
+                'title'  => 'Access Submissions',
+                'desc'   => 'Chose which user groups can access submissions',
+                'fields' => [
+                    'submissionsPermissions' => [
+                        'type'    => 'checkbox',
+                        'value'   => $permissionsModel->submissionsPermissions,
+                        'choices' => $memberGroupChoices,
+                    ],
+                ],
+            ],
+            [
+                'title'  => 'Manage Submissions',
+                'desc'   => 'Chose which user groups can manage submissions',
+                'fields' => [
+                    'manageSubmissionsPermissions' => [
+                        'type'    => 'checkbox',
+                        'value'   => $permissionsModel->manageSubmissionsPermissions,
+                        'choices' => $memberGroupChoices,
+                    ],
+                ],
+            ],
+            [
+                'title'  => 'Access Fields',
+                'desc'   => 'Chose which user groups have an access to fields',
+                'fields' => [
+                    'fieldsPermissions' => [
+                        'type'    => 'checkbox',
+                        'value'   => $permissionsModel->fieldsPermissions,
+                        'choices' => $memberGroupChoices,
+                    ],
+                ],
+            ],
+        ];
+
+        if ($version === 'pro') {
+            $sections[] = [
+                'title'  => 'Access Export',
+                'desc'   => 'Chose which user groups have an access to export',
+                'fields' => [
+                    'exportPermissions' => [
+                        'type'    => 'checkbox',
+                        'value'   => $permissionsModel->exportPermissions,
+                        'choices' => $memberGroupChoices,
+                    ],
+                ],
+            ];
+        }
+
+        $additionalSections = [
+            [
+                'title'  => 'Access Settings',
+                'desc'   => 'Chose which user groups have an access to settings',
+                'fields' => [
+                    'settingsPermissions' => [
+                        'type'    => 'checkbox',
+                        'value'   => $permissionsModel->settingsPermissions,
+                        'choices' => $memberGroupChoicesWithoutSuperAdmin,
+                    ],
+                ],
+            ],
+            [
+                'title'  => 'Access Integrations',
+                'desc'   => 'Chose which user groups have an access to integrations',
+                'fields' => [
+                    'integrationsPermissions' => [
+                        'type'    => 'checkbox',
+                        'value'   => $permissionsModel->integrationsPermissions,
+                        'choices' => $memberGroupChoices,
+                    ],
+                ],
+            ],
+            [
+                'title'  => 'Access Resources',
+                'desc'   => 'Chose which user groups have an access to resources',
+                'fields' => [
+                    'resourcesPermissions' => [
+                        'type'    => 'checkbox',
+                        'value'   => $permissionsModel->resourcesPermissions,
+                        'choices' => $memberGroupChoices,
+                    ],
+                ],
+            ],
+            [
+                'title'  => 'Access Logs',
+                'desc'   => 'Chose which user groups have an access to logs',
+                'fields' => [
+                    'logsPermissions' => [
+                        'type'    => 'checkbox',
+                        'value'   => $permissionsModel->logsPermissions,
+                        'choices' => $memberGroupChoices,
+                    ],
+                ],
+            ],
+        ];
+
+        $sections = array_merge($sections, $additionalSections);
+
+        $fields = [
+            'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),
+            'cp_page_title'         => $view->getHeading(),
+            'save_btn_text'         => 'btn_save_settings',
+            'save_btn_text_working' => 'btn_saving',
+            'sections'              => [$sections],
+        ];
+
+        $view
+            ->setHeading(lang('Permissions'))
+            ->addBreadcrumb(new NavigationLink('Permissions', 'settings/permissions'))
+            ->setTemplateVariables($fields);
 
         return $view;
     }
@@ -413,9 +627,13 @@ class SettingsController extends Controller
      *
      * @return bool
      */
-    private function handlePost()
+    private function handlePost($type)
     {
-        $settings = $this->getSettings();
+        if ($type == self::TYPE_PERMISSIONS) {
+            $settings = $this->getPermissionsModel();
+        } else {
+            $settings = $this->getSettings();
+        }
 
         if (!empty($_POST) && !isset($_POST['prefix'])) {
             $accessor = PropertyAccess::createPropertyAccessor();
@@ -448,6 +666,14 @@ class SettingsController extends Controller
     }
 
     /**
+     * @return PermissionsModel
+     */
+    private function getPermissionsModel()
+    {
+        return PermissionsRepository::getInstance()->getOrCreate();
+    }
+
+    /**
      * @param string $method
      *
      * @return string
@@ -469,6 +695,20 @@ class SettingsController extends Controller
 
         if (null === $instance) {
             $instance = new StatusController();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @return \Solspace\Addons\FreeformNext\Services\PermissionsService
+     */
+    private function getPermissionsService()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new \Solspace\Addons\FreeformNext\Services\PermissionsService();
         }
 
         return $instance;
