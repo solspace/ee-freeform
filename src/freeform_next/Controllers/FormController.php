@@ -35,6 +35,7 @@ use Solspace\Addons\FreeformNext\Services\FilesService;
 use Solspace\Addons\FreeformNext\Services\FormsService;
 use Solspace\Addons\FreeformNext\Services\MailerService;
 use Solspace\Addons\FreeformNext\Services\MailingListsService;
+use Solspace\Addons\FreeformNext\Services\PermissionsService;
 use Solspace\Addons\FreeformNext\Services\SettingsService;
 use Solspace\Addons\FreeformNext\Services\StatusesService;
 use Solspace\Addons\FreeformNext\Services\SubmissionsService;
@@ -51,59 +52,77 @@ class FormController extends Controller
      */
     public function index()
     {
+        $canManageForms = $this->getPermissionsService()->canManageForms(ee()->session->userdata('group_id'));
+        $canAccessSubmissions = $this->getPermissionsService()->canAccessSubmissions(ee()->session->userdata('group_id'));
+
         /** @var Table $table */
         $table = ee('CP/Table', ['sortable' => false, 'searchable' => false]);
 
-        $table->setColumns(
-            [
-                'id'                 => ['type' => Table::COL_ID],
-                'Form'               => ['type' => Table::COL_TEXT],
-                'Handle'             => ['type' => Table::COL_TEXT],
-                'Submissions'        => ['type' => Table::COL_TEXT],
-                'blocked_spam_count' => ['type' => Table::COL_TEXT],
-                'manage'             => ['type' => Table::COL_TOOLBAR],
-                ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
-            ]
-        );
+        $columns = [
+            'id'                 => ['type' => Table::COL_ID],
+            'Form'               => ['type' => Table::COL_TEXT],
+            'Handle'             => ['type' => Table::COL_TEXT],
+            'Submissions'        => ['type' => Table::COL_TEXT],
+            'blocked_spam_count' => ['type' => Table::COL_TEXT],
+            'manage'             => ['type' => Table::COL_TOOLBAR],
+        ];
+
+        if ($canManageForms) {
+            $columns[] = ['type' => Table::COL_CHECKBOX, 'name' => 'selection'];
+        }
+
+        $table->setColumns($columns);
 
         $forms            = FormRepository::getInstance()->getAllForms();
         $submissionTotals = SubmissionRepository::getInstance()->getSubmissionTotalsPerForm();
 
         $tableData = [];
         foreach ($forms as $form) {
-            $tableData[] = [
+
+            $toolbarItems = [];
+
+            if ($canManageForms) {
+                $toolbarItems = [
+                    'edit' => [
+                        'href'  => $this->getLink('forms/' . $form->id),
+                        'title' => lang('edit'),
+                    ],
+                    'sync' => [
+                        'href'                 => 'javascript:;',
+                        'class'                => 'reset-spam-count',
+                        'title'                => lang('Reset Spam Count'),
+                        'data-csrf'            => CSRF_TOKEN,
+                        'data-url'             => $this->getLink('api/reset_spam'),
+                        'data-form-id'         => $form->id,
+                        'data-confirm-message' => sprintf(
+                            lang('Are you sure you want to reset the spam count for %s to 0?'),
+                            $form->name
+                        ),
+                    ],
+                ];
+            }
+
+            $toolbar = [
+                'toolbar_items' => $toolbarItems,
+            ];
+
+            $data = [
                 $form->id,
                 [
                     'content' => $form->name,
-                    'href'    => $this->getLink('forms/' . $form->id),
+                    'href'    => ($canManageForms ? $this->getLink('forms/' . $form->id) : null),
                 ],
                 $form->handle,
                 [
                     'content' => isset($submissionTotals[$form->id]) ? $submissionTotals[$form->id] : 0,
-                    'href'    => $this->getLink('submissions/' . $form->handle),
+                    'href'    => ($canAccessSubmissions ? $this->getLink('submissions/' . $form->handle) : null ),
                 ],
                 $form->spamBlockCount,
-                [
-                    'toolbar_items' => [
-                        'edit' => [
-                            'href'  => $this->getLink('forms/' . $form->id),
-                            'title' => lang('edit'),
-                        ],
-                        'sync' => [
-                            'href'                 => 'javascript:;',
-                            'class'                => 'reset-spam-count',
-                            'title'                => lang('Reset Spam Count'),
-                            'data-csrf'            => CSRF_TOKEN,
-                            'data-url'             => $this->getLink('api/reset_spam'),
-                            'data-form-id'         => $form->id,
-                            'data-confirm-message' => sprintf(
-                                lang('Are you sure you want to reset the spam count for %s to 0?'),
-                                $form->name
-                            ),
-                        ],
-                    ],
-                ],
-                [
+                $toolbar,
+            ];
+
+            if ($canManageForms) {
+                $data[] = [
                     'name'  => 'id_list[]',
                     'value' => $form->id,
                     'data'  => [
@@ -112,20 +131,24 @@ class FormController extends Controller
                                 ENT_QUOTES
                             ) . '</b>',
                     ],
-                ],
-            ];
+                ];
+            }
+
+            $tableData[] = $data;
         }
         $table->setData($tableData);
         $table->setNoResultsText('No results');
 
-        $view = new CpView(
-            'form/listing',
-            [
-                'table'            => $table->viewData(),
-                'cp_page_title'    => lang('Forms'),
-                'form_right_links' => FreeformHelper::get('right_links', $this),
-            ]
-        );
+        $template = [
+            'table'            => $table->viewData(),
+            'cp_page_title'    => lang('Forms'),
+        ];
+
+        if ($canManageForms) {
+            $template['form_right_links'] = FreeformHelper::get('right_links', $this);
+        }
+
+        $view = new CpView('form/listing', $template);
 
         $view
             ->setHeading(lang('Forms'))
@@ -142,6 +165,10 @@ class FormController extends Controller
      */
     public function edit(FormModel $form)
     {
+        if (!($this->getPermissionsService()->canManageForms(ee()->session->userdata('group_id')))) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         $fileService     = new FilesService();
         $settingsService = new SettingsService();
 
@@ -184,6 +211,11 @@ class FormController extends Controller
     public function save()
     {
         $view = new AjaxView();
+
+        if (!($this->getPermissionsService()->canManageForms(ee()->session->userdata('group_id')))) {
+            return $view->addError('No access');
+        }
+
         $post = $_POST;
 
         if (!isset($post['formId'])) {
@@ -272,6 +304,10 @@ class FormController extends Controller
      */
     public function batchDelete()
     {
+        if (!($this->getPermissionsService()->canManageForms(ee()->session->userdata('group_id')))) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         if (isset($_POST['id_list'])) {
             $ids = [];
             foreach ($_POST['id_list'] as $id) {
@@ -293,5 +329,19 @@ class FormController extends Controller
         }
 
         return new RedirectView($this->getLink(''));
+    }
+
+    /**
+     * @return \Solspace\Addons\FreeformNext\Services\PermissionsService
+     */
+    private function getPermissionsService()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new \Solspace\Addons\FreeformNext\Services\PermissionsService();
+        }
+
+        return $instance;
     }
 }

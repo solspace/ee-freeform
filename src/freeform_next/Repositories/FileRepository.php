@@ -45,17 +45,35 @@ class FileRepository extends Repository
      */
     public function getAllAssetSources()
     {
+        $msmEnabled = false;
+
+        if (ee()->config->item('multiple_sites_enabled') === 'y') {
+            $msmEnabled = true;
+        }
+
         $results = ee()->db
-            ->select('id, name')
+            ->select('id, name, site_id')
             ->from('exp_upload_prefs')
             ->where(
                 [
-                    'site_id'   => ee()->config->item('site_id'),
                     'module_id' => 0,
                 ]
             )
             ->get()
             ->result_array();
+
+        if (!$msmEnabled) {
+            return $results;
+        }
+
+        // Add MSM Site Switcher
+        ee()->load->model('site_model');
+
+        $site_list = ee()->session->userdata('assigned_sites');
+
+        foreach ($results as $key => $assetSource) {
+            $results[$key]['name'] = $assetSource['name'] . ' (' . $site_list[$assetSource['site_id']] . ')';
+        }
 
         return $results;
     }

@@ -29,6 +29,12 @@ class NotificationController extends Controller
      */
     public function index()
     {
+        $canAccessNotifications = $this->getPermissionsService()->canAccessNotifications(ee()->session->userdata('group_id'));
+
+        if (!$canAccessNotifications) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         /** @var Table $table */
         $table = ee('CP/Table', ['sortable' => false, 'searchable' => false]);
 
@@ -141,6 +147,12 @@ class NotificationController extends Controller
      */
     public function edit($notificationId, Result $validation = null)
     {
+        $canAccessNotifications = $this->getPermissionsService()->canAccessNotifications(ee()->session->userdata('group_id'));
+
+        if (!$canAccessNotifications) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         if (strtolower($notificationId) === 'new') {
             $notification = NotificationModel::create();
         } else {
@@ -280,6 +292,13 @@ class NotificationController extends Controller
     public function save($id)
     {
         $notification = NotificationRepository::getInstance()->getOrCreateNotification($id);
+
+        $canAccessNotifications = $this->getPermissionsService()->canAccessNotifications(ee()->session->userdata('group_id'));
+
+        if (!$canAccessNotifications) {
+            return $notification;
+        }
+
         $isNew        = !$notification->id;
 
         $post        = $_POST;
@@ -318,6 +337,12 @@ class NotificationController extends Controller
      */
     public function batchDelete()
     {
+        $canAccessNotifications = $this->getPermissionsService()->canAccessNotifications(ee()->session->userdata('group_id'));
+
+        if (!$canAccessNotifications) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         if (isset($_POST['id_list'])) {
             $ids = [];
             foreach ($_POST['id_list'] as $id) {
@@ -352,5 +377,19 @@ class NotificationController extends Controller
         include PATH_THIRD . "freeform_next/Templates/notifications/{$template}.php";
 
         return ob_get_clean();
+    }
+
+    /**
+     * @return \Solspace\Addons\FreeformNext\Services\PermissionsService
+     */
+    private function getPermissionsService()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new \Solspace\Addons\FreeformNext\Services\PermissionsService();
+        }
+
+        return $instance;
     }
 }

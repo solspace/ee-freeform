@@ -171,6 +171,9 @@ class FieldProperties extends AbstractProperties
     /** @var string */
     protected $colorSelected;
 
+    /** @var bool */
+    protected $hidden;
+
     /**
      * @return string
      */
@@ -602,6 +605,14 @@ class FieldProperties extends AbstractProperties
     }
 
     /**
+     * @return bool|null
+     */
+    public function isHidden()
+    {
+        return $this->hidden;
+    }
+
+    /**
      * Return a list of all property fields and their type
      * [propertyKey => propertyType, ..]
      * E.g. ["name" => "string", ..]
@@ -663,6 +674,7 @@ class FieldProperties extends AbstractProperties
             'colorIdle'           => self::TYPE_STRING,
             'colorHover'          => self::TYPE_STRING,
             'colorSelected'       => self::TYPE_STRING,
+            'hidden'              => self::TYPE_BOOLEAN,
         ];
     }
 }

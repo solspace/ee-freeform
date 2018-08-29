@@ -33,6 +33,12 @@ class FieldController extends Controller
      */
     public function index()
     {
+        $canAccessFields = $this->getPermissionsService()->canAccessFields(ee()->session->userdata('group_id'));
+
+        if (!$canAccessFields) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         /** @var Table $table */
         $table = ee('CP/Table', ['sortable' => false, 'searchable' => false]);
 
@@ -102,6 +108,12 @@ class FieldController extends Controller
      */
     public function edit($id, Result $validation = null)
     {
+        $canAccessFields = $this->getPermissionsService()->canAccessFields(ee()->session->userdata('group_id'));
+
+        if (!$canAccessFields) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         if ($id === 'new') {
             $model = FieldModel::create();
         } else {
@@ -212,6 +224,13 @@ class FieldController extends Controller
     public function save($fieldId = null)
     {
         $field = FieldRepository::getInstance()->getOrCreateField($fieldId);
+
+        $canAccessFields = $this->getPermissionsService()->canAccessFields(ee()->session->userdata('group_id'));
+
+        if (!$canAccessFields) {
+            return $field;
+        }
+
         $isNew = !$field->id;
 
         $post        = $_POST;
@@ -340,6 +359,12 @@ class FieldController extends Controller
      */
     public function batchDelete()
     {
+        $canAccessFields = $this->getPermissionsService()->canAccessFields(ee()->session->userdata('group_id'));
+
+        if (!$canAccessFields) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         if (isset($_POST['id_list'])) {
             $ids = [];
             foreach ($_POST['id_list'] as $id) {
@@ -1106,6 +1131,20 @@ class FieldController extends Controller
 
         if (null === $instance) {
             $instance = new FilesService();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @return \Solspace\Addons\FreeformNext\Services\PermissionsService
+     */
+    private function getPermissionsService()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new \Solspace\Addons\FreeformNext\Services\PermissionsService();
         }
 
         return $instance;

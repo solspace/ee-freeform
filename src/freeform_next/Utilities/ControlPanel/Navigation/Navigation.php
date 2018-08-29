@@ -14,6 +14,7 @@ namespace Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation;
 use EllisLab\ExpressionEngine\Library\CP\URL;
 use EllisLab\ExpressionEngine\Service\Sidebar\Header;
 use EllisLab\ExpressionEngine\Service\Sidebar\Sidebar;
+use Solspace\Addons\FreeformNext\Services\PermissionsService;
 
 class Navigation
 {
@@ -44,7 +45,38 @@ class Navigation
         /** @var Sidebar $sidebar */
         $sidebar = ee('CP/Sidebar')->make();
 
+        $permissionsService = $this->getPermissionsService();
+        $groupId = ee()->session->userdata('group_id');
+
         foreach ($this->stack as $item) {
+
+            // Special case because resources do not have a method or sub-method
+            if ($item->getTitle() == 'Resources') {
+                if (!$permissionsService->canUserSeeSectionInNavigation(PermissionsService::PERMISSION__ACCESS_RESOURCES, $groupId)) continue;
+            }
+
+            // Do not show the section in the menu if user does not have the permission to it
+            if (!$permissionsService->canUserSeeSectionInNavigation($item->getMethod(), $groupId)) continue;
+
+            $subNav = $item->getSubNav();
+
+            if ($subNav) {
+
+                $showParentItem = true;
+
+                foreach ($subNav as $subItem) {
+                    $subMethod = $subItem->getMethod();
+                    $parentMethod = substr($subMethod, 0, strpos($subMethod, "/"));
+
+                    if (!$permissionsService->canUserSeeSectionInNavigation($parentMethod, $groupId)) {
+                        $showParentItem = false;
+                    }
+                }
+
+                // Do not show the parent item if subsection's permission does not allow that
+                if (!$showParentItem) continue;
+            }
+
             $link = $item->getLink();
 
             /** @var Header $header */
@@ -66,10 +98,18 @@ class Navigation
 
             $button = $item->getButtonLink();
             if ($button) {
-                $header->withButton($button->getTitle(), $button->getLink());
+
+                $canAddButton = true;
+
+                if ($item->getMethod() === PermissionsService::PERMISSION__MANAGE_FORMS) {
+                    $canAddButton = $permissionsService->canManageForms($groupId);
+                }
+
+                if ($canAddButton) {
+                    $header->withButton($button->getTitle(), $button->getLink());
+                }
             }
 
-            $subNav = $item->getSubNav();
             if ($subNav) {
                 $basicList = $header->addBasicList();
                 foreach ($subNav as $subItem) {
@@ -125,5 +165,19 @@ class Navigation
         }
 
         return $currentUrl;
+    }
+
+    /**
+     * @return PermissionsService
+     */
+    private function getPermissionsService()
+    {
+        static $instance;
+
+        if (null === $instance) {
+            $instance = new PermissionsService();
+        }
+
+        return $instance;
     }
 }

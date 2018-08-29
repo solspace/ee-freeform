@@ -42,6 +42,18 @@ class SubmissionAttributes
     private $filters;
 
     /** @var array */
+    private $likeFilters;
+
+    /** @var array */
+    private $orLikeFilters;
+
+    /** @var array */
+    private $idFilters;
+
+    /** @var array */
+    private $orIdFilters;
+
+    /** @var array */
     private $inFilters;
 
     /** @var array */
@@ -60,6 +72,10 @@ class SubmissionAttributes
             SubmissionModel::TABLE . '.formId' => $form->getId(),
         ];
 
+        $this->likeFilters  = [];
+        $this->orLikeFilters  = [];
+        $this->idFilters  = [];
+        $this->orIdFilters  = [];
         $this->inFilters    = [];
         $this->notInFilters = [];
     }
@@ -349,6 +365,38 @@ class SubmissionAttributes
     /**
      * @return array
      */
+    public function getLikeFilters()
+    {
+        return $this->likeFilters;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOrLikeFilters()
+    {
+        return $this->orLikeFilters;
+    }
+
+    /**
+     * @return array
+     */
+    public function getIdFilters()
+    {
+        return $this->idFilters;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOrIdFilters()
+    {
+        return $this->orIdFilters;
+    }
+
+    /**
+     * @return array
+     */
     public function getFilters()
     {
         return $this->filters;
@@ -385,6 +433,58 @@ class SubmissionAttributes
         } else {
             $this->filters[$key] = $value;
         }
+
+        return $this;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public function addLikeFilter($key, $value)
+    {
+        $this->likeFilters[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public function addOrLikeFilter($key, $value)
+    {
+        $this->orLikeFilters[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public function addIdFilter($key, $value)
+    {
+        $this->idFilters[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public function addOrIdFilter($key, $value)
+    {
+        $this->orIdFilters[$key] = $value;
 
         return $this;
     }

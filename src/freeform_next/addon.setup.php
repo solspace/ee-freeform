@@ -62,6 +62,7 @@ return [
         'SubmissionModel'            => 'Model\SubmissionModel',
         'SubmissionPreferencesModel' => 'Model\SubmissionPreferencesModel',
         'SettingsModel'              => 'Model\SettingsModel',
+        'PermissionsModel'           => 'Model\PermissionsModel',
         'IntegrationModel'           => 'Model\IntegrationModel',
         'MailingListModel'           => 'Model\MailingListModel',
         'MailingListFieldModel'      => 'Model\MailingListFieldModel',
