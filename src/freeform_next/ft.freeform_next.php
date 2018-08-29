@@ -19,6 +19,11 @@ class Freeform_next_ft extends EE_Fieldtype
         parent::__construct();
 
         ee()->lang->loadfile('freeform_next');
+
+        if (REQ !== 'CP' && !session_id()) {
+            @session_start();
+        }
+
         $this->info = include __DIR__ . '/addon.setup.php';
 
         $this->field_id = isset($this->settings['field_id']) ?
