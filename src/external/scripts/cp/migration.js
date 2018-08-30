@@ -25,7 +25,7 @@ $(document).ready(function () {
       submissionFormsCount > 0 &&
       migrateSubmissions === true
     ) {
-      const precent = (submissionFormsProcessed / submissionFormsCount) * 100;
+      const precent = Math.round((submissionFormsProcessed / submissionFormsCount) * 100);
       stageText += ' ' + precent + '%';
     }
 
