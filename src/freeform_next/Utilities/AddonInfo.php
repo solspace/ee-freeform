@@ -67,6 +67,10 @@ class AddonInfo
      */
     protected function __construct()
     {
+        if (REQ !== 'CP' && !session_id()) {
+            @session_start();
+        }
+
         $data = require __DIR__ . '/../addon.setup.php';
 
         foreach ($data as $key => $value) {
