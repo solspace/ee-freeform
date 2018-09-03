@@ -11,7 +11,6 @@
 
 namespace Solspace\Addons\FreeformNext\Services;
 
-use Solspace\Addons\Freeform\Library\AddonBuilder;
 use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Library\Migrations\Helpers\ClassicFieldHelper;
 use Solspace\Addons\FreeformNext\Library\Migrations\Helpers\ClassicFormHelper;
@@ -30,11 +29,11 @@ use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 
 class MigrationsService
 {
-    const STATUS__FIELDS = 'status-fields';
-    const STATUS__FORM_STATUSES = 'form-statuses';
+    const STATUS__FIELDS             = 'status-fields';
+    const STATUS__FORM_STATUSES      = 'form-statuses';
     const STATUS__FORM_NOTIFICATIONS = 'form-notifications';
-    const STATUS__FORMS = 'status-forms';
-    const STATUS__SUBMISSIONS = 'status-submissions';
+    const STATUS__FORMS              = 'status-forms';
+    const STATUS__SUBMISSIONS        = 'status-submissions';
 
     /** @var MigrationResultObject */
     public $result;
@@ -57,7 +56,7 @@ class MigrationsService
      */
     public function isClassicFreeformInstalled()
     {
-        $installed = ee()->addons->get_installed('modules', TRUE);
+        $installed = ee()->addons->get_installed('modules', true);
 
         if (array_key_exists('freeform', $installed)) {
             return true;
@@ -75,7 +74,11 @@ class MigrationsService
         $fields   = FieldRepository::getInstance()->getAllFields();
         $statuses = StatusRepository::getInstance()->getAllStatuses();
 
-        return empty($forms) && count($fields) === 12 && count($statuses) === 3;
+        $emptyForms  = empty($forms);
+        $fieldCount  = count($fields);
+        $statusCount = count($statuses);
+
+        return $emptyForms && $fieldCount === 12 && $statusCount === 3;
     }
 
     /**
@@ -303,7 +306,7 @@ class MigrationsService
     }
 
     /**
-     * @param $classicSubmission
+     * @param     $classicSubmission
      * @param int $formId
      *
      * @return bool
@@ -336,24 +339,24 @@ class MigrationsService
     public function getStagesInfo()
     {
         return [
-            self::STATUS__FIELDS => [
-                'type-name' => self::STATUS__FIELDS,
+            self::STATUS__FIELDS             => [
+                'type-name'        => self::STATUS__FIELDS,
                 'in-progress-text' => 'Migrating Fields',
             ],
-            self::STATUS__FORM_STATUSES => [
-                'type-name' => self::STATUS__FORM_STATUSES,
+            self::STATUS__FORM_STATUSES      => [
+                'type-name'        => self::STATUS__FORM_STATUSES,
                 'in-progress-text' => 'Migrating Form Statuses',
             ],
             self::STATUS__FORM_NOTIFICATIONS => [
-                'type-name' => self::STATUS__FORM_NOTIFICATIONS,
+                'type-name'        => self::STATUS__FORM_NOTIFICATIONS,
                 'in-progress-text' => 'Migrating Form Notifications',
             ],
-            self::STATUS__FORMS => [
-                'type-name' => self::STATUS__FORMS,
+            self::STATUS__FORMS              => [
+                'type-name'        => self::STATUS__FORMS,
                 'in-progress-text' => 'Migrating Forms',
             ],
-            self::STATUS__SUBMISSIONS => [
-                'type-name' => self::STATUS__SUBMISSIONS,
+            self::STATUS__SUBMISSIONS        => [
+                'type-name'        => self::STATUS__SUBMISSIONS,
                 'in-progress-text' => 'Migrating Submissions',
             ],
         ];
@@ -378,8 +381,8 @@ class MigrationsService
     {
         foreach ($this->getStages() as $key => $stage) {
             if ($stage === $currentStage) {
-                if (array_key_exists($key+1, $this->getStages())) {
-                    return $this->getStagesInfo()[$this->getStages()[$key+1]];
+                if (array_key_exists($key + 1, $this->getStages())) {
+                    return $this->getStagesInfo()[$this->getStages()[$key + 1]];
                 }
             }
         }
@@ -410,9 +413,10 @@ class MigrationsService
     }
 
     /**
-     * @param $stage
+     * @param      $stage
      * @param null $formId
      * @param null $page
+     *
      * @return MigrationResultObject
      */
     public function runStage($stage, $formId = null, $page = null)
@@ -458,11 +462,11 @@ class MigrationsService
             return [];
         }
 
-        $formsCount = $this->classicSubmissionHelper->getFormsCount();
-        $nextFormId = $this->classicSubmissionHelper->formId;
+        $formsCount   = $this->classicSubmissionHelper->getFormsCount();
+        $nextFormId   = $this->classicSubmissionHelper->formId;
         $formFinished = $this->classicSubmissionHelper->finished;
-        $nextPage = (int) ($this->classicSubmissionHelper->page + 1);
-        $pageCount = $this->classicSubmissionHelper->formPagesCount;
+        $nextPage     = (int) ($this->classicSubmissionHelper->page + 1);
+        $pageCount    = $this->classicSubmissionHelper->formPagesCount;
 
         if ($formFinished === true) {
             $nextForm = $this->classicSubmissionHelper->getNextForm($this->classicSubmissionHelper->formId);
@@ -477,11 +481,11 @@ class MigrationsService
         }
 
         $result = [
-            'formsCount' => $formsCount,
-            'nextForm' => $nextFormId,
+            'formsCount'   => $formsCount,
+            'nextForm'     => $nextFormId,
             'finishedForm' => $formFinished,
-            'nextPage' => $nextPage,
-            'pageCount' => $pageCount,
+            'nextPage'     => $nextPage,
+            'pageCount'    => $pageCount,
         ];
 
         return $result;
