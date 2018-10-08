@@ -13,6 +13,6 @@ import Text from "./Text";
 
 export default class Regex extends Text {
   getClassName() {
-    return 'Regex';
+    return "Regex";
   }
 }

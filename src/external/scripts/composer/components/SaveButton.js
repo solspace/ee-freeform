@@ -8,12 +8,12 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import qwest from "qwest";
-import {connect} from "react-redux";
-import {updateFormId, updateProperty} from "../actions/Actions";
-import {FORM} from "../constants/FieldTypes";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { updateFormId, updateProperty } from "../actions/Actions";
+import { FORM } from "../constants/FieldTypes";
 
 const initialState = {
   isSaving: false,
@@ -28,8 +28,8 @@ const initialState = {
   }),
   (dispatch) => ({
     updateFormId: (formId) => dispatch(updateFormId(formId)),
-    updateFormHandle: (newHandle) => dispatch(updateProperty(FORM, {handle: newHandle})),
-  })
+    updateFormHandle: (newHandle) => dispatch(updateProperty(FORM, { handle: newHandle })),
+  }),
 )
 export default class SaveButton extends Component {
   static propTypes = {
@@ -53,15 +53,15 @@ export default class SaveButton extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.save                   = this.save.bind(this);
-    this.checkForSaveShortcut   = this.checkForSaveShortcut.bind(this);
-    this.state                  = initialState;
+    this.save = this.save.bind(this);
+    this.checkForSaveShortcut = this.checkForSaveShortcut.bind(this);
+    this.state = initialState;
 
     document.addEventListener("keydown", this.checkForSaveShortcut, false);
   }
 
   render() {
-    const {isSaving} = this.state;
+    const { isSaving } = this.state;
 
     const originalTitle = "Save ⌘S";
     const progressTitle = "Saving...";
@@ -90,9 +90,9 @@ export default class SaveButton extends Component {
   }
 
   save(event) {
-    const {saveUrl, formUrl, formId, composer, context}       = this.props;
-    const {currentFormHandle, updateFormId, updateFormHandle} = this.props;
-    const {csrf, notificator}                                 = this.context;
+    const { saveUrl, formUrl, formId, composer, context } = this.props;
+    const { currentFormHandle, updateFormId, updateFormHandle } = this.props;
+    const { csrf, notificator } = this.context;
 
     let savableState = {
       [csrf.name]: csrf.token,
@@ -100,40 +100,38 @@ export default class SaveButton extends Component {
       composerState: JSON.stringify({
         composer,
         context,
-      })
+      }),
     };
 
-    let count = 0;
-
     const shouldGotoFormList = event.target.className.match(/gotoFormList/);
-    const shouldGotoNewForm  = event.target.className.match(/gotoNewForm/);
-    const duplicateForm      = event.target.className.match(/duplicateForm/);
+    const shouldGotoNewForm = event.target.className.match(/gotoNewForm/);
+    const duplicateForm = event.target.className.match(/duplicateForm/);
 
     if (duplicateForm) {
-      savableState.formId    = "";
+      savableState.formId = "";
       savableState.duplicate = true;
     }
 
-    this.setState({isSaving: true});
+    this.setState({ isSaving: true });
 
-    return qwest.post(saveUrl, savableState, {responseType: "json"})
+    return qwest.post(saveUrl, savableState, { responseType: "json" })
       .then((xhr, response) => {
-        this.setState({isSaving: false});
+        this.setState({ isSaving: false });
 
         if (!response.errors) {
-          let url = formUrl.replace('{id}', response.id);
-          history.pushState(response.id, '', url);
+          let url = formUrl.replace("{id}", response.id);
+          history.pushState(response.id, "", url);
 
           updateFormId(response.id);
           if (currentFormHandle !== response.handle) {
             updateFormHandle(response.handle);
           }
 
-            notificator("notice", "Saved successfully");
+          notificator("notice", "Saved successfully");
           if (shouldGotoFormList) {
-            window.location.href = formUrl.replace('{id}', '');
+            window.location.href = formUrl.replace("{id}", "");
           } else if (shouldGotoNewForm) {
-            window.location.href = formUrl.replace('{id}', 'new');
+            window.location.href = formUrl.replace("{id}", "new");
           }
 
           return true;
@@ -143,12 +141,12 @@ export default class SaveButton extends Component {
       })
       .catch(exception => {
         notificator("error", exception);
-        this.setState({isSaving: false});
+        this.setState({ isSaving: false });
       });
   }
 
   checkForSaveShortcut(event) {
-    const sKey    = 83;
+    const sKey = 83;
     const keyCode = event.which;
 
     if (keyCode == sKey && this.isModifierKeyPressed(event)) {

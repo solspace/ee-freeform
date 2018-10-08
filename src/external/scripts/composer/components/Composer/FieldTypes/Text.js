@@ -13,13 +13,13 @@ import HtmlInput from "./HtmlInput";
 
 export default class Text extends HtmlInput {
   getClassName() {
-    return 'Text';
+    return "Text";
   }
 
   getInputClassNames() {
     return [
-      'text',
-      'fullwidth',
-    ]
+      "text",
+      "fullwidth",
+    ];
   }
 }

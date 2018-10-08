@@ -37,11 +37,27 @@ class FormTransformer implements Transformer
             'form:page_count'                => count($form->getPages()),
             'form:is_submitted_successfully' => $form->isSubmittedSuccessfully(),
             'form:has_errors'                => $form->hasErrors(),
+            'form:errors'                    => $this->getErrors($form),
             'form:row_class'                 => $form->getCustomAttributes()->getRowClass(),
             'form:column_class'              => $form->getCustomAttributes()->getColumnClass(),
             'form:submission_count'          => $submissionCount,
             'form:fields'                    => $this->getFields($form, 'field:', $skipHelperFields),
         ];
+    }
+
+    /**
+     * @param Form $form
+     *
+     * @return array
+     */
+    private function getErrors(Form $form)
+    {
+        $data = [];
+        foreach ($form->getErrors() as $error) {
+            $data[] = ['error' => $error];
+        }
+
+        return $data;
     }
 
     /**

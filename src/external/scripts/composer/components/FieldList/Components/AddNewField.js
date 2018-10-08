@@ -8,12 +8,12 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
+import React, { Component } from "react";
+import { fetchFields } from "../../../actions/Actions";
 import FieldProperties from "./FieldProperties";
-import {fetchFields} from "../../../actions/Actions"
 
 export default class AddNewField extends Component {
-  static EVENT_AFTER_UPDATE = 'freeform_add_new_field_after_render';
+  static EVENT_AFTER_UPDATE = "freeform_add_new_field_after_render";
 
   static initialState = {
     showFieldForm: false,
@@ -22,7 +22,7 @@ export default class AddNewField extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state           = AddNewField.initialState;
+    this.state = AddNewField.initialState;
     this.toggleFieldForm = this.toggleFieldForm.bind(this);
   }
 
@@ -31,7 +31,7 @@ export default class AddNewField extends Component {
   }
 
   render() {
-    const {showFieldForm} = this.state;
+    const { showFieldForm } = this.state;
 
     const className = "composer-add-new-field-wrapper" + (showFieldForm ? " active" : "");
 
@@ -44,7 +44,7 @@ export default class AddNewField extends Component {
         }
 
         {showFieldForm &&
-        <FieldProperties toggleFieldForm={this.toggleFieldForm}/>
+        <FieldProperties toggleFieldForm={this.toggleFieldForm} />
         }
       </div>
     );
@@ -52,7 +52,7 @@ export default class AddNewField extends Component {
 
   toggleFieldForm() {
     this.setState({
-      showFieldForm: !this.state.showFieldForm
+      showFieldForm: !this.state.showFieldForm,
     });
   }
 }

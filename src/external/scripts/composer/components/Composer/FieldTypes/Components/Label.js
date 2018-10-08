@@ -8,9 +8,9 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
-import {HIDDEN} from "../../../../constants/FieldTypes";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { HIDDEN } from "../../../../constants/FieldTypes";
 
 export default class Label extends Component {
   static propTypes = {
@@ -20,7 +20,7 @@ export default class Label extends Component {
   };
 
   render() {
-    const {label, isRequired, type} = this.props;
+    const { label, isRequired, type } = this.props;
 
     const labelClass = ["composer-field-label"];
     if (isRequired) {
@@ -33,7 +33,7 @@ export default class Label extends Component {
 
     return (
       <label className={labelClass.join(" ")}>
-        <span dangerouslySetInnerHTML={{__html: label}} /> {type === HIDDEN ? " (Hidden field)" : ""}
+        <span dangerouslySetInnerHTML={{ __html: label }} /> {type === HIDDEN ? " (Hidden field)" : ""}
         {label && isRequired ? <span className="required" /> : ""}
         {this.props.children}
         {!label && isRequired ? <span className="required" /> : ""}

@@ -9,8 +9,8 @@
  */
 
 import React from "react";
+import { SketchPicker } from "react-color";
 import BasePropertyItem from "./BasePropertyItem";
-import {SketchPicker} from "react-color";
 
 export default class ColorProperty extends BasePropertyItem {
   static initialState = {
@@ -29,8 +29,8 @@ export default class ColorProperty extends BasePropertyItem {
   }
 
   renderInput() {
-    const {value, readOnly, disabled, className} = this.props;
-    const {displayColorPicker} = this.state;
+    const { value, readOnly, disabled, className } = this.props;
+    const { displayColorPicker } = this.state;
 
     const classes = [className];
     if (readOnly && disabled) {
@@ -42,13 +42,13 @@ export default class ColorProperty extends BasePropertyItem {
         <div className="freeform-colorpicker-preview-wrapper" onClick={this.handleClick}>
           <div
             className="freeform-colorpicker-preview"
-            style={{backgroundColor: value}}
+            style={{ backgroundColor: value }}
           />
         </div>
 
-        { displayColorPicker && !readOnly && !disabled &&
+        {displayColorPicker && !readOnly && !disabled &&
         <div className="freeform-colorpicker-wrapper">
-          <div className="freeform-colorpicker-cover" onClick={this.handleClose}/>
+          <div className="freeform-colorpicker-cover" onClick={this.handleClose} />
           <SketchPicker
             color={value}
             onChange={this.handleChange}
@@ -61,15 +61,15 @@ export default class ColorProperty extends BasePropertyItem {
   }
 
   handleClick = () => {
-    this.setState({displayColorPicker: !this.state.displayColorPicker});
+    this.setState({ displayColorPicker: !this.state.displayColorPicker });
   };
 
   handleClose = () => {
-    this.setState({displayColorPicker: false});
+    this.setState({ displayColorPicker: false });
   };
 
   handleChange = (color) => {
-    const {name} = this.props;
+    const { name } = this.props;
 
     this.props.onChangeHandler(name, color.hex);
   };

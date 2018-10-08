@@ -19,8 +19,8 @@ export function properties(state = [], action) {
 }
 
 export function modifyGroupValues(state = [], action) {
-  const {hash, isChecked} = action;
-  let clonedState         = {...state};
+  const { hash, isChecked, value = null } = action;
+  let clonedState = { ...state };
 
   switch (action.type) {
     case ActionTypes.ADD_VALUE_SET:
@@ -45,7 +45,7 @@ export function modifyGroupValues(state = [], action) {
 
         let hasModifications = false;
         for (let i = 0; i < options.length; i++) {
-          const {label, value} = options[i];
+          const { label, value } = options[i];
 
           if (!label.toString().length && !value.toString().length) {
             options.splice(i, 1);
@@ -64,7 +64,7 @@ export function modifyGroupValues(state = [], action) {
 
         if (hasModifications) {
           clonedState[hash].options = options;
-          clonedState[hash].values  = values;
+          clonedState[hash].values = values;
 
           return clonedState;
         }
@@ -74,18 +74,18 @@ export function modifyGroupValues(state = [], action) {
 
     case ActionTypes.UPDATE_VALUE_SET:
       if (state[hash] && state[hash].options) {
-        let {value, label, index} = action;
+        let { label, index } = action;
 
-        const options       = [...state[hash].options];
+        const options = [...state[hash].options];
         const previousValue = options[index].value;
 
-        options[index].value = value;
-        options[index].label = label;
+        options[index].value = value + "";
+        options[index].label = label + "";
 
         clonedState[hash].options = options;
 
         if (state[hash].values !== undefined) {
-          const values             = [...state[hash].values];
+          const values = [...state[hash].values];
           const previousValueIndex = values.indexOf(previousValue);
           if (previousValueIndex !== -1) {
             values[previousValueIndex] = value;
@@ -103,19 +103,22 @@ export function modifyGroupValues(state = [], action) {
       return state;
 
     case ActionTypes.UPDATE_IS_CHECKED:
-      let {index} = action;
+      let { index } = action;
 
-      const value = clonedState[hash].options[index].value;
+      const val = clonedState[hash].options[index].value;
 
       switch (clonedState[hash].type) {
         case FieldTypes.CHECKBOX_GROUP:
-          if (clonedState[hash].values === undefined) {
+        case FieldTypes.DYNAMIC_RECIPIENTS:
+        case FieldTypes.MULTIPLE_SELECT:
+          const truncateValues = clonedState[hash].type === FieldTypes.DYNAMIC_RECIPIENTS && !clonedState[hash].showAsCheckboxes;
+          if (clonedState[hash].values === undefined || truncateValues) {
             clonedState[hash].values = [];
           }
 
-          const valueIndex = clonedState[hash].values.indexOf(value);
+          const valueIndex = clonedState[hash].values.indexOf(val);
           if (isChecked && valueIndex === -1) {
-            clonedState[hash].values.push(value);
+            clonedState[hash].values.push(val);
           }
 
           if (!isChecked && valueIndex !== -1) {
@@ -125,7 +128,51 @@ export function modifyGroupValues(state = [], action) {
           break;
 
         default:
-          clonedState[hash].value = isChecked ? value : "";
+          clonedState[hash].value = isChecked ? val : "";
+          break;
+      }
+
+      return clonedState;
+
+    case ActionTypes.INSERT_VALUE:
+      switch (clonedState[hash].type) {
+        case FieldTypes.CHECKBOX_GROUP:
+        case FieldTypes.MULTIPLE_SELECT:
+          if (clonedState[hash].values === undefined) {
+            clonedState[hash].values = [];
+          }
+
+          const valueIndex = clonedState[hash].values.indexOf(value);
+          if (valueIndex === -1) {
+            clonedState[hash].values.push(value);
+          }
+
+          break;
+
+        default:
+          clonedState[hash].value = value;
+          break;
+      }
+
+      return clonedState;
+
+    case ActionTypes.REMOVE_VALUE:
+      switch (clonedState[hash].type) {
+        case FieldTypes.CHECKBOX_GROUP:
+        case FieldTypes.MULTIPLE_SELECT:
+          if (clonedState[hash].values === undefined) {
+            return clonedState;
+          }
+
+          const valueIndex = clonedState[hash].values.indexOf(value);
+          if (valueIndex !== -1) {
+            clonedState[hash].values.splice(valueIndex, 1);
+          }
+
+          break;
+
+        default:
+          clonedState[hash].value = "";
           break;
       }
 
@@ -140,7 +187,7 @@ export function modifyGroupValues(state = [], action) {
             (item) => ({
               label: item.label,
               value: item.label,
-            })
+            }),
           );
         }
       }
@@ -166,8 +213,8 @@ export function modifyGroupValues(state = [], action) {
  * @returns {*}
  */
 function reorderValueSet(state, action) {
-  const {index, newIndex, hash} = action;
-  const clonedState = {...state};
+  const { index, newIndex, hash } = action;
+  const clonedState = { ...state };
 
   const item = clonedState[hash].options[index];
 
@@ -185,8 +232,8 @@ function reorderValueSet(state, action) {
  * @returns {Object}
  */
 function removeValueSet(state, action) {
-  const {hash, index} = action;
-  const clonedState = {...state};
+  const { hash, index } = action;
+  const clonedState = { ...state };
 
   clonedState[hash].options = [
     ...clonedState[hash].options.slice(0, index),

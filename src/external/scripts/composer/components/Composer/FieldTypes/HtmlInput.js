@@ -8,11 +8,12 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { slugify, underscored } from "underscore.string";
-import { TEXT, MAILING_LIST } from "../../../constants/FieldTypes";
-import Badge from "./Components/Badge"
+import { reservedKeywords } from "../../../constants/Fields";
+import { MAILING_LIST, TEXT } from "../../../constants/FieldTypes";
+import Badge from "./Components/Badge";
 import Instructions from "./Components/Instructions";
 import Label from "./Components/Label";
 
@@ -47,15 +48,15 @@ export default class HtmlInput extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.getBadges            = this.getBadges.bind(this);
+    this.getBadges = this.getBadges.bind(this);
     this.getWrapperClassNames = this.getWrapperClassNames.bind(this);
-    this.prepareWrapperClass  = this.prepareWrapperClass.bind(this);
-    this.renderInput          = this.renderInput.bind(this);
-    this.getClassName         = this.getClassName.bind(this);
+    this.prepareWrapperClass = this.prepareWrapperClass.bind(this);
+    this.renderInput = this.renderInput.bind(this);
+    this.getClassName = this.getClassName.bind(this);
   }
 
   getClassName() {
-    return 'HtmlInput';
+    return "HtmlInput";
   }
 
   getType() {
@@ -82,12 +83,12 @@ export default class HtmlInput extends Component {
   }
 
   render() {
-    const { properties: { label, type, required, instructions } } = this.props;
+    const { properties: { type, required, instructions } } = this.props;
 
     return (
       <div className={this.prepareWrapperClass()}>
-        <Label label={label} type={type} isRequired={required}>{this.getBadges()}</Label>
-        <Instructions instructions={instructions}/>
+        <Label label={this.getLabel()} type={type} isRequired={required}>{this.getBadges()}</Label>
+        <Instructions instructions={instructions} />
         {this.renderInput()}
       </div>
     );
@@ -102,19 +103,24 @@ export default class HtmlInput extends Component {
     );
   }
 
+  getLabel = () => (this.props.properties.label);
+
   /**
    * Return any Badge objects if applicable
    */
   getBadges() {
     const { properties: { handle, type } } = this.props;
+    const badges = [];
 
     if (!handle && type !== MAILING_LIST) {
-      return [
-        <Badge key={"handle"} label={"Handle is not set"} type={Badge.WARNING}/>,
-      ]
+      badges.push(<Badge key={"handle"} label={"Handle is not set"} type={Badge.WARNING} />);
     }
 
-    return []
+    if (reservedKeywords.indexOf(handle) !== -1) {
+      badges.push(<Badge key={"handle"} label={"Handle is a reserved keyword"} type={Badge.WARNING} />);
+    }
+
+    return badges;
   }
 
   /**
@@ -132,9 +138,9 @@ export default class HtmlInput extends Component {
   prepareWrapperClass() {
     let wrapperClassNames = this.getWrapperClassNames();
 
-    wrapperClassNames.push('composer-ft-' + slugify(underscored(this.getClassName())) + '-wrapper');
+    wrapperClassNames.push("composer-ft-" + slugify(underscored(this.getClassName())) + "-wrapper");
 
-    return wrapperClassNames.join(' ');
+    return wrapperClassNames.join(" ");
   }
 
   /**
@@ -152,8 +158,8 @@ export default class HtmlInput extends Component {
   prepareInputClass() {
     let inputClassNames = this.getInputClassNames();
 
-    inputClassNames.push('composer-ft-' + slugify(underscored(this.getClassName())));
+    inputClassNames.push("composer-ft-" + slugify(underscored(this.getClassName())));
 
-    return inputClassNames.join(' ');
+    return inputClassNames.join(" ");
   }
 }

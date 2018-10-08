@@ -25,14 +25,14 @@
         <tr>
             <td>{form:id}</td>
             <td>
-                <a href="{path='demo/bootstrap/{form:handle}'}">
+                <a href="{path='demo/{segment_2}/{form:handle}'}">
                     {form:name}
                 </a>
             </td>
             <td class="code">{form:handle}</td>
             {if logged_in_group_id == "1"}
             <td>
-                <a href="{path='demo/bootstrap/{form:handle}/submissions'}">
+                <a href="{path='demo/{segment_2}/{form:handle}/submissions'}">
                     {form:submission_count} submissions
                 </a>
             </td>

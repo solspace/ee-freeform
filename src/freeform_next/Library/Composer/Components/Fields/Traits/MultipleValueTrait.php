@@ -12,6 +12,9 @@
 namespace Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DataContainers\Option;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecipientField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\ObscureValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\OptionsInterface;
 
 trait MultipleValueTrait
@@ -35,12 +38,34 @@ trait MultipleValueTrait
 
         $values = $this->values;
 
-        if (empty($values)) {
-            $values = [];
+        if (!\is_array($values) && !empty($values)) {
+            $values = [$values];
         }
 
-        if (!is_array($values)) {
-            $values = [$values];
+        if (empty($values)) {
+            $values = [];
+        } else {
+            $values = array_map('strval', $values);
+        }
+
+        if ($this instanceof DynamicRecipientField && $values) {
+            $areIndexes = true;
+            foreach ($values as $value) {
+                if (!\is_numeric($value)) {
+                    $areIndexes = false;
+                }
+            }
+
+            $checkedIndexes = [];
+            foreach ($this->options as $index => $option) {
+                if ($areIndexes && \in_array($index, $values, false)) {
+                    $checkedIndexes[] = $index;
+                } else if (\in_array($option->getValue(), $values, true)) {
+                    $checkedIndexes[] = $index;
+                }
+            }
+
+            $values = $checkedIndexes;
         }
 
         return $values;
@@ -53,15 +78,23 @@ trait MultipleValueTrait
      */
     public function setValue($value)
     {
+        if ($this instanceof MultipleValueInterface && !\is_array($value)) {
+            if (null === $value) {
+                $value = [];
+            } else {
+                $value = [$value];
+            }
+        }
+
         $this->values = $value;
 
         if ($this instanceof OptionsInterface) {
             $updatedOptions = [];
-            foreach ($this->getOptions() as $option) {
-                if (is_numeric($option->getValue())) {
-                    $checked = in_array((int) $option->getValue(), $this->getValue(), false);
+            foreach ($this->getOptions() as $index => $option) {
+                if ($this instanceof ObscureValueInterface) {
+                    $checked = \in_array($index, $value, false);
                 } else {
-                    $checked = in_array($option->getValue(), $this->getValue(), true);
+                    $checked = \in_array($option->getValue(), $value, false);
                 }
 
                 $updatedOptions[] = new Option(

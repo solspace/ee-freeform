@@ -35,7 +35,7 @@ export function mailingLists(state = initialState, action) {
     case ActionTypes.RECEIVE_MAILING_LISTS:
       return {
         ...state,
-        list: action.mailingListData,
+        list: action.sourceTargetData,
         isFetching: false,
         didInvalidate: false,
       };

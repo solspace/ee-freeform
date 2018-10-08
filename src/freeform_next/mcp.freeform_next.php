@@ -32,6 +32,7 @@ use Solspace\Addons\FreeformNext\Model\NotificationModel;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
+use Solspace\Addons\FreeformNext\Services\FieldsService;
 use Solspace\Addons\FreeformNext\Services\MigrationsService;
 use Solspace\Addons\FreeformNext\Services\SettingsService;
 use Solspace\Addons\FreeformNext\Services\UpdateService;
@@ -326,6 +327,28 @@ class Freeform_next_mcp extends ControlPanelView
     /**
      * @return array
      */
+    public function optionsFromSource()
+    {
+        $source        = ee()->input->post('source');
+        $target        = ee()->input->post('target');
+        $configuration = ee()->input->post('configuration');
+
+        if (!\is_array($configuration)) {
+            $configuration = [];
+        }
+
+        $ajaxView = new AjaxView();
+        $fieldsService = new FieldsService();
+        $options = $fieldsService->getOptionsFromSource($source, $target, $configuration);
+
+        $ajaxView->addVariable('data', $options);
+
+        return $this->renderView($ajaxView);
+    }
+
+    /**
+     * @return array
+     */
     public function finish_tutorial()
     {
         $service = new SettingsService();
@@ -461,6 +484,10 @@ class Freeform_next_mcp extends ControlPanelView
             ->addSubNavItem(new NavigationLink('Email Templates', 'settings/email_templates'))
             ->addSubNavItem(new NavigationLink('Statuses', 'settings/statuses'))
             ->addSubNavItem(new NavigationLink('Demo Templates', 'settings/demo_templates'));
+
+        if (class_exists('Solspace\Addons\FreeformNext\Library\Pro\Fields\RecaptchaField')) {
+            $settings->addSubNavItem(new NavigationLink('reCAPTCHA', 'settings/recaptcha'));
+        }
 
         $resources = new NavigationLink('Resources');
         $resources

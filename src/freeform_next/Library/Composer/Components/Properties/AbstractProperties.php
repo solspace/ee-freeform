@@ -16,11 +16,11 @@ use Solspace\Addons\FreeformNext\Library\Translations\TranslatorInterface;
 
 abstract class AbstractProperties
 {
-    const TYPE_STRING  = "string";
-    const TYPE_BOOLEAN = "boolean";
-    const TYPE_INTEGER = "integer";
-    const TYPE_ARRAY   = "array";
-    const TYPE_OBJECT  = "object";
+    const TYPE_STRING  = 'string';
+    const TYPE_BOOLEAN = 'boolean';
+    const TYPE_INTEGER = 'integer';
+    const TYPE_ARRAY   = 'array';
+    const TYPE_OBJECT  = 'object';
 
     /** @var string */
     protected $type;
@@ -86,15 +86,18 @@ abstract class AbstractProperties
             $expectedType = strtolower($manifest[$key]);
             switch ($expectedType) {
                 case self::TYPE_BOOLEAN:
-                    $value = in_array(strtolower($value), [1, "true"]) ? true : false;
+                    if (!\is_bool($value)) {
+                        $value = \in_array(strtolower($value), ['1', 1, 'true'], true) ? true : false;
+                    }
+
                     break;
 
                 case self::TYPE_INTEGER:
-                    $value = (int)$value;
+                    $value = (int) $value;
                     break;
 
                 case self::TYPE_STRING:
-                    $value = (string)$value;
+                    $value = (string) $value;
                     break;
             }
 
@@ -108,9 +111,9 @@ abstract class AbstractProperties
                     $this->getTranslator()->translate(
                         "Value for '{key}' should be '{valueType}' but is '{expectedType}'",
                         [
-                            "key"          => $key,
-                            "expectedType" => $expectedType,
-                            "valueType"    => $valueType,
+                            'key'          => $key,
+                            'expectedType' => $expectedType,
+                            'valueType'    => $valueType,
                         ]
                     )
 

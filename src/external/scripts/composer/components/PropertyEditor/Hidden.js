@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
+import PropTypes from "prop-types";
 import React from "react";
-import PropTypes from 'prop-types';
 import BasePropertyEditor from "./BasePropertyEditor";
 import TextProperty from "./PropertyItems/TextProperty";
 
@@ -26,7 +26,7 @@ export default class Hidden extends BasePropertyEditor {
   };
 
   render() {
-    const {properties: {value, handle}} = this.context;
+    const { properties: { value, handle } } = this.context;
 
     return (
       <div>

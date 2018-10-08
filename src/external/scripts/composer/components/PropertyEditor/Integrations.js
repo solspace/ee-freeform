@@ -8,15 +8,15 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
+import PropTypes from "prop-types";
 import React from "react";
-import PropTypes from 'prop-types';
+import { connect } from "react-redux";
+import { fetchCrmIntegrationsIfNeeded, invalidateCrmIntegrations } from "../../actions/Integrations";
 import * as FieldTypes from "../../constants/FieldTypes";
 import BasePropertyEditor from "./BasePropertyEditor";
+import IntegrationMappingTable from "./Components/IntegrationMappingTable/IntegrationMappingTable";
 import CustomProperty from "./PropertyItems/CustomProperty";
 import SelectProperty from "./PropertyItems/SelectProperty";
-import IntegrationMappingTable from "./Components/IntegrationMappingTable/IntegrationMappingTable";
-import {connect} from "react-redux";
-import {invalidateCrmIntegrations, fetchCrmIntegrationsIfNeeded} from "../../actions/Integrations";
 
 @connect(
   (state) => ({
@@ -29,8 +29,8 @@ import {invalidateCrmIntegrations, fetchCrmIntegrationsIfNeeded} from "../../act
     fetchCrmIntegrations: () => {
       dispatch(invalidateCrmIntegrations());
       dispatch(fetchCrmIntegrationsIfNeeded());
-    }
-  })
+    },
+  }),
 )
 export default class Integrations extends BasePropertyEditor {
   static propTypes = {
@@ -48,7 +48,7 @@ export default class Integrations extends BasePropertyEditor {
       type: PropTypes.string.isRequired,
       integrationId: PropTypes.node,
       mapping: PropTypes.any,
-    })
+    }),
   };
 
   constructor(props, context) {
@@ -58,9 +58,9 @@ export default class Integrations extends BasePropertyEditor {
   }
 
   render() {
-    const {integrationList, properties, integrationProperties: {integrationId, mapping}} = this.props;
+    const { integrationList, properties, integrationProperties: { integrationId, mapping } } = this.props;
 
-    const {isFetching, fetchCrmIntegrations} = this.props;
+    const { isFetching, fetchCrmIntegrations } = this.props;
 
     let fieldList = [];
     const integrationOptions = [];
@@ -77,15 +77,19 @@ export default class Integrations extends BasePropertyEditor {
 
     const formFields = [];
     for (let key in properties) {
-      if (!properties.hasOwnProperty(key)) continue;
+      if (!properties.hasOwnProperty(key)) {
+        continue;
+      }
 
       const prop = properties[key];
-      if (FieldTypes.INTEGRATION_SUPPORTED_TYPES.indexOf(prop.type) === -1) continue;
+      if (FieldTypes.INTEGRATION_SUPPORTED_TYPES.indexOf(prop.type) === -1) {
+        continue;
+      }
 
       formFields.push({
         handle: prop.handle,
         label: prop.label,
-      })
+      });
     }
 
     let mappingField = "";
@@ -133,8 +137,8 @@ export default class Integrations extends BasePropertyEditor {
   }
 
   updateIntegration(event) {
-    const {updateField} = this.context;
-    const integration   = event.target;
+    const { updateField } = this.context;
+    const integration = event.target;
 
     const integrationId = parseInt(integration.value);
 

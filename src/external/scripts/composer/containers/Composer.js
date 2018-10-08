@@ -8,28 +8,29 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
-import {connect} from "react-redux";
-import {DropTarget} from "react-dnd";
-import {FIELD, COLUMN, ROW} from "../constants/DraggableTypes";
-import Row from "../components/Composer/Row";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { DropTarget } from "react-dnd";
+import { connect } from "react-redux";
 import {
-  addFieldToNewRow,
-  addColumnToRow,
-  repositionColumn,
   addColumnToNewRow,
-  addPlaceholderRow,
+  addColumnToRow,
+  addFieldToNewRow,
   addPlaceholderColumn,
-  clearPlaceholders
+  addPlaceholderRow,
+  checkForDuplicateHandles,
+  clearPlaceholders,
+  repositionColumn,
 } from "../actions/Actions";
 import PlaceholderRow from "../components/Composer/Placeholders/PlaceholderRow";
-import {hashFromTime} from "../helpers/Utilities";
+import Row from "../components/Composer/Row";
+import { COLUMN, FIELD, ROW } from "../constants/DraggableTypes";
+import { hashFromTime } from "../helpers/Utilities";
 import TabListContainer from "./TabListContainer";
 
 const composerTarget = {
   hover(props, monitor) {
-    if (!monitor.isOver({shallow: true})) {
+    if (!monitor.isOver({ shallow: true })) {
       return;
     }
 
@@ -45,7 +46,7 @@ const composerTarget = {
       return;
     }
 
-    const {hash, properties} = monitor.getItem();
+    const { hash, properties } = monitor.getItem();
 
     if (hash && !properties) {
       props.columnToNewRow(-1, hash, properties, props.pageIndex);
@@ -53,7 +54,7 @@ const composerTarget = {
     }
 
     props.addFieldToNewRow(hash, properties, props.pageIndex);
-  }
+  },
 };
 
 
@@ -81,9 +82,10 @@ const composerTarget = {
     addColumnPlaceholder: (rowIndex, index, hash) => dispatch(addPlaceholderColumn(rowIndex, index, hash)),
     addFieldToNewRow: (hash, properties, pageIndex) => dispatch(addFieldToNewRow(hash, properties, pageIndex)),
     clearPlaceholders: () => dispatch(clearPlaceholders()),
-  })
+    checkForDuplicateHandles: () => dispatch(checkForDuplicateHandles()),
+  }),
 )
-@DropTarget([FIELD, COLUMN], composerTarget, (connect) => ({connectDropTarget: connect.dropTarget()}))
+@DropTarget([FIELD, COLUMN], composerTarget, (connect) => ({ connectDropTarget: connect.dropTarget() }))
 export default class Composer extends Component {
   static propTypes = {
     layout: PropTypes.array.isRequired,
@@ -97,33 +99,40 @@ export default class Composer extends Component {
     addRowPlaceholder: PropTypes.func.isRequired,
     addColumnPlaceholder: PropTypes.func.isRequired,
     clearPlaceholders: PropTypes.func.isRequired,
+    checkForDuplicateHandles: PropTypes.func.isRequired,
     properties: PropTypes.object.isRequired,
     placeholders: PropTypes.object.isRequired,
   };
 
   static contextTypes = {
-    store: PropTypes.object.isRequired
+    store: PropTypes.object.isRequired,
   };
 
   constructor(props, context) {
     super(props, context);
 
-    this.moveColumn     = this.moveColumn.bind(this);
-    this.addColumn      = this.addColumn.bind(this);
+    this.moveColumn = this.moveColumn.bind(this);
+    this.addColumn = this.addColumn.bind(this);
     this.columnToNewRow = this.columnToNewRow.bind(this);
-    this.removeColumn   = this.removeColumn.bind(this);
+    this.removeColumn = this.removeColumn.bind(this);
+  }
+
+  componentDidMount() {
+    const { checkForDuplicateHandles } = this.props;
+
+    checkForDuplicateHandles();
   }
 
   render() {
-    const {pageIndex, layout, connectDropTarget} = this.props;
+    const { pageIndex, layout, connectDropTarget } = this.props;
 
     const rows = layout[pageIndex] ? layout[pageIndex] : [];
 
-    const {type, rowIndex}      = this.props.placeholders;
+    const { type, rowIndex } = this.props.placeholders;
     const shouldShowPlaceholder = type === ROW && rowIndex === -1;
 
     return connectDropTarget(
-      <div style={{minHeight: 600}}>
+      <div style={{ minHeight: 600 }}>
         <div className="tabs">
           <TabListContainer />
         </div>
@@ -143,12 +152,12 @@ export default class Composer extends Component {
                 addColumnPlaceholder={this.props.addColumnPlaceholder}
                 clearPlaceholders={this.props.clearPlaceholders}
               />
-            )
+            ),
           )}
 
-          <PlaceholderRow active={shouldShowPlaceholder}/>
+          <PlaceholderRow active={shouldShowPlaceholder} />
         </div>
-      </div>
+      </div>,
     );
   }
 

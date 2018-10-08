@@ -8,23 +8,22 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
-import {FIELD} from "../../constants/DraggableTypes";
-import {connect} from "react-redux";
-import {DragSource} from "react-dnd";
-import Badge from "../Composer/FieldTypes/Components/Badge";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { DragSource } from "react-dnd";
+import { connect } from "react-redux";
+import { clearPlaceholders } from "../../actions/Actions";
+import { FIELD } from "../../constants/DraggableTypes";
 import FieldHelper from "../../helpers/FieldHelper";
-import * as FieldTypes from "../../constants/FieldTypes";
 import PropertyHelper from "../../helpers/PropertyHelper";
-import {clearPlaceholders} from "../../actions/Actions";
+import Badge from "../Composer/FieldTypes/Components/Badge";
 
 const fieldSource = {
   canDrag(props, monitor) {
     return !props.isUsed;
   },
   beginDrag(props) {
-    let hash       = props.hash;
+    let hash = props.hash;
     let properties = PropertyHelper.getCleanProperties(props);
 
     if (!hash) {
@@ -47,11 +46,11 @@ const fieldSource = {
   null,
   (dispatch) => ({
     clearPlaceholders: () => dispatch(clearPlaceholders()),
-  })
+  }),
 )
 @DragSource(FIELD, fieldSource, (connect, monitor) => ({
   connectDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging()
+  isDragging: monitor.isDragging(),
 }))
 export default class Field extends Component {
   static propTypes = {
@@ -66,7 +65,7 @@ export default class Field extends Component {
   };
 
   render() {
-    const {type, isUsed, label, onClick, connectDragSource, isDragging, badge} = this.props;
+    const { type, isUsed, label, onClick, connectDragSource, isDragging, badge } = this.props;
 
     if (isUsed) {
       return null;
@@ -83,7 +82,7 @@ export default class Field extends Component {
           onClick={!isUsed ? onClick : null}>
         {label}
         {badge && <Badge label={badge} />}
-      </li>
+      </li>,
     );
   }
 }

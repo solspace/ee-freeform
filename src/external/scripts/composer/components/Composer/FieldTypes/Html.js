@@ -8,10 +8,10 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
-import Label from "./Components/Label";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import Badge from "./Components/Badge";
+import Label from "./Components/Label";
 
 export default class Html extends Component {
   static propTypes = {
@@ -23,19 +23,19 @@ export default class Html extends Component {
   };
 
   getClassName() {
-    return 'Html';
+    return "Html";
   }
 
   render() {
-    const {properties: {label, value}} = this.props;
+    const { properties: { label, value } } = this.props;
 
     return (
       <div>
         <Label type="html">
           <Badge label="HTML" type={Badge.TEMPLATE} />
         </Label>
-        <div className="composer-html-content" dangerouslySetInnerHTML={{__html: value}}></div>
+        <div className="composer-html-content" dangerouslySetInnerHTML={{ __html: value }} />
       </div>
-    )
+    );
   }
 }

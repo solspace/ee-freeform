@@ -8,14 +8,14 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import Field from "./Field";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import FieldHelper from "../../helpers/FieldHelper";
+import Field from "./Field";
 
 @connect(state => ({
-  currentPage: state.context.page
+  currentPage: state.context.page,
 }))
 export default class FieldGroup extends Component {
   static propTypes = {
@@ -24,7 +24,7 @@ export default class FieldGroup extends Component {
         type: PropTypes.string.isRequired,
         label: PropTypes.string.isRequired,
         handle: PropTypes.string.isRequired,
-      }).isRequired
+      }).isRequired,
     ).isRequired,
     usedFields: PropTypes.array.isRequired,
     onFieldClick: PropTypes.func,
@@ -37,7 +37,7 @@ export default class FieldGroup extends Component {
   };
 
   render() {
-    const {title, fields, currentPage, usedFields, onFieldClick} = this.props;
+    const { title, fields, currentPage, usedFields, onFieldClick } = this.props;
 
     return (
       <div className="composer-fields">
@@ -50,7 +50,7 @@ export default class FieldGroup extends Component {
               {...field}
               isUsed={usedFields.indexOf(field.id) !== -1}
               onClick={() => onFieldClick(FieldHelper.hashField(field), field, currentPage)}
-            />
+            />,
           )}
         </ul>
       </div>

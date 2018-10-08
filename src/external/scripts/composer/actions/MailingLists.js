@@ -8,9 +8,9 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
+import fetch from "isomorphic-fetch";
+import { urlBuilder } from "../app";
 import * as ActionTypes from "../constants/ActionTypes";
-import fetch from 'isomorphic-fetch'
-import {urlBuilder} from "../app";
 
 const requestMailingLists = () => ({
   type: ActionTypes.REQUEST_MAILING_LISTS,
@@ -18,7 +18,7 @@ const requestMailingLists = () => ({
 
 const receiveMailingLists = (mailingListData) => ({
   type: ActionTypes.RECEIVE_MAILING_LISTS,
-  mailingListData,
+  sourceTargetData: mailingListData,
 });
 
 export const invalidateMailingLists = () => ({
@@ -26,18 +26,18 @@ export const invalidateMailingLists = () => ({
 });
 
 export function fetchMailingListsIfNeeded() {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     if (shouldFetchMailingLists(getState())) {
       dispatch(requestMailingLists());
 
       const url = urlBuilder("freeform_next/integrations/mailing_lists/get");
-      return fetch(url, {credentials: 'same-origin'})
+      return fetch(url, { credentials: "same-origin" })
         .then(response => response.json())
         .then(json => dispatch(receiveMailingLists(json)));
     } else {
       Promise.resolve();
     }
-  }
+  };
 }
 
 const shouldFetchMailingLists = (state) => {

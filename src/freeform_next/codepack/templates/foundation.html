@@ -10,8 +10,9 @@
         <div class="top-bar-right">
             <ul class="menu vertical medium-horizontal" data-responsive-menu="drilldown medium-dropdown">
                 <li><a href="{path='demo/bootstrap'}">Bootstrap</a></li>
-                <li class="active"><a href="{path='demo/foundation'}">Foundation</a></li>
+                <li class="{if segment_2 == 'foundation'}active{/if}"><a href="{path='demo/foundation'}">Foundation</a></li>
                 <li><a href="{path='demo/materialize'}">Materialize</a></li>
+                <li class="{if segment_2 == 'foundation_ajax'}active{/if}"><a href="{path='demo/foundation_ajax'}">AJAX</a></li>
                 <li><a href="https://solspace.com/expressionengine/freeform/docs">Documentation</a></li>
             </ul>
         </div>

@@ -17,10 +17,9 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\S
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits\OptionsTrait;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits\SingleValueTrait;
 
-class RadioGroupField extends AbstractField implements SingleValueInterface, OptionsInterface
+class RadioGroupField extends AbstractExternalOptionsField implements SingleValueInterface
 {
     use SingleValueTrait;
-    use OptionsTrait;
 
     /**
      * Return the field TYPE
@@ -48,11 +47,11 @@ class RadioGroupField extends AbstractField implements SingleValueInterface, Opt
             $output .= '<label>';
 
             $output .= '<input '
-                . $this->getAttributeString("name", $this->getHandle())
-                . $this->getAttributeString("type", "radio")
-                . $this->getAttributeString("class", $attributes->getClass())
-                . $this->getAttributeString("id", $this->getIdAttribute($index + 1))
-                . $this->getAttributeString("value", $option->getValue(), false)
+                . $this->getAttributeString('name', $this->getHandle())
+                . $this->getAttributeString('type', 'radio')
+                . $this->getAttributeString('class', $attributes->getClass())
+                . $this->getAttributeString('id', $this->getIdAttribute($index + 1))
+                . $this->getAttributeString('value', $option->getValue(), false)
                 . $this->getParameterString('checked', $isSelected)
                 . $attributes->getInputAttributesAsString()
                 . '/>';
@@ -80,6 +79,6 @@ class RadioGroupField extends AbstractField implements SingleValueInterface, Opt
             }
         }
 
-        return "";
+        return '';
     }
 }

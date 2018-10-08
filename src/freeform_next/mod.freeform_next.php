@@ -20,6 +20,7 @@ use Solspace\Addons\FreeformNext\Library\Helpers\TemplateHelper;
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
+use Solspace\Addons\FreeformNext\Services\HoneypotService;
 use Solspace\Addons\FreeformNext\Utilities\Plugin;
 
 class Freeform_Next extends Plugin
@@ -173,7 +174,8 @@ class Freeform_Next extends Plugin
         $hash   = $this->getPost(FormValueContext::FORM_HASH_KEY, null);
         $formId = FormValueContext::getFormIdFromHash($hash);
 
-        $formModel = FormRepository::getInstance()->getFormById($formId);
+        $formModel       = FormRepository::getInstance()->getFormById($formId);
+        $honeypotService = new HoneypotService();
 
         if (!$formModel) {
             return null;
@@ -181,6 +183,9 @@ class Freeform_Next extends Plugin
 
         $form          = $formModel->getForm();
         $isAjaxRequest = AJAX_REQUEST;
+
+        $honeypot = $honeypotService->getHoneypot($form);
+
         if ($form->isValid()) {
             $submissionModel = $form->submit();
 
@@ -200,6 +205,10 @@ class Freeform_Next extends Plugin
                             'finished'     => true,
                             'returnUrl'    => $returnUrl,
                             'submissionId' => $submissionModel ? $submissionModel->id : null,
+                            'honeypot'     => [
+                                'name' => $honeypot->getName(),
+                                'hash' => $honeypot->getHash(),
+                            ],
                         ]
                     );
                 } else {
@@ -210,6 +219,10 @@ class Freeform_Next extends Plugin
                     [
                         'success'  => true,
                         'finished' => false,
+                        'honeypot' => [
+                            'name' => $honeypot->getName(),
+                            'hash' => $honeypot->getHash(),
+                        ],
                     ]
                 );
             }
@@ -225,9 +238,14 @@ class Freeform_Next extends Plugin
 
                 $this->returnJson(
                     [
-                        'success'  => false,
-                        'finished' => false,
-                        'errors'   => $fieldErrors,
+                        'success'    => false,
+                        'finished'   => false,
+                        'formErrors' => $form->getErrors(),
+                        'errors'     => $fieldErrors,
+                        'honeypot'   => [
+                            'name' => $honeypot->getName(),
+                            'hash' => $honeypot->getHash(),
+                        ],
                     ]
                 );
             }

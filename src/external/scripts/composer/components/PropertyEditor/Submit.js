@@ -8,21 +8,22 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
+import PropTypes from "prop-types";
 import React from "react";
-import PropTypes from 'prop-types';
-import BasePropertyEditor from "./BasePropertyEditor";
-import TextProperty from "./PropertyItems/TextProperty";
-import CheckboxProperty from "./PropertyItems/CheckboxProperty";
-import PositionProperty from "./Components/Submit/PositionProperty";
-import DualPositionProperty from "./Components/Submit/DualPositionProperty";
+import { connect } from "react-redux";
 import FieldHelper from "../../helpers/FieldHelper";
-import {connect} from "react-redux";
+import BasePropertyEditor from "./BasePropertyEditor";
+import DualPositionProperty from "./Components/Submit/DualPositionProperty";
+import PositionProperty from "./Components/Submit/PositionProperty";
+import CheckboxProperty from "./PropertyItems/CheckboxProperty";
+import TextProperty from "./PropertyItems/TextProperty";
 
 @connect(
   state => ({
     layout: state.composer.layout,
     properties: state.composer.properties,
-  })
+    hash: state.context.hash,
+  }),
 )
 export default class Submit extends BasePropertyEditor {
   static propTypes = {
@@ -47,12 +48,12 @@ export default class Submit extends BasePropertyEditor {
   }
 
   render() {
-    const {hash, properties: {labelNext, labelPrev, disablePrev, position}} = this.context;
+    const { hash, properties: { labelNext, labelPrev, disablePrev, position } } = this.context;
 
-    const {layout} = this.props;
+    const { layout } = this.props;
 
     const isFirstPage = FieldHelper.isFieldOnFirstPage(hash, layout);
-    const showPrev    = !disablePrev && !isFirstPage;
+    const showPrev = !disablePrev && !isFirstPage;
 
     return (
       <div>

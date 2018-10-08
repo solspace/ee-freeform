@@ -45,6 +45,10 @@ $sidebarMinWidth: 18%;
     &[data-icon=add]:before {
       content: "\f067";
     }
+
+    &[data-icon=crm]:before {
+      content: "\f0ee";
+    }
   }
 
   .btn.active {
@@ -143,6 +147,14 @@ $sidebarMinWidth: 18%;
         margin: 0 0 $spacing !important;
         font-size: 1.15rem;
         font-weight: 500;
+
+        display: flex;
+        justify-content: space-between;
+
+        .property-reset {
+          padding: 2px 6px 2px;
+          font-size: 12px;
+        }
       }
     }
 
@@ -317,7 +329,8 @@ $sidebarMinWidth: 18%;
     margin: 5px 0 $spacing-wide;
 
     > a {
-      margin-right: $spacing-short;
+      margin-right: 1px;
+      padding: 6px 2px 6px 7px;
 
       &:before {
         position: relative;

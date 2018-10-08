@@ -8,15 +8,15 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { DropTarget } from "react-dnd";
+import { connect } from "react-redux";
+import { handleColumnDrag, handleColumnDrop, handleFieldDrop } from "../../actions/DragDrop";
+import { COLUMN, FIELD, ROW } from "../../constants/DraggableTypes";
 import Column from "./Column";
 import PlaceholderColumn from "./Placeholders/PlaceholderColumn";
 import PlaceholderRow from "./Placeholders/PlaceholderRow";
-import {ROW, COLUMN, FIELD} from "../../constants/DraggableTypes";
-import {connect} from "react-redux";
-import {DropTarget} from "react-dnd";
-import {handleColumnDrag, handleColumnDrop, handleFieldDrop} from "../../actions/DragDrop";
 
 const rowRowTarget = {
   hover(props, monitor, component) {
@@ -41,13 +41,13 @@ const rowRowTarget = {
       case FIELD:
         return handleFieldDrop(props, monitor, component);
     }
-  }
+  },
 };
 
 @connect(
   (state) => ({
     placeholders: state.placeholders,
-  })
+  }),
 )
 @DropTarget([COLUMN, FIELD, ROW], rowRowTarget, (connect, monitor) => ({
   connectDropTarget: connect.dropTarget(),
@@ -72,16 +72,16 @@ export default class Row extends Component {
   };
 
   render() {
-    const {connectDropTarget} = this.props;
+    const { connectDropTarget } = this.props;
 
-    const {columns, index}        = this.props;
-    const {addColumn, moveColumn, properties} = this.props;
+    const { columns, index } = this.props;
+    const { addColumn, moveColumn, properties } = this.props;
 
-    const {placeholders} = this.props;
+    const { placeholders } = this.props;
 
-    const placeholderType     = placeholders.type;
+    const placeholderType = placeholders.type;
     const placeholderRowIndex = placeholders.rowIndex;
-    const placeholderIndex    = placeholders.index;
+    const placeholderIndex = placeholders.index;
     const draggableTargetHash = placeholders.targetHash;
 
     const isDraggingColumnFromThisRow = placeholderRowIndex === index;
@@ -106,7 +106,7 @@ export default class Row extends Component {
           columnCountInRow={columnLength}
           properties={properties[hash]}
           hash={hash}
-        />
+        />,
       );
     }
 
@@ -131,7 +131,7 @@ export default class Row extends Component {
         <ul className="composer-column-container">
           {columnList}
         </ul>
-      </div>
+      </div>,
     );
   }
 }

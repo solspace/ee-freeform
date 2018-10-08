@@ -1,6 +1,7 @@
-import React, {Component} from 'react';
 import PropTypes from "prop-types";
-import CustomProperty from './CustomProperty';
+import React from "react";
+import BasePropertyItem from "./BasePropertyItem";
+import CustomProperty from "./CustomProperty";
 
 export default class RadioProperty extends BasePropertyItem {
   static propTypes = {
@@ -9,11 +10,11 @@ export default class RadioProperty extends BasePropertyItem {
       PropTypes.shape({
         key: PropTypes.string.isRequired,
         value: PropTypes.any.isRequired,
-      })
+      }),
     ).isRequired,
   };
 
-  renderInput() {
+  render() {
     const { label, instructions, name, value, options, onChangeHandler } = this.props;
 
     return (

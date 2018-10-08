@@ -13,13 +13,14 @@ namespace Solspace\Addons\FreeformNext\Controllers;
 
 use EllisLab\ExpressionEngine\Library\CP\Table;
 use Solspace\Addons\FreeformNext\Library\Composer\Attributes\FormAttributes;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\ExternalOptionsInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Composer\Composer;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Library\Session\EERequest;
-use Solspace\Addons\FreeformNext\Library\Session\EESession;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
 use Solspace\Addons\FreeformNext\Model\FormModel;
 use Solspace\Addons\FreeformNext\Repositories\CrmRepository;
@@ -31,6 +32,7 @@ use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
 use Solspace\Addons\FreeformNext\Services\CrmService;
+use Solspace\Addons\FreeformNext\Services\FieldsService;
 use Solspace\Addons\FreeformNext\Services\FilesService;
 use Solspace\Addons\FreeformNext\Services\FormsService;
 use Solspace\Addons\FreeformNext\Services\MailerService;
@@ -198,6 +200,12 @@ class FormController extends Controller
                         ->getSettingsModel()
                         ->isDbEmailTemplateStorage(),
                     'isWidgetsInstalled'       => false,
+                    'sourceTargets'            => $this->getSourceTargetsList(),
+                    'generatedOptions'         => $this->getGeneratedOptionsList($form->getForm()),
+                    'channelFields'            => $this->getChannelFields(),
+                    'categoryFields'           => $this->getCategoryFields(),
+                    'memberFields'             => $this->getMemberFields(),
+                    'isRecaptchaEnabled'       => $settingsService->getSettingsModel()->isRecaptchaEnabled(),
                 ]
             );
 
@@ -256,6 +264,7 @@ class FormController extends Controller
                 $composerState,
                 $formAttributes,
                 $formsService,
+                new FieldsService(),
                 new SubmissionsService(),
                 new MailerService(),
                 new FilesService(),
@@ -343,5 +352,151 @@ class FormController extends Controller
         }
 
         return $instance;
+    }
+
+    /**
+     * @param Form $form
+     *
+     * @return array|\stdClass
+     */
+    private function getGeneratedOptionsList(Form $form)
+    {
+        $options = [];
+        foreach ($form->getLayout()->getFields() as $field) {
+            if ($field instanceof ExternalOptionsInterface) {
+                if ($field->getOptionSource() !== ExternalOptionsInterface::SOURCE_CUSTOM) {
+                    $options[$field->getHash()] = $this->getFieldsService()->getOptionsFromSource(
+                        $field->getOptionSource(),
+                        $field->getOptionTarget(),
+                        $field->getOptionConfiguration()
+                    );
+                }
+            }
+        }
+
+        if (empty($options)) {
+            return new \stdClass();
+        }
+
+        return $options;
+    }
+
+    /**
+     * @return array
+     */
+    private function getSourceTargetsList()
+    {
+        $channels = ee('Model')
+            ->get('Channel')
+            ->filter('site_id', ee()->config->item('site_id'))
+            ->all();
+
+        $channelList = [0 => ['key' => '', 'value' => lang('All Channels')]];
+
+        foreach ($channels as $group) {
+            $channelList[] = [
+                'key'   => $group->channel_id,
+                'value' => $group->channel_title,
+            ];
+        }
+
+        $categories = ee('Model')
+            ->get('CategoryGroup')
+            ->filter('site_id', ee()->config->item('site_id'))
+            ->all();
+
+        $categoryList = [0 => ['key' => '', 'value' => lang('All Category Groups')]];
+        foreach ($categories as $group) {
+            $categoryList[] = [
+                'key'   => $group->group_id,
+                'value' => $group->group_name,
+            ];
+        }
+
+        $memberGroups = ee('Model')
+            ->get('MemberGroup')
+            ->filter('site_id', ee()->config->item('site_id'))
+            ->all();
+
+        $memberList = [0 => ['key' => '', 'value' => lang('All Member Groups')]];
+        foreach ($memberGroups as $group) {
+            $memberList[] = [
+                'key'   => $group->group_id,
+                'value' => $group->group_title,
+            ];
+        }
+
+        return [
+            ExternalOptionsInterface::SOURCE_ENTRIES    => $channelList,
+            ExternalOptionsInterface::SOURCE_CATEGORIES => $categoryList,
+            ExternalOptionsInterface::SOURCE_MEMBERS    => $memberList,
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function getChannelFields()
+    {
+        $fieldList = [
+            ['key' => 'entry_id', 'value' => 'ID'],
+            ['key' => 'title', 'value' => lang('Title')],
+            ['key' => 'url_title', 'value' => lang('URL Title')],
+        ];
+
+        $fields = ee('Model')
+            ->get('ChannelField')
+            ->filter('site_id', ee()->config->item('site_id'))
+            ->all();
+
+        foreach ($fields as $field) {
+            $fieldList[] = ['key' => $field->field_name, 'value' => $field->field_label];
+        }
+
+        return $fieldList;
+    }
+
+    /**
+     * @return array
+     */
+    private function getCategoryFields()
+    {
+        $fieldList = [
+            ['key' => 'cat_id', 'value' => 'ID'],
+            ['key' => 'cat_name', 'value' => lang('Title')],
+            ['key' => 'cat_url_title', 'value' => lang('URL Title')],
+        ];
+
+        $fields = ee('Model')
+            ->get('CategoryField')
+            ->filter('site_id', ee()->config->item('site_id'))
+            ->all();
+
+        foreach ($fields as $field) {
+            $fieldList[] = ['key' => $field->field_name, 'value' => $field->field_label];
+        }
+
+        return $fieldList;
+    }
+
+    /**
+     * @return array
+     */
+    private function getMemberFields()
+    {
+        $fieldList = [
+            ['key' => 'member_id', 'value' => 'ID'],
+            ['key' => 'username', 'value' => lang('Username')],
+            ['key' => 'screen_name', 'value' => lang('Screen Name')],
+            ['key' => 'email', 'value' => lang('Email')],
+        ];
+
+        $fields = ee('Model')->get('MemberField')->all();
+
+        foreach ($fields as $field) {
+            $fieldList[] = ['key' => $field->m_field_name, 'value' => $field->m_field_label];
+        }
+
+        return $fieldList;
     }
 }

@@ -8,7 +8,7 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import {hashFromTime, hashId, deHashId} from "./Utilities";
+import { deHashId, hashFromTime, hashId } from "./Utilities";
 
 export default class FieldHelper {
   static hashField(field) {

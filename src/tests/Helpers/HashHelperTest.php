@@ -12,7 +12,7 @@
 namespace Helpers;
 
 use PHPUnit\Framework\TestCase;
-use Solspace\Freeform\Library\Helpers\HashHelper;
+use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
 
 class HashHelperTest extends TestCase
 {

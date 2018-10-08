@@ -11,16 +11,12 @@
 
 namespace Solspace\Addons\FreeformNext\Library\Composer\Components\Fields;
 
-use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\OptionsInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\SingleValueInterface;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits\OptionsTrait;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits\SingleValueTrait;
 
-class SelectField extends AbstractField implements SingleValueInterface, OptionsInterface
+class SelectField extends AbstractExternalOptionsField implements SingleValueInterface
 {
     use SingleValueTrait;
-    use OptionsTrait;
 
     /**
      * Return the field TYPE
@@ -42,18 +38,18 @@ class SelectField extends AbstractField implements SingleValueInterface, Options
         $attributes = $this->getCustomAttributes();
 
         $output = '<select '
-            . $this->getAttributeString("name", $this->getHandle())
-            . $this->getAttributeString("id", $this->getIdAttribute())
-            . $this->getAttributeString("class", $attributes->getClass())
+            . $this->getAttributeString('name', $this->getHandle())
+            . $this->getAttributeString('id', $this->getIdAttribute())
+            . $this->getAttributeString('class', $attributes->getClass())
             . $attributes->getInputAttributesAsString()
             . $this->getRequiredAttribute()
             . '>';
 
         foreach ($this->getOptions() as $option) {
             $isSelected = $this->getValue() === $option->getValue();
-            $output .= '<option value="' . $option->getValue() . '"' . ($isSelected ? ' selected' : '') . '>';
-            $output .= $this->translate($option->getLabel());
-            $output .= '</option>';
+            $output     .= '<option value="' . $option->getValue() . '"' . ($isSelected ? ' selected' : '') . '>';
+            $output     .= $this->translate($option->getLabel());
+            $output     .= '</option>';
         }
 
         $output .= '</select>';
@@ -78,6 +74,6 @@ class SelectField extends AbstractField implements SingleValueInterface, Options
             }
         }
 
-        return "";
+        return '';
     }
 }

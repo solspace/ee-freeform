@@ -13,6 +13,6 @@ import Text from "./Text";
 
 export default class Website extends Text {
   getClassName() {
-    return 'Website';
+    return "Website";
   }
 }

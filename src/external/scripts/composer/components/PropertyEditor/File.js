@@ -8,15 +8,15 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
+import PropTypes from "prop-types";
 import React from "react";
-import PropTypes from 'prop-types';
+import { connect } from "react-redux";
 import BasePropertyEditor from "./BasePropertyEditor";
-import TextProperty from "./PropertyItems/TextProperty";
-import TextareaProperty from "./PropertyItems/TextareaProperty";
-import SelectProperty from "./PropertyItems/SelectProperty";
 import CheckboxListProperty from "./PropertyItems/CheckboxListProperty";
 import CheckboxProperty from "./PropertyItems/CheckboxProperty";
-import {connect} from "react-redux";
+import SelectProperty from "./PropertyItems/SelectProperty";
+import TextareaProperty from "./PropertyItems/TextareaProperty";
+import TextProperty from "./PropertyItems/TextProperty";
 
 @connect(
   (state) => ({
@@ -24,7 +24,7 @@ import {connect} from "react-redux";
     properties: state.composer.properties,
     assetSources: state.assetSources,
     allFileKinds: state.fileKinds,
-  })
+  }),
 )
 export default class File extends BasePropertyEditor {
   static propTypes = {
@@ -59,9 +59,9 @@ export default class File extends BasePropertyEditor {
   }
 
   render() {
-    const {assetSources} = this.props;
+    const { assetSources } = this.props;
 
-    const {properties: {type, label, handle, required, assetSourceId, fileKinds, maxFileSizeKB, fileCount, instructions}} = this.context;
+    const { properties: { type, label, handle, required, assetSourceId, fileKinds, maxFileSizeKB, fileCount, instructions } } = this.context;
 
     const assetSourceList = [];
     assetSources.map((source) => {
@@ -154,11 +154,13 @@ export default class File extends BasePropertyEditor {
   }
 
   getFileKindOptions() {
-    const {allFileKinds} = this.props;
+    const { allFileKinds } = this.props;
 
     const fileKindList = [];
     for (let key in allFileKinds) {
-      if (!allFileKinds.hasOwnProperty(key)) continue;
+      if (!allFileKinds.hasOwnProperty(key)) {
+        continue;
+      }
 
       fileKindList.push({
         key: key,

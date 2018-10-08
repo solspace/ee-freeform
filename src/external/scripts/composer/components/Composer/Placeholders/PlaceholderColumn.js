@@ -8,7 +8,7 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
+import React, { Component } from "react";
 
 export default class PlaceholderColumn extends Component {
   render() {

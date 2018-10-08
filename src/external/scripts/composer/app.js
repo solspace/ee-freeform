@@ -8,43 +8,68 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React from "react";
-import {compose, createStore, applyMiddleware} from "redux";
-import ReactDOM from "react-dom";
-import {Provider} from "react-redux";
-import ComposerApp from "./containers/ComposerApp";
-import thunkMiddleware from "redux-thunk";
-import composerReducers from "./reducers/index";
-import * as FieldTypes from "./constants/FieldTypes";
 import "babel-polyfill";
-import {showNotification} from "./helpers/Utilities";
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { applyMiddleware, compose, createStore } from "redux";
+import thunkMiddleware from "redux-thunk";
+import * as FieldTypes from "./constants/FieldTypes";
+import ComposerApp from "./containers/ComposerApp";
+import { showNotification } from "./helpers/Utilities";
+import composerReducers from "./reducers/index";
 
 const enhancer = compose(
   applyMiddleware(thunkMiddleware),
   window.devToolsExtension ? window.devToolsExtension() : f => f
 );
 
-//noinspection JSUnresolvedVariable
+const specialFields = [
+  {
+    type: FieldTypes.SUBMIT,
+    label: "Submit",
+    labelNext: "Submit",
+    labelPrev: "Previous",
+    disablePrev: false,
+    position: "left",
+  },
+  {
+    type: FieldTypes.HTML,
+    label: "HTML",
+    value: "<div>Html content</div>",
+  },
+  {
+    type: FieldTypes.CONFIRMATION,
+    label: "Confirm",
+    handle: "confirm",
+    placeholder: "",
+  },
+  {
+    type: FieldTypes.PASSWORD,
+    label: "Password",
+    handle: "password",
+    placeholder: "",
+  },
+];
+
+if (isRecaptchaEnabled) {
+  specialFields.push({ type: FieldTypes.RECAPTCHA, label: "reCAPTCHA" });
+}
+
 let store = createStore(
   composerReducers, {
-    formId: formId,
+    csrfToken: {
+      name: "csrf_token",
+      value: csrfToken,
+    },
+    formId,
     fields: {
       isFetching: false,
       didInvalidate: false,
       fields: fieldList,
       types: fieldTypeList,
     },
-    specialFields: [
-      {type: FieldTypes.HTML, label: "HTML", value: "<div>Html content</div>"},
-      {
-        type: FieldTypes.SUBMIT,
-        label: "Submit",
-        labelNext: "Submit",
-        labelPrev: "Previous",
-        disablePrev: false,
-        position: "left",
-      },
-    ],
+    specialFields,
     mailingLists: {
       isFetching: false,
       didInvalidate: false,
@@ -66,9 +91,18 @@ let store = createStore(
       solspaceTemplates: solspaceFormTemplates,
       list: formTemplateList,
     },
-    formStatuses: formStatuses,
-    assetSources: assetSources,
-    fileKinds: fileKinds,
+    sourceTargets,
+    generatedOptionLists: {
+      isFetching: false,
+      didInvalidate: false,
+      cache: generatedOptions,
+    },
+    formStatuses,
+    assetSources,
+    fileKinds,
+    channelFields,
+    categoryFields,
+    memberFields,
     ...composerState,
   },
   enhancer
@@ -77,12 +111,12 @@ let store = createStore(
 const rootElement = document.getElementById("freeform-builder");
 export const notificator = (type, message) => (showNotification(message, type));
 export const urlBuilder = (url) => {
-  const index = baseUrl.indexOf('&');
+  const index = baseUrl.indexOf("&");
   if (index === -1 || index === false) {
-    return baseUrl + '/' + url;
+    return baseUrl + "/" + url;
   }
 
-  return baseUrl.substring(0, index) + '/' + url + baseUrl.substring(index, baseUrl.length);
+  return baseUrl.substring(0, index) + "/" + url + baseUrl.substring(index, baseUrl.length);
 };
 
 ReactDOM.render(

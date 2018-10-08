@@ -8,35 +8,39 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
-import {connect} from "react-redux";
-import * as FieldTypes from "../constants/FieldTypes";
-import Form from "../components/PropertyEditor/Form";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { resetProperties, switchHash, updateProperty, } from "../actions/Actions";
+import AlwaysNearbyBox from "../components/AlwaysNearbyBox";
 import AdminNotifications from "../components/PropertyEditor/AdminNotifications";
-import Page from "../components/PropertyEditor/Page";
-import Integrations from "../components/PropertyEditor/Integrations";
-import Text from "../components/PropertyEditor/Text";
-import Textarea from "../components/PropertyEditor/Textarea";
-import Hidden from "../components/PropertyEditor/Hidden";
-import Email from "../components/PropertyEditor/Email";
-import Html from "../components/PropertyEditor/Html";
-import Submit from "../components/PropertyEditor/Submit";
 import Checkbox from "../components/PropertyEditor/Checkbox";
 import CheckboxGroup from "../components/PropertyEditor/CheckboxGroup";
-import RadioGroup from "../components/PropertyEditor/RadioGroup";
-import DynamicRecipients from "../components/PropertyEditor/DynamicRecipients";
-import MailingList from "../components/PropertyEditor/MailingList";
-import File from "../components/PropertyEditor/File";
-import DateTime from "../components/PropertyEditor/Datetime";
-import Number from "../components/PropertyEditor/Number";
-import Phone from "../components/PropertyEditor/Phone";
-import Regex from "../components/PropertyEditor/Regex";
-import Rating from "../components/PropertyEditor/Rating";
-import Website from "../components/PropertyEditor/Website";
+import FormSettings from "../components/PropertyEditor/Components/FormSettings";
 import Confirmation from "../components/PropertyEditor/Confirmation";
-import {updateProperty, switchHash} from "../actions/Actions";
-import AlwaysNearbyBox from "../components/AlwaysNearbyBox";
+import DateTime from "../components/PropertyEditor/Datetime";
+import DynamicRecipients from "../components/PropertyEditor/DynamicRecipients";
+import Email from "../components/PropertyEditor/Email";
+import File from "../components/PropertyEditor/File";
+import Form from "../components/PropertyEditor/Form";
+import Hidden from "../components/PropertyEditor/Hidden";
+import Html from "../components/PropertyEditor/Html";
+import Integrations from "../components/PropertyEditor/Integrations";
+import MailingList from "../components/PropertyEditor/MailingList";
+import Number from "../components/PropertyEditor/Number";
+import Page from "../components/PropertyEditor/Page";
+import Password from "../components/PropertyEditor/Password";
+import Phone from "../components/PropertyEditor/Phone";
+import RadioGroup from "../components/PropertyEditor/RadioGroup";
+import Rating from "../components/PropertyEditor/Rating";
+import Recaptcha from "../components/PropertyEditor/Recaptcha";
+import Regex from "../components/PropertyEditor/Regex";
+import Select from "../components/PropertyEditor/Select";
+import Submit from "../components/PropertyEditor/Submit";
+import Text from "../components/PropertyEditor/Text";
+import Textarea from "../components/PropertyEditor/Textarea";
+import Website from "../components/PropertyEditor/Website";
+import * as FieldTypes from "../constants/FieldTypes";
 
 const propertyTypes = {
   admin_notifications: AdminNotifications,
@@ -47,7 +51,8 @@ const propertyTypes = {
   email: Email,
   html: Html,
   submit: Submit,
-  select: RadioGroup,
+  select: Select,
+  multiple_select: CheckboxGroup,
   checkbox: Checkbox,
   checkbox_group: CheckboxGroup,
   radio_group: RadioGroup,
@@ -62,6 +67,8 @@ const propertyTypes = {
   website: Website,
   regex: Regex,
   confirmation: Confirmation,
+  recaptcha: Recaptcha,
+  password: Password,
 };
 
 @connect(
@@ -70,13 +77,15 @@ const propertyTypes = {
     formStatuses: state.formStatuses,
     hash: state.context.hash,
     integrationCount: state.integrations.list.length,
+    fields: state.fields.fields,
   }),
   (dispatch) => ({
     updateProperties: (hash, keyValueObject) => dispatch(updateProperty(hash, keyValueObject)),
+    resetProperties: (hash, defaultProperties) => dispatch(resetProperties(hash, defaultProperties)),
     editForm: () => dispatch(switchHash(FieldTypes.FORM)),
     editAdminNotifications: () => dispatch(switchHash(FieldTypes.ADMIN_NOTIFICATIONS)),
     editIntegrations: () => dispatch(switchHash(FieldTypes.INTEGRATION)),
-  })
+  }),
 )
 export default class PropertyEditor extends Component {
   static propTypes = {
@@ -108,20 +117,26 @@ export default class PropertyEditor extends Component {
   });
 
   render() {
-    const {hash, properties, formStatuses, editForm, editAdminNotifications, editIntegrations, integrationCount} = this.props;
+    const { hash, properties, formStatuses, editForm, editAdminNotifications, editIntegrations, integrationCount } = this.props;
 
     let title = "Field Property Editor";
 
-    const props = (properties[hash] && properties[hash].type) ? properties[hash] : {type: null};
+    const props = (properties[hash] && properties[hash].type) ? properties[hash] : { type: null };
 
     let form = null;
     switch (props.type) {
       case FieldTypes.FORM:
         title = "Form Settings";
-        form  = <Form formStatuses={formStatuses} />;
+        form = <Form formStatuses={formStatuses} />;
         break;
 
       default:
+        if (props.type === FieldTypes.INTEGRATION) {
+          title = "CRM Integrations";
+        } else if (props.type === FieldTypes.ADMIN_NOTIFICATIONS) {
+          title = "Admin Notifications";
+        }
+
         if (props.type && propertyTypes[props.type]) {
           let DynamicClassName = propertyTypes[props.type];
 
@@ -131,41 +146,71 @@ export default class PropertyEditor extends Component {
         break;
     }
 
+    const showReset = [
+      FieldTypes.FORM,
+      FieldTypes.INTEGRATION,
+      FieldTypes.ADMIN_NOTIFICATIONS,
+      FieldTypes.PAGE,
+      FieldTypes.SUBMIT,
+      FieldTypes.CONNECTIONS,
+      FieldTypes.HTML,
+      FieldTypes.MAILING_LIST,
+      FieldTypes.RECAPTCHA,
+      FieldTypes.PASSWORD,
+      FieldTypes.CONFIRMATION,
+    ].indexOf(props.type) === -1;
+
     return (
-      <AlwaysNearbyBox
-        stickyTop={
-          <div className="composer-form-settings">
-            <a onClick={editForm} className={"btn action form-settings" + (hash === FieldTypes.FORM ? " active" : "")} data-icon="settings">
-              Form Settings
-            </a>
+        <AlwaysNearbyBox
+          stickyTop={
+            <FormSettings
+              editForm={editForm}
+              editIntegrations={editIntegrations}
+              editAdminNotifications={editAdminNotifications}
+              hash={hash}
+              integrationCount={integrationCount}
+            />
+          }
+        >
+          <h3>
+            <span>{title}</span>
 
-            <a onClick={editAdminNotifications} className={"btn action notification-settings" + (hash === FieldTypes.ADMIN_NOTIFICATIONS ? " active" : "")} data-icon="mail">
-              Notify
-            </a>
+            {showReset &&
+            <button
+              className={"btn small property-reset"}
+              title={"Reset to default values"}
+              onClick={this.resetField}
+            >
+              Reset
+            </button>
+            }
+          </h3>
+          <h4 dangerouslySetInnerHTML={{ __html: props.label }} />
 
-            {integrationCount ?
-              (
-                <a onClick={editIntegrations} className={"btn action crm-settings" + (hash === FieldTypes.INTEGRATION ? " active" : "")} data-icon="settings">
-                  CRM
-                </a>
-              )
-              : ""}
-          </div>
-        }
-      >
-        <h3>{title}</h3>
-        <h4 dangerouslySetInnerHTML={{__html: props.label}} />
+          <hr style={{ marginBottom: 10 }} />
 
-        <hr />
+          {form ? form : <p>Please select an element</p>}
 
-        {form ? form : <p>Please select an element</p>}
-      </AlwaysNearbyBox>
+
+        </AlwaysNearbyBox>
     );
   }
 
-  updateField(keyValueObject) {
-    const {hash, updateProperties} = this.props;
+  updateField = (keyValueObject) => {
+    const { hash, updateProperties } = this.props;
 
     updateProperties(hash, keyValueObject);
-  }
+  };
+
+  resetField = () => {
+    const { hash, resetProperties, fields } = this.props;
+
+    for (const field of fields) {
+      if (field.hash === hash) {
+        resetProperties(hash, field);
+
+        return;
+      }
+    }
+  };
 }

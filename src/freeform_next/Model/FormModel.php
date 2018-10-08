@@ -20,6 +20,7 @@ use Solspace\Addons\FreeformNext\Library\Session\EERequest;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Services\CrmService;
+use Solspace\Addons\FreeformNext\Services\FieldsService;
 use Solspace\Addons\FreeformNext\Services\FilesService;
 use Solspace\Addons\FreeformNext\Services\FormsService;
 use Solspace\Addons\FreeformNext\Services\MailerService;
@@ -128,10 +129,11 @@ class FormModel extends Model
         $composerState  = json_decode($this->layoutJson, true);
         $formAttributes = $this->getFormAttributes();
 
-        return $this->composer = new Composer(
+        $this->composer = new Composer(
             $composerState,
             $formAttributes,
             new FormsService(),
+            new FieldsService(),
             new SubmissionsService(),
             new MailerService(),
             new FilesService(),
@@ -140,6 +142,8 @@ class FormModel extends Model
             new StatusesService(),
             new EETranslator()
         );
+
+        return $this->composer;
     }
 
     /**

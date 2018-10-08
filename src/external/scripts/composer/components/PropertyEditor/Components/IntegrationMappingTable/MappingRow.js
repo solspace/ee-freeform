@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 
 export default class MappingRow extends Component {
   static propTypes = {
@@ -27,7 +27,7 @@ export default class MappingRow extends Component {
   };
 
   render() {
-    const {handle, label, required, formFields, mappedFormField, onChangeHandler} = this.props;
+    const { handle, label, required, formFields, mappedFormField, onChangeHandler } = this.props;
 
     return (
       <tr>

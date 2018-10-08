@@ -28,6 +28,11 @@
     var assetSources = <?php echo json_encode($assetSources) ?>;
     var fileKinds = <?php echo json_encode($fileKinds) ?>;
     var composerState = <?php echo $form->getComposer()->getComposerStateJSON() ?>;
+    var sourceTargets = <?php echo json_encode($sourceTargets) ?>;
+    var generatedOptions = <?php echo json_encode($generatedOptions) ?>;
+    var channelFields = <?php echo json_encode($channelFields) ?>;
+    var categoryFields = <?php echo json_encode($categoryFields) ?>;
+    var memberFields = <?php echo json_encode($memberFields) ?>;
 
     var baseUrl = "<?php echo ee('CP/URL', 'addons/settings/') ?>";
     var saveUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/forms') ?>";
@@ -38,10 +43,11 @@
     var finishTutorialUrl = "<?php echo ee('CP/URL', 'addons/settings/freeform_next/finish_tutorial') ?>";
 
     var showTutorial = <?php echo $showTutorial ? 'true' : 'false' ?>;
-    var defaultTemplates = <?php echo $defaultTemplates ? "true" : "false" ?>;
+    var defaultTemplates = <?php echo $defaultTemplates ? 'true' : 'false' ?>;
     var canManageFields = true;
     var canManageNotifications = true;
     var canManageSettings = true;
+    var isRecaptchaEnabled = <?php echo $isRecaptchaEnabled ? 'true' : 'false' ?>;
 
     var isDbEmailTemplateStorage = <?php echo $isDbEmailTemplateStorage ? 'true' : 'false' ?>;
     var isWidgetsInstalled       = <?php echo $isWidgetsInstalled ? 'true' : 'false' ?>;

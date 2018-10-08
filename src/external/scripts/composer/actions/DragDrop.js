@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import {ROW, COLUMN} from "../constants/DraggableTypes";
-import {findDOMNode} from "react-dom";
+import { findDOMNode } from "react-dom";
+import { COLUMN, ROW } from "../constants/DraggableTypes";
 
 export const NEW_ROW_HANDLE_SIZE = 20;
 
@@ -24,7 +24,7 @@ export function handleColumnDrag(props, monitor, component) {
   const item = monitor.getItem();
 
   const shouldShowRowPlaceholder = shouldCreateNewRow(props, monitor, component);
-  const {rowIndex, index, type}  = props.placeholders;
+  const { rowIndex, index, type } = props.placeholders;
 
   const newRowIndex = props.index;
 
@@ -64,7 +64,7 @@ export function handleColumnDrag(props, monitor, component) {
  * @param component
  */
 export function handleColumnDrop(props, monitor, component) {
-  const item                     = monitor.getItem();
+  const item = monitor.getItem();
   const shouldShowRowPlaceholder = shouldCreateNewRow(props, monitor, component);
 
   const rowIndex = props.index;
@@ -93,7 +93,7 @@ export function handleColumnDrop(props, monitor, component) {
  * @param component
  */
 export function handleFieldDrop(props, monitor, component) {
-  const item                     = monitor.getItem();
+  const item = monitor.getItem();
   const shouldShowRowPlaceholder = shouldCreateNewRow(props, monitor, component);
 
   const rowIndex = props.index;
@@ -121,7 +121,7 @@ export function handleFieldDrop(props, monitor, component) {
 export function handleOptionRowDrag(props, monitor, component) {
   const item = monitor.getItem();
 
-  const dragIndex  = item.index;
+  const dragIndex = item.index;
   const hoverIndex = props.index;
 
   if (dragIndex === hoverIndex) {
@@ -129,9 +129,9 @@ export function handleOptionRowDrag(props, monitor, component) {
   }
 
   const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
-  const boundingBox       = hoverBoundingRect.bottom - hoverBoundingRect.top;
-  const clientOffset      = monitor.getClientOffset();
-  const hoverClientY      = clientOffset.y - hoverBoundingRect.top;
+  const boundingBox = hoverBoundingRect.bottom - hoverBoundingRect.top;
+  const clientOffset = monitor.getClientOffset();
+  const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
   if (dragIndex < hoverIndex && hoverClientY < 0) {
     return;
@@ -155,9 +155,9 @@ export function handleOptionRowDrag(props, monitor, component) {
  * @returns {number|null}
  */
 function calculateNewColumnIndex(props, monitor, component) {
-  const item        = monitor.getItem();
+  const item = monitor.getItem();
   const columnCount = props.columns.length;
-  const {rowIndex}  = props.placeholders;
+  const { rowIndex } = props.placeholders;
 
   if (columnCount >= 4 && props.index !== item.rowIndex) {
     return null;
@@ -168,7 +168,7 @@ function calculateNewColumnIndex(props, monitor, component) {
   const splitCount = columnCount + (sameRow ? 0 : 1);
 
   const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
-  const boundingBox       = hoverBoundingRect.right - hoverBoundingRect.left;
+  const boundingBox = hoverBoundingRect.right - hoverBoundingRect.left;
 
   const blockSplit = boundingBox / splitCount;
 
@@ -190,14 +190,14 @@ function calculateNewColumnIndex(props, monitor, component) {
  * @returns {boolean|null}
  */
 function shouldCreateNewRow(props, monitor, component) {
-  const item        = monitor.getItem();
+  const item = monitor.getItem();
 
   if (item.columnCountInRow === 1 && (item.rowIndex === props.index || (item.rowIndex + 1) === props.index)) {
     return null;
   }
 
   const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
-  const clientOffset      = monitor.getClientOffset();
+  const clientOffset = monitor.getClientOffset();
 
   return (hoverBoundingRect.top + NEW_ROW_HANDLE_SIZE) > clientOffset.y;
 }

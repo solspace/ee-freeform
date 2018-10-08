@@ -8,17 +8,17 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
+import PropTypes from "prop-types";
 import React from "react";
-import PropTypes from 'prop-types';
-import HtmlInput from "./HtmlInput";
+import { connect } from "react-redux";
+import * as SubmitPositions from "../../../constants/SubmitPositions";
 import FieldHelper from "../../../helpers/FieldHelper";
-import * as SubmitPositions  from "../../../constants/SubmitPositions";
-import {connect} from "react-redux";
+import HtmlInput from "./HtmlInput";
 
 @connect(
   state => ({
     layout: state.composer.layout,
-  })
+  }),
 )
 export default class Submit extends HtmlInput {
   static propTypes = {
@@ -37,14 +37,14 @@ export default class Submit extends HtmlInput {
   };
 
   getClassName() {
-    return 'Submit';
+    return "Submit";
   }
 
   render() {
-    const {layout, properties: {labelNext, labelPrev, disablePrev}} = this.props;
+    const { layout, properties: { labelNext, labelPrev, disablePrev } } = this.props;
 
-    let {properties: {position}} = this.props;
-    const {hash} = this.context;
+    let { properties: { position } } = this.props;
+    const { hash } = this.context;
 
     if (disablePrev) {
       const allowedPositions = [SubmitPositions.LEFT, SubmitPositions.RIGHT, SubmitPositions.CENTER];
@@ -55,7 +55,7 @@ export default class Submit extends HtmlInput {
     }
 
     const isFirstPage = FieldHelper.isFieldOnFirstPage(hash, layout);
-    const showPrev    = !disablePrev && !isFirstPage;
+    const showPrev = !disablePrev && !isFirstPage;
 
     const wrapperClass = ["composer-submit-position-wrapper", "composer-submit-position-" + position];
 
@@ -67,11 +67,11 @@ export default class Submit extends HtmlInput {
 
         <input type="submit" className="btn submit" value={labelNext} />
       </div>
-    )
+    );
   }
 
   getWrapperClassNames() {
-    let {properties: {position, disablePrev}} = this.props;
+    let { properties: { position, disablePrev } } = this.props;
 
     if (disablePrev) {
       const allowedPositions = [SubmitPositions.LEFT, SubmitPositions.RIGHT, SubmitPositions.CENTER];

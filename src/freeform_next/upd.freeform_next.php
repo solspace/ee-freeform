@@ -10,10 +10,12 @@
  */
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
+use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Utilities\AddonUpdater;
 use Solspace\Addons\FreeformNext\Utilities\AddonUpdater\PluginAction;
+use Solspace\Addons\FreeformNext\Utilities\AddonUpdater\PluginExtension;
 
 class Freeform_next_upd extends AddonUpdater
 {
@@ -22,7 +24,7 @@ class Freeform_next_upd extends AddonUpdater
      *
      * @return bool
      */
-    public function update($previousVersion = null)
+    public function runMigrations($previousVersion = null)
     {
         if (version_compare($previousVersion, '1.0.3', '<=')) {
             ee()->db
@@ -140,92 +142,92 @@ class Freeform_next_upd extends AddonUpdater
 
             $map = [
                 [
-                    'table'   => 'freeform_next_forms',
+                    'table'    => 'freeform_next_forms',
                     'uindexes' => [
                         'exp_freeform_next_forms_handle_unq_idx' => 'ffn_forms_handle (handle)',
                     ],
-                    'indexes'   => [],
+                    'indexes'  => [],
                 ],
                 [
-                    'table'   => 'freeform_next_fields',
+                    'table'    => 'freeform_next_fields',
                     'uindexes' => [
                         'exp_freeform_next_fields_handle_unq_idx' => 'ffn_fields_handle (handle)',
                     ],
-                    'indexes'   => [
+                    'indexes'  => [
                         'exp_freeform_next_fields_notificationId_fk' => 'ffn_fields_notificationId_fk (notificationId)',
-                        'exp_freeform_next_fields_assetSourceId_fk' => 'ffn_fields_assetSourceId_fk (assetSourceId)',
+                        'exp_freeform_next_fields_assetSourceId_fk'  => 'ffn_fields_assetSourceId_fk (assetSourceId)',
                     ],
                 ],
                 [
-                    'table'   => 'freeform_next_integrations',
+                    'table'    => 'freeform_next_integrations',
                     'uindexes' => [
                         'exp_freeform_next_class_handle_unq_idx' => 'ffn_class_handle (class, handle)',
-                        'exp_freeform_next_handle_unq_idx' => 'ffn_handle (handle)',
+                        'exp_freeform_next_handle_unq_idx'       => 'ffn_handle (handle)',
                     ],
-                    'indexes'   => [],
+                    'indexes'  => [],
                 ],
                 [
-                    'table'   => 'freeform_next_crm_fields',
+                    'table'    => 'freeform_next_crm_fields',
                     'uindexes' => [
                         'exp_freeform_next_crm_fields_integrationId_handle_unq_idx' => 'ffn_crm_fields_iId_handle (integrationId, handle)',
                     ],
-                    'indexes'   => [],
+                    'indexes'  => [],
                 ],
                 [
-                    'table'   => 'freeform_next_mailing_list_fields',
+                    'table'    => 'freeform_next_mailing_list_fields',
                     'uindexes' => [
                         'exp_freeform_next_mailingListId_handle_unq_idx' => 'ffn_mailingListId_handle (mailingListId, handle)',
                     ],
-                    'indexes'   => [],
+                    'indexes'  => [],
                 ],
                 [
-                    'table'   => 'freeform_next_mailing_lists',
+                    'table'    => 'freeform_next_mailing_lists',
                     'uindexes' => [
                         'exp_freeform_next_integrationId_resourceId_unq_idx' => 'ffn_integrationId_resourceId (integrationId, resourceId)',
                     ],
-                    'indexes'   => [],
+                    'indexes'  => [],
                 ],
                 [
-                    'table'   => 'freeform_next_notifications',
+                    'table'    => 'freeform_next_notifications',
                     'uindexes' => [
                         'exp_freeform_next_notifications_handle_unq_idx' => 'ffn_notifications_handle (handle)',
                     ],
-                    'indexes'   => [],
+                    'indexes'  => [],
                 ],
                 [
-                    'table'   => 'freeform_next_statuses',
+                    'table'    => 'freeform_next_statuses',
                     'uindexes' => [
-                        'exp_freeform_next_statuses_name_unq_idx' => 'ffn_statuses_name (name)',
+                        'exp_freeform_next_statuses_name_unq_idx'   => 'ffn_statuses_name (name)',
                         'exp_freeform_next_statuses_handle_unq_idx' => 'ffn_statuses_handle (handle)',
                     ],
-                    'indexes'   => [],
+                    'indexes'  => [],
                 ],
                 [
-                    'table'   => 'freeform_next_submissions',
+                    'table'    => 'freeform_next_submissions',
                     'uindexes' => [],
-                    'indexes'   => [
+                    'indexes'  => [
                         'exp_freeform_next_submissions_statusId_fk' => 'ffn_submissions_statusId_fk (statusId)',
-                        'exp_freeform_next_submissions_formId_fk' => 'ffn_submissions_formId_fk (formId)',
+                        'exp_freeform_next_submissions_formId_fk'   => 'ffn_submissions_formId_fk (formId)',
                     ],
                 ],
                 [
-                    'table'   => 'freeform_next_export_profiles',
+                    'table'    => 'freeform_next_export_profiles',
                     'uindexes' => [],
-                    'indexes'   => [
+                    'indexes'  => [
                         'exp_freeform_next_export_formId_fk' => 'ffn_export_formId_fk (formId)',
                     ],
                 ],
                 [
-                    'table'   => 'freeform_next_export_settings',
+                    'table'    => 'freeform_next_export_settings',
                     'uindexes' => [],
-                    'indexes'   => [
+                    'indexes'  => [
                         'exp_freeform_next_export_userId_fk' => 'ffn_export_userId_fk (userId)',
                     ],
                 ],
                 [
-                    'table'   => 'freeform_next_unfinalized_files',
+                    'table'    => 'freeform_next_unfinalized_files',
                     'uindexes' => [],
-                    'indexes'   => [
+                    'indexes'  => [
                         'exp_freeform_next_unfinalized_files_assetId_fk' => 'ffn_unfinalized_files_assetId_fk (assetId)',
                     ],
                 ],
@@ -245,7 +247,8 @@ class Freeform_next_upd extends AddonUpdater
                         ee()->db->query("ALTER TABLE exp_$table DROP INDEX $old, ADD INDEX $index");
                     }
                 }
-            } catch (\Exception $exception) {}
+            } catch (\Exception $exception) {
+            }
         }
 
 
@@ -295,6 +298,23 @@ class Freeform_next_upd extends AddonUpdater
                 ');
         }
 
+        if (version_compare($previousVersion, '1.6.5', '<')) {
+            ee()->db->query('
+                ALTER TABLE exp_freeform_next_settings
+                ADD COLUMN `recaptchaEnabled` TINYINT(1) DEFAULT 0
+            ');
+
+            ee()->db->query('
+                ALTER TABLE exp_freeform_next_settings
+                ADD COLUMN `recaptchaKey` VARCHAR(50) DEFAULT NULL
+            ');
+
+            ee()->db->query('
+                ALTER TABLE exp_freeform_next_settings
+                ADD COLUMN `recaptchaSecret` VARCHAR(50) DEFAULT NULL
+            ');
+        }
+
         return true;
     }
 
@@ -305,6 +325,22 @@ class Freeform_next_upd extends AddonUpdater
     {
         return [
             new PluginAction('submitForm', 'Freeform_next', true),
+        ];
+    }
+
+    /**
+     * @return array|PluginExtension[]
+     */
+    protected function getInstallableExtensions()
+    {
+        return [
+            new PluginExtension('validateRecaptchaFields', ExtensionHelper::HOOK_FIELD_BEFORE_VALIDATE),
+            new PluginExtension('validateHoneypot', ExtensionHelper::HOOK_FORM_VALIDATE),
+            new PluginExtension('addHoneypotInputToForm', ExtensionHelper::HOOK_FORM_RENDER_OPENING_TAG),
+            new PluginExtension('addHoneypotJavascriptToForm', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG),
+            new PluginExtension('addDateTimeJavascript', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG, [], 6),
+            new PluginExtension('addFormDisabledJavascript', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG, [], 7),
+            new PluginExtension('addFormAnchorJavascript', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG, [], 8),
         ];
     }
 

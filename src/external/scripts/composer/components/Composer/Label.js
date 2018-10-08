@@ -8,22 +8,22 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 
 export default class Label extends Component {
-    static propTypes = {
-        fieldId: PropTypes.number.isRequired,
-        label: PropTypes.string.isRequired
-    };
+  static propTypes = {
+    fieldId: PropTypes.number.isRequired,
+    label: PropTypes.string.isRequired,
+  };
 
-    render () {
-        const {fieldId, label} = this.props;
+  render() {
+    const { fieldId, label } = this.props;
 
-        return (
-            <label for={"composer-input-" + fieldId}>
-                {label}
-            </label>
-        );
-    }
+    return (
+      <label for={"composer-input-" + fieldId}>
+        {label}
+      </label>
+    );
+  }
 }

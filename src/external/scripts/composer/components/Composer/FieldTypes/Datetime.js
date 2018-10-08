@@ -8,10 +8,10 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React from "react";
 import PropTypes from "prop-types";
-import Text from './Text';
+import React from "react";
 import * as FieldTypes from "../../../constants/FieldTypes";
+import Text from "./Text";
 
 export default class Datetime extends Text {
   static propTypes = {
@@ -38,13 +38,13 @@ export default class Datetime extends Text {
   };
 
   getClassName() {
-    return 'Datetime';
+    return "Datetime";
   }
 
   constructor(props, context) {
     super(props, context);
 
-    this.getFormat              = this.getFormat.bind(this);
+    this.getFormat = this.getFormat.bind(this);
     this.getHumanReadableFormat = this.getHumanReadableFormat.bind(this);
   }
 
@@ -53,7 +53,7 @@ export default class Datetime extends Text {
   }
 
   renderInput() {
-    const {properties: {generatePlaceholder}} = this.props;
+    const { properties: { generatePlaceholder } } = this.props;
 
     let cleanProps = this.getCleanProperties();
 
@@ -80,19 +80,19 @@ export default class Datetime extends Text {
     const format = this.getFormat();
 
     return format
-      .replace('Y', 'YYYY')
-      .replace('y', 'YY')
-      .replace('n', 'M')
-      .replace('m', 'MM')
-      .replace('j', 'D')
-      .replace('d', 'DD')
-      .replace('H', 'HH')
-      .replace('h', 'H')
-      .replace('G', 'HH')
-      .replace('g', 'H')
-      .replace('i', 'MM')
-      .replace('A', 'TT')
-      .replace('a', 'TT')
+      .replace("Y", "YYYY")
+      .replace("y", "YY")
+      .replace("n", "M")
+      .replace("m", "MM")
+      .replace("j", "D")
+      .replace("d", "DD")
+      .replace("H", "HH")
+      .replace("h", "H")
+      .replace("G", "HH")
+      .replace("g", "H")
+      .replace("i", "MM")
+      .replace("A", "TT")
+      .replace("a", "TT")
       ;
   }
 
@@ -102,9 +102,9 @@ export default class Datetime extends Text {
    * @returns {string}
    */
   getFormat() {
-    const {properties: {dateTimeType}}                                               = this.props;
-    const {properties: {dateOrder, date4DigitYear, dateLeadingZero, dateSeparator}}  = this.props;
-    const {properties: {clock24h, lowercaseAMPM, clockSeparator, clockAMPMSeparate}} = this.props;
+    const { properties: { dateTimeType } } = this.props;
+    const { properties: { dateOrder, date4DigitYear, dateLeadingZero, dateSeparator } } = this.props;
+    const { properties: { clock24h, lowercaseAMPM, clockSeparator, clockAMPMSeparate } } = this.props;
 
     let formatParts = [];
 
@@ -112,31 +112,31 @@ export default class Datetime extends Text {
     const showTime = dateTimeType === FieldTypes.DATE_TIME_TYPE_BOTH || dateTimeType === FieldTypes.DATE_TIME_TYPE_TIME;
 
     if (showDate) {
-      let month = dateLeadingZero ? 'm' : 'n',
-          day   = dateLeadingZero ? 'd' : 'j',
-          year  = date4DigitYear ? 'Y' : 'y';
+      let month = dateLeadingZero ? "m" : "n",
+        day = dateLeadingZero ? "d" : "j",
+        year = date4DigitYear ? "Y" : "y";
 
       let first, second, third;
 
       switch (dateOrder) {
-        case 'mdy':
-          first  = month;
+        case "mdy":
+          first = month;
           second = day;
-          third  = year;
+          third = year;
 
           break;
 
-        case 'dmy':
-          first  = day;
+        case "dmy":
+          first = day;
           second = month;
-          third  = year;
+          third = year;
 
           break;
 
-        case 'ymd':
-          first  = year;
+        case "ymd":
+          first = year;
           second = month;
-          third  = day;
+          third = day;
 
           break;
       }
@@ -146,20 +146,20 @@ export default class Datetime extends Text {
 
     if (showTime) {
       let hours,
-          minutes = 'i',
-          ampm;
+        minutes = "i",
+        ampm;
 
       if (clock24h) {
-        hours = 'H';
-        ampm  = '';
+        hours = "H";
+        ampm = "";
       } else {
-        hours = 'g';
-        ampm  = (clockAMPMSeparate ? ' ' : '') + (lowercaseAMPM ? 'a' : 'A');
+        hours = "g";
+        ampm = (clockAMPMSeparate ? " " : "") + (lowercaseAMPM ? "a" : "A");
       }
 
       formatParts.push(hours + clockSeparator + minutes + ampm);
     }
 
-    return formatParts.join(' ');
+    return formatParts.join(" ");
   }
 }

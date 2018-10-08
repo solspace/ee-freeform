@@ -14,7 +14,7 @@ import TextProperty from "./PropertyItems/TextProperty";
 
 export default class Page extends BasePropertyEditor {
   render() {
-    const {properties: {label}} = this.context;
+    const { properties: { label } } = this.context;
 
     return (
       <div>

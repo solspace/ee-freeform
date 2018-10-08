@@ -9,9 +9,9 @@
  */
 
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
+import { addPage, switchPage } from "../actions/Actions";
 import TabList from "../components/Composer/TabList";
-import {switchPage, addPage} from "../actions/Actions";
 
 export default connect(
   (state) => ({
@@ -25,6 +25,6 @@ export default connect(
     onNewTab: (index) => {
       dispatch(addPage(index));
       dispatch(switchPage(index));
-    }
-  })
+    },
+  }),
 )(TabList);

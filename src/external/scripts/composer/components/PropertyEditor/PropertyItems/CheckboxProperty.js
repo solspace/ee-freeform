@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
+import PropTypes from "prop-types";
 import React from "react";
-import PropTypes from 'prop-types';
 import BasePropertyItem from "./BasePropertyItem";
 
 export default class CheckboxProperty extends BasePropertyItem {
@@ -20,7 +20,7 @@ export default class CheckboxProperty extends BasePropertyItem {
   };
 
   render() {
-    const {instructions} = this.props;
+    const { instructions } = this.props;
 
     return (
       <div className="composer-property-item">
@@ -39,15 +39,15 @@ export default class CheckboxProperty extends BasePropertyItem {
   }
 
   renderInput() {
-    const {label, name, readOnly, disabled, onChangeHandler, className, checked, bold} = this.props;
+    const { label, name, readOnly, disabled, onChangeHandler, className, checked, bold } = this.props;
 
     const randId = Math.random().toString(36).substring(2, 9);
 
-    let style = {fontWeight: "normal"};
+    let style = { fontWeight: "normal" };
 
     if (!!bold) {
       style.fontWeight = "bold";
-      style.color      = "#576574";
+      style.color = "#576574";
     }
 
     return (

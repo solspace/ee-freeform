@@ -4,12 +4,19 @@ namespace Solspace\Addons\FreeformNext\Services;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DataContainers\Option;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\ExternalOptionsInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
+use Solspace\Addons\FreeformNext\Library\Configuration\ExternalOptionsConfiguration;
+use Solspace\Addons\FreeformNext\Library\Database\FieldHandlerInterface;
+use Solspace\Addons\FreeformNext\Library\Factories\PredefinedOptionsFactory;
+use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Model\FieldModel;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
-class FieldsService
+class FieldsService implements FieldHandlerInterface
 {
     /**
      * @return array
@@ -22,6 +29,7 @@ class FieldsService
             FieldInterface::TYPE_EMAIL              => 'Email',
             FieldInterface::TYPE_HIDDEN             => 'Hidden',
             FieldInterface::TYPE_SELECT             => 'Select',
+            FieldInterface::TYPE_MULTIPLE_SELECT    => 'Multiple Select',
             FieldInterface::TYPE_CHECKBOX           => 'Checkbox',
             FieldInterface::TYPE_CHECKBOX_GROUP     => 'Checkbox Group',
             FieldInterface::TYPE_RADIO_GROUP        => 'Radio Group',
@@ -29,9 +37,9 @@ class FieldsService
             FieldInterface::TYPE_DYNAMIC_RECIPIENTS => 'Dynamic Recipients',
         ];
 
-        $finder = new Finder();
-        $path   = __DIR__ . '/../Library/Pro/Fields';
-        $interface = 'Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface';
+        $finder        = new Finder();
+        $path          = __DIR__ . '/../Library/Pro/Fields';
+        $interface     = 'Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface';
         $baseNamespace = 'Solspace\Addons\FreeformNext\Library\Pro\Fields';
 
         if (file_exists($path) && is_dir($path)) {
@@ -79,5 +87,116 @@ class FieldsService
             } catch (\Exception $e) {
             }
         }
+    }
+
+    /**
+     * @param AbstractField $field
+     * @param Form          $form
+     */
+    public function beforeValidate(AbstractField $field, Form $form)
+    {
+        ExtensionHelper::call(ExtensionHelper::HOOK_FIELD_BEFORE_VALIDATE, $field, $form);
+    }
+
+    /**
+     * @param AbstractField $field
+     * @param Form          $form
+     */
+    public function afterValidate(AbstractField $field, Form $form)
+    {
+        ExtensionHelper::call(ExtensionHelper::HOOK_FIELD_AFTER_VALIDATE, $field, $form);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getOptionsFromSource($source, $target, array $configuration = [], $selectedValues = [])
+    {
+        $config     = new ExternalOptionsConfiguration($configuration);
+        $labelField = $config->getLabelField();
+        $valueField = $config->getValueField();
+        $options    = [];
+
+        if (!\is_array($selectedValues)) {
+            $selectedValues = [$selectedValues];
+        }
+
+        switch ($source) {
+            case ExternalOptionsInterface::SOURCE_ENTRIES:
+                $labelField = $labelField ?: 'title';
+                $valueField = $valueField ?: 'entry_id';
+
+                $builder = ee('Model')
+                    ->get('ChannelEntry')
+                    ->filter('site_id', ee()->config->item('site_id'));
+
+                if ($target) {
+                    $builder->filter('channel_id', $target);
+                }
+
+                $items = $builder->all();
+
+                foreach ($items as $item) {
+                    $label     = $item->$labelField ?: $item->channel_title;
+                    $value     = $item->$valueField ?: $item->channel_id;
+                    $options[] = new Option($label, $value, \in_array($value, $selectedValues, true));
+                }
+
+                break;
+
+            case ExternalOptionsInterface::SOURCE_CATEGORIES:
+                $labelField = $labelField ?: 'cat_name';
+                $valueField = $valueField ?: 'cat_id';
+
+                $builder = ee('Model')
+                    ->get('Category')
+                    ->filter('site_id', ee()->config->item('site_id'));
+
+                if ($target) {
+                    $builder->filter('group_id', $target);
+                }
+
+                $items = $builder->all();
+
+                foreach ($items as $item) {
+                    $label     = $item->$labelField ?: $item->cat_name;
+                    $value     = $item->$valueField ?: $item->cat_id;
+                    $options[] = new Option($label, $value, \in_array($value, $selectedValues, true));
+                }
+
+                break;
+
+            case ExternalOptionsInterface::SOURCE_MEMBERS:
+                $labelField = $labelField ?: 'username';
+                $valueField = $valueField ?: 'member_id';
+
+                $builder = ee('Model')->get('Member');
+
+                if ($target) {
+                    $builder->filter('group_id', $target);
+                }
+
+                $items = $builder->all();
+
+                foreach ($items as $item) {
+                    $label     = $item->$labelField ?: $item->username;
+                    $value     = $item->$valueField ?: $item->member_id;
+                    $options[] = new Option($label, $value, \in_array($value, $selectedValues, true));
+                }
+
+                break;
+
+            case ExternalOptionsInterface::SOURCE_PREDEFINED:
+                return PredefinedOptionsFactory::create($target, $config, $selectedValues);
+        }
+
+        if ($config->getEmptyOption()) {
+            array_unshift(
+                $options,
+                new Option($config->getEmptyOption(), '', \in_array('', $selectedValues, true))
+            );
+        }
+
+        return $options;
     }
 }

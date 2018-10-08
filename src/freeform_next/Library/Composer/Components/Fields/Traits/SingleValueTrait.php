@@ -44,23 +44,21 @@ trait SingleValueTrait
 
         if ($this instanceof OptionsInterface) {
             $updatedOptions = [];
-            $objectValue = $this->getValue();
 
-            foreach ($this->getOptions() as $index => $option) {
-                if ($this instanceof ObscureValueInterface) {
-                    if (is_numeric($this->getValue())) {
-                        $checked = $index === (int) $this->getValue();
-                    } else {
-                        $checked = $option->getValue() === $this->getValue();
-                    }
-                } else {
-                    $checked = $option->getValue() == $objectValue;
+            if ($this instanceof ObscureValueInterface) {
+                $objectValue = $this->getValue();
+                if (is_numeric($value)) {
+                    $objectValue = $this->getActualValue($this->getValue());
                 }
+            } else {
+                $objectValue = $this->getValue();
+            }
 
+            foreach ($this->getOptions() as $option) {
                 $updatedOptions[] = new Option(
                     $option->getLabel(),
                     $option->getValue(),
-                    $checked
+                    $option->getValue() === (string) $objectValue
                 );
             }
 

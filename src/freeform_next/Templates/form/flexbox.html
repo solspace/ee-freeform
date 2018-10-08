@@ -17,6 +17,12 @@
 {if form:has_errors}
 	<div class="freeform-form-has-errors">
 		There was an error submitting this form
+
+		<ul>
+			{form:errors}
+				<li>{error}</li>
+			{/form:errors}
+		</ul>
 	</div>
 {/if}
 

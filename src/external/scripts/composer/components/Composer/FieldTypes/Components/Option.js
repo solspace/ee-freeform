@@ -8,25 +8,25 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
+import PropTypes from "prop-types";
 import React from "react";
-import PropTypes from 'prop-types';
 import HtmlInput from "../HtmlInput";
 
 export default class Radio extends HtmlInput {
-    static propTypes = {
-        label: PropTypes.string.isRequired,
-        properties: PropTypes.object.isRequired,
-    };
+  static propTypes = {
+    label: PropTypes.string.isRequired,
+    properties: PropTypes.object.isRequired,
+  };
 
-    getType() {
-        return "option";
-    }
+  getType() {
+    return "option";
+  }
 
-    render() {
-        const {label, value} = this.props;
+  render() {
+    const { label, value } = this.props;
 
-        return (
-            <option value={value}>{label}</option>
-        );
-    }
+    return (
+      <option value={value}>{label}</option>
+    );
+  }
 }

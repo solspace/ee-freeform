@@ -8,7 +8,7 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
+import React, { Component } from "react";
 import NotificationProperties from "./NotificationProperties";
 
 export default class AddNewNotification extends Component {
@@ -19,12 +19,12 @@ export default class AddNewNotification extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state      = AddNewNotification.initialState;
+    this.state = AddNewNotification.initialState;
     this.toggleForm = this.toggleForm.bind(this);
   }
 
   render() {
-    const {showForm} = this.state;
+    const { showForm } = this.state;
 
     const className = "composer-add-new-notification-wrapper" + (showForm ? " active" : "");
 
@@ -45,7 +45,7 @@ export default class AddNewNotification extends Component {
 
   toggleForm() {
     this.setState({
-      showForm: !this.state.showForm
+      showForm: !this.state.showForm,
     });
   }
 }

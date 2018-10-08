@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import Tab from "./Tab";
 
 const MAX_TABS = 100;
@@ -29,8 +29,8 @@ export default class TabList extends Component {
   };
 
   render() {
-    const {layout, currentPageIndex, onTabClick, onNewTab, tabCount} = this.props;
-    const {formPropCleanup} = this.context;
+    const { layout, currentPageIndex, onTabClick, onNewTab, tabCount } = this.props;
+    const { formPropCleanup } = this.context;
 
     return (
       <div className="tab-list-wrapper">
@@ -44,7 +44,7 @@ export default class TabList extends Component {
                 onClick={() => onTabClick(index)}
                 isSelected={index == currentPageIndex}
               />
-            )
+            ),
           )}
         </ul>
 
@@ -54,11 +54,11 @@ export default class TabList extends Component {
           </div>
         )}
       </div>
-    )
+    );
   }
 
   getLabel(pageIndex) {
-    const {properties} = this.props;
+    const { properties } = this.props;
 
     if (properties["page" + pageIndex]) {
       return properties["page" + pageIndex].label;

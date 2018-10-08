@@ -8,8 +8,8 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 
 export default class Instructions extends Component {
   static propTypes = {
@@ -17,7 +17,7 @@ export default class Instructions extends Component {
   };
 
   render() {
-    const {instructions} = this.props;
+    const { instructions } = this.props;
 
     if (!instructions) {
       return null;

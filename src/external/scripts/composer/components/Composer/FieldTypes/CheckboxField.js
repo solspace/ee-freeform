@@ -8,11 +8,11 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { CHECKBOX } from "../../../constants/FieldTypes";
-import Badge from './Components/Badge'
+import Badge from "./Components/Badge";
 import Checkbox from "./Components/Checkbox";
 import Instructions from "./Components/Instructions";
 import HtmlInput from "./HtmlInput";
@@ -41,7 +41,7 @@ export default class CheckboxField extends HtmlInput {
   };
 
   getClassName() {
-    return 'CheckboxField';
+    return "CheckboxField";
   }
 
   getType() {
@@ -49,11 +49,11 @@ export default class CheckboxField extends HtmlInput {
   }
 
   getBadges() {
-    const badges    = super.getBadges();
+    const badges = super.getBadges();
     const { value } = this.props.properties;
 
     if (!value) {
-      badges.push(<Badge key={"value"} label="No Value set" type={Badge.WARNING}/>);
+      badges.push(<Badge key={"value"} label="No Value set" type={Badge.WARNING} />);
     }
 
     return badges;
@@ -66,7 +66,7 @@ export default class CheckboxField extends HtmlInput {
 
     return (
       <div className={this.prepareWrapperClass()}>
-        <Instructions instructions={instructions}/>
+        <Instructions instructions={instructions} />
         <Checkbox
           label={label}
           isChecked={!!checked}

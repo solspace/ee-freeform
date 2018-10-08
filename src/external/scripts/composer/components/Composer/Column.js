@@ -8,13 +8,13 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { DragSource } from "react-dnd";
+import { connect } from "react-redux";
+import { clearPlaceholders, removeColumn, removeProperty, switchHash } from "../../actions/Actions";
+import { COLUMN } from "../../constants/DraggableTypes";
 import Field from "./Field";
-import {COLUMN} from "../../constants/DraggableTypes";
-import {connect} from "react-redux";
-import {DragSource} from "react-dnd";
-import {removeColumn, removeProperty, switchHash, clearPlaceholders} from "../../actions/Actions";
 
 const columnSource = {
   beginDrag(props) {
@@ -25,8 +25,8 @@ const columnSource = {
       pageIndex: props.pageIndex,
       hash: props.hash,
       columnCountInRow: props.columnCountInRow,
-      clearPlaceholders: props.clearPlaceholders
-    }
+      clearPlaceholders: props.clearPlaceholders,
+    };
   },
   endDrag(props) {
     props.clearPlaceholders();
@@ -38,6 +38,7 @@ const columnSource = {
     pageIndex: state.context.page,
     currentHash: state.context.hash,
     layout: state.composer.layout,
+    duplicateHandles: state.duplicateHandles,
   }),
   (dispatch) => ({
     openFieldSettings: (hash) => dispatch(switchHash(hash)),
@@ -47,7 +48,7 @@ const columnSource = {
     },
     openProperties: (hash) => dispatch(switchHash(hash)),
     clearPlaceholders: () => dispatch(clearPlaceholders()),
-  })
+  }),
 )
 @DragSource(COLUMN, columnSource, (connect, monitor) => ({
   connectDragSource: connect.dragSource(),
@@ -69,25 +70,26 @@ export default class Column extends Component {
     openFieldSettings: PropTypes.func.isRequired,
     openProperties: PropTypes.func.isRequired,
     connectDragPreview: PropTypes.func.isRequired,
+    duplicateHandles: PropTypes.array.isRequired,
   };
 
   constructor(props, context) {
     super(props, context);
 
     this.openPropertiesHandler = this.openPropertiesHandler.bind(this);
-    this.removeColumnHandler   = this.removeColumnHandler.bind(this);
-    this.buildPreview          = this.buildPreview.bind(this);
+    this.removeColumnHandler = this.removeColumnHandler.bind(this);
+    this.buildPreview = this.buildPreview.bind(this);
   }
 
   componentDidMount() {
-    const {connectDragPreview} = this.props;
+    const { connectDragPreview } = this.props;
 
     connectDragPreview(this.buildPreview());
   }
 
   render() {
-    const {hash, index, rowIndex, currentHash} = this.props;
-    const {connectDragSource, properties}      = this.props;
+    const { hash, index, rowIndex, currentHash, duplicateHandles } = this.props;
+    const { connectDragSource, properties } = this.props;
 
     const className = ["composer-column"];
     if (currentHash === hash) {
@@ -106,8 +108,9 @@ export default class Column extends Component {
           hash={hash}
           index={index}
           rowIndex={rowIndex}
+          duplicateHandles={duplicateHandles}
         />
-      </div>
+      </div>,
     );
   }
 
@@ -115,7 +118,7 @@ export default class Column extends Component {
    * Handles opening the properties in props editor for this column
    */
   openPropertiesHandler() {
-    const {hash, openProperties}  = this.props;
+    const { hash, openProperties } = this.props;
 
     openProperties(hash);
   }
@@ -126,7 +129,7 @@ export default class Column extends Component {
    * @param event
    */
   removeColumnHandler(event) {
-    const {removeColumn, pageIndex, hash, index, rowIndex} = this.props;
+    const { removeColumn, pageIndex, hash, index, rowIndex } = this.props;
 
     removeColumn(hash, index, rowIndex, pageIndex);
 
@@ -140,8 +143,8 @@ export default class Column extends Component {
    * @returns {Image}
    */
   buildPreview() {
-    const {properties: {label}} = this.props;
-    let [width, height]         = [200, 30];
+    const { properties: { label } } = this.props;
+    let [width, height] = [200, 30];
 
     let canvas = document.createElement("canvas");
 
@@ -152,7 +155,7 @@ export default class Column extends Component {
 
     const ctx = canvas.getContext("2d");
 
-    const devicePixelRatio  = window.devicePixelRatio || 1;
+    const devicePixelRatio = window.devicePixelRatio || 1;
     const backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
       ctx.mozBackingStorePixelRatio ||
       ctx.msBackingStorePixelRatio ||
@@ -164,7 +167,7 @@ export default class Column extends Component {
     width = width * ratio;
     height = height * ratio;
 
-    canvas.width  = width;
+    canvas.width = width;
     canvas.height = height;
 
     ctx.fillStyle = "#FFFFFF";
@@ -174,13 +177,13 @@ export default class Column extends Component {
     const lineDashSpacing = Math.ceil(2 * ratio);
 
     ctx.setLineDash([lineDashWidth, lineDashSpacing]);
-    ctx.strokeStyle    = "#c9c9c9";
+    ctx.strokeStyle = "#c9c9c9";
     ctx.lineDashOffset = 0;
     ctx.strokeRect(0, 0, width, height);
 
     const fontSize = Math.ceil(13 * ratio);
 
-    ctx.font      = `normal ${fontSize}px HelveticaNeue, sans-serif`;
+    ctx.font = `normal ${fontSize}px HelveticaNeue, sans-serif`;
     ctx.fillStyle = "#000000";
     ctx.fillText(label, Math.ceil(10 * ratio), Math.ceil(20 * ratio));
 

@@ -12,7 +12,8 @@
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="{path='demo/bootstrap'}">Bootstrap</a></li>
             <li><a href="{path='demo/foundation'}">Foundation</a></li>
-            <li class="active"><a href="{path='demo/materialize'}">Materialize</a></li>
+            <li class="{if segment_2 == 'materialize'}active{/if}"><a href="{path='demo/materialize'}">Materialize</a></li>
+            <li class="{if segment_2 == 'materialize_ajax'}active{/if}"><a href="{path='demo/materialize_ajax'}">AJAX</a></li>
 
             <!-- Dropdown Trigger -->
             <li>

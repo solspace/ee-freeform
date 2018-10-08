@@ -8,13 +8,13 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
-import ReactDOM from "react-dom";
-import {connect} from "react-redux";
-import {underscored} from "underscore.string";
-import {fetchFormTemplatesIfNeeded, invalidateFormTemplates} from "../../../actions/FormTemplates";
 import fetch from "isomorphic-fetch";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
+import { connect } from "react-redux";
+import { underscored } from "underscore.string";
+import { fetchFormTemplatesIfNeeded, invalidateFormTemplates } from "../../../actions/FormTemplates";
 
 @connect(
   null,
@@ -23,7 +23,7 @@ import fetch from "isomorphic-fetch";
       dispatch(invalidateFormTemplates());
       dispatch(fetchFormTemplatesIfNeeded(hash, templateName));
     },
-  })
+  }),
 )
 export default class NotificationProperties extends Component {
   static initialState = {
@@ -49,14 +49,14 @@ export default class NotificationProperties extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state          = NotificationProperties.initialState;
-    this.updateName     = this.updateName.bind(this);
+    this.state = NotificationProperties.initialState;
+    this.updateName = this.updateName.bind(this);
     this.updateFileName = this.updateFileName.bind(this);
-    this.updateState    = this.updateState.bind(this);
-    this.getFileName    = this.getFileName.bind(this);
-    this.addTemplate    = this.addTemplate.bind(this);
-    this.setErrors      = this.setErrors.bind(this);
-    this.cleanErrors    = this.cleanErrors.bind(this);
+    this.updateState = this.updateState.bind(this);
+    this.getFileName = this.getFileName.bind(this);
+    this.addTemplate = this.addTemplate.bind(this);
+    this.setErrors = this.setErrors.bind(this);
+    this.cleanErrors = this.cleanErrors.bind(this);
   }
 
   componentDidMount() {
@@ -64,8 +64,8 @@ export default class NotificationProperties extends Component {
   }
 
   render() {
-    const {name, fileName, errors} = this.state;
-    const {toggleForm}             = this.props;
+    const { name, fileName, errors } = this.state;
+    const { toggleForm } = this.props;
 
     return (
       <div className="composer-new-field-form">
@@ -113,7 +113,7 @@ export default class NotificationProperties extends Component {
   }
 
   updateName(event) {
-    const {target: {value}} = event;
+    const { target: { value } } = event;
     this.setState({
       name: value,
       fileName: this.getFileName(value),
@@ -121,7 +121,7 @@ export default class NotificationProperties extends Component {
   }
 
   updateFileName(event) {
-    this.setState({handle: this.getFileName(event.target.value)});
+    this.setState({ handle: this.getFileName(event.target.value) });
   }
 
   /**
@@ -158,9 +158,9 @@ export default class NotificationProperties extends Component {
    * @returns {boolean}
    */
   addTemplate() {
-    const {name}                                 = this.refs;
-    const {toggleForm, fetchTemplates}           = this.props;
-    const {csrf, notificator, createTemplateUrl} = this.context;
+    const { name } = this.refs;
+    const { toggleForm, fetchTemplates } = this.props;
+    const { csrf, notificator, createTemplateUrl } = this.context;
 
     const nameValue = ReactDOM.findDOMNode(name).value;
 
@@ -182,7 +182,7 @@ export default class NotificationProperties extends Component {
 
     fetch(createTemplateUrl, {
       method: "post",
-      credentials: 'same-origin',
+      credentials: "same-origin",
       body: formData,
     })
       .then(response => response.json())
@@ -202,10 +202,10 @@ export default class NotificationProperties extends Component {
   }
 
   setErrors(errors) {
-    this.setState({errors: errors});
+    this.setState({ errors: errors });
   }
 
   cleanErrors() {
-    this.setState({errors: []});
+    this.setState({ errors: [] });
   }
 }

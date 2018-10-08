@@ -17,10 +17,9 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\O
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits\MultipleValueTrait;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits\OptionsTrait;
 
-class CheckboxGroupField extends AbstractField implements MultipleValueInterface, OptionsInterface
+class CheckboxGroupField extends AbstractExternalOptionsField implements MultipleValueInterface
 {
     use MultipleValueTrait;
-    use OptionsTrait;
 
     /**
      * Return the field TYPE

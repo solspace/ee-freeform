@@ -8,42 +8,42 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
+import fetch from "isomorphic-fetch";
+import { switchHash, updateProperty } from "../actions/Actions";
+import { urlBuilder } from "../app";
 import * as ActionTypes from "../constants/ActionTypes";
-import {updateProperty, switchHash} from "../actions/Actions";
-import fetch from 'isomorphic-fetch'
-import {urlBuilder} from "../app";
 
 function requestNotifications() {
   return {
     type: ActionTypes.REQUEST_NOTIFICATIONS,
-  }
+  };
 }
 
 function receiveNotifications(notificationData) {
   return {
     type: ActionTypes.RECEIVE_NOTIFICATIONS,
     notificationData,
-  }
+  };
 }
 
 export function invalidateNotifications() {
   return {
     type: ActionTypes.INVALIDATE_NOTIFICATIONS,
-  }
+  };
 }
 
 export function fetchNotificationsIfNeeded(hash = null, autoselectId = null) {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     if (shouldFetchNotifications(getState())) {
       dispatch(requestNotifications());
 
       const url = urlBuilder("freeform_next/api/notifications/list");
-      return fetch(url, {credentials: 'same-origin'})
+      return fetch(url, { credentials: "same-origin" })
         .then(response => response.json())
         .then(json => {
             dispatch(receiveNotifications(json));
             if (hash && autoselectId) {
-              dispatch(updateProperty(hash, {notificationId: autoselectId}));
+              dispatch(updateProperty(hash, { notificationId: autoselectId }));
 
               // For some reason, the property update alone isn't enough
               // for React to refresh the select box, so I have to do a quick back-and-forth
@@ -51,12 +51,12 @@ export function fetchNotificationsIfNeeded(hash = null, autoselectId = null) {
               dispatch(switchHash(""));
               dispatch(switchHash(hash));
             }
-          }
+          },
         );
     } else {
       Promise.resolve();
     }
-  }
+  };
 }
 
 function shouldFetchNotifications(state) {

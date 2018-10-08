@@ -8,10 +8,10 @@
  * @license       https://solspace.com/software/license-agreement
  */
 
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import * as SubmitPositions from "../../../../constants/SubmitPositions";
 import CustomProperty from "../../PropertyItems/CustomProperty";
-import * as SubmitPositions  from "../../../../constants/SubmitPositions";
 
 export default class PositionProperty extends Component {
   static propTypes = {
@@ -20,7 +20,7 @@ export default class PositionProperty extends Component {
   };
 
   render() {
-    let {position, onChangeHandler} = this.props;
+    let { position, onChangeHandler } = this.props;
 
     const allowedPositions = [SubmitPositions.LEFT, SubmitPositions.RIGHT, SubmitPositions.CENTER];
 
