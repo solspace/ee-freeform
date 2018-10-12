@@ -281,8 +281,8 @@ abstract class AbstractIntegration implements IntegrationInterface
      */
     final protected function getEndpoint($endpoint)
     {
-        $root     = rtrim($this->getApiRootUrl(), "/");
-        $endpoint = ltrim($endpoint, "/");
+        $root     = rtrim($this->getApiRootUrl(), '/');
+        $endpoint = ltrim($endpoint, '/');
 
         return "$root/$endpoint";
     }
