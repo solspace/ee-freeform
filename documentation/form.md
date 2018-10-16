@@ -120,40 +120,42 @@ If you're wanting to simply render a complete form based on Composer layout and 
 			* `{option:label}` - the option label for the field option.
 			* `{if option:checked}selected{/if}` - check if the field option is selected/checked.
 			* Example code would look something like this:
-				```
-				<select name="{field:state:handle}">
-					{field:state:options}
-					<option value="{option:value}" {if option:checked}selected{/if}>
-						{option:label}
-					</option>
-					{/field:state:options}
-				</select>
-				```
-	* Also available are automated rendering options for manually constructed forms:
-		* `{field:field_name:render}` - renders complete field (label, input, etc). The following override parameters are available:
-			* `id` - overrides ID for input(s)
-			* `class` - overrides class for input(s)
-			* `label_class` - overrides class for label
-			* `error_class` - adds class to `ul` generated for error(s)
-			* `instructions_class` - adds class to `div` generated for instructions
-			* `instructions_below_field="yes"` - loads instructions below input rather than above
-			* `input_attributes`
-				* Attributes to be added to the input field, e.g. `input_attributes:readonly="true"`, `input_attributes:data-field-id="test"`
-			* `override_value`
-				* Override the value for the input field, e.g. `override_value="test"`
-		* `{field:field_name:render_label}` - renders the complete label. The following override parameters are available:
-			* `label_class`
-		* `{field:field_name:render_input}` - renders the complete input. The following override parameters are available:
-			* `class`
-			* `input_attributes`
-				* Attributes to be added to the input field, e.g. `input_attributes:readonly="true"`, `input_attributes:data-field-id="test"`
-			* `override_value`
-				* Override the value for the input field, e.g. `override_value="test"`
-		* `{field:field_name:render_instructions}` - renders the instructions. The following override parameters are available:
-			* `instructions_class`
-		* `{field:field_name:render_errors}` - renders the errors. The following override parameters are available:
-			* `errors_class`
-	* For a more robust automated rendering of fields, see the [{fields}{/fields}](#varpair-fields) variable pair.
+
+```
+<select name="{field:state:handle}">
+	{field:state:options}
+	<option value="{option:value}" {if option:checked}selected{/if}>
+		{option:label}
+	</option>
+	{/field:state:options}
+</select>
+```
+
+* Also available are automated rendering options for manually constructed forms:
+	* `{field:field_name:render}` - renders complete field (label, input, etc). The following override parameters are available:
+		* `id` - overrides ID for input(s)
+		* `class` - overrides class for input(s)
+		* `label_class` - overrides class for label
+		* `error_class` - adds class to `ul` generated for error(s)
+		* `instructions_class` - adds class to `div` generated for instructions
+		* `instructions_below_field="yes"` - loads instructions below input rather than above
+		* `input_attributes`
+			* Attributes to be added to the input field, e.g. `input_attributes:readonly="true"`, `input_attributes:data-field-id="test"`
+		* `override_value`
+			* Override the value for the input field, e.g. `override_value="test"`
+	* `{field:field_name:render_label}` - renders the complete label. The following override parameters are available:
+		* `label_class`
+	* `{field:field_name:render_input}` - renders the complete input. The following override parameters are available:
+		* `class`
+		* `input_attributes`
+			* Attributes to be added to the input field, e.g. `input_attributes:readonly="true"`, `input_attributes:data-field-id="test"`
+		* `override_value`
+			* Override the value for the input field, e.g. `override_value="test"`
+	* `{field:field_name:render_instructions}` - renders the instructions. The following override parameters are available:
+		* `instructions_class`
+	* `{field:field_name:render_errors}` - renders the errors. The following override parameters are available:
+		* `errors_class`
+* For a more robust automated rendering of fields, see the [{fields}{/fields}](#varpair-fields) variable pair.
 
 
 ## Variable Pairs <a href="#variable-pairs" id="variable-pairs" class="docs-anchor">#</a>
@@ -165,17 +167,19 @@ If you're wanting to simply render a complete form based on Composer layout and 
 		* `{current_page:index}` - page number of currently viewed page
 		* `{form:page_count}` - total number of pages for the form
 	* Typical usage looks something like this:
-		```
-		{if form:page_count > 1}
-			<ul class="nav nav-tabs">
-			{pages}
-				<li class="{if page:index == current_page:index}active{if:else}disabled{/if}">
-					<a href="javascript:;">{page:label}</a>
-				</li>
-			{/pages}
-			</ul>
-		{/if}
-		```
+
+```
+{if form:page_count > 1}
+	<ul class="nav nav-tabs">
+	{pages}
+		<li class="{if page:index == current_page:index}active{if:else}disabled{/if}">
+			<a href="javascript:;">{page:label}</a>
+		</li>
+	{/pages}
+	</ul>
+{/if}
+```
+
 * `{rows}{/rows}` <a href="#varpair-rows" id="varpair-rows" class="docs-anchor">#</a>
 	* Handles formatting options for displaying rows of fields in layout (set by Composer).
 * `{fields}{/fields}` <a href="#varpair-fields" id="varpair-fields" class="docs-anchor">#</a>
