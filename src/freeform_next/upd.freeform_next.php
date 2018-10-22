@@ -276,7 +276,7 @@ class Freeform_next_upd extends AddonUpdater
                 ');
         }
 
-        if (version_compare($previousVersion, '1.6.4', '<')) {
+        if (version_compare($previousVersion, '1.6.5', '<')) {
             ee()->db
                 ->query('
                                     CREATE TABLE IF NOT EXISTS `exp_freeform_next_permissions` (
@@ -296,9 +296,7 @@ class Freeform_next_upd extends AddonUpdater
                   PRIMARY KEY (`id`)
                 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
                 ');
-        }
 
-        if (version_compare($previousVersion, '1.6.5', '<')) {
             ee()->db->query('
                 ALTER TABLE exp_freeform_next_settings
                 ADD COLUMN `recaptchaEnabled` TINYINT(1) DEFAULT 0
