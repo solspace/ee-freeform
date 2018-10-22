@@ -15,6 +15,7 @@ use Guzzle\Http\Client;
 use Guzzle\Http\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
+use Solspace\Addons\FreeformNext\Library\Integrations\IntegrationStorageInterface;
 use Solspace\Addons\FreeformNext\Library\Integrations\MailingLists\AbstractMailingListIntegration;
 use Solspace\Addons\FreeformNext\Library\Integrations\MailingLists\DataObjects\ListObject;
 use Solspace\Addons\FreeformNext\Library\Integrations\SettingBlueprint;
@@ -27,6 +28,7 @@ class Dotmailer extends AbstractMailingListIntegration
     const SETTING_USER_EMAIL    = 'user_email';
     const SETTING_USER_PASS     = 'user_pass';
     const SETTING_DOUBLE_OPT_IN = 'double_opt_in';
+    const SETTING_ENDPOINT      = 'endpoint';
 
     /**
      * Returns a list of additional settings for this integration
@@ -55,6 +57,13 @@ class Dotmailer extends AbstractMailingListIntegration
                 SettingBlueprint::TYPE_BOOL,
                 self::SETTING_DOUBLE_OPT_IN,
                 'Use double opt-in?',
+                '',
+                false
+            ),
+            new SettingBlueprint(
+                SettingBlueprint::TYPE_INTERNAL,
+                self::SETTING_ENDPOINT,
+                'Endpoint',
                 '',
                 false
             ),
@@ -157,6 +166,39 @@ class Dotmailer extends AbstractMailingListIntegration
     public function fetchAccessToken()
     {
         return $this->getSetting(self::SETTING_USER_EMAIL);
+    }
+
+    /**
+     * Perform anything necessary before this integration is saved
+     *
+     * @param IntegrationStorageInterface $model
+     *
+     * @throws IntegrationException
+     */
+    public function onBeforeSave(IntegrationStorageInterface $model)
+    {
+        $client = new Client();
+        $request = $client->get('https://api.dotmailer.com/v2/account-info');
+        $request->setAuth($this->getUsername(), $this->getPassword());
+
+        try {
+            $response = $request->send();
+            $json = json_decode($response->getBody(true));
+
+            if (isset($json->properties)) {
+                foreach ($json->properties as $property) {
+                    if ($property->name === 'ApiEndpoint') {
+                        $this->setSetting(self::SETTING_ENDPOINT, $property->value);
+                        $model->updateSettings($this->getSettings());
+
+                        return;
+                    }
+                }
+            }
+        } catch (BadResponseException $e) {
+        }
+
+        throw new IntegrationException('Could not get an API endpoint');
     }
 
     /**
@@ -293,7 +335,7 @@ class Dotmailer extends AbstractMailingListIntegration
      */
     protected function getApiRootUrl()
     {
-        return 'https://api.dotmailer.com/v2/';
+        return rtrim($this->getSetting(self::SETTING_ENDPOINT), '/') . '/v2/';
     }
 
     /**
