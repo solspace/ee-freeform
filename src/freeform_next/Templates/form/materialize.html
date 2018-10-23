@@ -81,6 +81,25 @@
 					{field:render_errors}
 				</div>
 
+			{if:elseif field:type == 'dynamic_recipients' AND field:show_as_checkboxes}
+
+				<div class="{form:column_class} s12 col m{column:grid_width}{if field:has_errors} has-error{/if}" style="margin-bottom: 20px;">
+					{field:render_label label_class="{if field:required}required{/if}"}
+					{field:options}
+						<p>
+							<input type="checkbox"
+								   id="{form:hash}{field:handle}{option:value}"
+								   name="{field:handle}[]"
+								   value="{option:value}"
+								   {if option:checked}checked{/if}
+							/>
+							<label for="{form:hash}{field:handle}{option:value}">{option:label}</label>
+						</p>
+					{/field:options}
+					{field:render_instructions}
+					{field:render_errors}
+				</div>
+
 			{if:elseif field:type == 'textarea'}
 
 				<div class="{form:column_class} s12 col m{column:grid_width}">
