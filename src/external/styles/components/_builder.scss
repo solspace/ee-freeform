@@ -203,38 +203,42 @@ $minRowHeight: 60px;
         .composer-ft-website-wrapper,
         .composer-ft-email-wrapper,
         .composer-ft-phone-wrapper {
-          &:after {
-            font-size: 17px;
-            font-family: "solspace-freeform", sans-serif;
-            display: block;
+          .input-wrapper {
+            position: relative;
 
-            position: absolute;
-            right: 17px;
-            top: 37px;
+            &:after {
+              font-size: 17px;
+              font-family: "solspace-freeform", sans-serif;
+              display: block;
 
-            color: #CCC;
+              position: absolute;
+              right: 8px;
+              top: 7px;
+
+              color: #CCC;
+            }
           }
         }
 
-        .composer-ft-datetime-wrapper:after {
+        .composer-ft-datetime-wrapper .input-wrapper:after {
           content: '\f133';
         }
-        .composer-ft-website-wrapper:after {
+        .composer-ft-website-wrapper .input-wrapper:after {
           content: '\e813';
         }
-        .composer-ft-confirmation-wrapper:after {
+        .composer-ft-confirmation-wrapper .input-wrapper:after {
           content: '\e814';
         }
-        .composer-ft-email-wrapper:after {
+        .composer-ft-email-wrapper .input-wrapper:after {
           content: '\e800';
         }
-        .composer-ft-regex-wrapper:after {
+        .composer-ft-regex-wrapper .input-wrapper:after {
           content: '\e80b';
         }
-        .composer-ft-number-wrapper:after {
+        .composer-ft-number-wrapper .input-wrapper:after {
           content: '\f292';
         }
-        .composer-ft-phone-wrapper:after {
+        .composer-ft-phone-wrapper .input-wrapper:after {
           content: '\e80a';
         }
 
