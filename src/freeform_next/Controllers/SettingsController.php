@@ -347,15 +347,15 @@ class SettingsController extends Controller
                         'type'    => 'radio',
                         'value'   => $permissionsModel->defaultPermissions,
                         'choices' => [
-                            'allow_all' => 'Allow All access',
-                            'deny_all' => 'Deny All access',
+                            'allow_all' => 'Allow All Access',
+                            'deny_all' => 'Deny All Access',
                         ],
                     ],
                 ],
             ],
             [
                 'title'  => 'Manage Forms',
-                'desc'   => 'Chose which user groups can manage forms',
+                'desc'   => 'Choose which member groups can manage Forms.',
                 'fields' => [
                     'formsPermissions' => [
                         'type'    => 'checkbox',
@@ -366,7 +366,7 @@ class SettingsController extends Controller
             ],
             [
                 'title'  => 'Access Submissions',
-                'desc'   => 'Chose which user groups can access submissions',
+                'desc'   => 'Choose which member groups have access to Submissions.',
                 'fields' => [
                     'submissionsPermissions' => [
                         'type'    => 'checkbox',
@@ -377,7 +377,7 @@ class SettingsController extends Controller
             ],
             [
                 'title'  => 'Manage Submissions',
-                'desc'   => 'Chose which user groups can manage submissions',
+                'desc'   => 'Choose which member groups can manage Submissions.',
                 'fields' => [
                     'manageSubmissionsPermissions' => [
                         'type'    => 'checkbox',
@@ -388,7 +388,7 @@ class SettingsController extends Controller
             ],
             [
                 'title'  => 'Access Fields',
-                'desc'   => 'Chose which user groups have an access to fields',
+                'desc'   => 'Choose which member groups have access to the Field Manager.',
                 'fields' => [
                     'fieldsPermissions' => [
                         'type'    => 'checkbox',
@@ -402,7 +402,7 @@ class SettingsController extends Controller
         if ($version === 'pro') {
             $sections[] = [
                 'title'  => 'Access Export',
-                'desc'   => 'Chose which user groups have an access to export',
+                'desc'   => 'Choose which member groups have access to Export.',
                 'fields' => [
                     'exportPermissions' => [
                         'type'    => 'checkbox',
@@ -416,7 +416,7 @@ class SettingsController extends Controller
         $additionalSections = [
             [
                 'title'  => 'Access Settings',
-                'desc'   => 'Chose which user groups have an access to settings',
+                'desc'   => 'Choose which member groups have access to Settings.',
                 'fields' => [
                     'settingsPermissions' => [
                         'type'    => 'checkbox',
@@ -427,7 +427,7 @@ class SettingsController extends Controller
             ],
             [
                 'title'  => 'Access Integrations',
-                'desc'   => 'Chose which user groups have an access to integrations',
+                'desc'   => 'Choose which member groups have access to Integrations.',
                 'fields' => [
                     'integrationsPermissions' => [
                         'type'    => 'checkbox',
@@ -438,7 +438,7 @@ class SettingsController extends Controller
             ],
             [
                 'title'  => 'Access Resources',
-                'desc'   => 'Chose which user groups have an access to resources',
+                'desc'   => 'Choose which member groups have access to Resources.',
                 'fields' => [
                     'resourcesPermissions' => [
                         'type'    => 'checkbox',
@@ -449,7 +449,7 @@ class SettingsController extends Controller
             ],
             [
                 'title'  => 'Access Logs',
-                'desc'   => 'Chose which user groups have an access to logs',
+                'desc'   => 'Choose which member groups have access to Error logs.',
                 'fields' => [
                     'logsPermissions' => [
                         'type'    => 'checkbox',
@@ -464,7 +464,7 @@ class SettingsController extends Controller
 
         $fields = [
             'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),
-            'cp_page_title'         => $view->getHeading(),
+            'cp_page_title'         => lang('Permissions'),
             'save_btn_text'         => 'btn_save_settings',
             'save_btn_text_working' => 'btn_saving',
             'sections'              => [$sections],
@@ -472,7 +472,7 @@ class SettingsController extends Controller
 
         $view
             ->setHeading(lang('Permissions'))
-            ->addBreadcrumb(new NavigationLink('Permissions', 'settings/permissions'))
+            ->addBreadcrumb(new NavigationLink('Settings', 'settings/general'))
             ->setTemplateVariables($fields);
 
         return $view;
