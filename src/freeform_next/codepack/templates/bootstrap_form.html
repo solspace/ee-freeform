@@ -87,6 +87,24 @@
                             {field:render_instructions instructions_class="help-block"}
                             {field:render_errors error_class="help-block"}
 
+                        {if:elseif field:type == 'dynamic_recipients' AND field:show_as_checkboxes}
+
+                            {field:render_label label_class="{if field:required}required{/if}"}
+                            {field:options}
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"
+                                               name="{field:handle}[]"
+                                               value="{option:value}"
+                                               {if option:checked}checked{/if}
+                                        />
+                                        {option:label}
+                                    </label>
+                                </div>
+                            {/field:options}
+                            {field:render_instructions instructions_class="help-block"}
+                            {field:render_errors error_class="help-block"}
+
                         {if:elseif field:type == 'submit'}
 
                             {field:render}

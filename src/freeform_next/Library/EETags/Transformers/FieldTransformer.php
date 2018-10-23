@@ -60,8 +60,7 @@ class FieldTransformer
             $prefix . 'label'                => $field->getLabel(),
             $prefix . 'value'                => $value,
             $prefix . 'option_value'         => $this->getOptionValues($field),
-            $prefix . 'placeholder'          => $field instanceof PlaceholderInterface ? $field->getPlaceholder(
-            ) : null,
+            $prefix . 'placeholder'          => $field instanceof PlaceholderInterface ? $field->getPlaceholder() : null,
             $prefix . 'instructions'         => $field->getInstructions(),
             $prefix . 'errors'               => $field->getErrors(),
             $prefix . 'render_input'         => $field->renderInput(),
@@ -80,12 +79,11 @@ class FieldTransformer
             $prefix . 'marker:open'          => '##FFN:' . $field->getHash() . ':FFN##',
             $prefix . 'options'              => $this->getOptions($field),
             $prefix . 'files'                => $files,
-            $prefix . 'show_as_radio'        => $field instanceof DynamicRecipientField
-                ? $field->isShowAsRadio() : false,
+            $prefix . 'show_as_radio'        => $field instanceof DynamicRecipientField ? $field->isShowAsRadio() : false,
+            $prefix . 'show_as_checkboxes'   => $field instanceof DynamicRecipientField ? $field->isShowAsCheckboxes() : false,
             $prefix . 'checked'              => $field instanceof CheckboxField ? $field->isChecked() : false,
             $prefix . 'date_time_type'       => $field instanceof DatetimeField ? $field->getDateTimeType() : null,
-            $prefix . 'generate_placeholder' => $field instanceof DatetimeField ? $field->isGeneratePlaceholder(
-            ) : null,
+            $prefix . 'generate_placeholder' => $field instanceof DatetimeField ? $field->isGeneratePlaceholder() : null,
             $prefix . 'date_order'           => $field instanceof DatetimeField ? $field->getDateOrder() : null,
             $prefix . 'date_4_digit_year'    => $field instanceof DatetimeField ? $field->isDate4DigitYear() : null,
             $prefix . 'date_leading_zero'    => $field instanceof DatetimeField ? $field->isDateLeadingZero() : null,
@@ -95,13 +93,11 @@ class FieldTransformer
             $prefix . 'use_datepicker'       => $field instanceof DatetimeField ? $field->isUseDatepicker() : null,
             $prefix . 'clock_separator'      => $field instanceof DatetimeField ? $field->getClockSeparator() : null,
             $prefix . 'clock_am_pm_separate' => $field instanceof DatetimeField ? $field->isClockAMPMSeparate() : null,
-            $prefix . 'pattern'              => $field instanceof RegexField || $field instanceof PhoneField ? $field->getPattern(
-            ) : null,
+            $prefix . 'pattern'              => $field instanceof RegexField || $field instanceof PhoneField ? $field->getPattern() : null,
             $prefix . 'min_length'           => $field instanceof NumberField ? $field->getMinLength() : null,
             $prefix . 'max_length'           => $field instanceof NumberField ? $field->getMaxLength() : null,
             $prefix . 'min_value'            => $field instanceof NumberField ? $field->getMinValue() : null,
-            $prefix . 'max_value'            => $field instanceof NumberField || $field instanceof RatingField ? $field->getMaxValue(
-            ) : null,
+            $prefix . 'max_value'            => $field instanceof NumberField || $field instanceof RatingField ? $field->getMaxValue() : null,
             $prefix . 'decimal_count'        => $field instanceof NumberField ? $field->getDecimalCount() : null,
             $prefix . 'decimal_separator'    => $field instanceof NumberField ? $field->getDecimalSeparator() : null,
             $prefix . 'thousands_separator'  => $field instanceof NumberField ? $field->getThousandsSeparator() : null,
