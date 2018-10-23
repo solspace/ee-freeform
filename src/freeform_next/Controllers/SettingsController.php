@@ -60,7 +60,7 @@ class SettingsController extends Controller
             throw new FreeformException('Page does not exist');
         }
 
-        if ($type !== 'statuses' && $this->handlePost(self::TYPE_PERMISSIONS)) {
+        if ($type !== 'statuses' && $this->handlePost($type)) {
             ee('CP/Alert')
                 ->makeInline('shared-form')
                 ->asSuccess()
@@ -319,7 +319,8 @@ class SettingsController extends Controller
 
         $permissionsModel = $this->getPermissionsModel();
 
-        $member_groups = ee('Model')->get('MemberGroup')
+        /** @var MemberGroup[] $memberGroups */
+        $memberGroups = ee('Model')->get('MemberGroup')
             ->with('AssignedChannels')
             ->fields('group_id')
             ->fields('group_title')
@@ -328,11 +329,9 @@ class SettingsController extends Controller
         $memberGroupChoices = [];
         $memberGroupChoicesWithoutSuperAdmin = [];
 
-        foreach ($member_groups as $group) {
-            /** @var MemberGroup $group */
-
-            if ($group->group_id != 1) {
-                $memberGroupChoicesWithoutSuperAdmin[$group->group_id] = $group->group_title;
+        foreach ($memberGroups as $group) {
+            if ($group->group_id === 1) {
+                continue;
             }
 
             $memberGroupChoices[$group->group_id] = $group->group_title;
