@@ -172,7 +172,7 @@ class FieldModel extends Model implements \JsonSerializable
             $returnArray['showAsRadio']    = false;
         }
 
-        if ($this->type === FieldInterface::TYPE_CHECKBOX_GROUP) {
+        if (in_array($this->type, [FieldInterface::TYPE_CHECKBOX_GROUP, FieldInterface::TYPE_MULTIPLE_SELECT], true)) {
             $returnArray['showCustomValues'] = $this->hasCustomOptionValues();
             $returnArray['values']           = $this->values ?: [];
             $returnArray['options']          = $this->options ?: [];
@@ -306,6 +306,7 @@ class FieldModel extends Model implements \JsonSerializable
             if ($isChecked) {
                 switch ($this->type) {
                     case FieldInterface::TYPE_CHECKBOX_GROUP:
+                    case FieldInterface::TYPE_MULTIPLE_SELECT:
                         $savableValues[] = $fieldValue;
                         break;
 
