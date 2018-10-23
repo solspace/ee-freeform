@@ -341,7 +341,7 @@ class SettingsController extends Controller
 
         $sections = [
             [
-                'title'  => 'Default permissions for New Groups',
+                'title'  => 'Default Permissions for New Member Groups',
                 'fields' => [
                     'defaultPermissions' => [
                         'type'    => 'radio',
