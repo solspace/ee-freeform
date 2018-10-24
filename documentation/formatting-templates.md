@@ -80,13 +80,19 @@ A more complex example (accounting for checkbox groups, radios, etc) with Bootst
 	{if form:has_errors}
 		<div class="alert alert-danger">
 			There was an error submitting this form
+
+			<ul>
+				{form:errors}
+					<li>{error}</li>
+				{/form:errors}
+			</ul>
 		</div>
 	{/if}
 
 	{rows}
 		<div class="row {form:row_class}">
 		{fields}
-			<div class="{form:column_class} col-xs-12 col-lg-{column:grid_width} {if field:type == 'checkbox' OR field:type == 'mailing_list'}checkbox{if:else}form-group{/if}{if field:has_errors} has-error{/if}{if field:type == 'submit'} submit-align-{field:position}{/if}">
+			<div class="{form:column_class} col-xs-12 col-sm-{column:grid_width} {if field:type == 'checkbox' OR field:type == 'mailing_list'}checkbox{if:else}form-group{/if}{if field:has_errors} has-error{/if}{if field:type == 'submit'} submit-align-{field:position}{/if}">
 			{if field:type == 'checkbox_group'}
 
 				{field:render_label label_class="{if field:required}required{/if}"}
@@ -142,6 +148,26 @@ A more complex example (accounting for checkbox groups, radios, etc) with Bootst
 						</label>
 					</div>
 				{/field:options}
+				{field:render_instructions instructions_class="help-block"}
+				{field:render_errors error_class="help-block"}
+
+			{if:elseif field:type == 'dynamic_recipients' AND field:show_as_checkboxes}
+
+				{field:render_label label_class="{if field:required}required{/if}"}
+
+				{field:options}
+				<div class="checkbox">
+					<label>
+						<input type="checkbox"
+							   name="{field:handle}[]"
+							   value="{option:value}"
+							   {if option:checked}checked{/if}
+						/>
+						{option:label}
+					</label>
+				</div>
+				{/field:options}
+
 				{field:render_instructions instructions_class="help-block"}
 				{field:render_errors error_class="help-block"}
 

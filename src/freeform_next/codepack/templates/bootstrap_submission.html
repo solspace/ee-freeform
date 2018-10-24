@@ -12,13 +12,17 @@
                     <th style="width: 20%;">{field:label}</th>
                     <td>
                     {if field:type == "file"} {!-- special handling for File fields --}
-                        {exp:file:entries file_id="{field:value}"}
-                            {if extension == "gif" OR extension == "jpg" OR extension == "jpeg" OR extension == "png"}
-                                <img src="{file_url}" width="{width}" height="{height}" alt="{title}" />
-                            {if:else}
-                                <a href="{file_url}">{title}</a>
-                            {/if}
-                        {/exp:file:entries}
+                        {if field:value}
+                            {exp:file:entries file_id="{field:value}" dynamic="no"}
+                                {if extension == "gif" OR extension == "jpg" OR extension == "jpeg" OR extension == "png"}
+                                    <img src="{file_url}" width="{width}" height="{height}" alt="{title}" />
+                                {if:else}
+                                    <a href="{file_url}">{title}</a>
+                                {/if}
+                            {/exp:file:entries}
+                        {if:else}
+                            No file(s) uploaded
+                        {/if}
                     {if:else}
                         {field:value}
                     {/if}

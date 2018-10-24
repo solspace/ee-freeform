@@ -262,13 +262,15 @@ Display a single submission, complete with special handling for file fields:
 				<td>
 				{if field:type == "file"} {!-- special handling for File fields --}
 					{if field:value}
-						{exp:file:entries file_id="{field:value}"}
+						{exp:file:entries file_id="{field:value}" dynamic="no"}
 							{if extension == "gif" OR extension == "jpg" OR extension == "jpeg" OR extension == "png"}
 								<img src="{file_url}" width="{width}" height="{height}" alt="{title}" />
 							{if:else}
 								<a href="{file_url}">{title}</a>
 							{/if}
 						{/exp:file:entries}
+					{if:else}
+						No file(s) uploaded
 					{/if}
 				{if:else}
 					{field:value}
