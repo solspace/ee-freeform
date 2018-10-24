@@ -41,6 +41,12 @@ class MigrationsController extends Controller
      */
     public function index()
     {
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+
+        if (!$canAccessSettings) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         $pageTitle = lang('Migrate Freeform Classic');
 
         if (!$this->getMigrationService()->isClassicFreeformInstalled()) {
@@ -90,6 +96,12 @@ class MigrationsController extends Controller
      */
     public function run($id)
     {
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+
+        if (!$canAccessSettings) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         $result = [];
         $stage = $this->getPost('stage');
 
@@ -136,6 +148,12 @@ class MigrationsController extends Controller
 
     private function buildHomepage()
     {
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+
+        if (!$canAccessSettings) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         $pageTitle = lang('Migrate Freeform Classic');
 
         $migrateUrl = $this->getLink('migrations/ff_classic/run');
@@ -171,6 +189,12 @@ class MigrationsController extends Controller
      */
     public function save(IntegrationModel $model)
     {
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+
+        if (!$canAccessSettings) {
+            return false;
+        }
+
         $isNew = !$model->id;
 
         $class  = ee()->input->post('class');
@@ -265,6 +289,12 @@ class MigrationsController extends Controller
      */
     public function batchDelete()
     {
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+
+        if (!$canAccessSettings) {
+            return new RedirectView($this->getLink('denied'));
+        }
+
         if (isset($_POST['id_list'])) {
             $ids = [];
             foreach ($_POST['id_list'] as $id) {

@@ -799,18 +799,4 @@ class SubmissionController extends Controller
             AbstractField::TYPE_WEBSITE,
         ];
     }
-
-    /**
-     * @return \Solspace\Addons\FreeformNext\Services\PermissionsService
-     */
-    private function getPermissionsService()
-    {
-        static $instance;
-
-        if (null === $instance) {
-            $instance = new \Solspace\Addons\FreeformNext\Services\PermissionsService();
-        }
-
-        return $instance;
-    }
 }

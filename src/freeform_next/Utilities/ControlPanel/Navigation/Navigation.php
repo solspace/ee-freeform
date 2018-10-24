@@ -55,6 +55,10 @@ class Navigation
                 if (!$permissionsService->canUserSeeSectionInNavigation(PermissionsService::PERMISSION__ACCESS_RESOURCES, $groupId)) continue;
             }
 
+            if ($item->getTitle() == 'Migrations') {
+                if (!$permissionsService->canUserSeeSectionInNavigation(PermissionsService::PERMISSION__ACCESS_SETTINGS, $groupId)) continue;
+            }
+
             // Do not show the section in the menu if user does not have the permission to it
             if (!$permissionsService->canUserSeeSectionInNavigation($item->getMethod(), $groupId)) continue;
 

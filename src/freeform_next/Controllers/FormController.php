@@ -341,20 +341,6 @@ class FormController extends Controller
     }
 
     /**
-     * @return \Solspace\Addons\FreeformNext\Services\PermissionsService
-     */
-    private function getPermissionsService()
-    {
-        static $instance;
-
-        if (null === $instance) {
-            $instance = new \Solspace\Addons\FreeformNext\Services\PermissionsService();
-        }
-
-        return $instance;
-    }
-
-    /**
      * @param Form $form
      *
      * @return array|\stdClass

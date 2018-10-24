@@ -755,18 +755,4 @@ class SettingsController extends Controller
 
         return $instance;
     }
-
-    /**
-     * @return \Solspace\Addons\FreeformNext\Services\PermissionsService
-     */
-    private function getPermissionsService()
-    {
-        static $instance;
-
-        if (null === $instance) {
-            $instance = new \Solspace\Addons\FreeformNext\Services\PermissionsService();
-        }
-
-        return $instance;
-    }
 }
