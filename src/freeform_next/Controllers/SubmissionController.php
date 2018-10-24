@@ -149,7 +149,7 @@ class SubmissionController extends Controller
         $attributes = new SubmissionAttributes($form);
 
         $currentKeyword = '';
-        $currentSearchStatus = 'Pending';
+        $currentSearchStatus = '';
         $currentDateRangeStart = '';
         $currentDateRangeEnd = '';
         $currentDateRange = '';
