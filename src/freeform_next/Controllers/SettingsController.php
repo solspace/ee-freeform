@@ -327,8 +327,6 @@ class SettingsController extends Controller
             ->all();
 
         $memberGroupChoices = [];
-        $memberGroupChoicesWithoutSuperAdmin = [];
-
         foreach ($memberGroups as $group) {
             if ($group->group_id === 1) {
                 continue;
@@ -421,7 +419,7 @@ class SettingsController extends Controller
                     'settingsPermissions' => [
                         'type'    => 'checkbox',
                         'value'   => $permissionsModel->settingsPermissions,
-                        'choices' => $memberGroupChoicesWithoutSuperAdmin,
+                        'choices' => $memberGroupChoices,
                     ],
                 ],
             ],
