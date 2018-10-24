@@ -327,8 +327,6 @@ class SettingsController extends Controller
             ->all();
 
         $memberGroupChoices = [];
-        $memberGroupChoicesWithoutSuperAdmin = [];
-
         foreach ($memberGroups as $group) {
             if ($group->group_id === 1) {
                 continue;
@@ -421,7 +419,7 @@ class SettingsController extends Controller
                     'settingsPermissions' => [
                         'type'    => 'checkbox',
                         'value'   => $permissionsModel->settingsPermissions,
-                        'choices' => $memberGroupChoicesWithoutSuperAdmin,
+                        'choices' => $memberGroupChoices,
                     ],
                 ],
             ],
@@ -753,20 +751,6 @@ class SettingsController extends Controller
 
         if (null === $instance) {
             $instance = new StatusController();
-        }
-
-        return $instance;
-    }
-
-    /**
-     * @return \Solspace\Addons\FreeformNext\Services\PermissionsService
-     */
-    private function getPermissionsService()
-    {
-        static $instance;
-
-        if (null === $instance) {
-            $instance = new \Solspace\Addons\FreeformNext\Services\PermissionsService();
         }
 
         return $instance;

@@ -378,18 +378,4 @@ class NotificationController extends Controller
 
         return ob_get_clean();
     }
-
-    /**
-     * @return \Solspace\Addons\FreeformNext\Services\PermissionsService
-     */
-    private function getPermissionsService()
-    {
-        static $instance;
-
-        if (null === $instance) {
-            $instance = new \Solspace\Addons\FreeformNext\Services\PermissionsService();
-        }
-
-        return $instance;
-    }
 }
