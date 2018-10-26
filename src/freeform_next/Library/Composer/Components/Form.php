@@ -388,6 +388,18 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
     }
 
     /**
+     * @param array $messages
+     *
+     * @return Form
+     */
+    public function addErrors(array $messages)
+    {
+        $this->errors = array_merge($this->errors, $messages);
+
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function isMarkedAsSpam()
@@ -433,7 +445,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         $this->formHandler->onFormValidate($this);
 
         $isFormValid = true;
-        foreach ($currentPageFields as $field) {
+        foreach ($this->getCurrentPage()->getFields() as $field) {
             if (!$field->isValid()) {
                 $isFormValid = false;
             }
@@ -488,9 +500,17 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
     /**
      * @return bool
      */
+    public function isFormPosted()
+    {
+        return $this->getFormValueContext()->hasFormBeenPosted();
+    }
+
+    /**
+     * @return bool
+     */
     public function hasErrors()
     {
-        return $this->isPagePosted() && !$this->isValid();
+        return ($this->isPagePosted() && !$this->isValid()) || count($this->getErrors()) != 0;
     }
 
     /**

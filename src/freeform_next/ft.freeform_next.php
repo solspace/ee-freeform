@@ -86,7 +86,7 @@ class Freeform_next_ft extends EE_Fieldtype
             }
 
             $obj = new Freeform_Next();
-            $obj->submitForm();
+            $obj->submitForm($formModel->getForm());
         }
 
         $form = $formModel->getForm();

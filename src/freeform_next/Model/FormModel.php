@@ -126,22 +126,24 @@ class FormModel extends Model
      */
     public function getComposer()
     {
-        $composerState  = json_decode($this->layoutJson, true);
-        $formAttributes = $this->getFormAttributes();
+        if (null === $this->composer) {
+            $composerState  = json_decode($this->layoutJson, true);
+            $formAttributes = $this->getFormAttributes();
 
-        $this->composer = new Composer(
-            $composerState,
-            $formAttributes,
-            new FormsService(),
-            new FieldsService(),
-            new SubmissionsService(),
-            new MailerService(),
-            new FilesService(),
-            new MailingListsService(),
-            new CrmService(),
-            new StatusesService(),
-            new EETranslator()
-        );
+            $this->composer = new Composer(
+                $composerState,
+                $formAttributes,
+                new FormsService(),
+                new FieldsService(),
+                new SubmissionsService(),
+                new MailerService(),
+                new FilesService(),
+                new MailingListsService(),
+                new CrmService(),
+                new StatusesService(),
+                new EETranslator()
+            );
+        }
 
         return $this->composer;
     }

@@ -166,23 +166,14 @@ class Freeform_Next extends Plugin
     }
 
     /**
-     * @return Form|null
+     * @param Form $form
+     *
      * @throws FreeformException
      */
-    public function submitForm()
+    public function submitForm(Form $form)
     {
-        $hash   = $this->getPost(FormValueContext::FORM_HASH_KEY, null);
-        $formId = FormValueContext::getFormIdFromHash($hash);
-
-        $formModel       = FormRepository::getInstance()->getFormById($formId);
         $honeypotService = new HoneypotService();
-
-        if (!$formModel) {
-            return null;
-        }
-
-        $form          = $formModel->getForm();
-        $isAjaxRequest = AJAX_REQUEST;
+        $isAjaxRequest   = AJAX_REQUEST;
 
         $honeypot = $honeypotService->getHoneypot($form);
 
@@ -265,7 +256,7 @@ class Freeform_Next extends Plugin
 
         $hash = $this->getPost(FormValueContext::FORM_HASH_KEY, null);
         if (null !== $hash) {
-            $this->submitForm();
+            $id = FormValueContext::getFormIdFromHash($hash);
         }
 
         $formModel = FormRepository::getInstance()->getFormByIdOrHandle($id ? $id : $handle);
@@ -274,6 +265,9 @@ class Freeform_Next extends Plugin
         }
 
         $form = $formModel->getForm();
+        if (null !== $hash) {
+            $this->submitForm($form);
+        }
 
         FormTagParamUtilities::setFormCustomAttributes($form);
 

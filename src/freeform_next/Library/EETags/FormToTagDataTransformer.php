@@ -221,7 +221,7 @@ class FormToTagDataTransformer
 
         $data = [];
         /** @var Row $row */
-        foreach ($form as $row) {
+        foreach ($form->getCurrentPage()->getRows() as $row) {
             $columns = [
                 'fields' => [],
             ];

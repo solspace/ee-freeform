@@ -13,6 +13,7 @@ namespace Solspace\Addons\FreeformNext\Library\Session;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Attributes\DynamicNotificationAttributes;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SubmitField;
 use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
 
@@ -173,6 +174,10 @@ class FormValueContext implements \JsonSerializable
             if (isset($this->storedValues[$fieldName])) {
                 return $this->storedValues[$fieldName];
             }
+        }
+
+        if ($field instanceof CheckboxField) {
+            return $field->isChecked() ? $field->getValue() : '';
         }
 
         $default = $field->getValue();
