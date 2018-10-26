@@ -1,17 +1,17 @@
-<script src="{exp:freeform_next:theme_folder_url}lib/codepack/js/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
-{if embed:page=='bootstrap'}
-    <script src="{exp:freeform_next:theme_folder_url}lib/codepack/js/bootstrap.min.js"></script>
+{if embed:page == 'bootstrap'}
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 {/if}
 
 
-{if embed:page=='foundation'}
-    <script src="{exp:freeform_next:theme_folder_url}lib/codepack/js/foundation.min.js"></script>
+{if embed:page == 'foundation'}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.3/foundation.min.js"></script>
 {/if}
 
 
-{if embed:page=='materialize'}
-    <script src="{exp:freeform_next:theme_folder_url}lib/codepack/js/materialize.min.js"></script>
+{if embed:page == 'materialize'}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
     <script>
       $(document).ready(function() {
         $('select').material_select();

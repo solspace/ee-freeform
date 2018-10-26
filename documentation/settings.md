@@ -28,8 +28,10 @@ The settings allow you to adjust:
 * *Formatting Templates* <a href="#formatting-templates" id="formatting-templates" class="docs-anchor">#</a>
 	* **Directory Path** <a href="#formatting-directory-path" id="formatting-directory-path" class="docs-anchor">#</a>
 		* When using custom formatting templates for your forms, you'll need to specify where your HTML templates are stored.
-		* Provide a full path to your Freeform formatting templates directory (whatever you want it to be named, wherever you want it located).
-			* E.g. **/home/username/www/public_html/freeform-formatting** or **/home/username/www/system/user/templates/freeform-formatting**
+		* Provide a relative path from the EE `/system/user/templates/` directory, or full path to the folder where your custom formatting templates directory is. Examples:
+		* `/home/username/www/public_html/freeform-formatting`
+		* `/home/username/www/system/user/templates/freeform-formatting`
+		* `freeform-formatting/`
 		* To add a starter example template, click the "Add a sample template" button, and then edit the template after.
 
 [![Formatting Templates](images/cp_settings-formatting-templates.png)](images/cp_settings-formatting-templates.png)
@@ -37,8 +39,10 @@ The settings allow you to adjust:
 * *Email Templates* <a href="#email-templates" id="email-templates" class="docs-anchor">#</a>
 	* This area is for users that wish to use HTML template files for email notifications. See [Email Notifications](email-notifications.md) documentation for more information about implementation.
 	* **Directory Path** <a href="#email-directory-path" id="email-directory-path" class="docs-anchor">#</a>
-		* Provide a full path to your Freeform email notifications templates directory (whatever you want it to be named, wherever you want it located).
-			* E.g. **/home/username/www/public_html/freeform-emails** or **/home/username/www/system/user/templates/freeform-emails**
+		* Provide a relative path from the EE `/system/user/templates/` directory, or full path to the folder where your Freeform email notifications templates directory is. Examples:
+			* `/home/username/www/public_html/freeform-emails`
+			* `/home/username/www/system/user/templates/freeform-emails`
+			* `freeform-emails/`
 		* To add a starter example template, click the "Add a sample template" button, and then edit the template after.
 	* **Default Email Notification Creation Method** <a href="#default-email-method" id="default-email-method" class="docs-anchor">#</a>
 		* Select which storage method to use when creating new email notifications with **Add New Notification** option in Composer.

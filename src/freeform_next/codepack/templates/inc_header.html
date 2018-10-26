@@ -7,20 +7,20 @@
     <meta name="description" content="Demo Templates for Freeform">
     <meta name="author" content="Solspace">
     <title>Freeform | {if embed:title}{embed:title}{if:else}Home{/if}</title>
-    {if embed:page=='bootstrap'}
-        <link href="{exp:freeform_next:theme_folder_url}lib/codepack/css/bootstrap.min.css" rel="stylesheet">
+    {if embed:page == 'bootstrap'}
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
         <link href="{exp:freeform_next:theme_folder_url}lib/codepack/css/main-bootstrap.css" rel="stylesheet">
     {/if}
 
-    {if embed:page=='foundation'}
-        <link href="{exp:freeform_next:theme_folder_url}lib/codepack/css/foundation.min.css" rel="stylesheet">
+    {if embed:page == 'foundation'}
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.3/foundation.min.css" rel="stylesheet">
         <link href="{exp:freeform_next:theme_folder_url}lib/codepack/css/main-foundation.css" rel="stylesheet">
     {/if}
 
-    {if embed:page=='materialize'}
+    {if embed:page == 'materialize'}
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link href="{exp:freeform_next:theme_folder_url}lib/codepack/css/main-materialize.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css" rel="stylesheet">
+        <link href="{exp:freeform_next:theme_folder_url}lib/codepack/css/main-materialize.css" rel="stylesheet">
     {/if}
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->

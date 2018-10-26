@@ -13,33 +13,7 @@ Freeform includes several example [formatting templates](formatting-templates.md
 
 The following example assumes you're including necessary [Bootstrap JS and CSS](http://getbootstrap.com).
 
-	<style>
-		label.required:after {
-			content:"*";
-			color:#d00;
-			margin-left:5px;
-		}
-		.submit-align-left {
-			text-align:left;
-		}
-		.submit-align-right {
-			text-align:right;
-		}
-		.submit-align-center {
-			text-align:center;
-		}
-		.submit-align-center button:not(:first-of-type),
-		.submit-align-left button:not(:first-of-type),
-		.submit-align-right button:not(:first-of-type) {
-			margin-left:5px;
-		}
-		.submit-align-spread button:first-child {
-			float:left;
-		}
-		.submit-align-spread button:last-child {
-			float:right;
-		}
-	</style>
+	<style>label.required:after {content:"*";color:#d00;margin-left:5px;}.submit-align-left{text-align:left}.submit-align-right{text-align:right}.submit-align-center{text-align:center}.submit-align-center button:not(:first-of-type),.submit-align-left button:not(:first-of-type),.submit-align-right button:not(:first-of-type){margin-left:5px}.submit-align-spread button:first-child{float:left}.submit-align-spread button:last-child{float:right}</style>
 
 	{if form:page_count > 1}
 		<ul class="nav nav-tabs">
@@ -54,13 +28,19 @@ The following example assumes you're including necessary [Bootstrap JS and CSS](
 	{if form:has_errors}
 		<div class="alert alert-danger">
 			There was an error submitting this form
+
+			<ul>
+				{form:errors}
+					<li>{error}</li>
+				{/form:errors}
+			</ul>
 		</div>
 	{/if}
 
 	{rows}
 		<div class="row {form:row_class}">
 		{fields}
-			<div class="{form:column_class} col-xs-12 col-lg-{column:grid_width} {if field:type == 'checkbox' OR field:type == 'mailing_list'}checkbox{if:else}form-group{/if}{if field:has_errors} has-error{/if}{if field:type == 'submit'} submit-align-{field:position}{/if}">
+			<div class="{form:column_class} col-xs-12 col-sm-{column:grid_width} {if field:type == 'checkbox' OR field:type == 'mailing_list'}checkbox{if:else}form-group{/if}{if field:has_errors} has-error{/if}{if field:type == 'submit'} submit-align-{field:position}{/if}">
 			{if field:type == 'checkbox_group'}
 
 				{field:render_label label_class="{if field:required}required{/if}"}
@@ -119,6 +99,26 @@ The following example assumes you're including necessary [Bootstrap JS and CSS](
 				{field:render_instructions instructions_class="help-block"}
 				{field:render_errors error_class="help-block"}
 
+			{if:elseif field:type == 'dynamic_recipients' AND field:show_as_checkboxes}
+
+				{field:render_label label_class="{if field:required}required{/if}"}
+
+				{field:options}
+				<div class="checkbox">
+					<label>
+						<input type="checkbox"
+							   name="{field:handle}[]"
+							   value="{option:value}"
+							   {if option:checked}checked{/if}
+						/>
+						{option:label}
+					</label>
+				</div>
+				{/field:options}
+
+				{field:render_instructions instructions_class="help-block"}
+				{field:render_errors error_class="help-block"}
+
 			{if:elseif field:type == 'submit'}
 
 				{field:render}
@@ -144,39 +144,7 @@ The following example assumes you're including necessary [Bootstrap JS and CSS](
 
 The following example assumes you're including necessary [Foundation JS and CSS](https://foundation.zurb.com).
 
-	<style>
-		label.required:after {
-			content:"*";
-			color:#d00;
-			margin-left:5px;
-			font-size:12px;
-			font-family:serif;
-			font-weight:700;
-		}
-		.submit {
-			margin-top:15px;
-		}
-		.submit-align-left {
-			text-align:left;
-		}
-		.submit-align-right {
-			text-align:right;
-		}
-		.submit-align-center {
-			text-align:center;
-		}
-		.submit-align-center button:not(:first-of-type),
-		.submit-align-left button:not(:first-of-type),
-		.submit-align-right button:not(:first-of-type) {
-			margin-left:5px;
-		}
-		.submit-align-spread button:first-child {
-			float:left;
-		}
-		.submit-align-spread button:last-child {
-			float:right;
-		}
-	</style>
+	<style>label.required:after{content:"*";color:#d00;margin-left:5px;font-size:12px;font-family:serif;font-weight:700}.submit{margin-top:15px}.submit-align-left{text-align:left}.submit-align-right{text-align:right}.submit-align-center{text-align:center}.submit-align-center button:not(:first-of-type),.submit-align-left button:not(:first-of-type),.submit-align-right button:not(:first-of-type){margin-left:5px}.submit-align-spread button:first-child{float:left}.submit-align-spread button:last-child{float:right}</style>
 
 	{if form:page_count > 1}
 		<ul class="menu pagemenu">
@@ -193,6 +161,12 @@ The following example assumes you're including necessary [Foundation JS and CSS]
 	{if form:has_errors}
 		<div class="callout alert">
 			There was an error submitting this form
+
+			<ul>
+				{form:errors}
+					<li>{error}</li>
+				{/form:errors}
+			</ul>
 		</div>
 	{/if}
 
@@ -258,6 +232,27 @@ The following example assumes you're including necessary [Foundation JS and CSS]
 				{field:render_instructions instructions_class="help-block"}
 				{field:render_errors error_class="help-block"}
 
+
+			{if:elseif field:type == 'dynamic_recipients' AND field:show_as_checkboxes}
+
+				{field:render_label label_class="{if field:required}required{/if}"}
+
+				{field:options}
+					<div class="checkbox">
+						<label>
+							<input type="checkbox"
+								   name="{field:handle}[]"
+								   value="{option:value}"
+								   {if option:checked}checked{/if}
+							/>
+							{option:label}
+						</label>
+					</div>
+				{/field:options}
+
+				{field:render_instructions instructions_class="help-block"}
+				{field:render_errors error_class="help-block"}
+
 			{if:elseif field:type == 'submit'}
 
 				{field:render}
@@ -297,6 +292,12 @@ The following example assumes you're including necessary [Materialize JS and CSS
 	{if form:has_errors}
 		<div class="alert alert-danger errors">
 			There was an error submitting this form
+
+			<ul>
+				{form:errors}
+					<li>{error}</li>
+				{/form:errors}
+			</ul>
 		</div>
 	{/if}
 
@@ -335,6 +336,44 @@ The following example assumes you're including necessary [Materialize JS and CSS
 									/>
 									<label for="{form:hash}{field:handle}{option:value}">{option:label}</label>
 								</p>
+						{/field:options}
+						{field:render_instructions}
+						{field:render_errors}
+					</div>
+
+				{if:elseif field:type == 'dynamic_recipients' AND field:show_as_radio}
+
+					<div class="{form:column_class} s12 col m{column:grid_width}{if field:has_errors} has-error{/if}" style="margin-bottom: 20px;">
+						{field:render_label label_class="{if field:required}required{/if}"}
+						{field:options}
+								<p>
+									<input type="radio"
+										   id="{form:hash}{field:handle}{option:index}"
+										   name="{field:handle}"
+										   value="{option:index}"
+										   {if option:checked}checked{/if}
+									/>
+									<label for="{form:hash}{field:handle}{option:value}">{option:label}</label>
+								</p>
+						{/field:options}
+						{field:render_instructions}
+						{field:render_errors}
+					</div>
+
+				{if:elseif field:type == 'dynamic_recipients' AND field:show_as_checkboxes}
+
+					<div class="{form:column_class} s12 col m{column:grid_width}{if field:has_errors} has-error{/if}" style="margin-bottom: 20px;">
+						{field:render_label label_class="{if field:required}required{/if}"}
+						{field:options}
+							<p>
+								<input type="checkbox"
+									   id="{form:hash}{field:handle}{option:value}"
+									   name="{field:handle}[]"
+									   value="{option:value}"
+									   {if option:checked}checked{/if}
+								/>
+								<label for="{form:hash}{field:handle}{option:value}">{option:label}</label>
+							</p>
 						{/field:options}
 						{field:render_instructions}
 						{field:render_errors}
@@ -384,25 +423,6 @@ The following example assumes you're including necessary [Materialize JS and CSS
 							/>
 						</div>
 
-						{field:render_instructions}
-						{field:render_errors}
-					</div>
-
-				{if:elseif field:type == 'dynamic_recipients' AND field:show_as_radio}
-
-					<div class="{form:column_class} s12 col m{column:grid_width}{if field:has_errors} has-error{/if}" style="margin-bottom: 20px;">
-						{field:render_label label_class="{if field:required}required{/if}"}
-						{field:options}
-								<p>
-									<input type="radio"
-										   id="{form:hash}{field:handle}{option:index}"
-										   name="{field:handle}"
-										   value="{option:index}"
-										   {if option:checked}checked{/if}
-									/>
-									<label for="{form:hash}{field:handle}{option:value}">{option:label}</label>
-								</p>
-						{/field:options}
 						{field:render_instructions}
 						{field:render_errors}
 					</div>

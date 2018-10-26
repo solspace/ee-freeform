@@ -108,7 +108,7 @@ The following field types are available ([see below for additional Pro Field Typ
 					{/field:department:options}
 					</select>```
 
-			* To make the first option empty, specify **--** or **Please select...**, etc for the label, and leave option blank.
+			* To make the first option empty, specify `--` or `Please select...`, etc for the label, and leave option blank.
 		* In the Property Editor (right column) in Composer, select a notification template you want the selected recipient for this field to receive.
 			* Users/groups need to have permissions access for **Email Notifications** to create new formatting templates.
 		* Can be marked as required.
