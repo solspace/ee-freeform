@@ -2,7 +2,7 @@
 
 To submit a form using AJAX - pass the serialized form data as the payload when posting to any front-end URL.
 
-**NOTE:** This solution currently will not work with [multi-page](multi-page-forms.md) forms.
+> **NOTE:** This solution currently will not work with [multi-page](multi-page-forms.md) forms.
 
 
 ## Return values <a href="#return-values" id="return-values" class="docs-anchor">#</a>

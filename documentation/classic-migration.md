@@ -1,7 +1,7 @@
-# Freeform Classic Migration Utility (beta)
+# Freeform Classic Migration Utility
 It's important to note that the new Freeform is not just merely an update or even an overhaul of classic Freeform. It was completely rewritten from scratch, and built without attempting to conform to legacy requirements. Because of this, the new Freeform is a completely different add-on with its own namespace / folder name, allowing you to install it alongside Freeform Classic. In order to migrate your Classic data, you'll have to use this migration utility. And because not everything is the same in the new Freeform, not everything can be migrated. This page will go into details on what to expect, and how you might need to prep your site before attempting migration, and then what to clean up afterwards.
 
-***NOTE:** You must have the appropriate EE-compatible version of Freeform Classic installed and upgraded for the new Freeform to properly detect and migrate it. For example, if you moved from EE2 to EE4, but only have the EE2 version of Freeform Classic (4.x) installed, the migration won't work correctly. You'll need to update to the 5.x (EE3) or 6.x (EE4) version of Freeform Classic first. If you're switching from Classic to the new Freeform, we don't expect you to pay an upgrade fee to access the EE3 or EE4 compatible versions of Classic to only use it for 15 mins to run the migration utility, so feel free to temporarily "borrow and reuse" a newer Classic license from another site if you have, or [contact us for a temporary copy](https://solspace.com/expressionengine/freeform/support). :)*
+> **NOTE:** You must have the appropriate EE-compatible version of Freeform Classic installed and upgraded for the new Freeform to properly detect and migrate it. For example, if you moved from EE2 to EE4, but only have the EE2 version of Freeform Classic (4.x) installed, the migration won't work correctly. You'll need to update to the 5.x (EE3) or 6.x (EE4) version of Freeform Classic first. If you're switching from Classic to the new Freeform, we don't expect you to pay an upgrade fee to access the EE3 or EE4 compatible versions of Classic to only use it for 15 mins to run the migration utility, so feel free to temporarily "borrow and reuse" a newer Classic license from another site if you have, or [contact us for a temporary copy](https://solspace.com/expressionengine/freeform/support). :)
 
 * [Quick Overview of Limitations](#limitations)
 * [Fields](#fields)
@@ -36,10 +36,11 @@ All fields will be attempted to be migrated over to the appropriate field equiva
 	* All fields that contain the string `email` in it's label or short name.
 	* All **Text** fields that contain the *Field Content Type* of *Email*.
 	* **NOTE:** If you want to make sure fields are designated as *Email* fieldtype, be sure they fall into the options listed above. If you do NOT want some fields to be converted to *Email* fieldtype, be sure to rename (temporarily for migration) or reassign your fields' *Field Content Type*.
-* **Multi-select** fields: there is no multi-select fieldtype in the new Freeform.
+* **Multi-select** fields: initially there was no multi-select fieldtype in the new Freeform. As for Freeform 1.7+, the Multi-select fieldtype is available again. However, the migration does not yet account for this...
 	* All Classic *Multi-select* fields will be converted to *Checkbox Groups*.
 * **Country** / **State** / **Province** Select fields: there are none of these in the new Freeform.
 	* All fields of this type will be converted to Select fields with those existing data options populated as their options.
+	* As of Freeform 1.7+, field option 'Data Feeders' for Checkbox group, Radio group, Select and Multi-select fieldtypes are available. You can now populate these fields with Entries, Categories, Members, or one of our many predefined options: States, Provinces, Countries, Languages, Number ranges, Year ranges, Months, Days and Days of the Week. Freeform Data Feeders also offer flexible control over formatting and/or which data fills option labels and option values. The migration will NOT automatically convert your existing fields to this new style.
 
 The following mapping of data will happen for each field during migration (*Classic* -> **New Freeform**):
 

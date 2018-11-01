@@ -3,6 +3,7 @@
 	* [Updates](updates.md)
 	* [Changelog](changelog.md)
 	* [Settings](settings.md)
+	* [Permissions](permissions.md)
 	* [Demo Templates](demo-templates.md)
 	* [Common Issues](common-issues.md)
 
