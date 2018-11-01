@@ -148,8 +148,10 @@ class FormRepository extends Repository
             ->orFilter('handle', $idOrHandle)
             ->first();
 
-        self::$cacheById[$form->id]         = $form;
-        self::$cacheByHandle[$form->handle] = $form;
+        if ($form) {
+            self::$cacheById[$form->id]         = $form;
+            self::$cacheByHandle[$form->handle] = $form;
+        }
 
         return $form;
     }
