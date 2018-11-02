@@ -37,10 +37,11 @@ class FieldsService implements FieldHandlerInterface
             FieldInterface::TYPE_DYNAMIC_RECIPIENTS => 'Dynamic Recipients',
         ];
 
-        $finder        = new Finder();
-        $path          = __DIR__ . '/../Library/Pro/Fields';
-        $interface     = 'Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface';
-        $baseNamespace = 'Solspace\Addons\FreeformNext\Library\Pro\Fields';
+        $finder             = new Finder();
+        $path               = __DIR__ . '/../Library/Pro/Fields';
+        $interface          = 'Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface';
+        $noStorageInterface = 'Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface';
+        $baseNamespace      = 'Solspace\Addons\FreeformNext\Library\Pro\Fields';
 
         if (file_exists($path) && is_dir($path)) {
             /** @var SplFileInfo[] $files */
@@ -57,7 +58,7 @@ class FieldsService implements FieldHandlerInterface
                 $className = $baseNamespace . "\\" . $baseName;
 
                 $reflectionClass = new \ReflectionClass($className);
-                if ($reflectionClass->implementsInterface($interface)) {
+                if ($reflectionClass->implementsInterface($interface) && !$reflectionClass->implementsInterface($noStorageInterface)) {
                     $name = $className::getFieldTypeName();
                     $type = $className::getFieldType();
 
