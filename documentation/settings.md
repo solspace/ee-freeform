@@ -13,6 +13,8 @@ The settings allow you to adjust:
 	* **Spam Protection** <a href="#spam-protection" id="spam-protection" class="docs-anchor">#</a>
 		* Freeform includes its own Javascript-based honeypot spam protection. This is enabled by default, but can be disabled here.
 		* For more information, visit the [Spam Protection documentation](spam-protection.md).
+	* **Spam protection simulates a successful submission?** <a href="#spam-simulate-success" id="spam-simulate-success" class="docs-anchor">#</a>
+		* Enable this to change the spam protection behavior to simulate a successful submission instead of just reloading the form.
 	* **Session Storage Mechanism** <a href="#session-storage" id="session-storage" class="docs-anchor">#</a>
 		* Choose the mechanism with which session data is stored on front end submissions:
 			* **PHP Sessions** (default)
@@ -62,3 +64,8 @@ The settings allow you to adjust:
 
 * *Demo Templates* <a href="#demo-templates" id="demo-templates" class="docs-anchor">#</a>
 	* Allows you to install the [Demo Templates](demo-templates.md) to get Freeform up and running on the front end with just a couple clicks!
+
+* *reCAPTCHA* (Pro only) <a href="#recaptcha" id="recaptcha" class="docs-anchor">#</a>
+	* **Enable reCAPTCHA** <a href="#enable-recaptcha" id="enable-recaptcha" class="docs-anchor">#</a>
+		* Enable this setting and fill in the reCAPTCHA *Site Key* and *Secret Key* to enable reCAPTCHA for Freeform. Then, to add reCAPTCHA to your forms, open up and edit each form and drag over the **reCAPTCHA** special field anywhere you like into your form layout.
+		* Visit [Google reCAPTCHA site](https://www.google.com/recaptcha) to register your site and get your *Site Key* and *Secret Key*.

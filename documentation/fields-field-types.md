@@ -6,8 +6,35 @@ Freeform uses its own set of fields and field types. Using a predefined set of f
 
 * [Fields Overview](#fields)
 * [Field Types](#field-types)
+	* [Text](#fields-text)
+	* [Textarea](#fields-textarea)
+	* [Email](#fields-email)
+	* [Hidden](#fields-hidden)
+	* [Select](#fields-select)
+	* [Multiple Select](#fields-multiple-select)
+	* [Checkbox](#fields-checkbox)
+	* [Checkbox Group](#fields-checkbox-group)
+	* [Radio Group](#fields-radio-group)
+	* [File Upload](#fields-file-upload)
+	* [Dynamic Recipients](#fields-dynamic-recipients)
 * [Pro Field Types](#pro-field-types)
+	* [Confirmation](#fields-confirmation)
+	* [Date & Time](#fields-date-time)
+	* [Number](#fields-number)
+	* [Phone](#fields-phone)
+	* [Rating](#fields-rating)
+	* [Regex](#fields-regex)
+	* [Website](#fields-website)
+	* [reCAPTCHA](#fields-recaptcha)
+* [Special Fields](#special-fields)
+	* [Submit](#fields-submit)
+	* [HTML](#fields-html)
+	* [reCAPTCHA (Pro)](#fields-recaptcha)
 * [Field Specific Properties](#field-specific-properties)
+* [Populating Fields with Elements & Predefined Options](#feeders)
+	* [Available Fields](#feeders-fields)
+	* [Available Craft Elements](#feeders-elements)
+	* [Available Predefined Options](#feeders-predefined)
 
 
 ## Fields Overview <a href="#fields" id="fields" class="docs-anchor">#</a>
@@ -61,8 +88,15 @@ The following field types are available ([see below for additional Pro Field Typ
 	* A select dropdown menu field.
 		* Can specify labels (with values assumed) or labels and values (that differ).
 			* To make the first option empty, use **labels and values** approach with first option having **--** or **Please select...**, etc for the label, and leave option blank.
+		* Can be automatically populated with select [EE Data or Pre-defined list options](#feeders).
 		* Can be marked as required.
 		* Can specify default option to be selected.
+* **Multiple Select** (`multiple_select`) <a href="#fields-multiple-select" id="fields-multiple-select" class="docs-anchor">#</a>
+	* A multiple select field.
+		* Can specify labels (with values assumed) or labels and values (that differ).
+		* Can be automatically populated with select [EE Data or Pre-defined list options](#feeders).
+		* Can be marked as required.
+		* Can specify default option(s) to be selected.
 * **Checkbox** (`checkbox`) <a href="#fields-checkbox" id="fields-checkbox" class="docs-anchor">#</a>
 	* A single checkbox field.
 		* Has a default value of **Yes**, which can be overwritten with any value you want. The front end however, will always display the value as `1`, but upon submission, the value will be switched to the one you have set.
@@ -71,11 +105,13 @@ The following field types are available ([see below for additional Pro Field Typ
 * **Checkbox Group** (`checkbox_group`) <a href="#fields-checkbox-group" id="fields-checkbox-group" class="docs-anchor">#</a>
 	* A group of checkboxes.
 		* Can specify labels (with values assumed) or labels and values (that differ).
+		* Can be automatically populated with select [EE Data or Pre-defined list options](#feeders).
 		* Can be marked as required.
 		* Can specify which (if any) options to be checked by default.
 * **Radio Group** (`radio_group`) <a href="#fields-radio-group" id="fields-radio-group" class="docs-anchor">#</a>
 	* A group of radio options.
 		* Can specify labels (with values assumed) or labels and values (that differ).
+		* Can be automatically populated with select [EE Data or Pre-defined list options](#feeders).
 		* Can be marked as required.
 		* Can specify which (if any) option to be selected by default.
 * **File Upload** (`file`) <a href="#fields-file-upload" id="fields-file-upload" class="docs-anchor">#</a>
@@ -95,7 +131,7 @@ The following field types are available ([see below for additional Pro Field Typ
 		* Can be marked as required.
 * **Dynamic Recipients** (`dynamic_recipients`) <a href="#fields-dynamic-recipients" id="fields-dynamic-recipients" class="docs-anchor">#</a>
 	* A select dropdown menu field that contains protected email addresses and labels for each.
-		* Can be switched to Radio options at form level inside Composer.
+		* Can be switched to Radio or Checkbox group options at form level inside Composer.
 		* Specify labels and email address values.
 			* Emails are never parsed in source code (they're replaced with **0**, **1**, **2**, etc).
 				* **NOTE:** When parsing this field semi-manually, be sure to use `{field:index}` to generate numeric values of options instead of `{field:value}`.
@@ -112,8 +148,8 @@ The following field types are available ([see below for additional Pro Field Typ
 		* In the Property Editor (right column) in Composer, select a notification template you want the selected recipient for this field to receive.
 			* Users/groups need to have permissions access for **Email Notifications** to create new formatting templates.
 		* Can be marked as required.
-		* Can specify default option to be selected.
-		* Currently only 1 recipient(s) option can be selected at this time.
+		* Can specify default option(s) to be selected.
+		* Can specify 1 or more recipient options at a time (when using as Checkboxes).
 		* Multiple email addresses can be specified for each option, separated by commas.
 		* Can include more than 1 of this field type in your forms, allowing for multiple sets of recipients to be notified.
 
@@ -223,6 +259,36 @@ The following extra field types are available with Freeform Pro:
 [![Website fieldtype](images/cp_field-website.png)](images/cp_field-website.png)
 
 
+## Special Fields <a href="#special-fields" id="special-fields" class="docs-anchor">#</a>
+
+Special fields are ones that either every form needs (such as Submit button) and ones that aid in the layout and content of forms (such as the HTML block). None of these fields store any submission data in the database. The following special fields are available to use:
+
+* **Submit** <a href="#fields-submit" id="fields-submit" class="docs-anchor">#</a>
+	* Settings allow you to edit the button label.
+	* You may adjust the positioning of the submit button:
+		* Aligned to Left
+		* Aligned to Center
+		* Aligned to Right
+	* When using with multi-page forms, Freeform will detect when you're on a page after first page, and provide you with additional options:
+		* It will include a Previous button by default, allowing the user to go back to previous pages in the form.
+			* Previous button can be disabled.
+		* Positioning options now include:
+			* Apart at Left and Right
+			* Together at Left
+			* Together at Center
+			* Together at Right
+	* You may include 1 per page in your form.
+* **HTML** <a href="#fields-html" id="fields-html" class="docs-anchor">#</a>
+	* Property Editor will load an HTML area for you to type or paste your code into.
+	* Layout column will live parse your HTML.
+	* All HTML is allowed here.
+	* You can include as many of these in your form as you wish.
+* **reCAPTCHA** (Pro) <a href="#fields-recaptcha" id="fields-recaptcha" class="docs-anchor">#</a>
+	* Built in support for [reCAPTCHA](https://www.google.com/recaptcha).
+	* See [reCAPTCHA documentation](spam-protection.md#recaptcha) for more information.
+	* *reCAPTCHA* fields will render automatically like the rest of your fields in your form, but if you're building a form manually, you'd call it like this (using the Hash value for *reCAPTCHA* field in Property Editor of Composer):
+
+
 ## Field Specific Properties <a href="#field-specific-properties" id="field-specific-properties" class="docs-anchor">#</a>
 
 The following are field specific properties for the basic and Pro field types:
@@ -270,3 +336,97 @@ The following are field specific properties for the basic and Pro field types:
 		* A label for the **Previous** button. `Previous` by default.
 	* `{field:disable_prev}`
 		* A boolean value. If `true` the **Previous** button should not be rendered.
+
+
+## Populating Fields with EE Data & Predefined Options <a href="#feeders" id="feeders" class="docs-anchor">#</a>
+
+Inside Composer (only), basic field types with options have the ability to be automatically fed options from EE Data or Predefined Options. This allows you to quickly build forms by having fields auto-generated.
+
+### Available Fields <a href="#feeders-fields" id="feeders-fields" class="docs-anchor">#</a>
+The following field types can be auto-populated:
+
+* [Select](#fields-select)
+	* Optional **Empty Option Label** to have first option be something like `Please select...`
+* [Multiple Select](#fields-multiple-select)
+* [Checkbox Group](#fields-checkbox-group)
+* [Radio Group](#fields-radio-group)
+
+### Available EE Data types <a href="#feeders-ee-data" id="feeders-elements" class="docs-anchor">#</a>
+The following EE Data types can be fed to the above field types:
+
+* **[EE Entries](https://docs.expressionengine.com/latest/cp/publish/edit.html)**
+	* **Target** channel or all channels.
+	* **Option Label** and **Option Value** choices:
+		* ID
+		* Title
+		* URL Title
+		* Fields (simple values)
+* **[EE Members](https://docs.expressionengine.com/latest/member/index.html)**
+	* **Target** member group or all groups.
+	* **Option Label** and **Option Value** choices:
+		* ID
+		* Username
+		* Screen Name
+		* Email
+		* Fields (simple values)
+* **[EE Categories](https://docs.expressionengine.com/latest/cp/channel/cat/index.html)**
+	* **Target** category groups or all groups.
+	* **Option Label** and **Option Value** choices:
+		* ID
+		* Title
+		* URL Title
+		* Fields (simple values)
+
+### Available Predefined Options <a href="#feeders-predefined" id="feeders-predefined" class="docs-anchor">#</a>
+The following Freeform predefined options can be fed to the above field types:
+
+* **States**
+	* USA States and territories
+	* **Option Label** and **Option Value** choices:
+		* Full
+		* Abbreviated (upper case 2 letters)
+* **Provinces**
+	* Canadian Provinces and territories
+	* **Option Label** and **Option Value** choices:
+		* Full
+		* Abbreviated (upper case 2 letters)
+* **Countries**
+	* All world countries
+	* **Option Label** and **Option Value** choices:
+		* Full
+		* Abbreviated (upper case 2 letters)
+* **Languages**
+	* All world languages
+	* **Option Label** and **Option Value** choices:
+		* Full
+		* Abbreviated (lower case 2 letters)
+* **Numbers** (range)
+	* A custom range of numbers
+	* **Range Start** and **Range End**
+		* E.g. `60` - `65` would return list: `60, 61, 62, 63, 64, 65`
+* **Years** (range)
+	* A custom range of years
+	* **Range Start** - number of years in PAST from current year
+	* **Range End** - number of years in FUTURE from current year
+		* E.g. `5` (start) - `0` (end) would return list: `2018, 2017, 2016, 2015, 2014, 2013`
+	* **Sort Direction**:
+		* Ascending
+		* Descending
+* **Months**
+	* All 12 months of the year.
+	* **Option Label** and **Option Value** choices:
+		* Full, e.g. `September`
+		* Abbreviated (Capitalized 3 letters), e.g. `Sep`
+		* Single Number, e.g. `9`
+		* 2-digit Number, e.g. `09`
+* **Days**
+	* List of days `1` to `31`.
+	* **Option Label** and **Option Value** choices:
+		* Single Number, e.g. `3`
+		* 2-digit Number, e.g. `03`
+* **Days of Week**
+	* List of all days of week.
+	* **Option Label** and **Option Value** choices:
+		* Full, e.g. `Thursday`
+		* Abbreviated (Capitalized 3 letters), e.g. `Thu`
+		* Single Number, e.g. `4`

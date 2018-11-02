@@ -1,6 +1,6 @@
 {
   "name": "solspace/ee-freeform-next",
-  "description": "Freeform Next plugin for EE3.x",
+  "description": "Freeform add-on for ExpressionEngine",
   "type": "library",
   "require": {
     "symfony/property-access": "^2.8",

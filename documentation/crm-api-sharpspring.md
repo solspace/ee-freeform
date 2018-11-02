@@ -2,9 +2,9 @@
 
 This documentation page assumes you have read over the [CRM Integration Overview page](crm-integrations.md). If you have not yet read it, please do so now. We also assume that you have a [SharpSpring](https://sharpspring.com) account already. This integration requires that you have *Freeform Pro*. If you currently have Freeform Lite, you can purchase an upgrade to Freeform Pro by visiting your account area.
 
-Includes support for the following:
+SharpSpring integration includes support for the following:
 
-* Field mapping to standard SharpSpring fields (excluding custom fields for now).
+* Field mapping to standard SharpSpring fields and all custom field types.
 * Maps data to **Contacts**.
 
 ## Setup Instructions <a href="#setup" id="setup" class="docs-anchor">#</a>
