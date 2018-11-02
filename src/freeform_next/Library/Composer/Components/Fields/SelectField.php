@@ -46,7 +46,7 @@ class SelectField extends AbstractExternalOptionsField implements SingleValueInt
             . '>';
 
         foreach ($this->getOptions() as $option) {
-            $isSelected = $this->getValue() === $option->getValue();
+            $isSelected = $this->getValue() == $option->getValue();
             $output     .= '<option value="' . $option->getValue() . '"' . ($isSelected ? ' selected' : '') . '>';
             $output     .= $this->translate($option->getLabel());
             $output     .= '</option>';

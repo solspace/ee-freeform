@@ -9,6 +9,7 @@
  */
 
 import { combineReducers } from "redux";
+import { duplicateHandles } from "./DuplicateHandles";
 import { composer, context, formId } from "./Composer";
 import { assetSources, fields, fileKinds, formStatuses, specialFields } from "./Fields";
 import { templates } from "./FormTemplates";
@@ -34,6 +35,7 @@ export default combineReducers({
   assetSources,
   templates,
   placeholders,
+  duplicateHandles,
   integrations,
   fileKinds,
   channelFields: (state = []) => state,

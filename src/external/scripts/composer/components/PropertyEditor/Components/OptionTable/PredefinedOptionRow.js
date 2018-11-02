@@ -31,12 +31,6 @@ export default class PredefinedOptionRow extends Component {
     removeValue: PropTypes.func.isRequired,
   };
 
-  constructor(props, context) {
-    super(props, context);
-
-    this.updateIsChecked = this.updateIsChecked.bind(this);
-  }
-
   render() {
     const { label, value, isChecked } = this.props;
 
@@ -68,11 +62,12 @@ export default class PredefinedOptionRow extends Component {
             onChange={this.updateIsChecked}
           />
         </td>
+        <td />
       </tr>
     );
   }
 
-  updateIsChecked(event) {
+  updateIsChecked = (event) => {
     const { hash, value, insertValue, removeValue } = this.props;
     const { target: { checked } } = event;
 
