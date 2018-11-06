@@ -5,6 +5,7 @@
 - Added Multi-select fieldtype.
 - Added filtering options in CP Submissions list view.
 - Added reCAPTCHA support for Freeform Pro edition.
+- Added dotmailer mailing list integration for Freeform Pro edition.
 - Added Member Group Permissions controls - allow or deny access to various pages and parts of Freeform control panel.
 - Added ability to render Dynamic Recipients as checkboxes, and now allows submitter to select more than 1 option.
 - Added ability to set Mailing List fields as hidden fields (automatically opting in users).
