@@ -1,5 +1,13 @@
 # Changelog
 
+### 1.7.1 (November 7, 2018) <a href="#v1-7-1" id="v1-7-1" class="docs-anchor">#</a>
+- Fixed a bug where default selections for multi-option fields populated with predefined and EE data were not respecting default option selections on front end.
+- Fixed a bug where the Classic Migration would stall while migrating submissions if a form contained no submissions.
+- Fixed a bug where Freeform was converting number strings to actual numbers when saving the form.
+- Fixed a bug where 'reCAPTCHA' was available as a fieldtype choice (it's only available as a special field).
+- Fixed a bug where the Dynamic Recipients fieldtype was parsing as `0`, `1` etc instead of the option value.
+- Fixed a bug where Composer would error when using PHP 5.4 (EE3).
+
 ### 1.7.0 (November 1, 2018) <a href="#v1-7-0" id="v1-7-0" class="docs-anchor">#</a>
 - Added field option Data Feeders for Checkbox group, Radio group, Select and Multi-select fieldtypes. You can now populate these fields with Entries, Categories, Members, or one of our many predefined options: States, Provinces, Countries, Languages, Number ranges, Year ranges, Months, Days and Days of the Week. Freeform Data Feeders also offer flexible control over formatting and/or which data fills option labels and option values.
 - Added Multi-select fieldtype.
