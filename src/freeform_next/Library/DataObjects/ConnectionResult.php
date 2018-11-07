@@ -24,7 +24,9 @@ class ConnectionResult
      */
     public function isSuccessful()
     {
-        return empty($this->formErrors) && empty($this->fieldErrors);
+        $isEmpty = empty($this->formErrors) && empty($this->fieldErrors);
+
+        return $isEmpty;
     }
 
     /**

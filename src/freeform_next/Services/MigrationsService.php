@@ -75,7 +75,9 @@ class MigrationsService
         $fields   = FieldRepository::getInstance()->getAllFields();
         $statuses = StatusRepository::getInstance()->getAllStatuses();
 
-        return empty($forms) && count($fields) === 12 && count($statuses) === 3;
+        $isFreshInstall = empty($forms) && count($fields) === 12 && count($statuses) === 3;
+
+        return $isFreshInstall;
     }
 
     /**

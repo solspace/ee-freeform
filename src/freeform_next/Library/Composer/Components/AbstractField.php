@@ -302,7 +302,9 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
     {
         $this->addErrors($this->validate());
 
-        return empty($this->errors);
+        $isEmpty = empty($this->errors);
+
+        return $isEmpty;
     }
 
     /**
