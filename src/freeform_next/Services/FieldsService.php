@@ -140,7 +140,7 @@ class FieldsService implements FieldHandlerInterface
                 foreach ($items as $item) {
                     $label     = $item->$labelField ?: $item->channel_title;
                     $value     = $item->$valueField ?: $item->channel_id;
-                    $options[] = new Option($label, $value, \in_array($value, $selectedValues, true));
+                    $options[] = new Option($label, $value, \in_array($value, $selectedValues, false));
                 }
 
                 break;
@@ -162,7 +162,7 @@ class FieldsService implements FieldHandlerInterface
                 foreach ($items as $item) {
                     $label     = $item->$labelField ?: $item->cat_name;
                     $value     = $item->$valueField ?: $item->cat_id;
-                    $options[] = new Option($label, $value, \in_array($value, $selectedValues, true));
+                    $options[] = new Option($label, $value, \in_array($value, $selectedValues, false));
                 }
 
                 break;
@@ -182,7 +182,7 @@ class FieldsService implements FieldHandlerInterface
                 foreach ($items as $item) {
                     $label     = $item->$labelField ?: $item->username;
                     $value     = $item->$valueField ?: $item->member_id;
-                    $options[] = new Option($label, $value, \in_array($value, $selectedValues, true));
+                    $options[] = new Option($label, $value, \in_array($value, $selectedValues, false));
                 }
 
                 break;
@@ -194,7 +194,7 @@ class FieldsService implements FieldHandlerInterface
         if ($config->getEmptyOption()) {
             array_unshift(
                 $options,
-                new Option($config->getEmptyOption(), '', \in_array('', $selectedValues, true))
+                new Option($config->getEmptyOption(), '', \in_array('', $selectedValues, false))
             );
         }
 
