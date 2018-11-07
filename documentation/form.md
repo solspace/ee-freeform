@@ -87,8 +87,10 @@ If you're wanting to simply render a complete form based on Composer layout and 
 	* Outputs the description of the form.
 * `{form:return_url}` <a href="#var-returnUrl" id="var-returnUrl" class="docs-anchor">#</a>
 	* Outputs the return URL of the form.
-* `{form:current_page}` <a href="#var-currentpage" id="var-currentpage" class="docs-anchor">#</a>
-	* Returns the current page containing its label and index.
+* `{current_page:label}` <a href="#var-current_page_label" id="var-current_page_label" class="docs-anchor">#</a>
+	* Returns the current page label.
+* `{current_page:index}` <a href="#var-current_page_index" id="var-current_page_label" class="docs-anchor">#</a>
+	* Returns the current page index, e.g. `0`, `1`, etc.
 * **Custom Attributes** <a href="#var-custom-attributes" id="var-custom-attributes" class="docs-anchor">#</a>
 	* The following variables are available to help with formatting, based on what you have specified in Composer or the corresponding parameters:
 		* `{form:id_attribute}` <a href="#var-custattr-id" id="var-custattr-id" class="docs-anchor">#</a>
@@ -143,6 +145,8 @@ If you're wanting to simply render a complete form based on Composer layout and 
 			* Attributes to be added to the input field, e.g. `input_attributes:readonly="true"`, `input_attributes:data-field-id="test"`
 		* `override_value`
 			* Override the value for the input field, e.g. `override_value="test"`
+		* Manually rendering *reCAPTCHA* (Pro) fields need to be called like this (using the Hash value for *reCAPTCHA* field in Property Editor of Composer, e.g. `MD1KzPw68`):
+			* `{field:grecaptcha_MD1KzPw68:render}`
 	* `{field:field_name:render_label}` - renders the complete label. The following override parameters are available:
 		* `label_class`
 	* `{field:field_name:render_input}` - renders the complete input. The following override parameters are available:

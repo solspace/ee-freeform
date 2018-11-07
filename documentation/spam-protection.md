@@ -25,9 +25,6 @@ Freeform does NOT use [EE's native CAPTCHA feature](https://docs.expressionengin
 
 If you wish to use *reCAPTCHA* for your forms, enable the [reCAPTCHA](settings.md#recaptcha) setting and fill in the reCAPTCHA *Site Key* and *Secret Key*. To add reCAPTCHA to your forms, open up and edit each form and drag over the **reCAPTCHA** special field anywhere you like into your form layout.
 
-*reCAPTCHA* fields will render automatically like the rest of your fields in your form, but if you're building a form manually, you'd call it like this (using the Hash value for *reCAPTCHA* field in Property Editor of Composer):
+*reCAPTCHA* fields will render automatically like the rest of your fields in your form, but if you're building a form manually, you'd call it like this (using the Hash value for *reCAPTCHA* field in Property Editor of Composer, e.g. `MD1KzPw68`):
 
-	{% set form = craft.freeform.form("composerForm") %}
-	{% set recaptcha = form.get("JDGnlp8vB") %}
-
-	{{ recaptcha.renderInput }}
+	{field:grecaptcha_MD1KzPw68:render}
