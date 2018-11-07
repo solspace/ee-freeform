@@ -42,7 +42,7 @@ class CheckboxGroupField extends AbstractExternalOptionsField implements Multipl
         $output     = '';
 
         foreach ($this->options as $index => $option) {
-            $isSelected = in_array($option->getValue(), $this->getValue());
+            $isSelected = in_array($option->getValue(), $this->getValue(), false);
 
             $output .= '<label>';
 
