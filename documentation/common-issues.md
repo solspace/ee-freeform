@@ -7,6 +7,7 @@ Check out this documentation resource to troubleshoot common problems or find an
 * [Emails not sending](#emails-not-sending)
 * [Form not submitting](#form-not-submitting)
 * [Updated field options aren't showing](#field-options)
+* [Certain uploaded files are not being accepted](#uploaded-files)
 * [Form submits very slowly](#form-submits-slow)
 * [Error when loading form in templates](#errors-templates)
 * [Errors about missing files/pages in Freeform CP](#missing-files)
@@ -70,6 +71,42 @@ A common issue customers run into is their forms not submitting successfully. Th
 * To be extra thorough, you can also try submitting EE's simple [Contact Form](https://docs.expressionengine.com/latest/add-ons/email/contact_form.html) feature.
 
 
+## Updated field options aren't showing <a href="#field-options" id="field-options" class="docs-anchor">#</a>
+
+Freeform takes a bit of a unique - but flexible - approach to [fields](fields-field-types.md). Fields are global and available to all forms, but they can also be overwritten per form. This allows you to save time reusing existing fields when making other forms, but also gives you flexibility to make adjustments to them when needed. So to clarify, you can create fields with labels and options that are common to all forms, but also override those on each form. For example, if you have a field named Cell Phone, on the form level, you can rename the field name to Mobile Phone, or if you have a Checkbox Group field with options: Option A, Option B, and Option C, you could override it to just have 2 options with values of Option A and Option B, and/or add Option D.
+
+The possibly confusing part here is that when you edit/add/remove options at Composer level for each form, they will NOT update the "master" field options/labels. And likewise, if you edit/add/remove options at the "master" field level (**Freeform** -> **Fields**), they will NOT update any existing usage of this field in the forms they're assigned to. It would be chaos if it did in either case, and prevent you from being able to tweak field labels and options per form.
+
+If you plan on building several forms with matching fields (that have matching options, etc), we strongly encourage you to create the field(s) in main Field area (**Freeform** -> **Fields**) first with all the options you'd like. Then when you construct your forms, you'll see all the default options available. It's better to think of the main fields area as defaults for new forms (or new assignments of that field to existing forms).
+
+
+## Certain uploaded files are not being accepted <a href="#uploaded-files" id="uploaded-files" class="docs-anchor">#</a>
+
+If you have a form that doesn't seem to be accepting files such as `docx` or similar, it could be a variety of issues ranging from which application compiled the file to your server configuration. One possible workaround to this would be adding the [Mime Whitelist Additions](https://docs.expressionengine.com/latest/general/system_configuration_overrides.html#mime-whitelist-additions) rule to your EE config file (e.g. `docx`):
+
+```
+$config['mime_whitelist_additions'] = array(
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+);
+```
+
+You may also need an **.htaccess** directive (added to top of the file before any rewrite rules):
+
+	#mimetype addition docx
+	AddType application/vnd.openxmlformats-officedocument.wordprocessingml.document .docx
+
+
+## Form submits very slowly <a href="#form-submits-slow" id="form-submits-slow" class="docs-anchor">#</a>
+
+If you're experiencing performance issues with Freeform, it could be due to a variety and combination of reasons. If forms are taking a long time to submit, consider the following options, and create a support ticket with the info below if necessary:
+
+* Are you using an older version of ExpressionEngine? Please update to the latest available version.
+* Does your form have a lot of fields in it? If so, try testing with a smaller and simpler form (e.g. Name, Email, and Message fields) and see if it submits faster.
+* Are you sending email notifications with the form? If so, does disabling some or all of them make things go faster?
+* Are any other parts of the site (especially form submits) slow or slow ish? If so, the issue might have more to do with your hosting environment.
+* Try placing the form on a fresh/blank template and see if the issue still happens (this rules out conflicts with any forms or JS on the page).
+
+
 ## Error when loading form in templates <a href="#errors-templates" id="errors-templates" class="docs-anchor">#</a>
 
 If you're getting an error that looks something like this:
@@ -90,26 +127,6 @@ This is very likely because you assigned a custom **Formatting Template** to you
 To correct this issue, ensure the path to your Formatting Templates directory path is correct, and that the formatting template the form was assigned (at some point) exists.
 
 > NOTE: If you want to change the name of the formatting template file while it already is in use for form(s), you should first assign all other form(s) another formatting template, then rename the formatting template file, and then reassign the form(s) to that newly renamed formatting template.
-
-
-## Updated field options aren't showing <a href="#field-options" id="field-options" class="docs-anchor">#</a>
-
-Freeform takes a bit of a unique - but flexible - approach to [fields](fields-field-types.md). Fields are global and available to all forms, but they can also be overwritten per form. This allows you to save time reusing existing fields when making other forms, but also gives you flexibility to make adjustments to them when needed. So to clarify, you can create fields with labels and options that are common to all forms, but also override those on each form. For example, if you have a field named Cell Phone, on the form level, you can rename the field name to Mobile Phone, or if you have a Checkbox Group field with options: Option A, Option B, and Option C, you could override it to just have 2 options with values of Option A and Option B, and/or add Option D.
-
-The possibly confusing part here is that when you edit/add/remove options at Composer level for each form, they will NOT update the "master" field options/labels. And likewise, if you edit/add/remove options at the "master" field level (**Freeform** -> **Fields**), they will NOT update any existing usage of this field in the forms they're assigned to. It would be chaos if it did in either case, and prevent you from being able to tweak field labels and options per form.
-
-If you plan on building several forms with matching fields (that have matching options, etc), we strongly encourage you to create the field(s) in main Field area (**Freeform** -> **Fields**) first with all the options you'd like. Then when you construct your forms, you'll see all the default options available. It's better to think of the main fields area as defaults for new forms (or new assignments of that field to existing forms).
-
-
-## Form submits very slowly <a href="#form-submits-slow" id="form-submits-slow" class="docs-anchor">#</a>
-
-If you're experiencing performance issues with Freeform, it could be due to a variety and combination of reasons. If forms are taking a long time to submit, consider the following options, and create a support ticket with the info below if necessary:
-
-* Are you using an older version of ExpressionEngine? Please update to the latest available version.
-* Does your form have a lot of fields in it? If so, try testing with a smaller and simpler form (e.g. Name, Email, and Message fields) and see if it submits faster.
-* Are you sending email notifications with the form? If so, does disabling some or all of them make things go faster?
-* Are any other parts of the site (especially form submits) slow or slow ish? If so, the issue might have more to do with your hosting environment.
-* Try placing the form on a fresh/blank template and see if the issue still happens (this rules out conflicts with any forms or JS on the page).
 
 
 ## Errors about missing files/pages in Freeform CP <a href="#missing-files" id="missing-files" class="docs-anchor">#</a>
