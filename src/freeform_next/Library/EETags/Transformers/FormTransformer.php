@@ -5,10 +5,8 @@ namespace Solspace\Addons\FreeformNext\Library\EETags\Transformers;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecipientField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\FileUploadInterface;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoRenderInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\StaticValueInterface;
-use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SubmitField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 
 class FormTransformer implements Transformer
@@ -42,6 +40,12 @@ class FormTransformer implements Transformer
             'form:column_class'              => $form->getCustomAttributes()->getColumnClass(),
             'form:submission_count'          => $submissionCount,
             'form:fields'                    => $this->getFields($form, 'field:', $skipHelperFields),
+            'form:current_page'              => [
+                [
+                    'page:index' => $form->getCurrentPage()->getIndex(),
+                    'page:label' => $form->getCurrentPage()->getLabel(),
+                ],
+            ],
         ];
     }
 
