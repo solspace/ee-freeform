@@ -42,7 +42,7 @@ class RadioGroupField extends AbstractExternalOptionsField implements SingleValu
         $output     = '';
 
         foreach ($this->options as $index => $option) {
-            $isSelected = $option->getValue() === $this->getValue();
+            $isSelected = $option->getValue() == $this->getValue();
 
             $output .= '<label>';
 
