@@ -145,12 +145,12 @@ class ClassicSubmissionHelper extends AddonBuilder
             ->query("SELECT * FROM $table ORDER BY entry_id ASC LIMIT $offset, $limit")
             ->result_array();
 
-        $totalEntries = ee()->db->query("SELECT COUNT(*) as `count` FROM $table")->row()->count;
+        $totalEntries = (int) ee()->db->query("SELECT COUNT(*) as `count` FROM $table")->row()->count;
 
         $this->formPagesCount = $this->getFormPages($totalEntries, $limit);
         $this->finished = false;
 
-        if ((int) $page === (int)$this->formPagesCount) {
+        if ((int) $page === (int)$this->formPagesCount || $totalEntries === 0) {
             $this->finished = true;
         }
 
