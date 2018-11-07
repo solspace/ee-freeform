@@ -41,7 +41,7 @@ class Option implements \JsonSerializable
      */
     public function getLabel()
     {
-        return $this->label;
+        return (string) $this->label;
     }
 
     /**
@@ -49,7 +49,7 @@ class Option implements \JsonSerializable
      */
     public function getValue()
     {
-        return $this->value;
+        return (string) $this->value;
     }
 
     /**
