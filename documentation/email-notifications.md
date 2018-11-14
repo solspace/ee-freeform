@@ -2,16 +2,83 @@
 
 Freeform allows you to send email notifications upon submittal of a form. They are global and can be reused for multiple forms, saving you time when you are managing many forms.
 
-* [Assigning Notifications to Fields/Forms](#assigning-notifications)
+* [Types of Email Notifications](#email-notification-types)
 * [Overview of Email Notification Template Options](#notification-template-options)
 * [Managing Email Templates within EE CP (Database)](#notification-template-database)
 * [Managing Email Templates as HTML Files](#notification-template-files)
 * [Template Examples](#examples)
 
 
-## Assigning Notifications to Fields/Forms <a href="#assigning-notifications" id="assigning-notifications" class="docs-anchor">#</a>
+## Types of Email Notifications <a href="#email-notification-types" id="email-notification-types" class="docs-anchor">#</a>
 
-Email notifications can be sent to email address(es) specified for admins (in the **Notify** section of Composer (right column) as well as email addresses specified/selected in the [Email](fields-field-types.md#fields-email) and [Dynamic Recipients](fields-field-types.md#fields-dynamic-recipients) field types. To assign an email notification template to these fields, click on the field in Composer, and then in the Property Editor (right column), select a notification template you want used to generate an email notification for the entered/selected email address. Email notifications can even be done [dynamically at template level](form.md#param-dynamicnotificationrecipients).
+Freeform allows you to send email notifications 5 different ways (all of them each being able to have their own notification templates, etc):
+
+* [Admin Notifications](#type-admin)
+* [Dynamic Recipients](#type-dynamic-recipients)
+* [Dynamic Template Notifications](#type-dynamic-template)
+* [User/Submitter Notifications](#type-user-submitter)
+* [User Defined](#type-user-defined)
+
+
+### Admin Notifications <a href="#type-admin" id="type-admin" class="docs-anchor">#</a>
+
+Email notifications can be sent to one or more admin email addresses. To setup:
+
+1. In Composer interface for the form, click on the Admin Notifications (envelope icon) tab at the top right.
+2. Select and/or add an email template.
+3. Specify admin email address(es) in the text area below. Separated multiples by line breaks only.
+
+### Dynamic Recipients <a href="#type-dynamic-recipients" id="type-dynamic-recipients" class="docs-anchor">#</a>
+
+Email notifications can be sent to one or more pre-defined admin email addresses that are selected by the user filling out the form using the [Dynamic Recipients](fields-field-types.md#fields-dynamic-recipients) field. For example, you might have a select dropdown field that contains different departments for the user to address the email to. To setup:
+
+1. In Field Editor (**Freeform -> Fields**) or Composer Quick Field (**Add New Field** button at left), create a new field of the *Dynamic Recipient* field type.
+2. In Composer interface for the form, drag that field into field layout.
+3. Click on field inside field layout and look over to the Property Editor (right column).
+4. Select and/or add an email template.
+5. Choose how you wish to display the field (Select, Radios, Checkboxes).
+6. Specify email addresses (and corresponding labels) for each option you wish to make available for users to select.
+	* You can specify more than 1 email address per option - just separate multiples with comma (`,` no space).
+	* Email addresses will NOT be rendered in the front end form, but rather a corresponding ID value will show up.
+
+> **NOTE:** You currently cannot specify more than 1 option with the same email address. It will appear to display somewhat correctly, but you'll notice some odd behaviors when the user submits the form. The only workaround for this currently is to create email address aliases for each duplicate option.
+
+### Dynamic Template Notifications <a href="#type-dynamic-template" id="type-dynamic-template" class="docs-anchor">#</a>
+
+Email notifications can be setup dynamically at template level using the [dynamic_notification_recipients](form.md#param-dynamicnotificationrecipients) parameter in your template. This allows you to hard code values or dynamically pass a value from another element such as a Channel Entry. To setup:
+
+1. In your EE template, add the following parameters to your [Freeform_Next:Form](form.md) template tag:
+`dynamic_notification_recipients="admin@example.com|support@example.com"`
+`dynamic_notification_template="test.html"`
+
+* For Database entry based templates, specify the handle for `template`.
+* For Twig file based templates, specify the full file name including **.html** for `template`.
+
+> **NOTE:** This feature uses Session data. It will likely not work properly if the page is cached with something like Varnish, etc.
+
+### User/Submitter Notifications <a href="#type-user-submitter" id="type-user-submitter" class="docs-anchor">#</a>
+
+Email notifications can be sent to the user submitting the form using the [Email](fields-field-types.md#fields-email) field type. This is often used to send an email confirmation for the user. To setup:
+
+1. In Field Editor (**Freeform -> Fields**) or Composer Quick Field (**Add New Field** button at left), create a new field of the *Email* field type.
+2. In Composer interface for the form, drag that field into field layout.
+3. Click on field inside field layout and look over to the Property Editor (right column).
+4. Select and/or add an email template.
+
+When the form submitter enters their email address in this field, Freeform will use that email address to send the email notification to.
+
+### User Defined <a href="#type-user-defined" id="type-user-defined" class="docs-anchor">#</a>
+
+Email notifications can be sent to email addresses of the submitters choosing using the [Email](fields-field-types.md#fields-email) field type. This would be commonly used for "tell-a-friend" type forms, or forms to send out any other type of invites. The user submitting the form would enter email address(es) in the form and Freeform can send an email notification to them. This essentially works the same way as [User/Submitter Notifications](#type-user-submitter). Just be careful as this could be abused by spammers. To setup:
+
+1. In Field Editor (**Freeform -> Fields**) or Composer Quick Field (**Add New Field** button at left), create a new field of the *Email* field type.
+2. In Composer interface for the form, drag that field into field layout.
+3. Click on field inside field layout and look over to the Property Editor (right column).
+4. Select and/or add an email template.
+
+To allow sending of email notifications to more than 1 email address (e.g. in the case of a "tell-a-friend" type form), you will need to add multiple input fields, each with the input name `email[]`. This approach would require that you code this part manually however.
+
+> **NOTE:** This feature could be abused by spammers.
 
 
 ## Overview of Email Notification Template Options <a href="#notification-template-options" id="notification-template-options" class="docs-anchor">#</a>
