@@ -7,6 +7,7 @@ Check out this documentation resource to troubleshoot common problems or find an
 * [Emails not sending](#emails-not-sending)
 * [Form not submitting](#form-not-submitting)
 * [Updated field options aren't showing](#field-options)
+* [Errors when adding new fields](#errors-fields)
 * [Certain uploaded files are not being accepted](#uploaded-files)
 * [Form submits very slowly](#form-submits-slow)
 * [Error when loading form in templates](#errors-templates)
@@ -78,6 +79,15 @@ Freeform takes a bit of a unique - but flexible - approach to [fields](fields-fi
 The possibly confusing part here is that when you edit/add/remove options at Composer level for each form, they will NOT update the "master" field options/labels. And likewise, if you edit/add/remove options at the "master" field level (**Freeform** -> **Fields**), they will NOT update any existing usage of this field in the forms they're assigned to. It would be chaos if it did in either case, and prevent you from being able to tweak field labels and options per form.
 
 If you plan on building several forms with matching fields (that have matching options, etc), we strongly encourage you to create the field(s) in main Field area (**Freeform** -> **Fields**) first with all the options you'd like. Then when you construct your forms, you'll see all the default options available. It's better to think of the main fields area as defaults for new forms (or new assignments of that field to existing forms).
+
+
+## Errors when adding new fields <a href="#errors-fields" id="errors-fields" class="docs-anchor">#</a>
+
+If you're receiving an error when creating a new field, it's likely because you've reached the maximum number of fields for your site unfortunately. There is currently a limit (around 130+) on the number of Freeform fields for each install of ExpressionEngine, due to the MySQL column limit, since all fields are stored in a single table. The total limit is also dependent on the type of fields you have, your server setup and encoding type, etc. The reason this error occurs is because the field gets added as a row to the `freeform_next_fields` database table, but there isn't room to add the field as a column in the `freeform_next_submissions` database table.
+
+The good news is that fields are global and available to all forms, and can also be overwritten per form. This allows you to save time reusing existing fields when making other forms, but also gives you flexibility to make adjustments to them when needed. So to clarify, you can create fields with labels and options that are common to all forms, but also override those on each form. For example, if you have a field named **Cell Phone**, on the form level, you can rename the field name to **Mobile Phone**, or if you have a Checkbox Group field with options: **Option 1**, **Option 2**, and **Option 3**, you could override it to just have 2 options with values of **Option A** and **Option B**.
+
+If you're building survey forms for example, you might want to create a dozen or so generic fields of each field type you commonly use, and just rename them for each survey form.
 
 
 ## Certain uploaded files are not being accepted <a href="#uploaded-files" id="uploaded-files" class="docs-anchor">#</a>
@@ -200,7 +210,7 @@ Freeform allows you to send [email notifications](email-notifications.md) upon s
 
 ## How many fields can I have? <a href="#how-many-fields" id="how-many-fields" class="docs-anchor">#</a>
 
-There is currently a limitation of 195 Freeform fields for each install of ExpressionEngine, due to the MySQL column limit, since all fields are stored in a single table. However, it's very important to note that Freeform fields can be used across all forms, and even be relabelled for each form.
+There is currently a limitation of around 130+ Freeform fields for each install of ExpressionEngine, due to the MySQL column limit, since all fields are stored in a single table. The total limit is also dependent on the type of fields you have, your server setup and encoding type, etc. However, it's very important to note that Freeform fields can be used across all forms, and even be relabelled for each form.
 
 If you plan on having many forms on your site, it may make sense to have some generic naming of fields, and relabel them for each individual form inside Composer. For example, if you need a checkbox for each form that essentially has your site user accept terms and conditions (but the label needs to be a bit different for each form), it'd be better to create a checkbox field once with the name **Accept Terms**, and then relabel it for each form as necessary, rather than creating 10 different variations of fields.
 
