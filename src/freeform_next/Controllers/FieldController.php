@@ -210,8 +210,11 @@ class FieldController extends Controller
         $view
             ->setHeading($model->label ?: lang('New Field'))
             ->addBreadcrumb(new NavigationLink('Fields', 'fields'))
-            ->addJavascript('fieldEditor')
-            ->addJavascript('handleGenerator');
+            ->addJavascript('fieldEditor');
+
+        if (!$model->id) {
+            $view->addJavascript('handleGenerator');
+        }
 
         return $view;
     }
