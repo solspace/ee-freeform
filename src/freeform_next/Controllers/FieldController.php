@@ -1025,28 +1025,6 @@ class FieldController extends Controller
                     ],
                 ],
             ],
-            FieldInterface::TYPE_CONFIRMATION       => [
-                [
-                    'title'  => 'Default Value',
-                    'desc'   => 'The default value for the field.',
-                    'fields' => [
-                        'value' => [
-                            'type'  => 'text',
-                            'value' => $model->value,
-                        ],
-                    ],
-                ],
-                [
-                    'title'  => 'Placeholder',
-                    'desc'   => 'The default text that will be shown if the field doesn’t have a value.',
-                    'fields' => [
-                        'placeholder' => [
-                            'type'  => 'text',
-                            'value' => $model->placeholder,
-                        ],
-                    ],
-                ],
-            ],
             FieldInterface::TYPE_REGEX              => [
                 [
                     'title'  => 'Default Value',
