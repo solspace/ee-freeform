@@ -108,6 +108,10 @@ class SubmissionRepository extends Repository
             ee()->db->where($key, $value);
         }
 
+        foreach ($attributes->getOrFilters() as $key => $value) {
+            ee()->db->or_where($key, $value);
+        }
+
         foreach ($attributes->getInFilters() as $key => $value) {
             ee()->db->where_in($key, $value);
         }
@@ -136,10 +140,17 @@ class SubmissionRepository extends Repository
             $query = ee()->db
                 ->select("$submissionTable.*, $submissionTable.id AS submissionId, $statusTable.name AS statusName, $statusTable.handle AS statusHandle, $statusTable.color AS statusColor")
                 ->from($submissionTable)
-                ->join($statusTable, "$submissionTable.statusId = $statusTable.id")
-                ->get();
+                ->join($statusTable, "$submissionTable.statusId = $statusTable.id");
 
-            $result = $query->result_array();
+            $sql = $query->_compile_select();
+
+            foreach ($attributes->getWhere() as $value) {
+                $sql = $this->addWhereToSql($sql, $value);
+            }
+
+            $result = $query->query($sql)->result_array();
+            $query->_reset_select();
+            ee()->db->_reset_select();
 
         } catch (\Exception $e) {
             if (preg_match("/Column not found: 1054.*in 'order clause'/", $e->getMessage())) {
@@ -204,16 +215,26 @@ class SubmissionRepository extends Repository
             ee()->db->offset($attributes->getOffset());
         }
 
-        $prefix = ee()->db->dbprefix;
+        $prefix          = ee()->db->dbprefix;
         $submissionTable = SubmissionModel::TABLE;
-        $statusTable = StatusModel::TABLE;
+        $statusTable     = StatusModel::TABLE;
 
-        return ee()->db
+        $query = ee()->db
             ->select("COUNT({$prefix}{$submissionTable}.id) AS total")
             ->from($submissionTable)
-            ->join($statusTable, "$submissionTable.statusId = $statusTable.id")
-            ->get()
-            ->row('total') ?: 0;
+            ->join($statusTable, "$submissionTable.statusId = $statusTable.id");
+
+        $sql = $query->_compile_select();
+
+        foreach ($attributes->getWhere() as $value) {
+            $sql = $this->addWhereToSql($sql, $value, false);
+        }
+
+        $result = $query->query($sql)->row('total') ?: 0;
+        $query->_reset_select();
+        ee()->db->_reset_select();
+
+        return $result;
     }
 
     /**
@@ -236,35 +257,33 @@ class SubmissionRepository extends Repository
         return $totals;
     }
 
-    private function groupLike($values) {
+    private function groupLike($values)
+    {
 
         $where = '';
 
-        if (is_array($values))
-        {
-            $first	= TRUE;
-            $and	= "\nAND ";
-            $or		= "\nOR ";
-            $where	.= '(';
+        if (is_array($values)) {
+            $first = true;
+            $and   = "\nAND ";
+            $or    = "\nOR ";
+            $where .= '(';
 
             //a LIKE or LIKE for every shown column
-            foreach ($values as $name => $value)
-            {
+            foreach ($values as $name => $value) {
                 $joiner = $or;
-                $start	= $or;
+                $start  = $or;
 
-                if ($first)
-                {
-                    $first	= FALSE;
-                    $start	= '';
-                    $joiner	= $and;
+                if ($first) {
+                    $first  = false;
+                    $start  = '';
+                    $joiner = $and;
                 }
 
                 $where .= $start . implode(
                         $joiner,
                         call_user_func_array(
-                            array($this, '_like'),
-                            array($name, $value)
+                            [$this, '_like'],
+                            [$name, $value]
                         )
                     );
             }
@@ -272,18 +291,35 @@ class SubmissionRepository extends Repository
             $where .= ')';
         }
 
-        if ($return_sql)
-        {
+        if ($return_sql) {
             return $where;
-        }
-        else
-        {
-            if ($where)
-            {
+        } else {
+            if ($where) {
                 $this->where($where);
             }
 
             return $this;
         }
+    }
+
+    /**
+     * @param string $sql
+     * @param string $where
+     *
+     * @return string
+     */
+    private function addWhereToSql($sql, $where, $hasOrderBy = true)
+    {
+        $pattern = '/^(.*)(WHERE .*)' . ($hasOrderBy ? '(\nORDER BY .*)' : '()') . '$/is';
+
+        preg_match($pattern, $sql, $matches);
+
+        if ($matches) {
+            list ($_, $firstPart, $wherePart, $lastPart) = $matches;
+
+            $sql = "$firstPart $wherePart AND $where $lastPart";
+        }
+
+        return $sql;
     }
 }

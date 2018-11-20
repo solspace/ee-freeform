@@ -42,6 +42,9 @@ class SubmissionAttributes
     private $filters;
 
     /** @var array */
+    private $orFilters;
+
+    /** @var array */
     private $likeFilters;
 
     /** @var array */
@@ -59,6 +62,9 @@ class SubmissionAttributes
     /** @var array */
     private $notInFilters;
 
+    /** @var array */
+    private $where;
+
     /**
      * SubmissionAttributes constructor.
      *
@@ -72,12 +78,14 @@ class SubmissionAttributes
             SubmissionModel::TABLE . '.formId' => $form->getId(),
         ];
 
-        $this->likeFilters  = [];
-        $this->orLikeFilters  = [];
-        $this->idFilters  = [];
-        $this->orIdFilters  = [];
-        $this->inFilters    = [];
-        $this->notInFilters = [];
+        $this->orFilters     = [];
+        $this->likeFilters   = [];
+        $this->orLikeFilters = [];
+        $this->idFilters     = [];
+        $this->orIdFilters   = [];
+        $this->inFilters     = [];
+        $this->notInFilters  = [];
+        $this->where         = [];
     }
 
     /**
@@ -405,6 +413,14 @@ class SubmissionAttributes
     /**
      * @return array
      */
+    public function getOrFilters()
+    {
+        return $this->orFilters;
+    }
+
+    /**
+     * @return array
+     */
     public function getInFilters()
     {
         return $this->inFilters;
@@ -416,6 +432,14 @@ class SubmissionAttributes
     public function getNotInFilters()
     {
         return $this->notInFilters;
+    }
+
+    /**
+     * @return array
+     */
+    public function getWhere()
+    {
+        return $this->where;
     }
 
     /**
@@ -433,6 +457,19 @@ class SubmissionAttributes
         } else {
             $this->filters[$key] = $value;
         }
+
+        return $this;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public function addOrFilter($key, $value)
+    {
+        $this->orFilters[$key] = $value;
 
         return $this;
     }
@@ -485,6 +522,18 @@ class SubmissionAttributes
     public function addOrIdFilter($key, $value)
     {
         $this->orIdFilters[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param $value
+     *
+     * @return $this
+     */
+    public function addWhere($value)
+    {
+        $this->where[] = $value;
 
         return $this;
     }
