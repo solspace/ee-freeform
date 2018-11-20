@@ -77,7 +77,7 @@ class ConfirmationField extends TextField implements NoStorageInterface
             $output = $this->injectAttribute($output, 'name', $this->getHandle());
             $output = $this->injectAttribute($output, 'id', $this->getIdAttribute());
             $output = $this->injectAttribute($output, 'class', $attributes->getClass());
-            $output = $this->injectAttribute($output, 'value', $this->getValue(), false);
+            $output = $this->injectAttribute($output, 'value', $this->getValue(), true);
             $output = $this->injectAttribute(
                 $output,
                 'placeholder',

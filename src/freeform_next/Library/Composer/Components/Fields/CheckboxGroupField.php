@@ -51,7 +51,7 @@ class CheckboxGroupField extends AbstractExternalOptionsField implements Multipl
                 . $this->getAttributeString("type", "checkbox")
                 . $this->getAttributeString("class", $attributes->getClass())
                 . $this->getAttributeString("id", $this->getIdAttribute($index + 1))
-                . $this->getAttributeString("value", $option->getValue(), false)
+                . $this->getAttributeString("value", $option->getValue(), true)
                 . $this->getParameterString('checked', $isSelected)
                 . $attributes->getInputAttributesAsString()
                 . '/>';
