@@ -41,7 +41,7 @@ class HiddenField extends TextField implements SingleValueInterface, NoRenderInt
             . $this->getAttributeString("type", $this->getType())
             . $this->getAttributeString("class", $attributes->getClass())
             . $this->getAttributeString("id", $this->getIdAttribute())
-            . $this->getAttributeString("value", $this->getValue(), false)
+            . $this->getAttributeString("value", $this->getValue(), true)
             . $attributes->getInputAttributesAsString()
             . '/>';
     }

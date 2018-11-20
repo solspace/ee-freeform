@@ -92,7 +92,7 @@ class TextareaField extends AbstractField implements SingleValueInterface, Place
                 $this->translate($attributes->getPlaceholder() ?: $this->getPlaceholder())
             )
             . '>'
-            . $this->getValue()
+            . htmlspecialchars($this->getValue())
             . '</textarea>';
     }
 }
