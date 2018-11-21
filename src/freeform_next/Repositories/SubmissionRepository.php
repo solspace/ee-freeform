@@ -207,10 +207,6 @@ class SubmissionRepository extends Repository
             ee()->db->where($submissionTable . '.id', $value);
         }
 
-        if ($attributes->getLimit()) {
-            ee()->db->limit($attributes->getLimit());
-        }
-
         if (null !== $attributes->getOffset()) {
             ee()->db->offset($attributes->getOffset());
         }
@@ -310,14 +306,34 @@ class SubmissionRepository extends Repository
      */
     private function addWhereToSql($sql, $where, $hasOrderBy = true)
     {
-        $pattern = '/^(.*)(WHERE .*)' . ($hasOrderBy ? '(\nORDER BY .*)' : '()') . '$/is';
+        $pattern = '/WHERE (.*?)\s(?=(ORDER BY|LIMIT))/s';
 
         preg_match($pattern, $sql, $matches);
 
         if ($matches) {
-            list ($_, $firstPart, $wherePart, $lastPart) = $matches;
+            list ($_, $existingRules) = $matches;
 
-            $sql = "$firstPart $wherePart AND $where $lastPart";
+            $sql = str_replace(
+                'WHERE ' . $existingRules,
+                'WHERE ' . $existingRules . ' AND ' . $where,
+                $sql
+            );
+        } else {
+
+            $pattern = '/WHERE (.*)$/s';
+            preg_match($pattern, $sql, $matches);
+
+            if ($matches) {
+                list ($_, $existingRules) = $matches;
+
+                $sql = str_replace(
+                    'WHERE ' . $existingRules,
+                    'WHERE ' . $existingRules . ' AND ' . $where,
+                    $sql
+                );
+            } else {
+                $sql = $sql . ' WHERE' . $where;
+            }
         }
 
         return $sql;
