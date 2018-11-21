@@ -54,6 +54,8 @@ The *Freeform_Next:Submissions* template tag fetches an individual submission or
 	* Specify a status to fetch submissions with a certain status, e.g. `status="open"`, or an array of statuses: `status="open|pending"`.
 * `submission_id` <a href="#param-submission_id" id="param-submission_id" class="docs-anchor">#</a>
 	* Used to limit results to a specific submission or set of submissions, e.g. `submission_id="22"`, or array of ID's, e.g. `submission_id="22|45|56"`
+* `search:FIELD_NAME` <a href="#param-search_field_name" id="param-search_field_name" class="docs-anchor">#</a>
+	* Used to filter your submission results by a hardcoded search term, e.g., `search:city="winnipeg"` will show only submissions that contain the value `winnipeg` in the `city` field. It works mostly like the [search:field="value"](https://docs.expressionengine.com/v4/channel/channel_entries.html#search-field-name) parameter in the [Channel:Entries](https://docs.expressionengine.com/v4/channel/channel_entries.html) tag (though some more advanced options may not work).
 
 
 ## Variables <a href="#variables" id="variables" class="docs-anchor">#</a>
