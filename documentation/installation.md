@@ -6,9 +6,9 @@
 
 
 ## Requirements <a href="#requirements" id="requirements" class="docs-anchor">#</a>
-Solspace Freeform Lite and Pro are compatible with EE4 and EE3, with mostly the same minimum requirements as listed on the [ExpressionEngine Requirements](https://docs.expressionengine.com/latest/installation/requirements.html) page:
+Solspace Freeform Express, Lite and Pro editions are all compatible with EE5, EE4 and EE3, with mostly the same minimum requirements as listed on the [ExpressionEngine Requirements](https://docs.expressionengine.com/latest/installation/requirements.html) page:
 
-### ExpressionEngine 4.x
+### ExpressionEngine 4.x/5.x
 
 * PHP 7 or newer
 * MySQL 5.6 or newer
