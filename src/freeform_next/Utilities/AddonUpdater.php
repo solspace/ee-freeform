@@ -86,6 +86,7 @@ abstract class AddonUpdater
         );
 
         $this->deleteActions();
+        $this->deleteExtensions();
 
         $this->onAfterUninstall();
 
@@ -265,13 +266,34 @@ abstract class AddonUpdater
                 ->row();
 
             if ($existing) {
-                unset($data['settings'], $data['priority'], $data['enabled']);
+                unset($data['settings'], $data['priority']);
 
                 ee()->db
                     ->where('extension_id', $existing->extension_id)
                     ->update('extensions', $data);
             } else {
                 ee()->db->insert('extensions', $data);
+            }
+        }
+    }
+
+    private function deleteExtensions()
+    {
+        $className = $this->getAddonInfo()->getModuleName() . '_ext';
+
+        foreach ($this->getInstallableExtensions() as $extension) {
+            $existing = ee()->db
+                ->select('extension_id')
+                ->where([
+                    'class'  => $className,
+                    'method' => $extension->getMethodName(),
+                    'hook'   => $extension->getHookName(),
+                ])
+                ->get('extensions')
+                ->row();
+
+            if ($existing) {
+                ee()->db->delete('extensions', ['extension_id' => $existing->extension_id]);
             }
         }
     }
