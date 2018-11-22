@@ -237,7 +237,7 @@ class HoneypotService
         static $honeypotHashes = [];
 
         if (!isset($honeypotHashes[$form->getHash()])) {
-            $random                           = time() . random_int(0, 999) . (time() + 999);
+            $random                           = time() . mt_rand(0, 999) . (time() + 999);
             $honeypotHashes[$form->getHash()] = substr(sha1($random), 0, 6);
         }
 
