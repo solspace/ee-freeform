@@ -18,8 +18,8 @@ $this->extend('_layouts/table_form_wrapper');
 ?>
 
 <form method="get" action="#" id="entry-filters" data-action="<?=isset($entries_filter_uri) ? $entries_filter_uri : ""?>">
-    <?php if (ee()->config->item('cp_session_type') != 'c'): ?>
-    <input type="hidden" name="S" value="<?= ee()->session->userdata('session_id') ?>">
+    <?php if ($sessionToken): ?>
+    <input type="hidden" name="S" value="<?= $sessionToken ?>">
     <?php endif; ?>
     <div class="filters" id="custom-filters">
         <b><?= lang('filters') ?>:</b>

@@ -414,6 +414,14 @@ class SubmissionController extends Controller
             ]);
         }
 
+        $sessionType = ee()->config->item('cp_session_type');
+        $sessionToken = null;
+        if ($sessionType === 'cs') {
+            $sessionToken = ee()->session->userdata('fingerprint');
+        } else if ($sessionType === 's') {
+            $sessionToken = ee()->session->userdata('session_id');
+        }
+
         $view = new CpView(
             'submissions/listing',
             [
@@ -438,6 +446,8 @@ class SubmissionController extends Controller
 
                 'baseUrl'               => $baseUrl,
                 'filters'               => $filters,
+
+                'sessionToken'          => $sessionToken,
             ]
         );
 
