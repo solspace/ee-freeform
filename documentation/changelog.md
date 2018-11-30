@@ -1,5 +1,11 @@
 # Changelog
 
+### 1.7.3 (November XX, 2018) <a href="#v1-7-3" id="v1-7-3" class="docs-anchor">#</a>
+- Fixed a bug where CP Forms list, Composer and front end forms render would error when using PHP 5.4 (EE3).
+- Fixed a bug where rendering a form on front end would error in PHP versions below 7.x (EE3).
+- Fixed a bug where extension hooks were not being uninstalled correctly.
+- Fixed a bug where CP Submissions filters were not working correctly when using Session ID.
+
 ### 1.7.2 (November 21, 2018) <a href="#v1-7-2" id="v1-7-2" class="docs-anchor">#</a>
 - Added `search:field="value"` parameter to Submissions template tag to allow filtering of results by field values.
 - Fixed a potential XSS vulnerability.
