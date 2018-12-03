@@ -78,8 +78,10 @@ class TemplateHelper
         self::loadTemplateLib();
 
         ee()->TMPL->parse($string);
-        $string = ee()->TMPL->template;
-        $string = ee()->TMPL->parse_globals($string);
+        if (!empty($string)) {
+            $string = ee()->TMPL->template;
+            $string = ee()->TMPL->parse_globals($string);
+        }
 
         return $string;
     }
