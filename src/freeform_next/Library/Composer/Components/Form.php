@@ -129,6 +129,12 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
     /** @var int */
     private $cachedPageIndex;
 
+    /** @var bool */
+    private $submitted;
+
+    /** @var mixed */
+    private $submitResult;
+
     /**
      * Form constructor.
      *
@@ -174,6 +180,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         $this->customAttributes    = new CustomFormAttributes();
         $this->errors              = [];
         $this->markedAsSpam        = false;
+        $this->submitted           = false;
 
         $this->layout = new Layout(
             $this,
@@ -544,6 +551,12 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      */
     public function submit()
     {
+        if ($this->submitted) {
+            return $this->submitResult;
+        }
+
+        $this->submitted = true;
+
         $formValueContext = $this->getFormValueContext();
         $onBeforeSubmit   = ExtensionHelper::call(ExtensionHelper::HOOK_FORM_BEFORE_SUBMIT, $this);
 
@@ -555,6 +568,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
 
         if ($formValueContext->shouldFormWalkToPreviousPage()) {
             $this->retreatFormToPreviousPage();
+            $this->submitResult = false;
 
             return false;
         }
@@ -564,11 +578,14 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
 
         if (!$this->isLastPage()) {
             $this->advanceFormToNextPage();
+            $this->submitResult = false;
 
             return false;
         }
 
         if (!$onBeforeSubmit) {
+            $this->submitResult = false;
+
             return false;
         }
 
@@ -586,6 +603,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         $formValueContext->cleanOutCurrentSession();
 
         ExtensionHelper::call(ExtensionHelper::HOOK_FORM_AFTER_SUBMIT, $this, $submission);
+        $this->submitResult = $submission;
 
         return $submission;
     }
