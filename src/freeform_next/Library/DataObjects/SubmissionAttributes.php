@@ -298,7 +298,7 @@ class SubmissionAttributes
      */
     public function setDateRangeEnd($dateRangeEnd)
     {
-        $dateRangeEnd = $this->getDateValue($dateRangeEnd);
+        $dateRangeEnd = str_replace('00:00:00', '23:59:59', $this->getDateValue($dateRangeEnd));
 
         $this->dateRangeEnd = $dateRangeEnd;
         $this->setFilter(SubmissionModel::TABLE . '.dateCreated <=', $dateRangeEnd);
