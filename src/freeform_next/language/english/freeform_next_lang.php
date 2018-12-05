@@ -16,4 +16,7 @@ $lang = [
     'all_fields' => 'All Fields',
     'field' => 'Field',
     'date_range' => 'Date Range',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
+    'keywords' => 'Keywords',
 ];
