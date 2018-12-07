@@ -244,6 +244,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
     let specificOptions = null;
     switch (target) {
       case ExternalOptions.PREDEFINED_STATES:
+      case ExternalOptions.PREDEFINED_STATES_TERRITORIES:
       case ExternalOptions.PREDEFINED_PROVINCES:
       case ExternalOptions.PREDEFINED_COUNTRIES:
       case ExternalOptions.PREDEFINED_LANGUAGES:
@@ -444,6 +445,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
           value={target}
           options={[
             { key: ExternalOptions.PREDEFINED_STATES, value: "States" },
+            { key: ExternalOptions.PREDEFINED_STATES_TERRITORIES, value: "States & Territories" },
             { key: ExternalOptions.PREDEFINED_PROVINCES, value: "Provinces" },
             { key: ExternalOptions.PREDEFINED_COUNTRIES, value: "Countries" },
             { key: ExternalOptions.PREDEFINED_LANGUAGES, value: "Languages" },
@@ -592,6 +594,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
     let updatedConfiguration = {};
     switch (value) {
       case ExternalOptions.PREDEFINED_STATES:
+      case ExternalOptions.PREDEFINED_STATES_TERRITORIES:
       case ExternalOptions.PREDEFINED_PROVINCES:
       case ExternalOptions.PREDEFINED_COUNTRIES:
       case ExternalOptions.PREDEFINED_LANGUAGES:

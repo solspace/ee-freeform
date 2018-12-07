@@ -68,6 +68,10 @@ class PredefinedOptionsFactory
                 $options = $instance->getStateOptions();
                 break;
 
+            case ExternalOptionsInterface::PREDEFINED_STATES_TERRITORIES:
+                $options = $instance->getStateTerritoryOptions();
+                break;
+
             default:
                 $options = [];
                 break;
@@ -284,6 +288,31 @@ class PredefinedOptionsFactory
 
         return $options;
     }
+
+    /**
+     * @return Option[]
+     */
+    private function getStateTerritoryOptions()
+    {
+        /** @var array $states */
+        static $states;
+        if (null === $states) {
+            $states = json_decode(file_get_contents(__DIR__ . '/Data/states-territories.json'), true);
+        }
+
+        $options      = [];
+        $isShortLabel = $this->getConfig()->getListType() === self::TYPE_ABBREVIATED;
+        $isShortValue = $this->getConfig()->getValueType() === self::TYPE_ABBREVIATED;
+        foreach ($states as $abbreviation => $stateName) {
+            $label = $isShortLabel ? $abbreviation : $stateName;
+            $value = $isShortValue ? $abbreviation : $stateName;
+
+            $options[] = new Option($label, $value, $this->isChecked($value));
+        }
+
+        return $options;
+    }
+
 
     /**
      * @param mixed $value

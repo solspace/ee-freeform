@@ -28,6 +28,7 @@ export const PREDEFINED_NUMBERS = "numbers";
 export const PREDEFINED_YEARS = "years";
 export const PREDEFINED_PROVINCES = "provinces";
 export const PREDEFINED_STATES = "states";
+export const PREDEFINED_STATES_TERRITORIES = "states_territories";
 export const PREDEFINED_COUNTRIES = "countries";
 export const PREDEFINED_LANGUAGES = "languages";
 
