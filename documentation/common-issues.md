@@ -12,6 +12,7 @@ Check out this documentation resource to troubleshoot common problems or find an
 * [Form submits very slowly](#form-submits-slow)
 * [Error when loading form in templates](#errors-templates)
 * [Errors about missing files/pages in Freeform CP](#missing-files)
+* ["The request response is empty" error when saving a Form](#request-response-empty)
 * [Errors about Update Service](#update-service-errors)
 * [Composer not loading correctly](#composer-issues)
 * [Data not sending to API integrations](#api-integration-issues)
@@ -144,6 +145,11 @@ To correct this issue, ensure the path to your Formatting Templates directory pa
 A surprisingly common issue is that customers will see errors in the Freeform control panel area saying that a file or page doesn't exist / is missing (e.g. when attempting to create a new email notification template, etc). This is usually a result of the file actually being missing on the site, or being blocked for some reason. Make sure that your server, site, or FTP client is not ignoring or excluding certain files and/or directories for any reason (e.g. an **.htaccess** rewrite rule that manipulates URL's can interfere with Freeform's POST to `/save` by redirecting it to `/save/`, etc). In all known cases of this, the aforementioned solutions always resolved the issue.
 
 
+## "The request response is empty" error when saving a Form <a href="#request-response-empty" id="missing-files" class="docs-anchor">#</a>
+
+If you're seeing the error **The request response is empty** when attempting to save your form inside the Freeform CP Composer page, this error is likely due to your server not having [PHP iconv](http://php.net/manual/en/book.iconv.php) enabled. The Freeform dependency [symfony/polyfill-mbstring](https://packagist.org/packages/symfony/polyfill-mbstring) requires it. It's not very common that a server does not have **iconv**, but does happen.
+
+
 ## Errors about Update Service <a href="#update-service-errors" id="update-service-errors" class="docs-anchor">#</a>
 
 If you're seeing errors referencing the Freeform Update Service, it might just be a temporary glitch. To resolve this issue right away, delete the **freeform_next** folder in the `/system/user/cache/` directory, which would let Freeform try downloading the Changelog again.
@@ -151,7 +157,7 @@ If you're seeing errors referencing the Freeform Update Service, it might just b
 
 ## Composer not loading correctly <a href="#composer-issues" id="composer-issues" class="docs-anchor">#</a>
 
-If the Composer interface inside the Freeform control panel is not loading correctly, it's very likely to do with the Freeform **themes** folder missing / being old / being corrupt. Remove the **freeform_next** themes folder and try uploading it again.
+If the Composer interface inside the Freeform control panel is not loading correctly, it's very likely to do with the Freeform **themes** folder missing / being old / being corrupt. Remove the **freeform_next** themes folder and try uploading it again. It may also be an issue with folder/file permissions. Please make sure the correct permissions are set as well.
 
 
 ## Data not sending to API integrations <a href="#api-integration-issues" id="api-integration-issues" class="docs-anchor">#</a>
