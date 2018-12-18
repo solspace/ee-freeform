@@ -230,6 +230,14 @@ class CustomFieldAttributes extends AbstractAttributes
     }
 
     /**
+     * @return string|null
+     */
+    public function getFieldIdPrefix()
+    {
+        return $this->formAttributes->getFieldIdPrefix();
+    }
+
+    /**
      * Takes a two class strings, explodes them into arrays, merges, then returns a glued string
      *
      * @param string $classStringA

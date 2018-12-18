@@ -475,6 +475,8 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
             $attribute .= '-' . $suffix;
         }
 
+        $attribute = $this->getCustomAttributes()->getFieldIdPrefix() . $attribute;
+
         return $attribute;
     }
 

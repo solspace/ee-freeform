@@ -39,6 +39,7 @@ class FormTransformer implements Transformer
             'form:row_class'                 => $form->getCustomAttributes()->getRowClass(),
             'form:column_class'              => $form->getCustomAttributes()->getColumnClass(),
             'form:submission_count'          => $submissionCount,
+            'form:field_id_prefix'           => $form->getCustomAttributes()->getFieldIdPrefix(),
             'form:fields'                    => $this->getFields($form, 'field:', $skipHelperFields),
             'form:current_page'              => [
                 [
