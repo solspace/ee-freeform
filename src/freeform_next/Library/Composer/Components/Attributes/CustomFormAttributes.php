@@ -79,6 +79,9 @@ class CustomFormAttributes extends AbstractAttributes
     /** @var bool */
     protected $useActionUrl;
 
+    /** @var string */
+    protected $fieldIdPrefix;
+
     /**
      * @return string
      */
@@ -229,6 +232,14 @@ class CustomFormAttributes extends AbstractAttributes
     public function getUseRequiredAttribute()
     {
         return $this->useRequiredAttribute;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFieldIdPrefix()
+    {
+        return $this->fieldIdPrefix;
     }
 
     /**
