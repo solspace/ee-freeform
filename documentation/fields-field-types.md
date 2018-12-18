@@ -381,7 +381,12 @@ The following EE Data types can be fed to the above field types:
 The following Freeform predefined options can be fed to the above field types:
 
 * **States**
-	* USA States and territories
+	* Official USA States
+	* **Option Label** and **Option Value** choices:
+		* Full
+		* Abbreviated (upper case 2 letters)
+* **States & Territories**
+	* Official USA States and territories
 	* **Option Label** and **Option Value** choices:
 		* Full
 		* Abbreviated (upper case 2 letters)
