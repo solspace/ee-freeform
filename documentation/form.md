@@ -64,6 +64,8 @@ If you're wanting to simply render a complete form based on Composer layout and 
 	* E.g. `input_attributes:readonly="true"`, `input_attributes:data-field-id="test"`
 * `use_required_attribute="yes"` <a href="#param-userequiredattribute" id="param-userequiredattribute" class="docs-anchor">#</a>
 	* Adds `required` attribute to input fields that have been set to be required in Composer.
+* `field_id_prefix="myform-"` <a href="#param-fieldidprefix" id="param-fieldidprefix" class="docs-anchor">#</a>
+	* Adds a prefix value on field outputs. Helpful if you have more than 1 form on the same template and are sharing fields.
 * `dynamic_notification_recipients` <a href="#param-dynamicnotificationrecipients" id="param-dynamicnotificationrecipients" class="docs-anchor">#</a>
 	* Allows using a dynamic template level notification for a more fine-grained control.
 	* Hard code values or pass a value from a channel entry, etc, e.g. `dynamic_notification_recipients="admin@example.com|support@example.com"`

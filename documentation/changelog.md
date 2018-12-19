@@ -1,5 +1,14 @@
 # Changelog
 
+### 1.7.5 (December XX, 2018) <a href="#v1-7-5" id="v1-7-5" class="docs-anchor">#</a>
+- Added `field_id_prefix` parameter to the Freeform:Form and Render tags to set a prefix value on field output. Helpful if you have more than 1 form on the same template and are sharing fields.
+- Fixed a bug where having more than 1 form in the same template would cause one form to take over the other form if the page reloaded from errors being present.
+- Fixed a bug where the JS autoscroll feature would act up if there was an error on a form and there was more than 1 form in the same page.
+- Fixed a bug where using data feeders from EE Entries, etc in Freeform fields would significantly impact submit wait time for forms on front end.
+- Fixed a bug where the US States predefined options list contained more than official states. Also added a States & Territories list that contains official states and territories.
+- Fixed a bug where the CP submission list date filters were not including the selected end date range in results.
+- Fixed a bug where the CP submission list filters were missing some translations.
+
 ### 1.7.4 (December 3, 2018) <a href="#v1-7-4" id="v1-7-4" class="docs-anchor">#</a>
 - Fixed a bug where submissions titles were not showing up correctly in some cases in CP Submissions list.
 
