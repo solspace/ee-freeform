@@ -19,7 +19,7 @@ use Symfony\Component\Finder\SplFileInfo;
 class FieldsService implements FieldHandlerInterface
 {
     /** @var array */
-    private static $optionsCache = [];
+    private static $optionsCache = array();
 
     /**
      * @return array
