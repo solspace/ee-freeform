@@ -277,8 +277,10 @@ class SubmissionAttributes
     {
         $dateRangeStart = $this->getDateValue($dateRangeStart);
 
-        $this->dateRangeStart = $dateRangeStart;
-        $this->setFilter(SubmissionModel::TABLE . '.dateCreated >=', $dateRangeStart);
+        if ($dateRangeStart) {
+            $this->dateRangeStart = $dateRangeStart;
+            $this->setFilter(SubmissionModel::TABLE . '.dateCreated >=', $dateRangeStart);
+        }
 
         return $this;
     }
@@ -298,10 +300,12 @@ class SubmissionAttributes
      */
     public function setDateRangeEnd($dateRangeEnd)
     {
-        $dateRangeEnd = str_replace('00:00:00', '23:59:59', $this->getDateValue($dateRangeEnd));
+        if ($dateRangeEnd) {
+            $dateRangeEnd = str_replace('00:00:00', '23:59:59', $this->getDateValue($dateRangeEnd));
 
-        $this->dateRangeEnd = $dateRangeEnd;
-        $this->setFilter(SubmissionModel::TABLE . '.dateCreated <=', $dateRangeEnd);
+            $this->dateRangeEnd = $dateRangeEnd;
+            $this->setFilter(SubmissionModel::TABLE . '.dateCreated <=', $dateRangeEnd);
+        }
 
         return $this;
     }
