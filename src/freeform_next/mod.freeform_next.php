@@ -173,8 +173,24 @@ class Freeform_Next extends Plugin
      *
      * @throws FreeformException
      */
-    public function submitForm(Form $form)
+    public function submitForm(Form $form = null)
     {
+        if (null === $form) {
+            $hash = $this->getPost(FormValueContext::FORM_HASH_KEY, null);
+
+            if (null !== $hash) {
+                $postedId = FormValueContext::getFormIdFromHash($hash);
+                $formModel = FormRepository::getInstance()->getFormByIdOrHandle($postedId);
+                if ($formModel) {
+                    $form = $formModel->getForm();
+                }
+            }
+        }
+
+        if (!$form) {
+            return;
+        }
+
         $honeypotService = new HoneypotService();
         $isAjaxRequest   = AJAX_REQUEST;
 
