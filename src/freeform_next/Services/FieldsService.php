@@ -18,6 +18,9 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class FieldsService implements FieldHandlerInterface
 {
+    /** @var array */
+    private static $optionsCache = [];
+
     /**
      * @return array
      */
@@ -113,6 +116,12 @@ class FieldsService implements FieldHandlerInterface
      */
     public function getOptionsFromSource($source, $target, array $configuration = [], $selectedValues = [])
     {
+        $cacheHash = sha1($source . $target . serialize($configuration) . serialize($selectedValues));
+
+        if (array_key_exists($cacheHash, self::$optionsCache)) {
+            return self::$optionsCache[$cacheHash];
+        }
+
         $config     = new ExternalOptionsConfiguration($configuration);
         $labelField = $config->getLabelField();
         $valueField = $config->getValueField();
@@ -197,6 +206,8 @@ class FieldsService implements FieldHandlerInterface
                 new Option($config->getEmptyOption(), '', \in_array('', $selectedValues, false))
             );
         }
+
+        self::$optionsCache[$cacheHash] = $options;
 
         return $options;
     }
