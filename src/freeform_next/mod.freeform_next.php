@@ -251,24 +251,26 @@ class Freeform_Next extends Plugin
      */
     private function assembleFormFromTag()
     {
-        $id     = $this->getParam('form_id');
-        $handle = $this->getParam('form');
+        $id       = $this->getParam('form_id');
+        $handle   = $this->getParam('form');
+        $postedId = null;
+
         if (!$handle) {
             $handle = $this->getParam('form_name');
         }
 
         $hash = $this->getPost(FormValueContext::FORM_HASH_KEY, null);
         if (null !== $hash) {
-            $id = FormValueContext::getFormIdFromHash($hash);
+            $postedId = FormValueContext::getFormIdFromHash($hash);
         }
 
-        $formModel = FormRepository::getInstance()->getFormByIdOrHandle($id ? $id : $handle);
+        $formModel = FormRepository::getInstance()->getFormByIdOrHandle($id ?: $handle);
         if (!$formModel) {
             return null;
         }
 
         $form = $formModel->getForm();
-        if (null !== $hash) {
+        if (null !== $hash && (int) $postedId === (int) $formModel->getId()) {
             $this->submitForm($form);
         }
 
