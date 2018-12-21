@@ -11,6 +11,7 @@ Solspace Freeform Express, Lite and Pro editions are all compatible with EE5, EE
 ### ExpressionEngine 4.x/5.x
 
 * PHP 7 or newer
+* [PHP iconv](http://php.net/manual/en/book.iconv.php) enabled
 * MySQL 5.6 or newer
 * Windows and macOS browsers:
 	* Chrome 21 or newer
@@ -22,6 +23,7 @@ Solspace Freeform Express, Lite and Pro editions are all compatible with EE5, EE
 ### ExpressionEngine 3.5.x
 
 * PHP 5.4 or newer
+* [PHP iconv](http://php.net/manual/en/book.iconv.php) enabled
 * MySQL 5.1 or newer
 * Windows and macOS browsers:
 	* Chrome 21 or newer

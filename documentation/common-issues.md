@@ -13,6 +13,7 @@ Check out this documentation resource to troubleshoot common problems or find an
 * [Error when loading form in templates](#errors-templates)
 * [Errors about missing files/pages in Freeform CP](#missing-files)
 * ["The request response is empty" error when saving a Form](#request-response-empty)
+* ["fatal error of ../freeform_next/vendor/symfony/polyfill-mbstring/Mbstring.php" error when saving a Form](#request-response-empty)
 * [Errors about Update Service](#update-service-errors)
 * [Composer not loading correctly](#composer-issues)
 * [Data not sending to API integrations](#api-integration-issues)
@@ -145,9 +146,9 @@ To correct this issue, ensure the path to your Formatting Templates directory pa
 A surprisingly common issue is that customers will see errors in the Freeform control panel area saying that a file or page doesn't exist / is missing (e.g. when attempting to create a new email notification template, etc). This is usually a result of the file actually being missing on the site, or being blocked for some reason. Make sure that your server, site, or FTP client is not ignoring or excluding certain files and/or directories for any reason (e.g. an **.htaccess** rewrite rule that manipulates URL's can interfere with Freeform's POST to `/save` by redirecting it to `/save/`, etc). In all known cases of this, the aforementioned solutions always resolved the issue.
 
 
-## "The request response is empty" error when saving a Form <a href="#request-response-empty" id="missing-files" class="docs-anchor">#</a>
+## "The request response is empty" error when saving a Form or "fatal error of ../freeform_next/vendor/symfony/polyfill-mbstring/Mbstring.php" <a href="#request-response-empty" id="request-response-empty" class="docs-anchor">#</a>
 
-If you're seeing the error **The request response is empty** when attempting to save your form inside the Freeform CP Composer page, this error is likely due to your server not having [PHP iconv](http://php.net/manual/en/book.iconv.php) enabled. The Freeform dependency [symfony/polyfill-mbstring](https://packagist.org/packages/symfony/polyfill-mbstring) requires it. It's not very common that a server does not have **iconv**, but does happen.
+If you're seeing the error **The request response is empty** or **fatal error of ../freeform_next/vendor/symfony/polyfill-mbstring/Mbstring.php** when attempting to save your form inside the Freeform CP Composer page, this error is likely due to your server not having [PHP iconv](http://php.net/manual/en/book.iconv.php) enabled. The Freeform dependency [symfony/polyfill-mbstring](https://packagist.org/packages/symfony/polyfill-mbstring) requires it. It's not very common that a server does not have **iconv**, but does happen.
 
 
 ## Errors about Update Service <a href="#update-service-errors" id="update-service-errors" class="docs-anchor">#</a>
