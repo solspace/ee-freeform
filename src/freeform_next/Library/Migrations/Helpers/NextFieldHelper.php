@@ -161,12 +161,6 @@ class NextFieldHelper
 
         ExtensionHelper::call(ExtensionHelper::HOOK_FIELD_AFTER_SAVE, $field, $isNew);
 
-        ee('CP/Alert')
-            ->makeInline('shared-form')
-            ->asSuccess()
-            ->withTitle(lang('Success'))
-            ->defer();
-
         return true;
     }
 
@@ -259,7 +253,7 @@ class NextFieldHelper
         if (!$nextTypeName) {
             $this->addToErrors('Could not find next field type for classic field type ' . $this->getClassicFieldType($classicField));
         }
-        
+
         $types = $this->getNextTypesArray();
 
         if (!array_key_exists($nextTypeName, $types)) {
