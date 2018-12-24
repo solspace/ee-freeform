@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.7.6 (December 24, 2018) <a href="#v1-7-6" id="v1-7-6" class="docs-anchor">#</a>
+- Updated Classic migration to maintain original submission dates of migrated submissions.
+- Fixed a bug where Classic migrations could stop working in rare cases.
+
 ### 1.7.5 (December 19, 2018) <a href="#v1-7-5" id="v1-7-5" class="docs-anchor">#</a>
 - Added `field_id_prefix` parameter to the Freeform:Form and Render tags to set a prefix value on field output. Helpful if you have more than 1 form on the same template and are sharing fields.
 - Fixed a bug where having more than 1 form in the same template would cause one form to take over the other form if the page reloaded from errors being present.
