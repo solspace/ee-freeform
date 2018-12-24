@@ -16,18 +16,18 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
-use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Solspace\Addons\FreeformNext\Library\Helpers\TemplateHelper;
+use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 
 /**
- * @property int       $id
- * @property int       $siteId
- * @property int       $statusId
- * @property string    $statusName
- * @property string    $statusHandle
- * @property string    $statusColor
- * @property int       $formId
- * @property string    $title
+ * @property int    $id
+ * @property int    $siteId
+ * @property int    $statusId
+ * @property string $statusName
+ * @property string $statusHandle
+ * @property string $statusColor
+ * @property int    $formId
+ * @property string $title
  */
 class SubmissionModel extends Model
 {
@@ -271,12 +271,13 @@ class SubmissionModel extends Model
      */
     public function save()
     {
+        $dateFormat = 'Y-m-d H:i:s';
         $insertData = [
             'siteId'      => $this->siteId,
             'formId'      => $this->formId,
             'statusId'    => $this->statusId,
             'title'       => $this->title,
-            'dateUpdated' => date('Y-m-d H:i:s', time()),
+            'dateUpdated' => date($dateFormat, time()),
         ];
 
         $insertData = array_merge($insertData, $this->assembleInsertData());
@@ -289,7 +290,17 @@ class SubmissionModel extends Model
                     $insertData
                 );
         } else {
-            $insertData['dateCreated'] = date('Y-m-d H:i:s');
+            if (!empty($this->dateCreated)) {
+                if (is_string($this->dateCreated)) {
+                    $dateCreated = $this->dateCreated;
+                } else {
+                    $dateCreated = $this->dateCreated->format($dateFormat);
+                }
+            } else {
+                $dateCreated = date($dateFormat);
+            }
+
+            $insertData['dateCreated'] = $dateCreated;
 
             ee()->db
                 ->insert(
@@ -318,7 +329,8 @@ class SubmissionModel extends Model
 
     /**
      * @param Form $form
-     * @param $savableFields
+     * @param      $savableFields
+     *
      * @return $this
      */
     public function setTitle(Form $form, $savableFields)
