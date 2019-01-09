@@ -1,9 +1,10 @@
 # Switching from Freeform Classic to Freeform Lite / Pro ("Next")
 
-**NOTE:** For the purpose of clarity in this documentation resource, any prior version of *Freeform Pro 4.x* and *Freeform Pro 5.x* are referred to as *Freeform Classic*. The **new** versions of *Freeform Lite* and *Freeform Pro* are referred to as *Freeform Next*.
+**NOTE:** For the purpose of clarity in this documentation resource, any prior version of *Freeform (free)* and *Freeform Pro 4.x*, *5.x* and *6.x* are referred to as *Freeform Classic*. The **new** versions of *Freeform Lite* and *Freeform Pro* are referred to as *Freeform Next*.
 
 Freeform has been completely rewritten from ground up. Whether you're considering switching from Freeform Classic to Freeform Next, or interesting in using Freeform Next on your next site build, this page is a resource to help you understand the differences and changes made with Freeform Next.
 
+* [How to Upgrade](#how-to-upgrade)
 * [Changes to Composer](#composer)
 * [Changes to Composer Templates](#formatting-templates)
 * [Changes to Freeform Entries](#submissions)
@@ -13,6 +14,111 @@ Freeform has been completely rewritten from ground up. Whether you're considerin
 * [Changes to Permissions](#permissions)
 * [Addition of API Integrations](#api-integrations)
 * [Migrating from Classic](#migration)
+
+
+## How to Upgrade <a href="#how-to-upgrade" id="how-to-upgrade" class="docs-anchor">#</a>
+
+You must have the appropriate EE-compatible version of Freeform Classic installed and upgraded for the [new Freeform "Next"](http://docs.solspace.com/expressionengine/freeform/v1) to properly detect and migrate it. For example, if you moved from EE2 to EE4, but only have the EE2 version of Freeform Classic (4.x) installed, the migration won't work correctly. You'll need to update to the 5.x (EE3) or 6.x (EE4/EE5) version of Freeform Classic first. If you're switching from Classic to the new Freeform, we don't expect you to pay an upgrade fee to access the EE3 or EE4 compatible versions of Classic to only use it for 15 mins to run the migration utility, so feel free to temporarily "borrow and reuse" a newer Classic license from another site if you have, or [contact us for a temporary copy](https://solspace.com/expressionengine/freeform/support).
+
+### Quick Overview
+
+If you want to retain any of your Freeform data, you'll need to appease Freeform Next and its [Migration Utility](../overview/classic-migration.md) (if you don't care about this data, then feel free to uninstall Freeform Classic and fresh install Freeform Next):
+
+### Version & Compatibility
+
+<table style="width: 100%; max-width: 1000px; margin: 15px 0;">
+  <tr style="border-bottom: 1px solid #dbdbdb;">
+    <th style="width: 60%; padding: 2px 5px;">Freeform version</th>
+    <th style="width: 40%; padding: 2px 5px;">Compatible EE version(s)</th>
+  </tr>
+  <tr style="border-bottom: 1px solid #dbdbdb;">
+    <td style="padding: 2px 5px;">Freeform Classic 3.x / Freeform 3.x <i>free</i></td>
+    <td style="padding: 2px 5px;">EE 1.x, 2.x</td>
+  </tr>
+  <tr style="border-bottom: 1px solid #dbdbdb;">
+    <td style="padding: 2px 5px;">Freeform Classic 4.x / Freeform 4.x <i>free</i> / Freeform Pro 4.x</td>
+    <td style="padding: 2px 5px;">EE 2.x</td>
+  </tr>
+  <tr style="border-bottom: 1px solid #dbdbdb;">
+    <td style="padding: 2px 5px;">Freeform Classic 5.x / Freeform 5.x <i>free</i> / Freeform Pro 5.x</td>
+    <td style="padding: 2px 5px;">EE 3.x</td>
+  </tr>
+  <tr style="border-bottom: 1px solid #dbdbdb;">
+    <td style="padding: 2px 5px;">Freeform Classic 6.x</td>
+    <td style="padding: 2px 5px;">EE 4.x, 5.x</td>
+  </tr>
+  <tr style="border-bottom: 1px solid #dbdbdb;">
+    <td style="padding: 2px 5px;">Freeform <i>Next</i> 1.x / <i>new</i> Freeform 1.x</td>
+    <td style="padding: 2px 5px;">EE 3.x, 4.x, 5.x</td>
+  </tr>
+</table>
+
+### Steps Needed to Migrate <a href="#upgrade-steps" id="upgrade-steps" class="docs-anchor">#</a>
+
+***Freeform Classic 4.x*** on ***EE 2.x***
+
+- Switching to Freeform Next 1.x
+- **Upgrading to EE 3.x or greater**
+  1. [Request temporary copy of latest Freeform Classic](https://solspace.com/expressionengine/freeform/support)
+  2. Upgrade to EE 3.x
+  3. Upgrade to Freeform Classic 5.x
+  4. Purchase Freeform Next and upload files to site
+  5. Install Freeform Next
+  6. Run [Migration Utility](classic-migration.md) inside Freeform Next
+  7. Verify all data in Freeform Next
+  8. Correctly uninstall Freeform Classic
+  9. Delete Freeform Classic files (`freeform` folders)
+
+***Freeform Classic 5.x*** on ***EE 3.x***
+
+- Switching to Freeform Next 1.x
+- **Staying on EE 3.x**
+  1. Purchase Freeform Next and upload files to site
+  2. <a href="https://solspace.com/account">Download latest Freeform Classic from account</a>
+  3. Update to latest Freeform Classic 5.x
+  4. Install Freeform Next
+  5. Run [Migration Utility](classic-migration.md) inside Freeform Next
+  6. Verify all data in Freeform Next
+  7. Correctly uninstall Freeform Classic
+  8. Delete Freeform Classic files (`freeform` folders)
+
+***Freeform Classic 5.x*** on ***EE 3.x***
+
+- Switching to Freeform Next 1.x
+- **Upgrading to EE 4.x or greater**
+  1. Purchase Freeform Next and upload files to site
+  2. <a href="https://solspace.com/account">Download latest Freeform Classic from account</a>
+  3. Update to latest Freeform Classic 6.x
+  4. Upgrade to EE 4.x
+  5. Install Freeform Next
+  6. Run [Migration Utility](classic-migration.md) inside Freeform Next
+  7. Verify all data in Freeform Next
+  8. Correctly uninstall Freeform Classic
+  9. Delete Freeform Classic files (`freeform` folders)
+
+***Freeform Classic 6.x*** on ***EE 4.x***
+
+- Switching to Freeform Next 1.x
+- **Staying on EE 4.x** ***or***
+- **Upgrading to EE 5.x**
+  1. Purchase Freeform Next and upload files to site
+  2. Install Freeform Next
+  3. Run [Migration Utility](classic-migration.md) inside Freeform Next
+  4. Verify all data in Freeform Next
+  5. Correctly uninstall Freeform Classic
+  6. Delete Freeform Classic files (`freeform` folders)
+  7. Upgrade to EE 5.x if applicable
+
+***Freeform Classic 6.x*** on ***EE 5.x***
+
+- Switching to Freeform Next 1.x
+- **Staying on EE 5.x**
+  1. Purchase Freeform Next and upload files to site
+  2. Install Freeform Next
+  3. Run [Migration Utility](classic-migration.md) inside Freeform Next
+  4. Verify all data in Freeform Next
+  5. Correctly uninstall Freeform Classic
+  6. Delete Freeform Classic files (`freeform` folders)
 
 
 ## Changes to Composer <a href="#composer" id="composer" class="docs-anchor">#</a>
