@@ -136,7 +136,9 @@ class Freeform_next_ext
      */
     public function addFormAnchorJavascript(Form $form, FormRenderObject $renderObject)
     {
-        if ($form->isPagePosted() && !$form->isValid()) {
+        $autoScroll = $this->getSettingsService()->getSettingsModel()->isAutoScrollToErrors();
+
+        if ($autoScroll && $form->isPagePosted() && !$form->isValid()) {
             $anchorJs = file_get_contents(__DIR__ . '/javascript/invalid-form.js');
             $anchorJs = str_replace('{{FORM_ANCHOR}}', $form->getAnchor(), $anchorJs);
 

@@ -31,6 +31,7 @@ use Symfony\Component\Finder\SplFileInfo;
  * @property bool   $defaultTemplates
  * @property bool   $removeNewlines
  * @property bool   $formSubmitDisable
+ * @property bool   $autoScrollToErrors
  */
 class SettingsModel extends Model
 {
@@ -54,6 +55,7 @@ class SettingsModel extends Model
     const DEFAULT_DEFAULT_TEMPLATES               = true;
     const DEFAULT_REMOVE_NEWLINES                 = false;
     const DEFAULT_FORM_SUBMIT_DISABLE             = true;
+    const DEFAULT_AUTO_SCROLL_TO_ERRORS           = true;
 
     const SESSION_STORAGE_SESSION  = 'session';
     const SESSION_STORAGE_DATABASE = 'db';
@@ -78,6 +80,7 @@ class SettingsModel extends Model
     protected $recaptchaEnabled;
     protected $recaptchaKey;
     protected $recaptchaSecret;
+    protected $autoScrollToErrors;
 
     /**
      * Creates a Settings Model
@@ -90,22 +93,23 @@ class SettingsModel extends Model
         $settings = ee('Model')->make(
             self::MODEL,
             [
-                'siteId'                        => ee()->config->item('site_id'),
-                'spamProtectionEnabled'         => self::DEFAULT_SPAM_PROTECTION_ENABLED,
-                'spamBlockLikeSuccessfulPost'   => self::DEFAULT_SPAM_BLOCK_LIKE_SUCCESSFUL_POST,
-                'showTutorial'                  => self::DEFAULT_SHOW_TUTORIAL,
-                'fieldDisplayOrder'             => self::DEFAULT_FIELD_DISPLAY_ORDER,
-                'formattingTemplatePath'        => self::DEFAULT_FORMATTING_TEMPLATE_PATH,
-                'notificationTemplatePath'      => self::DEFAULT_NOTIFICATION_TEMPLATE_PATH,
-                'notificationCreationMethod'    => self::DEFAULT_NOTIFICATION_CREATION_METHOD,
-                'license'                       => self::DEFAULT_LICENSE,
-                'sessionStorage'                => self::SESSION_STORAGE_SESSION,
-                'defaultTemplates'              => self::DEFAULT_DEFAULT_TEMPLATES,
-                'removeNewlines'                => self::DEFAULT_REMOVE_NEWLINES,
-                'formSubmitDisable'             => self::DEFAULT_FORM_SUBMIT_DISABLE,
-                'recaptchaEnabled'              => false,
-                'recaptchaKey'                  => null,
-                'recaptchaSecret'               => null,
+                'siteId'                      => ee()->config->item('site_id'),
+                'spamProtectionEnabled'       => self::DEFAULT_SPAM_PROTECTION_ENABLED,
+                'spamBlockLikeSuccessfulPost' => self::DEFAULT_SPAM_BLOCK_LIKE_SUCCESSFUL_POST,
+                'showTutorial'                => self::DEFAULT_SHOW_TUTORIAL,
+                'fieldDisplayOrder'           => self::DEFAULT_FIELD_DISPLAY_ORDER,
+                'formattingTemplatePath'      => self::DEFAULT_FORMATTING_TEMPLATE_PATH,
+                'notificationTemplatePath'    => self::DEFAULT_NOTIFICATION_TEMPLATE_PATH,
+                'notificationCreationMethod'  => self::DEFAULT_NOTIFICATION_CREATION_METHOD,
+                'license'                     => self::DEFAULT_LICENSE,
+                'sessionStorage'              => self::SESSION_STORAGE_SESSION,
+                'defaultTemplates'            => self::DEFAULT_DEFAULT_TEMPLATES,
+                'removeNewlines'              => self::DEFAULT_REMOVE_NEWLINES,
+                'formSubmitDisable'           => self::DEFAULT_FORM_SUBMIT_DISABLE,
+                'recaptchaEnabled'            => false,
+                'recaptchaKey'                => null,
+                'recaptchaSecret'             => null,
+                'autoScrollToErrors'          => self::DEFAULT_AUTO_SCROLL_TO_ERRORS,
             ]
         );
 
@@ -328,6 +332,14 @@ class SettingsModel extends Model
     public function isFormSubmitDisable()
     {
         return (bool) $this->formSubmitDisable;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAutoScrollToErrors()
+    {
+        return (bool) $this->autoScrollToErrors;
     }
 
     /**
