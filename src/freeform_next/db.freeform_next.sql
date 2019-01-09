@@ -212,9 +212,10 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_settings` (
   `integrationsPermissions`     TEXT                   NULL      DEFAULT NULL,
   `resourcesPermissions`        TEXT                   NULL      DEFAULT NULL,
   `logsPermissions`             TEXT                   NULL      DEFAULT NULL,
-  `recaptchaEnabled`            TINYINT(1)                       DEFAULT 1,
+  `recaptchaEnabled`            TINYINT(1)                       DEFAULT 0,
   `recaptchaKey`                VARCHAR(50)            NULL      DEFAULT NULL,
   `recaptchaSecret`             VARCHAR(50)            NULL      DEFAULT NULL,
+  `autoScrollToErrors`          TINYINT(1)             NOT NULL  DEFAULT 1,
   PRIMARY KEY (`id`)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
 

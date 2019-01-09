@@ -302,6 +302,16 @@ class SettingsController extends Controller
                                     ],
                                 ],
                             ],
+                            [
+                                'title'  => 'Automatically Scroll to Form on Errors and Multipage forms?',
+                                'desc'   => 'Enable this to have Freeform use JS to automatically scroll the page down to the form upon submit when there are errors or the form is continuing to the next page in multipage forms.',
+                                'fields' => [
+                                    'autoScrollToErrors' => [
+                                        'type'  => 'yes_no',
+                                        'value' => $settings->isAutoScrollToErrors() ? 'y' : 'n',
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ]

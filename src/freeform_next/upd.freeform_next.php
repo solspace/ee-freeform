@@ -313,6 +313,14 @@ class Freeform_next_upd extends AddonUpdater
             ');
         }
 
+        if (version_compare($previousVersion, '1.7.5', '<=')) {
+            ee()->db
+                ->query('
+                    ALTER TABLE exp_freeform_next_settings
+                    ADD COLUMN `autoScrollToErrors` TINYINT(1) DEFAULT 1 AFTER `spamProtectionEnabled`
+                ');
+        }
+
         return true;
     }
 
