@@ -17,6 +17,12 @@ $this->extend('_layouts/table_form_wrapper');
 
 ?>
 
+<script>
+  var layoutEditorSaveUrl = '<?php echo ee('CP/URL')->make('addons/settings/freeform_next/api/submission_layout') ?>';
+  var layoutEditorFormId  = <?php echo (int) $form->getId() ?>;
+</script>
+
+
 <form method="get" action="#" id="entry-filters" data-action="<?=isset($entries_filter_uri) ? $entries_filter_uri : ""?>">
     <?php if ($sessionToken): ?>
     <input type="hidden" name="S" value="<?= $sessionToken ?>">
@@ -269,11 +275,6 @@ $this->extend('_layouts/table_form_wrapper');
         </div>
     </form>
 </div>
-
-<script>
-  var layoutEditorSaveUrl = '<?php echo ee('CP/URL')->make('addons/settings/freeform_next/api/submission_layout') ?>';
-  var layoutEditorFormId  = <?php echo (int) $form->getId() ?>;
-</script>
 
 <link rel="stylesheet" href="<?php echo URL_THIRD_THEMES ?>freeform_next/css/submissions.css"/>
 <link rel="stylesheet" href="<?php echo URL_THIRD_THEMES ?>freeform_next/lib/featherlight/featherlight.min.css"/>
