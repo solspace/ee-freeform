@@ -304,8 +304,13 @@ class SubmissionController extends Controller
                     $data[] = ee()->localize->format_date($dateFormat, strtotime($submission->dateCreated));
                 } else if (is_numeric($setting->getId())) {
                     try {
-                        $field = $form->getLayout()->getFieldById($setting->getId());
-                        $value = $submission->getFieldValueAsString($field->getHandle());
+                        $field = $form->getLayout()->getFieldById((int) $setting->getId());
+
+                        try {
+                            $value = $submission->getFieldValueAsString($field->getHandle());
+                        } catch (FreeformException $e) {
+                            $value = '';
+                        }
 
                         if ($field instanceof FileUploadField) {
                             $assetIds = $submission->getFieldValue($field->getHandle());
