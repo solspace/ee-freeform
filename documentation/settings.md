@@ -27,6 +27,8 @@ The settings allow you to adjust:
 		* Enable this to have newlines removed from Textarea fields in submissions when exporting.
 	* **Disable Submit Button on Form Submit?** <a href="#disable-submit" id="disable-submit" class="docs-anchor">#</a>
 		* Enable this to automatically disable the form's submit button when the user submits the form. This will prevent the form from double-submitting.
+	* **Automatically Scroll to Form on Errors and Multipage forms?** <a href="#auto-scroll" id="auto-scroll" class="docs-anchor">#</a>
+		* Enable this to have Freeform use JS to automatically scroll the page down to the form upon submit when there are errors or the form is continuing to the next page in multipage forms.
 * *Formatting Templates* <a href="#formatting-templates" id="formatting-templates" class="docs-anchor">#</a>
 	* **Directory Path** <a href="#formatting-directory-path" id="formatting-directory-path" class="docs-anchor">#</a>
 		* When using custom formatting templates for your forms, you'll need to specify where your HTML templates are stored.

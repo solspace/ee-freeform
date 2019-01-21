@@ -1,5 +1,12 @@
 # Changelog
 
+### 1.7.7 (January 21, 2019) <a href="#v1-7-7" id="v1-7-7" class="docs-anchor">#</a>
+- Added 'Automatically Scroll to Form on Errors and Multipage forms?' setting to allow the ability to disable this feature.
+- Updated Salesforce Lead integration to clear out all empty values before submitting to Salesforce.
+- Fixed a potential XSS vulnerability.
+- Fixed a bug where editing submission field layouts in Submissions CP list page were sometimes not working.
+- Fixed a bug where the Submission CP list page could error if the form contained fields which had no values submitted previously.
+
 ### 1.7.6 (December 24, 2018) <a href="#v1-7-6" id="v1-7-6" class="docs-anchor">#</a>
 - Updated Classic migration to maintain original submission dates of migrated submissions.
 - Fixed a bug where Classic migrations could stop working in rare cases.
