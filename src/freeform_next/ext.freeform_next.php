@@ -138,7 +138,7 @@ class Freeform_next_ext
     {
         $autoScroll = $this->getSettingsService()->getSettingsModel()->isAutoScrollToErrors();
 
-        if ($autoScroll && $form->isPagePosted() && !$form->isValid()) {
+        if ($autoScroll && $form->isFormPosted()) {
             $anchorJs = file_get_contents(__DIR__ . '/javascript/invalid-form.js');
             $anchorJs = str_replace('{{FORM_ANCHOR}}', $form->getAnchor(), $anchorJs);
 
