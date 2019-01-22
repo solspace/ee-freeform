@@ -80,7 +80,7 @@ class Freeform_next_ft extends EE_Fieldtype
         }
 
         $hash = ee()->input->post(FormValueContext::FORM_HASH_KEY, null);
-        if (null !== $hash) {
+        if (null !== $hash && $hash !== false) {
             if (!class_exists('Freeform_Next')) {
                 require_once __DIR__ . '/mod.freeform_next.php';
             }
