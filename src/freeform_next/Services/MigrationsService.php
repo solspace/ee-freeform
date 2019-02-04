@@ -57,13 +57,7 @@ class MigrationsService
      */
     public function isClassicFreeformInstalled()
     {
-        $installed = ee()->addons->get_installed('modules', TRUE);
-
-        if (array_key_exists('freeform', $installed)) {
-            return true;
-        }
-
-        return false;
+        return ee()->db->table_exists('freeform_forms');
     }
 
     /**
