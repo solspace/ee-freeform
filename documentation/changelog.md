@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.7.8 (January 30, 2019) <a href="#v1-7-8" id="v1-7-8" class="docs-anchor">#</a>
+- Fixed a bug where the 'Automatically Scroll to Form on Errors and Multipage forms?' setting was not working for multi-page form returns.
+- Fixed a bug where the Freeform channel entry fieldtype could prematurely trigger submit logic in certain scenarios.
+
 ### 1.7.7 (January 21, 2019) <a href="#v1-7-7" id="v1-7-7" class="docs-anchor">#</a>
 - Added 'Automatically Scroll to Form on Errors and Multipage forms?' setting to allow the ability to disable this feature.
 - Updated Salesforce Lead integration to clear out all empty values before submitting to Salesforce.
