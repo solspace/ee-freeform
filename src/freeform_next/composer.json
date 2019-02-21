@@ -7,7 +7,7 @@
     "symfony/finder": "^2.8",
     "symfony/filesystem": "^2.8",
     "hashids/hashids": "^1.0",
-    "pixel418/markdownify": "2.1.11",
+    "pixel418/markdownify": "^2.3.1",
     "egulias/email-validator": "^1.2",
     "danielstjules/stringy": "~2.3",
     "guzzle/guzzle": "^3.9",
