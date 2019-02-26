@@ -314,6 +314,7 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
                 case 'url':
                 case 'address':
                 case 'picklist':
+                case 'phone':
                     $type = FieldObject::TYPE_STRING;
                     break;
 
@@ -326,7 +327,6 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
                     break;
 
                 case 'number':
-                case 'phone':
                 case 'currency':
                     $type = FieldObject::TYPE_NUMERIC;
                     break;
