@@ -806,11 +806,14 @@ class SubmissionController extends Controller
     {
         return [
             AbstractField::TYPE_EMAIL,
-            AbstractField::TYPE_HTML,
             AbstractField::TYPE_NUMBER,
             AbstractField::TYPE_PHONE,
             AbstractField::TYPE_TEXT,
             AbstractField::TYPE_TEXTAREA,
+            AbstractField::TYPE_HIDDEN,
+            AbstractField::TYPE_CHECKBOX,
+            AbstractField::TYPE_REGEX,
+            AbstractField::TYPE_SELECT,
             AbstractField::TYPE_WEBSITE,
         ];
     }
