@@ -34,6 +34,7 @@ use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
 use Solspace\Addons\FreeformNext\Services\FieldsService;
 use Solspace\Addons\FreeformNext\Services\MigrationsService;
+use Solspace\Addons\FreeformNext\Services\PermissionsService;
 use Solspace\Addons\FreeformNext\Services\SettingsService;
 use Solspace\Addons\FreeformNext\Services\UpdateService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
@@ -699,14 +700,14 @@ class Freeform_next_mcp extends ControlPanelView
     }
 
     /**
-     * @return \Solspace\Addons\FreeformNext\Services\PermissionsService
+     * @return PermissionsService
      */
     private function getPermissionsService()
     {
         static $instance;
 
         if (null === $instance) {
-            $instance = new \Solspace\Addons\FreeformNext\Services\PermissionsService();
+            $instance = new PermissionsService();
         }
 
         return $instance;

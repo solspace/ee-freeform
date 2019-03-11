@@ -211,6 +211,7 @@ class PermissionsService
             self::PERMISSION__ACCESS_SETTINGS,
             self::PERMISSION__ACCESS_RESOURCES,
             self::PERMISSION__ACCESS_INTEGRATIONS,
+            self::PERMISSION__ACCESS_LOGS,
         ];
     }
 }

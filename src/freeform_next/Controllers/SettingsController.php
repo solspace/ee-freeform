@@ -405,6 +405,17 @@ class SettingsController extends Controller
                     ],
                 ],
             ],
+            [
+                'title'  => 'Access Notifications',
+                'desc'   => 'Choose which member groups have access to Notifications.',
+                'fields' => [
+                    'notificationsPermissions' => [
+                        'type'    => 'checkbox',
+                        'value'   => $permissionsModel->notificationsPermissions,
+                        'choices' => $memberGroupChoices,
+                    ],
+                ],
+            ],
         ];
 
         if ($version === 'pro') {
