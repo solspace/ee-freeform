@@ -574,9 +574,9 @@ class SubmissionController extends Controller
                         $fields = [
                             $handle => [
                                 'type'     => 'checkbox',
-                                'value'    => $value,
+                                'value'    => $value ? $field->getStaticValue() : '',
                                 'required' => $isRequired,
-                                'choices'  => [$field->getValue() => $field->getLabel()],
+                                'choices'  => [$field->getStaticValue() => $field->getLabel()],
                             ],
                         ];
                     } else if ($field instanceof SelectField || ($field instanceof DynamicRecipientField && !$field->isShowAsRadio())
@@ -735,8 +735,12 @@ class SubmissionController extends Controller
 
             $value = ee()->input->post($field->getHandle(), true);
 
-            if ($field instanceof CheckboxField && is_array($value)) {
-                $value = reset($value);
+            if ($field instanceof CheckboxField) {
+                if (is_array($value)) {
+                    $value = reset($value);
+                }
+
+                $value = $value ?: '';
             }
 
             $submission->setFieldValue($field->getHandle(), $value);
