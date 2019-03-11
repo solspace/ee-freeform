@@ -618,7 +618,8 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
      */
     protected function getAttributeString($name, $value, $escapeValue = true, $insertEmpty = false)
     {
-        if ('' !== $value || $insertEmpty) {
+        $notEmpty = null !== $value && '' !== $value;
+        if ($notEmpty || $insertEmpty) {
             return sprintf(
                 ' %s="%s"',
                 $name,
