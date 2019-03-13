@@ -38,8 +38,8 @@
     "hashids": "^1.0.2",
     "isomorphic-fetch": "^2.2.1",
     "natives": "^1.1.6",
-    "npm": "^6.7.0",
-    "prop-types": "^15.6.2",
+    "npm": "^6.9.0",
+    "prop-types": "^15.7.2",
     "qwest": "^4.4.4",
     "react": "^15.1.0",
     "react-ace": "^5.9.0",
@@ -58,7 +58,7 @@
     "underscore.string": "^3.3.4",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.7.0",
+    "watchify": "^3.11.1",
     "zip-folder": "^1.0.0"
   },
   "scripts": {

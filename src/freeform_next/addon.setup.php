@@ -28,7 +28,7 @@ if (FreeformHelper::get('version') !== FREEFORM_EXPRESS && !file_exists($cacheDi
     if (!$ftExists) {
         ee()->db->insert('exp_fieldtypes', [
             'name'                => 'freeform_next',
-            'version'             => '1.7.8',
+            'version'             => '1.7.9',
             'settings'            => 'YTowOnt9',
             'has_global_settings' => 'n',
         ]);
@@ -46,12 +46,12 @@ if (FreeformHelper::get('version') !== FREEFORM_EXPRESS && !file_exists($cacheDi
 
 return [
     'author'         => 'Solspace',
-    'author_url'     => 'https://solspace.com/expressionengine/freeform',
-    'docs_url'       => 'https://solspace.com/expressionengine/freeform/docs',
+    'author_url'     => 'http://docs.solspace.com/expressionengine/freeform/v1/',
+    'docs_url'       => 'http://docs.solspace.com/expressionengine/freeform/v1/',
     'name'           => FreeformHelper::get('name'),
     'module_name'    => 'Freeform_next',
     'description'    => 'The most intuitive and powerful form builder for ExpressionEngine.',
-    'version'        => '1.7.8',
+    'version'        => '1.7.9',
     'namespace'      => 'Solspace\Addons\FreeformNext',
     'settings_exist' => true,
     'models'         => [
