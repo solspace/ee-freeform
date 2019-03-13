@@ -20,6 +20,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecip
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\EmailField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\MailingListField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\MultipleSelectField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\RadioGroupField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SelectField;
@@ -521,6 +522,10 @@ class SubmissionController extends Controller
             $data = [];
 
             foreach ($form->getLayout()->getHiddenFields() as $field) {
+                if ($field instanceof MailingListField) {
+                    continue;
+                }
+                
                 if ($field->getPageIndex() === $page->getIndex()) {
                     $fields = [
                         $field->getHandle() => [
