@@ -50,7 +50,7 @@
     "react-dom": "^15.1.0",
     "react-joyride": "1.11.4",
     "react-motion": "^0.4.4",
-    "react-redux": "^4.4.9",
+    "react-redux": "^4.4.10",
     "reactify": "^1.1.1",
     "redux": "^3.5.2",
     "redux-thunk": "^2.3.0",
