@@ -57,7 +57,7 @@ class SubmissionModel extends Model
     protected $title;
 
     /** @var array */
-    private $fieldValues;
+    private $fieldValues = [];
 
     /**
      * Get the submission table field column name
