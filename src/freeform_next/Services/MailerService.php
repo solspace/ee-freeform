@@ -72,7 +72,7 @@ class MailerService implements MailHandlerInterface
             ee()->email->reply_to($replyTo, $fromName);
             ee()->email->to($emailAddress);
             ee()->email->subject($subject);
-            ee()->email->message(entities_to_ascii($bodyHtml));
+            ee()->email->message($bodyHtml);
 
             if ($notification->includeAttachments) {
                 foreach ($fields as $field) {

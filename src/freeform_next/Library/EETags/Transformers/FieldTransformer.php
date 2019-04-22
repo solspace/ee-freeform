@@ -55,6 +55,10 @@ class FieldTransformer
             $value = (string) $value;
         }
 
+        if ($value) {
+            $value = htmlentities($value, ENT_QUOTES, 'UTF-8');
+        }
+
         $data = [
             $prefix . 'id'                   => $field->getId(),
             $prefix . 'handle'               => $field->getHandle(),
