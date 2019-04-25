@@ -51,6 +51,16 @@ class FileUploadField extends AbstractField implements MultipleValueInterface, F
     private static $filesUploadedErrors = [];
 
     /**
+     * @param bool $optionsAsValues
+     *
+     * @return string
+     */
+    public function getValueAsString($optionsAsValues = true)
+    {
+        return implode('|', $this->getValue());
+    }
+
+    /**
      * Return the field TYPE
      *
      * @return string
@@ -211,7 +221,7 @@ class FileUploadField extends AbstractField implements MultipleValueInterface, F
 
                 if ($responseErrors) {
                     $this->errors = array_merge($errors, $responseErrors);
-                    
+
                     self::$filesUploadedErrors[$this->handle] = $this->errors;
                     throw new FileUploadException(implode('. ', $responseErrors));
                 }
