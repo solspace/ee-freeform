@@ -10,6 +10,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\O
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\OptionsInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\PlaceholderInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SubmitField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\TextareaField;
 use Solspace\Addons\FreeformNext\Library\Pro\Fields\DatetimeField;
 use Solspace\Addons\FreeformNext\Library\Pro\Fields\NumberField;
 use Solspace\Addons\FreeformNext\Library\Pro\Fields\PhoneField;
@@ -57,6 +58,9 @@ class FieldTransformer
 
         if ($value) {
             $value = htmlentities($value, ENT_QUOTES, 'UTF-8');
+            if ($field instanceof TextareaField) {
+                $value = str_replace(['&lt;br /&gt;', '&lt;br&gt;'], '<br />', $value);
+            }
         }
 
         $data = [
