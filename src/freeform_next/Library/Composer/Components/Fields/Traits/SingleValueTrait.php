@@ -58,7 +58,7 @@ trait SingleValueTrait
                 $updatedOptions[] = new Option(
                     $option->getLabel(),
                     $option->getValue(),
-                    $option->getValue() === (string) $objectValue
+                    (string) $option->getValue() === (string) $objectValue
                 );
             }
 

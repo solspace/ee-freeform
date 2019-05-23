@@ -321,7 +321,7 @@ class PredefinedOptionsFactory
      */
     private function isChecked($value)
     {
-        return \in_array($value, $this->selectedValues, true);
+        return \in_array((string) $value, $this->selectedValues, true);
     }
 
     /**
