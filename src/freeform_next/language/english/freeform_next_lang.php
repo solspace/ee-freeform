@@ -1,10 +1,10 @@
 <?php
 
 $lang = [
-    'label'                       => 'Label',
-    'handle'                      => 'Handle',
-    'is_default'                  => 'Is Default?',
-    'blocked_spam_count'          => 'Blocked Spam',
+    'label' => 'Label',
+    'handle' => 'Handle',
+    'is_default' => 'Is Default?',
+    'blocked_spam_count' => 'Blocked Spam',
     'no_available_composer_forms' => 'No available composer forms',
     'today' => 'Today',
     'entry_date' => 'Entry Date',
@@ -19,4 +19,6 @@ $lang = [
     'start_date' => 'Start Date',
     'end_date' => 'End Date',
     'keywords' => 'Keywords',
+    '{email} is not a valid email address' => '{email} is not a valid email address',
+    'This field is required' => 'This field is required',
 ];
