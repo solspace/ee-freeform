@@ -144,10 +144,10 @@ class FormRepository extends Repository
             return self::$cacheByHandle[$idOrHandle];
         }
 
-        $form = ee('Model')
+        $target = is_numeric($idOrHandle) ? 'id' : 'handle';
+        $form   = ee('Model')
             ->get(FormModel::MODEL)
-            ->filter('id', $idOrHandle)
-            ->orFilter('handle', $idOrHandle)
+            ->filter($target, $idOrHandle)
             ->first();
 
         if ($form) {
