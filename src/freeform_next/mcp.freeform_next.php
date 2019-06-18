@@ -286,7 +286,7 @@ class Freeform_next_mcp extends ControlPanelView
                 $templateName = (string) \Stringy\Stringy::create($templateName)->underscored()->toAscii();
                 $templateName .= '.html';
 
-                $filePath = $settings->getFormattingTemplatePath() . '/' . $templateName;
+                $filePath = $settings->getAbsoluteFormTemplateDirectory() . '/' . $templateName;
 
                 if (file_exists($filePath)) {
                     $ajaxView->addError(sprintf('Template "%s" already exists', $templateName));
