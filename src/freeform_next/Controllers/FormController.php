@@ -433,6 +433,7 @@ class FormController extends Controller
         $fields = ee('Model')
             ->get('ChannelField')
             ->filter('site_id', ee()->config->item('site_id'))
+            ->orFilter('site_id', 0)
             ->all();
 
         foreach ($fields as $field) {
@@ -456,6 +457,7 @@ class FormController extends Controller
         $fields = ee('Model')
             ->get('CategoryField')
             ->filter('site_id', ee()->config->item('site_id'))
+            ->orFilter('site_id', 0)
             ->all();
 
         foreach ($fields as $field) {

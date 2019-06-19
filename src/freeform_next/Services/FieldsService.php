@@ -146,6 +146,9 @@ class FieldsService implements FieldHandlerInterface
 
                 $items = $builder->all();
 
+                $labelField = $this->getCustomChannelFieldId($labelField);
+                $valueField = $this->getCustomChannelFieldId($valueField);
+
                 foreach ($items as $item) {
                     $label     = $item->$labelField ?: $item->channel_title;
                     $value     = $item->$valueField ?: $item->channel_id;
@@ -168,6 +171,9 @@ class FieldsService implements FieldHandlerInterface
 
                 $items = $builder->all();
 
+                $labelField = $this->getCustomCategoryFieldId($labelField);
+                $valueField = $this->getCustomCategoryFieldId($valueField);
+
                 foreach ($items as $item) {
                     $label     = $item->$labelField ?: $item->cat_name;
                     $value     = $item->$valueField ?: $item->cat_id;
@@ -187,6 +193,9 @@ class FieldsService implements FieldHandlerInterface
                 }
 
                 $items = $builder->all();
+
+                $labelField = $this->getCustomMemberFieldId($labelField);
+                $valueField = $this->getCustomMemberFieldId($valueField);
 
                 foreach ($items as $item) {
                     $label     = $item->$labelField ?: $item->username;
@@ -210,5 +219,71 @@ class FieldsService implements FieldHandlerInterface
         self::$optionsCache[$cacheHash] = $options;
 
         return $options;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return string
+     */
+    private function getCustomMemberFieldId($value)
+    {
+        $result = ee()->db
+            ->select('m_field_id')
+            ->from('member_fields')
+            ->where('m_field_name', $value)
+            ->limit(1)
+            ->get()
+            ->row();
+
+        if ($result) {
+            return 'm_field_id_' . $result->m_field_id;
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return string
+     */
+    private function getCustomChannelFieldId($value)
+    {
+        $result = ee()->db
+            ->select('field_id')
+            ->from('channel_fields')
+            ->where('field_name', $value)
+            ->limit(1)
+            ->get()
+            ->row();
+
+        if ($result) {
+            return 'field_id_' . $result->field_id;
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return string
+     */
+    private function getCustomCategoryFieldId($value)
+    {
+        $result = ee()->db
+            ->select('field_id')
+            ->from('category_fields')
+            ->where('field_name', $value)
+            ->limit(1)
+            ->get()
+            ->row();
+
+        if ($result) {
+            return 'field_id_' . $result->field_id;
+        }
+
+        return $value;
     }
 }
