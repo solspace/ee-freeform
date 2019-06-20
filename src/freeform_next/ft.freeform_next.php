@@ -7,7 +7,7 @@ class Freeform_next_ft extends EE_Fieldtype
 {
     /** @var array */
     public $info = [
-        'name'    => 'Freeform Next',
+        'name'    => 'Freeform',
         'version' => '1.0',
     ];
 

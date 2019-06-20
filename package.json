@@ -1,7 +1,7 @@
 {
   "name": "freeform_next",
   "version": "1.0.0",
-  "description": "FreeForm Next plugin for EE3.x",
+  "description": "Freeform for EE",
   "dependencies": {
     "babel": "^6.5.2",
     "babel-plugin-transform-decorators": "^6.8.0",
