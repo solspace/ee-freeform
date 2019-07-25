@@ -60,6 +60,7 @@ class FieldTransformer
             $value = htmlentities($value, ENT_QUOTES, 'UTF-8');
             if ($field instanceof TextareaField) {
                 $value = str_replace(['&lt;br /&gt;', '&lt;br&gt;'], '<br />', $value);
+                $value = nl2br($value);
             }
         }
 
