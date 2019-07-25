@@ -55,4 +55,4 @@ To export all of your Freeform submissions:
 * At the top right of the page, click the **Export CSV button**.
 	* Currently you can only export ALL submissions.
 
-For more advanced and flexible exporting options, consider [upgrading to Freeform Pro](https://solspace.com/expressionengine/freeform/#compare)!
+For more advanced and flexible exporting options, consider [upgrading to Freeform Pro](http://docs.solspace.com/expressionengine/freeform/v1/)!

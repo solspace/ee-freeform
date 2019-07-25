@@ -18,7 +18,7 @@ Freeform has been completely rewritten from ground up. Whether you're considerin
 
 ## How to Upgrade <a href="#how-to-upgrade" id="how-to-upgrade" class="docs-anchor">#</a>
 
-You must have the appropriate EE-compatible version of Freeform Classic installed and upgraded for the [new Freeform "Next"](https://solspace.com/expressionengine/freeform/) to properly detect and migrate it. For example, if you moved from EE2 to EE4, but only have the EE2 version of Freeform Classic (4.x) installed, the migration won't work correctly. You'll need to update to the 5.x (EE3) or 6.x (EE4/EE5) version of Freeform Classic first. If you're switching from Classic to the new Freeform, we don't expect you to pay an upgrade fee to access the EE3 or EE4 compatible versions of Classic to only use it for 15 mins to run the migration utility, so feel free to temporarily "borrow and reuse" a newer Classic license from another site if you have, or [contact us for a temporary copy](https://solspace.com/expressionengine/freeform/support).
+You must have the appropriate EE-compatible version of Freeform Classic installed and upgraded for the [new Freeform "Next"](https://solspace.com/expressionengine/freeform/) to properly detect and migrate it. For example, if you moved from EE2 to EE4, but only have the EE2 version of Freeform Classic (4.x) installed, the migration won't work correctly. You'll need to update to the 5.x (EE3) or 6.x (EE4/EE5) version of Freeform Classic first. If you're switching from Classic to the new Freeform, we don't expect you to pay an upgrade fee to access the EE3 or EE4 compatible versions of Classic to only use it for 15 mins to run the migration utility, so feel free to temporarily "borrow and reuse" a newer Classic license from another site if you have, or [contact us for a temporary copy](http://docs.solspace.com/expressionengine/freeform/v1/support.html).
 
 ### Quick Overview
 
@@ -59,7 +59,7 @@ If you want to retain any of your Freeform data, you'll need to appease Freeform
 
 - Switching to Freeform Next 1.x
 - **Upgrading to EE 3.x or greater**
-  1. [Request temporary copy of latest Freeform Classic](https://solspace.com/expressionengine/freeform/support)
+  1. [Request temporary copy of latest Freeform Classic](http://docs.solspace.com/expressionengine/freeform/v1/support.html)
   2. Upgrade to EE 3.x
   3. Upgrade to Freeform Classic 5.x
   4. Purchase Freeform Next and upload files to site

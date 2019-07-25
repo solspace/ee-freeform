@@ -1,7 +1,7 @@
 {
   "name": "freeform_next",
   "version": "1.0.0",
-  "description": "FreeForm Next plugin for EE3.x",
+  "description": "Freeform for EE",
   "dependencies": {
     "babel": "^6.5.2",
     "babel-plugin-transform-decorators": "^6.8.0",
@@ -44,7 +44,7 @@
     "react": "^15.1.0",
     "react-ace": "^5.9.0",
     "react-addons-css-transition-group": "^15.3.2",
-    "react-color": "^2.17.1",
+    "react-color": "^2.17.3",
     "react-dnd": "^2.6.0",
     "react-dnd-html5-backend": "^2.6.0",
     "react-dom": "^15.1.0",

@@ -1,11 +1,11 @@
 <?php
 /**
- * Freeform for Expression Engine
+ * Freeform for ExpressionEngine
  *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2019, Solspace, Inc.
- * @link          https://solspace.com/expressionengine/freeform
+ * @link          http://docs.solspace.com/expressionengine/freeform/v1/
  * @license       https://solspace.com/software/license-agreement
  */
 
