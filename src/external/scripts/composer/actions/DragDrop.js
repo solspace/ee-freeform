@@ -146,6 +146,40 @@ export function handleOptionRowDrag(props, monitor, component) {
 }
 
 /**
+ * Handles row dragging - reorders the rows live
+ *
+ * @param props
+ * @param monitor
+ * @param component
+ */
+export function handleMatrixRowDrag(props, monitor, component) {
+  const item = monitor.getItem();
+
+  const dragIndex = item.rowIndex;
+  const hoverIndex = props.rowIndex;
+
+  if (dragIndex === hoverIndex) {
+    return;
+  }
+
+  const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+  const boundingBox = hoverBoundingRect.bottom - hoverBoundingRect.top;
+  const clientOffset = monitor.getClientOffset();
+  const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+  if (dragIndex < hoverIndex && hoverClientY < 0) {
+    return;
+  }
+
+  if (dragIndex > hoverIndex && hoverClientY > boundingBox) {
+    return;
+  }
+
+  props.swapRow(dragIndex, hoverIndex);
+  monitor.getItem().rowIndex = hoverIndex;
+}
+
+/**
  * Calculates the new column index based on how many columns a row already has
  * and the current X position of the cursor
  *

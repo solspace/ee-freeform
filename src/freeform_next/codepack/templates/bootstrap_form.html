@@ -112,7 +112,7 @@
                         {if:else}
 
                             {field:render
-                                class="{if field:type == 'checkbox' OR field:type == 'mailing_list'}checkbox{if:else}form-control{/if}"
+                                class="{if field:type == 'checkbox' OR field:type == 'mailing_list'}checkbox{if:elseif field:type == 'table'}table{if:else}form-control{/if}"
                                 label_class="{if field:required}required{/if}"
                                 error_class="help-block"
                                 instructions_class="help-block"

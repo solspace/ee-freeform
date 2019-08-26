@@ -16,6 +16,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
+use Solspace\Addons\FreeformNext\Library\Helpers\StringHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\TemplateHelper;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 
@@ -247,7 +248,7 @@ class SubmissionModel extends Model
         $value = $this->fieldValues[$handle];
 
         if (is_array($value)) {
-            $value = implode(', ', $value);
+            $value = StringHelper::implodeRecursively(', ', $value);
         }
 
         return $value;

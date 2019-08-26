@@ -255,6 +255,7 @@ class FieldController extends Controller
             'lowercaseAMPM',
             'clockAMPMSeparate',
             'allowNegative',
+            'useScript',
         ];
 
         $integerValues = [
@@ -263,6 +264,7 @@ class FieldController extends Controller
             'minLength',
             'maxLength',
             'decimalCount',
+            'maxValues',
         ];
 
         foreach ($validValues as $key => $value) {

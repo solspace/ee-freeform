@@ -30,6 +30,7 @@ import Recaptcha from "./FieldTypes/Recaptcha";
 import Regex from "./FieldTypes/Regex";
 import Select from "./FieldTypes/Select";
 import Submit from "./FieldTypes/Submit";
+import Table from "./FieldTypes/Table";
 import Text from "./FieldTypes/Text";
 import Textarea from "./FieldTypes/Textarea";
 import Website from "./FieldTypes/Website";
@@ -58,6 +59,7 @@ const fieldTypes = {
   confirmation: Confirmation,
   recaptcha: Recaptcha,
   password: Password,
+  table: Table,
 };
 
 export default class Field extends Component {

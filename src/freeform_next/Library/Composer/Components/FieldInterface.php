@@ -37,6 +37,7 @@ interface FieldInterface
     const TYPE_REGEX        = 'regex';
     const TYPE_CONFIRMATION = 'confirmation';
     const TYPE_RECAPTCHA    = 'recaptcha';
+    const TYPE_TABLE        = 'table';
 
     /**
      * Returns the INPUT type

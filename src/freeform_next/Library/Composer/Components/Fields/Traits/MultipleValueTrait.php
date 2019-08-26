@@ -13,9 +13,11 @@ namespace Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DataContainers\Option;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecipientField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultiDimensionalValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\ObscureValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\OptionsInterface;
+use Solspace\Addons\FreeformNext\Library\Pro\Fields\TableField;
 
 trait MultipleValueTrait
 {
@@ -44,7 +46,7 @@ trait MultipleValueTrait
 
         if (empty($values)) {
             $values = [];
-        } else {
+        } else if (!$this instanceof MultiDimensionalValueInterface) {
             $values = array_map('strval', $values);
         }
 

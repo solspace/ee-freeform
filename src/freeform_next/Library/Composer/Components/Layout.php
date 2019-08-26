@@ -71,6 +71,9 @@ class Layout implements \JsonSerializable, \Iterator
     /** @var bool */
     private $hasDatepickerEnabledFields;
 
+    /** @var bool */
+    private $hasTableFields;
+
     /**
      * Layout constructor.
      *
@@ -100,6 +103,14 @@ class Layout implements \JsonSerializable, \Iterator
     public function hasDatepickerEnabledFields()
     {
         return $this->hasDatepickerEnabledFields;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasTableFields()
+    {
+        return $this->hasTableFields;
     }
 
     /**
@@ -287,7 +298,10 @@ class Layout implements \JsonSerializable, \Iterator
         $datetimeClass  = 'Solspace\Addons\FreeformNext\Library\Pro\Fields\DatetimeField';
         $datetimeExists = class_exists($datetimeClass);
 
-        $hasDatepickerEnabledFields = false;
+        $tableClass  = 'Solspace\Addons\FreeformNext\Library\Pro\Fields\TableField';
+        $tableExists = class_exists($tableClass);
+
+        $hasDatepickerEnabledFields = $hasTableFields = false;
         $pageObjects                = [];
         $allRows                    = [];
         $allFields                  = [];
@@ -363,6 +377,12 @@ class Layout implements \JsonSerializable, \Iterator
                         }
                     }
 
+                    if ($tableExists && get_class($field) === $tableClass) {
+                        if ($field->isUseScript()) {
+                            $hasTableFields = true;
+                        }
+                    }
+
                     $pageFields[] = $field;
                     $allFields[]  = $field;
                 }
@@ -392,6 +412,7 @@ class Layout implements \JsonSerializable, \Iterator
         $this->fileUploadFields           = $fileUploadFields;
         $this->mailingListFields          = $mailingListFields;
         $this->hasDatepickerEnabledFields = $hasDatepickerEnabledFields;
+        $this->hasTableFields             = $hasTableFields;
     }
 
     /**

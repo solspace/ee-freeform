@@ -11,6 +11,7 @@
 import * as ActionTypes from "../constants/ActionTypes";
 import * as FieldTypes from "../constants/FieldTypes";
 import { hashFromTime } from "../helpers/Utilities";
+import { manageMatrixEditor } from "./MatrixEditor";
 import { modifyGroupValues } from "./PropertyEditor";
 
 function layout(state = [[]], action) {
@@ -311,6 +312,34 @@ export function composer(state = [], action) {
     case ActionTypes.REORDER_VALUE_SET:
     case ActionTypes.REMOVE_VALUE_SET:
       return { ...state, properties: modifyGroupValues(state.properties, action) };
+
+    case ActionTypes.MATRIX_ADD_ROW:
+    case ActionTypes.MATRIX_REMOVE_ROW:
+    case ActionTypes.MATRIX_SWAP_ROW:
+    case ActionTypes.MATRIX_UPDATE_COLUMN:;
+      const propClone = { ...state.properties };
+      const { hash, attribute } = action;
+
+      if (!propClone[hash]) {
+        return state;
+      }
+
+      const target = { ...propClone[hash] };
+
+      if (!target[attribute]) {
+        target[attribute] = [];
+      }
+
+      return {
+        ...state,
+        properties: {
+          ...state.properties,
+          [hash]: {
+            ...target,
+            [attribute]: manageMatrixEditor(target[attribute], action),
+          }
+        }
+      };
 
     default:
       return state;

@@ -23,6 +23,8 @@
                         {if:else}
                             No file(s) uploaded
                         {/if}
+                    {if:elseif field:type == "table"}
+                        table
                     {if:else}
                         {field:value}
                     {/if}

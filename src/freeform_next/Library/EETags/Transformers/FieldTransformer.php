@@ -11,11 +11,13 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\O
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\PlaceholderInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SubmitField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\TextareaField;
+use Solspace\Addons\FreeformNext\Library\Helpers\StringHelper;
 use Solspace\Addons\FreeformNext\Library\Pro\Fields\DatetimeField;
 use Solspace\Addons\FreeformNext\Library\Pro\Fields\NumberField;
 use Solspace\Addons\FreeformNext\Library\Pro\Fields\PhoneField;
 use Solspace\Addons\FreeformNext\Library\Pro\Fields\RatingField;
 use Solspace\Addons\FreeformNext\Library\Pro\Fields\RegexField;
+use Solspace\Addons\FreeformNext\Library\Pro\Fields\TableField;
 
 class FieldTransformer
 {
@@ -49,7 +51,7 @@ class FieldTransformer
                 if ($field instanceof FileUploadField) {
                     $value = implode('|', $value);
                 } else {
-                    $value = implode(', ', $value);
+                    $value = StringHelper::implodeRecursively(', ', $value);
                 }
             }
 
@@ -120,6 +122,9 @@ class FieldTransformer
             $prefix . 'label_next'           => $field instanceof SubmitField ? $field->getLabelNext() : null,
             $prefix . 'label_prev'           => $field instanceof SubmitField ? $field->getLabelPrev() : null,
             $prefix . 'disable_prev'         => $field instanceof SubmitField ? $field->isDisablePrev() : null,
+            $prefix . 'layout'               => $field instanceof TableField ? $field->getLayout() : null,
+            $prefix . 'use_script'           => $field instanceof TableField ? $field->isUseScript() : null,
+            $prefix . 'max_rows'             => $field instanceof TableField ? $field->getMaxRows() : null,
         ];
 
         if (null !== $columnCount && null !== $columnIndex) {

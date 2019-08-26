@@ -76,6 +76,7 @@ class NextFieldHelper
             'lowercaseAMPM',
             'clockAMPMSeparate',
             'allowNegative',
+            'useScript',
         ];
 
         $integerValues = [
@@ -84,6 +85,7 @@ class NextFieldHelper
             'minLength',
             'maxLength',
             'decimalCount',
+            'maxRows',
         ];
 
         foreach ($validValues as $key => $value) {

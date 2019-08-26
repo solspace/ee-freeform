@@ -37,6 +37,7 @@ import Recaptcha from "../components/PropertyEditor/Recaptcha";
 import Regex from "../components/PropertyEditor/Regex";
 import Select from "../components/PropertyEditor/Select";
 import Submit from "../components/PropertyEditor/Submit";
+import Table from "../components/PropertyEditor/Table";
 import Text from "../components/PropertyEditor/Text";
 import Textarea from "../components/PropertyEditor/Textarea";
 import Website from "../components/PropertyEditor/Website";
@@ -69,6 +70,7 @@ const propertyTypes = {
   confirmation: Confirmation,
   recaptcha: Recaptcha,
   password: Password,
+  table: Table,
 };
 
 @connect(

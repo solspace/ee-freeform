@@ -189,6 +189,15 @@ class FieldProperties extends AbstractProperties
     /** @var bool */
     protected $hidden;
 
+    /** @var array */
+    protected $layout;
+
+    /** @var int */
+    protected $maxRows;
+
+    /** @var bool */
+    protected $useScript;
+
     /**
      * @return string
      */
@@ -677,6 +686,30 @@ class FieldProperties extends AbstractProperties
     }
 
     /**
+     * @return array
+     */
+    public function getLayout()
+    {
+        return $this->layout;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxRows()
+    {
+        return $this->maxRows;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUseScript()
+    {
+        return $this->useScript;
+    }
+
+    /**
      * Return a list of all property fields and their type
      * [propertyKey => propertyType, ..]
      * E.g. ["name" => "string", ..]
@@ -744,6 +777,9 @@ class FieldProperties extends AbstractProperties
             'configuration'       => self::TYPE_ARRAY,
             'useJsMask'           => self::TYPE_BOOLEAN,
             'hidden'              => self::TYPE_BOOLEAN,
+            'useScript'           => self::TYPE_BOOLEAN,
+            'layout'              => self::TYPE_ARRAY,
+            'maxRows'             => self::TYPE_INTEGER,
         ];
     }
 }

@@ -72,6 +72,9 @@ const validProperties = [
   "source",
   "target",
   "configuration",
+  "maxRows",
+  "layout",
+  "useScript",
 ];
 
 export default class PropertyHelper {

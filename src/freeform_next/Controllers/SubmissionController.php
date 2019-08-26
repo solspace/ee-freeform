@@ -32,6 +32,7 @@ use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionAttributes;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Library\Pro\Fields\RatingField;
+use Solspace\Addons\FreeformNext\Library\Pro\Fields\TableField;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 use Solspace\Addons\FreeformNext\Repositories\StatusRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionPreferencesRepository;
@@ -525,7 +526,7 @@ class SubmissionController extends Controller
                 if ($field instanceof MailingListField) {
                     continue;
                 }
-                
+
                 if ($field->getPageIndex() === $page->getIndex()) {
                     $fields = [
                         $field->getHandle() => [
@@ -675,6 +676,10 @@ class SubmissionController extends Controller
                                 ];
                             }
                         }
+                    } else if ($field instanceof TableField) {
+                        $fields = [];
+
+
                     } else {
                         $fields = [
                             $handle => [

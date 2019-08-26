@@ -115,6 +115,24 @@ class Freeform_next_ext
      * @param Form             $form
      * @param FormRenderObject $renderObject
      */
+    public function addTableJavascript(Form $form, FormRenderObject $renderObject)
+    {
+        if ($form->getLayout()->hasTableFields()) {
+            static $tableScriptLoaded;
+
+            if (null === $tableScriptLoaded) {
+                $tableJs = file_get_contents(__DIR__ . '/javascript/fields/table.js');
+                $renderObject->appendJsToOutput($tableJs);
+
+                $tableScriptLoaded = true;
+            }
+        }
+    }
+
+    /**
+     * @param Form             $form
+     * @param FormRenderObject $renderObject
+     */
     public function addFormDisabledJavascript(Form $form, FormRenderObject $renderObject)
     {
         if ($this->getSettingsService()->isFormSubmitDisable()) {

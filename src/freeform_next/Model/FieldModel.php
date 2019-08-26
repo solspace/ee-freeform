@@ -208,6 +208,12 @@ class FieldModel extends Model implements \JsonSerializable
             $returnArray['useDatepicker']       = $this->getAdditionalProperty('useDatepicker', true);
         }
 
+        if ($this->type === FieldInterface::TYPE_TABLE) {
+            $returnArray['layout']    = $this->getAdditionalProperty('layout', []);
+            $returnArray['maxRows']   = $this->getAdditionalProperty('maxRows', 0);
+            $returnArray['useScript'] = $this->getAdditionalProperty('useScript', true);
+        }
+
         if ($this->type === FieldInterface::TYPE_NUMBER) {
             $returnArray['value']              = $this->value ?: '';
             $returnArray['placeholder']        = $this->placeholder ?: '';
