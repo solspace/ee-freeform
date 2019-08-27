@@ -30,6 +30,7 @@ use Solspace\Addons\FreeformNext\Library\Mailing\MailHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
 use Solspace\Addons\FreeformNext\Library\Translations\TranslatorInterface;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
+use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
 
 class Form implements \JsonSerializable, \Iterator, \ArrayAccess
 {
@@ -791,6 +792,33 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
         if (null !== $attributes) {
             $this->customAttributes->mergeAttributes($attributes);
             $this->setSessionCustomFormData();
+            $this->populateFromSubmission($this->customAttributes->getSubmissionToken());
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param SubmissionModel|int|string|null $token
+     *
+     * @return Form
+     */
+    public function populateFromSubmission($token = null)
+    {
+        if (null === $token) {
+            return $this;
+        }
+
+        $submission = SubmissionRepository::getInstance()->getSubmissionByToken($this, $token);
+        if ($submission instanceof SubmissionModel) {
+            foreach ($this->getLayout()->getFields() as $field) {
+                try {
+                    if ($submission->getFieldValue($field->getHandle())) {
+                        $field->setValue($submission->{$field->getHandle()});
+                    }
+                } catch (FreeformException $e) {
+                }
+            }
         }
 
         return $this;
@@ -829,22 +857,34 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      */
     private function setSessionCustomFormData()
     {
-        $template   = $this->customAttributes->getDynamicNotificationTemplate();
-        $recipients = $this->customAttributes->getDynamicNotificationRecipients();
+        $template        = $this->customAttributes->getDynamicNotificationTemplate();
+        $recipients      = $this->customAttributes->getDynamicNotificationRecipients();
+        $submissionToken = $this->customAttributes->getSubmissionToken();
 
-        if (!empty($recipients) || !empty($template)) {
+        if (!empty($recipients) || !empty($template) || !empty($submissionToken)) {
             $this
                 ->getFormValueContext()
                 ->setCustomFormData(
                     [
                         FormValueContext::DATA_DYNAMIC_TEMPLATE_KEY   => $template,
                         FormValueContext::DATA_DYNAMIC_RECIPIENTS_KEY => $recipients,
+                        FormValueContext::DATA_SUBMISSION_TOKEN       => $submissionToken,
                     ]
                 )
                 ->saveState();
         }
 
         return $this;
+    }
+
+    /**
+     * Returns the assigned submission token
+     *
+     * @return string|null
+     */
+    public function getAssociatedSubmissionToken()
+    {
+        return $this->getFormValueContext()->getSubmissionIdentificator();
     }
 
     /**

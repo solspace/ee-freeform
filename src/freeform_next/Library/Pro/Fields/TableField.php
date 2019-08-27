@@ -15,7 +15,7 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
     const COLUMN_TYPE_SELECT   = 'select';
     const COLUMN_TYPE_CHECKBOX = 'checkbox';
 
-    /** @var string */
+    /** @var array */
     protected $layout;
 
     /** @var bool */
@@ -33,7 +33,7 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getLayout()
     {
@@ -54,6 +54,48 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
     public function getMaxRows()
     {
         return $this->maxRows;
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return $this|AbstractField
+     */
+    public function setValue($value)
+    {
+        $layout = $this->getLayout();
+
+        $this->values = $values = [];
+        if (!is_array($value)) {
+            return $this;
+        }
+
+        foreach ($value as $rowIndex => $row) {
+            if (!is_array($row)) {
+                continue;
+            }
+
+            $hasSingleValue = false;
+            $rowValues = [];
+            foreach ($layout as $index => $column) {
+                $value = isset($row[$index]) ? $row[$index] : '';
+                if ($value) {
+                    $hasSingleValue = true;
+                }
+
+                $rowValues[$index] = $value;
+            }
+
+            if (!$hasSingleValue) {
+                continue;
+            }
+
+            $values[] = $rowValues;
+        }
+
+        $this->values = $values;
+
+        return $this;
     }
 
     /**
@@ -107,12 +149,12 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
 
                 switch ($type) {
                     case self::COLUMN_TYPE_CHECKBOX:
-                        $output .= "<input type=\"checkbox\" name=\"{$handle}[$rowIndex][]\" value=\"$value\" data-default-value=\"$defaultValue\" />";
+                        $output .= "<input type=\"checkbox\" name=\"{$handle}[$rowIndex][$index]\" value=\"$defaultValue\" data-default-value=\"$defaultValue\" " . ($value ? 'checked' : '') . " />";
                         break;
 
                     case self::COLUMN_TYPE_SELECT:
                         $options = explode(';', $defaultValue);
-                        $output .= "<select name=\"{$handle}[$rowIndex][]\">";
+                        $output .= "<select name=\"{$handle}[$rowIndex][$index]\">";
                         foreach ($options as $option) {
                             $selected = $option === $value ? ' selected' : '';
                             $output .= "<option value=\"$option\"$selected>$option</option>";
@@ -123,7 +165,7 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
 
                     case self::COLUMN_TYPE_STRING:
                     default:
-                        $output .= "<input type=\"text\" name=\"{$handle}[$rowIndex][]\" value=\"$value\" data-default-value=\"$defaultValue\" />";
+                        $output .= "<input type=\"text\" name=\"{$handle}[$rowIndex][$index]\" value=\"$value\" data-default-value=\"$defaultValue\" />";
 
                         break;
                 }

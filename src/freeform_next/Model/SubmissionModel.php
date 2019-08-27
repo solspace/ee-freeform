@@ -19,6 +19,7 @@ use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\StringHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\TemplateHelper;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
+use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
 
 /**
  * @property int    $id
@@ -82,15 +83,24 @@ class SubmissionModel extends Model
      */
     public static function create(Form $form, array $fetchedValues)
     {
-        /** @var SubmissionModel $submission */
-        $submission = ee('Model')->make(
-            self::MODEL,
-            [
-                'siteId'   => ee()->config->item('site_id'),
-                'formId'   => $form->getId(),
-                'statusId' => $form->getDefaultStatus(),
-            ]
-        );
+        $token = $form->getAssociatedSubmissionToken();
+
+        $submission = null;
+        if ($token) {
+            $submission = SubmissionRepository::getInstance()->getSubmissionByToken($form, $token);
+        }
+
+        if (!$submission) {
+            /** @var SubmissionModel $submission */
+            $submission = ee('Model')->make(
+                self::MODEL,
+                [
+                    'siteId'   => ee()->config->item('site_id'),
+                    'formId'   => $form->getId(),
+                    'statusId' => $form->getDefaultStatus(),
+                ]
+            );
+        }
 
         foreach ($fetchedValues as $key => $value) {
             if (property_exists(__CLASS__, $key)) {

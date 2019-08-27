@@ -82,6 +82,9 @@ class CustomFormAttributes extends AbstractAttributes
     /** @var string */
     protected $fieldIdPrefix;
 
+    /** @var string */
+    protected $submissionToken;
+
     /**
      * @return string
      */
@@ -240,6 +243,14 @@ class CustomFormAttributes extends AbstractAttributes
     public function getFieldIdPrefix()
     {
         return $this->fieldIdPrefix;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSubmissionToken()
+    {
+        return $this->submissionToken;
     }
 
     /**

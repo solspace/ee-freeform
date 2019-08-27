@@ -144,12 +144,14 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_submissions` (
   `siteId`      INT(11)      NOT NULL  DEFAULT '1',
   `statusId`    INT(11)                DEFAULT NULL,
   `formId`      INT(11)      NOT NULL,
+  `token`       VARCHAR(100) NOT NULL,
   `title`       VARCHAR(255) NULL      DEFAULT NULL,
   `dateCreated` DATETIME               DEFAULT NULL,
   `dateUpdated` DATETIME               DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `ffn_submissions_statusId_fk` (`statusId`),
-  KEY `ffn_submissions_formId_fk` (`formId`)
+  KEY `ffn_submissions_formId_fk` (`formId`),
+  UNIQUE KEY `ffn_submissions_token` (`token`)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `exp_freeform_next_export_profiles` (

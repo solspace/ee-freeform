@@ -82,6 +82,39 @@ class SubmissionRepository extends Repository
     }
 
     /**
+     * @param Form   $form
+     * @param string $token
+     *
+     * @return SubmissionModel|null
+     */
+    public function getSubmissionByToken(Form $form, $token)
+    {
+        if (!$token) {
+            return null;
+        }
+
+        /** @var array $result */
+        $result = ee()->db
+            ->select('s.*, stat.name AS statusName, stat.handle AS statusHandle, stat.color AS statusColor')
+            ->from(SubmissionModel::TABLE . ' AS s')
+            ->join(StatusModel::TABLE . ' AS stat', 's.statusId = stat.id')
+            ->where(
+                [
+                    's.token' => $token,
+                    'formId'  => $form->getId(),
+                ]
+            )
+            ->get()
+            ->result_array();
+
+        if (count($result) > 0) {
+            return SubmissionModel::createFromDatabase($form, $result[0]);
+        }
+
+        return null;
+    }
+
+    /**
      * @param SubmissionAttributes $attributes
      *
      * @return SubmissionModel[]

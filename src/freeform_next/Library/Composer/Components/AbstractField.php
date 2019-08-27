@@ -23,6 +23,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\S
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Properties\FieldProperties;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Validation\Constraints\ConstraintInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Validation\Validator;
+use Solspace\Addons\FreeformNext\Library\Helpers\StringHelper;
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
 use Stringy\Stringy;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
@@ -449,7 +450,7 @@ abstract class AbstractField implements FieldInterface, \JsonSerializable
 
         if (!is_string($value)) {
             if (is_array($value)) {
-                return implode(', ', $value);
+                return StringHelper::implodeRecursively(', ', $value);
             }
 
             return (string) $value;

@@ -10,6 +10,7 @@
  */
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
+use Solspace\Addons\FreeformNext\Library\Helpers\CryptoHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
@@ -318,6 +319,30 @@ class Freeform_next_upd extends AddonUpdater
                 ->query('
                     ALTER TABLE exp_freeform_next_settings
                     ADD COLUMN `autoScrollToErrors` TINYINT(1) DEFAULT 1 AFTER `spamProtectionEnabled`
+                ');
+        }
+
+        if (version_compare($previousVersion, '1.7.14', '<=')) {
+            ee()->db
+                ->query('
+                    ALTER TABLE exp_freeform_next_submissions
+                    ADD COLUMN `token` VARCHAR(100) NOT NULL AFTER `formId`
+                ');
+
+            $rows = ee()->db
+                ->select('id')
+                ->get('exp_freeform_next_submissions')
+                ->result();
+
+            foreach ($rows as $row) {
+                ee()->db->where('id', $row->id);
+                ee()->db->update('exp_freeform_next_submissions', ['token' => CryptoHelper::getUniqueToken(100)]);
+            }
+
+            ee()->db
+                ->query('
+                    ALTER TABLE exp_freeform_next_submissions
+                    ADD UNIQUE INDEX ffn_submissions_token (token)
                 ');
         }
 

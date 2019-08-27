@@ -30,6 +30,7 @@ class FormValueContext implements \JsonSerializable
 
     const DATA_DYNAMIC_RECIPIENTS_KEY = 'dynamicRecipients';
     const DATA_DYNAMIC_TEMPLATE_KEY   = 'dynamicTemplate';
+    const DATA_SUBMISSION_TOKEN       = 'submissionToken';
 
     /** @var int */
     private $formId;
@@ -234,6 +235,18 @@ class FormValueContext implements \JsonSerializable
                     'recipients' => $recipients,
                 ]
             );
+        }
+
+        return null;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSubmissionIdentificator()
+    {
+        if (isset($this->customFormData[self::DATA_SUBMISSION_TOKEN])) {
+            return $this->customFormData[self::DATA_SUBMISSION_TOKEN];
         }
 
         return null;
