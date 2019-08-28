@@ -24,6 +24,18 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
     /** @var int */
     protected $maxRows;
 
+    /** @var string */
+    protected $addButtonLabel = 'Add';
+
+    /** @var string */
+    protected $addButtonMarkup;
+
+    /** @var string */
+    protected $removeButtonLabel = 'Remove';
+
+    /** @var string */
+    protected $removeButtonMarkup;
+
     /**
      * @return string
      */
@@ -54,6 +66,86 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
     public function getMaxRows()
     {
         return $this->maxRows;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddButtonLabel()
+    {
+        return $this->addButtonLabel;
+    }
+
+    /**
+     * @param string $addButtonLabel
+     *
+     * @return TableField
+     */
+    public function setAddButtonLabel($addButtonLabel)
+    {
+        $this->addButtonLabel = $addButtonLabel;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddButtonMarkup()
+    {
+        return $this->addButtonMarkup;
+    }
+
+    /**
+     * @param string $addButtonMarkup
+     *
+     * @return TableField
+     */
+    public function setAddButtonMarkup($addButtonMarkup)
+    {
+        $this->addButtonMarkup = $addButtonMarkup;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRemoveButtonLabel()
+    {
+        return $this->removeButtonLabel;
+    }
+
+    /**
+     * @param string $removeButtonLabel
+     *
+     * @return TableField
+     */
+    public function setRemoveButtonLabel($removeButtonLabel): TableField
+    {
+        $this->removeButtonLabel = $removeButtonLabel;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRemoveButtonMarkup()
+    {
+        return $this->removeButtonMarkup;
+    }
+
+    /**
+     * @param string $removeButtonMarkup
+     *
+     * @return TableField
+     */
+    public function setRemoveButtonMarkup($removeButtonMarkup): TableField
+    {
+        $this->removeButtonMarkup = $removeButtonMarkup;
+
+        return $this;
     }
 
     /**
@@ -174,7 +266,11 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
             }
 
             $output .= '<td>';
-            $output .= '<button class="form-table-remove-row" type="button">Remove</button>';
+            if ($this->removeButtonMarkup) {
+                $output .= $this->removeButtonMarkup;
+            } else {
+                $output .= '<button class="form-table-remove-row" type="button">' . $this->removeButtonLabel . '</button>';
+            }
             $output .= '</td>';
 
             $output .= '</tr>';
@@ -182,7 +278,11 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
         $output .= '</tbody>';
 
         $output .= '</table>';
-        $output .= '<button class="form-table-add-row" data-target="' . $id . '" type="button">Add</button>';
+        if ($this->addButtonMarkup) {
+            $output .= $this->addButtonMarkup;
+        } else {
+            $output .= '<button class="form-table-add-row" data-target="' . $id . '" type="button">' . $this->addButtonLabel . '</button>';
+        }
 
         return $output;
     }

@@ -64,7 +64,7 @@ class SubmissionController extends Controller
 
         $canManageSubmissions = $this->getPermissionsService()->canManageSubmissions(ee()->session->userdata('group_id'));
 
-        $columnLabels = [];
+        $columnLabels   = [];
         $visibleColumns = [];
 
         $preferences = SubmissionPreferencesRepository::getInstance()->getOrCreate(
@@ -97,9 +97,9 @@ class SubmissionController extends Controller
             $label  = $setting->getLabel();
             if (is_numeric($setting->getId())) {
                 try {
-                    $field  = $form->getLayout()->getFieldById($setting->getId());
-                    $handle = $field->getHandle();
-                    $label  = $field->getLabel();
+                    $field     = $form->getLayout()->getFieldById($setting->getId());
+                    $handle    = $field->getHandle();
+                    $label     = $field->getLabel();
                     $fieldType = $field->getType();
 
                     if ($field->getType() === AbstractField::TYPE_FILE) {
@@ -133,7 +133,7 @@ class SubmissionController extends Controller
             }
 
             if (!in_array($fieldId, ['statusName', 'dateCreated', 'dateUpdated'])) {
-                $visibleColumns[] = $fieldId;
+                $visibleColumns[]       = $fieldId;
                 $columnLabels[$fieldId] = $label;
             }
         }
@@ -150,37 +150,37 @@ class SubmissionController extends Controller
 
         $attributes = new SubmissionAttributes($form);
 
-        $currentKeyword = '';
-        $currentSearchStatus = '';
+        $currentKeyword        = '';
+        $currentSearchStatus   = '';
         $currentDateRangeStart = '';
-        $currentDateRangeEnd = '';
-        $currentDateRange = '';
-        $currentSearchOnField = '';
+        $currentDateRangeEnd   = '';
+        $currentDateRange      = '';
+        $currentSearchOnField  = '';
 
-        $statuses = StatusRepository::getInstance()->getAllStatuses();
+        $statuses     = StatusRepository::getInstance()->getAllStatuses();
         $formStatuses = [];
 
         foreach ($statuses as $status) {
             $formStatuses[$status->id] = $status->name;
         }
 
-        $search_vars = array(
+        $search_vars = [
             'search_keywords',
             'search_status',
             'search_date_range',
             'search_date_range_start',
             'search_date_range_end',
-            'search_on_field'
-        );
+            'search_on_field',
+        ];
 
         $searchVars = [];
 
         foreach ($search_vars as $searchVarible) {
-            $searchValue = ee()->input->get_post($searchVarible, TRUE);
+            $searchValue                = ee()->input->get_post($searchVarible, true);
             $searchVars[$searchVarible] = trim($searchValue);
         }
 
-        $searchOnField = $searchVars['search_on_field'];
+        $searchOnField  = $searchVars['search_on_field'];
         $searchKeywords = $searchVars['search_keywords'];
 
         if (($searchOnField == '' OR in_array($searchOnField, $visibleColumns)) AND $searchKeywords AND trim($searchKeywords) !== '') {
@@ -192,7 +192,7 @@ class SubmissionController extends Controller
                     $attributes->addOrLikeFilter($column, $searchKeywords);
                 }
 
-            } elseif ($searchOnField == 'id') {
+            } else if ($searchOnField == 'id') {
                 $attributes->addIdFilter($searchOnField, $searchKeywords);
             } else {
                 $attributes->addLikeFilter($searchOnField, $searchKeywords);
@@ -219,7 +219,7 @@ class SubmissionController extends Controller
 
             if ($dateRangeStart) {
                 $currentDateRangeStart = $dateRangeStart;
-                $dateRangeStart = date($dateRangeStart);
+                $dateRangeStart        = date($dateRangeStart);
                 $attributes->setDateRangeStart($dateRangeStart);
             }
 
@@ -227,7 +227,7 @@ class SubmissionController extends Controller
 
             if ($dateRangeEnd) {
                 $currentDateRangeEnd = $dateRangeEnd;
-                $dateRangeEnd = date($dateRangeEnd);
+                $dateRangeEnd        = date($dateRangeEnd);
                 $attributes->setDateRangeEnd($dateRangeEnd);
             }
         }
@@ -266,8 +266,8 @@ class SubmissionController extends Controller
             'CP/Table',
             [
                 'autosearch' => true,
-                'sortable' => true,
-                'limit' => 5,
+                'sortable'   => true,
+                'limit'      => 5,
             ]
         );
 
@@ -421,7 +421,7 @@ class SubmissionController extends Controller
             ]);
         }
 
-        $sessionType = ee()->config->item('cp_session_type');
+        $sessionType  = ee()->config->item('cp_session_type');
         $sessionToken = null;
         if ($sessionType === 'cs') {
             $sessionToken = ee()->session->userdata('fingerprint');
@@ -432,17 +432,17 @@ class SubmissionController extends Controller
         $view = new CpView(
             'submissions/listing',
             [
-                'table'                 => $table->viewData($this->getLink('submissions/' . $form->getHandle())),
-                'cp_page_title'         => 'Submissions for ' . $form->getName(),
-                'layout'                => $layout,
-                'form'                  => $form,
-                'form_right_links'      => $formRightLinks,
-                'pagination'            => $pagination,
-                'exportLink'            => $this->getLink('export'),
-                'formStatuses'          => $formStatuses,
-                'mainUrl'               => $this->getLink('submissions/' . $form->getHandle()),
-                'columnLabels'          => $columnLabels,
-                'visibleColumns'        => $visibleColumns,
+                'table'            => $table->viewData($this->getLink('submissions/' . $form->getHandle())),
+                'cp_page_title'    => 'Submissions for ' . $form->getName(),
+                'layout'           => $layout,
+                'form'             => $form,
+                'form_right_links' => $formRightLinks,
+                'pagination'       => $pagination,
+                'exportLink'       => $this->getLink('export'),
+                'formStatuses'     => $formStatuses,
+                'mainUrl'          => $this->getLink('submissions/' . $form->getHandle()),
+                'columnLabels'     => $columnLabels,
+                'visibleColumns'   => $visibleColumns,
 
                 'currentSearchOnField'  => $currentSearchOnField,
                 'currentKeyword'        => $currentKeyword,
@@ -451,10 +451,10 @@ class SubmissionController extends Controller
                 'currentDateRangeEnd'   => $currentDateRangeEnd,
                 'currentDateRange'      => $currentDateRange,
 
-                'baseUrl'               => $baseUrl,
-                'filters'               => $filters,
+                'baseUrl' => $baseUrl,
+                'filters' => $filters,
 
-                'sessionToken'          => $sessionToken,
+                'sessionToken' => $sessionToken,
             ]
         );
 
@@ -664,6 +664,18 @@ class SubmissionController extends Controller
                                 'content' => $content,
                             ],
                         ];
+                    } else if ($field instanceof TableField) {
+                        $field->setAddButtonMarkup('<ul class="toolbar"><li class="add"><a title="Add Row" class="form-table-add-row"></a></li></ul>');
+                        $field->setRemoveButtonMarkup('<ul class="toolbar"><li class="remove"><a title="Remove Row" class="form-table-remove-row"></a></li></ul>');
+                        $field->setValue($submission->getFieldValue($field->getHandle()));
+                        $output = $field->renderInput();
+
+                        $fields = [
+                            [
+                                'type'    => 'html',
+                                'content' => $output,
+                            ],
+                        ];
                     } else if ($field instanceof EmailField) {
                         $fields = [];
 
@@ -676,10 +688,6 @@ class SubmissionController extends Controller
                                 ];
                             }
                         }
-                    } else if ($field instanceof TableField) {
-                        $fields = [];
-
-
                     } else {
                         $fields = [
                             $handle => [
@@ -706,6 +714,7 @@ class SubmissionController extends Controller
             ->addBreadcrumb(new NavigationLink('Forms', 'forms'))
             ->addBreadcrumb(new NavigationLink($form->getName(), 'forms/' . $form->getId()))
             ->addBreadcrumb(new NavigationLink('Submissions', 'submissions/' . $form->getHandle()))
+            ->addJavascript('fields/table.js')
             ->setTemplateVariables(
                 [
                     'base_url'              => $this->getLink(
