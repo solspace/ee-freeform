@@ -15,6 +15,7 @@ use EllisLab\ExpressionEngine\Service\Model\Model;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
+use Solspace\Addons\FreeformNext\Library\Helpers\CryptoHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\StringHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\TemplateHelper;
@@ -24,6 +25,7 @@ use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
 /**
  * @property int    $id
  * @property int    $siteId
+ * @property string $token
  * @property int    $statusId
  * @property string $statusName
  * @property string $statusHandle
@@ -51,6 +53,7 @@ class SubmissionModel extends Model
 
     protected $id;
     protected $siteId;
+    protected $token;
     protected $statusId;
     protected $statusName;
     protected $statusHandle;
@@ -98,6 +101,7 @@ class SubmissionModel extends Model
                     'siteId'   => ee()->config->item('site_id'),
                     'formId'   => $form->getId(),
                     'statusId' => $form->getDefaultStatus(),
+                    'token'    => CryptoHelper::getUniqueToken(100),
                 ]
             );
         }
@@ -288,6 +292,7 @@ class SubmissionModel extends Model
             'formId'      => $this->formId,
             'statusId'    => $this->statusId,
             'title'       => $this->title,
+            'token'       => $this->token,
             'dateUpdated' => date($dateFormat, time()),
         ];
 
