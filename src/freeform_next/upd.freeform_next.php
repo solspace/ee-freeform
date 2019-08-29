@@ -322,7 +322,7 @@ class Freeform_next_upd extends AddonUpdater
                 ');
         }
 
-        if (version_compare($previousVersion, '1.7.14', '<=')) {
+        if (version_compare($previousVersion, '1.8.0', '<')) {
             ee()->db
                 ->query('
                     ALTER TABLE exp_freeform_next_submissions
