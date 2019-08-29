@@ -11,7 +11,8 @@
     "egulias/email-validator": "^1.2",
     "danielstjules/stringy": "~2.3",
     "guzzle/guzzle": "^3.9",
-    "apache/log4php": "^2.3.0"
+    "apache/log4php": "^2.3.0",
+    "doctrine/lexer": "^1.0.1"
   },
   "autoload": {
     "classmap": [
