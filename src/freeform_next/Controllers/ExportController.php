@@ -2,6 +2,7 @@
 
 namespace Solspace\Addons\FreeformNext\Controllers;
 
+use Solspace\Addons\FreeformNext\Library\Pro\Fields\TableField;
 use Solspace\Addons\FreeformNext\Model\ExportSettingModel;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 use Solspace\Addons\FreeformNext\Repositories\ExportSettingsRepository;
@@ -30,7 +31,11 @@ class ExportController extends Controller
         $settings->save();
 
         $searchableFields = $labels = [];
+
+        $columnIndex = 0;
+
         foreach ($fieldData as $fieldId => $data) {
+
             $label     = $data['label'];
             $isChecked = $data['checked'];
 
@@ -38,12 +43,34 @@ class ExportController extends Controller
                 continue;
             }
 
-            $labels[$fieldId] = $label;
+            if (is_numeric($fieldId)) {
+                $field = $form->getLayout()->getFieldById($fieldId);
+
+                if ($field instanceof TableField) {
+                    $tableColumns = $field->getLayout();
+
+                    foreach ($tableColumns as $tableColumn) {
+                        $label     = $tableColumn['label'];
+                        $isChecked = $data['checked'];
+
+                        $labels[$columnIndex] = $label;
+
+                        $columnIndex++;
+                    }
+                } else {
+                    $labels[$columnIndex] = $label;
+                }
+
+            } else {
+                $labels[$columnIndex] = $label;
+            }
 
             $fieldName = is_numeric($fieldId) ? SubmissionModel::getFieldColumnName($fieldId) : $fieldId;
             $fieldName = 's.' . $fieldName;
 
             $searchableFields[] = $fieldName;
+
+            $columnIndex++;
         }
 
         $data = ee()

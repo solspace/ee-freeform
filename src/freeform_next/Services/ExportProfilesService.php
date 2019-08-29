@@ -8,6 +8,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\TextareaFiel
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\DataExport\ExportDataCSV;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
+use Solspace\Addons\FreeformNext\Library\Pro\Fields\TableField;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 
@@ -23,6 +24,7 @@ class ExportProfilesService
         $data = $this->normalizeArrayData($form, $data);
 
         $csvData = $data;
+
         array_unshift($csvData, array_values($labels));
 
         $fileName = sprintf('%s submissions %s.csv', $form->getName(), date('Y-m-d H:i', time()));
@@ -180,7 +182,17 @@ class ExportProfilesService
                 $fieldId = $matches[1];
                 try {
                     $field = $form->getLayout()->getFieldById($fieldId);
+
                     $label = $field->getHandle();
+
+                    if ($field instanceof TableField) {
+                        $tableColumns = $field->getLayout();
+
+                        foreach ($tableColumns as $tableColumn) {
+                            $label[] = $tableColumn['label'];
+                        }
+                    }
+
                 } catch (FreeformException $e) {
                 }
             }
@@ -201,6 +213,9 @@ class ExportProfilesService
     private function normalizeArrayData(Form $form, array $data, $flattenArrays = true)
     {
         $isRemoveNewlines = (bool) SettingsRepository::getInstance()->getOrCreate()->removeNewlines;
+
+        $tableRowsData = null;
+        $tableFieldIds = [];
 
         foreach ($data as $index => $item) {
             foreach ($item as $fieldId => $value) {
@@ -237,6 +252,33 @@ class ExportProfilesService
                         continue;
                     }
 
+                    if ($field instanceof TableField) {
+                        $rowsValues = json_decode($value ?: '[]', true);
+                        $rowsValuesFormatted = [];
+
+                        if ($rowsValues) {
+                            $tableRowsData[$index][$fieldId] = $rowsValues;
+
+                            if (!in_array($fieldId, $tableFieldIds)) {
+                                $tableFieldIds[] = $fieldId;
+                            }
+
+                            if ($flattenArrays && is_array($rowsValues)) {
+
+                                foreach ($rowsValues as $rowsValue) {
+                                    $rowsValuesFormatted[] = implode(',', $rowsValue);
+                                }
+
+                                $rowsValues = implode('|', $rowsValuesFormatted);
+
+                            }
+
+                            $data[$index][$fieldId] = $rowsValues;
+                        }
+
+                        continue;
+
+                    }
 
                     if ($field instanceof MultipleValueInterface) {
                         $value = json_decode($value ?: '[]', true);
@@ -254,6 +296,10 @@ class ExportProfilesService
                     continue;
                 }
             }
+        }
+
+        if ($tableRowsData) {
+            $data = $this->populateDataWithTableDate($data, $tableRowsData, $tableFieldIds, $form);
         }
 
         return $data;
@@ -278,5 +324,97 @@ class ExportProfilesService
         echo $content;
 
         exit();
+    }
+
+
+    private function populateDataWithTableDate($data, $tableRowsData, $tableFieldIds, $form)
+    {
+        $newData = [];
+
+        $artificialRowsCount = $this->getArtificialRowsCount($tableRowsData);
+
+        foreach ($data as $submissionId => $rowValues) {
+
+            $submissionTableData = $tableRowsData[$submissionId];
+
+            for ($i = 1; $i <= $artificialRowsCount[$submissionId]; $i++) {
+
+                $newRow = $rowValues;
+
+                if ($i > 1) {
+                    foreach ($newRow as $newFieldId => $newFieldValue) {
+                        $newRow[$newFieldId] = null;
+                    }
+                }
+
+                foreach ($tableFieldIds as $tableFieldId) {
+
+
+                    if (array_key_exists($tableFieldId, $submissionTableData)) {
+
+                        $submissionsFieldData = $submissionTableData[$tableFieldId];
+
+                        $tableFieldRowValue = 'no value';
+
+                        if (array_key_exists($i-1, $submissionsFieldData)) {
+                            $tableFieldRowValue = $submissionTableData[$tableFieldId][$i-1];
+
+                        } else {
+                            preg_match('/^' . SubmissionModel::FIELD_COLUMN_PREFIX . '(\d+)$/', $tableFieldId, $matches);
+
+                            if (array_key_exists(1, $matches)) {
+                                $field = $form->getLayout()->getFieldById($matches[1]);
+
+                                if ($field instanceof TableField) {
+                                    $tableColumns = $field->getLayout();
+
+                                    $emptyFields = [];
+
+                                    foreach ($tableColumns as $tableColumn) {
+                                        $emptyFields[] = '';
+                                    }
+
+                                    $tableFieldRowValue = $emptyFields;
+                                }
+                            }
+                        }
+
+                        $thisKey = null;
+
+                        $keyCounter = 0;
+                        foreach ($newRow as $newRowFieldId => $newRowFieldValue) {
+                            if ($newRowFieldId === $tableFieldId) {
+                                $thisKey = $keyCounter;
+                            }
+                            $keyCounter++;
+                        }
+
+                        unset($newRow[$tableFieldId]);
+                        array_splice($newRow, $thisKey, 0, $tableFieldRowValue);
+                    }
+                }
+
+                $newData[] = $newRow;
+            }
+        }
+
+        return $newData;
+    }
+
+    private function getArtificialRowsCount($tableRowsData)
+    {
+        $artificialRowsCount = [];
+
+        foreach ($tableRowsData as $submissionId => $submissionTableFields) {
+            foreach ($submissionTableFields as $submissionTableFieldId => $submissionTableFieldValues) {
+                if (!array_key_exists($submissionId, $artificialRowsCount)) {
+                    $artificialRowsCount[$submissionId] = count($submissionTableFieldValues);
+                } elseif ($artificialRowsCount[$submissionId] < count($submissionTableFieldValues)) {
+                    $artificialRowsCount[$submissionId] = count($submissionTableFieldValues);
+                }
+            }
+        }
+
+        return $artificialRowsCount;
     }
 }
