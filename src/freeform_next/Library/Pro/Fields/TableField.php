@@ -73,7 +73,9 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
      */
     public function getAddButtonLabel()
     {
-        return $this->addButtonLabel;
+        $attributes = $this->getCustomAttributes();
+
+        return $attributes->getAddButtonLabel() !== null ? $attributes->getAddButtonLabel() : $this->addButtonLabel;
     }
 
     /**
@@ -113,7 +115,9 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
      */
     public function getRemoveButtonLabel()
     {
-        return $this->removeButtonLabel;
+        $attributes = $this->getCustomAttributes();
+
+        return $attributes->getRemoveButtonLabel() !== null ? $attributes->getRemoveButtonLabel() : $this->removeButtonLabel;
     }
 
     /**
@@ -121,7 +125,7 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
      *
      * @return TableField
      */
-    public function setRemoveButtonLabel($removeButtonLabel): TableField
+    public function setRemoveButtonLabel($removeButtonLabel)
     {
         $this->removeButtonLabel = $removeButtonLabel;
 
@@ -141,7 +145,7 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
      *
      * @return TableField
      */
-    public function setRemoveButtonMarkup($removeButtonMarkup): TableField
+    public function setRemoveButtonMarkup($removeButtonMarkup)
     {
         $this->removeButtonMarkup = $removeButtonMarkup;
 
@@ -168,7 +172,7 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
             }
 
             $hasSingleValue = false;
-            $rowValues = [];
+            $rowValues      = [];
             foreach ($layout as $index => $column) {
                 $value = isset($row[$index]) ? $row[$index] : '';
                 if ($value) {
@@ -214,8 +218,8 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
             $values = [$values];
         }
 
-        $id = $this->getIdAttribute();
-        $output      = '<table class="form-table ' . $classString . '" id="' . $id . '">';
+        $id     = $this->getIdAttribute();
+        $output = '<table class="form-table ' . $classString . '" id="' . $id . '">';
 
         $output .= '<thead>';
         $output .= '<tr>';
@@ -246,10 +250,10 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
 
                     case self::COLUMN_TYPE_SELECT:
                         $options = explode(';', $defaultValue);
-                        $output .= "<select name=\"{$handle}[$rowIndex][$index]\">";
+                        $output  .= "<select name=\"{$handle}[$rowIndex][$index]\">";
                         foreach ($options as $option) {
                             $selected = $option === $value ? ' selected' : '';
-                            $output .= "<option value=\"$option\"$selected>$option</option>";
+                            $output   .= "<option value=\"$option\"$selected>$option</option>";
                         }
                         $output .= '</select>';
 
@@ -266,10 +270,10 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
             }
 
             $output .= '<td>';
-            if ($this->removeButtonMarkup) {
-                $output .= $this->removeButtonMarkup;
+            if ($this->getRemoveButtonMarkup()) {
+                $output .= $this->getRemoveButtonMarkup();
             } else {
-                $output .= '<button class="form-table-remove-row" type="button">' . $this->removeButtonLabel . '</button>';
+                $output .= '<button class="form-table-remove-row ' . $attributes->getRemoveButtonClass() . '" type="button">' . $this->getRemoveButtonLabel() . '</button>';
             }
             $output .= '</td>';
 
@@ -278,10 +282,10 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
         $output .= '</tbody>';
 
         $output .= '</table>';
-        if ($this->addButtonMarkup) {
-            $output .= $this->addButtonMarkup;
+        if ($this->getAddButtonMarkup()) {
+            $output .= $this->getAddButtonMarkup();
         } else {
-            $output .= '<button class="form-table-add-row" data-target="' . $id . '" type="button">' . $this->addButtonLabel . '</button>';
+            $output .= '<button class="form-table-add-row ' . $attributes->getAddButtonClass() . '" data-target="' . $id . '" type="button">' . $this->getAddButtonLabel() . '</button>';
         }
 
         return $output;

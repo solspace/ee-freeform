@@ -50,11 +50,15 @@ export default class Table extends HtmlInput {
             let input;
             switch (type) {
               case TYPE_CHECKBOX:
-                input = <input type="checkbox" value={value} readOnly={true} />
+                input = <input type="checkbox" value={value} readOnly />
                 break;
 
               case TYPE_SELECT:
-                const options = value.split(';');
+                let options = [];
+                if (value) {
+                  options = value.split(';')
+                }
+
                 input = (
                   <select>
                     {options.map((item, j) => <option key={j} value={item}>{item}</option>)}
@@ -64,7 +68,7 @@ export default class Table extends HtmlInput {
 
               case TYPE_STRING:
               default:
-                input = <input type="text" value={value ? value : ''} readOnly={true} />
+                input = <input type="text" value={value ? value : ''} readOnly />
                 break;
             }
 

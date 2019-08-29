@@ -45,6 +45,18 @@ class CustomFieldAttributes extends AbstractAttributes
     /** @var array */
     protected $inputAttributes;
 
+    /** @var string */
+    protected $addButtonLabel;
+
+    /** @var string */
+    protected $addButtonClass;
+
+    /** @var string */
+    protected $removeButtonLabel;
+
+    /** @var string */
+    protected $removeButtonClass;
+
     /** @var AbstractField */
     private $field;
 
@@ -235,6 +247,38 @@ class CustomFieldAttributes extends AbstractAttributes
     public function getFieldIdPrefix()
     {
         return $this->formAttributes->getFieldIdPrefix();
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddButtonLabel()
+    {
+        return $this->addButtonLabel;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddButtonClass()
+    {
+        return $this->addButtonClass;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRemoveButtonLabel()
+    {
+        return $this->removeButtonLabel;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRemoveButtonClass()
+    {
+        return $this->removeButtonClass;
     }
 
     /**

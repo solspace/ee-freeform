@@ -122,7 +122,7 @@ class FieldTransformer
             $prefix . 'label_next'           => $field instanceof SubmitField ? $field->getLabelNext() : null,
             $prefix . 'label_prev'           => $field instanceof SubmitField ? $field->getLabelPrev() : null,
             $prefix . 'disable_prev'         => $field instanceof SubmitField ? $field->isDisablePrev() : null,
-            $prefix . 'layout'               => $field instanceof TableField ? $field->getLayout() : null,
+            $prefix . 'layout'               => $this->getTableLayout($field),
             $prefix . 'use_script'           => $field instanceof TableField ? $field->isUseScript() : null,
             $prefix . 'max_rows'             => $field instanceof TableField ? $field->getMaxRows() : null,
         ];
@@ -180,5 +180,93 @@ class FieldTransformer
         }
 
         return $values ? implode(', ', $values) : '';
+    }
+
+    /**
+     * @param AbstractField $field
+     *
+     * @return array|null
+     */
+    private function getTableLayout(AbstractField $field)
+    {
+        if (!$field instanceof TableField) {
+            return null;
+        }
+
+        $handle = $field->getHandle();
+
+        $layoutColumnData = [];
+        foreach ($field->getLayout() as $column) {
+            $layoutColumnData[] = [
+                'column:type'         => isset($column['type']) ? $column['type'] : null,
+                'column:defaultValue' => isset($column['defaultValue']) ? $column['defaultValue'] : '',
+                'column:label'        => isset($column['label']) ? $column['label'] : '',
+            ];
+        }
+
+
+        $rows = $field->getValue();
+        if (empty($rows)) {
+            $firstRow = [];
+            foreach ($field->getLayout() as $column) {
+                $firstRow[] = isset($column['value']) ? $column['value'] : '';
+            }
+
+            $rows[] = $firstRow;
+        }
+
+        $data = [];
+        foreach ($rows as $rowIndex => $row) {
+            $rowData = ['row:columns' => [], 'row:index' => $rowIndex];
+            foreach ($field->getLayout() as $index => $column) {
+                $type         = isset($column['type']) ? $column['type'] : TableField::COLUMN_TYPE_STRING;
+                $label        = isset($column['label']) ? $column['label'] : '';
+                $defaultValue = isset($column['value']) ? $column['value'] : '';
+                $value        = $row[$index] !== null ? $row[$index] : $defaultValue;
+                $value        = htmlentities($value);
+
+                switch ($type) {
+                    case TableField::COLUMN_TYPE_CHECKBOX:
+                        $input = "<input type=\"checkbox\" name=\"{$handle}[$rowIndex][$index]\" data-default-defaultValue=\"$defaultValue\" " . ($value ? 'checked' : '') . ' />';
+                        break;
+
+                    case TableField::COLUMN_TYPE_SELECT:
+                        $options = explode(';', $defaultValue);
+                        $input   = "<select name=\"{$handle}[$rowIndex][$index]\">";
+                        foreach ($options as $option) {
+                            $selected = $option === $defaultValue ? ' selected' : '';
+                            $input    .= "<option value=\"$option\"$selected>$option</option>";
+                        }
+                        $input .= '</select>';
+
+                        break;
+
+                    case TableField::COLUMN_TYPE_STRING:
+                    default:
+                        $input = "<input type=\"text\" name=\"{$handle}[$rowIndex][$index]\" value=\"$value\" data-default-value=\"$defaultValue\" />";
+
+                        break;
+                }
+
+                $rowData['row:columns'][] = [
+                    'column:row_index'     => $rowIndex,
+                    'column:index'         => $index,
+                    'column:label'         => $label,
+                    'column:type'          => $type,
+                    'column:default_value' => $defaultValue,
+                    'column:value'         => $value,
+                    'column:input'         => $input,
+                ];
+            }
+
+            $data[] = $rowData;
+        }
+
+        return [
+            [
+                'layout:columns' => $layoutColumnData,
+                'layout:rows'    => $data,
+            ],
+        ];
     }
 }
