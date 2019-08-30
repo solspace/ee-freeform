@@ -209,7 +209,12 @@ class FieldTransformer
         if (empty($rows)) {
             $firstRow = [];
             foreach ($field->getLayout() as $column) {
-                $firstRow[] = isset($column['value']) ? $column['value'] : '';
+                $type = isset($column['type']) ? $column['type'] : TableField::COLUMN_TYPE_STRING;
+                if ($type === TableField::COLUMN_TYPE_CHECKBOX) {
+                    $firstRow[] = null;
+                } else {
+                    $firstRow[] = isset($column['value']) ? $column['value'] : '';
+                }
             }
 
             $rows[] = $firstRow;
@@ -227,6 +232,7 @@ class FieldTransformer
 
                 switch ($type) {
                     case TableField::COLUMN_TYPE_CHECKBOX:
+                        $value = $row[$index];
                         $input = "<input type=\"checkbox\" name=\"{$handle}[$rowIndex][$index]\" data-default-defaultValue=\"$defaultValue\" " . ($value ? 'checked' : '') . ' />';
                         break;
 

@@ -26,7 +26,7 @@ export default class MatrixEditorProperty extends Component {
         type: PropTypes.string,
       }).isRequired,
     ).isRequired,
-    values: PropTypes.arrayOf(PropTypes.object.isRequired),
+    values: PropTypes.array,
     buttonLabel: PropTypes.string,
     addRow: PropTypes.func,
     removeRow: PropTypes.func,
@@ -45,6 +45,10 @@ export default class MatrixEditorProperty extends Component {
     const elements = [];
 
     for (const [i, item] of values.entries()) {
+      if (Array.isArray(item)) {
+        continue;
+      }
+
       elements.push(
         <Row
           rowIndex={i}

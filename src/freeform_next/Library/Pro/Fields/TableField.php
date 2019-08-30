@@ -212,7 +212,12 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
         if (empty($values)) {
             $values = [];
             foreach ($layout as $column) {
-                $values[] = isset($column['value']) ? $column['value'] : null;
+                $type = isset($column['type']) ? $column['type'] : self::COLUMN_TYPE_STRING;
+                if ($type === self::COLUMN_TYPE_CHECKBOX) {
+                    $values[] = null;
+                } else {
+                    $values[] = isset($column['value']) ? $column['value'] : null;
+                }
             }
 
             $values = [$values];
@@ -245,7 +250,8 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
 
                 switch ($type) {
                     case self::COLUMN_TYPE_CHECKBOX:
-                        $output .= "<input type=\"checkbox\" name=\"{$handle}[$rowIndex][$index]\" value=\"$defaultValue\" data-default-value=\"$defaultValue\" " . ($value ? 'checked' : '') . " />";
+                        $value  = $row[$index];
+                        $output .= "<input type=\"checkbox\" name=\"{$handle}[$rowIndex][$index]\" value=\"$defaultValue\" data-default-value=\"$defaultValue\" " . ($value ? 'checked' : '') . ' />';
                         break;
 
                     case self::COLUMN_TYPE_SELECT:
