@@ -138,6 +138,7 @@ class SubmissionModel extends Model
             [
                 'id'           => $fetchedValues['id'],
                 'siteId'       => $fetchedValues['siteId'],
+                'token'        => $fetchedValues['token'],
                 'formId'       => $fetchedValues['formId'],
                 'statusId'     => $fetchedValues['statusId'],
                 'title'        => $fetchedValues['title'],
