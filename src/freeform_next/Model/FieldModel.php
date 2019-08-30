@@ -387,6 +387,7 @@ class FieldModel extends Model implements \JsonSerializable
             case FieldInterface::TYPE_CHECKBOX_GROUP:
             case FieldInterface::TYPE_EMAIL:
             case FieldInterface::TYPE_TEXTAREA:
+            case FieldInterface::TYPE_TABLE:
                 $columnType = 'TEXT';
 
                 break;
@@ -405,6 +406,7 @@ class FieldModel extends Model implements \JsonSerializable
             case FieldInterface::TYPE_CHECKBOX_GROUP:
             case FieldInterface::TYPE_DYNAMIC_RECIPIENTS:
             case FieldInterface::TYPE_EMAIL:
+            case FieldInterface::TYPE_TABLE:
                 return true;
         }
 
