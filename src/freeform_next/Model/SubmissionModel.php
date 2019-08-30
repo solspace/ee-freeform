@@ -16,6 +16,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\CryptoHelper;
+use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\StringHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\TemplateHelper;
@@ -89,7 +90,7 @@ class SubmissionModel extends Model
         $token = $form->getAssociatedSubmissionToken();
 
         $submission = null;
-        if ($token) {
+        if ($token && FreeformHelper::get('version') === FREEFORM_PRO) {
             $submission = SubmissionRepository::getInstance()->getSubmissionByToken($form, $token);
         }
 

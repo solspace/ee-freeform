@@ -25,6 +25,7 @@ use Solspace\Addons\FreeformNext\Library\Exceptions\FieldExceptions\FileUploadEx
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\FileUploads\FileUploadHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
+use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
 use Solspace\Addons\FreeformNext\Library\Mailing\MailHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
@@ -805,7 +806,7 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      */
     public function populateFromSubmission($token = null)
     {
-        if (null === $token) {
+        if (null === $token || FreeformHelper::get('version') !== FREEFORM_PRO) {
             return $this;
         }
 
