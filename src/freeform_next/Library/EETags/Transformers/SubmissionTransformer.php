@@ -46,6 +46,7 @@ class SubmissionTransformer
         $data = [
             $prefix . 'id'               => $model->id,
             $prefix . 'title'            => $model->title,
+            $prefix . 'token'            => $model->token,
             $prefix . 'date'             => $model->dateCreated,
             $prefix . 'status_id'        => $model->statusId,
             $prefix . 'status'           => $model->statusName,
