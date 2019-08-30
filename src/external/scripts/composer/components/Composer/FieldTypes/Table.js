@@ -20,7 +20,7 @@ export default class Table extends HtmlInput {
   renderTable() {
     const { properties: { layout } } = this.props;
 
-    if (!layout) {
+    if (!layout || !layout.length) {
       return <table>
         <thead>
         <tr>
