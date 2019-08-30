@@ -57,6 +57,15 @@ class CustomFieldAttributes extends AbstractAttributes
     /** @var string */
     protected $removeButtonClass;
 
+    /** @var string */
+    protected $tableTextInputClass;
+
+    /** @var string */
+    protected $tableCheckboxInputClass;
+
+    /** @var string */
+    protected $tableSelectInputClass;
+
     /** @var AbstractField */
     private $field;
 
@@ -279,6 +288,30 @@ class CustomFieldAttributes extends AbstractAttributes
     public function getRemoveButtonClass()
     {
         return $this->removeButtonClass;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTableTextInputClass()
+    {
+        return $this->tableTextInputClass;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTableCheckboxInputClass()
+    {
+        return $this->tableCheckboxInputClass;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTableSelectInputClass()
+    {
+        return $this->tableSelectInputClass;
     }
 
     /**

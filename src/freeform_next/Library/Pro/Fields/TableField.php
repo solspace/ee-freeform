@@ -251,12 +251,21 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
                 switch ($type) {
                     case self::COLUMN_TYPE_CHECKBOX:
                         $value  = $row[$index];
-                        $output .= "<input type=\"checkbox\" name=\"{$handle}[$rowIndex][$index]\" value=\"$defaultValue\" data-default-value=\"$defaultValue\" " . ($value ? 'checked' : '') . ' />';
+                        $output .= '<input type="checkbox"'
+                            . " name=\"{$handle}[$rowIndex][$index]\""
+                            . ' class="' . $attributes->getTableCheckboxInputClass() . '"'
+                            . " value=\"$defaultValue\""
+                            . " data-default-value=\"$defaultValue\""
+                            . ($value ? ' checked' : '')
+                            . ' />';
                         break;
 
                     case self::COLUMN_TYPE_SELECT:
                         $options = explode(';', $defaultValue);
-                        $output  .= "<select name=\"{$handle}[$rowIndex][$index]\">";
+                        $output  .= '<select'
+                            . " name=\"{$handle}[$rowIndex][$index]\""
+                            . 'class="' . $attributes->getTableSelectInputClass() . '"'
+                            . '>';
                         foreach ($options as $option) {
                             $selected = $option === $value ? ' selected' : '';
                             $output   .= "<option value=\"$option\"$selected>$option</option>";
@@ -267,7 +276,13 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
 
                     case self::COLUMN_TYPE_STRING:
                     default:
-                        $output .= "<input type=\"text\" name=\"{$handle}[$rowIndex][$index]\" value=\"$value\" data-default-value=\"$defaultValue\" />";
+                        $output .= '<input'
+                            . ' type="text"'
+                            . ' class="' . $attributes->getTableTextInputClass() . '"'
+                            . " name=\"{$handle}[$rowIndex][$index]\""
+                            . " value=\"$value\""
+                            . " data-default-value=\"$defaultValue\""
+                            . ' />';
 
                         break;
                 }
