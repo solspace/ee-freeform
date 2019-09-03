@@ -104,6 +104,22 @@
 			{field:render_instructions instructions_class="help-block"}
 			{field:render_errors error_class="help-block"}
 
+		{if:elseif field:type == 'table'}
+                            
+			{field:render_label label_class="{if field:required}required{/if}"}
+			{field:render_input
+				class="table"
+				add_button_label="Add +"
+				add_button_class="btn btn-small btn-primary"
+				remove_button_label="x"
+				remove_button_class="btn btn-small btn-danger"
+				table_text_input_class="form-control"
+				table_select_input_class="form-control"
+				table_checkbox_input_class="form-check-input"
+			}
+			{field:render_instructions instructions_class="help-block"}
+			{field:render_errors error_class="help-block"}
+
 		{if:elseif field:type == 'submit'}
 
 			{field:render}
