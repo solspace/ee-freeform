@@ -229,6 +229,7 @@ class FieldTransformer
                 $defaultValue = isset($column['value']) ? $column['value'] : '';
                 $value        = $row[$index] !== null ? $row[$index] : $defaultValue;
                 $value        = htmlentities($value);
+                $templateOptions = [];
 
                 switch ($type) {
                     case TableField::COLUMN_TYPE_CHECKBOX:
@@ -240,6 +241,7 @@ class FieldTransformer
                         $options = explode(';', $defaultValue);
                         $input   = "<select name=\"{$handle}[$rowIndex][$index]\">";
                         foreach ($options as $option) {
+                            $templateOptions[] = ['option:value' => $option];
                             $selected = $option === $defaultValue ? ' selected' : '';
                             $input    .= "<option value=\"$option\"$selected>$option</option>";
                         }
@@ -262,6 +264,7 @@ class FieldTransformer
                     'column:default_value' => $defaultValue,
                     'column:value'         => $value,
                     'column:input'         => $input,
+                    'column:options'       => $templateOptions,
                 ];
             }
 
