@@ -4,6 +4,9 @@
 
         {exp:freeform_next:submissions form="{embed:form}" submission_id="{embed:submission_id}"}
 
+            <div class="pull-right">
+                <a class="btn btn-info" href="{path='demo/bootstrap'}/{embed:form}/edit/{submission:token}/">Edit</a>
+            </div>
             <h3>{form:name} - {submission:title}</h3>
 
             <table class="table table-striped">
