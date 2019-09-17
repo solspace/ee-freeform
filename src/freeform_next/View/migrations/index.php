@@ -5,8 +5,8 @@
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2019, Solspace, Inc.
- * @link          http://docs.solspace.com/expressionengine/freeform/v1/
- * @license       https://solspace.com/software/license-agreement
+ * @link          https://docs.solspace.com/expressionengine/freeform/v1/
+ * @license       https://docs.solspace.com/license-agreement/
  */
 ?>
 <link rel="stylesheet" href="<?php echo URL_THIRD_THEMES ?>freeform_next/css/migrations.css"/>
@@ -27,7 +27,7 @@
         <div id="ready-title">Ready for Migration</div>
         <div id="ready-text">
             Freeform has detected Freeform Classic on this site, so the migration utility is available!<br/>
-            Be sure to read and follow the <a href="http://docs.solspace.com/expressionengine/freeform/v1//classic-migration/">migration documentation</a>
+            Be sure to read and follow the <a href="https://docs.solspace.com/expressionengine/freeform/v1/classic-migration/">migration documentation</a>
             carefully in order to properly prepare and clean up your site afterward.
         </div>
         <div id="ready-text">

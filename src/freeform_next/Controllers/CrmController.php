@@ -118,7 +118,7 @@ class CrmController extends Controller
             $formRightLinks = [
                 [
                     'title' => lang('Upgrade to Pro to Enable'),
-                    'link'  => 'http://docs.solspace.com/expressionengine/freeform/v1/',
+                    'link'  => 'https://docs.solspace.com/expressionengine/freeform/v1/',
                 ],
             ];
         }
@@ -149,7 +149,7 @@ class CrmController extends Controller
         $serviceProviderTypes = $this->getCrmService()->getAllCrmServiceProviders();
 
         if (empty($serviceProviderTypes)) {
-            return new RedirectView('http://docs.solspace.com/expressionengine/freeform/v1/');
+            return new RedirectView('https://docs.solspace.com/expressionengine/freeform/v1/');
         }
 
         if ($id === 'new') {

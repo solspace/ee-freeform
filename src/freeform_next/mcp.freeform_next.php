@@ -5,8 +5,8 @@
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2019, Solspace, Inc.
- * @link          http://docs.solspace.com/expressionengine/freeform/v1/
- * @license       https://solspace.com/software/license-agreement
+ * @link          https://docs.solspace.com/expressionengine/freeform/v1/
+ * @license       https://docs.solspace.com/license-agreement/
  */
 
 use Solspace\Addons\FreeformNext\Controllers\ApiController;
@@ -493,13 +493,13 @@ class Freeform_next_mcp extends ControlPanelView
         $resources = new NavigationLink('Resources');
         $resources
             ->addSubNavItem(
-                new NavigationLink('Product Info', 'http://docs.solspace.com/expressionengine/freeform/v1/')
+                new NavigationLink('Product Info', 'https://docs.solspace.com/expressionengine/freeform/v1/')
             )
             ->addSubNavItem(
-                new NavigationLink('Documentation', 'http://docs.solspace.com/expressionengine/freeform/v1/')
+                new NavigationLink('Documentation', 'https://docs.solspace.com/expressionengine/freeform/v1/')
             )
             ->addSubNavItem(
-                new NavigationLink('Official Support', 'http://docs.solspace.com/expressionengine/freeform/v1/support.html')
+                new NavigationLink('Official Support', 'https://docs.solspace.com/expressionengine/freeform/v1/support.html')
             );
 
         $logs   = null;
