@@ -1,6 +1,6 @@
-const src       = "src/",
-      dist      = "dist/",
-      buildPath = dist + "build/";
+const src = "src/";
+const dist = "dist/";
+const buildPath = dist + "build/";
 
 const paths = {
   scripts: {
@@ -64,8 +64,6 @@ const paths = {
       buildPath + "freeform_next/vendor/**/Tests",
       buildPath + "freeform_next/vendor/**/test",
       buildPath + "freeform_next/vendor/**/doc",
-      buildPath + "freeform_next/composer.lock",
-      buildPath + "freeform_next/composer.json",
     ],
   },
 };
