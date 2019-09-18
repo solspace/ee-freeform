@@ -131,6 +131,7 @@ class Freeform_Next extends Plugin
             ->setDateRangeEnd($this->getParam('date_range_end'))
             ->setDateRange($this->getParam('date_range'))
             ->setSubmissionId($this->getParam('submission_id'))
+            ->setToken($this->getParam('token'))
             ->setOrderBy($this->getParam('orderby'))
             ->setSort($this->getParam('sort'))
             ->setLimit($limit)

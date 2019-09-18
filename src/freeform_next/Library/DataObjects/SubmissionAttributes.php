@@ -17,6 +17,9 @@ class SubmissionAttributes
     /** @var int */
     private $submissionId;
 
+    /** @var string */
+    private $token;
+
     /** @var int */
     private $limit;
 
@@ -133,6 +136,27 @@ class SubmissionAttributes
     {
         $this->submissionId = $submissionId;
         $this->setFilter(SubmissionModel::TABLE . '.id', $submissionId);
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param string $token
+     *
+     * @return SubmissionAttributes
+     */
+    public function setToken($token = null)
+    {
+        $this->token = $token;
+        $this->setFilter(SubmissionModel::TABLE . '.token', $token);
 
         return $this;
     }
