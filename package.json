@@ -63,7 +63,9 @@
   },
   "scripts": {
     "start": "gulp watch",
-    "deploy": "NODE_ENV=production gulp deploy --env prod"
+    "deploy:pro": "NODE_ENV=production gulp deploy:pro --env prod",
+    "deploy:lite": "NODE_ENV=production gulp deploy:lite --env prod",
+    "deploy:express": "NODE_ENV=production gulp deploy:express --env prod"
   },
   "repository": {
     "type": "git",

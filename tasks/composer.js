@@ -4,8 +4,9 @@ const paths    = require("./_paths"),
 
 module.exports = {
   fn: function (gulp, callback) {
-    var options = {
+    let options = {
       "working-dir": "./src/freeform_next",
+      "optimize-autoloader": true,
     };
 
     if (helpers.isProd()) {
