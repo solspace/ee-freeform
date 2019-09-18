@@ -3,6 +3,6 @@
   "package_desc": "This package includes a set of sample templates that help demonstrate Freeform's abilities and get you better acquainted with it.",
   "package_version": "1.0.0",
   "vendor": "Solspace",
-  "vendor_url": "http://docs.solspace.com/expressionengine/freeform/v1/",
-  "docs_url": "http://docs.solspace.com/expressionengine/freeform/v1/"
+  "vendor_url": "https://docs.solspace.com/expressionengine/freeform/v1/",
+  "docs_url": "https://docs.solspace.com/expressionengine/freeform/v1/"
 }

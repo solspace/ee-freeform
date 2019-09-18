@@ -5,8 +5,8 @@
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2019, Solspace, Inc.
- * @link          http://docs.solspace.com/expressionengine/freeform/v1/
- * @license       https://solspace.com/software/license-agreement
+ * @link          https://docs.solspace.com/expressionengine/freeform/v1/
+ * @license       https://docs.solspace.com/license-agreement/
  */
 
 namespace Solspace\Addons\FreeformNext\Library\Codepack\Components\FileObject;
@@ -16,7 +16,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 abstract class FileObject
 {
-    // TODO: NEED TO TARGET THIS CORRECTLY
     const HELP_LINK = 'https://solspace.com/';
 
     /** @var Filesystem */

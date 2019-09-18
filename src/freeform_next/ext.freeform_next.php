@@ -17,8 +17,8 @@ use Solspace\Addons\FreeformNext\Utilities\AddonInfo;
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2019, Solspace, Inc.
- * @link          http://docs.solspace.com/expressionengine/freeform/v1/
- * @license       https://solspace.com/software/license-agreement
+ * @link          https://docs.solspace.com/expressionengine/freeform/v1/
+ * @license       https://docs.solspace.com/license-agreement/
  */
 class Freeform_next_ext
 {
