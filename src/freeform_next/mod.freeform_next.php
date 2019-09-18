@@ -179,7 +179,7 @@ class Freeform_Next extends Plugin
             $hash = $this->getPost(FormValueContext::FORM_HASH_KEY, null);
 
             if (null !== $hash) {
-                $postedId = FormValueContext::getFormIdFromHash($hash);
+                $postedId  = FormValueContext::getFormIdFromHash($hash);
                 $formModel = FormRepository::getInstance()->getFormByIdOrHandle($postedId);
                 if ($formModel) {
                     $form = $formModel->getForm();
@@ -197,6 +197,7 @@ class Freeform_Next extends Plugin
         $honeypot = $honeypotService->getHoneypot($form);
 
         if ($form->isValid()) {
+            /** @var SubmissionModel $submissionModel */
             $submissionModel = $form->submit();
 
             if ($form->isFormSaved()) {
@@ -205,7 +206,11 @@ class Freeform_Next extends Plugin
                 $returnUrl = $postedReturnUrl ?: $form->getReturnUrl();
                 $returnUrl = TemplateHelper::renderStringWithForm($returnUrl, $form, $submissionModel);
                 if ($submissionModel) {
-                    $returnUrl = str_replace('SUBMISSION_ID', $submissionModel->id, $returnUrl);
+                    $returnUrl = str_replace(
+                        ['SUBMISSION_ID', 'SUBMISSION_TOKEN'],
+                        [$submissionModel->id, $submissionModel->token],
+                        $returnUrl
+                    );
                 }
 
                 if ($isAjaxRequest) {
@@ -323,9 +328,9 @@ class Freeform_Next extends Plugin
     /**
      * Generates SQL for a field search
      *
-     * @param    string    Search terms from search parameter
-     * @param    string    Database column name to search
-     * @param    int        Site ID
+     * @param string    Search terms from search parameter
+     * @param string    Database column name to search
+     * @param int        Site ID
      *
      * @return    string    SQL to include in an existing query's WHERE clause
      */
