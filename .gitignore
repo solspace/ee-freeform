@@ -12,3 +12,6 @@ npm-debug.log
 /Deploy.sh
 /src/freeform_next/ft_check
 .DS_Store
+/Deploy Express.sh
+/Deploy Lite.sh
+/Deploy Pro.sh
