@@ -328,6 +328,7 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
 
                 case 'number':
                 case 'currency':
+                case 'double':
                     $type = FieldObject::TYPE_NUMERIC;
                     break;
             }
