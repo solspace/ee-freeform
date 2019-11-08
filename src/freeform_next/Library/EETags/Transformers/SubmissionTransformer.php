@@ -6,6 +6,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
 use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionAttributes;
+use Solspace\Addons\FreeformNext\Library\Pro\Fields\TableField;
 use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 
 class SubmissionTransformer
@@ -84,7 +85,12 @@ class SubmissionTransformer
                 continue;
             }
 
-            $value  = $model->getFieldValue($field->getHandle());
+            $value = $model->getFieldValue($field->getHandle());
+
+            if ($field instanceof TableField) {
+                $field->setValue($value);
+            }
+
             $data[] = $fieldTransformer->transformField($field, $value, $prefix);
         }
 
