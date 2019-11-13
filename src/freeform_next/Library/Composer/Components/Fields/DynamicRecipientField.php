@@ -160,7 +160,7 @@ class DynamicRecipientField extends AbstractField implements RecipientInterface,
             $list = [];
             foreach ($obscureValue as $value) {
                 if (isset($options[$value])) {
-                    $list[] = $options[$value]->getValue();
+                    $list[] = $options[$value]->getLabel();
                 }
             }
 
@@ -168,7 +168,7 @@ class DynamicRecipientField extends AbstractField implements RecipientInterface,
         }
 
         if (isset($options[$obscureValue])) {
-            return $options[$obscureValue]->getValue();
+            return $options[$obscureValue]->getLabel();
         }
 
         return null;

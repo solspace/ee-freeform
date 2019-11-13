@@ -42,7 +42,7 @@ class FieldTransformer
             foreach ($value as $fileId) {
                 $files[] = ['file_id' => $fileId];
             }
-        } else if ($field instanceof ObscureValueInterface) {
+        } else if ($field instanceof ObscureValueInterface and !$field instanceof DynamicRecipientField) {
             $value = $field->getActualValue($value);
         }
 
@@ -65,6 +65,9 @@ class FieldTransformer
                 $value = nl2br($value);
             }
         }
+
+        // var_dump($value);
+        // die();
 
         $data = [
             $prefix . 'id'                   => $field->getId(),
