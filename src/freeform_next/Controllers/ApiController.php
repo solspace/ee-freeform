@@ -2,11 +2,15 @@
 
 namespace Solspace\Addons\FreeformNext\Controllers;
 
+use Solspace\Addons\FreeformNext\Library\Composer\Attributes\FormAttributes;
+use Solspace\Addons\FreeformNext\Library\Composer\Composer;
 use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionAttributes;
 use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionPreferenceSetting;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
+use Solspace\Addons\FreeformNext\Library\Session\EERequest;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
+use Solspace\Addons\FreeformNext\Model\FormModel;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
 use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
@@ -14,16 +18,29 @@ use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
 use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionPreferencesRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
+use Solspace\Addons\FreeformNext\Services\FormsService;
+use Solspace\Addons\FreeformNext\Services\SettingsService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\FileDownloadView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 use Stringy\Stringy;
+
+use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
+use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
+use Solspace\Addons\FreeformNext\Services\CrmService;
+use Solspace\Addons\FreeformNext\Services\FieldsService;
+use Solspace\Addons\FreeformNext\Services\FilesService;
+use Solspace\Addons\FreeformNext\Services\MailerService;
+use Solspace\Addons\FreeformNext\Services\MailingListsService;
+use Solspace\Addons\FreeformNext\Services\StatusesService;
+use Solspace\Addons\FreeformNext\Services\SubmissionsService;
 
 class ApiController extends Controller
 {
     const TYPE_FIELDS            = 'fields';
     const TYPE_NOTIFICATIONS     = 'notifications';
     const TYPE_RESET_SPAM        = 'reset_spam';
+    const TYPE_DUPLICATE         = 'duplicate';
     const TYPE_SUBMISSION_LAYOUT = 'submission_layout';
     const TYPE_SUBMISSION_EXPORT = 'submission_export';
 
@@ -48,6 +65,9 @@ class ApiController extends Controller
 
             case self::TYPE_SUBMISSION_LAYOUT:
                 return $this->submissionLayout();
+
+            case self::TYPE_DUPLICATE:
+                return $this->duplicate();
 
             case self::TYPE_SUBMISSION_EXPORT:
                 return $this->submissionExport($args);
@@ -149,6 +169,64 @@ class ApiController extends Controller
         }
 
         $view->setVariables(NotificationRepository::getInstance()->getAllNotifications());
+
+        return $view;
+    }
+
+    /**
+     * @return AjaxView
+     */
+    public function duplicate()
+    {
+        $formId = ee()->input->post('formId');
+
+        /** @var FormModel $form */
+        $form = FormRepository::getInstance()->getFormById($formId);
+        $view = new AjaxView();
+
+        if (!$form) {
+            $view->addError('Form not found');
+        } else {
+            $newForm = clone $form;
+
+            foreach (get_object_vars($form) as $varName => $varValue) {
+                $newForm->$varName = $varValue . ' '; // Does not work
+            }
+
+            $newForm->setId(null);
+        }
+
+        if (!ExtensionHelper::call(ExtensionHelper::HOOK_FORM_BEFORE_SAVE, $newForm, true)) {
+            $view->addError(ExtensionHelper::getLastCallData());
+
+            return $view;
+        }
+
+        try {
+            $newHandleBase = $newForm->handle;
+
+            if (strpos($newForm->handle, '_clone_') !== false) {
+                $newHandleBase = substr($newForm->handle, 0, strpos($newForm->handle, "_clone"));
+            }
+
+            $newHandle = $newHandleBase . '_clone_' . time();
+
+            $newForm->name = $newForm->name . ' '; // Does work
+            $newForm->handle = $newHandle;
+            $newForm->layoutJson = $newForm->layoutJson . ' ';
+            $newForm->defaultStatus = $newForm->defaultStatus . ' ';
+
+            $newForm->handle = $newHandle;
+            $newForm->save();
+
+            if (!ExtensionHelper::call(ExtensionHelper::HOOK_FORM_AFTER_SAVE, $newForm, true)) {
+                return $view;
+            }
+
+            $view->addVariable('success', true);
+        } catch (\Exception $e) {
+            $view->addError($e->getMessage());
+        }
 
         return $view;
     }

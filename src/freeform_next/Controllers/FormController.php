@@ -83,6 +83,7 @@ class FormController extends Controller
 
             $toolbarItems = [];
 
+            // change here
             if ($canManageForms) {
                 $toolbarItems = [
                     'edit' => [
@@ -100,6 +101,14 @@ class FormController extends Controller
                             lang('Are you sure you want to reset the spam count for %s to 0?'),
                             $form->name
                         ),
+                    ],
+                    'view' => [
+                        'href'                 => 'javascript:;',
+                        'class'                => 'duplicate',
+                        'title'                => lang('Duplicate'),
+                        'data-csrf'            => CSRF_TOKEN,
+                        'data-url'             => $this->getLink('api/duplicate'),
+                        'data-form-id'         => $form->id,
                     ],
                 ];
             }
