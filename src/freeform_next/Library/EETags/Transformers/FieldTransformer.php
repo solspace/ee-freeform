@@ -66,9 +66,6 @@ class FieldTransformer
             }
         }
 
-        // var_dump($value);
-        // die();
-
         $data = [
             $prefix . 'id'                   => $field->getId(),
             $prefix . 'handle'               => $field->getHandle(),
