@@ -51,7 +51,7 @@ return [
     'name'           => FreeformHelper::get('name'),
     'module_name'    => 'Freeform_next',
     'description'    => 'The most intuitive and powerful form builder for ExpressionEngine.',
-    'version'        => '1.8.1',
+    'version'        => '1.8.2',
     'namespace'      => 'Solspace\Addons\FreeformNext',
     'settings_exist' => true,
     'models'         => [
