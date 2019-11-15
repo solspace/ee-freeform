@@ -26,6 +26,27 @@
                         {if:else}
                             No file(s) uploaded
                         {/if}
+                    {if:elseif field:type == "table"}
+                        {field:layout}
+                            <table class="form-table table" id="form-input-{field:handle}">
+                                <thead>
+                                    <tr>
+                                    {layout:columns}
+                                        <th>{column:label}</th>
+                                    {/layout:columns}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {layout:rows}
+                                    <tr>
+                                    {row:columns}
+                                        <td>{column:value}</td>
+                                    {/row:columns}
+                                    </tr>
+                                {/layout:rows}
+                                </tbody>
+                            </table>
+                        {/field:layout}
                     {if:else}
                         {field:value}
                     {/if}
