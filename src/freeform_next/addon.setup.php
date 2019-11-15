@@ -50,7 +50,7 @@ return [
     'docs_url'       => 'https://docs.solspace.com/expressionengine/freeform/v1/',
     'name'           => FreeformHelper::get('name'),
     'module_name'    => 'Freeform_next',
-    'description'    => 'The most intuitive and powerful form builder for ExpressionEngine.',
+    'description'    => 'The most reliable, intuitive and powerful form builder for ExpressionEngine.',
     'version'        => '1.8.2',
     'namespace'      => 'Solspace\Addons\FreeformNext',
     'settings_exist' => true,
