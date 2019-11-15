@@ -199,8 +199,8 @@ class DynamicRecipientField extends AbstractField implements RecipientInterface,
         }
 
 
-        foreach ($options as $option) {
-            if ($option->getValue() == $values) {
+        foreach ($options as $key => $option) {
+            if ($key == $values) {
                 return $option->getLabel();
             }
         }
