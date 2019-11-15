@@ -185,12 +185,20 @@ class DynamicRecipientField extends AbstractField implements RecipientInterface,
     {
         $options = $this->getOptions();
 
-        if (\is_array($values)) {
+        if (\is_array($values) && $values) {
+
             $list = [];
             foreach ($values as $value) {
                 foreach ($options as $key => $option) {
-                    if ($key === $value) {
-                        $list[] = $option->getLabel();
+
+                    if (is_numeric($value)) {
+                        if ($key === $value) {
+                            $list[] = $option->getLabel();
+                        }
+                    } else {
+                        if ($option->getValue() === $value) {
+                            $list[] = $option->getLabel();
+                        }
                     }
                 }
             }
@@ -200,8 +208,14 @@ class DynamicRecipientField extends AbstractField implements RecipientInterface,
 
 
         foreach ($options as $key => $option) {
-            if ($key == $values) {
-                return $option->getLabel();
+            if (is_numeric($values)) {
+                if ($key === $values) {
+                    $list[] = $option->getLabel();
+                }
+            } else {
+                if ($option->getValue() === $values) {
+                    $list[] = $option->getLabel();
+                }
             }
         }
 
