@@ -175,6 +175,40 @@ class DynamicRecipientField extends AbstractField implements RecipientInterface,
     }
 
     /**
+     * Return labels for value of this field
+     *
+     * @param mixed $obscureValue
+     *
+     * @return mixed
+     */
+    public function getValueLabels($values)
+    {
+        $options = $this->getOptions();
+
+        if (\is_array($values)) {
+            $list = [];
+            foreach ($values as $value) {
+                foreach ($options as $option) {
+                    if ($option->getValue() == $value) {
+                        $list[] = $option->getLabel();
+                    }
+                }
+            }
+
+            return $list;
+        }
+
+
+        foreach ($options as $option) {
+            if ($option->getValue() == $values) {
+                return $option->getLabel();
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @return string
      */
     private function renderAsSelect()

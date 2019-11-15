@@ -12,6 +12,7 @@
 namespace Solspace\Addons\FreeformNext\Services;
 
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecipientField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoStorageInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\ObscureValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\StaticValueInterface;
