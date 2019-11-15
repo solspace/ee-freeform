@@ -346,6 +346,15 @@ class Freeform_next_upd extends AddonUpdater
                 ');
         }
 
+        if (version_compare($previousVersion, '1.8.2', '<')) {
+            ee()->db
+                ->query("
+                    UPDATE exp_extensions 
+                    SET `priority` = 9
+                    WHERE `method` = 'addTableJavascript' and `class` = 'Freeform_next_ext';
+                ");
+        }
+
         return true;
     }
 
