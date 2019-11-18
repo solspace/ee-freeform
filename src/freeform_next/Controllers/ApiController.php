@@ -2,13 +2,10 @@
 
 namespace Solspace\Addons\FreeformNext\Controllers;
 
-use Solspace\Addons\FreeformNext\Library\Composer\Attributes\FormAttributes;
-use Solspace\Addons\FreeformNext\Library\Composer\Composer;
 use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionAttributes;
 use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionPreferenceSetting;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
 use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
-use Solspace\Addons\FreeformNext\Library\Session\EERequest;
 use Solspace\Addons\FreeformNext\Library\Translations\EETranslator;
 use Solspace\Addons\FreeformNext\Model\FormModel;
 use Solspace\Addons\FreeformNext\Model\NotificationModel;
@@ -18,23 +15,11 @@ use Solspace\Addons\FreeformNext\Repositories\NotificationRepository;
 use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionPreferencesRepository;
 use Solspace\Addons\FreeformNext\Repositories\SubmissionRepository;
-use Solspace\Addons\FreeformNext\Services\FormsService;
-use Solspace\Addons\FreeformNext\Services\SettingsService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\FileDownloadView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Stringy\Stringy;
-
-use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
-use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
-use Solspace\Addons\FreeformNext\Services\CrmService;
-use Solspace\Addons\FreeformNext\Services\FieldsService;
-use Solspace\Addons\FreeformNext\Services\FilesService;
-use Solspace\Addons\FreeformNext\Services\MailerService;
-use Solspace\Addons\FreeformNext\Services\MailingListsService;
-use Solspace\Addons\FreeformNext\Services\StatusesService;
-use Solspace\Addons\FreeformNext\Services\SubmissionsService;
 
 class ApiController extends Controller
 {
@@ -369,11 +354,11 @@ class ApiController extends Controller
     {
         $newHandleBase = $newForm->handle;
 
-        if (strpos($newForm->handle, '_clone_') !== false) {
-            $newHandleBase = substr($newForm->handle, 0, strpos($newForm->handle, "_clone"));
+        if (strpos($newForm->handle, '_copy_') !== false) {
+            $newHandleBase = substr($newForm->handle, 0, strpos($newForm->handle, "_copy"));
         }
 
-        $newHandle = $newHandleBase . '_clone_' . time();
+        $newHandle = $newHandleBase . '_copy_' . time();
 
         $composer = $newForm->getComposer();
         $composerJson = $composer->getComposerStateJSON();
