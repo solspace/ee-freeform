@@ -174,14 +174,6 @@ class ApiController extends Controller
         return $view;
     }
 
-    function getProtectedProperty($property, $object)
-    {
-        $reflectionClass = new \ReflectionClass(get_class($object));
-        $reflectionProperty = $reflectionClass->getProperty($property);
-        $reflectionProperty->setAccessible(true);
-        return $reflectionProperty->getValue($object);
-    }
-
     /**
      * @return AjaxView
      */
@@ -421,5 +413,14 @@ class ApiController extends Controller
         $newForm->setId(null);
 
         return $newForm;
+    }
+
+    private function getProtectedProperty($property, $object)
+    {
+        $reflectionClass = new \ReflectionClass(get_class($object));
+        $reflectionProperty = $reflectionClass->getProperty($property);
+        $reflectionProperty->setAccessible(true);
+
+        return $reflectionProperty->getValue($object);
     }
 }
