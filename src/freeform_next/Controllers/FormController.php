@@ -83,7 +83,6 @@ class FormController extends Controller
 
             $toolbarItems = [];
 
-            // change here
             if ($canManageForms) {
                 $toolbarItems = [
                     'edit' => [
@@ -102,7 +101,7 @@ class FormController extends Controller
                             $form->name
                         ),
                     ],
-                    'view' => [
+                    'copy' => [
                         'href'                 => 'javascript:;',
                         'class'                => 'duplicate',
                         'title'                => lang('Duplicate'),

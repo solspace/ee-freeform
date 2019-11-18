@@ -23,6 +23,7 @@ use Solspace\Addons\FreeformNext\Services\SettingsService;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\AjaxView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\FileDownloadView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
+use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Stringy\Stringy;
 
 use Solspace\Addons\FreeformNext\Library\Exceptions\Composer\ComposerException;
@@ -150,6 +151,8 @@ class ApiController extends Controller
                         try {
                             file_put_contents($templatePath, $settings->getEmailTemplateContent());
                             $notification = NotificationModel::createFromTemplate($templatePath);
+
+                            var_dump($notification);die();
                         } catch (FreeformException $exception) {
                             $errors[] = $exception->getMessage();
                         }
@@ -169,6 +172,53 @@ class ApiController extends Controller
         }
 
         $view->setVariables(NotificationRepository::getInstance()->getAllNotifications());
+
+        return $view;
+    }
+
+    function getProtectedProperty($property, $object)
+    {
+        $reflectionClass = new \ReflectionClass(get_class($object));
+        $reflectionProperty = $reflectionClass->getProperty($property);
+        $reflectionProperty->setAccessible(true);
+        return $reflectionProperty->getValue($object);
+    }
+
+    /**
+     * @return AjaxView
+     */
+    public function duplicate()
+    {
+        $formId = ee()->input->post('formId');
+
+        /** @var FormModel $form */
+        $form = FormRepository::getInstance()->getFormById($formId);
+        $view = new AjaxView();
+
+        if (!$form) {
+            $view->addError('Form not found');
+            return $view;
+        } else {
+            $newForm = $this->createNewForm($form);
+        }
+
+        if (!ExtensionHelper::call(ExtensionHelper::HOOK_FORM_BEFORE_SAVE, $newForm, true)) {
+            $view->addError(ExtensionHelper::getLastCallData());
+            return $view;
+        }
+
+        try {
+            $newForm = $this->setNewHandle($newForm);
+            $newForm->save();
+
+            if (!ExtensionHelper::call(ExtensionHelper::HOOK_FORM_AFTER_SAVE, $newForm, true)) {
+                return $view;
+            }
+
+            $view->addVariable('success', true);
+        } catch (\Exception $e) {
+            $view->addError($e->getMessage());
+        }
 
         return $view;
     }
@@ -381,5 +431,55 @@ class ApiController extends Controller
         }
 
         return $instance;
+    }
+
+    private function setNewHandle($newForm)
+    {
+        $newHandleBase = $newForm->handle;
+
+        if (strpos($newForm->handle, '_clone_') !== false) {
+            $newHandleBase = substr($newForm->handle, 0, strpos($newForm->handle, "_clone"));
+        }
+
+        $newHandle = $newHandleBase . '_clone_' . time();
+
+        $composer = $newForm->getComposer();
+        $composerJson = $composer->getComposerStateJSON();
+        $composerState = json_decode($composerJson, true);
+        $composerState['composer']['properties']['form']['handle'] = $newHandle;
+        $newForm->layoutJson = json_encode($composerState);
+        $newForm->setProperty('handle', $newHandle);
+
+        return $newForm;
+    }
+
+    private function createNewForm($form)
+    {
+        $reflectionClass = new \ReflectionClass(FormModel::class);
+        $properties = $reflectionClass->getProperties();
+        $newForm = FormModel::create();
+
+        foreach ($properties as $varName => $varValue) {
+            if (in_array($varValue->name, [
+                'id',
+                'siteId',
+                'name',
+                'handle',
+                'spamBlockCount',
+                'description',
+                'layoutJson',
+                'returnUrl',
+                'defaultStatus',
+                'legacyId',
+                'dateCreated',
+                'dateUpdated',
+            ])) {
+                $newForm->setProperty($varValue->name, $this->getProtectedProperty($varValue->name, $form));
+            }
+        }
+
+        $newForm->setId(null);
+
+        return $newForm;
     }
 }
