@@ -151,8 +151,6 @@ class ApiController extends Controller
                         try {
                             file_put_contents($templatePath, $settings->getEmailTemplateContent());
                             $notification = NotificationModel::createFromTemplate($templatePath);
-
-                            var_dump($notification);die();
                         } catch (FreeformException $exception) {
                             $errors[] = $exception->getMessage();
                         }
@@ -209,64 +207,6 @@ class ApiController extends Controller
 
         try {
             $newForm = $this->setNewHandle($newForm);
-            $newForm->save();
-
-            if (!ExtensionHelper::call(ExtensionHelper::HOOK_FORM_AFTER_SAVE, $newForm, true)) {
-                return $view;
-            }
-
-            $view->addVariable('success', true);
-        } catch (\Exception $e) {
-            $view->addError($e->getMessage());
-        }
-
-        return $view;
-    }
-
-    /**
-     * @return AjaxView
-     */
-    public function duplicate()
-    {
-        $formId = ee()->input->post('formId');
-
-        /** @var FormModel $form */
-        $form = FormRepository::getInstance()->getFormById($formId);
-        $view = new AjaxView();
-
-        if (!$form) {
-            $view->addError('Form not found');
-        } else {
-            $newForm = clone $form;
-
-            foreach (get_object_vars($form) as $varName => $varValue) {
-                $newForm->$varName = $varValue . ' '; // Does not work
-            }
-
-            $newForm->setId(null);
-        }
-
-        if (!ExtensionHelper::call(ExtensionHelper::HOOK_FORM_BEFORE_SAVE, $newForm, true)) {
-            $view->addError(ExtensionHelper::getLastCallData());
-
-            return $view;
-        }
-
-        try {
-            $newHandleBase = $newForm->handle;
-
-            if (strpos($newForm->handle, '_clone_') !== false) {
-                $newHandleBase = substr($newForm->handle, 0, strpos($newForm->handle, "_clone"));
-            }
-
-            $newHandle = $newHandleBase . '_clone_' . time();
-
-            $newForm->name = $newForm->name . ' '; // Does work
-            $newForm->handle = $newHandle;
-            $newForm->layoutJson = $newForm->layoutJson . ' ';
-            $newForm->defaultStatus = $newForm->defaultStatus . ' ';
-
-            $newForm->handle = $newHandle;
             $newForm->save();
 
             if (!ExtensionHelper::call(ExtensionHelper::HOOK_FORM_AFTER_SAVE, $newForm, true)) {
