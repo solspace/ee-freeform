@@ -101,6 +101,14 @@ class FormController extends Controller
                             $form->name
                         ),
                     ],
+                    'copy' => [
+                        'href'                 => 'javascript:;',
+                        'class'                => 'duplicate',
+                        'title'                => lang('Duplicate'),
+                        'data-csrf'            => CSRF_TOKEN,
+                        'data-url'             => $this->getLink('api/duplicate'),
+                        'data-form-id'         => $form->id,
+                    ],
                 ];
             }
 

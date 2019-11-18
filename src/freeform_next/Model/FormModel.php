@@ -148,6 +148,23 @@ class FormModel extends Model
         return $this->composer;
     }
 
+    public function setHandle($handle) {
+        $this->handle = $handle;
+        $composer = $this->getComposer();
+
+        $formComponent = $composer->getForm();
+        $this->set(
+            [
+                'name'          => $formComponent->getName(),
+                'handle'        => $handle,
+                'description'   => $formComponent->getDescription(),
+                'defaultStatus' => $formComponent->getDefaultStatus(),
+                'returnUrl'     => $formComponent->getReturnUrl(),
+                'layoutJson'    => $composer->getComposerStateJSON(),
+            ]
+        );
+    }
+
     /**
      * @return Form
      */

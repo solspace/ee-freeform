@@ -38,4 +38,29 @@ $(function () {
       })
     }
   });
+
+  $(".duplicate").on({
+    click: (e) => {
+      const self = $(e.target);
+
+      const formId = self.data("form-id");
+
+      $.ajax({
+        url: self.data('url'),
+        type: "post",
+        data: {
+          formId: formId,
+          csrf: self.data("csrf"),
+        },
+        dataType: "json",
+        success: (response) => {
+          if (response.error) {
+            alert(response.error);
+          } else if (response.success) {
+            window.location.reload(false);
+          }
+        }
+      })
+    }
+  });
 });
