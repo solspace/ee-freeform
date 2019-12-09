@@ -203,8 +203,13 @@ class Freeform_Next extends Plugin
 
             if ($form->isFormSaved()) {
                 $postedReturnUrl = $this->getPost(Form::RETURN_URI_KEY);
+                if ($postedReturnUrl) {
+                    $postedReturnUrl = ee('Encrypt')->decrypt($postedReturnUrl);
+                    $returnUrl = $postedReturnUrl ? $postedReturnUrl : $form->getReturnUrl();
+                } else {
+                    $returnUrl = $form->getReturnUrl();
+                }
 
-                $returnUrl = $postedReturnUrl ?: $form->getReturnUrl();
                 $returnUrl = TemplateHelper::renderStringWithForm($returnUrl, $form, $submissionModel);
                 if ($submissionModel) {
                     $returnUrl = str_replace(
