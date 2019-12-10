@@ -673,7 +673,12 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
             ) . PHP_EOL;
 
         if ($customAttributes->getReturnUrl()) {
-            $returnUrl = ee('Encrypt')->encrypt($customAttributes->getReturnUrl());
+            $crypt = ee('Encrypt');
+
+            $returnUrl = $customAttributes->getReturnUrl();
+            $returnUrl = $crypt->encrypt($returnUrl);
+            $returnUrl = $crypt->encode($returnUrl);
+
             $output .= '<input type="hidden" '
                 . 'name="' . self::RETURN_URI_KEY . '" '
                 . 'value="' . $returnUrl . '" '
