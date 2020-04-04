@@ -280,6 +280,32 @@ class FilesService implements FileUploadHandlerInterface
             ];
         }
 
-        return self::$fileKinds;
+        // freeform_extra_file_extensions config
+		// Must be an array of file extensions
+		// Optionally, 'label' and 'extensions' keys can be provided
+		// to customize the File Kind group name.
+
+        $extraFileExtensions = ee()->config->item('freeform_extra_file_extensions') ?: [];
+
+        $extraFileKinds = [];
+
+        if(is_array($extraFileExtensions) && ! empty($extraFileExtensions))
+		{
+			if(! isset($extraFileExtensions['label']))
+			{
+				$extraFileExtensions['label'] = lang('Extra');
+			}
+
+			if(! isset($extraFileExtensions['extensions']))
+			{
+				$extraFileExtensions['extensions'] = $extraFileExtensions;
+			}
+
+			$extraFileKinds = [
+				strtolower($extraFileExtensions['label']) => $extraFileExtensions,
+			];
+		}
+
+        return self::$fileKinds + $extraFileKinds;
     }
 }
