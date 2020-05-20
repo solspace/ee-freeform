@@ -23,6 +23,7 @@ class SettingsController extends Controller
     const TYPE_STATUSES             = 'statuses';
     const TYPE_LICENSE              = 'license';
     const TYPE_GENERAL              = 'general';
+    const TYPE_SPAM_PROTECTION      = 'spam_protection';
     const TYPE_PERMISSIONS          = 'permissions';
     const TYPE_FORMATTING_TEMPLATES = 'formatting_templates';
     const TYPE_EMAIL_TEMPLATES      = 'email_templates';
@@ -34,6 +35,7 @@ class SettingsController extends Controller
         self::TYPE_STATUSES,
         self::TYPE_LICENSE,
         self::TYPE_GENERAL,
+        self::TYPE_SPAM_PROTECTION,
         self::TYPE_PERMISSIONS,
         self::TYPE_FORMATTING_TEMPLATES,
         self::TYPE_EMAIL_TEMPLATES,
@@ -91,6 +93,9 @@ class SettingsController extends Controller
 
             case self::TYPE_RECAPTCHA:
                 return $this->recaptchaAction();
+
+			case self::TYPE_SPAM_PROTECTION:
+				return $this->spamProtectionAction();
 
             case self::TYPE_GENERAL:
             default:
@@ -214,26 +219,6 @@ class SettingsController extends Controller
                     'save_btn_text_working' => 'btn_saving',
                     'sections'              => [
                         [
-                            [
-                                'title'  => 'Spam Protection',
-                                'desc'   => 'Enable this to use Freeform\'s built in Javascript-based honeypot spam protection.',
-                                'fields' => [
-                                    'spamProtectionEnabled' => [
-                                        'type'  => 'yes_no',
-                                        'value' => $settings->isSpamProtectionEnabled(),
-                                    ],
-                                ],
-                            ],
-                            [
-                                'title'  => 'Spam protection simulates a successful submission?',
-                                'desc'   => 'Enable this to change the spam protection behavior to simulate a successful submission instead of just reloading the form.',
-                                'fields' => [
-                                    'spamBlockLikeSuccessfulPost' => [
-                                        'type'  => 'yes_no',
-                                        'value' => $settings->isSpamBlockLikeSuccessfulPost(),
-                                    ],
-                                ],
-                            ],
                             // [
                             //     'title'  => 'Show Composer Tutorial',
                             //     'desc'   => 'Enable this to show the interactive tutorial again in Composer. This setting disables again when the tutorial is completed or skipped.',
@@ -320,6 +305,62 @@ class SettingsController extends Controller
         return $view;
     }
 
+	/**
+	 * @return CpView
+	 */
+	private function spamProtectionAction()
+	{
+		$settings = $this->getSettings();
+
+		$view = new CpView('settings/common', []);
+		$view
+			->setHeading(lang('Spam Protection'))
+			->addBreadcrumb(new NavigationLink('Settings', 'settings/spam_protection'))
+			->setTemplateVariables(
+				[
+					'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),
+					'cp_page_title'         => $view->getHeading(),
+					'save_btn_text'         => 'btn_save_settings',
+					'save_btn_text_working' => 'btn_saving',
+					'sections'              => [
+						[
+							[
+								'title'  => 'Freeform Honeypot',
+								'desc'   => 'Enable this to use Freeform\'s built in Honeypot spam protection.',
+								'fields' => [
+									'spamProtectionEnabled' => [
+										'type'  => 'yes_no',
+										'value' => $settings->isSpamProtectionEnabled(),
+									],
+								],
+							],
+							[
+								'title'  => 'Javascript Enhancement',
+								'desc'   => 'Enable this to use Freeform\'s built-in Javascript enhancement for the Honeypot feature. This will require users to have JS enabled for their browser and help fight spambots more aggressively.',
+								'fields' => [
+									'freeformHoneypotEnhancement' => [
+										'type'  => 'yes_no',
+										'value' => $settings->isFreeformHoneypotEnhanced(),
+									],
+								],
+							],
+							[
+								'title'  => 'Spam protection simulates a successful submission?',
+								'desc'   => 'Enable this to change the spam protection behavior to simulate a successful submission instead of just reloading the form.',
+								'fields' => [
+									'spamBlockLikeSuccessfulPost' => [
+										'type'  => 'yes_no',
+										'value' => $settings->isSpamBlockLikeSuccessfulPost(),
+									],
+								],
+							],
+						],
+					],
+				]
+			);
+
+		return $view;
+	}
     /**
      * @return CpView
      */

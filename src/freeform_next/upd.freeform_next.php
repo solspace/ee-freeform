@@ -355,6 +355,14 @@ class Freeform_next_upd extends AddonUpdater
                 ");
         }
 
+		if (version_compare($previousVersion, '1.8.4', '<=')) {
+			ee()->db
+				->query('
+                    ALTER TABLE exp_freeform_next_settings
+                    ADD COLUMN `freeformHoneypotEnhancement` TINYINT(1) DEFAULT 0 AFTER `spamProtectionEnabled`
+                ');
+		}
+
         return true;
     }
 

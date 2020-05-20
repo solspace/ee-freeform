@@ -20,6 +20,7 @@ use Symfony\Component\Finder\SplFileInfo;
  * @property int    $id
  * @property int    $siteId
  * @property bool   $spamProtectionEnabled
+ * @property bool   $freeformHoneypotEnhancement
  * @property bool   $spamBlockLikeSuccessfulPost
  * @property bool   $showTutorial
  * @property string $fieldDisplayOrder
@@ -66,6 +67,7 @@ class SettingsModel extends Model
     protected $id;
     protected $siteId;
     protected $spamProtectionEnabled;
+    protected $freeformHoneypotEnhancement;
     protected $spamBlockLikeSuccessfulPost;
     protected $showTutorial;
     protected $fieldDisplayOrder;
@@ -253,6 +255,14 @@ class SettingsModel extends Model
     {
         return (bool) $this->spamProtectionEnabled;
     }
+
+	/**
+	 * @return bool
+	 */
+	public function isFreeformHoneypotEnhanced()
+	{
+		return (bool) $this->freeformHoneypotEnhancement;
+	}
 
     /**
      * @return bool
