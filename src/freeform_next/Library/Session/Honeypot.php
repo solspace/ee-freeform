@@ -42,10 +42,10 @@ class Honeypot implements \JsonSerializable
     /**
      * Honeypot constructor.
      */
-    public function __construct()
+    public function __construct(bool $isEnhanced = false)
     {
-        $this->name      = $this->generateUniqueName();
-        $this->hash      = $this->generateHash();
+        $this->name      = $isEnhanced ? $this->generateUniqueName() : self::NAME_PREFIX;
+        $this->hash      = $isEnhanced ? $this->generateHash() : '';
         $this->timestamp = time();
     }
 

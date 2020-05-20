@@ -58,26 +58,35 @@ class HoneypotService
         /** @var array $postValues */
         $postValues = $_POST;
 
-        foreach ($postValues as $key => $value) {
-            if (strpos($key, Honeypot::NAME_PREFIX) === 0) {
-                if (\in_array($key, self::$validHoneypots, true)) {
-                    return;
-                }
+        if(!$this->getSettingsService()->getSettingsModel()->isFreeformHoneypotEnhanced())
+		{
+			if (array_key_exists(Honeypot::NAME_PREFIX, $postValues) && $postValues[Honeypot::NAME_PREFIX] === '') {
+				return;
+			}
+		}
+		else
+		{
+			foreach ($postValues as $key => $value) {
+				if (strpos($key, Honeypot::NAME_PREFIX) === 0) {
+					if (\in_array($key, self::$validHoneypots, true)) {
+						return;
+					}
 
-                $honeypotList = $this->getHoneypotList();
-                foreach ($honeypotList as $honeypot) {
-                    $hasMatchingName = $key === $honeypot->getName();
-                    $hasMatchingHash = $value === $honeypot->getHash();
-                    if ($hasMatchingName && $hasMatchingHash) {
-                        self::$validHoneypots[] = $key;
+					$honeypotList = $this->getHoneypotList();
+					foreach ($honeypotList as $honeypot) {
+						$hasMatchingName = $key === $honeypot->getName();
+						$hasMatchingHash = $value === $honeypot->getHash();
+						if ($hasMatchingName && $hasMatchingHash) {
+							self::$validHoneypots[] = $key;
 
-                        $this->removeHoneypot($honeypot);
+							$this->removeHoneypot($honeypot);
 
-                        return;
-                    }
-                }
-            }
-        }
+							return;
+						}
+					}
+				}
+			}
+		}
 
         if (!$this->getSettingsService()->getSettingsModel()->spamBlockLikeSuccessfulPost) {
             $form->addError(lang('Form honeypot is invalid'));
@@ -119,15 +128,16 @@ class HoneypotService
      */
     private function getNewHoneypot()
     {
-        $honeypotList = $this->getHoneypotList();
+		$honeypot = new Honeypot($this->isEnhanced());
 
-        $newHoneypot    = new Honeypot();
-        $honeypotList[] = $newHoneypot;
+		if ($this->isEnhanced()) {
+			$honeypotList   = $this->getHoneypotList();
+			$honeypotList[] = $honeypot;
+			$honeypotList   = $this->weedOutOldHoneypots($honeypotList);
+			$this->updateHoneypotList($honeypotList);
+		}
 
-        $honeypotList = $this->weedOutOldHoneypots($honeypotList);
-        $this->updateHoneypotList($honeypotList);
-
-        return $newHoneypot;
+        return $honeypot;
     }
 
     /**
@@ -152,6 +162,10 @@ class HoneypotService
      */
     private function weedOutOldHoneypots(array $honeypotList)
     {
+		if (!$this->isEnhanced()) {
+			return [];
+		}
+
         $cleanList = array_filter(
             $honeypotList,
             function (Honeypot $honeypot) {
@@ -247,7 +261,7 @@ class HoneypotService
         $honeypotName = $honeypot->getName();
         $output       = '<input '
             . 'type="text" '
-            . 'value="' . $hash . '" '
+            . 'value="' . ($this->isEnhanced() ? $hash : '') . '" '
             . 'name="' . $honeypotName . '" '
             . 'id="' . $honeypotName . '" '
             . '/>';
@@ -258,4 +272,12 @@ class HoneypotService
             . '</div>';
         return $output;
     }
+
+	/**
+	 * @return bool
+	 */
+	private function isEnhanced(): bool
+	{
+		return $this->getSettingsService()->getSettingsModel()->isFreeformHoneypotEnhanced();
+	}
 }
