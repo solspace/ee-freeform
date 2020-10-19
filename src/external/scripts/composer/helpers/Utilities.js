@@ -85,10 +85,10 @@ export function showNotification(text, type) {
   }
 
   let notification = document.createElement("div");
-  notification.className = "composer-alert alert " + type;
+  notification.className = "composer-alert alert alert--" + type + " " + type;
   notification.innerHTML = text;
 
-  const block = document.querySelectorAll(".wrap .col.w-16.last")[0];
+  const block = document.querySelectorAll(".ee-main__content")[0];
 
   block.appendChild(notification);
 

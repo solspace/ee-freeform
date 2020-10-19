@@ -175,7 +175,7 @@ class FormController extends Controller
      */
     public function edit(FormModel $form)
     {
-        if (!($this->getPermissionsService()->canManageForms(ee()->session->userdata('group_id')))) {
+        if (!($this->getPermissionsService()->canManageForms(ee()->session->userdata('role_id')))) {
             return new RedirectView($this->getLink('denied'));
         }
 
@@ -407,16 +407,17 @@ class FormController extends Controller
             ];
         }
 
-        $memberGroups = ee('Model')
-            ->get('MemberGroup')
-            ->filter('site_id', ee()->config->item('site_id'))
+        $memberRoles = ee('Model')
+            ->get('Role')
+			->with('RoleSettings')
+            ->filter('RoleSettings.site_id', ee()->config->item('site_id'))
             ->all();
 
-        $memberList = [0 => ['key' => '', 'value' => lang('All Member Groups')]];
-        foreach ($memberGroups as $group) {
+        $memberList = [0 => ['key' => '', 'value' => lang('All Roles')]];
+        foreach ($memberRoles as $group) {
             $memberList[] = [
-                'key'   => $group->group_id,
-                'value' => $group->group_title,
+                'key'   => $group->role_id,
+                'value' => $group->name,
             ];
         }
 

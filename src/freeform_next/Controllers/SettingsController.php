@@ -16,7 +16,7 @@ use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 use Stringy\Stringy;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use EllisLab\ExpressionEngine\Model\Member\MemberGroup;
+use ExpressionEngine\Model\Member\Role;
 
 class SettingsController extends Controller
 {
@@ -370,20 +370,20 @@ class SettingsController extends Controller
 
         $permissionsModel = $this->getPermissionsModel();
 
-        /** @var MemberGroup[] $memberGroups */
-        $memberGroups = ee('Model')->get('MemberGroup')
+        /** @var Role[] $memberRoles */
+        $memberRoles = ee('Model')->get('Role')
             ->with('AssignedChannels')
-            ->fields('group_id')
-            ->fields('group_title')
+            ->fields('role_id')
+            ->fields('name')
             ->all();
 
-        $memberGroupChoices = [];
-        foreach ($memberGroups as $group) {
-            if ($group->group_id === 1) {
+        $memberRoleChoices = [];
+        foreach ($memberRoles as $role) {
+            if ($role->role_id === 1) {
                 continue;
             }
 
-            $memberGroupChoices[$group->group_id] = $group->group_title;
+            $memberRoleChoices[$role->role_id] = $role->name;
         }
 
         $view = new CpView('settings/common', []);
@@ -409,7 +409,7 @@ class SettingsController extends Controller
                     'formsPermissions' => [
                         'type'    => 'checkbox',
                         'value'   => $permissionsModel->formsPermissions,
-                        'choices' => $memberGroupChoices,
+                        'choices' => $memberRoleChoices,
                     ],
                 ],
             ],
@@ -420,7 +420,7 @@ class SettingsController extends Controller
                     'submissionsPermissions' => [
                         'type'    => 'checkbox',
                         'value'   => $permissionsModel->submissionsPermissions,
-                        'choices' => $memberGroupChoices,
+                        'choices' => $memberRoleChoices,
                     ],
                 ],
             ],
@@ -431,7 +431,7 @@ class SettingsController extends Controller
                     'manageSubmissionsPermissions' => [
                         'type'    => 'checkbox',
                         'value'   => $permissionsModel->manageSubmissionsPermissions,
-                        'choices' => $memberGroupChoices,
+                        'choices' => $memberRoleChoices,
                     ],
                 ],
             ],
@@ -442,7 +442,7 @@ class SettingsController extends Controller
                     'fieldsPermissions' => [
                         'type'    => 'checkbox',
                         'value'   => $permissionsModel->fieldsPermissions,
-                        'choices' => $memberGroupChoices,
+                        'choices' => $memberRoleChoices,
                     ],
                 ],
             ],
@@ -453,7 +453,7 @@ class SettingsController extends Controller
                     'notificationsPermissions' => [
                         'type'    => 'checkbox',
                         'value'   => $permissionsModel->notificationsPermissions,
-                        'choices' => $memberGroupChoices,
+                        'choices' => $memberRoleChoices,
                     ],
                 ],
             ],
@@ -467,7 +467,7 @@ class SettingsController extends Controller
                     'exportPermissions' => [
                         'type'    => 'checkbox',
                         'value'   => $permissionsModel->exportPermissions,
-                        'choices' => $memberGroupChoices,
+                        'choices' => $memberRoleChoices,
                     ],
                 ],
             ];
@@ -481,7 +481,7 @@ class SettingsController extends Controller
                     'settingsPermissions' => [
                         'type'    => 'checkbox',
                         'value'   => $permissionsModel->settingsPermissions,
-                        'choices' => $memberGroupChoices,
+                        'choices' => $memberRoleChoices,
                     ],
                 ],
             ],
@@ -492,7 +492,7 @@ class SettingsController extends Controller
                     'integrationsPermissions' => [
                         'type'    => 'checkbox',
                         'value'   => $permissionsModel->integrationsPermissions,
-                        'choices' => $memberGroupChoices,
+                        'choices' => $memberRoleChoices,
                     ],
                 ],
             ],
@@ -503,7 +503,7 @@ class SettingsController extends Controller
                     'resourcesPermissions' => [
                         'type'    => 'checkbox',
                         'value'   => $permissionsModel->resourcesPermissions,
-                        'choices' => $memberGroupChoices,
+                        'choices' => $memberRoleChoices,
                     ],
                 ],
             ],
@@ -514,7 +514,7 @@ class SettingsController extends Controller
                     'logsPermissions' => [
                         'type'    => 'checkbox',
                         'value'   => $permissionsModel->logsPermissions,
-                        'choices' => $memberGroupChoices,
+                        'choices' => $memberRoleChoices,
                     ],
                 ],
             ],
