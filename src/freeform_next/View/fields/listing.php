@@ -15,7 +15,7 @@ $this->extend('_layouts/table_form_wrapper')?>
     <?php $this->embed('ee:_shared/table', $table); ?>
 
 
-    <fieldset class="tbl-bulk-act hidden">
+    <fieldset class="bulk-action-bar hidden">
         <select>
             <option value="remove" data-confirm-trigger="selected" rel="modal-confirm-remove"><?=lang('remove')?></option>
         </select>

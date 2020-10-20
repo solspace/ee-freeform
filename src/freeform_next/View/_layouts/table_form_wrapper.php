@@ -8,7 +8,7 @@
             <?php if ( ! empty($form_right_links)):?>
                 <fieldset class="tbl-search right">
                     <?php foreach ($form_right_links as $link_data):?>
-                        <a class="btn tn action"
+                        <a class="btn tn action button--small"
                            <?php echo @$link_data['attrs'] ?>
                            href="<?=$link_data['link']?>">
                             <?=$link_data['title']?>
@@ -20,14 +20,14 @@
                 <fieldset class="tbl-search right">
                     <?php foreach ($form_dropdown_links as $dropdownTitle => $links): ?>
                         <div class="dropdown-field">
-                            <select name="form_handle">
+                            <select name="form_handle" class="select-popup button--small">
                                 <?php foreach ($links as $link_data):?>
                                     <option value="<?=$link_data['link']?>" <?php echo @$link_data['attrs'] ?>>
                                         <?=$link_data['title']?>
                                     </option>
                                 <?php endforeach;?>
                             </select>
-                            <a class="btn action tn">
+                            <a class="btn action tn button--small">
                                 <?php echo $dropdownTitle ?>
                             </a>
                         </div>
@@ -52,7 +52,7 @@
                         <?php endif;?>
                     </fieldset>
                 <?php elseif ($footer['type'] == 'bulk_action_form'): ?>
-                    <fieldset class="tbl-bulk-act hidden">
+                    <fieldset class="bulk-action-bar hidden">
                         <span class="blinking-warning"><?= lang('calendar_warning_will_delete_entries') ?> &nbsp; </span>
                         <select name="bulk_action">
                             <?php if (isset($footer['bulk_actions'])):?>
