@@ -193,6 +193,7 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_settings` (
   `id`                          INT(11)                NOT NULL  AUTO_INCREMENT,
   `siteId`                      INT(11)                NOT NULL  DEFAULT '1',
   `spamProtectionEnabled`       TINYINT(1) UNSIGNED    NOT NULL  DEFAULT '0',
+  `freeformHoneypotEnhancement` TINYINT(1) UNSIGNED    NOT NULL  DEFAULT '0',
   `spamBlockLikeSuccessfulPost` TINYINT(1) UNSIGNED    NOT NULL  DEFAULT '0',
   `showTutorial`                TINYINT(1) UNSIGNED    NOT NULL  DEFAULT '0',
   `fieldDisplayOrder`           VARCHAR(30)            NULL      DEFAULT NULL,

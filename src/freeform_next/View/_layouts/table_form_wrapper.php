@@ -19,7 +19,7 @@
             <?php if ( ! empty($form_dropdown_links)):?>
                 <fieldset class="tbl-search right">
                     <?php foreach ($form_dropdown_links as $dropdownTitle => $links): ?>
-                        <div class="dropdown">
+                        <div class="dropdown-field">
                             <select name="form_handle">
                                 <?php foreach ($links as $link_data):?>
                                     <option value="<?=$link_data['link']?>" <?php echo @$link_data['attrs'] ?>>

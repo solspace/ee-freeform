@@ -3,9 +3,9 @@ $(() => {
 
   $('tbody', table).sortable();
 
-  $('.tbl-search .dropdown > a').on({
+  $('.tbl-search .dropdown-field > a').on({
     click: function(e) {
-      const parent = $(this).parents('.dropdown');
+      const parent = $(this).parents('.dropdown-field');
 
       window.location.href = $('select[name=form_handle]', parent).val();
 

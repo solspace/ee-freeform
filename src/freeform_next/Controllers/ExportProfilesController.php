@@ -58,19 +58,19 @@ class ExportProfilesController extends Controller
                     'toolbar_items' => [
                         'csv'  => [
                             'href'  => $this->getLink('export_profiles/csv/' . $profile->id),
-                            'title' => lang('CSV'),
+                            'content' => lang('CSV'),
                         ],
                         'json' => [
                             'href'  => $this->getLink('export_profiles/json/' . $profile->id),
-                            'title' => lang('JSON'),
+                            'content' => lang('JSON'),
                         ],
                         'xml'  => [
                             'href'  => $this->getLink('export_profiles/xml/' . $profile->id),
-                            'title' => lang('XML'),
+                            'content' => lang('XML'),
                         ],
                         'text' => [
                             'href'  => $this->getLink('export_profiles/text/' . $profile->id),
-                            'title' => lang('Text'),
+                            'content' => lang('Text'),
                         ],
                         'edit' => [
                             'href'  => $this->getLink('export_profiles/' . $profile->id),
