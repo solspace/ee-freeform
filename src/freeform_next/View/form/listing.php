@@ -15,10 +15,10 @@ $this->extend('_layouts/table_form_wrapper')?>
 	<?php $this->embed('ee:_shared/table', $table); ?>
 
 	<fieldset class="bulk-action-bar hidden">
-		<select class="select-popup button--small">
+		<select class="">
 			<option value="remove" data-confirm-trigger="selected" rel="modal-confirm-remove"><?=lang('remove')?></option>
 		</select>
-		<input class="btn button--primary button--small submit" data-conditional-modal="confirm-trigger" type="submit" value="<?=lang('submit')?>">
+		<input class="btn button--primary submit" data-conditional-modal="confirm-trigger" type="submit" value="<?=lang('submit')?>">
 	</fieldset>
 
 </form>

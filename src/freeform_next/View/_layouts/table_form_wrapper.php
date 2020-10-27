@@ -44,10 +44,14 @@
 
 				</div>
 			</div>
-			
-            <?=ee('CP/Alert')->getAllInlines()?>
-            <?=$child_view?>
-            <?php if (isset($pagination)):?>
+
+			<div class="panel-body">
+				<?=ee('CP/Alert')->getAllInlines()?>
+			</div>
+
+			<?=$child_view?>
+
+			<?php if (isset($pagination)):?>
                 <div class="ss_clearfix"><?=$pagination?></div>
             <?php endif;?>
             <?php if (isset($footer)):?>
