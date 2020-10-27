@@ -1,44 +1,50 @@
-<div class="box table-list-wrap">
-    <div class="tbl-ctrls">
+<div class="">
+    <div class="panel">
         <?php if (isset($form_url)):?>
             <?=form_open($form_url)?>
         <?php elseif (isset($footer) AND $footer['type'] == 'bulk_action_form'):?>
         <form><!-- currently EE's bulk action setup requires a form wrapper no matter what -->
             <?php endif;?>
-            <?php if ( ! empty($form_right_links)):?>
-                <fieldset class="tbl-search right">
-                    <?php foreach ($form_right_links as $link_data):?>
-                        <a class="btn tn action button--small"
-                           <?php echo @$link_data['attrs'] ?>
-                           href="<?=$link_data['link']?>">
-                            <?=$link_data['title']?>
-                        </a>
-                    <?php endforeach;?>
-                </fieldset>
-            <?php endif;?>
-            <?php if ( ! empty($form_dropdown_links)):?>
-                <fieldset class="tbl-search right">
-                    <?php foreach ($form_dropdown_links as $dropdownTitle => $links): ?>
-                        <div class="dropdown-field">
-                            <select name="form_handle" class="select-popup button--small">
-                                <?php foreach ($links as $link_data):?>
-                                    <option value="<?=$link_data['link']?>" <?php echo @$link_data['attrs'] ?>>
-                                        <?=$link_data['title']?>
-                                    </option>
-                                <?php endforeach;?>
-                            </select>
-                            <a class="btn action tn button--small">
-                                <?php echo $dropdownTitle ?>
-                            </a>
-                        </div>
-                    <?php endforeach;?>
-                </fieldset>
-            <?php endif;?>
-            <?php if (isset($cp_page_title)):?>
-                <h1><?=$cp_page_title?></h1>
-            <?php elseif (isset($wrapper_header)):?>
-                <h1><?=$wrapper_header?></h1>
-            <?php endif;?>
+			<div class="panel-heading">
+				<div class="title-bar">
+					<?php if (isset($cp_page_title)):?>
+						<h3 class="title-bar__title"><?=$cp_page_title?></h3>
+					<?php elseif (isset($wrapper_header)):?>
+						<h3 class="title-bar__title""><?=$wrapper_header?></h3>
+					<?php endif;?>
+					<?php if ( ! empty($form_right_links)):?>
+						<fieldset class="tbl-search right title-bar__extra-tools">
+							<?php foreach ($form_right_links as $link_data):?>
+								<a class="btn tn action button--small"
+								   <?php echo @$link_data['attrs'] ?>
+								   href="<?=$link_data['link']?>">
+									<?=$link_data['title']?>
+								</a>
+							<?php endforeach;?>
+						</fieldset>
+					<?php endif;?>
+					<?php if ( ! empty($form_dropdown_links)):?>
+						<fieldset class="tbl-search right title-bar__extra-tools">
+							<?php foreach ($form_dropdown_links as $dropdownTitle => $links): ?>
+								<div class="dropdown-field">
+									<select name="form_handle" class="select-popup button--small">
+										<?php foreach ($links as $link_data):?>
+											<option value="<?=$link_data['link']?>" <?php echo @$link_data['attrs'] ?>>
+												<?=$link_data['title']?>
+											</option>
+										<?php endforeach;?>
+									</select>
+									<a class="btn action tn button--small">
+										<?php echo $dropdownTitle ?>
+									</a>
+								</div>
+							<?php endforeach;?>
+						</fieldset>
+					<?php endif;?>
+
+				</div>
+			</div>
+			
             <?=ee('CP/Alert')->getAllInlines()?>
             <?=$child_view?>
             <?php if (isset($pagination)):?>

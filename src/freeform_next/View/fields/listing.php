@@ -11,19 +11,15 @@
 
 $this->extend('_layouts/table_form_wrapper')?>
 
-<div class="panel">
-	<div class="tbl-ctrls">
-		<form>
-			<?php $this->embed('ee:_shared/table', $table); ?>
+<form>
+	<?php $this->embed('ee:_shared/table', $table); ?>
 
 
-			<fieldset class="bulk-action-bar hidden">
-				<select class="select-popup button--small">
-					<option value="remove" data-confirm-trigger="selected" rel="modal-confirm-remove"><?=lang('remove')?></option>
-				</select>
-				<input class="btn button--primary button--small submit" data-conditional-modal="confirm-trigger" type="submit" value="<?=lang('submit')?>">
-			</fieldset>
+	<fieldset class="bulk-action-bar hidden">
+		<select class="select-popup button--small">
+			<option value="remove" data-confirm-trigger="selected" rel="modal-confirm-remove"><?=lang('remove')?></option>
+		</select>
+		<input class="btn button--primary button--small submit" data-conditional-modal="confirm-trigger" type="submit" value="<?=lang('submit')?>">
+	</fieldset>
 
-		</form>
-	</div>
-</div>
+</form>
