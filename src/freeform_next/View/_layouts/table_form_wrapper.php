@@ -15,7 +15,7 @@
 					<?php if ( ! empty($form_right_links)):?>
 						<fieldset class="tbl-search right title-bar__extra-tools">
 							<?php foreach ($form_right_links as $link_data):?>
-								<a class="btn tn action button--small"
+								<a class="btn tn action"
 								   <?php echo @$link_data['attrs'] ?>
 								   href="<?=$link_data['link']?>">
 									<?=$link_data['title']?>
@@ -27,14 +27,14 @@
 						<fieldset class="tbl-search right title-bar__extra-tools">
 							<?php foreach ($form_dropdown_links as $dropdownTitle => $links): ?>
 								<div class="dropdown-field">
-									<select name="form_handle" class="select-popup button--small">
+									<select name="form_handle" class="">
 										<?php foreach ($links as $link_data):?>
 											<option value="<?=$link_data['link']?>" <?php echo @$link_data['attrs'] ?>>
 												<?=$link_data['title']?>
 											</option>
 										<?php endforeach;?>
 									</select>
-									<a class="btn action tn button--small">
+									<a class="btn action tn">
 										<?php echo $dropdownTitle ?>
 									</a>
 								</div>

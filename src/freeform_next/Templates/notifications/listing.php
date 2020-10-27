@@ -3,7 +3,7 @@
         <th class="folder">
             <?php echo $path ?>
 
-            <a class="btn action add-template" href="<?php echo $url ?>">
+            <a class="btn action add-template button--small" href="<?php echo $url ?>">
                 Add sample template
             </a>
         </th>
