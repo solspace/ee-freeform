@@ -23,39 +23,90 @@ $this->extend('_layouts/table_form_wrapper');
 </script>
 
 
-<form method="get" action="#" id="entry-filters" data-action="<?=isset($entries_filter_uri) ? $entries_filter_uri : ""?>">
+<form method="get" action="<?=ee('CP/URL')->getCurrentUrl()?>" id="entry-filters" data-action="<?=isset($entries_filter_uri) ? $entries_filter_uri : ""?>">
     <?php if ($sessionToken): ?>
     <input type="hidden" name="S" value="<?= $sessionToken ?>">
     <?php endif; ?>
-    <div class="filters" id="custom-filters">
+	<div class="panel-body">
+		<div class="filter-bar filter-bar--collapsible" id="custom-filters">
+			<div class="filter-bar__item">
+				<button class="has-sub filter-bar__button js-dropdown-toggle button button--default button--small" data-filter-label="status">
+					<?= lang('status') ?>
+					<span class="faded">
+					<?= $currentSearchStatus ? '(' . lang($currentSearchStatus) . ')' : '' ?>
+				</span>
+				</button>
+				<div class="dropdown">
+					<div data-target="search_status">
+						<?php foreach ($formStatuses as $status_id => $status): ?>
+							<a href="<?=$status['url']?>" class="dropdown__link" data-value="<?= $status_id ?>">
+								<?= $status['label'] ?>
+							</a>
+						<?php endforeach; ?>
+					</div>
+				</div>
+			</div>
+
+			<div class="filter-bar__item">
+				<button class="has-sub filter-bar__button js-dropdown-toggle button button--default button--small" data-filter-label="date">
+					<?= lang('entry_date') ?>
+					<span class="faded">
+					<?= $currentDateRange ? '(' . lang($currentDateRange) . ')' : '' ?>
+				</span>
+				</button>
+				<div class="dropdown">
+					<?php foreach ($formDateRanges as $date_key => $date_range): ?>
+					<a href="<?=$date_range['url']?>" class="dropdown__link" data-value="today"><?=$date_range['label']?></a>
+					<?php endforeach ?>
+					<a class="dropdown__link" data-target="date_range" data-prevent-trigger="1"><?= lang('choose_date_range') ?></a>
+				</div>
+			</div>
+
+			<div class="filter-bar__item date-range-inputs" style="display: none;">
+				<input type="text"
+					   name="date_range_start"
+					   class="datepicker input--small"
+					   rel="date-picker"
+					   data-timestamp="<?= $currentDateRangeStart ? strtotime($currentDateRangeStart) : time() ?>"
+					   value="<?= $currentDateRangeStart ?>"
+					   placeholder="<?= lang('start_date') ?>"
+					   style="width: 70px;"
+				/>
+			</div>
+			<div class="filter-bar__item date-range-inputs" style="display: none;">
+				<input type="text"
+					   name="date_range_end"
+					   class="datepicker input--small"
+					   rel="date-picker"
+					   data-timestamp="<?= $currentDateRangeStart ? strtotime($currentDateRangeStart) : time() ?>"
+					   value="<?= $currentDateRangeEnd ?>"
+					   placeholder="<?= lang('end_date') ?>"
+					   style="width: 70px;"
+				/>
+			</div>
+
+
+			<div class="filter-bar__item date-range-inputs">
+				<input type="text"
+					   name="keywords"
+					   placeholder="<?= lang('keywords') ?>"
+					   style="width: 90px;"
+					   value="<?= $currentKeyword ?>"
+					   class="search-input__input input--small"
+				/>
+			</div>
+		</div>
+	</div>
+
+    <div class="filters panel-body">
         <b><?= lang('filters') ?>:</b>
 
         <?php // echo $filters->render($baseUrl); ?>
 
         <ul>
             <li>
-                <input type="hidden" name="search_status" value="<?= $currentSearchStatus ?>">
-                <a href="" class="has-sub" data-filter-label="status">
-                    <?= lang('status') ?>
-                    <span class="faded">
-                    <?= $currentSearchStatus ? '(' . lang($currentSearchStatus) . ')' : '' ?>
-                </span>
-                </a>
-                <div class="sub-menu">
-                    <ul data-target="search_status">
-                        <?php foreach ($formStatuses as $status => $status_label): ?>
-                            <li>
-                                <a data-value="<?= $status ?>">
-                                    <?= $status_label ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            </li>
-            <li>
                 <input type="hidden" name="search_date_range" value="<?= $currentDateRange ?>">
-                <a href="" class="has-sub" data-filter-label="date">
+                <a href="" class="has-sub button--small" data-filter-label="date">
                     <?= lang('entry_date') ?>
                     <span class="faded">
                     <?= $currentDateRange ? '(' . lang($currentDateRange) . ')' : '' ?>
@@ -101,11 +152,12 @@ $this->extend('_layouts/table_form_wrapper');
                        placeholder="<?= lang('keywords') ?>"
                        style="width: 90px;"
                        value="<?= $currentKeyword ?>"
+					   class="search-input__input input--small"
                 />
             </li>
             <li>
                 <input type="hidden" name="search_on_field" value="<?= $currentSearchOnField ?>">
-                <a href="" class="has-sub" data-filter-label="date">
+                <a href="" class="has-sub button--small" data-filter-label="date">
                     <?= lang('field') ?>
                     <span class="faded">
                     (<?= $currentSearchOnField ? $columnLabels[$currentSearchOnField] : lang('all_fields') ?>)
@@ -133,20 +185,16 @@ $this->extend('_layouts/table_form_wrapper');
         </ul>
     </div>
 
-	<div class="panel">
-		<div class="tbl-ctrls">
-    		<?php $this->embed('ee:_shared/table', $table); ?>
+	<?php $this->embed('ee:_shared/table', $table); ?>
 
-			<fieldset class="bulk-action-bar hidden">
-				<select class="">
-					<option value="remove" data-confirm-trigger="selected" rel="modal-confirm-remove"><?= lang(
-							'remove'
-						) ?></option>
-				</select>
-				<input class="btn button--primary submit" data-conditional-modal="confirm-trigger" type="submit" value="<?= lang('submit') ?>">
-			</fieldset>
-		</div>
-	</div>
+	<fieldset class="bulk-action-bar hidden">
+		<select class="">
+			<option value="remove" data-confirm-trigger="selected" rel="modal-confirm-remove"><?= lang(
+					'remove'
+				) ?></option>
+		</select>
+		<input class="btn button--primary submit" data-conditional-modal="confirm-trigger" type="submit" value="<?= lang('submit') ?>">
+	</fieldset>
 
 </form>
 

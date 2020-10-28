@@ -1,43 +1,47 @@
+var $form = $('#entry-filters');
 var $context = $('#custom-filters');
-var $valueLinks = $('a[data-value]', $context);
+var $targetLinks = $('a[data-target]', $context);
 var $inputs = $('input[type=text]', $context);
-var $dateRangeOccurrences = $('#date-range-inputs', $context);
+var $dateRangeOccurrences = $('.date-range-inputs', $context);
 
 var $dateChoice = $('input[name=search_date_range]', $context);
 
-$valueLinks
+$targetLinks
   .unbind('click')
   .on({
     click: function () {
-      
+
       var $self = $(this);
-      var $menu = $self.parents('div.sub-menu');
-      var target = $self.parents('ul:first[data-target]').data('target');
-      var $input = $('input[name=' + target + ']', $context);
+      // var $menu = $self.parents('div.sub-menu');
+      var target = $self.data('target');
+      // var $input = $('input[name=' + target + ']', $context);
 
-      var value = $self.data('value');
+      // var value = $self.data('value');
 
-      $input.val(value);
-      $menu.hide();
+      // $input.val(value);
+      // $menu.hide();
 
-      $menu.parents('li:first').find('a.has-sub > span.faded').html('(' + $self.html().trim() + ')');
+      // $menu.parents('li:first').find('a.has-sub > span.faded').html('(' + $self.html().trim() + ')');
 
-      if (target == 'search_date_range') {
-        if (value == 'date_range') {
-          $dateRangeOccurrences.show();
-        } else {
-          $dateRangeOccurrences
-            .hide()
-            .find('input')
-            .val('');
-        }
+      if (target == 'date_range')
+      {
+        $dateRangeOccurrences.show();
+        $self.parents('.dropdown').removeClass('dropdown--open');
+        $('button.dropdown-open').removeClass('dropdown-open');
+      }
+      else
+      {
+        $dateRangeOccurrences
+          .hide()
+          .find('input')
+          .val('');
       }
 
-      if (!$self.data('prevent-trigger')) {
-        event.preventDefault();
-        event.stopPropagation();
-        postFilter();
-      }
+      // if (!$self.data('prevent-trigger')) {
+      //   event.preventDefault();
+      //   event.stopPropagation();
+      //   postFilter();
+      // }
     }
   });
 

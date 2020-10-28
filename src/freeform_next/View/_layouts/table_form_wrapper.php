@@ -15,7 +15,7 @@
 					<?php if ( ! empty($form_right_links)):?>
 						<fieldset class="tbl-search right title-bar__extra-tools">
 							<?php foreach ($form_right_links as $link_data):?>
-								<a class="btn tn action"
+								<a <?php if (strpos(@$link_data['attrs'], 'class=') === false) : ?>class="btn tn action"<?php endif ?>
 								   <?php echo @$link_data['attrs'] ?>
 								   href="<?=$link_data['link']?>">
 									<?=$link_data['title']?>
@@ -45,9 +45,11 @@
 				</div>
 			</div>
 
+			<?php if(ee('CP/Alert')->getAllInlines() !== '') : ?>
 			<div class="panel-body">
 				<?=ee('CP/Alert')->getAllInlines()?>
 			</div>
+			<?php endif ?>
 
 			<?=$child_view?>
 

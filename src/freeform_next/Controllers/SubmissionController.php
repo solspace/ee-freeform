@@ -59,7 +59,7 @@ class SubmissionController extends Controller
             return new RedirectView($this->getLink('denied'));
         }
 
-        $baseUrl = ee('CP/URL', 'addons/settings/freeform_next/submissions/' . $form->getHandle());
+        $baseUrl = ee('CP/URL')->getCurrentUrl();//ee('CP/URL', 'addons/settings/freeform_next/submissions/' . $form->getHandle());
         $filters = ee('CP/Filter')->add('Date');
 
         $canManageSubmissions = $this->getPermissionsService()->canManageSubmissions(ee()->session->userdata('group_id'));
@@ -161,15 +161,18 @@ class SubmissionController extends Controller
         $formStatuses = [];
 
         foreach ($statuses as $status) {
-            $formStatuses[$status->id] = $status->name;
+            $formStatuses[$status->id] = [
+            	'label' => $status->name,
+            	'url' => ee('CP/URL')->getCurrentUrl()->addQueryStringVariables(['status' => $status->id])->compile()
+				];
         }
 
         $search_vars = [
-            'search_keywords',
-            'search_status',
-            'search_date_range',
-            'search_date_range_start',
-            'search_date_range_end',
+            'keywords',
+            'status',
+            'date_range',
+            'date_range_start',
+            'date_range_end',
             'search_on_field',
         ];
 
@@ -181,7 +184,7 @@ class SubmissionController extends Controller
         }
 
         $searchOnField  = $searchVars['search_on_field'];
-        $searchKeywords = $searchVars['search_keywords'];
+		$searchKeywords = $searchVars['keywords'];
 
         if (($searchOnField == '' OR in_array($searchOnField, $visibleColumns)) AND $searchKeywords AND trim($searchKeywords) !== '') {
 
@@ -201,21 +204,37 @@ class SubmissionController extends Controller
             $currentKeyword = $searchKeywords;
         }
 
-        $searchStatus = $searchVars['search_status'];
+        $searchStatus = $searchVars['status'];
 
-        if ($searchStatus AND in_array($searchStatus, array_flip($formStatuses))) {
-            $currentSearchStatus = $formStatuses[$searchStatus];
+        if ($searchStatus AND in_array($searchStatus, array_keys($formStatuses))) {
+            $currentSearchStatus = $formStatuses[$searchStatus]['label'];
             $attributes->addFilter('statusId', $searchStatus);
         }
 
-        $dateRange = str_replace('_', ' ', $searchVars['search_date_range']);
+        $dateRangesKeys = [
+			'today',
+			'this_week',
+			'this_month',
+			'last_month',
+			'this_year',
+		];
 
-        $currentDateRange = $searchVars['search_date_range'];
+		$formDateRanges = [];
+
+		foreach ($dateRangesKeys as $dateRangeKey) {
+			$formDateRanges[] = [
+				'label' => lang($dateRangeKey),
+				'url' => ee('CP/URL')->getCurrentUrl()->addQueryStringVariables(['date_range' => $dateRangeKey])->compile()
+			];
+		}
+
+        $dateRange = str_replace('_', ' ', $searchVars['date_range']);
+        $currentDateRange = $searchVars['date_range'];
 
         if ($dateRange !== 'date range') {
             $attributes->setDateRange($dateRange);
         } else {
-            $dateRangeStart = $searchVars['search_date_range_start'];
+            $dateRangeStart = $searchVars['range_start'];
 
             if ($dateRangeStart) {
                 $currentDateRangeStart = $dateRangeStart;
@@ -223,7 +242,7 @@ class SubmissionController extends Controller
                 $attributes->setDateRangeStart($dateRangeStart);
             }
 
-            $dateRangeEnd = $searchVars['search_date_range_end'];
+            $dateRangeEnd = $searchVars['range_end'];
 
             if ($dateRangeEnd) {
                 $currentDateRangeEnd = $dateRangeEnd;
@@ -403,7 +422,7 @@ class SubmissionController extends Controller
             [
                 'title' => lang('Edit Layout'),
                 'link'  => '#',
-                'attrs' => 'id="change-layout-trigger"',
+                'attrs' => 'id="change-layout-trigger" class="btn action button--small"',
             ],
         ];
 
@@ -411,7 +430,7 @@ class SubmissionController extends Controller
             array_unshift($formRightLinks, [
                 'title' => lang('Quick Export'),
                 'link'  => '#',
-                'attrs' => 'id="quick-export-trigger" style="margin-right: 5px;"',
+                'attrs' => 'id="quick-export-trigger" style="margin-right: 5px;"  class="btn action button--small"',
             ]);
         } else {
             array_unshift($formRightLinks, [
@@ -432,29 +451,30 @@ class SubmissionController extends Controller
         $view = new CpView(
             'submissions/listing',
             [
-                'table'            => $table->viewData($this->getLink('submissions/' . $form->getHandle())),
-                'cp_page_title'    => 'Submissions for ' . $form->getName(),
-                'layout'           => $layout,
-                'form'             => $form,
-                'form_right_links' => $formRightLinks,
-                'pagination'       => $pagination,
-                'exportLink'       => $this->getLink('export'),
-                'formStatuses'     => $formStatuses,
-                'mainUrl'          => $this->getLink('submissions/' . $form->getHandle()),
-                'columnLabels'     => $columnLabels,
-                'visibleColumns'   => $visibleColumns,
+				'table'            => $table->viewData($this->getLink('submissions/' . $form->getHandle())),
+				'cp_page_title'    => 'Submissions for ' . $form->getName(),
+				'layout'           => $layout,
+				'form'             => $form,
+				'form_right_links' => $formRightLinks,
+				'pagination'       => $pagination,
+				'exportLink'       => $this->getLink('export'),
+				'formStatuses'     => $formStatuses,
+				'formDateRanges'   => $formDateRanges,
+				'mainUrl'          => $this->getLink('submissions/' . $form->getHandle()),
+				'columnLabels'     => $columnLabels,
+				'visibleColumns'   => $visibleColumns,
 
-                'currentSearchOnField'  => $currentSearchOnField,
-                'currentKeyword'        => $currentKeyword,
-                'currentSearchStatus'   => $currentSearchStatus,
-                'currentDateRangeStart' => $currentDateRangeStart,
-                'currentDateRangeEnd'   => $currentDateRangeEnd,
-                'currentDateRange'      => $currentDateRange,
+				'currentSearchOnField'  => $currentSearchOnField,
+				'currentKeyword'        => $currentKeyword,
+				'currentSearchStatus'   => $currentSearchStatus,
+				'currentDateRangeStart' => $currentDateRangeStart,
+				'currentDateRangeEnd'   => $currentDateRangeEnd,
+				'currentDateRange'      => $currentDateRange,
 
-                'baseUrl' => $baseUrl,
-                'filters' => $filters,
+				'baseUrl' => $baseUrl,
+				'filters' => $filters,
 
-                'sessionToken' => $sessionToken,
+				'sessionToken' => $sessionToken,
             ]
         );
 
