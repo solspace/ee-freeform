@@ -152,6 +152,7 @@ class SubmissionController extends Controller
 
         $currentKeyword        = '';
         $currentSearchStatus   = '';
+        $currentSearchStatusId = '';
         $currentDateRangeStart = '';
         $currentDateRangeEnd   = '';
         $currentDateRange      = '';
@@ -208,6 +209,7 @@ class SubmissionController extends Controller
 
         if ($searchStatus AND in_array($searchStatus, array_keys($formStatuses))) {
             $currentSearchStatus = $formStatuses[$searchStatus]['label'];
+            $currentSearchStatusId = $searchStatus;
             $attributes->addFilter('statusId', $searchStatus);
         }
 
@@ -234,7 +236,7 @@ class SubmissionController extends Controller
         if ($dateRange !== 'date range') {
             $attributes->setDateRange($dateRange);
         } else {
-            $dateRangeStart = $searchVars['range_start'];
+            $dateRangeStart = $searchVars['date_range_start'];
 
             if ($dateRangeStart) {
                 $currentDateRangeStart = $dateRangeStart;
@@ -242,7 +244,7 @@ class SubmissionController extends Controller
                 $attributes->setDateRangeStart($dateRangeStart);
             }
 
-            $dateRangeEnd = $searchVars['range_end'];
+            $dateRangeEnd = $searchVars['date_range_end'];
 
             if ($dateRangeEnd) {
                 $currentDateRangeEnd = $dateRangeEnd;
@@ -467,6 +469,7 @@ class SubmissionController extends Controller
 				'currentSearchOnField'  => $currentSearchOnField,
 				'currentKeyword'        => $currentKeyword,
 				'currentSearchStatus'   => $currentSearchStatus,
+				'currentSearchStatusId' => $currentSearchStatusId,
 				'currentDateRangeStart' => $currentDateRangeStart,
 				'currentDateRangeEnd'   => $currentDateRangeEnd,
 				'currentDateRange'      => $currentDateRange,

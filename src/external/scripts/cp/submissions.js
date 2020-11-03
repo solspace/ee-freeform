@@ -12,16 +12,18 @@ $targetLinks
     click: function () {
 
       var $self = $(this);
-      // var $menu = $self.parents('div.sub-menu');
       var target = $self.data('target');
-      // var $input = $('input[name=' + target + ']', $context);
+      var tagContent = $self.html();
 
-      // var value = $self.data('value');
+      $('input[type=hidden][data-filter=' + target + ']').val(target);
 
-      // $input.val(value);
-      // $menu.hide();
-
-      // $menu.parents('li:first').find('a.has-sub > span.faded').html('(' + $self.html().trim() + ')');
+      if (target == 'search_on_field')
+      {
+        $('input[type=hidden][data-filter=' + target + ']').val($self.data('value'));
+        $self.parents('.dropdown').removeClass('dropdown--open');
+        $('button.dropdown-open').removeClass('dropdown-open');
+        $self.parents('.dropdown').prev('button').find('span.faded').html('(' + tagContent + ')');
+      }
 
       if (target == 'date_range')
       {
@@ -37,11 +39,6 @@ $targetLinks
           .val('');
       }
 
-      // if (!$self.data('prevent-trigger')) {
-      //   event.preventDefault();
-      //   event.stopPropagation();
-      //   postFilter();
-      // }
     }
   });
 

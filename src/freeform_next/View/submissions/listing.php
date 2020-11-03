@@ -27,10 +27,10 @@ $this->extend('_layouts/table_form_wrapper');
     <?php if ($sessionToken): ?>
     <input type="hidden" name="S" value="<?= $sessionToken ?>">
     <?php endif; ?>
-	<div class="panel-body">
+	<div class="panel-heading">
 		<div class="filter-bar filter-bar--collapsible" id="custom-filters">
 			<div class="filter-bar__item">
-				<button class="has-sub filter-bar__button js-dropdown-toggle button button--default button--small" data-filter-label="status">
+				<button type="button" class="has-sub filter-bar__button js-dropdown-toggle button button--default button--small" data-filter-label="status">
 					<?= lang('status') ?>
 					<span class="faded">
 					<?= $currentSearchStatus ? '(' . lang($currentSearchStatus) . ')' : '' ?>
@@ -44,11 +44,12 @@ $this->extend('_layouts/table_form_wrapper');
 							</a>
 						<?php endforeach; ?>
 					</div>
+					<input type="hidden" data-filter="status" name="status" value="<?=$currentSearchStatusId?>">
 				</div>
 			</div>
 
 			<div class="filter-bar__item">
-				<button class="has-sub filter-bar__button js-dropdown-toggle button button--default button--small" data-filter-label="date">
+				<button type="button" class="has-sub filter-bar__button js-dropdown-toggle button button--default button--small" data-filter-label="date">
 					<?= lang('entry_date') ?>
 					<span class="faded">
 					<?= $currentDateRange ? '(' . lang($currentDateRange) . ')' : '' ?>
@@ -59,34 +60,35 @@ $this->extend('_layouts/table_form_wrapper');
 					<a href="<?=$date_range['url']?>" class="dropdown__link" data-value="today"><?=$date_range['label']?></a>
 					<?php endforeach ?>
 					<a class="dropdown__link" data-target="date_range" data-prevent-trigger="1"><?= lang('choose_date_range') ?></a>
+					<input type="hidden" data-filter="date_range" name="date_range" value="<?=$currentDateRange?>">
 				</div>
 			</div>
 
-			<div class="filter-bar__item date-range-inputs" style="display: none;">
+			<div class="filter-bar__item date-range-inputs" <?php if($currentDateRange != 'date_range') : ?>style="display: none;"<?php endif ?>>
 				<input type="text"
 					   name="date_range_start"
 					   class="datepicker input--small"
 					   rel="date-picker"
 					   data-timestamp="<?= $currentDateRangeStart ? strtotime($currentDateRangeStart) : time() ?>"
-					   value="<?= $currentDateRangeStart ?>"
+					   value="<?= $currentDateRangeStart && $currentDateRange == 'date_range' ? $currentDateRangeStart : '' ?>"
 					   placeholder="<?= lang('start_date') ?>"
 					   style="width: 70px;"
 				/>
 			</div>
-			<div class="filter-bar__item date-range-inputs" style="display: none;">
+			<div class="filter-bar__item date-range-inputs" <?php if($currentDateRange != 'date_range') : ?>style="display: none;"<?php endif ?>>
 				<input type="text"
 					   name="date_range_end"
 					   class="datepicker input--small"
 					   rel="date-picker"
 					   data-timestamp="<?= $currentDateRangeStart ? strtotime($currentDateRangeStart) : time() ?>"
-					   value="<?= $currentDateRangeEnd ?>"
+					   value="<?= $currentDateRangeEnd && $currentDateRange == 'date_range' ? $currentDateRangeEnd : '' ?>"
 					   placeholder="<?= lang('end_date') ?>"
 					   style="width: 70px;"
 				/>
 			</div>
 
 
-			<div class="filter-bar__item date-range-inputs">
+			<div class="filter-bar__item">
 				<input type="text"
 					   name="keywords"
 					   placeholder="<?= lang('keywords') ?>"
@@ -95,95 +97,29 @@ $this->extend('_layouts/table_form_wrapper');
 					   class="search-input__input input--small"
 				/>
 			</div>
+
+			<div class="filter-bar__item">
+				<button type="button" class="has-sub filter-bar__button js-dropdown-toggle button button--default button--small" data-filter-label="search_on_field">
+					<?= lang('field') ?>
+					<span class="faded">
+					(<?= $currentSearchOnField ? $columnLabels[$currentSearchOnField] : lang('all_fields') ?>)
+					</span>
+				</button>
+				<div class="dropdown">
+					<div data-target="search_on_field">
+						<?php foreach ($visibleColumns as $column_name): ?>
+							<a class="dropdown__link" data-target="search_on_field" data-value="<?= $column_name ?>" data-prevent-trigger="1"><?= $columnLabels[$column_name] ?></a>
+						<?php endforeach; ?>
+					</div>
+					<input type="hidden" data-filter="search_on_field" name="search_on_field" value="<?=$currentSearchOnField?>">
+				</div>
+			</div>
+
+			<div class="filter-bar__item">
+				<a href="<?= $mainUrl ?>" class="filter-bar__button filter-bar__button--clear button button--default button--small"><i class="fas fa-minus-circle fa-sm"></i> <?= lang('clear_filters') ?></a>
+			</div>
 		</div>
 	</div>
-
-    <div class="filters panel-body">
-        <b><?= lang('filters') ?>:</b>
-
-        <?php // echo $filters->render($baseUrl); ?>
-
-        <ul>
-            <li>
-                <input type="hidden" name="search_date_range" value="<?= $currentDateRange ?>">
-                <a href="" class="has-sub button--small" data-filter-label="date">
-                    <?= lang('entry_date') ?>
-                    <span class="faded">
-                    <?= $currentDateRange ? '(' . lang($currentDateRange) . ')' : '' ?>
-                </span>
-                </a>
-                <div class="sub-menu">
-                    <ul data-target="search_date_range">
-                        <li><a data-value="today"><?= lang('today') ?></a></li>
-                        <li><a data-value="this_week"><?= lang('this_week') ?></a></li>
-                        <li><a data-value="this_month"><?= lang('this_month') ?></a></li>
-                        <li><a data-value="last_month"><?= lang('last_month') ?></a></li>
-                        <li><a data-value="this_year"><?= lang('this_year') ?></a></li>
-                        <li><a data-value="date_range" data-prevent-trigger="1"><?= lang('choose_date_range') ?></a></li>
-                    </ul>
-                </div>
-            </li>
-
-            <li id="date-range-inputs" style="display: none">
-
-                <input type="text"
-                       name="search_date_range_start"
-                       class="datepicker"
-                       rel="date-picker"
-                       data-timestamp="<?= $currentDateRangeStart ? strtotime($currentDateRangeStart) : time() ?>"
-                       value="<?= $currentDateRangeStart ?>"
-                       placeholder="<?= lang('start_date') ?>"
-                       style="width: 70px;"
-                />
-                <input type="text"
-                       name="search_date_range_end"
-                       class="datepicker"
-                       rel="date-picker"
-                       data-timestamp="<?= $currentDateRangeStart ? strtotime($currentDateRangeStart) : time() ?>"
-                       value="<?= $currentDateRangeEnd ?>"
-                       placeholder="<?= lang('end_date') ?>"
-                       style="width: 70px;"
-                />
-            </li>
-
-            <li>
-                <input type="text"
-                       name="search_keywords"
-                       placeholder="<?= lang('keywords') ?>"
-                       style="width: 90px;"
-                       value="<?= $currentKeyword ?>"
-					   class="search-input__input input--small"
-                />
-            </li>
-            <li>
-                <input type="hidden" name="search_on_field" value="<?= $currentSearchOnField ?>">
-                <a href="" class="has-sub button--small" data-filter-label="date">
-                    <?= lang('field') ?>
-                    <span class="faded">
-                    (<?= $currentSearchOnField ? $columnLabels[$currentSearchOnField] : lang('all_fields') ?>)
-                </span>
-                </a>
-                <div class="sub-menu">
-                    <ul data-target="search_on_field">
-                        <li>
-                            <a data-value=""><?= lang('all_fields') ?></a>
-                        </li>
-                        <?php foreach ($visibleColumns as $column_name): ?>
-                            <li>
-                                <a data-value="<?= $column_name ?>">
-                                    <?= $columnLabels[$column_name] ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="filter-clear">
-                <a href="<?= $mainUrl ?>"><?= lang('clear_filters') ?></a>
-            </li>
-        </ul>
-    </div>
 
 	<?php $this->embed('ee:_shared/table', $table); ?>
 
