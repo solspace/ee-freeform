@@ -135,23 +135,25 @@ $this->extend('_layouts/table_form_wrapper');
 </form>
 
 <div class="choice-panel hidden">
-    <h1><?php echo lang('Edit Layout') ?></h1>
+    <h1 class="dialog__header"><?php echo lang('Edit Layout') ?></h1>
 
-    <ul class="very-sortable">
-        <?php foreach ($layout as $setting) : ?>
-            <li data-id="<?php echo $setting->getId() ?>"
-                data-handle="<?php echo $setting->getHandle() ?>"
-                data-label="<?php echo $setting->getLabel() ?>">
-                <label>
-                    <span class="handle"></span>
-                    <input type="checkbox"<?php echo $setting->isChecked() ? ' checked' : '' ?> />
-                    <?php echo $setting->getLabel() ?>
-                </label>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+	<div class="dialog__body">
+		<ul class="very-sortable">
+			<?php foreach ($layout as $setting) : ?>
+				<li data-id="<?php echo $setting->getId() ?>"
+					data-handle="<?php echo $setting->getHandle() ?>"
+					data-label="<?php echo $setting->getLabel() ?>">
+					<label>
+						<span class="handle"></span>
+						<input type="checkbox"<?php echo $setting->isChecked() ? ' checked' : '' ?> />
+						<?php echo $setting->getLabel() ?>
+					</label>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+	</div>
 
-    <div class="buttons">
+    <div class="buttons dialog__actions ">
         <button class="btn action" data-layout-save>Save</button>
         <button class="btn action" data-featherlight-close>Cancel</button>
     </div>
