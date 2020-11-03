@@ -163,9 +163,9 @@ $this->extend('_layouts/table_form_wrapper');
     <form id="export-csv-modal" method="post" action="<?php echo $exportLink ?>">
         <input type="hidden" name="csrf_token" value="<?php echo CSRF_TOKEN ?>">
 
-        <h1>Export data</h1>
+        <h1 class="dialog__header">Export data</h1>
 
-        <div class="body">
+        <div class="dialog__body">
             <div class="field">
                 <div class="heading">
                     <label>Export as</label>
@@ -253,13 +253,10 @@ $this->extend('_layouts/table_form_wrapper');
             <?php endforeach; ?>
 
         </div>
-        <div class="footer">
-            <div class="buttons right last">
+        <div class="buttons dialog__actions">
                 <input type="button" class="btn cancel" value="Cancel"/>
-                <input type="submit" class="btn submit" value="Export"/>
-
+                <input type="submit" class="btn submit button--primary" value="Export"/>
                 <div class="spinner" style="display: none;"></div>
-            </div>
         </div>
     </form>
 </div>
