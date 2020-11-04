@@ -64,6 +64,78 @@ class Freeform_next_jump extends AbstractJumpMenu
 			'requires_keyword' => false,
 			'target' => 'notifications'
 		],
+		'general' => [
+			'icon' => 'fa-wrench',
+			'command' => 'general settings',
+			'command_title' => 'general',
+			'dynamic' => false,
+			'requires_keyword' => false,
+			'target' => 'settings/general'
+		],
+		'spam_protection' => [
+			'icon' => 'fa-wrench',
+			'command' => 'spam protection',
+			'command_title' => 'spam_protection',
+			'dynamic' => false,
+			'requires_keyword' => false,
+			'target' => 'settings/spam_protection'
+		],
+		'permissions' => [
+			'icon' => 'fa-wrench',
+			'command' => 'permissions',
+			'command_title' => 'permissions',
+			'dynamic' => false,
+			'requires_keyword' => false,
+			'target' => 'settings/permissions'
+		],
+		'formatting_templates' => [
+			'icon' => 'fa-wrench',
+			'command' => 'formatting templates',
+			'command_title' => 'formatting_templates',
+			'dynamic' => false,
+			'requires_keyword' => false,
+			'target' => 'settings/formatting_templates'
+		],
+		'email_templates' => [
+			'icon' => 'fa-wrench',
+			'command' => 'email templates',
+			'command_title' => 'email_templates',
+			'dynamic' => false,
+			'requires_keyword' => false,
+			'target' => 'settings/email_templates'
+		],
+		'statuses' => [
+			'icon' => 'fa-wrench',
+			'command' => 'statuses',
+			'command_title' => 'statuses',
+			'dynamic' => false,
+			'requires_keyword' => false,
+			'target' => 'settings/statuses'
+		],
+		'recaptcha' => [
+			'icon' => 'fa-wrench',
+			'command' => 'recaptcha',
+			'command_title' => 'recaptcha',
+			'dynamic' => false,
+			'requires_keyword' => false,
+			'target' => 'settings/recaptcha'
+		],
+		'mailing_lists' => [
+			'icon' => 'fa-cogs',
+			'command' => 'mailing lists',
+			'command_title' => 'mailing_lists',
+			'dynamic' => false,
+			'requires_keyword' => false,
+			'target' => 'integrations/mailing_lists'
+		],
+		'crm' => [
+			'icon' => 'fa-cogs',
+			'command' => 'crm',
+			'command_title' => 'crm',
+			'dynamic' => false,
+			'requires_keyword' => false,
+			'target' => 'integrations/crm'
+		],
 	];
 
 	/**

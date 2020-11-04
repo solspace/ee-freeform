@@ -29,4 +29,12 @@ $lang = [
 	'view_fields' => 'View <b>Fields</b>',
 	'view_field' => 'View <b>Field</b>',
 	'view_notifications' => 'View <b>Notifications</b>',
+	'general' => 'General',
+	'spam_protection' => 'Spam Protection',
+	'permissions' => 'Permissions',
+	'formatting_templates' => 'Formatting Templates',
+	'email_templates' => 'Email Templates',
+	'statuses' => 'Statuses',
+	'mailing_lists' => 'Mailing Lists',
+	'crm' => 'CRM',
 ];
