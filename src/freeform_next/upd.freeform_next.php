@@ -390,6 +390,7 @@ class Freeform_next_upd extends AddonUpdater
             new PluginExtension('addFormDisabledJavascript', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG, [], 7),
             new PluginExtension('addFormAnchorJavascript', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG, [], 8),
             new PluginExtension('addTableJavascript', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG, [], 9),
+            new PluginExtension('addCpCustomMenu', 'cp_custom_menu'),
         ];
     }
 

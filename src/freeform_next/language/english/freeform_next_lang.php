@@ -21,4 +21,12 @@ $lang = [
     'keywords' => 'Keywords',
     '{email} is not a valid email address' => '{email} is not a valid email address',
     'This field is required' => 'This field is required',
+
+	// Jump Menu
+	'view_forms' => 'View <b>Forms</b>',
+	'view_form' => 'View <b>Form</b>',
+	'view_submissions_in' => 'View <b>Submissions</b> in',
+	'view_fields' => 'View <b>Fields</b>',
+	'view_field' => 'View <b>Field</b>',
+	'view_notifications' => 'View <b>Notifications</b>',
 ];

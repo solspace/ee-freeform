@@ -5,9 +5,11 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SubmitField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\DataObjects\FormRenderObject;
+use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Library\Pro\Fields\RecaptchaField;
 use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Services\HoneypotService;
+use Solspace\Addons\FreeformNext\Services\PermissionsService;
 use Solspace\Addons\FreeformNext\Services\SettingsService;
 use Solspace\Addons\FreeformNext\Utilities\AddonInfo;
 
@@ -164,6 +166,42 @@ class Freeform_next_ext
         }
     }
 
+	/**
+	 * Add the Freeform Menu
+	 *
+	 * @param object $menu ExpressionEngine\Service\CustomMenu\Menu
+	 */
+    public function addCpCustomMenu($menu)
+	{
+		$permissionsService = new PermissionsService;
+
+		$sub = $menu->addSubmenu(FreeformHelper::get('name'));
+
+		if($permissionsService->canManageForms(ee()->session->userdata('group_id')))
+		{
+			$sub->addItem(
+				lang('Forms'),
+				ee('CP/URL', 'addons/settings/freeform_next/forms')
+			);
+		}
+
+		if($permissionsService->canAccessFields(ee()->session->userdata('group_id')))
+		{
+			$sub->addItem(
+				lang('Fields'),
+				ee('CP/URL', 'addons/settings/freeform_next/fields')
+			);
+		}
+
+		if($permissionsService->canAccessNotifications(ee()->session->userdata('group_id')))
+		{
+			$sub->addItem(
+				lang('Notifications'),
+				ee('CP/URL', 'addons/settings/freeform_next/notifications')
+			);
+		}
+	}
+
     /**
      * @return HoneypotService
      */
@@ -191,4 +229,5 @@ class Freeform_next_ext
 
         return $service;
     }
+
 }
