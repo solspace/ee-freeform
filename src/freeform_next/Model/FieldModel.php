@@ -380,7 +380,7 @@ class FieldModel extends Model implements \JsonSerializable
      */
     public function getColumnType()
     {
-        $columnType = 'VARCHAR(255)';
+        $columnType = 'TEXT';
 
         switch ($this->type) {
             case FieldInterface::TYPE_FILE:
