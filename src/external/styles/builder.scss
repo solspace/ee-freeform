@@ -31,7 +31,7 @@ $sidebarMinWidth: 18%;
       top: 1px;
 
       font-family: FontAwesome;
-      padding-right: 5px;
+      padding-right: 0;
     }
 
     &[data-icon=settings]:before {
@@ -52,8 +52,8 @@ $sidebarMinWidth: 18%;
   }
 
   .btn.active {
-    background-color: #186291;
-    border-color: #186291;
+    background-color: #2c3fe4;
+    border-color: #2c3fe4;
   }
 }
 
@@ -125,6 +125,7 @@ $sidebarMinWidth: 18%;
 .builder-interface {
   position: relative;
   border: 1px solid $color-tab-border;
+  border-radius: 6px;
 
   .builder-blocks {
     display: flex;
