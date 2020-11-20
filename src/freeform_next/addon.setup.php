@@ -4,8 +4,8 @@
  *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
- * @copyright     Copyright (c) 2008-2019, Solspace, Inc.
- * @link          https://docs.solspace.com/expressionengine/freeform/v1/
+ * @copyright     Copyright (c) 2008-2020, Solspace, Inc.
+ * @link          https://docs.solspace.com/expressionengine/freeform/v2/
  * @license       https://docs.solspace.com/license-agreement/
  */
 
@@ -46,8 +46,8 @@ if (FreeformHelper::get('version') !== FREEFORM_EXPRESS && !file_exists($cacheDi
 
 return [
     'author'         => 'Solspace',
-    'author_url'     => 'https://docs.solspace.com/expressionengine/freeform/v1/',
-    'docs_url'       => 'https://docs.solspace.com/expressionengine/freeform/v1/',
+    'author_url'     => 'https://docs.solspace.com/expressionengine/freeform/v2/',
+    'docs_url'       => 'https://docs.solspace.com/expressionengine/freeform/v2/',
     'name'           => FreeformHelper::get('name'),
     'module_name'    => 'Freeform_next',
     'description'    => 'The most reliable, intuitive and powerful form builder for ExpressionEngine.',

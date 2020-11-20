@@ -118,7 +118,7 @@ class MailingListsController extends Controller
             $formRightLinks = [
                 [
                     'title' => lang('Upgrade to Pro to Enable'),
-                    'link'  => 'https://docs.solspace.com/expressionengine/freeform/v1/',
+                    'link'  => 'https://docs.solspace.com/expressionengine/freeform/v2/',
                 ],
             ];
         }
@@ -148,7 +148,7 @@ class MailingListsController extends Controller
         $serviceProviderTypes = $this->getMailingListService()->getAllMailingListServiceProviders();
 
         if (empty($serviceProviderTypes)) {
-            return new RedirectView('https://docs.solspace.com/expressionengine/freeform/v1/');
+            return new RedirectView('https://docs.solspace.com/expressionengine/freeform/v2/');
         }
 
         if ($id === 'new') {

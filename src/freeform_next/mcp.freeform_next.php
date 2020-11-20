@@ -4,8 +4,8 @@
  *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
- * @copyright     Copyright (c) 2008-2019, Solspace, Inc.
- * @link          https://docs.solspace.com/expressionengine/freeform/v1/
+ * @copyright     Copyright (c) 2008-2020, Solspace, Inc.
+ * @link          https://docs.solspace.com/expressionengine/freeform/v2/
  * @license       https://docs.solspace.com/license-agreement/
  */
 
@@ -494,13 +494,13 @@ class Freeform_next_mcp extends ControlPanelView
         $resources = new NavigationLink('Resources');
         $resources
             ->addSubNavItem(
-                new NavigationLink('Product Info', 'https://docs.solspace.com/expressionengine/freeform/v1/')
+                new NavigationLink('Product Info', 'https://docs.solspace.com/expressionengine/freeform/v2/')
             )
             ->addSubNavItem(
-                new NavigationLink('Documentation', 'https://docs.solspace.com/expressionengine/freeform/v1/')
+                new NavigationLink('Documentation', 'https://docs.solspace.com/expressionengine/freeform/v2/')
             )
             ->addSubNavItem(
-                new NavigationLink('Official Support', 'https://docs.solspace.com/expressionengine/freeform/v1/support.html')
+                new NavigationLink('Official Support', 'https://docs.solspace.com/expressionengine/freeform/v2/support.html')
             );
 
         $logs   = null;
