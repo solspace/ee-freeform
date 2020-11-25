@@ -42,7 +42,8 @@
                     </select>
                 </td>
                 <td>
-                    <input class="value"
+                    <input type="text"
+						   class="value"
                            name="filters[<?php echo $iterator ?>][value]"
                            value="<?php echo $filter['value'] ?>"/>
                 </td>
@@ -79,7 +80,7 @@
                 </select>
             </td>
             <td>
-                <input class="value" name="filters[__iterator__][value]"/>
+                <input type="text" class="value" name="filters[__iterator__][value]"/>
             </td>
             <td width="10">
                 <div class="toolbar-wrap">
