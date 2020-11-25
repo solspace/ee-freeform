@@ -278,6 +278,8 @@ $sidebarMinWidth: 18%;
 .field-list {
   background: $color-cp-bg-gray;
   flex: $fieldListFlex;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
 
   .field-container {
     position: fixed;
@@ -323,6 +325,8 @@ $sidebarMinWidth: 18%;
 .property-editor {
   background: $color-cp-bg-gray;
   flex: $propertyEditorFlex;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
 
   //overflow: hidden;
 
