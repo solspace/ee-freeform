@@ -544,6 +544,10 @@ $sidebarMinWidth: 18%;
         color: $color-input-text;
         font-family: HelveticaNeue, sans-serif;
 
+        &:not(:checked) {
+          background: $color-white;
+        }
+
         &[readonly] {
           background: $color-input-readonly;
           border: 1px solid $color-input-readonly-border;
