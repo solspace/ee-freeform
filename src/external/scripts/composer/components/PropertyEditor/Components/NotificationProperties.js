@@ -111,8 +111,8 @@ export default class NotificationProperties extends Component {
         </div>
         }
 
-        <button className="btn action cancel small" onClick={toggleForm}>Cancel</button>
-        <button className="btn action submit small" onClick={this.addNotification}>Save</button>
+        <button className="btn action cancel button--small" onClick={toggleForm}>Cancel</button>
+        <button className="btn action submit button--small" onClick={this.addNotification}>Save</button>
       </div>
     );
   }
