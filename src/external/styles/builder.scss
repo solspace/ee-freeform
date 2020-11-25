@@ -428,7 +428,7 @@ $sidebarMinWidth: 18%;
 
 .composer-new-field-form {
   .btn.cancel {
-    margin-right: $spacing;
+    margin-right: $spacing / 5;
   }
 
   .field {
@@ -446,8 +446,19 @@ $sidebarMinWidth: 18%;
         margin-top: 5px;
 
         width: 100%;
+        box-sizing: border-box;
       }
     }
+
+    .input {
+      input {
+        box-sizing: border-box;
+      }
+    }
+  }
+
+  button {
+    padding: 5px 10px!important;
   }
 }
 

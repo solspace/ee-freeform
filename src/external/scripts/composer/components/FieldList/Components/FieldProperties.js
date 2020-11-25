@@ -137,8 +137,8 @@ export default class FieldProperties extends Component {
         </div>
         }
 
-        <button className="btn action cancel small" onClick={toggleFieldForm}>Cancel</button>
-        <button className="btn action submit small" onClick={this.addField}>Save</button>
+        <button className="btn action cancel button--small" onClick={toggleFieldForm}>Cancel</button>
+        <button className="btn action submit button--small" onClick={this.addField}>Save</button>
       </div>
     );
   }
