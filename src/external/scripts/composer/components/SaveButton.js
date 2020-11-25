@@ -69,23 +69,19 @@ export default class SaveButton extends Component {
     let currentTitle = isSaving ? progressTitle : originalTitle;
 
     return (
-      <div className="buttons composer-save">
-        <div className="btngroup submit">
-          <input
-            type="submit"
-            value={currentTitle}
-            onClick={this.save}
-            className="btn submit"
-          />
-
-          <input
-            type="submit"
-            value="Save and close"
-            onClick={this.save}
-            className="btn submit formsubmit gotoFormList"
-          />
+        <div className="button-group buttons composer-save">
+          <button className="button button--primary" type="submit" value={currentTitle} data-work-text="Saving..." onClick={this.save}>{currentTitle}</button>
+          <button type="button" className="button button--primary dropdown-toggle js-dropdown-toggle saving-options"
+                  data-dropdown-pos="bottom-end">
+            <i className="fas fa-angle-down"></i>
+          </button>
+          <div className="dropdown">
+            <div className="dropdown__scroll">
+              <button className="button button__within-dropdown formsubmit gotoFormList" type="submit" data-submit-text="Save &amp; Close" data-work-text="Saving..." onClick={this.save}>Save &amp; Close
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
     );
   }
 
