@@ -29,7 +29,7 @@ class UpdateService
     {
         $cacheDir = PATH_CACHE . '/freeform_next';
 
-        $this->jsonUrl   = 'https://solspace.com/expressionengine/updates/freeform.json';
+        $this->jsonUrl   = 'https://accounts.solspace.com/expressionengine/updates/freeform2.json';
         $this->jsonPath  = $cacheDir . '/changelog.json';
         $this->addonInfo = AddonInfo::getInstance();
 
