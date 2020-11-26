@@ -200,6 +200,22 @@ class Freeform_next_ext
 				ee('CP/URL', 'addons/settings/freeform_next/notifications')
 			);
 		}
+
+		if($permissionsService->canAccessExport(ee()->session->userdata('group_id')) && FreeformHelper::get('version') === 'pro')
+		{
+			$sub->addItem(
+				lang('Export'),
+				ee('CP/URL', 'addons/settings/freeform_next/export_profiles')
+			);
+		}
+
+		if($permissionsService->canAccessSettings(ee()->session->userdata('group_id')) && FreeformHelper::get('version') === 'pro')
+		{
+			$sub->addItem(
+				lang('Settings'),
+				ee('CP/URL', 'addons/settings/freeform_next/settings/general')
+			);
+		}
 	}
 
     /**
