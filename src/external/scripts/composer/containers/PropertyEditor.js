@@ -179,7 +179,7 @@ export default class PropertyEditor extends Component {
 
             {showReset &&
             <button
-              className={"btn small property-reset"}
+              className={"button button--default button--small property-reset"}
               title={"Reset to default values"}
               onClick={this.resetField}
             >
