@@ -92,7 +92,7 @@ export default class FieldProperties extends Component {
                     value={type}
                     ref="type"
                     onChange={this.updateType}
-                    className="fullwidth"
+                    className="fullwidth button--small"
             >
               {options.map((item) => (
                 <option key={item.key} value={item.key}>{item.value}</option>
@@ -108,7 +108,7 @@ export default class FieldProperties extends Component {
             <input type="text"
                    name="label"
                    ref="label"
-                   className="text fullwidth"
+                   className="text fullwidth input--small"
                    value={label}
                    onChange={this.updateLabel}
                    onKeyUp={this.updateState}
@@ -123,7 +123,7 @@ export default class FieldProperties extends Component {
             <input type="text"
                    name="handle"
                    ref="handle"
-                   className="text fullwidth code"
+                   className="text fullwidth code input--small"
                    value={handle}
                    onChange={this.updateHandle}
                    onKeyUp={this.updateState}

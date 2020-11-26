@@ -80,7 +80,7 @@ export default class NotificationProperties extends Component {
             <input type="text"
                    name="name"
                    ref="name"
-                   className="text fullwidth"
+                   className="text fullwidth input--small"
                    value={name}
                    onChange={this.updateName}
                    onKeyUp={this.updateState}
@@ -96,7 +96,7 @@ export default class NotificationProperties extends Component {
             <input type="text"
                    name="handle"
                    ref="handle"
-                   className="text fullwidth code"
+                   className="text fullwidth code input--small"
                    value={handle}
                    onChange={this.updateHandle}
                    onKeyUp={this.updateState}
