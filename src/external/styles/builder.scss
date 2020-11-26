@@ -582,6 +582,16 @@ $sidebarMinWidth: 18%;
         margin-right: $spacing-short;
         min-height: 0;
       }
+
+
+
+    }
+
+    .composer-property-checkbox {
+      display: flex;
+      input[type=checkbox] {
+        margin-top: 4px;
+      }
     }
   }
 
