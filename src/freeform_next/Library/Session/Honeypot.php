@@ -13,7 +13,7 @@ namespace Solspace\Addons\FreeformNext\Library\Session;
 
 class Honeypot implements \JsonSerializable
 {
-    const NAME_PREFIX = "freeform_form_handle_";
+    const NAME_PREFIX = "freeform_form_handle";
 
     /** @var string */
     private $name;
@@ -94,7 +94,7 @@ class Honeypot implements \JsonSerializable
     {
         $hash = $this->generateHash(6);
 
-        return self::NAME_PREFIX . $hash;
+        return self::NAME_PREFIX . '_' . $hash;
     }
 
     /**
