@@ -698,7 +698,7 @@ class SettingsController extends Controller
             'sections'              => [
                 [
                     [
-                        'title'  => 'reCAPTCHA enabled?',
+                        'title'  => 'reCAPTCHA v2 Checkbox enabled?',
                         'fields' => [
                             'recaptchaEnabled' => [
                                 'type'        => 'yes_no',

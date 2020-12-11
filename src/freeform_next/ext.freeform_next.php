@@ -209,7 +209,7 @@ class Freeform_next_ext
 			);
 		}
 
-		if($permissionsService->canAccessSettings(ee()->session->userdata('group_id')) && FreeformHelper::get('version') === 'pro')
+		if($permissionsService->canAccessSettings(ee()->session->userdata('group_id')))
 		{
 			$sub->addItem(
 				lang('Settings'),
