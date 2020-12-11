@@ -335,6 +335,13 @@ class ExportProfilesService
 
         foreach ($data as $submissionId => $rowValues) {
 
+        	if(! isset($tableRowsData[$submissionId]))
+			{
+				$newRow = $rowValues;
+				$newData[] = $newRow;
+				continue;
+			}
+
             $submissionTableData = $tableRowsData[$submissionId];
 
             for ($i = 1; $i <= $artificialRowsCount[$submissionId]; $i++) {
