@@ -21,6 +21,7 @@ const renderInput = (props) => {
 
       return (
         <select
+		  className="button--small"
           name={handle}
           value={value}
           onChange={inputChange}
