@@ -688,8 +688,8 @@ class SubmissionController extends Controller
                             ],
                         ];
                     } else if ($field instanceof TableField) {
-                        $field->setAddButtonMarkup('<ul class="toolbar"><li class="add"><a title="Add Row" class="form-table-add-row"></a></li></ul>');
-                        $field->setRemoveButtonMarkup('<ul class="toolbar"><li class="remove"><a title="Remove Row" class="form-table-remove-row"></a></li></ul>');
+                        $field->setAddButtonMarkup('<ul class="toolbar"><li class="add"><a title="' . lang('add_row') . '" class="add button button--default button--small form-table-add-row"> ' . lang('add_row') . '</a></li></ul>');
+                        $field->setRemoveButtonMarkup('<ul class="toolbar"><li class="remove"><a title="' . lang('remove_row') . '" class="remove button button--default button--small form-table-remove-row"> ' . lang('remove_row') . '</a></li></ul>');
                         $field->setValue($submission->getFieldValue($field->getHandle()));
                         $output = $field->renderInput();
 

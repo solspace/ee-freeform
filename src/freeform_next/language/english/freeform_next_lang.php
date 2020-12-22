@@ -37,4 +37,8 @@ $lang = [
 	'statuses' => 'Statuses',
 	'mailing_lists' => 'Mailing Lists',
 	'crm' => 'CRM',
+
+	// Tables
+	'add_row' => 'Add Row',
+	'remove_row' => 'Remove Row',
 ];
