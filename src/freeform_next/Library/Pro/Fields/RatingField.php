@@ -124,7 +124,10 @@ class RatingField extends AbstractField implements SingleValueInterface
             $output .= $this->getAttributeString('id', $starId);
             $output .= $this->getAttributeString('class', $attributes->getClass());
             $output .= $this->getAttributeString('value', $i, false);
-            $output .= $this->getAttributeString('checked', (int) $this->getValue() === $i);
+            if((int) $this->getValue() === $i)
+			{
+            	$output .= $this->getAttributeString('checked', true);
+			}
             $output .= $attributes->getInputAttributesAsString();
             $output .= ' />' . PHP_EOL;
 
