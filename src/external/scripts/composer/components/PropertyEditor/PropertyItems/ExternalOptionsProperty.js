@@ -112,6 +112,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
         <SelectProperty
           label='Source'
           name='source'
+          className='button--small'
           value={source}
           options={ExternalOptionsProperty.sourceOptions}
           onChangeHandler={this.onChangeSource}
