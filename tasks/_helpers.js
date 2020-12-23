@@ -7,7 +7,7 @@ module.exports = {
   },
   version: () => {
     const fileContent = fs.readFileSync("src/freeform_next/addon.setup.php", "utf8");
-    const regex = /['"]version['"]\s*=>\s*['"]([0-9\.]+)['"]/g;
+    const regex = /['"]version['"]\s*=>\s*['"]([0-9a-z\-\.]+)['"]/g;
 
     return regex.exec(fileContent)[1];
   },
