@@ -91,10 +91,16 @@
 
           &.composer-option-row-checkbox {
             width: 13px;
-            padding: 0 0 0 5px !important;
+            padding: 0 0px 0 5px !important;
 
             > input {
               margin: 0 !important;
+            }
+          }
+
+          &:last-child {
+            &.composer-option-row-checkbox {
+              padding: 0 5px 0 5px !important;
             }
           }
 

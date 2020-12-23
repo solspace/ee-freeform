@@ -566,8 +566,8 @@ $sidebarMinWidth: 18%;
         &[readonly] {
           background: $color-input-readonly;
           border: 1px solid $color-input-readonly-border;
-          box-shadow: $shadow-readonly-input;
           color: $color-input-readonly-text;
+          border-radius: 0;
         }
 
         &.code {

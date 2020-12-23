@@ -62,7 +62,6 @@ export default class PredefinedOptionRow extends Component {
             onChange={this.updateIsChecked}
           />
         </td>
-        <td />
       </tr>
     );
   }

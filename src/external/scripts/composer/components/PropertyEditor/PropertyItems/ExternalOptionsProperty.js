@@ -112,7 +112,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
         <SelectProperty
           label='Source'
           name='source'
-          className='button--small'
+          className='button--small button--block'
           value={source}
           options={ExternalOptionsProperty.sourceOptions}
           onChangeHandler={this.onChangeSource}
@@ -190,6 +190,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
         <SelectProperty
           label='Target'
           name='target'
+          className='button--small button--block'
           value={target}
           options={list}
           onChangeHandler={this.onChangeTarget}
@@ -198,6 +199,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
         <SelectProperty
           label='Option Label'
           name='labelField'
+          className='button--small button--block'
           value={this.getConfigProperty("labelField", defaultLabelField)}
           options={fields}
           onChangeHandler={this.onUpdateConfig}
@@ -206,6 +208,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
         <SelectProperty
           label='Option Value'
           name='valueField'
+          className='button--small button--block'
           value={this.getConfigProperty("valueField", defaultValueField)}
           options={fields}
           onChangeHandler={this.onUpdateConfig}
@@ -254,6 +257,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
             <SelectProperty
               label="Option Label"
               name="listType"
+              className='button--small button--block'
               options={[
                 { key: ExternalOptions.TYPE_ABBREVIATED, value: "Abbreviated" },
                 { key: ExternalOptions.TYPE_FULL, value: "Full" },
@@ -265,6 +269,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
             <SelectProperty
               label="Option Value"
               name="valueType"
+              className='button--small button--block'
               options={[
                 { key: ExternalOptions.TYPE_ABBREVIATED, value: "Abbreviated" },
                 { key: ExternalOptions.TYPE_FULL, value: "Full" },
@@ -340,6 +345,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
             <SelectProperty
               label="Option Label"
               name="listType"
+              className='button--small button--block'
               options={[
                 { key: ExternalOptions.TYPE_FULL, value: "Full" },
                 { key: ExternalOptions.TYPE_ABBREVIATED, value: "Abbreviated" },
@@ -352,6 +358,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
             <SelectProperty
               label="Option Value"
               name="valueType"
+              className='button--small button--block'
               options={[
                 { key: ExternalOptions.TYPE_FULL, value: "Full" },
                 { key: ExternalOptions.TYPE_ABBREVIATED, value: "Abbreviated" },
@@ -372,6 +379,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
             <SelectProperty
               label="Option Label"
               name="listType"
+              className='button--small button--block'
               options={[
                 { key: ExternalOptions.TYPE_INT, value: "Single number" },
                 { key: ExternalOptions.TYPE_INT_LEADING_ZERO, value: "2-digit number" },
@@ -382,6 +390,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
             <SelectProperty
               label="Option Value"
               name="valueType"
+              className='button--small button--block'
               options={[
                 { key: ExternalOptions.TYPE_INT, value: "Single number" },
                 { key: ExternalOptions.TYPE_INT_LEADING_ZERO, value: "2-digit number" },
@@ -400,6 +409,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
             <SelectProperty
               label="Option Label"
               name="listType"
+              className='button--small button--block'
               options={[
                 { key: ExternalOptions.TYPE_FULL, value: "Full" },
                 { key: ExternalOptions.TYPE_ABBREVIATED, value: "Abbreviated" },
@@ -411,6 +421,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
             <SelectProperty
               label="Option Value"
               name="valueType"
+              className='button--small button--block'
               options={[
                 { key: ExternalOptions.TYPE_FULL, value: "Full" },
                 { key: ExternalOptions.TYPE_ABBREVIATED, value: "Abbreviated" },
@@ -443,6 +454,7 @@ export default class ExternalOptionsProperty extends BasePropertyItem {
         <SelectProperty
           label='Target'
           name='target'
+          className='button--small button--block'
           value={target}
           options={[
             { key: ExternalOptions.PREDEFINED_STATES, value: "States" },
