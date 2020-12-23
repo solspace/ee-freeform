@@ -189,7 +189,7 @@ class FieldsService implements FieldHandlerInterface
                 $builder = ee('Model')->get('Member');
 
                 if ($target) {
-                    $builder->filter('group_id', $target);
+                    $builder->filter('role_id', $target);
                 }
 
                 $items = $builder->all();
