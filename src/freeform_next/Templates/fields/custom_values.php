@@ -30,11 +30,11 @@
 
         <?php else: ?>
 
-            <a href="#" class="toggle-btn <?= $model->hasCustomOptionValues() ? 'on' : 'off' ?>">
+            <button type="button" class="toggle-btn <?= $model->hasCustomOptionValues() ? 'on' : 'off' ?>" data-state="<?= $model->hasCustomOptionValues() ? 'on' : 'off' ?>" role="switch" aria-checked="<?= $model->hasCustomOptionValues() ? 'true' : 'false' ?>" alt="<?= $model->hasCustomOptionValues() ? 'on' : 'off' ?>">
                 <input type="hidden" name="<?php echo sprintf('types[%s][custom_values]', $type) ?>" value="<?= $model->hasCustomOptionValues() ? 1 : 0?>">
                 <span class="slider"></span>
                 <span class="option"></span>
-            </a>
+            </button>
 
         <?php endif; ?>
     </div>

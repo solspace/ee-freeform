@@ -105,7 +105,7 @@ $(() => {
 
           self.showValues(val === "0");
         }
-      }, 'a');
+      }, 'button');
 
     itemList.sortable({
       handle: 'li[data-action=reorder] > a',
