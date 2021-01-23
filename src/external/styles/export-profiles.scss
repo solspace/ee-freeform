@@ -6,6 +6,12 @@
       top: 4px;
     }
   }
+  .dropdown-field {
+    display: flex;
+    select {
+      margin-right: 3px;
+    }
+  }
 }
 
 .toolbar {
