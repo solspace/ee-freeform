@@ -158,6 +158,11 @@ class FormController extends Controller
             $template['form_right_links'] = FreeformHelper::get('right_links', $this);
         }
 
+		$template['footer'] = array(
+			'submit_lang' => lang('submit'),
+			'type'        => 'bulk_action_form',
+		);
+
         $view = new CpView('form/listing', $template);
 
         $view

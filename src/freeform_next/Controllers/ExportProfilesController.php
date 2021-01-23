@@ -101,16 +101,19 @@ class ExportProfilesController extends Controller
             ];
         }
 
-        $view = new CpView(
-            'export_profiles/listing',
-            [
-                'table'               => $table->viewData(),
-                'cp_page_title'       => lang('Export Profiles'),
-                'form_dropdown_links' => [
-                    'Create Export Profile' => $formRightLinks,
-                ],
-            ]
-        );
+        $template = [
+			'table'               => $table->viewData(),
+			'cp_page_title'       => lang('Export Profiles'),
+			'form_dropdown_links' => [
+				'Create Export Profile' => $formRightLinks,
+			],
+			'footer' => [
+				'submit_lang' => lang('submit'),
+				'type'        => 'bulk_action_form',
+			]
+		];
+
+        $view = new CpView('export_profiles/listing', $template);
 
         $view
             ->setHeading(lang('Export Profiles'))

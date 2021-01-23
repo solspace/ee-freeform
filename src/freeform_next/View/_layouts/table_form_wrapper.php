@@ -1,7 +1,7 @@
 <div class="">
     <div class="panel">
         <?php if (isset($form_url)):?>
-            <?=form_open($form_url)?>
+            <?=form_open($form_url, isset($form_attributes) ? $form_attributes : [] )?>
         <?php elseif (isset($footer) AND $footer['type'] == 'bulk_action_form'):?>
         <form><!-- currently EE's bulk action setup requires a form wrapper no matter what -->
             <?php endif;?>
@@ -65,8 +65,7 @@
                     </fieldset>
                 <?php elseif ($footer['type'] == 'bulk_action_form'): ?>
                     <fieldset class="bulk-action-bar hidden">
-                        <span class="blinking-warning"><?= lang('calendar_warning_will_delete_entries') ?> &nbsp; </span>
-                        <select name="bulk_action">
+						<select name="bulk_action" class="select-popup button--small">
                             <?php if (isset($footer['bulk_actions'])):?>
                                 <?php foreach($footer['bulk_actions'] as $value => $label):?>
                                     <option value="<?=$value?>" data-confirm-trigger="selected" rel="modal-confirm-<?=$value?>">
@@ -79,7 +78,7 @@
                                 </option>
                             <?php endif;?>
                         </select>
-                        <button class="btn submit" data-conditional-modal="confirm-trigger">
+                        <button class="btn button--primary button--small submit" data-conditional-modal="confirm-trigger">
                             <?=$footer['submit_lang']?>
                         </button>
                     </fieldset>
@@ -87,7 +86,8 @@
                 <?php endif;?>
             <?php endif;?>
             <?php if (isset($form_url) || (isset($footer) AND $footer['type'] == 'bulk_action_form')):?>
-        </form>
+        </form> <!-- end of wrapper -->
     <?php endif;?>
+		<?=$blocks['addonModals']?>
     </div>
 </div>

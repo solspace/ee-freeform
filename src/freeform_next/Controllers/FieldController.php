@@ -85,14 +85,18 @@ class FieldController extends Controller
         $table->setData($tableData);
         $table->setNoResultsText('No results');
 
-        $view = new CpView(
-            'fields/listing',
-            [
-                'table'            => $table->viewData(),
-                'cp_page_title'    => lang('Fields'),
-                'form_right_links' => FreeformHelper::get('right_links', $this),
-            ]
-        );
+        $template = [
+			'table'            => $table->viewData(),
+			'cp_page_title'    => lang('Fields'),
+			'form_right_links' => FreeformHelper::get('right_links', $this),
+			'footer' => [
+				'submit_lang' => lang('submit'),
+				'type'        => 'bulk_action_form',
+			]
+		];
+
+        $view = new CpView('fields/listing', $template);
+
         $view->setHeading(lang('Fields'));
         $view->addModal((new ConfirmRemoveModal($this->getLink('fields/delete')))->setKind('Fields'));
 

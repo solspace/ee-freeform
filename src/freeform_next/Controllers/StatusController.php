@@ -80,14 +80,18 @@ class StatusController extends Controller
         $removeModal = new ConfirmRemoveModal($this->getLink('settings/statuses/delete'));
         $removeModal->setKind('Statuses');
 
-        $view = new CpView(
-            'statuses/listing',
-            [
-                'table'            => $table->viewData(),
-                'cp_page_title'    => lang('Statuses'),
-                'form_right_links' => FreeformHelper::get('right_links', $this),
-            ]
-        );
+        $template = [
+			'table'            => $table->viewData(),
+			'cp_page_title'    => lang('Statuses'),
+			'form_right_links' => FreeformHelper::get('right_links', $this),
+			'footer' => [
+				'submit_lang' => lang('submit'),
+				'type'        => 'bulk_action_form',
+			]
+		];
+
+        $view = new CpView('statuses/listing', $template);
+
         $view
             ->setHeading(lang('Statuses'))
             ->addModal($removeModal);

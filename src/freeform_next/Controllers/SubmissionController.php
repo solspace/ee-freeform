@@ -450,36 +450,43 @@ class SubmissionController extends Controller
             $sessionToken = ee()->session->userdata('session_id');
         }
 
-        $view = new CpView(
-            'submissions/listing',
-            [
-				'table'            => $table->viewData($this->getLink('submissions/' . $form->getHandle())),
-				'cp_page_title'    => 'Submissions for ' . $form->getName(),
-				'layout'           => $layout,
-				'form'             => $form,
-				'form_right_links' => $formRightLinks,
-				'pagination'       => $pagination,
-				'exportLink'       => $this->getLink('export'),
-				'formStatuses'     => $formStatuses,
-				'formDateRanges'   => $formDateRanges,
-				'mainUrl'          => $this->getLink('submissions/' . $form->getHandle()),
-				'columnLabels'     => $columnLabels,
-				'visibleColumns'   => $visibleColumns,
+        $template = [
+			'table'            => $table->viewData($this->getLink('submissions/' . $form->getHandle())),
+			'cp_page_title'    => 'Submissions for ' . $form->getName(),
+			'layout'           => $layout,
+			'form'             => $form,
+			'form_right_links' => $formRightLinks,
+			'pagination'       => $pagination,
+			'exportLink'       => $this->getLink('export'),
+			'formStatuses'     => $formStatuses,
+			'formDateRanges'   => $formDateRanges,
+			'mainUrl'          => $this->getLink('submissions/' . $form->getHandle()),
+			'columnLabels'     => $columnLabels,
+			'visibleColumns'   => $visibleColumns,
+			'form_url' => ee('CP/URL')->getCurrentUrl(),
+			'form_attributes' => [
+				'id' => 'entry-filters',
+				'data-action' => isset($entries_filter_uri) ? $entries_filter_uri : ""
+			],
+			'currentSearchOnField'  => $currentSearchOnField,
+			'currentKeyword'        => $currentKeyword,
+			'currentSearchStatus'   => $currentSearchStatus,
+			'currentSearchStatusId' => $currentSearchStatusId,
+			'currentDateRangeStart' => $currentDateRangeStart,
+			'currentDateRangeEnd'   => $currentDateRangeEnd,
+			'currentDateRange'      => $currentDateRange,
 
-				'currentSearchOnField'  => $currentSearchOnField,
-				'currentKeyword'        => $currentKeyword,
-				'currentSearchStatus'   => $currentSearchStatus,
-				'currentSearchStatusId' => $currentSearchStatusId,
-				'currentDateRangeStart' => $currentDateRangeStart,
-				'currentDateRangeEnd'   => $currentDateRangeEnd,
-				'currentDateRange'      => $currentDateRange,
+			'baseUrl' => $baseUrl,
+			'filters' => $filters,
 
-				'baseUrl' => $baseUrl,
-				'filters' => $filters,
+			'sessionToken' => $sessionToken,
+			'footer' => [
+				'submit_lang' => lang('submit'),
+				'type'        => 'bulk_action_form',
+			]
+		];
 
-				'sessionToken' => $sessionToken,
-            ]
-        );
+        $view = new CpView('submissions/listing', $template);
 
         $exportServiceClassName = 'Solspace\Addons\FreeformNext\Services\ExportService';
         if (class_exists($exportServiceClassName)) {
