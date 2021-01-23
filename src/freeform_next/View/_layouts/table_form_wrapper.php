@@ -88,6 +88,6 @@
             <?php if (isset($form_url) || (isset($footer) AND $footer['type'] == 'bulk_action_form')):?>
         </form> <!-- end of wrapper -->
     <?php endif;?>
-		<?=$blocks['addonModals']?>
+		<?=isset($blocks['addonModals']) ? $blocks['addonModals'] : ''?>
     </div>
 </div>
