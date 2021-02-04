@@ -77,7 +77,10 @@ class Freeform_next_ext
      */
     public function addHoneypotInputToForm(Form $form, FormRenderObject $renderObject)
     {
-        $this->getHoneypotService()->addHoneyPotInputToForm($renderObject);
+    	if($this->getSettingsService()->getSettingsModel()->isSpamProtectionEnabled())
+		{
+        	$this->getHoneypotService()->addHoneyPotInputToForm($renderObject);
+		}
     }
 
     /**
