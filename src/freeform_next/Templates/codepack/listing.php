@@ -19,7 +19,7 @@
 <style>
     .folder:before {
         content: '\f07c';
-        font-family: FontAwesome;
+        font-family: 'Font Awesome 5 Free';
         color: #77bce6;
         font-weight: normal;
         margin-right: 5px;

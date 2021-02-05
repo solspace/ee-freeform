@@ -43,6 +43,7 @@
           text-align: center;
 
           input {
+            margin-top: 7px;
             margin-right: 0;
             margin-bottom: 0;
             padding-right: 0;
@@ -80,7 +81,7 @@
       padding: 3px 5px 0 !important;
 
       > a {
-        font-family: FontAwesome;
+        font-family: 'Font Awesome 5 Free';
         font-weight: 400;
         -webkit-font-smoothing: antialiased;
 
@@ -110,8 +111,6 @@
       float: left;
       box-sizing: border-box;
 
-      width: 28px;
-      height: 26px;
       padding: 4px 8px;
 
       background: #f9f9f9;
@@ -125,7 +124,7 @@
       }
 
       &:before {
-        font-family: FontAwesome;
+        font-family: 'Font Awesome 5 Free';
       }
 
       &[data-add-row]:before {
@@ -139,6 +138,7 @@
     background: #fffcee;
     border: 1px solid #ffd30e;
     color: #745f00;
+    margin-top: 10px;
     margin-bottom: 10px;
     padding: 10px;
     text-align: center;

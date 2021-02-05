@@ -30,7 +30,7 @@ $sidebarMinWidth: 18%;
       position: relative;
       top: 1px;
 
-      font-family: FontAwesome;
+      font-family: 'Font Awesome 5 Free';
       padding-right: 2px;
     }
 
@@ -39,7 +39,7 @@ $sidebarMinWidth: 18%;
     }
 
     &[data-icon=mail]:before {
-      content: "\f003";
+      content: "\f0e0";
     }
 
     &[data-icon=add]:before {
@@ -76,7 +76,7 @@ $sidebarMinWidth: 18%;
     font-size: $font-size;
 
     &:after {
-      font-family: FontAwesome;
+      font-family: 'Font Awesome 5 Free';
       color: $color-action-button;
     }
 
@@ -252,7 +252,7 @@ $sidebarMinWidth: 18%;
               position: relative;
               top: 1px;
 
-              font-family: FontAwesome;
+              font-family: 'Font Awesome 5 Free';
             }
           }
         }
@@ -635,7 +635,7 @@ $sidebarMinWidth: 18%;
 
   &.success, &.issue {
     &:before {
-      font-family: FontAwesome, sans-serif;
+      font-family: 'Font Awesome 5 Free', sans-serif;
       padding-right: 5px;
     }
   }

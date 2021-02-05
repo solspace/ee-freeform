@@ -38,7 +38,7 @@
     a.handle:before {
         display: block;
         content: "\f0c9";
-        font-family: FontAwesome, sans-serif;
+        font-family: 'Font Awesome 5 Free', sans-serif;
         color: black;
     }
 </style>
