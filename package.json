@@ -66,6 +66,9 @@
     "deploy:lite": "NODE_ENV=production gulp deploy:lite --env prod",
     "deploy:express": "NODE_ENV=production gulp deploy:express --env prod"
   },
+  "resolutions": {
+    "graceful-fs": "^4.2.4"
+  },
   "repository": {
     "type": "git",
     "url": "git@solspace.git.beanstalkapp.com:/solspace/ee-freeform.git"
