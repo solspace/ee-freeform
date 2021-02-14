@@ -61,7 +61,7 @@
                 <?php foreach ($model->options as $option): ?>
                     <?php
                     if ($type === \Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface::TYPE_CHECKBOX_GROUP) {
-                        $checked = in_array($option['value'], $model->values);
+                        $checked = $model->values && in_array($option['value'], $model->values);
                     } else {
                         $checked = $option['value'] == $model->value;
                     }

@@ -100,8 +100,8 @@ $(() => {
       }, 'input[type=radio]')
       .on({
         click: (event) => {
-          const element = $(event.target),
-                val = element.siblings('input[type=hidden]').val();
+          const element = $(event.target).parents('.value-toggler').children('button');
+          const val = element.children('input[type=hidden]').val();
 
           self.showValues(val === "0");
         }
