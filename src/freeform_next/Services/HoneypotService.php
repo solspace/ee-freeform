@@ -266,7 +266,7 @@ class HoneypotService
             . 'id="' . $honeypotName . '" '
             . '/>';
 
-        $output = '<div style="position: absolute !important; width: 0 !important; height: 0 !important; overflow: hidden !important;" aria-hidden="true">'
+        $output = '<div style="position: absolute !important; width: 0 !important; height: 0 !important; overflow: hidden !important;" aria-hidden="true" tabindex="-1">'
             . '<label for="' . $honeypotName . '">Leave this field blank</label>'
             . $output
             . '</div>';
