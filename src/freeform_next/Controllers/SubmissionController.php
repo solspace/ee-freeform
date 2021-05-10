@@ -667,19 +667,19 @@ class SubmissionController extends Controller
 
                                 $content .= '<div>';
                                 $content .= '<div style="margin: 5px 0;">' . $asset->file_name . '</div>';
-                                $content .= '<div class="toolbar-wrap"><ul class="toolbar">';
-                                $content .= '<li class="edit"><a href="' . ee(
+                                $content .= '<div class="toolbar-wrap"><div class="toolbar button-group">';
+                                $content .= '<a class="button button--secondary button--small fa fa-pencil-alt" href="' . ee(
                                         'CP/URL',
                                         'cp/files/file/edit/' . $assetId
-                                    )->compile() . '"></a></li>';
-                                $content .= '<li class="download"><a href="' . ee(
+                                    )->compile() . '"></a>';
+                                $content .= '<a class="button button--secondary button--small fa fa-download" href="' . ee(
                                         'CP/URL',
                                         'files/file/download/' . $assetId
-                                    )->compile() . '"></a></li>';
-                                $content .= '</ul></div>';
+                                    )->compile() . '"></a>';
+                                $content .= '</div></div>';
 
                                 if ($asset->isImage()) {
-                                    $content .= '<img style="border: 1px solid black; padding: 1px;" width="100" src="'
+                                    $content .= '<img style="margin-top: 10px; border: 1px solid black; padding: 1px;" width="100" src="'
                                         . $asset->getAbsoluteURL() . '" />';
                                 }
                                 $content .= '</div>';
