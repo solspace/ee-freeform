@@ -4,7 +4,7 @@
  *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
- * @copyright     Copyright (c) 2008-2020, Solspace, Inc.
+ * @copyright     Copyright (c) 2008-2021, Solspace, Inc.
  * @link          https://docs.solspace.com/expressionengine/freeform/v2/
  * @license       https://docs.solspace.com/license-agreement/
  */
@@ -670,7 +670,7 @@ class SubmissionController extends Controller
                                 $content .= '<div class="toolbar-wrap"><div class="toolbar button-group">';
                                 $content .= '<a class="button button--secondary button--small fa fa-pencil-alt" href="' . ee(
                                         'CP/URL',
-                                        'cp/files/file/edit/' . $assetId
+                                        'cp/files/file/crop/' . $assetId
                                     )->compile() . '"></a>';
                                 $content .= '<a class="button button--secondary button--small fa fa-download" href="' . ee(
                                         'CP/URL',
