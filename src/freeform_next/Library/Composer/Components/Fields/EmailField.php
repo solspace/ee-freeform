@@ -12,6 +12,7 @@
 namespace Solspace\Addons\FreeformNext\Library\Composer\Components\Fields;
 
 use Egulias\EmailValidator\EmailValidator;
+use Egulias\EmailValidator\Validation\RFCValidation;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
@@ -103,7 +104,7 @@ class EmailField extends AbstractField implements RecipientInterface, MultipleVa
 
             $hasDot = preg_match('/@.+\..+$/', $email);
 
-            if (!$hasDot || !$validator->isValid($email)) {
+			if (!$hasDot || !$validator->isValid($email, new RFCValidation())) {
                 $errors[] = $this->translate('{email} is not a valid email address', ['email' => $email]);
             }
         }
