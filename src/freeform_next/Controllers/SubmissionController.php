@@ -354,15 +354,31 @@ class SubmissionController extends Controller
 
                                     if ($asset) {
                                         $content .= '<div class="' . ($asset->isImage() ? 'has-img' : '') . '">';
+                                        $content .= '<a class="button m-link" data-file-id="' . $asset->getId() . '" rel="modal-view-file">';
                                         if ($asset->isImage()) {
                                             $content .= '<img src="' . $asset->getAbsoluteURL() . '" />';
                                         }
                                         $content .= '<div>' . $asset->file_name . '</div>';
+                                        $content .= '</a>';
                                         $content .= '</div>';
                                     }
                                 }
 
                                 $content .= '</div>';
+
+								ee()->cp->add_js_script(array(
+									'file' => array(
+										'cp/files/manager'
+									),
+								));
+
+								$modal_vars = array(
+									'name' => 'modal-view-file',
+									'contents' => '',
+								);
+
+								$modal = ee('View')->make('ee:_shared/modal')->render($modal_vars);
+								ee('CP/Modal')->addModal('modal-view-file', $modal);
 
                                 $data[] = [
                                     'content' => $content,
@@ -668,24 +684,38 @@ class SubmissionController extends Controller
                                 $content .= '<div>';
                                 $content .= '<div style="margin: 5px 0;">' . $asset->file_name . '</div>';
                                 $content .= '<div class="toolbar-wrap"><div class="toolbar button-group">';
-                                $content .= '<a class="button button--secondary button--small fa fa-pencil-alt" href="' . ee(
-                                        'CP/URL',
-                                        'cp/files/file/crop/' . $assetId
-                                    )->compile() . '"></a>';
+                                $content .= '<a class="button button--secondary button--small fa fa-pencil-alt m-link" data-file-id="' . $assetId . '" rel="modal-view-file"></a>';
                                 $content .= '<a class="button button--secondary button--small fa fa-download" href="' . ee(
                                         'CP/URL',
                                         'files/file/download/' . $assetId
                                     )->compile() . '"></a>';
                                 $content .= '</div></div>';
+                                $content .= '<a class="button button--secondary button--small m-link" style="margin-top: 10px" data-file-id="' . $asset->getId() . '" rel="modal-view-file">';
 
                                 if ($asset->isImage()) {
                                     $content .= '<img style="margin-top: 10px; border: 1px solid black; padding: 1px;" width="100" src="'
                                         . $asset->getAbsoluteURL() . '" />';
                                 }
                                 $content .= '</div>';
+                                $content .= '</a>';
                             }
 
                             $content .= '</div>';
+
+							ee()->javascript->set_global('file_view_url', ee('CP/URL')->make('files/file/view/###')->compile());
+							ee()->cp->add_js_script(array(
+								'file' => array(
+									'cp/files/manager'
+								),
+							));
+
+							$modal_vars = array(
+								'name' => 'modal-view-file',
+								'contents' => '',
+							);
+
+							$modal = ee('View')->make('ee:_shared/modal')->render($modal_vars);
+							ee('CP/Modal')->addModal('modal-view-file', $modal);
                         }
 
                         $fields = [
