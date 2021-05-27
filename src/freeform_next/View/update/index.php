@@ -10,7 +10,7 @@
     <div class="tbl-ctrls">
 
         <fieldset class="tbl-search right">
-            <a class="btn tn action" target="_blank" href="https://solspace.com/account/software">
+            <a class="btn tn action" target="_blank" href="https://expressionengine.com/store/purchases">
                 Get Latest Version
             </a>
         </fieldset>
