@@ -716,14 +716,23 @@ class SubmissionController extends Controller
 
 							$modal = ee('View')->make('ee:_shared/modal')->render($modal_vars);
 							ee('CP/Modal')->addModal('modal-view-file', $modal);
-                        }
 
-                        $fields = [
-                            [
-                                'type'    => 'html',
-                                'content' => $content,
-                            ],
-                        ];
+							$fields = [
+								[
+									'type'    => 'html',
+									'content' => $content,
+								],
+							];
+                        }
+                        else
+						{
+							$fields = [
+								($handle.'[]') => [
+									'type'    => 'file',
+									]
+							];
+						}
+
                     } else if ($field instanceof TableField) {
                         $field->setAddButtonMarkup('<ul class="toolbar"><li class="add"><a title="' . lang('add_row') . '" class="add button button--default button--small form-table-add-row"> ' . lang('add_row') . '</a></li></ul>');
                         $field->setRemoveButtonMarkup('<ul class="toolbar"><li class="remove"><a title="' . lang('remove_row') . '" class="remove button button--default button--small form-table-remove-row"> ' . lang('remove_row') . '</a></li></ul>');
@@ -784,6 +793,7 @@ class SubmissionController extends Controller
                     'save_btn_text'         => 'Save',
                     'save_btn_text_working' => 'Saving...',
                     'sections'              => $sectionData,
+					'has_file_input' 		=> count($form->getLayout()->getFileUploadFields()) > 0,
                 ]
             );
 
@@ -808,11 +818,22 @@ class SubmissionController extends Controller
         $submission->statusId = ee()->input->post('statusId', StatusRepository::getInstance()->getDefaultStatusId());
 
         foreach ($form->getLayout()->getFields() as $field) {
-            if ($field instanceof NoStorageInterface || $field instanceof FileUploadField) {
+            if ($field instanceof NoStorageInterface) {
                 continue;
             }
 
             $value = ee()->input->post($field->getHandle(), true);
+
+			if ($field instanceof FileUploadField) {
+				if(isset($_FILES[$field->getHandle()]))
+				{
+					$value = $field->uploadFile();
+				}
+				else
+				{
+					continue;
+				}
+			}
 
             if ($field instanceof CheckboxField) {
                 if (is_array($value)) {
