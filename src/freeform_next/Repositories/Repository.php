@@ -26,7 +26,7 @@ abstract class Repository
     /**
      * Prevent object from being cloned
      */
-    final private function __clone()
+    private function __clone()
     {
     }
 
