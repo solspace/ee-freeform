@@ -44,7 +44,7 @@ use Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView;
 
 class SubmissionController extends Controller
 {
-    const MAX_PER_PAGE = 20;
+    const MAX_PER_PAGE = 25;
 
     /**
      * @param Form $form
@@ -254,6 +254,7 @@ class SubmissionController extends Controller
         }
 
         $page = (int) ee()->input->get('page') ?: 1;
+		$perpage = (int) ee()->input->get('perpage', self::MAX_PER_PAGE);
 
         $sortDirection = ee()->input->get('sort_dir');
         $sortDirection = !$sortDirection || $sortDirection === '0' ? 'desc' : $sortDirection;
@@ -270,17 +271,26 @@ class SubmissionController extends Controller
         $attributes
             ->setOrderBy($sortColumn)
             ->setSort($sortDirection)
-            ->setLimit(self::MAX_PER_PAGE)
-            ->setOffset(self::MAX_PER_PAGE * ($page - 1));
+            ->setLimit($perpage)
+            ->setOffset($perpage * ($page - 1));
 
         $submissions = SubmissionRepository::getInstance()->getAllSubmissionsFor($attributes);
 
-        $pagination = ee('CP/Pagination', $totalSubmissionCount)
-            ->perPage(self::MAX_PER_PAGE)
+		$pagination = ee('CP/Pagination', $totalSubmissionCount)
+            ->perPage($perpage)
             ->currentPage($page)
             ->render(
                 $this->getLink('submissions/' . $form->getHandle() . '&' . http_build_query($sortVars) . '&' . http_build_query($searchVars))
             );
+
+		if(! $pagination)
+		{
+			$pagination = '<ul class="pagination"><li class="pagination__item">'.
+				ee('CP/Filter')
+				->add('Perpage', $totalSubmissionCount, 'all_items', false, true)
+				->render($this->getLink('submissions/' . $form->getHandle() . '&' . http_build_query($sortVars) . '&' . http_build_query($searchVars)), '__') .
+				'</li></ul>';
+		}
 
         /** @var Table $table */
         $table = ee(
