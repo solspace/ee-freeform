@@ -254,7 +254,7 @@ class SubmissionController extends Controller
         }
 
         $page = (int) ee()->input->get('page') ?: 1;
-		$perpage = (int) ee()->input->get('perpage', self::MAX_PER_PAGE);
+		$perpage = (int) ee()->input->get('perpage') ?: self::MAX_PER_PAGE;
 
         $sortDirection = ee()->input->get('sort_dir');
         $sortDirection = !$sortDirection || $sortDirection === '0' ? 'desc' : $sortDirection;
