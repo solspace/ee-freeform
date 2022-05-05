@@ -95,7 +95,7 @@ class Navigation
             }
 
             if (strpos($this->getCurrentUrl(), 'addons/settings/freeform_next/submissions') === 0) {
-                if (strpos($item->getMethod(), 'form') === 0) {
+                if ($item->getMethod() && strpos($item->getMethod(), 'form') === 0) {
                     $header->isActive();
                 }
             }

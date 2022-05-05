@@ -127,7 +127,7 @@ class FormModel extends Model
     public function getComposer()
     {
         if (null === $this->composer) {
-            $composerState  = json_decode($this->layoutJson, true);
+            $composerState  = $this->layoutJson ? json_decode($this->layoutJson, true) : null;
             $formAttributes = $this->getFormAttributes();
 
             $this->composer = new Composer(

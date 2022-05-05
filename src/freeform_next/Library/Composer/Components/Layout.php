@@ -430,12 +430,12 @@ class Layout implements \JsonSerializable, \Iterator
      * Specify data which should be serialized to JSON
      *
      * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * @return array data which can be serialized by <b>json_encode</b>,
      *        which is a value of any type other than a resource.
      * @since 5.4.0
      */
-    public function jsonSerialize()
-    {
+    public function jsonSerialize(): array
+	{
         return $this->layoutData;
     }
 
@@ -446,7 +446,7 @@ class Layout implements \JsonSerializable, \Iterator
      * @return mixed Can return any type.
      * @since 5.0.0
      */
-    public function current()
+    public function current(): mixed
     {
         return current($this->pages);
     }
@@ -458,7 +458,7 @@ class Layout implements \JsonSerializable, \Iterator
      * @return void Any returned value is ignored.
      * @since 5.0.0
      */
-    public function next()
+    public function next(): void
     {
         next($this->pages);
     }
@@ -470,7 +470,7 @@ class Layout implements \JsonSerializable, \Iterator
      * @return mixed scalar on success, or null on failure.
      * @since 5.0.0
      */
-    public function key()
+    public function key(): mixed
     {
         return key($this->pages);
     }
@@ -483,7 +483,7 @@ class Layout implements \JsonSerializable, \Iterator
      *        Returns true on success or false on failure.
      * @since 5.0.0
      */
-    public function valid()
+    public function valid(): bool
     {
         return null !== $this->key() && $this->key() !== false;
     }
@@ -495,7 +495,7 @@ class Layout implements \JsonSerializable, \Iterator
      * @return void Any returned value is ignored.
      * @since 5.0.0
      */
-    public function rewind()
+    public function rewind(): void
     {
         reset($this->pages);
     }

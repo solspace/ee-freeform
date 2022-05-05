@@ -33,6 +33,7 @@ class EETranslator implements TranslatorInterface
         $string = lang($string);
 
         foreach ($variables as $key => $val) {
+			$val = $val ?: '';
             $string = str_replace('{' . $key . '}', $val, $string);
         }
 

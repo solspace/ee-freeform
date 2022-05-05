@@ -36,7 +36,7 @@ class Row implements \JsonSerializable, \Iterator, \ArrayAccess, \Countable
      *
      * @return mixed
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             "id"      => $this->id,
@@ -49,7 +49,7 @@ class Row implements \JsonSerializable, \Iterator, \ArrayAccess, \Countable
      *
      * @return mixed
      */
-    public function current()
+    public function current(): mixed
     {
         return current($this->fields);
     }
@@ -59,7 +59,7 @@ class Row implements \JsonSerializable, \Iterator, \ArrayAccess, \Countable
      *
      * @return void
      */
-    public function next()
+    public function next(): void
     {
         next($this->fields);
     }
@@ -69,7 +69,7 @@ class Row implements \JsonSerializable, \Iterator, \ArrayAccess, \Countable
      *
      * @return mixed
      */
-    public function key()
+    public function key(): mixed
     {
         return key($this->fields);
     }
@@ -79,7 +79,7 @@ class Row implements \JsonSerializable, \Iterator, \ArrayAccess, \Countable
      *
      * @return bool
      */
-    public function valid()
+    public function valid(): bool
     {
         return !is_null($this->key()) && $this->key() !== false;
     }
@@ -89,7 +89,7 @@ class Row implements \JsonSerializable, \Iterator, \ArrayAccess, \Countable
      *
      * @return void
      */
-    public function rewind()
+    public function rewind(): void
     {
         reset($this->fields);
     }
@@ -99,7 +99,7 @@ class Row implements \JsonSerializable, \Iterator, \ArrayAccess, \Countable
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->fields);
     }
@@ -107,7 +107,7 @@ class Row implements \JsonSerializable, \Iterator, \ArrayAccess, \Countable
     /**
      * @inheritDoc
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->fields[$offset]);
     }
@@ -115,7 +115,7 @@ class Row implements \JsonSerializable, \Iterator, \ArrayAccess, \Countable
     /**
      * @inheritDoc
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->offsetExists($offset) ? $this->fields[$offset] : null;
     }
@@ -123,7 +123,7 @@ class Row implements \JsonSerializable, \Iterator, \ArrayAccess, \Countable
     /**
      * @inheritDoc
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new FreeformException("Form Page Row ArrayAccess does not allow unsetting values");
     }
@@ -131,7 +131,7 @@ class Row implements \JsonSerializable, \Iterator, \ArrayAccess, \Countable
     /**
      * @inheritDoc
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         throw new FreeformException("Form Page Row ArrayAccess does not allow unsetting values");
     }

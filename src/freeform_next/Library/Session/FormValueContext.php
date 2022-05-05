@@ -86,7 +86,7 @@ class FormValueContext implements \JsonSerializable
      */
     private static function getHashParts($hash)
     {
-        if (preg_match(self::HASH_PATTERN, $hash, $matches)) {
+        if ($hash && preg_match(self::HASH_PATTERN, $hash, $matches)) {
             return [$matches['formId'], $matches['pageIndex'], $matches['payload']];
         }
 
@@ -505,7 +505,7 @@ class FormValueContext implements \JsonSerializable
     /**
      * @inheritdoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'currentPageIndex' => $this->currentPageIndex,

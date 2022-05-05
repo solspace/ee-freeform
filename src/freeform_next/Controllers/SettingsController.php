@@ -117,7 +117,7 @@ class SettingsController extends Controller
             return new RedirectView($this->getLink('denied'));
         }
 
-        if (strtolower($id) === 'delete') {
+        if ($id && strtolower($id) === 'delete') {
             return $this->getStatusController()->batchDelete();
         }
 

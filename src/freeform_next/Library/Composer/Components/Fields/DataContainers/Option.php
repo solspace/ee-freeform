@@ -60,10 +60,10 @@ class Option implements \JsonSerializable
         return $this->checked;
     }
 
-    /**
-     * @return array|mixed
-     */
-    public function jsonSerialize()
+	/**
+	 * @return array
+	 */
+    public function jsonSerialize(): array
     {
         return [
             'label'   => $this->getLabel(),

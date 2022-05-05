@@ -100,7 +100,7 @@ class SubmissionPreferenceSetting implements \JsonSerializable
     /**
      * Specify data which should be serialized to JSON
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'id'      => $this->getId(),

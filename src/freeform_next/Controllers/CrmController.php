@@ -338,7 +338,7 @@ class CrmController extends Controller
             }
         }
 
-        $settings = json_decode($model->settings, true) ?: [];
+        $settings = $model->settings ? json_decode($model->settings, true) : [];
 
         $blueprints = $this->getCrmService()->getCrmSettingBlueprints($class);
 

@@ -95,7 +95,7 @@ class FieldObject implements \JsonSerializable
     /**
      * Specify data which should be serialized to JSON
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'handle'   => $this->getHandle(),

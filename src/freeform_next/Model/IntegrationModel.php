@@ -119,9 +119,9 @@ class IntegrationModel extends Model implements IntegrationStorageInterface
         $integration = new $className(
             $this->id,
             $this->name,
-            new \DateTime($this->lastUpdate),
+            new \DateTime($this->lastUpdate ?: ''),
             $this->accessToken,
-            json_decode($this->settings, true),
+            json_decode($this->settings ?: '', true),
             new EELogger(),
             new EEPluginConfiguration(),
             new EETranslator(),

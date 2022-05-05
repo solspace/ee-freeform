@@ -73,7 +73,7 @@ class StatusModel extends Model implements \JsonSerializable
     /**
      * Specify data which should be serialized to JSON
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'id'        => (int)$this->id,

@@ -48,7 +48,7 @@ class DynamicNotificationAttributes extends AbstractAttributes implements \JsonS
     /**
      * @inheritDoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'recipients' => $this->getRecipients(),

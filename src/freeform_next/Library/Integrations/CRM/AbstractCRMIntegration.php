@@ -89,8 +89,8 @@ abstract class AbstractCRMIntegration extends AbstractIntegration implements CRM
      *
      * @return array
      */
-    public function jsonSerialize()
-    {
+    public function jsonSerialize(): array
+	{
         try {
             $fields = $this->getFields();
         } catch (\Exception $e) {

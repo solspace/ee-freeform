@@ -115,8 +115,8 @@ abstract class AbstractMailingListIntegration extends AbstractIntegration implem
     /**
      * Specify data which should be serialized to JSON
      */
-    public function jsonSerialize()
-    {
+    public function jsonSerialize(): array
+	{
         try {
             $lists = $this->getLists();
         } catch (\Exception $e) {

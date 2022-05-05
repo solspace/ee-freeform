@@ -111,7 +111,7 @@ class Freeform_next_mcp extends ControlPanelView
             return $this->renderView(new RedirectView($this->getLink('denied')));
         }
 
-        if (strtolower($id) === 'delete') {
+        if ($id && strtolower($id) === 'delete') {
             return $this->renderView($this->getFieldController()->batchDelete());
         }
 
@@ -148,7 +148,7 @@ class Freeform_next_mcp extends ControlPanelView
             return $this->renderView(new RedirectView($this->getLink('denied')));
         }
 
-        if (strtolower($notificationId) === 'delete') {
+        if ($notificationId && strtolower($notificationId) === 'delete') {
             return $this->renderView($this->getNotificationController()->batchDelete());
         }
 
@@ -185,7 +185,7 @@ class Freeform_next_mcp extends ControlPanelView
             return $this->renderView(new RedirectView($this->getLink('denied')));
         }
 
-        if (strtolower($seg1) === 'delete') {
+        if ($seg1 && strtolower($seg1) === 'delete') {
             return $this->renderView($this->getExportProfilesController()->batchDelete());
         }
 

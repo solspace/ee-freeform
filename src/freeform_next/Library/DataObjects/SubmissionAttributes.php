@@ -258,7 +258,7 @@ class SubmissionAttributes
      */
     public function setSort($sort = null)
     {
-        $this->sort = strtolower($sort) === 'desc' ? 'DESC' : 'ASC';
+        $this->sort = strtolower((string) $sort) === 'desc' ? 'DESC' : 'ASC';
 
         return $this;
     }
