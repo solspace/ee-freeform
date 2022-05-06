@@ -116,7 +116,8 @@ class Page implements \JsonSerializable, \Iterator, \ArrayAccess
      *
      * @return mixed
      */
-    public function current(): mixed
+	#[\ReturnTypeWillChange]
+    public function current()
     {
         return current($this->rows);
     }
@@ -136,7 +137,8 @@ class Page implements \JsonSerializable, \Iterator, \ArrayAccess
      *
      * @return mixed
      */
-    public function key(): mixed
+	#[\ReturnTypeWillChange]
+    public function key()
     {
         return key($this->rows);
     }
@@ -172,7 +174,8 @@ class Page implements \JsonSerializable, \Iterator, \ArrayAccess
     /**
      * @inheritDoc
      */
-    public function offsetGet($offset): mixed
+	#[\ReturnTypeWillChange]
+    public function offsetGet($offset)
     {
         return $this->offsetExists($offset) ? $this->rows[$offset] : null;
     }

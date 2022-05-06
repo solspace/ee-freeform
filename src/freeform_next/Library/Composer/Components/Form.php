@@ -1084,7 +1084,8 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      *
      * @return mixed Can return any type.
      */
-    public function current(): mixed
+	#[\ReturnTypeWillChange]
+    public function current()
     {
         return current($this->currentPageRows);
     }
@@ -1104,7 +1105,8 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      *
      * @return mixed scalar on success, or null on failure.
      */
-    public function key(): mixed
+	#[\ReturnTypeWillChange]
+    public function key()
     {
         return key($this->currentPageRows);
     }
@@ -1148,7 +1150,8 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      *
      * @return mixed
      */
-    public function offsetGet($offset): mixed
+	#[\ReturnTypeWillChange]
+    public function offsetGet($offset)
     {
         return $this->offsetExists($offset) ? $this->currentPageRows[$offset] : null;
     }

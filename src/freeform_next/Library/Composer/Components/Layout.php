@@ -446,7 +446,8 @@ class Layout implements \JsonSerializable, \Iterator
      * @return mixed Can return any type.
      * @since 5.0.0
      */
-    public function current(): mixed
+	#[\ReturnTypeWillChange]
+    public function current()
     {
         return current($this->pages);
     }
@@ -470,7 +471,8 @@ class Layout implements \JsonSerializable, \Iterator
      * @return mixed scalar on success, or null on failure.
      * @since 5.0.0
      */
-    public function key(): mixed
+	#[\ReturnTypeWillChange]
+    public function key()
     {
         return key($this->pages);
     }

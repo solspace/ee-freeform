@@ -49,7 +49,8 @@ class Row implements \JsonSerializable, \Iterator, \ArrayAccess, \Countable
      *
      * @return mixed
      */
-    public function current(): mixed
+	#[\ReturnTypeWillChange]
+	public function current()
     {
         return current($this->fields);
     }
@@ -64,12 +65,12 @@ class Row implements \JsonSerializable, \Iterator, \ArrayAccess, \Countable
         next($this->fields);
     }
 
-    /**
-     * Return the key of the current element
-     *
-     * @return mixed
-     */
-    public function key(): mixed
+	/**
+	 * Return the key of the current element
+	 *
+	 * @return int|null
+	 */
+    public function key(): ?int
     {
         return key($this->fields);
     }
@@ -115,7 +116,8 @@ class Row implements \JsonSerializable, \Iterator, \ArrayAccess, \Countable
     /**
      * @inheritDoc
      */
-    public function offsetGet($offset): mixed
+	#[\ReturnTypeWillChange]
+    public function offsetGet($offset)
     {
         return $this->offsetExists($offset) ? $this->fields[$offset] : null;
     }
