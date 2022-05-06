@@ -1095,7 +1095,8 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      *
      * @return void Any returned value is ignored.
      */
-    public function next(): void
+	#[\ReturnTypeWillChange]
+    public function next()
     {
         next($this->currentPageRows);
     }
@@ -1126,7 +1127,8 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      *
      * @return void Any returned value is ignored.
      */
-    public function rewind(): void
+	#[\ReturnTypeWillChange]
+    public function rewind()
     {
         reset($this->currentPageRows);
     }
@@ -1165,7 +1167,8 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      * @return void
      * @throws FreeformException
      */
-    public function offsetSet($offset, $value): void
+	#[\ReturnTypeWillChange]
+    public function offsetSet($offset, $value)
     {
         throw new FreeformException('Form ArrayAccess does not allow for setting values');
     }
@@ -1178,7 +1181,8 @@ class Form implements \JsonSerializable, \Iterator, \ArrayAccess
      * @return void
      * @throws FreeformException
      */
-    public function offsetUnset($offset): void
+	#[\ReturnTypeWillChange]
+    public function offsetUnset($offset)
     {
         throw new FreeformException('Form ArrayAccess does not allow unsetting values');
     }

@@ -127,7 +127,8 @@ class Page implements \JsonSerializable, \Iterator, \ArrayAccess
      *
      * @return void
      */
-    public function next(): void
+	#[\ReturnTypeWillChange]
+    public function next()
     {
         next($this->rows);
     }
@@ -158,7 +159,8 @@ class Page implements \JsonSerializable, \Iterator, \ArrayAccess
      *
      * @return void
      */
-    public function rewind(): void
+	#[\ReturnTypeWillChange]
+    public function rewind()
     {
         reset($this->rows);
     }
@@ -183,7 +185,8 @@ class Page implements \JsonSerializable, \Iterator, \ArrayAccess
     /**
      * @inheritDoc
      */
-    public function offsetSet($offset, $value): void
+	#[\ReturnTypeWillChange]
+    public function offsetSet($offset, $value)
     {
         throw new FreeformException("Form Page ArrayAccess does not allow for setting values");
     }
@@ -191,7 +194,8 @@ class Page implements \JsonSerializable, \Iterator, \ArrayAccess
     /**
      * @inheritDoc
      */
-    public function offsetUnset($offset): void
+	#[\ReturnTypeWillChange]
+    public function offsetUnset($offset)
     {
         throw new FreeformException("Form Page ArrayAccess does not allow unsetting values");
     }

@@ -1,7 +1,7 @@
 /.idea
 /node_modules/
-/src/freeform_next/vendor/
-/src/freeform_next/php7/vendor/
+#/src/freeform_next/vendor/
+#/src/freeform_next/php7/vendor/
 /src/freeform_next/javascript/
 /src/freeform_next/Library/Helpers/Misc/
 /src/themes/

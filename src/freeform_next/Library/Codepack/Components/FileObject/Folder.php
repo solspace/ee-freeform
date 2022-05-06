@@ -131,7 +131,8 @@ class Folder extends FileObject implements \Iterator
      * @return void Any returned value is ignored.
      * @since 5.0.0
      */
-    public function next(): void
+	#[\ReturnTypeWillChange]
+    public function next()
     {
         next($this->files);
     }
@@ -169,7 +170,8 @@ class Folder extends FileObject implements \Iterator
      * @return void Any returned value is ignored.
      * @since 5.0.0
      */
-    public function rewind(): void
+	#[\ReturnTypeWillChange]
+    public function rewind()
     {
         reset($this->files);
     }

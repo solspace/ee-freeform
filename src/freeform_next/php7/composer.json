@@ -1,0 +1,25 @@
+{
+  "name": "solspace/ee-freeform-next",
+  "description": "The most reliable, intuitive and powerful form builder for ExpressionEngine.",
+  "type": "library",
+  "require": {
+    "symfony/property-access": "^2.8",
+    "symfony/finder": "^2.8",
+    "symfony/filesystem": "^2.8",
+    "hashids/hashids": "^1.0",
+    "pixel418/markdownify": "^2.3.1",
+    "egulias/email-validator": "^2.1",
+    "statamic/stringy": "^3.1",
+    "guzzle/guzzle": "^3.9",
+    "apache/log4php": "^2.3.0",
+    "doctrine/lexer": "^1.0.1"
+  },
+  "autoload": {
+    "classmap": [
+      "./"
+    ]
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^4.8"
+  }
+}
