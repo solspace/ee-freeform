@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'a6643e307f17a70d0fd2c267b20f162a239b65ae',
+        'reference' => '90a67474dbc1b2f8dc6f40049e5fef5f2a8dd651',
         'name' => 'solspace/ee-freeform-next',
         'dev' => true,
     ),
@@ -397,7 +397,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'a6643e307f17a70d0fd2c267b20f162a239b65ae',
+            'reference' => '90a67474dbc1b2f8dc6f40049e5fef5f2a8dd651',
             'dev_requirement' => false,
         ),
         'statamic/stringy' => array(
