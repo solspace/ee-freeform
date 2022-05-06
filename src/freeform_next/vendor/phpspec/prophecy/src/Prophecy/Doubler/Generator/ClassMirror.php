@@ -11,11 +11,17 @@
 
 namespace Prophecy\Doubler\Generator;
 
+use Prophecy\Doubler\Generator\Node\ArgumentTypeNode;
+use Prophecy\Doubler\Generator\Node\ReturnTypeNode;
 use Prophecy\Exception\InvalidArgumentException;
 use Prophecy\Exception\Doubler\ClassMirrorException;
 use ReflectionClass;
+use ReflectionIntersectionType;
 use ReflectionMethod;
+use ReflectionNamedType;
 use ReflectionParameter;
+use ReflectionType;
+use ReflectionUnionType;
 
 /**
  * Class mirror.
@@ -32,19 +38,19 @@ class ClassMirror
         '__wakeup',
         '__toString',
         '__call',
+        '__invoke'
     );
 
     /**
      * Reflects provided arguments into class node.
      *
-     * @param ReflectionClass   $class
+     * @param ReflectionClass|null $class
      * @param ReflectionClass[] $interfaces
      *
      * @return Node\ClassNode
      *
-     * @throws \Prophecy\Exception\InvalidArgumentException
      */
-    public function reflect(ReflectionClass $class = null, array $interfaces)
+    public function reflect(?ReflectionClass $class, array $interfaces)
     {
         $node = new Node\ClassNode;
 
@@ -109,6 +115,7 @@ class ClassMirror
             }
 
             if (true === $method->isFinal()) {
+                $node->addUnextendableMethod($method->getName());
                 continue;
             }
 
@@ -141,8 +148,13 @@ class ClassMirror
             $node->setReturnsReference();
         }
 
-        if (version_compare(PHP_VERSION, '7.0', '>=') && true === $method->hasReturnType()) {
-            $node->setReturnType((string) $method->getReturnType());
+        if ($method->hasReturnType()) {
+            $returnTypes = $this->getTypeHints($method->getReturnType(), $method->getDeclaringClass(), $method->getReturnType()->allowsNull());
+            $node->setReturnTypeNode(new ReturnTypeNode(...$returnTypes));
+        }
+        elseif (method_exists($method, 'hasTentativeReturnType') && $method->hasTentativeReturnType()) {
+            $returnTypes = $this->getTypeHints($method->getTentativeReturnType(), $method->getDeclaringClass(), $method->getTentativeReturnType()->allowsNull());
+            $node->setReturnTypeNode(new ReturnTypeNode(...$returnTypes));
         }
 
         if (is_array($params = $method->getParameters()) && count($params)) {
@@ -159,52 +171,84 @@ class ClassMirror
         $name = $parameter->getName() == '...' ? '__dot_dot_dot__' : $parameter->getName();
         $node = new Node\ArgumentNode($name);
 
-        $typeHint = $this->getTypeHint($parameter);
-        $node->setTypeHint($typeHint);
+        $typeHints = $this->getTypeHints($parameter->getType(), $parameter->getDeclaringClass(), $parameter->allowsNull());
 
-        if (true === $parameter->isDefaultValueAvailable()) {
-            $node->setDefault($parameter->getDefaultValue());
-        } elseif (true === $parameter->isOptional()
-              || (true === $parameter->allowsNull() && $typeHint)) {
-            $node->setDefault(null);
+        $node->setTypeNode(new ArgumentTypeNode(...$typeHints));
+
+        if ($parameter->isVariadic()) {
+            $node->setAsVariadic();
         }
 
-        if (true === $parameter->isPassedByReference()) {
+        if ($this->hasDefaultValue($parameter)) {
+            $node->setDefault($this->getDefaultValue($parameter));
+        }
+
+        if ($parameter->isPassedByReference()) {
             $node->setAsPassedByReference();
         }
+
 
         $methodNode->addArgument($node);
     }
 
-    private function getTypeHint(ReflectionParameter $parameter)
+    private function hasDefaultValue(ReflectionParameter $parameter)
     {
-        if (null !== $className = $this->getParameterClassName($parameter)) {
-            return $className;
+        if ($parameter->isVariadic()) {
+            return false;
         }
 
-        if (true === $parameter->isArray()) {
-            return 'array';
+        if ($parameter->isDefaultValueAvailable()) {
+            return true;
         }
 
-        if (version_compare(PHP_VERSION, '5.4', '>=') && true === $parameter->isCallable()) {
-            return 'callable';
-        }
-
-        if (version_compare(PHP_VERSION, '7.0', '>=') && true === $parameter->hasType()) {
-            return (string) $parameter->getType();
-        }
-
-        return null;
+        return $parameter->isOptional() || ($parameter->allowsNull() && $parameter->getType() && \PHP_VERSION_ID < 80100);
     }
 
-    private function getParameterClassName(ReflectionParameter $parameter)
+    private function getDefaultValue(ReflectionParameter $parameter)
     {
-        try {
-            return $parameter->getClass() ? $parameter->getClass()->getName() : null;
-        } catch (\ReflectionException $e) {
-            preg_match('/\[\s\<\w+?>\s([\w,\\\]+)/s', $parameter, $matches);
-
-            return isset($matches[1]) ? $matches[1] : null;
+        if (!$parameter->isDefaultValueAvailable()) {
+            return null;
         }
+
+        return $parameter->getDefaultValue();
+    }
+
+    private function getTypeHints(?ReflectionType $type, ?ReflectionClass $class, bool $allowsNull) : array
+    {
+        $types = [];
+
+        if ($type instanceof ReflectionNamedType) {
+            $types = [$type->getName()];
+
+        }
+        elseif ($type instanceof ReflectionUnionType) {
+            $types = $type->getTypes();
+        }
+        elseif ($type instanceof ReflectionIntersectionType) {
+            throw new ClassMirrorException('Doubling intersection types is not supported', $class);
+        }
+        elseif(is_object($type)) {
+            throw new ClassMirrorException('Unknown reflection type ' . get_class($type), $class);
+        }
+
+        $types = array_map(
+            function(string $type) use ($class) {
+                if ($type === 'self') {
+                    return $class->getName();
+                }
+                if ($type === 'parent') {
+                    return $class->getParentClass()->getName();
+                }
+
+                return $type;
+            },
+            $types
+        );
+
+        if ($types && $types != ['mixed'] && $allowsNull) {
+            $types[] = 'null';
+        }
+
+        return $types;
     }
 }

@@ -3,18 +3,18 @@
   "description": "The most reliable, intuitive and powerful form builder for ExpressionEngine.",
   "type": "library",
   "require": {
-    "symfony/property-access": "^5.0",
+    "symfony/property-access": "^6.0",
     "symfony/finder": "^5.0",
     "symfony/filesystem": "^2.8",
     "hashids/hashids": "^4.1",
     "pixel418/markdownify": "^2.3.1",
     "egulias/email-validator": "^2.1",
     "statamic/stringy": "^3.1",
-    "guzzle/guzzle": "^3.9",
     "apache/log4php": "^2.3.0",
-    "doctrine/lexer": "^1.0.1"
+    "doctrine/lexer": "^1.0.1",
+    "guzzlehttp/guzzle": "^6.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^4.8"
+    "phpunit/phpunit": "^9.0"
   }
 }
