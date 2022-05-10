@@ -11,8 +11,8 @@
 
 namespace Solspace\Addons\FreeformNext\Integrations\MailingLists;
 
-use Guzzle\Http\Client;
-use Guzzle\Http\Exception\BadResponseException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
 use Solspace\Addons\FreeformNext\Library\Integrations\IntegrationStorageInterface;
@@ -80,9 +80,9 @@ class Dotmailer extends AbstractMailingListIntegration
         $client = new Client();
 
         try {
-            $request = $client->get($this->getEndpoint('/account-info'));
-            $request->setAuth($this->getUsername(), $this->getPassword());
-            $response = $request->send();
+			$response = $client->get($this->getEndpoint('/account-info'), [
+				'auth' => [$this->getUsername(), $this->getPassword()]
+			]);
 
             $json = json_decode($response->getBody(true));
 
@@ -129,11 +129,13 @@ class Dotmailer extends AbstractMailingListIntegration
                     }
                 }
 
-                $request = $client->post($endpoint);
-                $request->setAuth($this->getUsername(), $this->getPassword());
-                $request->setHeader('Content-Type', 'application/json');
-                $request->setBody(json_encode($data));
-                $request->send();
+                $request = $client->post($endpoint, [
+					'auth' => [$this->getUsername(), $this->getPassword()],
+					'headers' => [
+						'Content-Type' => 'application/json'
+					],
+					'body' => json_encode($data)
+				]);
             }
         } catch (BadResponseException $e) {
             $responseBody = $e->getResponse()->getBody(true);
@@ -178,11 +180,11 @@ class Dotmailer extends AbstractMailingListIntegration
     public function onBeforeSave(IntegrationStorageInterface $model)
     {
         $client = new Client();
-        $request = $client->get('https://api.dotmailer.com/v2/account-info');
-        $request->setAuth($this->getUsername(), $this->getPassword());
 
         try {
-            $response = $request->send();
+			$response = $client->get('https://api.dotmailer.com/v2/account-info', [
+				'auth' => [$this->getUsername(), $this->getPassword()]
+			]);
             $json = json_decode($response->getBody(true));
 
             if (isset($json->properties)) {
@@ -212,13 +214,13 @@ class Dotmailer extends AbstractMailingListIntegration
     protected function fetchLists()
     {
         $client = new Client();
-        $client->setDefaultOption('query', ['select' => 1000]);
         $endpoint = $this->getEndpoint('/address-books');
 
         try {
-            $request = $client->get($endpoint);
-            $request->setAuth($this->getUsername(), $this->getPassword());
-            $response = $request->send();
+			$response = $client->get($endpoint, [
+				'query' => ['select' => 1000],
+				'auth' => [$this->getUsername(), $this->getPassword()]
+			]);
         } catch (BadResponseException $e) {
             $responseBody = $e->getResponse()->getBody(true);
 
@@ -272,9 +274,9 @@ class Dotmailer extends AbstractMailingListIntegration
         $endpoint = $this->getEndpoint('/data-fields');
 
         try {
-            $request = $client->get($endpoint);
-            $request->setAuth($this->getUsername(), $this->getPassword());
-            $response = $request->send();
+			$response = $client->get($endpoint, [
+				'auth' => [$this->getUsername(), $this->getPassword()]
+			]);
         } catch (BadResponseException $e) {
             $responseBody = $e->getResponse()->getBody(true);
 

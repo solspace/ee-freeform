@@ -11,8 +11,8 @@
 
 namespace Solspace\Addons\FreeformNext\Integrations\MailingLists;
 
-use Guzzle\Http\Client;
-use Guzzle\Http\Exception\BadResponseException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
 use Solspace\Addons\FreeformNext\Library\Integrations\IntegrationStorageInterface;
@@ -72,9 +72,12 @@ class MailChimp extends AbstractMailingListIntegration
         $client = new Client();
 
         try {
-            $request = $client->get($this->getEndpoint('/'));
-            $request->setAuth('mailchimp', $this->getAccessToken());
-            $response = $request->send();
+			$response = $client->get($this->getEndpoint('/'), [
+				'auth' => [
+					'mailchimp',
+					$this->getAccessToken()
+				]
+			]);
 
             $json = json_decode($response->getBody(true));
 
@@ -122,11 +125,13 @@ class MailChimp extends AbstractMailingListIntegration
 
             $data = ['members' => $members, 'update_existing' => true];
 
-            $request = $client->post($endpoint);
-            $request->setAuth('mailchimp', $this->getAccessToken());
-            $request->setHeader('Content-Type', 'application/json');
-            $request->setBody(json_encode($data));
-            $response = $request->send();
+			$response = $client->post($endpoint, [
+				'auth' => ['mailchimp', $this->getAccessToken()],
+				'headers' => [
+					'Content-Type' => 'application/json'
+				],
+				'body' => json_encode($data)
+			]);
         } catch (BadResponseException $e) {
             $responseBody = $e->getResponse()->getBody(true);
 
@@ -200,19 +205,17 @@ class MailChimp extends AbstractMailingListIntegration
     protected function fetchLists()
     {
         $client = new Client();
-        $client->setDefaultOption(
-            'query',
-            [
-                'fields' => 'lists.id,lists.name,lists.stats.member_count',
-                'count'  => 999,
-            ]
-        );
+
         $endpoint = $this->getEndpoint('/lists');
 
         try {
-            $request = $client->get($endpoint);
-            $request->setAuth('mailchimp', $this->getAccessToken());
-            $response = $request->send();
+			$response = $client->get($endpoint, [
+				'query' => [
+					'fields' => 'lists.id,lists.name,lists.stats.member_count',
+					'count'  => 999,
+				],
+				'auth' => ['mailchimp', $this->getAccessToken()]
+			]);
         } catch (BadResponseException $e) {
             $responseBody = $e->getResponse()->getBody(true);
 
@@ -265,14 +268,16 @@ class MailChimp extends AbstractMailingListIntegration
     protected function fetchFields($listId)
     {
         $client = new Client();
-        $client->setDefaultOption('query', ['count' => 999]);
 
         $endpoint = $this->getEndpoint("/lists/$listId/merge-fields");
 
         try {
-            $request = $client->get($endpoint);
-            $request->setAuth('mailchimp', $this->getAccessToken());
-            $response = $request->send();
+			$response = $client->get($endpoint, [
+				'query' => [
+					'count' => 999
+				],
+				'auth' => ['mailchimp', $this->getAccessToken()]
+			]);
         } catch (BadResponseException $e) {
             $responseBody = $e->getResponse()->getBody(true);
 

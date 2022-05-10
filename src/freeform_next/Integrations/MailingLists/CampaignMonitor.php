@@ -11,8 +11,8 @@
 
 namespace Solspace\Addons\FreeformNext\Integrations\MailingLists;
 
-use Guzzle\Http\Client;
-use Guzzle\Http\Exception\BadResponseException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
 use Solspace\Addons\FreeformNext\Library\Integrations\IntegrationStorageInterface;
@@ -76,9 +76,9 @@ class CampaignMonitor extends AbstractMailingListIntegration
         $client = new Client();
 
         try {
-            $request = $client->get($this->getEndpoint('/clients/' . $this->getClientID() . '.json'));
-            $request->setAuth($this->getAccessToken(), 'freeform');
-            $response = $request->send();
+			$response = $client->get($this->getEndpoint('/clients/' . $this->getClientID() . '.json'), [
+				'auth' => [$this->getAccessToken(), 'freeform']
+			]);
 
             $json = json_decode($response->getBody(true));
 
@@ -139,11 +139,13 @@ class CampaignMonitor extends AbstractMailingListIntegration
                     'RestartSubscriptionBasedAutoresponders' => true,
                 ];
 
-                $request = $client->post($endpoint);
-                $request->setAuth($this->getAccessToken(), 'freeform');
-                $request->setHeader('Content-Type', 'application/json');
-                $request->setBody(json_encode($data));
-                $request->send();
+                $request = $client->post($endpoint, [
+					'auth' => [$this->getAccessToken(), 'freeform'],
+					'headers' => [
+						'Content-Type' => 'application/json'
+					],
+					'body' => json_encode($data)
+				]);
             }
         } catch (BadResponseException $e) {
             $responseBody = $e->getResponse()->getBody(true);
@@ -204,9 +206,9 @@ class CampaignMonitor extends AbstractMailingListIntegration
         $endpoint = $this->getEndpoint('/clients/' . $this->getClientID() . '/lists.json');
 
         try {
-            $request = $client->get($endpoint);
-            $request->setAuth($this->getAccessToken(), 'freeform');
-            $response = $request->send();
+			$response = $client->get($endpoint, [
+				'auth' => [$this->getAccessToken(), 'freeform']
+			]);
         } catch (BadResponseException $e) {
             $responseBody = $e->getResponse()->getBody(true);
 
@@ -262,9 +264,9 @@ class CampaignMonitor extends AbstractMailingListIntegration
         $endpoint = $this->getEndpoint("/lists/$listId/customfields.json");
 
         try {
-            $request = $client->get($endpoint);
-            $request->setAuth($this->getAccessToken(), 'freeform');
-            $response = $request->send();
+			$response = $client->get($endpoint, [
+				'auth' => [$this->getAccessToken(), 'freeform']
+			]);
         } catch (BadResponseException $e) {
             $responseBody = $e->getResponse()->getBody(true);
 

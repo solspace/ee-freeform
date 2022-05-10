@@ -11,8 +11,8 @@
 
 namespace Solspace\Addons\FreeformNext\Integrations\MailingLists;
 
-use Guzzle\Http\Client;
-use Guzzle\Http\Exception\BadResponseException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
 use Solspace\Addons\FreeformNext\Library\Integrations\IntegrationStorageInterface;
@@ -74,14 +74,18 @@ class ConstantContact extends AbstractMailingListIntegration
     public function checkConnection()
     {
         $client = new Client();
-        $client->setDefaultOption('query', ['api_key' => $this->getApiKey()]);
 
         $endpoint = $this->getEndpoint('/account/info');
 
         try {
-            $request = $client->get($endpoint);
-            $request->setHeader('Authorization', 'Bearer ' . $this->getAccessToken());
-            $response = $request->send();
+			$response = $client->get($endpoint, [
+				'query' => [
+					'api_key' => $this->getApiKey()
+				],
+				'headers' => [
+					'Authorization' => 'Bearer ' . $this->getAccessToken()
+				]
+			]);
 
             $body = $response->getBody();
             $json = json_decode($body);
@@ -137,7 +141,6 @@ class ConstantContact extends AbstractMailingListIntegration
     public function pushEmails(ListObject $mailingList, array $emails, array $mappedValues)
     {
         $client = new Client();
-        $client->setDefaultOption('query', ['api_key' => $this->getApiKey()]);
 
         try {
             $emailAddresses = [];
@@ -153,11 +156,16 @@ class ConstantContact extends AbstractMailingListIntegration
                 $mappedValues
             );
 
-            $request = $client->post($this->getEndpoint('/contacts'));
-            $request->setHeader('Authorization', 'Bearer ' . $this->getAccessToken());
-            $request->setHeader('Content-Type', 'application/json');
-            $request->setBody(json_encode($data));
-            $response = $request->send();
+			$response = $client->post($this->getEndpoint('/contacts'), [
+				'query' => [
+					'api_key' => $this->getApiKey()
+				],
+				'headers' => [
+					'Authorization' => 'Bearer ' . $this->getAccessToken(),
+					'Content-Type' => 'application/json'
+				],
+				'body' => json_encode($data)
+			]);
 
         } catch (BadResponseException $e) {
             $responseBody = $e->getResponse()->getBody(true);
@@ -193,14 +201,18 @@ class ConstantContact extends AbstractMailingListIntegration
     protected function fetchLists()
     {
         $client = new Client();
-        $client->setDefaultOption('query', ['api_key' => $this->getApiKey()]);
 
         $endpoint = $this->getEndpoint('/lists');
 
         try {
-            $request = $client->get($endpoint);
-            $request->setHeader('Authorization', 'Bearer ' . $this->getAccessToken());
-            $response = $request->send();
+			$response = $client->get($endpoint, [
+				'query' => [
+					'api_key' => $this->getApiKey()
+				],
+				'headers' => [
+					'Authorization' => 'Bearer ' . $this->getAccessToken()
+				]
+			]);
 
         } catch (BadResponseException $e) {
             $responseBody = $e->getResponse()->getBody(true);
