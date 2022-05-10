@@ -11,8 +11,8 @@
 
 namespace Solspace\Addons\FreeformNext\Integrations\CRM;
 
-use Guzzle\Http\Client;
-use Guzzle\Http\Exception\BadResponseException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\CRMIntegrationNotFoundException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Integrations\CRM\AbstractCRMIntegration;
@@ -143,9 +143,12 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
 
         try {
 
-            $request = $client->post($this->getAccessTokenUrl(), ['Content-Type' => 'application/x-www-form-urlencoded']);
-            $request->setBody($body);
-            $response = $request->send();
+			$response = $client->post($this->getAccessTokenUrl(), [
+				'headers' => [
+					'Content-Type' => 'application/x-www-form-urlencoded'
+				],
+				'body' => $body
+			]);
 
             $json = json_decode($response->getBody());
 
@@ -210,8 +213,7 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
             'Content-Type'  => 'application/json',
         ];
 
-        $request  = $client->get($endpoint, $headers);
-        $response = $request->send();
+		$response  = $client->get($endpoint, ['headers' => $headers]);
 
         $json = json_decode($response->getBody(true), true);
 
@@ -243,9 +245,10 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
                 'Sforce-Auto-Assign' => $setOwner ? 'TRUE' : 'FALSE',
             ];
 
-            $request = $client->post($endpoint, $headers);
-            $request->setBody(json_encode($keyValueList));
-            $response = $request->send();
+			$response = $client->post($endpoint, [
+				'headers' => $headers ,
+				'body' => json_encode($keyValueList)
+			]);
 
             return $response->getStatusCode() === 201;
         } catch (BadResponseException $e) {
@@ -287,8 +290,9 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
 
 
         try {
-            $request  = $client->get($this->getEndpoint('/sobjects/Lead/describe'), $headers);
-            $response = $request->send();
+			$response  = $client->get($this->getEndpoint('/sobjects/Lead/describe'), [
+				'headers' => $headers
+			]);
         } catch (BadResponseException $e) {
             $responseBody = $e->getResponse()->getBody(true);
 
@@ -418,7 +422,7 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
         $instance        = $this->getSetting(self::SETTING_INSTANCE);
         $usingCustomUrls = $this->getSetting(self::SETTING_CUSTOM_URL);
 
-        if (strpos($instance, 'https://') !== 0) {
+        if ($instance && strpos($instance, 'https://') !== 0) {
             return sprintf(
                 'https://%s%s.salesforce.com/services/data/v20.0/',
                 $instance,

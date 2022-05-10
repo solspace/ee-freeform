@@ -13,7 +13,7 @@ module.exports = {
     "build:fonts",
     "build:themes",
     "build:crypt",
-    "composer",
+    // "composer",
     "clean:deploy",
   ],
   fn: (gulp, callback) => {

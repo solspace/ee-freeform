@@ -11,8 +11,8 @@
 
 namespace Solspace\Addons\FreeformNext\Integrations\CRM;
 
-use Guzzle\Http\Client;
-use Guzzle\Http\Exception\BadResponseException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Integrations\CRM\AbstractCRMIntegration;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
@@ -55,7 +55,6 @@ class HubSpot extends AbstractCRMIntegration
     public function pushObject(array $keyValueList)
     {
         $client = new Client();
-        $client->setDefaultOption('query', ['hapikey' => $this->getAccessToken()]);
 
         $endpoint = $this->getEndpoint('/deals/v1/deal/');
 
@@ -86,10 +85,15 @@ class HubSpot extends AbstractCRMIntegration
         $contactId = null;
         if ($contactProps) {
             try {
-                $request = $client->post($this->getEndpoint('/contacts/v1/contact'));
-                $request->setHeader('Content-Type', 'application/json');
-                $request->setBody(json_encode(['properties' => $contactProps]));
-                $response = $request->send();
+				$response = $client->post($this->getEndpoint('/contacts/v1/contact'), [
+					'query' => [
+						'hapikey' => $this->getAccessToken()
+					],
+					'headers' => [
+						'Content-Type' => 'application/json'
+					],
+					'body' => json_encode(['properties' => $contactProps])
+				]);
 
                 $json = json_decode($response->getBody(true));
                 if (isset($json->vid)) {
@@ -112,10 +116,15 @@ class HubSpot extends AbstractCRMIntegration
         $companyId = null;
         if ($companyProps) {
             try {
-                $request = $client->post($this->getEndpoint('companies/v2/companies'));
-                $request->setHeader('Content-Type', 'application/json');
-                $request->setBody(json_encode(['properties' => $companyProps]));
-                $response = $request->send();
+				$response = $client->post($this->getEndpoint('companies/v2/companies'), [
+					'query' => [
+						'hapikey' => $this->getAccessToken()
+					],
+					'headers' => [
+						'Content-Type' => 'application/json'
+					],
+					'body' => json_encode(['properties' => $companyProps])
+				]);
 
                 $json = json_decode($response->getBody());
                 if (isset($json->companyId)) {
@@ -160,12 +169,14 @@ class HubSpot extends AbstractCRMIntegration
     public function checkConnection()
     {
         $client = new Client();
-        $client->setDefaultOption('query', ['hapikey' => $this->getAccessToken()]);
 
         $endpoint = $this->getEndpoint('/contacts/v1/lists/all/contacts/all');
 
-        $request  = $client->get($endpoint);
-        $response = $request->send();
+		$response  = $client->get($endpoint, [
+			'query' => [
+				'hapikey' => $this->getAccessToken()
+			]
+		]);
 
         $json = json_decode($response->getBody(true), true);
 
@@ -246,10 +257,12 @@ class HubSpot extends AbstractCRMIntegration
     private function extractCustomFields($endpoint, $dataType, &$fieldList)
     {
         $client = new Client();
-        $client->setDefaultOption('query', ['hapikey' => $this->getAccessToken()]);
 
-        $request  = $client->get($this->getEndpoint($endpoint));
-        $response = $request->send();
+		$response  = $client->get($this->getEndpoint($endpoint), [
+			'query' => [
+				'hapikey' => $this->getAccessToken()
+			]
+		]);
 
         $data = json_decode($response->getBody(true));
 

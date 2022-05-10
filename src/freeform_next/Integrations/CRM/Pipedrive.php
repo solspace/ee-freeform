@@ -11,8 +11,8 @@
 
 namespace Solspace\Addons\FreeformNext\Integrations\CRM;
 
-use Guzzle\Http\Client;
-use Guzzle\Http\Exception\BadResponseException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Integrations\CRM\AbstractCRMIntegration;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
@@ -55,7 +55,6 @@ class Pipedrive extends AbstractCRMIntegration
     public function pushObject(array $keyValueList)
     {
         $client = new Client();
-        $client->setDefaultOption('query', ['api_token' => $this->getAccessToken()]);
 
         $organizationFields = $personFields = $dealFields = $notesFields = [];
         foreach ($keyValueList as $key => $value) {
@@ -74,10 +73,15 @@ class Pipedrive extends AbstractCRMIntegration
         $organizationId = null;
         if ($organizationFields) {
             try {
-                $request = $client->post($this->getEndpoint('/v1/organizations'));
-                $request->setHeader('Content-Type', 'application/json');
-                $request->setBody(json_encode($organizationFields));
-                $response = $request->send();
+				$response = $client->post($this->getEndpoint('/v1/organizations'), [
+					'headers' => [
+						'Content-Type' => 'application/json'
+					],
+					'body' => json_encode($organizationFields),
+					'query' => [
+						'api_token' => $this->getAccessToken()
+					]
+				]);
 
                 $json = json_decode($response->getBody(true));
                 if (isset($json->data->id)) {
@@ -209,18 +213,14 @@ class Pipedrive extends AbstractCRMIntegration
      */
     public function checkConnection()
     {
-        try {
-            $response = $this->getResponse(
-                $this->getEndpoint('/v1/deals'),
-                ['query' => ['limit' => 1]]
-            );
+		$response = $this->getResponse(
+			$this->getEndpoint('/v1/deals'),
+			['query' => ['limit' => 1]]
+		);
 
-            $json = json_decode($response->getBody(true), false);
+		$json = json_decode($response->getBody(true), false);
 
-            return isset($json->success) && $json->success === true;
-        } catch (BadResponseException $exception) {
-            throw new IntegrationException($exception->getMessage(), $exception->getCode(), $exception->getPrevious());
-        }
+		return isset($json->success) && $json->success === true;
     }
 
     /**
@@ -354,23 +354,18 @@ class Pipedrive extends AbstractCRMIntegration
      * @param       $endpoint
      * @param array $queryOptions
      *
-     * @return \Guzzle\Http\Message\Response
-     */
+     * @return \Psr\Http\Message\ResponseInterface
+	 */
     private function getResponse($endpoint, array $queryOptions = [])
     {
         $client = new Client();
-        $client->setDefaultOption(
-            'query',
-            array_merge(
-                ['api_token' => $this->getAccessToken()],
-                $queryOptions
-            )
-        );
 
-        $request = $client->get($endpoint);
-        $request->setHeader('Accept', 'application/json');
-
-        return $request->send();
+        return $client->get($endpoint, [
+			'headers' => [
+				'Accept'=> 'application/json'
+			],
+			'query' => array_merge(['api_token' => $this->getAccessToken()], $queryOptions),
+		]);
     }
 
     /**

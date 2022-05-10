@@ -1,6 +1,6 @@
 <?php
 
-use Guzzle\Http\Client;
+use GuzzleHttp\Client;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SubmitField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
@@ -44,16 +44,21 @@ class Freeform_next_ext
                 $secret = SettingsRepository::getInstance()->getOrCreate()->getRecaptchaSecret();
 
                 $client  = new Client();
-                $request = $client->post(
+				$postResponse = $client->post(
                     'https://www.google.com/recaptcha/api/siteverify',
-                    ['Content-Type' => 'application/json'],
-                    [
-                        'secret'   => $secret,
-                        'response' => $response,
-                    ]
-                );
+					[
+						'headers' => [
+							'Content-Type' => 'application/x-www-form-urlencoded',
+						],
+						'form_params'         => [
+							'secret'   => $secret,
+							'response' => $response,
+						],
+					]
+				);
 
-                $postResponse = $request->send();
+
+                // $postResponse = $request->send();
                 $result       = json_decode((string) $postResponse->getBody(true), true);
 
                 if (!$result['success']) {

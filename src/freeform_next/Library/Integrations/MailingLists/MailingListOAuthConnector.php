@@ -11,8 +11,8 @@
 
 namespace Solspace\Addons\FreeformNext\Library\Integrations\MailingLists;
 
-use Guzzle\Http\Client;
-use Guzzle\Http\Exception\BadResponseException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Integrations\SettingBlueprint;
 
@@ -96,12 +96,13 @@ abstract class MailingListOAuthConnector extends AbstractMailingListIntegration
 
         $body = http_build_query($payload);
 
-        $request = $client->post($this->getAccessTokenUrl());
-        $request->setHeader("Content-Type", "application/x-www-form-urlencoded");
-        $request->setBody($body);
-
         try {
-            $response = $request->send();
+			$response = $client->post($this->getAccessTokenUrl(), [
+				'headers' => [
+					'Content-Type' => 'application/x-www-form-urlencoded',
+				],
+				'body'    => $body,
+			]);
         } catch (BadResponseException $e) {
             throw new IntegrationException($e->getResponse()->getBody(true));
         }

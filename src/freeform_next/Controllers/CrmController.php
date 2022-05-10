@@ -3,7 +3,7 @@
 namespace Solspace\Addons\FreeformNext\Controllers;
 
 use EllisLab\ExpressionEngine\Library\CP\Table;
-use Guzzle\Http\Exception\BadResponseException;
+use GuzzleHttp\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
@@ -501,7 +501,7 @@ class CrmController extends Controller
                 }
             } else {
                 $view->addVariable('success', false);
-                $view->addError($e->getResponse()->getBody(true));
+                $view->addError($e->getMessage());
             }
         }
 

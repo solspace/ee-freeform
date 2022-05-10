@@ -11,8 +11,8 @@
 
 namespace Solspace\Addons\FreeformNext\Integrations\CRM;
 
-use Guzzle\Http\Client;
-use Guzzle\Http\Exception\BadResponseException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Integrations\CRM\AbstractCRMIntegration;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
@@ -56,12 +56,15 @@ class Insightly extends AbstractCRMIntegration
     public function pushObject(array $keyValueList)
     {
         $client = new Client();
-        $request = $client->get($this->getEndpoint('/Leads'));
-        $request->setHeader('Content-Type', 'application/json');
-        $request->getCurlOptions()->set(CURLOPT_USERPWD, $this->getAccessToken());
-        $request->getCurlOptions()->set(CURLOPT_POSTFIELDS, json_encode($keyValueList));
-
-        $response = $request->send();
+		$response = $client->get($this->getEndpoint('/Leads'), [
+			'headers' => [
+				'Content-Type' => 'application/json'
+			],
+			'form_params' => json_encode($keyValueList),
+			'auth' => [null, $this->getAccessToken()]
+		]);
+        // $request->getCurlOptions()->set(CURLOPT_USERPWD, $this->getAccessToken());
+        // $request->getCurlOptions()->set(CURLOPT_POSTFIELDS, json_encode($keyValueList));
 
         return $response->getStatusCode() === 200;
     }
@@ -74,11 +77,18 @@ class Insightly extends AbstractCRMIntegration
     public function checkConnection()
     {
         $client = new Client();
-        $request = $client->get($this->getEndpoint('/Leads'));
-        $request->setHeader('Content-Type', 'application/json');
-        $request->getCurlOptions()->set(CURLOPT_USERPWD, $this->getAccessToken());
 
-        $response = $request->send();
+		$response = $client->get($this->getEndpoint('/Leads'), [
+			'headers' => [
+				'Content-Type' => 'application/json'
+			],
+			'auth' => [null, $this->getAccessToken()]
+		]);
+        // $request = $client->get($this->getEndpoint('/Leads'));
+        // $request->setHeader('Content-Type', 'application/json');
+        // $request->getCurlOptions()->set(CURLOPT_USERPWD, $this->getAccessToken());
+
+        // $response = $request->send();
 
         return $response->getStatusCode() === 200;
     }
