@@ -2,7 +2,7 @@
 
 namespace Solspace\Addons\FreeformNext\Controllers;
 
-use Guzzle\Http\Exception\BadResponseException;
+use GuzzleHttp\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Library\Migrations\Objects\MigrationResultObject;
 use Solspace\Addons\FreeformNext\Model\IntegrationModel;

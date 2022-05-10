@@ -11,7 +11,7 @@
 
 namespace Solspace\Addons\FreeformNext\Services;
 
-use Guzzle\Http\Exception\BadResponseException;
+use GuzzleHttp\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Layout;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Properties\IntegrationProperties;
 use Solspace\Addons\FreeformNext\Library\Database\CRMHandlerInterface;
