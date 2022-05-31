@@ -337,7 +337,7 @@ class Dotmailer extends AbstractMailingListIntegration
      */
     protected function getApiRootUrl()
     {
-        return rtrim($this->getSetting(self::SETTING_ENDPOINT), '/') . '/v2/';
+        return rtrim($this->getSetting(self::SETTING_ENDPOINT) ?: '', '/') . '/v2/';
     }
 
     /**

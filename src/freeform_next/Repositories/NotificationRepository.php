@@ -74,7 +74,7 @@ class NotificationRepository extends Repository
                     $model = NotificationModel::createFromTemplate($filePath);
                     self::$notificationCache[$model->id] = $model;
                 } catch (EmailTemplateException $exception) {
-                    EELogger::get('notifications')->error($exception->getMessage(), $exception);
+					(new EELogger())->error($exception->getMessage(), 'FreeformNotifications');
                 }
             }
 
