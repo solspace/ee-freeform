@@ -382,6 +382,7 @@ class SubmissionModel extends Model
         }
 
         if ($field->isArrayValue()) {
+            $value = is_null($value) ? '' : $value;
             $value = json_decode($value, true);
         }
 
