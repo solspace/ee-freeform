@@ -4,8 +4,8 @@
  *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
- * @copyright     Copyright (c) 2008-2021, Solspace, Inc.
- * @link          https://docs.solspace.com/expressionengine/freeform/v2/
+ * @copyright     Copyright (c) 2008-2022, Solspace, Inc.
+ * @link          https://docs.solspace.com/expressionengine/freeform/v3/
  * @license       https://docs.solspace.com/license-agreement/
  */
 
@@ -34,7 +34,7 @@ if (FreeformHelper::get('version') !== FREEFORM_EXPRESS && !file_exists($cacheDi
     if (!$ftExists) {
         ee()->db->insert('exp_fieldtypes', [
             'name'                => 'freeform_next',
-            'version'             => '2.0.1',
+            'version'             => '3.0.0-b.1',
             'settings'            => 'YTowOnt9',
             'has_global_settings' => 'n',
         ]);
@@ -52,12 +52,12 @@ if (FreeformHelper::get('version') !== FREEFORM_EXPRESS && !file_exists($cacheDi
 
 return [
     'author'         => 'Solspace',
-    'author_url'     => 'https://docs.solspace.com/expressionengine/freeform/v2/',
-    'docs_url'       => 'https://docs.solspace.com/expressionengine/freeform/v2/',
-    'name'           => FreeformHelper::get('name'),
+    'author_url'     => 'https://docs.solspace.com/expressionengine/freeform/v3/',
+    'docs_url'       => 'https://docs.solspace.com/expressionengine/freeform/v3/',
+    'name'           => 'Freeform',
     'module_name'    => 'Freeform_next',
     'description'    => 'The most reliable, intuitive and powerful form builder for ExpressionEngine.',
-    'version'        => '2.0.1',
+    'version'        => '3.0.0-b.1',
     'namespace'      => 'Solspace\Addons\FreeformNext',
     'settings_exist' => true,
     'models'         => [

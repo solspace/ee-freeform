@@ -7,7 +7,7 @@ if ($version === FREEFORM_LITE) {
 }
 
 if ($version === FREEFORM_PRO) {
-    return 'Freeform Pro';
+    return 'Freeform';
 }
 
 return 'Freeform Express';
