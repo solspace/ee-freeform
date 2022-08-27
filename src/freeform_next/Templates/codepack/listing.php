@@ -40,7 +40,7 @@
         font-weight: normal;
         font-style: normal;
     }
-	
+
     .folder:before {
         content: '\f07c';
         font-family: 'Solspace Font Awesome 5 Regular', 'Solspace Font Awesome 5 Solid', sans-serif;

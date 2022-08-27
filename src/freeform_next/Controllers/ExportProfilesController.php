@@ -192,7 +192,7 @@ class ExportProfilesController extends Controller
                                 'title'  => 'Statuses',
                                 'desc'   => 'Select which statuses to use',
                                 'fields' => [
-                                    'statuses' => [
+                                    'export-statuses' => [
                                         'type'    => 'checkbox',
                                         'choices' => $statuses,
                                         'value'   => $profile->statuses,
