@@ -30,7 +30,7 @@ $sidebarMinWidth: 18%;
       position: relative;
       top: 1px;
 
-      font-family: 'Font Awesome 5 Free';
+      font-family: 'Solspace Font Awesome 5 Regular', 'Solspace Font Awesome 5 Solid';
       padding-right: 2px;
     }
 
@@ -76,7 +76,7 @@ $sidebarMinWidth: 18%;
     font-size: $font-size;
 
     &:after {
-      font-family: 'Font Awesome 5 Free';
+      font-family: 'Solspace Font Awesome 5 Regular', 'Solspace Font Awesome 5 Solid';
       color: $color-action-button;
     }
 
@@ -252,7 +252,7 @@ $sidebarMinWidth: 18%;
               position: relative;
               top: 1px;
 
-              font-family: 'Font Awesome 5 Free';
+              font-family: 'Solspace Font Awesome 5 Regular', 'Solspace Font Awesome 5 Solid';
             }
           }
         }
@@ -635,7 +635,7 @@ $sidebarMinWidth: 18%;
 
   &.success, &.issue {
     &:before {
-      font-family: 'Font Awesome 5 Free', sans-serif;
+      font-family: 'Solspace Font Awesome 5 Regular', 'Solspace Font Awesome 5 Solid', sans-serif;
       padding-right: 5px;
     }
   }

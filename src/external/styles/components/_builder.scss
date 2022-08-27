@@ -146,7 +146,7 @@ $minRowHeight: 60px;
             height: $spacing;
 
             color: $color-error;
-            font-family: 'Font Awesome 5 Free';
+            font-family: 'Solspace Font Awesome 5 Regular', 'Solspace Font Awesome 5 Solid';
             font-size: 7px;
             font-weight: bold;
             line-height: $spacing;
@@ -292,7 +292,7 @@ $minRowHeight: 60px;
 
       margin-right: $spacing-short;
 
-      font-family: 'Font Awesome 5 Free', sans-serif;
+      font-family: 'Solspace Font Awesome 5 Regular', 'Solspace Font Awesome 5 Solid', sans-serif;
     }
   }
 
@@ -309,7 +309,7 @@ $minRowHeight: 60px;
     color: $color-column-label;
 
     &:before {
-      font-family: 'Font Awesome 5 Free', sans-serif;
+      font-family: 'Solspace Font Awesome 5 Regular', 'Solspace Font Awesome 5 Solid', sans-serif;
       content: "\f070";
     }
   }
@@ -318,23 +318,23 @@ $minRowHeight: 60px;
     color: $color-column-label;
 
     &:before {
-      font-family: 'Font Awesome 5 Free', sans-serif;
+      font-family: 'Solspace Font Awesome 5 Regular', 'Solspace Font Awesome 5 Solid', sans-serif;
       content: "\f121";
     }
   }
 }
 
 .icon-solspace-multiple_select:before {
-  font-family: 'Font Awesome 5 Free' !important;
+  font-family: 'Solspace Font Awesome 5 Regular', 'Solspace Font Awesome 5 Solid';
   content: "\f0c9";
 }
 
 .icon-solspace-password:before {
-  font-family: 'Font Awesome 5 Free' !important;
+  font-family: 'Solspace Font Awesome 5 Regular', 'Solspace Font Awesome 5 Solid';
   content: "\f023";
 }
 
 .icon-solspace-recaptcha:before {
-  font-family: 'Font Awesome 5 Free' !important;
+  font-family: 'Solspace Font Awesome 5 Regular', 'Solspace Font Awesome 5 Solid';
   content: "\f05e";
 }
