@@ -100,7 +100,7 @@
 
 <style>
     li.delete a:after {
-        font-family: 'Font Awesome 5 Free', sans-serif;
+        font-family: 'Solspace Font Awesome 5 Regular', 'Solspace Font Awesome 5 Solid', sans-serif;
         content: "\f014";
     }
 
