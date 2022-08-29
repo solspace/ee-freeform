@@ -17,7 +17,7 @@
 							<?php foreach ($form_right_links as $link_data):?>
 								<a <?php if (@$link_data['attrs'] && strpos(@$link_data['attrs'], 'class=') === false) : ?>class="btn tn action"<?php endif ?>
 								   <?php echo @$link_data['attrs'] ?>
-								   href="<?=$link_data['link']?>">
+								   class="tn button button--primary" href="<?=$link_data['link']?>">
 									<?=$link_data['title']?>
 								</a>
 							<?php endforeach;?>
