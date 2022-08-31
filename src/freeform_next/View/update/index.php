@@ -26,11 +26,11 @@
 
 		<?php foreach ($updates as $item) : ?>
 
-			<section class="item-wrap">
+			<section class="item-wrap" style="margin-bottom:25px;">
 				<div class="item">
 					<h3>
 						Freeform <b><?= $item->getVersion() ?></b>
-						<i>
+						<i style="font-size:75%;font-style:italic;font-weight:normal;margin-left:5px;">
 							(released on
 							<?= ee()->localize->format_date($format, $item->getDate()->getTimestamp()) ?>)
 						</i>
