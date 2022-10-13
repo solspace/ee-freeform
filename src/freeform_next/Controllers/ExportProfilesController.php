@@ -2,8 +2,8 @@
 
 namespace Solspace\Addons\FreeformNext\Controllers;
 
-use EllisLab\ExpressionEngine\Library\CP\Table;
-use EllisLab\ExpressionEngine\Service\Validation\Result;
+use ExpressionEngine\Library\CP\Table;
+use ExpressionEngine\Service\Validation\Result;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Exceptions\FreeformException;
