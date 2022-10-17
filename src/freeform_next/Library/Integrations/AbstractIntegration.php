@@ -12,6 +12,7 @@
 namespace Solspace\Addons\FreeformNext\Library\Integrations;
 
 use Solspace\Addons\FreeformNext\Library\Configuration\ConfigurationInterface;
+use Solspace\Addons\FreeformNext\Library\Database\IntegrationHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
 use Solspace\Addons\FreeformNext\Library\Logging\LoggerInterface;
@@ -48,6 +49,9 @@ abstract class AbstractIntegration implements IntegrationInterface
 
     /** @var TranslatorInterface */
     private $translator;
+
+    /** @var IntegrationHandlerInterface */
+    private $handler;
 
     /**
      * Returns a list of additional settings for this integration
@@ -241,6 +245,11 @@ abstract class AbstractIntegration implements IntegrationInterface
             default:
                 return (string)$value;
         }
+    }
+
+    protected function getHandler(): IntegrationHandlerInterface
+    {
+        return $this->handler;
     }
 
     /**
