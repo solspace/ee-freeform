@@ -53,7 +53,7 @@ class Insightly extends AbstractCRMIntegration
      *
      * @return bool
      */
-    public function pushObject(array $keyValueList)
+    public function pushObject(array $keyValueList, $formFields = NULL)
     {
         $client = new Client();
 		$response = $client->get($this->getEndpoint('/Leads'), [

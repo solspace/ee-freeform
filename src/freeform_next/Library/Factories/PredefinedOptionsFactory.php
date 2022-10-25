@@ -2,7 +2,7 @@
 
 namespace Solspace\Addons\FreeformNext\Library\Factories;
 
-use Solspace\Freeform\Freeform;
+use Solspace\Addons\FreeformNext;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DataContainers\Option;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\ExternalOptionsInterface;
 use Solspace\Addons\FreeformNext\Library\Configuration\ExternalOptionsConfiguration;

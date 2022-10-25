@@ -228,7 +228,7 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
      * @return bool
      * @throws \Exception
      */
-    public function pushObject(array $keyValueList)
+    public function pushObject(array $keyValueList, $formFields = NULL)
     {
         $client   = new Client();
         $endpoint = $this->getEndpoint('/sobjects/Lead');

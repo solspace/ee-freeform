@@ -12,6 +12,7 @@
 namespace Solspace\Addons\FreeformNext\Services;
 
 use GuzzleHttp\Exception\BadResponseException;
+use Psr\Http\Message\ResponseInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Layout;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Properties\IntegrationProperties;
 use Solspace\Addons\FreeformNext\Library\Database\CRMHandlerInterface;
@@ -249,10 +250,13 @@ class CrmService implements CRMHandlerInterface
         }
 
         $objectValues = [];
+        $formFields = [];
         foreach ($mapping as $crmHandle => $fieldHandle) {
             try {
                 $crmField  = $crmFieldsByHandle[$crmHandle];
                 $formField = $layout->getFieldByHandle($fieldHandle);
+
+                $formFields[$crmHandle] = $formField;
 
                 if ($crmField->getType() === FieldObject::TYPE_ARRAY) {
                     $value = $formField->getValue();
@@ -272,7 +276,7 @@ class CrmService implements CRMHandlerInterface
 
         if (!empty($objectValues)) {
             try {
-                $result = $integration->pushObject($objectValues);
+                $result = $integration->pushObject($objectValues, $formFields);
 
                 ExtensionHelper::call(ExtensionHelper::HOOK_CRM_AFTER_PUSH, $integration, $objectValues);
 
@@ -284,7 +288,7 @@ class CrmService implements CRMHandlerInterface
                             $this->updateAccessToken($integration);
 
                             try {
-                                $result = $integration->pushObject($objectValues);
+                                $result = $integration->pushObject($objectValues, $formFields);
 
                                 ExtensionHelper::call(ExtensionHelper::HOOK_CRM_AFTER_PUSH, $integration, $objectValues);
 
@@ -404,5 +408,13 @@ class CrmService implements CRMHandlerInterface
         }
 
         throw new IntegrationException('Could not get Crm settings');
+    }
+
+    public function onAfterResponse(AbstractIntegration $integration, ResponseInterface $response)
+    {
+        $event = new PushEvent($integration, $values);
+        $this->trigger(self::EVENT_AFTER_PUSH, $event);
+
+        return $event->isValid;
     }
 }

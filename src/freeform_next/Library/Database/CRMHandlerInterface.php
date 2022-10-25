@@ -17,7 +17,7 @@ use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\CRMIntegrationN
 use Solspace\Addons\FreeformNext\Library\Integrations\CRM\AbstractCRMIntegration;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
 
-interface CRMHandlerInterface
+interface CRMHandlerInterface extends IntegrationHandlerInterface
 {
     /**
      * @return AbstractCRMIntegration[]

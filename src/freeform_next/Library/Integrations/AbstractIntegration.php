@@ -82,7 +82,8 @@ abstract class AbstractIntegration implements IntegrationInterface
         $settings,
         LoggerInterface $logger,
         ConfigurationInterface $configuration,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        IntegrationHandlerInterface $handler
     ) {
         $this->id            = $id;
         $this->name          = $name;
@@ -92,6 +93,7 @@ abstract class AbstractIntegration implements IntegrationInterface
         $this->logger        = $logger;
         $this->configuration = $configuration;
         $this->translator    = $translator;
+        $this->handler       = $handler;
     }
 
     /**

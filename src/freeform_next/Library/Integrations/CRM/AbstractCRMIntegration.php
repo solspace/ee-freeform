@@ -56,7 +56,8 @@ abstract class AbstractCRMIntegration extends AbstractIntegration implements CRM
             $settings,
             $logger,
             $configuration,
-            $translator
+            $translator,
+            $crmHandler
         );
 
         $this->crmHandler = $crmHandler;
