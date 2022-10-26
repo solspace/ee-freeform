@@ -412,9 +412,6 @@ class CrmService implements CRMHandlerInterface
 
     public function onAfterResponse(AbstractIntegration $integration, ResponseInterface $response)
     {
-        $event = new PushEvent($integration, $values);
-        $this->trigger(self::EVENT_AFTER_PUSH, $event);
-
-        return $event->isValid;
+        //
     }
 }
