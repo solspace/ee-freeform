@@ -16,7 +16,7 @@ use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\MailingListInte
 use Solspace\Addons\FreeformNext\Library\Integrations\MailingLists\AbstractMailingListIntegration;
 use Solspace\Addons\FreeformNext\Library\Integrations\MailingLists\DataObjects\ListObject;
 
-interface MailingListHandlerInterface
+interface MailingListHandlerInterface extends IntegrationHandlerInterface
 {
     /**
      * Updates the mailing lists of a given mailing list integration

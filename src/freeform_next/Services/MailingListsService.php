@@ -27,8 +27,9 @@ use Solspace\Addons\FreeformNext\Repositories\MailingListRepository;
 use Solspace\Addons\FreeformNext\Utilities\Extension\FreeformIntegrationExtension;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use Psr\Http\Message\ResponseInterface;
 
-class MailingListsService implements MailingListHandlerInterface
+class MailingListsService  extends AbstractIntegrationService implements MailingListHandlerInterface
 {
     /** @var array */
     private static $integrations;
@@ -428,5 +429,13 @@ class MailingListsService implements MailingListHandlerInterface
         }
 
         throw new IntegrationException('Could not get Mailing List settings');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function onAfterResponse(AbstractIntegration $integration, ResponseInterface $response)
+    {
+
     }
 }
