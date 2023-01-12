@@ -424,13 +424,13 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
 
         if ($instance && strpos($instance, 'https://') !== 0) {
             return sprintf(
-                'https://%s%s.salesforce.com/services/data/v20.0/',
+                'https://%s%s.salesforce.com/services/data/v44.0/',
                 $instance,
                 ($usingCustomUrls ? '.my' : '')
             );
         }
 
-        return $instance . '/services/data/v20.0/';
+        return $instance . '/services/data/v44.0/';
     }
 
     /**
