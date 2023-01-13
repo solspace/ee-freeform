@@ -45,6 +45,8 @@ use Solspace\Addons\FreeformNext\Utilities\ControlPanelView;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
+require_once version_compare(PHP_VERSION, '8.0.0') < 0 ? __DIR__ . '/php7/vendor/autoload.php' : __DIR__ . '/vendor/autoload.php';
+
 class Freeform_next_mcp extends ControlPanelView
 {
     /**

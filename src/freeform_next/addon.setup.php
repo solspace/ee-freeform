@@ -12,13 +12,6 @@
 use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 
 require_once __DIR__ . '/helper_functions.php';
-if (version_compare(PHP_VERSION, '8.0.0') < 0) {
-	require_once __DIR__ . '/php7/vendor/autoload.php';
-}
-else
-{
-	require_once __DIR__ . '/vendor/autoload.php';
-}
 require_once __DIR__ . '/Library/Helpers/FreeformHelper.php';
 
 
