@@ -335,7 +335,7 @@ class CrmService implements CRMHandlerInterface
 
                 /** @var SplFileInfo $file */
                 foreach ($files as $file) {
-                    $fileName = $file->getFilename();
+                    $fileName = str_replace('/', '\\', $file->getRelativePathname());
                     $baseName = substr(
                         $fileName,
                         0,

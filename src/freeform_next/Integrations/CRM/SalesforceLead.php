@@ -13,6 +13,7 @@ namespace Solspace\Addons\FreeformNext\Integrations\CRM;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
+use Solspace\Addons\FreeformNext\Integrations\CRM\Salesforce\AbstractSalesforceIntegration;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\CRMIntegrationNotFoundException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Integrations\CRM\AbstractCRMIntegration;
@@ -21,7 +22,7 @@ use Solspace\Addons\FreeformNext\Library\Integrations\IntegrationStorageInterfac
 use Solspace\Addons\FreeformNext\Library\Integrations\SettingBlueprint;
 use Solspace\Addons\FreeformNext\Library\Integrations\TokenRefreshInterface;
 
-class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInterface
+class SalesforceLead extends AbstractSalesforceIntegration implements TokenRefreshInterface
 {
     const TITLE        = 'Salesforce Lead';
     const LOG_CATEGORY = 'Salesforce';
@@ -281,7 +282,7 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
      */
     public function fetchFields()
     {
-        $client = new Client();
+        $client = $this->generateAuthorizedClient();
 
         $headers = [
             'Authorization' => 'Bearer ' . $this->getAccessToken(),
@@ -431,6 +432,11 @@ class SalesforceLead extends AbstractCRMIntegration implements TokenRefreshInter
         }
 
         return $instance . '/services/data/v44.0/';
+    }
+
+    protected function getAuthorizationCheckUrl(): string
+    {
+        return $this->getEndpoint('/sobjects/Lead/describe');
     }
 
     /**
