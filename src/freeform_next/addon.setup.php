@@ -48,7 +48,7 @@ return [
     'author'         => 'Solspace',
     'author_url'     => 'https://docs.solspace.com/expressionengine/freeform/v2/',
     'docs_url'       => 'https://docs.solspace.com/expressionengine/freeform/v2/',
-    'name'           => FreeformHelper::get('name'),
+    'name'           => 'Freeform',
     'module_name'    => 'Freeform_next',
     'description'    => 'The most reliable, intuitive and powerful form builder for ExpressionEngine.',
     'version'        => '2.0.2',

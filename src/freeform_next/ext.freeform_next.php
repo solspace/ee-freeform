@@ -178,7 +178,7 @@ class Freeform_next_ext
 	{
 		$permissionsService = new PermissionsService;
 
-		$sub = $menu->addSubmenu(FreeformHelper::get('name'));
+		$sub = $menu->addSubmenu('Freeform');
 
 		if($permissionsService->canManageForms(ee()->session->userdata('group_id')))
 		{
