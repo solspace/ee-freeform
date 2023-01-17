@@ -1,0 +1,1 @@
+"use strict";var $prefix=$("input[name=prefix]");$(function(){$prefix.on({keyup:function(t){$("[data-prefix]").text($(t.target).val())}})});

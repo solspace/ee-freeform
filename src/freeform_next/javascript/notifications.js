@@ -1,0 +1,1 @@
+"use strict";$(function(){var e=$("input:text[name=name]"),n=$("input:text[name=handle]"),t=function(e){return e.replace(/(?:^\w|[A-Z]|\b\w)/g,function(e,n){return 0===n?e.toLowerCase():e.toUpperCase()}).replace(/\s+/g,"").replace(/[^a-zA-Z0-9_]/g,"")};e.on({keyup:function(){var r=e.val();r=t(r),n.val(r)},change:function(e){return $(e.target).trigger("keypress")}})});
