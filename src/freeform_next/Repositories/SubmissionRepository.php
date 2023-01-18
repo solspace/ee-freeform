@@ -129,12 +129,15 @@ class SubmissionRepository extends Repository
             ee()->db->like($key, $value);
         }
 
+        $orLikeGroup = [];
         foreach ($attributes->getOrLikeFilters() as $key => $value) {
-            if ($key == 'id') {
-                ee()->db->or_like($submissionTable . '.id', $value);
-            } else {
-                ee()->db->or_like($key, $value);
-            }
+            $orLikeGroup[] = ee()->db->dbprefix($submissionTable) . ".{$key} LIKE '%" . ee()->security->xss_clean($value) . "%'";
+        }
+
+        if(! empty($orLikeGroup))
+        {
+            $orLikeGroupString = '(' . implode(' OR ', $orLikeGroup) . ')';
+            ee()->db->where($orLikeGroupString);
         }
 
         foreach ($attributes->getFilters() as $key => $value) {
