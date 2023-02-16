@@ -3,6 +3,8 @@
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 
+require_once version_compare(PHP_VERSION, '8.0.0') < 0 ? __DIR__ . '/php7/vendor/autoload.php' : __DIR__ . '/vendor/autoload.php';
+
 class Freeform_next_ft extends EE_Fieldtype
 {
     /** @var array */
