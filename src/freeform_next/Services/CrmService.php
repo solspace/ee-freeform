@@ -330,7 +330,7 @@ class CrmService implements CRMHandlerInterface
             $finder      = new Finder();
             $crmListPath = __DIR__ . '/../Integrations/CRM';
             if (file_exists($crmListPath) && is_dir($crmListPath)) {
-                $files         = $finder->files()->in($crmListPath)->name('*.php');
+                $files         = $finder->depth(0)->files()->in($crmListPath)->name('*.php');
                 $baseNamespace = 'Solspace\Addons\FreeformNext\Integrations\CRM\\';
 
                 /** @var SplFileInfo $file */
