@@ -20,7 +20,11 @@ class ExportDataTSV extends ExportData {
         foreach ($row as $key => $value) {
             // Escape inner quotes and wrap all contents in new quotes.
             // Note that we are using \" to escape double quote not ""
+            if (is_null($value)) {
+                $value = '';
+            }
             $row[$key] = '"'. str_replace('"', '\"', $value) .'"';
+
         }
         return implode("\t", $row) . "\n";
     }

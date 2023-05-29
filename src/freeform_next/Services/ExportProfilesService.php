@@ -107,6 +107,9 @@ class ExportProfilesService
             foreach ($itemList as $id => $value) {
                 $label = $this->getHandleFromIdentificator($form, $id);
 
+                if (is_null($value)) {
+                    $value = '';
+                }
                 $node = $submission->addChild($label, htmlspecialchars($value));
                 $node->addAttribute('label', $this->getLabelFromIdentificator($form, $id));
             }
@@ -189,7 +192,7 @@ class ExportProfilesService
                         $tableColumns = $field->getLayout();
 
                         foreach ($tableColumns as $tableColumn) {
-                            $label[] = $tableColumn['label'];
+                            $label = $tableColumn['label'];
                         }
                     }
 

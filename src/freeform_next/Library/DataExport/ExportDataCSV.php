@@ -24,7 +24,7 @@ class ExportDataCSV extends ExportData
     public function generateRow($row) {
         foreach ($row as $key => $value) {
             // Escape inner quotes by double-quoting and wrap non-empty contents in new quotes
-            if ($value !== '') {
+            if (!empty($value)) {
                 $row[$key] = '"' . str_replace('"', '""', $value) . '"';
             }
         }
