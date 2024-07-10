@@ -50,7 +50,7 @@ return [
     'name'           => 'Freeform',
     'module_name'    => 'Freeform_next',
     'description'    => 'The most reliable, intuitive and powerful form builder for ExpressionEngine.',
-    'version'        => '3.0.5',
+    'version'        => '3.1.0',
     'namespace'      => 'Solspace\Addons\FreeformNext',
     'settings_exist' => true,
     'models'         => [

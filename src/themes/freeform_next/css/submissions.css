@@ -3,7 +3,7 @@
  *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
- * @copyright     Copyright (c) 2008-2022, Solspace, Inc.
+ * @copyright     Copyright (c) 2008-2023, Solspace, Inc.
  * @link          https://docs.solspace.com/expressionengine/freeform/v3/
  * @license       https://docs.solspace.com/license-agreement/
  *//*!
@@ -11,7 +11,7 @@
  *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
- * @copyright     Copyright (c) 2008-2022, Solspace, Inc.
+ * @copyright     Copyright (c) 2008-2023, Solspace, Inc.
  * @link          https://docs.solspace.com/expressionengine/freeform/v3/
  * @license       https://docs.solspace.com/license-agreement/
  *//*!
@@ -19,7 +19,7 @@
  *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
- * @copyright     Copyright (c) 2008-2022, Solspace, Inc.
+ * @copyright     Copyright (c) 2008-2023, Solspace, Inc.
  * @link          https://docs.solspace.com/expressionengine/freeform/v3/
  * @license       https://docs.solspace.com/license-agreement/
  */@font-face{font-family:'Solspace Font Awesome 5 Solid';src:url("../font/fontawesome-free-5.15.4-web/webfonts/fa-solid-900.svg?61199501");src:url("../font/fontawesome-free-5.15.4-web/webfonts/fa-solid-900.eot?61199501#iefix") format("embedded-opentype"),url("../font/fontawesome-free-5.15.4-web/webfonts/fa-solid-900.woff2?61199501") format("woff2"),url("../font/fontawesome-free-5.15.4-web/webfonts/fa-solid-900.woff?61199501") format("woff"),url("../font/fontawesome-free-5.15.4-web/webfonts/fa-solid-900.ttf?61199501") format("truetype"),url("../font/fontawesome-free-5.15.4-web/webfonts/fa-solid-900.svg?61199501#solspace-freeform") format("svg");font-weight:900;font-style:normal}@font-face{font-family:'Solspace Font Awesome 5 Regular';src:url("../font/fontawesome-free-5.15.4-web/webfonts/fa-regular-400.svg?61199501");src:url("../font/fontawesome-free-5.15.4-web/webfonts/fa-regular-400.eot?61199501#iefix") format("embedded-opentype"),url("../font/fontawesome-free-5.15.4-web/webfonts/fa-regular-400.woff2?61199501") format("woff2"),url("../font/fontawesome-free-5.15.4-web/webfonts/fa-regular-400.woff?61199501") format("woff"),url("../font/fontawesome-free-5.15.4-web/webfonts/fa-regular-400.ttf?61199501") format("truetype"),url("../font/fontawesome-free-5.15.4-web/webfonts/fa-regular-400.svg?61199501#solspace-freeform") format("svg");font-weight:normal;font-style:normal}.featherlight .featherlight-content{width:600px;padding:0 !important;border-bottom:none !important;overflow-x:hidden !important;border-radius:5px}.choice-panel ul{max-height:432px;overflow-y:auto;list-style:none;margin:0;padding:0}.choice-panel ul>li{display:block;margin:0;padding:0;transition:background .3s ease-out}.choice-panel ul>li:hover{background:#eeeeee}.choice-panel ul>li label{display:block;font-size:16px;padding:4px 10px}.choice-panel ul>li .handle{position:relative;top:-1px;display:inline-block;width:16px;height:16px;text-align:center;cursor:pointer}.choice-panel ul>li .handle:before{content:"\f0c9";font-family:'Solspace Font Awesome 5 Regular', 'Solspace Font Awesome 5 Solid', sans-serif}.choice-panel .buttons{padding:10px 10px;border-top:1px solid #e8e8e8;background-image:-webkit-linear-gradient(top, #f9f9f9, #fff)}.paginate{margin-top:20px}.color-indicator{display:inline-block;width:10px;height:10px;margin-right:5px;box-shadow:inset 0 0 1px rgba(0,0,0,0.6);border-radius:5px}#export-csv-modal .radio-list label{margin-right:5px}#export-csv-modal .body{overflow-y:auto;height:380px;padding:15px}#export-csv-modal .body .heading{font-weight:bold}#export-csv-modal .body .field{margin-bottom:15px}#export-csv-modal .icon.move{display:inline-block}#export-csv-modal .icon.move:before{content:"\f0c9";font-family:'Solspace Font Awesome 5 Regular', 'Solspace Font Awesome 5 Solid', sans-serif}#export-csv-modal ul{list-style:none;margin:0;padding:0}#export-csv-modal ul>li{margin:0;padding:0}.file-previews>div{position:relative;margin:10px 0}.file-previews>div>img{position:absolute;top:-5px;left:0;width:20px;height:20px;padding:1px;border:1px solid black}.file-previews>div.has-img>div{margin:0 0 0 29px}

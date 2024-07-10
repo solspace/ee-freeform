@@ -219,6 +219,7 @@ class FormController extends Controller
                     'categoryFields'           => $this->getCategoryFields(),
                     'memberFields'             => $this->getMemberFields(),
                     'isRecaptchaEnabled'       => $settingsService->getSettingsModel()->isRecaptchaEnabled(),
+                    'isRecaptchaV3'            => $settingsService->getSettingsModel()->getRecaptchaType() === 'v3',
                 ]
             );
 
