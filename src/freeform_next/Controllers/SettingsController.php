@@ -748,7 +748,7 @@ class SettingsController extends Controller
                         'fields' => [
                             'recaptchaScoreThreshold' => [
                                 'type' => 'select',
-                                'value' => $settings->getRecaptchaScoreThreshold(),
+                                'value' => $settings->getRecaptchaScoreThreshold() ?: '0.5',
                                 'choices' => [
                                     '0.0' => '0.0',
                                     '0.1' => '0.1',
