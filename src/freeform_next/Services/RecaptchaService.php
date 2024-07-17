@@ -136,7 +136,8 @@ class RecaptchaService
                 $minScore = max(0, $minScore);
 
                 if ($result['score'] < $minScore) {
-                    $form->addError(lang('Score check failed with ['.$result['score'].']'));
+                    // $form->addError(lang('Score check failed with ['.$result['score'].']'));
+                    $form->addError(lang('Spam test failed.'));
                 }
             }
 
