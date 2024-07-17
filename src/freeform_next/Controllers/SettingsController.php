@@ -497,17 +497,6 @@ class SettingsController extends Controller
                 ],
             ],
             [
-                'title'  => 'Access Resources',
-                'desc'   => 'Choose which member groups have access to Resources.',
-                'fields' => [
-                    'resourcesPermissions' => [
-                        'type'    => 'checkbox',
-                        'value'   => $permissionsModel->resourcesPermissions,
-                        'choices' => $memberRoleChoices,
-                    ],
-                ],
-            ],
-            [
                 'title'  => 'Access Logs',
                 'desc'   => 'Choose which member groups have access to Error logs.',
                 'fields' => [

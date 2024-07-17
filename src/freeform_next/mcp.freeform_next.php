@@ -483,24 +483,12 @@ class Freeform_next_mcp extends ControlPanelView
             ->addSubNavItem(new NavigationLink('License', 'settings/license'))
             ->addSubNavItem(new NavigationLink('General', 'settings/general'))
             ->addSubNavItem(new NavigationLink('Spam Protection', 'settings/spam_protection'))
-            ->addSubNavItem(new NavigationLink('Permissions', 'settings/permissions'))
+            ->addSubNavItem(new NavigationLink('reCAPTCHA', 'settings/recaptcha'))
             ->addSubNavItem(new NavigationLink('Formatting Templates', 'settings/formatting_templates'))
             ->addSubNavItem(new NavigationLink('Email Templates', 'settings/email_templates'))
             ->addSubNavItem(new NavigationLink('Statuses', 'settings/statuses'))
-            ->addSubNavItem(new NavigationLink('Demo Templates', 'settings/demo_templates'))
-            ->addSubNavItem(new NavigationLink('reCAPTCHA', 'settings/recaptcha'));
-
-        $resources = new NavigationLink('Resources');
-        $resources
-            ->addSubNavItem(
-                new NavigationLink('Product Info', 'https://docs.solspace.com/expressionengine/freeform/v3/')
-            )
-            ->addSubNavItem(
-                new NavigationLink('Documentation', 'https://docs.solspace.com/expressionengine/freeform/v3/')
-            )
-            ->addSubNavItem(
-                new NavigationLink('Official Support', 'https://docs.solspace.com/expressionengine/freeform/v3/support.html')
-            );
+            ->addSubNavItem(new NavigationLink('Permissions', 'settings/permissions'))
+            ->addSubNavItem(new NavigationLink('Demo Templates', 'settings/demo_templates'));
 
         $logs   = null;
         $logdir = __DIR__ . '/logs/';
@@ -551,8 +539,6 @@ class Freeform_next_mcp extends ControlPanelView
         if ($isMigrationAvailable) {
             $nav->addLink($migrations);
         }
-
-        $nav->addLink($resources);
 
         if ($logs) {
             $nav->addLink($logs);
