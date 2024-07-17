@@ -3,7 +3,7 @@
  *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
- * @copyright     Copyright (c) 2008-2022, Solspace, Inc.
+ * @copyright     Copyright (c) 2008-2023, Solspace, Inc.
  * @link          https://docs.solspace.com/expressionengine/freeform/v3/
  * @license       https://docs.solspace.com/license-agreement/
  *//*!
@@ -11,7 +11,7 @@
  *
  * @package       Solspace:Freeform
  * @author        Solspace, Inc.
- * @copyright     Copyright (c) 2008-2022, Solspace, Inc.
+ * @copyright     Copyright (c) 2008-2023, Solspace, Inc.
  * @link          https://docs.solspace.com/expressionengine/freeform/v3/
  * @license       https://docs.solspace.com/license-agreement/
  */@font-face{font-family:'Solspace Font Awesome 5 Solid';src:url("../font/fontawesome-free-5.15.4-web/webfonts/fa-solid-900.svg?61199501");src:url("../font/fontawesome-free-5.15.4-web/webfonts/fa-solid-900.eot?61199501#iefix") format("embedded-opentype"),url("../font/fontawesome-free-5.15.4-web/webfonts/fa-solid-900.woff2?61199501") format("woff2"),url("../font/fontawesome-free-5.15.4-web/webfonts/fa-solid-900.woff?61199501") format("woff"),url("../font/fontawesome-free-5.15.4-web/webfonts/fa-solid-900.ttf?61199501") format("truetype"),url("../font/fontawesome-free-5.15.4-web/webfonts/fa-solid-900.svg?61199501#solspace-freeform") format("svg");font-weight:900;font-style:normal}@font-face{font-family:'Solspace Font Awesome 5 Regular';src:url("../font/fontawesome-free-5.15.4-web/webfonts/fa-regular-400.svg?61199501");src:url("../font/fontawesome-free-5.15.4-web/webfonts/fa-regular-400.eot?61199501#iefix") format("embedded-opentype"),url("../font/fontawesome-free-5.15.4-web/webfonts/fa-regular-400.woff2?61199501") format("woff2"),url("../font/fontawesome-free-5.15.4-web/webfonts/fa-regular-400.woff?61199501") format("woff"),url("../font/fontawesome-free-5.15.4-web/webfonts/fa-regular-400.ttf?61199501") format("truetype"),url("../font/fontawesome-free-5.15.4-web/webfonts/fa-regular-400.svg?61199501#solspace-freeform") format("svg");font-weight:normal;font-style:normal}.update-list{list-style:none;margin:0;padding:0}.update-list>li{margin:0;padding:2px 0}.update-list>li:before{font-family:'Solspace Font Awesome 5 Regular', 'Solspace Font Awesome 5 Solid', sans-serif;margin-right:5px}.update-list>li.feature:before{content:'\f005';color:#54A261}.update-list>li.note:before{content:'\f1fc';color:#4486C1}.update-list>li.bugfix:before{content:'\f0ad';color:#CB3131}

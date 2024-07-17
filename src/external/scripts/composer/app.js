@@ -52,7 +52,7 @@ const specialFields = [
   },
 ];
 
-if (isRecaptchaEnabled) {
+if (isRecaptchaEnabled && !isRecaptchaV3) {
   specialFields.push({ type: FieldTypes.RECAPTCHA, label: "reCAPTCHA" });
 }
 

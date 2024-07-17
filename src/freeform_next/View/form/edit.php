@@ -48,6 +48,7 @@
     var canManageNotifications = true;
     var canManageSettings = true;
     var isRecaptchaEnabled = <?php echo $isRecaptchaEnabled ? 'true' : 'false' ?>;
+    var isRecaptchaV3 = <?php echo $isRecaptchaV3 ? 'true' : 'false' ?>;
 
     var isDbEmailTemplateStorage = <?php echo $isDbEmailTemplateStorage ? 'true' : 'false' ?>;
     var isWidgetsInstalled       = <?php echo $isWidgetsInstalled ? 'true' : 'false' ?>;

@@ -33,6 +33,11 @@ use Symfony\Component\Finder\SplFileInfo;
  * @property bool   $removeNewlines
  * @property bool   $formSubmitDisable
  * @property bool   $autoScrollToErrors
+ * @property bool   $recaptchaEnabled
+ * @property bool   $recaptchaType
+ * @property bool   $recaptchaKey
+ * @property bool   $recaptchaSecret
+ * @property bool   $recaptchaScoreThreshold
  */
 class SettingsModel extends Model
 {
@@ -57,6 +62,11 @@ class SettingsModel extends Model
     const DEFAULT_REMOVE_NEWLINES                 = false;
     const DEFAULT_FORM_SUBMIT_DISABLE             = true;
     const DEFAULT_AUTO_SCROLL_TO_ERRORS           = true;
+    const DEFAULT_RECAPTCHA_ENABLED               = false;
+    const DEFAULT_RECAPTCHA_TYPE                  = null;
+    const DEFAULT_RECAPTCHA_KEY                   = null;
+    const DEFAULT_RECAPTCHA_SECRET                = null;
+    const DEFAULT_RECAPTCHA_SCORE_THRESHOLD       = '0.5';
 
     const SESSION_STORAGE_SESSION  = 'session';
     const SESSION_STORAGE_DATABASE = 'db';
@@ -80,8 +90,10 @@ class SettingsModel extends Model
     protected $removeNewlines;
     protected $formSubmitDisable;
     protected $recaptchaEnabled;
+    protected $recaptchaType;
     protected $recaptchaKey;
     protected $recaptchaSecret;
+    protected $recaptchaScoreThreshold;
     protected $autoScrollToErrors;
 
     /**
@@ -108,9 +120,11 @@ class SettingsModel extends Model
                 'defaultTemplates'            => self::DEFAULT_DEFAULT_TEMPLATES,
                 'removeNewlines'              => self::DEFAULT_REMOVE_NEWLINES,
                 'formSubmitDisable'           => self::DEFAULT_FORM_SUBMIT_DISABLE,
-                'recaptchaEnabled'            => false,
-                'recaptchaKey'                => null,
-                'recaptchaSecret'             => null,
+                'recaptchaEnabled'            => self::DEFAULT_RECAPTCHA_ENABLED,
+                'recaptchaType'               => self::DEFAULT_RECAPTCHA_TYPE,
+                'recaptchaKey'                => self::DEFAULT_RECAPTCHA_KEY,
+                'recaptchaSecret'             => self::DEFAULT_RECAPTCHA_SECRET,
+                'recaptchaScoreThreshold'     => self::DEFAULT_RECAPTCHA_SCORE_THRESHOLD,
                 'autoScrollToErrors'          => self::DEFAULT_AUTO_SCROLL_TO_ERRORS,
             ]
         );
@@ -363,6 +377,14 @@ class SettingsModel extends Model
     /**
      * @return mixed
      */
+    public function getRecaptchaType()
+    {
+        return $this->recaptchaType;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getRecaptchaKey()
     {
         return $this->recaptchaKey;
@@ -374,6 +396,14 @@ class SettingsModel extends Model
     public function getRecaptchaSecret()
     {
         return $this->recaptchaSecret;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRecaptchaScoreThreshold()
+    {
+        return $this->recaptchaScoreThreshold;
     }
 
     /**

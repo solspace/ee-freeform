@@ -487,11 +487,8 @@ class Freeform_next_mcp extends ControlPanelView
             ->addSubNavItem(new NavigationLink('Formatting Templates', 'settings/formatting_templates'))
             ->addSubNavItem(new NavigationLink('Email Templates', 'settings/email_templates'))
             ->addSubNavItem(new NavigationLink('Statuses', 'settings/statuses'))
-            ->addSubNavItem(new NavigationLink('Demo Templates', 'settings/demo_templates'));
-
-        if (class_exists('Solspace\Addons\FreeformNext\Library\Pro\Fields\RecaptchaField')) {
-            $settings->addSubNavItem(new NavigationLink('reCAPTCHA', 'settings/recaptcha'));
-        }
+            ->addSubNavItem(new NavigationLink('Demo Templates', 'settings/demo_templates'))
+            ->addSubNavItem(new NavigationLink('reCAPTCHA', 'settings/recaptcha'));
 
         $resources = new NavigationLink('Resources');
         $resources

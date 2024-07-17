@@ -36,9 +36,32 @@ class RecaptchaField extends AbstractField implements NoStorageInterface, Single
     {
         static $key;
 
+        $settingsService = new SettingsService();
+        $settingsModel = $settingsService->getSettingsModel();
+
+        $isRecaptchaEnabled = $settingsModel->isRecaptchaEnabled();
+        $isRecaptchaV3 = $settingsModel->getRecaptchaType() === 'v3';
+        $recaptchaKey = $settingsModel->getRecaptchaKey();
+        $recaptchaSecret = $settingsModel->getRecaptchaSecret();
+
+        if (!$isRecaptchaEnabled) {
+            return false;
+        }
+
+        if ($isRecaptchaV3) {
+            return false;
+        }
+
+        if (!$recaptchaKey) {
+            return false;
+        }
+
+        if (!$recaptchaSecret) {
+            return false;
+        }
+
         if ($key === null) {
-            $settingsService = new SettingsService();
-            $key = $settingsService->getSettingsModel()->getRecaptchaKey();
+            $key = $recaptchaKey;
         }
 
         $output = '<script src="https://www.google.com/recaptcha/api.js"></script>';
