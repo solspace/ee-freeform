@@ -398,6 +398,92 @@ class Freeform_next_upd extends AddonUpdater
                 ");
         }
 
+        if (version_compare($previousVersion, '3.1.0', '<=')) {
+            ee()->db
+                ->query("
+                    UPDATE exp_extensions 
+                    SET `priority` = 5
+                    WHERE `method` = 'validateHoneypot' and `class` = 'Freeform_next_ext';
+                ");
+
+            ee()->db
+                ->query("
+                    UPDATE exp_extensions 
+                    SET `priority` = 6
+                    WHERE `method` = 'validateRecaptcha' and `class` = 'Freeform_next_ext';
+                ");
+
+            ee()->db
+                ->query("
+                    UPDATE exp_extensions 
+                    SET `priority` = 5
+                    WHERE `method` = 'validateRecaptchaFields' and `class` = 'Freeform_next_ext';
+                ");
+
+            ee()->db
+                ->query("
+                    UPDATE exp_extensions 
+                    SET `priority` = 5
+                    WHERE `method` = 'addHoneypotInputToForm' and `class` = 'Freeform_next_ext';
+                ");
+
+            ee()->db
+                ->query("
+                    UPDATE exp_extensions 
+                    SET `priority` = 6
+                    WHERE `method` = 'addRecaptchaInputToForm' and `class` = 'Freeform_next_ext';
+                ");
+
+            ee()->db
+                ->query("
+                    UPDATE exp_extensions 
+                    SET `priority` = 5
+                    WHERE `method` = 'addHoneypotJavascriptToForm' and `class` = 'Freeform_next_ext';
+                ");
+
+            ee()->db
+                ->query("
+                    UPDATE exp_extensions 
+                    SET `priority` = 6
+                    WHERE `method` = 'addDateTimeJavascript' and `class` = 'Freeform_next_ext';
+                ");
+
+            ee()->db
+                ->query("
+                    UPDATE exp_extensions 
+                    SET `priority` = 7
+                    WHERE `method` = 'addFormDisabledJavascript' and `class` = 'Freeform_next_ext';
+                ");
+
+            ee()->db
+                ->query("
+                    UPDATE exp_extensions 
+                    SET `priority` = 8
+                    WHERE `method` = 'addFormAnchorJavascript' and `class` = 'Freeform_next_ext';
+                ");
+
+            ee()->db
+                ->query("
+                    UPDATE exp_extensions 
+                    SET `priority` = 9
+                    WHERE `method` = 'addTableJavascript' and `class` = 'Freeform_next_ext';
+                ");
+
+            ee()->db
+                ->query("
+                    UPDATE exp_extensions 
+                    SET `priority` = 10
+                    WHERE `method` = 'addRecaptchaJavascriptToForm' and `class` = 'Freeform_next_ext';
+                ");
+
+            ee()->db
+                ->query("
+                    UPDATE exp_extensions 
+                    SET `priority` = 5
+                    WHERE `method` = 'addCpCustomMenu' and `class` = 'Freeform_next_ext';
+                ");
+        }
+
         return true;
     }
 
@@ -417,18 +503,22 @@ class Freeform_next_upd extends AddonUpdater
     protected function getInstallableExtensions()
     {
         return [
-            new PluginExtension('validateRecaptcha', ExtensionHelper::HOOK_FORM_VALIDATE),
-            new PluginExtension('validateRecaptchaFields', ExtensionHelper::HOOK_FIELD_BEFORE_VALIDATE),
-            new PluginExtension('addRecaptchaInputToForm', ExtensionHelper::HOOK_FORM_RENDER_OPENING_TAG),
-            new PluginExtension('addRecaptchaJavascriptToForm', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG),
-            new PluginExtension('validateHoneypot', ExtensionHelper::HOOK_FORM_VALIDATE),
-            new PluginExtension('addHoneypotInputToForm', ExtensionHelper::HOOK_FORM_RENDER_OPENING_TAG),
-            new PluginExtension('addHoneypotJavascriptToForm', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG),
+            new PluginExtension('validateRecaptcha', ExtensionHelper::HOOK_FORM_VALIDATE, [], 5),
+            new PluginExtension('validateHoneypot', ExtensionHelper::HOOK_FORM_VALIDATE, [], 6),
+
+            new PluginExtension('validateRecaptchaFields', ExtensionHelper::HOOK_FIELD_BEFORE_VALIDATE, [], 5),
+
+            new PluginExtension('addHoneypotInputToForm', ExtensionHelper::HOOK_FORM_RENDER_OPENING_TAG, [], 5),
+            new PluginExtension('addRecaptchaInputToForm', ExtensionHelper::HOOK_FORM_RENDER_OPENING_TAG, [], 6),
+
+            new PluginExtension('addHoneypotJavascriptToForm', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG, [], 5),
             new PluginExtension('addDateTimeJavascript', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG, [], 6),
             new PluginExtension('addFormDisabledJavascript', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG, [], 7),
             new PluginExtension('addFormAnchorJavascript', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG, [], 8),
             new PluginExtension('addTableJavascript', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG, [], 9),
-            new PluginExtension('addCpCustomMenu', 'cp_custom_menu'),
+            new PluginExtension('addRecaptchaJavascriptToForm', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG, [], 10),
+
+            new PluginExtension('addCpCustomMenu', 'cp_custom_menu', [], 5),
         ];
     }
 
