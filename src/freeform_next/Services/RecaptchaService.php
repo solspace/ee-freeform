@@ -80,10 +80,6 @@ class RecaptchaService
      */
     public function validateFormRecaptcha(Form $form)
     {
-        if (!$form->isValid()) {
-            return;
-        }
-
         $settingsModel = $this->getSettingsService()->getSettingsModel();
 
         $isRecaptchaEnabled = $settingsModel->isRecaptchaEnabled();
@@ -193,7 +189,7 @@ class RecaptchaService
 
         $recaptchaKey = $this->getSettingsService()->getSettingsModel()->getRecaptchaKey();
         if ($recaptchaKey) {
-            $output .= '<script src="https://www.google.com/recaptcha/api.js?render='.$recaptchaKey.'" async></script>';
+            $output .= '<script src="https://www.google.com/recaptcha/api.js?render='.$recaptchaKey.'" async defer></script>';
             $output .= '<script>window.onload=()=>{grecaptcha.ready(function(){grecaptcha.execute("'.$recaptchaKey.'",{action:"submit"}).then(function(token){const gRecaptchaResponse=document.querySelector("#g-recaptcha-response");if(gRecaptchaResponse){gRecaptchaResponse.value=token;}});});};</script>';
         }
 
