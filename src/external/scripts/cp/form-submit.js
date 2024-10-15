@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded',() => {
+document.addEventListener('DOMContentLoaded', () => {
   let anchor = document.getElementById('{{FORM_ANCHOR}}');
   if (anchor) {
     let form = anchor.parentElement;
