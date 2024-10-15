@@ -39,7 +39,7 @@ class RecaptchaService
             return;
         }
 
-        $renderObject->appendToOutput($this->getRecaptchaJavascript());
+        $renderObject->appendToOutput($this->getRecaptchaJavascript($renderObject->getForm()));
     }
 
     /**
@@ -183,14 +183,16 @@ class RecaptchaService
     /**
      * @return string
      */
-    public function getRecaptchaJavascript()
+    public function getRecaptchaJavascript(Form $form)
     {
         $output = '';
 
+        $formAnchor = $form->getAnchor();
+        $formHandle = $form->getHandle();
+
         $recaptchaKey = $this->getSettingsService()->getSettingsModel()->getRecaptchaKey();
         if ($recaptchaKey) {
-            $output .= '<script src="https://www.google.com/recaptcha/api.js?render='.$recaptchaKey.'" async defer></script>';
-            $output .= '<script>window.onload=()=>{grecaptcha.ready(function(){grecaptcha.execute("'.$recaptchaKey.'",{action:"submit"}).then(function(token){const gRecaptchaResponse=document.querySelector("#g-recaptcha-response");if(gRecaptchaResponse){gRecaptchaResponse.value=token;}});});};</script>';
+            $output .= '<script>document.addEventListener("DOMContentLoaded",()=>{const existingRecaptchaV3Scripts=document.querySelectorAll("#recaptcha-v3-loaded");if(existingRecaptchaV3Scripts.length===0){const recaptchaV3Script=document.createElement("script");recaptchaV3Script.id="recaptcha-v3-loaded";recaptchaV3Script.src="https://www.google.com/recaptcha/api.js?render='.$recaptchaKey.'";document.head.appendChild(recaptchaV3Script);}const form'.$formHandle.'Anchor=document.querySelector("form #'.$formAnchor.'");if(form'.$formHandle.'Anchor){const form'.$formHandle.'=form'.$formHandle.'Anchor.parentElement;form'.$formHandle.'.addEventListener("submit",event=>{event.preventDefault();grecaptcha.ready(()=>{grecaptcha.execute("'.$recaptchaKey.'",{action:"submit"}).then(token=>{const gRecaptchaResponse=form'.$formHandle.'.querySelector("#g-recaptcha-response");if(gRecaptchaResponse){gRecaptchaResponse.value=token;form'.$formHandle.'.submit();}});});});}});</script>';
         }
 
         return $output;
