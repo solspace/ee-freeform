@@ -245,7 +245,7 @@ class HoneypotService
         return '<div '
             . 'style="position: absolute !important; width: 0 !important; height: 0 !important; overflow: hidden !important;" '
             . 'aria-hidden="true" '
-            . 'tabindex="-1">'
+            . 'inert>'
             . '<label for="' . $honeypotName . '">Leave this field blank</label>'
             . $input
             . '</div>';
