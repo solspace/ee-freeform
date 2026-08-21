@@ -50,7 +50,7 @@ class HoneypotService
         /** @var array $postValues */
         $postValues = $_POST;
 
-        if(!$this->getSettingsService()->getSettingsModel()->isFreeformHoneypotEnhanced()) {
+        if (!$this->getSettingsService()->getSettingsModel()->isFreeformHoneypotEnhanced()) {
             if (array_key_exists(Honeypot::NAME_PREFIX, $postValues) && $postValues[Honeypot::NAME_PREFIX] === '') {
                 return;
             }
@@ -117,14 +117,14 @@ class HoneypotService
      */
     private function getNewHoneypot(): Honeypot
     {
-		$honeypot = new Honeypot($this->isEnhanced());
+        $honeypot = new Honeypot($this->isEnhanced());
 
-		if ($this->isEnhanced()) {
-			$honeypotList   = $this->getHoneypotList();
-			$honeypotList[] = $honeypot;
-			$honeypotList   = $this->weedOutOldHoneypots($honeypotList);
-			$this->updateHoneypotList($honeypotList);
-		}
+        if ($this->isEnhanced()) {
+            $honeypotList   = $this->getHoneypotList();
+            $honeypotList[] = $honeypot;
+            $honeypotList   = $this->weedOutOldHoneypots($honeypotList);
+            $this->updateHoneypotList($honeypotList);
+        }
 
         return $honeypot;
     }
@@ -149,9 +149,9 @@ class HoneypotService
      */
     private function weedOutOldHoneypots(array $honeypotList)
     {
-		if (!$this->isEnhanced()) {
-			return [];
-		}
+        if (!$this->isEnhanced()) {
+            return [];
+        }
 
         $cleanList = array_filter(
             $honeypotList,
@@ -222,34 +222,40 @@ class HoneypotService
     {
         static $honeypotHashes = [];
 
-        if (!isset($honeypotHashes[$form->getHash()])) {
-            $random                           = time() . random_int(0, 999) . (time() + 999);
-            $honeypotHashes[$form->getHash()] = substr(sha1($random), 0, 6);
+        $formHash = $form->getHash();
+
+        if (!isset($honeypotHashes[$formHash])) {
+            $random = time() . random_int(0, 999) . (time() + 999);
+            $honeypotHashes[$formHash] = substr(sha1($random), 0, 6);
         }
 
-        $hash = $honeypotHashes[$form->getHash()];
+        $honeypotName = $this->getHoneypot($form)->getName();
+        $value = $this->isEnhanced() ? $honeypotHashes[$formHash] : '';
 
-        $honeypot     = $this->getHoneypot($form);
-        $honeypotName = $honeypot->getName();
-        $output       = '<input '
+        $input = '<input '
             . 'type="text" '
-            . 'value="' . ($this->isEnhanced() ? $hash : '') . '" '
+            . 'aria-hidden="true" '
+            . 'tabindex="-1" '
+            . 'autocomplete="off" '
+            . 'value="' . $value . '" '
             . 'name="' . $honeypotName . '" '
             . 'id="' . $honeypotName . '" '
             . '/>';
 
-        $output = '<div style="position: absolute !important; width: 0 !important; height: 0 !important; overflow: hidden !important;" aria-hidden="true" tabindex="-1">'
+        return '<div '
+            . 'style="position: absolute !important; width: 0 !important; height: 0 !important; overflow: hidden !important;" '
+            . 'aria-hidden="true" '
+            . 'tabindex="-1">'
             . '<label for="' . $honeypotName . '">Leave this field blank</label>'
-            . $output
+            . $input
             . '</div>';
-        return $output;
     }
 
-	/**
-	 * @return bool
-	 */
-	private function isEnhanced(): bool
-	{
-		return $this->getSettingsService()->getSettingsModel()->isFreeformHoneypotEnhanced();
-	}
+    /**
+     * @return bool
+     */
+    private function isEnhanced(): bool
+    {
+        return $this->getSettingsService()->getSettingsModel()->isFreeformHoneypotEnhanced();
+    }
 }
