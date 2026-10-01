@@ -103,7 +103,7 @@ class Tab extends Component {
     const { connectDragSource, connectDropTarget } = this.props;
     const pageCount = layout.length;
 
-    const classNames = [];
+    const classNames = ["tab-bar__tab"];
     if (isSelected) {
       classNames.push("active");
     }
@@ -116,6 +116,7 @@ class Tab extends Component {
       connectDragSource(
         <li className={classNames.join(" ")}>
           <button type="button" className="composer-page-button"
+                  title={label || `Page ${index + 1}`}
                   aria-current={isSelected ? "page" : undefined}
                   onClick={this.tabClickHandler}>
             {label || `Page ${index + 1}`}

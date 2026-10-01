@@ -41,12 +41,6 @@ class Form extends BasePropertyEditor {
     isDefaultTemplates: PropTypes.bool.isRequired,
   };
 
-  constructor(props, context) {
-      super(props, context);
-
-      this.handleTitleUpdate = this.handleTitleUpdate.bind(this);
-  }
-
   render() {
     const { isDefaultTemplates } = this.context;
     const { properties: { name, handle, submissionTitleFormat, defaultStatus, returnUrl, description, formTemplate } } = this.context;
@@ -96,9 +90,6 @@ class Form extends BasePropertyEditor {
       });
     });
 
-    // Updating the EE .main-nav__title h1 on load.
-    document.getElementsByClassName("main-nav__title")[0].querySelector('h1').textContent = name;
-
     return (
       <div>
         <TextProperty
@@ -107,7 +98,7 @@ class Form extends BasePropertyEditor {
           name="name"
           required={true}
           value={name}
-          onChangeHandler={this.handleTitleUpdate}
+          onChangeHandler={this.update}
         />
 
         <TextProperty
@@ -179,15 +170,6 @@ class Form extends BasePropertyEditor {
     );
   }
 
-  handleTitleUpdate(event) {
-      const { value } = event.target;
-
-      document.getElementsByClassName("main-nav__title")[0].querySelector('h1').textContent = value;
-
-      document.title = value + " | ExpressionEngine";
-
-      this.update(event);
-  }
 }
 
 export default connect(

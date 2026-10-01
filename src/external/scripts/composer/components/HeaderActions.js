@@ -11,12 +11,14 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import { connect } from "react-redux";
 import SaveButton from "./SaveButton";
 
-export default class HeaderActions extends Component {
+class HeaderActions extends Component {
   static propTypes = {
     saveUrl: PropTypes.string.isRequired,
     formUrl: PropTypes.string.isRequired,
+    formName: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -25,6 +27,7 @@ export default class HeaderActions extends Component {
   }
 
   componentDidMount() {
+    this.updateTitle();
     if (!this.toolbar) {
       return;
     }
@@ -36,6 +39,7 @@ export default class HeaderActions extends Component {
   }
 
   componentDidUpdate() {
+    this.updateTitle();
     this.renderActions();
   }
 
@@ -53,6 +57,21 @@ export default class HeaderActions extends Component {
     }
   }
 
+  updateTitle() {
+    const name = this.props.formName || "New Form";
+    const heading = document.querySelector(".main-nav__title h1");
+    if (heading) {
+      // EE includes the license badge in this heading; change only its text.
+      let title = Array.from(heading.childNodes).find(node => node.nodeType === 3 && node.textContent.trim());
+      if (!title) {
+        title = document.createTextNode("");
+        heading.insertBefore(title, heading.firstChild);
+      }
+      title.textContent = name + (heading.querySelector(".license-status-badge") ? " " : "");
+    }
+    document.title = name + " | ExpressionEngine";
+  }
+
   render() {
     return this.toolbar ? null : (
       <div className="composer-header-fallback">
@@ -61,3 +80,7 @@ export default class HeaderActions extends Component {
     );
   }
 }
+
+export default connect(state => ({
+  formName: state.composer.properties.form.name,
+}))(HeaderActions);

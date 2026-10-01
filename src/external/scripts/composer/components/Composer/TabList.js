@@ -33,8 +33,8 @@ export default class TabList extends Component {
     const { formPropCleanup } = this.context;
 
     return (
-      <nav className="tab-list-wrapper" aria-label="Form pages">
-        <ul>
+      <nav className="tab-list-wrapper tab-bar" aria-label="Form pages">
+        <ul className="tab-bar__tabs">
           {layout.map(
             (row, index) => (
               <Tab

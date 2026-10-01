@@ -216,10 +216,11 @@
         flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 1px solid var(--ee-border, #dfe0ee);
+        border-bottom: 2px solid var(--ee-tab-bar-border, var(--ee-border, #dfe0ee));
 
         > ul {
-          gap: 16px;
+          column-gap: 20px;
+          row-gap: 0;
           padding: 0;
           list-style: none;
           margin: 0 !important;
@@ -234,44 +235,37 @@
             flex: 0 0 auto;
 
             cursor: pointer;
-            display: block;
-            padding: 0;
+            min-width: 0;
+            max-width: 100%;
+            margin: 0 0 -2px;
+            padding: 8px 0;
+            border-bottom: 2px solid transparent;
             min-height: 40px;
             display: flex;
             align-items: center;
 
             box-sizing: border-box;
 
-            font-size: 13px;
-            color: var(--ee-sidebar-text);
+            font-size: 14px;
+            color: var(--ee-text-secondary, #8f90b0);
             white-space: nowrap;
 
             &.active {
-              z-index: 1;
-              color: var(--ee-sidebar-text-active);
-
-              &::after {
-                content: "";
-                position: absolute;
-                left: 0;
-                right: 0;
-                bottom: -1px;
-                height: 2px;
-                background: var(--ee-sidebar-text-active);
-                pointer-events: none;
-              }
+              color: var(--ee-accent, #5d63f1);
+              border-bottom: 2px solid var(--ee-accent, #5d63f1);
+              margin-bottom: -2px;
             }
 
             &:hover {
+              color: var(--ee-accent, #5d63f1);
               text-decoration: none;
             }
 
             .composer-page-actions {
               display: inline-flex;
-              position: relative;
-              top: 1px;
-              right: -6px;
-              margin: 0 !important;
+              flex: 0 0 auto;
+              position: static;
+              margin: 0 0 0 4px !important;
               padding: 0 !important;
 
               .composer-action-remove {
@@ -320,7 +314,7 @@
     }
 
     > div > div {
-      margin: 0 0 14px;
+      margin: 0 0 24px;
 
       ul {
         display: grid;
@@ -414,9 +408,9 @@
 
     > button {
       min-width: 0;
-      min-height: 38px;
+      min-height: 44px;
       margin: 0;
-      padding: 2px 4px !important;
+      padding: 5px 4px !important;
       font-size: 12px;
       line-height: 16px;
       white-space: normal;
@@ -883,8 +877,12 @@
   .composer-page-button {
     background: transparent;
     border: 0;
-    padding: 4px 2px;
+    padding: 4px 0;
     min-height: 28px;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font: inherit;
     color: inherit;
     cursor: pointer;
