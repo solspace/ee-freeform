@@ -927,18 +927,41 @@
 
   .field-container hr { display: none; }
 
-  .composer-add-new-field-wrapper > button {
-    width: 100%;
-    min-height: 28px;
-    padding: 4px 8px;
-    font-size: 13px;
-    line-height: 18px;
+  .field-list .composer-palette-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 24px;
+    margin: 0 0 8px;
+    padding: 0 0 8px;
+    border-bottom: 1px solid var(--ee-border, #dfe0ee);
+
+    h3 {
+      margin: 0 !important;
+      font-size: 12px !important;
+      line-height: 18px;
+      letter-spacing: 1px;
+      text-transform: uppercase !important;
+      color: var(--ee-text-secondary, #8f90b0) !important;
+    }
+
+    .composer-new-field-button {
+      flex: 0 0 auto;
+      width: auto;
+      min-height: 24px;
+      margin: 0;
+      padding: 2px 8px !important;
+      font-size: 11px;
+      line-height: 18px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
   }
 
-  .field-list .composer-special-fields {
-    padding-bottom: 10px;
-    margin-bottom: 14px;
-    border-bottom: 1px solid var(--ee-border, #dfe0ee);
+  .composer-add-new-field-wrapper.active {
+    margin: 0 0 8px;
+    padding: 10px;
   }
 
   .composer-column input:not([type=checkbox]):not([type=radio]),

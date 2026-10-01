@@ -8,10 +8,15 @@
  * @license       https://docs.solspace.com/license-agreement/
  */
 
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import FieldProperties from "./FieldProperties";
 
 export default class AddNewField extends Component {
+  static propTypes = {
+    canCreate: PropTypes.bool.isRequired,
+  };
+
   static EVENT_AFTER_UPDATE = "freeform_add_new_field_after_render";
 
   static initialState = {
@@ -32,26 +37,40 @@ export default class AddNewField extends Component {
   render() {
     const { showFieldForm } = this.state;
 
-    const className = "composer-add-new-field-wrapper" + (showFieldForm ? " active" : "");
-
     return (
-      <div className={className}>
-        {!showFieldForm &&
-        <button type="button" className="button button--default button--small" onClick={this.toggleFieldForm}>
-          Add New Field
-        </button>
-        }
-
-        {showFieldForm &&
-        <FieldProperties toggleFieldForm={this.toggleFieldForm} />
+      <div>
+        <div className="composer-palette-heading sidebar__section-title">
+          <h3>Fields</h3>
+          {this.props.canCreate &&
+          <button
+            type="button"
+            className="button button--primary button--small composer-new-field-button"
+            aria-label="Add New Field"
+            aria-expanded={showFieldForm}
+            aria-controls="freeform-new-field-panel"
+            ref={button => { this.newFieldButton = button; }}
+            onClick={this.toggleFieldForm}
+          >
+            New
+          </button>
+          }
+        </div>
+        {this.props.canCreate && showFieldForm &&
+        <div id="freeform-new-field-panel" className="composer-add-new-field-wrapper active">
+          <FieldProperties toggleFieldForm={this.toggleFieldForm} />
+        </div>
         }
       </div>
     );
   }
 
   toggleFieldForm() {
-    this.setState({
-      showFieldForm: !this.state.showFieldForm,
+    this.setState(state => ({
+      showFieldForm: !state.showFieldForm,
+    }), () => {
+      if (!this.state.showFieldForm && this.newFieldButton) {
+        this.newFieldButton.focus();
+      }
     });
   }
 }
