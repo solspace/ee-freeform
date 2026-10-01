@@ -349,7 +349,9 @@
 
           .composer-palette-label {
             min-width: 0;
-            overflow-wrap: anywhere;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
 
           &:hover {
@@ -361,11 +363,6 @@
             background: $color-droppable;
           }
 
-          .composer-label-badge {
-            display: block;
-            padding: 0;
-            margin: 0;
-          }
         }
       }
     }
@@ -939,6 +936,15 @@
     line-height: 18px;
   }
 
+  // EE's select padding is !important; match it to the compact control height.
+  .composer-column select {
+    padding: 5px 30px 5px 8px !important;
+
+    &[multiple] {
+      padding: 5px 8px !important;
+    }
+  }
+
   .composer-column label.composer-field-label {
     font-size: 13px;
     line-height: 18px;
@@ -990,6 +996,16 @@
     textarea {
       font-size: 13px;
       line-height: 1.5;
+    }
+
+    select {
+      box-sizing: border-box;
+      padding: 4px 30px 4px 8px !important;
+
+      &[multiple] {
+        height: auto;
+        padding: 4px 8px !important;
+      }
     }
   }
 

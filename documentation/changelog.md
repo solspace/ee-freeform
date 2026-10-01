@@ -4,7 +4,8 @@
 - Raised the minimum PHP requirement to 8.2 and addressed a PHP 8.4/8.5 nullable parameter deprecation.
 - Updated bundled PHP dependencies and removed development dependencies from the bundled vendor directory.
 - Refreshed form builder styling with EE theme colours, compact inputs and spacing, cohesive toolbars, and responsive layouts.
-- Widened the field palette and settings sidebar, arranged palette fields in two columns, and further tightened builder controls and spacing.
+- Widened the field palette and settings sidebar, arranged palette fields in two columns with truncated names and hover tooltips, and removed mailing-list source labels from the palette.
+- Refined compact select padding to prevent clipped values and added more space between page tabs and the form layout.
 - Stabilized builder scrolling with a viewport-sized workspace, independent scroll areas, and fixed sidebar toolbars; prevented scroll chaining onto the page.
 - Improved keyboard access, focus visibility, field selection, settings labels, and status announcements in the form builder.
 - Replaced the custom colour picker with a native colour input.

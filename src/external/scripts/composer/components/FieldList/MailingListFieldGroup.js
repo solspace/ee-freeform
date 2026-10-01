@@ -45,7 +45,6 @@ class MailingListFieldGroup extends Component {
               key={index}
               {...field}
               label={field.name}
-              badge={field.source}
               type="mailing_list"
               isUsed={usedFields.indexOf(field.id) !== -1}
               onClick={() => onFieldClick(FieldHelper.hashField(field), field, currentPage)}
