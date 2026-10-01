@@ -25,7 +25,7 @@ class SubmissionTransformer
         $count = 1,
         $totalResults = 1,
         $absoluteTotal = 1,
-        SubmissionAttributes $attributes = null
+        ?SubmissionAttributes $attributes = null
     ) {
         $prefix        = 'submission:';
         $absoluteCount = $count;

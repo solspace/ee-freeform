@@ -1,6 +1,34 @@
 CHANGELOG
 =========
 
+7.3
+---
+
+ * Add support for `non-positive-int`, `non-negative-int` and `non-zero-int` PHPStan types to `PhpStanExtractor`
+ * Add `PropertyDescriptionExtractorInterface` to `PhpStanExtractor`
+ * Deprecate the `Type` class, use `Symfony\Component\TypeInfo\Type` class from `symfony/type-info` instead
+ * Deprecate the `PropertyTypeExtractorInterface::getTypes()` method, use `PropertyTypeExtractorInterface::getType()` instead
+ * Deprecate the `ConstructorArgumentTypeExtractorInterface::getTypesFromConstructor()` method, use `ConstructorArgumentTypeExtractorInterface::getTypeFromConstructor()` instead
+
+7.1
+---
+
+ * Introduce `PropertyDocBlockExtractorInterface` to extract a property's doc block
+ * Restrict access to `PhpStanExtractor` based on visibility
+ * Add `PropertyTypeExtractorInterface::getType()` as experimental
+
+6.4
+---
+
+ * Make properties writable when a setter in camelCase exists, similar to the camelCase getter
+
+6.1
+---
+
+ * Add support for phpDocumentor and PHPStan pseudo-types
+ * Add PHP 8.0 promoted properties `@param` mutation support to `PhpDocExtractor`
+ * Add PHP 8.0 promoted properties `@param` mutation support to `PhpStanExtractor`
+
 6.0
 ---
 

@@ -26,7 +26,7 @@ if (FreeformHelper::getVersion() !== FREEFORM_EXPRESS && !file_exists($cacheDir 
     if (!$ftExists) {
         ee()->db->insert('exp_fieldtypes', [
             'name'                => 'freeform_next',
-            'version'             => '3.3.10',
+            'version'             => '4.0.0-alpha.1',
             'settings'            => 'YTowOnt9',
             'has_global_settings' => 'n',
         ]);
@@ -49,9 +49,12 @@ return [
     'name'           => 'Freeform',
     'module_name'    => 'Freeform_next',
     'description'    => 'Powerful form builder',
-    'version'        => '3.3.10',
+    'version'        => '4.0.0-alpha.1',
     'namespace'      => 'Solspace\Addons\FreeformNext',
     'settings_exist' => true,
+    'requires'       => [
+        'php' => '8.2',
+    ],
     'models'         => [
         'FormModel'                  => 'Model\FormModel',
         'FieldModel'                 => 'Model\FieldModel',
