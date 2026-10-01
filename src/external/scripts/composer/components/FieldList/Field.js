@@ -71,8 +71,10 @@ class Field extends Component {
         <button type="button" className={classList.join(" ")}
                 aria-label={`Add ${label} to the current page`}
                 onClick={onClick}>
-          {label}
-          {badge && <Badge label={badge} />}
+          <span className="composer-palette-label">
+            {label}
+            {badge && <Badge label={badge} />}
+          </span>
         </button>
       </li>,
     );

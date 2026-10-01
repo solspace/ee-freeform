@@ -152,7 +152,7 @@
 
   .builder-blocks {
     display: grid;
-    grid-template-columns: minmax(180px, 220px) minmax(280px, 1fr) minmax(280px, 320px);
+    grid-template-columns: minmax(240px, 280px) minmax(0, 1fr) minmax(320px, 360px);
     height: var(--composer-workspace-height, calc(100dvh - 240px));
     min-height: 360px;
     overflow: hidden;
@@ -176,7 +176,7 @@
         text-transform: none !important;
         color: var(--ee-text-tertiary, var(--ee-text-secondary, #5a5b7f)) !important;
         opacity: 1;
-        margin: 0 0 12px !important;
+        margin: 0 0 10px !important;
         font-weight: 500;
 
         display: flex !important;
@@ -304,19 +304,31 @@
     }
 
     > div > div {
-      margin: 0 0 16px;
+      margin: 0 0 14px;
 
       ul {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 4px;
+
+        li {
+          min-width: 0;
+        }
+
         li > button {
           width: 100%;
+          height: 100%;
+          box-sizing: border-box;
           text-align: left;
           font: inherit;
           font-size: 13px;
-          line-height: 1.5;
-          min-height: 30px;
-          display: block;
-          margin: 0 0 $spacing-short;
-          padding: 4px 8px;
+          line-height: 18px;
+          min-height: 28px;
+          display: flex;
+          align-items: flex-start;
+          gap: 5px;
+          margin: 0;
+          padding: 4px 6px;
 
           cursor: grab;
 
@@ -328,6 +340,17 @@
           color: var(--ee-text-normal, #0d0d19);
 
           transition: background $anim-speed $anim-ease;
+
+          &:before {
+            flex: 0 0 13px;
+            line-height: 18px;
+            margin: 0;
+          }
+
+          .composer-palette-label {
+            min-width: 0;
+            overflow-wrap: anywhere;
+          }
 
           &:hover {
             border-color: var(--ee-input-focus-border, #5d63f1);
@@ -372,17 +395,17 @@
     grid-auto-flow: column;
     grid-auto-columns: minmax(0, 1fr);
     gap: 4px;
-    margin: 0 0 12px;
-    padding: 0 0 8px;
+    margin: 0 0 10px;
+    padding: 0 0 6px;
     border-bottom: 1px solid var(--ee-border, #dfe0ee);
 
     > button {
       min-width: 0;
-      min-height: 40px;
+      min-height: 38px;
       margin: 0;
-      padding: 4px !important;
+      padding: 2px 4px !important;
       font-size: 12px;
-      line-height: 1.5;
+      line-height: 16px;
       white-space: normal;
       box-shadow: none;
       border-color: transparent;
@@ -392,7 +415,7 @@
       &:before {
         display: block;
         font-size: 14px;
-        line-height: 16px;
+        line-height: 14px;
         margin-bottom: 2px;
         padding: 0 !important;
         top: 0 !important;
@@ -613,13 +636,13 @@
 }
 
 .composer-property-item {
-  margin: 14px 0;
+  margin: 12px 0;
 
   .composer-property-heading {
-    gap: 3px;
+    gap: 2px;
     display: flex;
     flex-direction: column;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
 
     > label {
       position: relative;
@@ -841,8 +864,8 @@
   .composer-page-button {
     background: transparent;
     border: 0;
-    padding: 6px 2px;
-    min-height: 30px;
+    padding: 4px 2px;
+    min-height: 28px;
     font: inherit;
     color: inherit;
     cursor: pointer;
@@ -876,8 +899,8 @@
   }
 
   .composer-property-header {
-    padding-bottom: 12px;
-    margin-bottom: 14px;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
     border-bottom: 1px solid var(--ee-border, #dfe0ee);
 
     h3 { margin-bottom: 0 !important; }
@@ -887,33 +910,38 @@
 
   .composer-add-new-field-wrapper > button {
     width: 100%;
-    min-height: 30px;
+    min-height: 28px;
+    padding: 4px 8px;
+    font-size: 13px;
+    line-height: 18px;
   }
 
   .field-list .composer-special-fields {
-    padding-bottom: 12px;
-    margin-bottom: 16px;
+    padding-bottom: 10px;
+    margin-bottom: 14px;
     border-bottom: 1px solid var(--ee-border, #dfe0ee);
   }
 
   .composer-column input:not([type=checkbox]):not([type=radio]),
   .composer-column select:not([multiple]) {
-    height: 32px;
-    min-height: 32px;
+    height: 30px;
+    min-height: 30px;
     padding: 5px 8px;
     font-size: 13px;
-    line-height: 20px;
+    line-height: 18px;
     box-sizing: border-box;
   }
 
   .composer-submit-position-wrapper .button {
-    min-height: 32px;
+    min-height: 30px;
     padding: 5px 10px;
     font-size: 13px;
-    line-height: 20px;
+    line-height: 18px;
   }
 
   .composer-column label.composer-field-label {
+    font-size: 13px;
+    line-height: 18px;
     padding-right: 64px;
     overflow-wrap: anywhere;
   }
@@ -952,11 +980,11 @@
   .property-editor .composer-property-input,
   .composer-new-field-form {
     input:not([type=checkbox]):not([type=radio]):not([type=color]), select {
-      height: 30px;
-      min-height: 30px;
+      height: 28px;
+      min-height: 28px;
       padding: 4px 8px;
       font-size: 13px;
-      line-height: 20px;
+      line-height: 18px;
     }
 
     textarea {
@@ -971,7 +999,7 @@
   }
 
   .property-editor .composer-sidebar-body hr {
-    margin: 12px 0;
+    margin: 10px 0;
   }
 
   .property-editor .composer-sidebar-body .button {
@@ -1001,7 +1029,7 @@
 
   @media (max-width: 1100px) {
     .builder-blocks {
-      grid-template-columns: 190px minmax(0, 1fr);
+      grid-template-columns: 240px minmax(0, 1fr);
       height: auto;
       overflow: visible;
     }
