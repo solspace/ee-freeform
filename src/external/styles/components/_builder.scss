@@ -12,9 +12,9 @@ $minRowHeight: 60px;
 
 .builder {
   position: relative;
-  background: var(--ee-input-bg, #ffffff);
+  background: var(--ee-panel-bg, var(--ee-input-bg, #ffffff));
   flex: $builderFlex;
-  padding: 10px !important;
+  padding: 16px !important;
 
   overflow: hidden;
 
@@ -22,8 +22,12 @@ $minRowHeight: 60px;
     height: 100%;
   }
 
+  .composer-canvas {
+    min-height: 600px;
+  }
+
   .layout {
-    padding: 20px 0 0;
+    padding: 16px 0 0;
   }
 
   .composer-row-placeholder {
@@ -56,7 +60,7 @@ $minRowHeight: 60px;
     min-height: $minRowHeight;
     padding: 0;
 
-    background: var(--ee-input-bg, #ffffff);
+    background: transparent;
 
     .composer-row-placeholder {
       position: absolute;
@@ -74,20 +78,22 @@ $minRowHeight: 60px;
       justify-content: space-around;
       align-items: stretch;
 
-      padding: 0 10px;
+      padding: 0;
+      gap: 8px;
+      margin-bottom: 4px;
 
       .composer-column {
         position: relative;
         flex: 0 1 100%;
-        padding: 12px 10px 2px;
+        padding: 12px 10px 4px;
         min-width: 0;
         border-radius: 6px;
 
-        border: 2px dashed transparent;
+        border: 1px solid transparent;
 
         &.composer-column-active {
-          background: var(--ee-input-bg, #ffffff);
-          border-color: var(--ee-sidebar-text-active, #2c3fe4);
+          background: var(--ee-accent-light, #eaebfd);
+          border-color: var(--ee-input-focus-border, #5d63f1);
 
           .composer-submit-position-wrapper {
             padding-bottom: 8px;
@@ -95,7 +101,7 @@ $minRowHeight: 60px;
         }
 
         &:hover:not(.composer-column-active) {
-          background: var(--ee-input-bg, #ffffff);
+          background: var(--ee-bg-0, #f7f7fb);
           border-color: var(--ee-border, #dfe0ee);
         }
 
@@ -158,9 +164,9 @@ $minRowHeight: 60px;
           background-image: none;
           display: block;
           width: 100%;
-          padding: 8px 15px;
-          font-size: 1rem;
-          line-height: 1.6;
+          padding: 8px 10px;
+          font-size: 14px;
+          line-height: 1.5;
           color: var(--ee-input-color);
           background-color: var(--ee-input-bg);
           transition: border-color 200ms ease, box-shadow 200ms ease;
@@ -174,9 +180,9 @@ $minRowHeight: 60px;
           display: block;
           margin: 0;
           width: 100%;
-          font-size: 1rem;
-          line-height: 1.6;
-          padding: 8px 15px;
+          font-size: 14px;
+          line-height: 1.5;
+          padding: 8px 10px;
           color: var(--ee-input-color);
           background-color: var(--ee-input-bg);
           border: 1px solid var(--ee-input-border);
@@ -195,10 +201,10 @@ $minRowHeight: 60px;
           border: 1px solid var(--ee-input-border);
           border-radius: 5px;
           box-shadow: 0 1px 2px 0 var(--ee-shadow-input);
-          font-size: 1rem;
-          line-height: 1.6;
+          font-size: 14px;
+          line-height: 1.5;
           width: 100%;
-          padding: 8px 15px;
+          padding: 8px 10px;
           max-height: unset;
           min-height: unset;
           resize: unset;
@@ -234,7 +240,7 @@ $minRowHeight: 60px;
           position: relative;
           margin: 0 !important;
           line-height: 1.4;
-          color: var(--ee-text-secondary);
+          color: var(--ee-text-tertiary, var(--ee-text-secondary, #5a5b7f));
           display: block;
           font-size: 0.8rem;
           font-style: normal;
@@ -318,7 +324,7 @@ $minRowHeight: 60px;
               right: 8px;
               top: 7px;
 
-              color: #CCC;
+              color: var(--ee-text-tertiary, #8082a5);
             }
           }
         }
@@ -522,7 +528,7 @@ $minRowHeight: 60px;
 }
 
 .composer-property-item-lightswitch .lightswitch-input:focus-visible + .lightswitch-visual {
-  outline: 2px solid #94a3b8;
+  outline: 2px solid var(--ee-input-focus-border, #5d63f1);
   outline-offset: 2px;
 }
 

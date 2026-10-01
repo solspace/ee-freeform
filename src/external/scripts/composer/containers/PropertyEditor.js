@@ -105,9 +105,13 @@ class PropertyEditor extends Component {
   render() {
     const { hash, properties, formStatuses, editForm, editAdminNotifications, editIntegrations, integrationCount } = this.props;
 
-    let title = "Field Property Editor";
+    let title = "Field settings";
 
     const props = (properties[hash] && properties[hash].type) ? properties[hash] : { type: null };
+
+    if (props.type === FieldTypes.PAGE) {
+      title = "Page settings";
+    }
 
     let form = null;
     switch (props.type) {
@@ -158,24 +162,22 @@ class PropertyEditor extends Component {
             />
           }
         >
-          <h3>
-            {title}
+          <div className="composer-property-header">
+            <h3>
+              {title}
 
-            {showReset &&
-            <button type="button"
-              className={"button button--default button--small property-reset"}
-              title={"Reset to default values"}
-              onClick={this.resetField}
-            >
-              Reset
-            </button>
-            }
-          </h3>
-          {props.label &&
-            <h4>{props.label}</h4>
-          }
-
-          <hr style={{ marginTop: 0, marginBottom: 15 }} />
+              {showReset &&
+                <button type="button"
+                  className={"button button--default button--small property-reset"}
+                  title={"Reset to default values"}
+                  onClick={this.resetField}
+                >
+                  Reset
+                </button>
+              }
+            </h3>
+            {props.label && <h4>{props.label}</h4>}
+          </div>
 
           {form ? form : <p>Please select an element</p>}
 
