@@ -10,7 +10,7 @@
 
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import SaveButton from "../components/SaveButton";
+import HeaderActions from "../components/HeaderActions";
 import Composer from "../containers/Composer";
 import FieldList from "../containers/FieldList";
 import PropertyEditor from "../containers/PropertyEditor";
@@ -72,6 +72,7 @@ export default class ComposerApp extends Component {
   });
 
   componentDidMount() {
+    document.documentElement.classList.add("freeform-builder-page");
     this.updateWorkspaceHeight();
     window.addEventListener("resize", this.updateWorkspaceHeight);
 
@@ -79,7 +80,7 @@ export default class ComposerApp extends Component {
     // Measure only on layout changes, never while a panel is scrolling.
     if (typeof ResizeObserver !== "undefined") {
       this.resizeObserver = new ResizeObserver(this.updateWorkspaceHeight);
-      const heading = document.querySelector(".main-nav__title");
+      const heading = document.querySelector(".main-nav") || document.querySelector(".main-nav__title");
       if (heading) {
         this.resizeObserver.observe(heading);
       }
@@ -87,6 +88,7 @@ export default class ComposerApp extends Component {
   }
 
   componentWillUnmount() {
+    document.documentElement.classList.remove("freeform-builder-page");
     window.removeEventListener("resize", this.updateWorkspaceHeight);
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
@@ -114,17 +116,19 @@ export default class ComposerApp extends Component {
 
     return (
       <div className="builder-interface">
-        <SaveButton saveUrl={saveUrl} formUrl={formUrl} />
+        <HeaderActions saveUrl={saveUrl} formUrl={formUrl} />
 
         <div className="builder-blocks" ref={this.setWorkspace}>
           <div className="field-list" role="region" aria-label="Available fields">
             <FieldList />
           </div>
-          <div className="builder" role="region" aria-label="Form layout">
-            <Composer />
-          </div>
-          <div className="property-editor" role="region" aria-label="Element settings">
-            <PropertyEditor />
+          <div className="composer-editor-panel panel">
+            <div className="builder" role="region" aria-label="Form layout">
+              <Composer />
+            </div>
+            <div className="property-editor" role="region" aria-label="Element settings">
+              <PropertyEditor />
+            </div>
           </div>
         </div>
       </div>

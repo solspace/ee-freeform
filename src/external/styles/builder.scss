@@ -17,19 +17,31 @@
 @import "extendable-classes";
 @import "../../../node_modules/react-joyride/lib/react-joyride";
 
-.main-nav {
-  margin-bottom: -35px;
+.freeform-builder-page .main-nav {
+  margin-bottom: 0;
 }
 
-.main-nav__title {
-  padding: 16px 20px;
-  position: relative;
-  border-top: 1px solid var(--ee-border, #dfe0ee);
-  border-left: 1px solid var(--ee-border, #dfe0ee);
-  border-right: 1px solid var(--ee-border, #dfe0ee);
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
-  background: var(--ee-panel-bg, var(--ee-input-bg, #ffffff));
+.freeform-builder-page .main-nav__title {
+  min-width: 0;
+}
+
+.freeform-builder-page .main-nav__toolbar {
+  flex-shrink: 0;
+}
+
+.composer-header-actions,
+.composer-header-fallback {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.composer-header-fallback {
+  margin-bottom: 24px;
+}
+
+.main-nav__toolbar .composer-save > .button {
+  width: auto;
+  margin: 0;
 }
 
 #freeform-builder {
@@ -143,28 +155,33 @@
 
 .builder-interface {
   position: relative;
-  border-top: 1px solid var(--ee-border);
-  border-left: 1px solid var(--ee-border, #dfe0ee);
-  border-right: 1px solid var(--ee-border, #dfe0ee);
-  border-bottom: 1px solid var(--ee-border, #dfe0ee);
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
 
   .builder-blocks {
     display: grid;
-    grid-template-columns: minmax(240px, 280px) minmax(0, 1fr) minmax(320px, 360px);
+    grid-template-columns: minmax(240px, 280px) minmax(0, 1fr);
+    gap: 28px;
     height: var(--composer-workspace-height, calc(100dvh - 240px));
     min-height: 360px;
-    overflow: hidden;
+    overflow: visible;
 
     > div {
       min-width: 0;
-      padding: 12px;
       min-height: 0;
+    }
 
-      &.builder {
-        border-left: 1px solid var(--ee-border);
-        border-right: 1px solid var(--ee-border);
+    .composer-editor-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 360px);
+      margin: 0;
+      overflow: hidden;
+
+      > div {
+        min-width: 0;
+        min-height: 0;
+      }
+
+      > .builder {
+        border-right: 1px solid var(--ee-border, #dfe0ee);
       }
     }
 
@@ -285,10 +302,9 @@
 }
 
 .field-list {
-  background: var(--ee-bg-0, var(--ee-input-bg, #f7f7fb));
+  background: transparent;
   flex: $fieldListFlex;
-  padding: 12px !important;
-  border-bottom-left-radius: 5px;
+  padding: 0 !important;
 
   .field-container {
     position: relative;
@@ -463,9 +479,10 @@
 }
 
 .composer-save {
-  position: absolute;
-  top: -54px;
-  right: 16px;
+  position: relative;
+  display: inline-flex;
+  flex-wrap: nowrap;
+  flex: 0 0 auto;
   z-index: 2;
 
   input {
@@ -485,6 +502,11 @@
   .button--primary::first-letter {
     text-decoration: underline;
     text-underline-offset: 2px;
+  }
+
+  button:focus-visible {
+    outline: 2px solid var(--ee-sidebar-text-active, #2c3fe4);
+    outline-offset: 2px;
   }
 
 }
@@ -964,6 +986,10 @@
     padding: 0 2px 2px;
   }
 
+  .field-list .composer-sidebar-content {
+    padding: 0;
+  }
+
   .composer-sidebar-toolbar {
     flex: 0 0 auto;
   }
@@ -1046,7 +1072,13 @@
   @media (max-width: 1100px) {
     .builder-blocks {
       grid-template-columns: 240px minmax(0, 1fr);
+      gap: 20px;
       height: auto;
+      overflow: visible;
+    }
+
+    .builder-blocks .composer-editor-panel {
+      grid-template-columns: minmax(0, 1fr);
       overflow: visible;
     }
 
@@ -1065,8 +1097,9 @@
       overscroll-behavior: auto;
     }
 
-    .builder-blocks > .builder {
+    .builder-blocks .composer-editor-panel > .builder {
       overflow: visible;
+      border-right: 0;
     }
 
     .builder .composer-canvas {
@@ -1084,11 +1117,7 @@
   @media (max-width: 720px) {
     .builder-blocks {
       grid-template-columns: minmax(0, 1fr);
-    }
-
-    .builder-blocks > .builder {
-      border: 0;
-      border-top: 1px solid var(--ee-border, #dfe0ee);
+      gap: 16px;
     }
 
     .builder > .composer-canvas {
@@ -1096,11 +1125,6 @@
       height: auto;
     }
 
-    .composer-save {
-      position: static;
-      padding: 12px;
-      justify-content: flex-end;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {

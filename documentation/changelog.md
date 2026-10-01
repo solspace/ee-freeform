@@ -6,6 +6,7 @@
 - Refreshed form builder styling with EE theme colours, compact inputs and spacing, cohesive toolbars, and responsive layouts.
 - Widened the field palette and settings sidebar, arranged palette fields in two columns with truncated names and hover tooltips, and removed mailing-list source labels from the palette.
 - Refined compact select padding to prevent clipped values and added more space between page tabs and the form layout.
+- Matched EE's Files page structure with native page-heading save controls, a separate field palette on the page background, and a framed form/settings panel.
 - Stabilized builder scrolling with a viewport-sized workspace, independent scroll areas, and fixed sidebar toolbars; prevented scroll chaining onto the page.
 - Improved keyboard access, focus visibility, field selection, settings labels, and status announcements in the form builder.
 - Replaced the custom colour picker with a native colour input.
