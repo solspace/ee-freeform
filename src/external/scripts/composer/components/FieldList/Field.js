@@ -67,11 +67,13 @@ class Field extends Component {
     }
 
     return connectDragSource(
-      <li className={classList.join(" ")}
-          disabled={isUsed}
-          onClick={!isUsed ? onClick : null}>
-        {label}
-        {badge && <Badge label={badge} />}
+      <li>
+        <button type="button" className={classList.join(" ")}
+                aria-label={`Add ${label} to the current page`}
+                onClick={onClick}>
+          {label}
+          {badge && <Badge label={badge} />}
+        </button>
       </li>,
     );
   }

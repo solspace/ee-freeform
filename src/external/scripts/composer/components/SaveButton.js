@@ -45,7 +45,14 @@ class SaveButton extends Component {
     this.checkForSaveShortcut = this.checkForSaveShortcut.bind(this);
     this.state = initialState;
 
+  }
+
+  componentDidMount() {
     document.addEventListener("keydown", this.checkForSaveShortcut, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.checkForSaveShortcut, false);
   }
 
   render() {
@@ -57,15 +64,15 @@ class SaveButton extends Component {
     let currentTitle = isSaving ? progressTitle : originalTitle;
 
     return (
-        <div className="button-group buttons composer-save">
-          <button className="button button--primary" type="submit" value={currentTitle} data-work-text="Saving..." onClick={this.save}>{currentTitle}</button>
+        <div className="button-group buttons composer-save" aria-busy={isSaving}>
+          <button className="button button--primary" type="button" disabled={isSaving} value={currentTitle} data-work-text="Saving..." onClick={this.save}>{currentTitle}</button>
           <button type="button" className="button button--primary dropdown-toggle js-dropdown-toggle saving-options"
-                  data-dropdown-pos="bottom-end">
-            <i className="fas fa-angle-down"></i>
+                  disabled={isSaving} aria-label="More save options" data-dropdown-pos="bottom-end">
+            <i className="fas fa-angle-down" aria-hidden="true"></i>
           </button>
           <div className="dropdown">
             <div className="dropdown__scroll">
-              <button className="button button__within-dropdown formsubmit gotoFormList" type="submit" data-submit-text="Save &amp; Close" data-work-text="Saving..." onClick={this.save}>Save &amp; Close
+              <button className="button button__within-dropdown gotoFormList" type="button" disabled={isSaving} data-submit-text="Save &amp; Close" data-work-text="Saving..." onClick={this.save}>Save &amp; Close
               </button>
             </div>
           </div>
@@ -74,6 +81,11 @@ class SaveButton extends Component {
   }
 
   save(event) {
+    event.preventDefault();
+    if (this.state.isSaving) {
+      return;
+    }
+
     const { saveUrl, formUrl, formId, composer, context } = this.props;
     const { currentFormHandle, updateFormId, updateFormHandle } = this.props;
     const { csrf, notificator } = this.context;
@@ -87,9 +99,10 @@ class SaveButton extends Component {
       }),
     };
 
-    const shouldGotoFormList = event.target.className.match(/gotoFormList/);
-    const shouldGotoNewForm = event.target.className.match(/gotoNewForm/);
-    const duplicateForm = event.target.className.match(/duplicateForm/);
+    const classList = event.type === "click" ? event.currentTarget.classList : null;
+    const shouldGotoFormList = classList && classList.contains("gotoFormList");
+    const shouldGotoNewForm = classList && classList.contains("gotoNewForm");
+    const duplicateForm = classList && classList.contains("duplicateForm");
 
     if (duplicateForm) {
       savableState.formId = "";

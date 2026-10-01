@@ -1,76 +1,20 @@
-/*
- * Freeform for ExpressionEngine
- *
- * @package       Solspace:Freeform
- * @author        Solspace, Inc.
- * @copyright     Copyright (c) 2008-2026, Solspace, Inc.
- * @link          https://docs.solspace.com/expressionengine/freeform/v3/
- * @license       https://docs.solspace.com/license-agreement/
- */
-
 import React from "react";
-import { SketchPicker } from "react-color";
 import BasePropertyItem from "./BasePropertyItem";
 
 export default class ColorProperty extends BasePropertyItem {
-  static initialState = {
-    displayColorPicker: false,
-  };
-
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      ...ColorProperty.initialState,
-    };
-
-    this.handleClick = this.handleClick.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-  }
-
   renderInput() {
-    const { value, readOnly, disabled, className } = this.props;
-    const { displayColorPicker } = this.state;
-
-    const classes = [className];
-    if (readOnly && disabled) {
-      classes.push("code");
-    }
+    const { name, value, readOnly, disabled, instructions, onChangeHandler } = this.props;
 
     return (
-      <div>
-        <div className="freeform-colorpicker-preview-wrapper" onClick={this.handleClick}>
-          <div
-            className="freeform-colorpicker-preview"
-            style={{ backgroundColor: value }}
-          />
-        </div>
-
-        {displayColorPicker && !readOnly && !disabled &&
-        <div className="freeform-colorpicker-wrapper">
-          <div className="freeform-colorpicker-cover" onClick={this.handleClose} />
-          <SketchPicker
-            color={value}
-            onChange={this.handleChange}
-            disableAlpha={true}
-          />
-        </div>
-        }
-      </div>
+      <input
+        id={this.inputId}
+        type="color"
+        name={name}
+        value={/^#[0-9a-f]{6}$/i.test(value) ? value : "#000000"}
+        disabled={disabled || readOnly}
+        aria-describedby={instructions ? this.hintId : undefined}
+        onChange={event => onChangeHandler(name, event.target.value)}
+      />
     );
   }
-
-  handleClick = () => {
-    this.setState({ displayColorPicker: !this.state.displayColorPicker });
-  };
-
-  handleClose = () => {
-    this.setState({ displayColorPicker: false });
-  };
-
-  handleChange = (color) => {
-    const { name } = this.props;
-
-    this.props.onChangeHandler(name, color.hex);
-  };
 }

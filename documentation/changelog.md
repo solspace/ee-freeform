@@ -1,5 +1,13 @@
 # Changelog
 
+### 4.0.0-alpha.1 (Unreleased)
+- Raised the minimum PHP requirement to 8.2 and addressed a PHP 8.4/8.5 nullable parameter deprecation.
+- Updated bundled PHP dependencies and removed development dependencies from the bundled vendor directory.
+- Refreshed form builder styling with theme-aware colours, responsive layouts, and native sticky sidebars.
+- Improved keyboard access, focus visibility, field selection, settings labels, and status announcements in the form builder.
+- Replaced the custom colour picker with a native colour input.
+- Prevented duplicate saves while a save is in progress and rendered form titles and notifications as plain text.
+
 ### 1.7.8 (January 30, 2019) <a href="#v1-7-8" id="v1-7-8" class="docs-anchor">#</a>
 - Fixed a bug where the 'Automatically Scroll to Form on Errors and Multipage forms?' setting was not working for multi-page form returns.
 - Fixed a bug where the Freeform channel entry fieldtype could prematurely trigger submit logic in certain scenarios.

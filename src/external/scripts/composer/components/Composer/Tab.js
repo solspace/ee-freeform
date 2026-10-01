@@ -114,12 +114,18 @@ class Tab extends Component {
 
     return connectDropTarget(
       connectDragSource(
-        <li className={classNames.join(" ")} onClick={this.tabClickHandler}>
-          <span>{label ? label : `Page ${index + 1}`}</span>
+        <li className={classNames.join(" ")}>
+          <button type="button" className="composer-page-button"
+                  aria-current={isSelected ? "page" : undefined}
+                  onClick={this.tabClickHandler}>
+            {label || `Page ${index + 1}`}
+          </button>
 
           {isSelected && (pageCount > 1) ? (
             <ul className="composer-actions composer-page-actions">
-              <li className="composer-action-remove" onClick={this.removePageHandler}></li>
+              <li><button type="button" className="composer-action-remove"
+                          aria-label={`Remove ${label || `Page ${index + 1}`}`}
+                          onClick={this.removePageHandler} /></li>
             </ul>
           ) : ""}
         </li>
@@ -128,9 +134,7 @@ class Tab extends Component {
   }
 
   tabClickHandler(event) {
-    if (!event.target.className.match(/composer-action-remove/)) {
-      this.props.onClick();
-    }
+    this.props.onClick();
   }
 
   removePageHandler(event) {
@@ -141,6 +145,7 @@ class Tab extends Component {
     }
 
     event.preventDefault();
+    event.stopPropagation();
     return false;
   }
 }

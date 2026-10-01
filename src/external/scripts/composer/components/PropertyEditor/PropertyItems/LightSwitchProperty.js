@@ -19,17 +19,10 @@ export default class LightSwitchProperty extends BasePropertyItem {
         bold: PropTypes.bool,
     };
 
-    constructor(props) {
-        super(props);
-
-        this.inputId = props.id || `lightswitch_${Math.random().toString(36).slice(2, 9)}`;
-        this.hintId = `${this.inputId}_hint`;
-    }
-
     render() {
         const { label, instructions, name, readOnly, disabled, className, checked, bold, onChangeHandler } = this.props;
 
-        const style = bold ? { fontWeight: "bold", color: "#0d0d19" } : { fontWeight: "normal" };
+        const style = { fontWeight: bold ? "bold" : "normal" };
 
         return (
             <div className="composer-property-item composer-property-item-lightswitch">
@@ -56,7 +49,7 @@ export default class LightSwitchProperty extends BasePropertyItem {
                             id={this.inputId}
                             className={`lightswitch-input ${className || ""}`}
                             name={name}
-                            disabled={disabled}
+                            disabled={disabled || readOnly}
                             readOnly={readOnly}
                             checked={!!checked}
                             onChange={onChangeHandler}

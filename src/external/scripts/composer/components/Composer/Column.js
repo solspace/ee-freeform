@@ -63,6 +63,17 @@ class Column extends Component {
     const { connectDragPreview } = this.props;
 
     connectDragPreview(this.buildPreview());
+    this.disablePreviewInputs();
+  }
+
+  componentDidUpdate() {
+    this.disablePreviewInputs();
+  }
+
+  disablePreviewInputs() {
+    // Preview fields illustrate the form; keyboard users edit them through settings.
+    this.refs.preview.querySelectorAll("input, textarea, select, button, a, [tabindex], [contenteditable]")
+      .forEach(element => element.setAttribute("tabindex", "-1"));
   }
 
   render() {
@@ -77,9 +88,16 @@ class Column extends Component {
     return connectDragSource(
       <div className={className.join(" ")} onClick={this.openPropertiesHandler}>
         <ul className="composer-actions composer-column-actions">
-          <li className="composer-action-remove" onClick={this.removeColumnHandler}></li>
+          <li><button type="button" className="composer-action-settings"
+                      data-field-hash={hash}
+                      aria-label={`Edit ${properties.label || properties.type} settings`}
+                      onClick={this.openPropertiesHandler} /></li>
+          <li><button type="button" className="composer-action-remove"
+                      aria-label={`Remove ${properties.label || properties.type}`}
+                      onClick={this.removeColumnHandler} /></li>
         </ul>
 
+        <div ref="preview" aria-hidden="true">
         <Field
           type={properties.type}
           properties={properties}
@@ -88,6 +106,7 @@ class Column extends Component {
           rowIndex={rowIndex}
           duplicateHandles={duplicateHandles}
         />
+        </div>
       </div>,
     );
   }
@@ -110,6 +129,13 @@ class Column extends Component {
     const { removeColumn, pageIndex, hash, index, rowIndex } = this.props;
 
     removeColumn(hash, index, rowIndex, pageIndex);
+    this.props.openProperties("form");
+    requestAnimationFrame(() => {
+      const button = document.querySelector(".composer-form-settings .form-settings");
+      if (button) {
+        button.focus();
+      }
+    });
 
     event.stopPropagation();
     event.preventDefault();

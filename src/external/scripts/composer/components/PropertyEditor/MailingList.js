@@ -205,7 +205,7 @@ class MailingList extends BasePropertyEditor {
           options={lists}
         />
 
-        <button
+        <button type="button"
           className="btn action download icon"
           onClick={fetchMailingLists}
           disabled={isFetching}

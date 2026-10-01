@@ -33,7 +33,7 @@ export default class TabList extends Component {
     const { formPropCleanup } = this.context;
 
     return (
-      <div className="tab-list-wrapper">
+      <nav className="tab-list-wrapper" aria-label="Form pages">
         <ul>
           {layout.map(
             (row, index) => (
@@ -50,10 +50,10 @@ export default class TabList extends Component {
 
         {!formPropCleanup && tabCount < MAX_TABS && (
           <div className="tab-list-controls">
-            <a className="button button--default button--small" onClick={() => onNewTab(layout.length)}>Add Page</a>
+            <button type="button" className="button button--default button--small" onClick={() => onNewTab(layout.length)}>Add Page</button>
           </div>
         )}
-      </div>
+      </nav>
     );
   }
 

@@ -81,13 +81,13 @@ export default class ComposerApp extends Component {
         <SaveButton saveUrl={saveUrl} formUrl={formUrl} />
 
         <div className="builder-blocks">
-          <div className="field-list">
+          <div className="field-list" role="region" aria-label="Available fields">
             <FieldList />
           </div>
-          <div className="builder">
+          <div className="builder" role="region" aria-label="Form layout">
             <Composer />
           </div>
-          <div className="property-editor">
+          <div className="property-editor" role="region" aria-label="Element settings">
             <PropertyEditor />
           </div>
         </div>

@@ -97,7 +97,7 @@ class Form extends BasePropertyEditor {
     });
 
     // Updating the EE .main-nav__title h1 on load.
-    document.getElementsByClassName("main-nav__title")[0].querySelector('h1').innerHTML = name;
+    document.getElementsByClassName("main-nav__title")[0].querySelector('h1').textContent = name;
 
     return (
       <div>
@@ -182,7 +182,7 @@ class Form extends BasePropertyEditor {
   handleTitleUpdate(event) {
       const { value } = event.target;
 
-      document.getElementsByClassName("main-nav__title")[0].querySelector('h1').innerHTML = value;
+      document.getElementsByClassName("main-nav__title")[0].querySelector('h1').textContent = value;
 
       document.title = value + " | ExpressionEngine";
 

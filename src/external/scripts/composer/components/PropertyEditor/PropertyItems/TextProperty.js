@@ -22,6 +22,9 @@ export default class TextProperty extends BasePropertyItem {
 
     return (
       <input
+        id={this.inputId}
+        aria-describedby={this.props.instructions ? this.hintId : undefined}
+        aria-required={!!this.props.required}
         type="text"
         className={classes.join(" ")}
         name={name}

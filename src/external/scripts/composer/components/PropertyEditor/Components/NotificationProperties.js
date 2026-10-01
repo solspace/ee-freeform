@@ -65,11 +65,11 @@ class NotificationProperties extends Component {
       <div className="composer-new-field-form">
         <div className="field">
           <div className="heading">
-            <label>Name</label>
+            <label htmlFor="freeform-new-notification-name">Name</label>
           </div>
           <div className="input">
             <input type="text"
-                   name="name"
+                   id="freeform-new-notification-name" name="name"
                    ref="name"
                    className="text fullwidth input--small"
                    value={name}
@@ -81,11 +81,11 @@ class NotificationProperties extends Component {
         {isDbEmailTemplateStorage &&
         <div className="field">
           <div className="heading">
-            <label>Handle</label>
+            <label htmlFor="freeform-new-notification-handle">Handle</label>
           </div>
           <div className="input">
             <input type="text"
-                   name="handle"
+                   id="freeform-new-notification-handle" name="handle"
                    ref="handle"
                    className="text fullwidth code input--small"
                    value={handle}
@@ -97,13 +97,13 @@ class NotificationProperties extends Component {
         }
 
         {errors.length > 0 &&
-        <div className="errors">
+        <div className="errors" role="alert">
           {errors.map((message, index) => (<div key={index}>{message}</div>))}
         </div>
         }
 
-        <button className="btn action cancel button--small" onClick={toggleForm}>Cancel</button>
-        <button className="btn action submit button--small" onClick={this.addNotification}>Save</button>
+        <button type="button" className="btn action cancel button--small" onClick={toggleForm}>Cancel</button>
+        <button type="button" className="btn action submit button--small" onClick={this.addNotification}>Save</button>
       </div>
     );
   }

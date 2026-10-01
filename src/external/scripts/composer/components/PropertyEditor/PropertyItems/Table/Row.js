@@ -60,13 +60,13 @@ class Row extends Component {
             {isSortable &&
             <td className="action">
               {connectDragSource(
-                <a className="move" title={"Reorder"} />,
+                <span className="move" title="Drag to reorder" aria-hidden="true" />,
               )}
             </td>
             }
             {isRemovable &&
             <td className="action">
-              <a className="delete" title={"Remove"} onClick={() => deleteRow(rowIndex)} />
+              <button type="button" className="delete" aria-label={`Remove row ${rowIndex + 1}`} onClick={() => deleteRow(rowIndex)} />
             </td>
             }
           </tr>,

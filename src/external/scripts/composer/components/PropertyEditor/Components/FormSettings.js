@@ -4,31 +4,34 @@ import * as FieldTypes from "../../../constants/FieldTypes";
 
 export const FormSettings = ({ hash, integrationCount, editForm, editAdminNotifications, editIntegrations }) => (
   <div className="composer-form-settings">
-    <a onClick={editForm}
+    <button type="button" onClick={editForm} aria-pressed={hash === FieldTypes.FORM}
        className={"button button--secondary form-settings" + (hash === FieldTypes.FORM ? " active" : "")}
        data-icon="settings"
        title="Form Settings"
+       aria-label="Form settings"
     >
         Settings
-    </a>
+    </button>
 
-    <a onClick={editAdminNotifications}
+    <button type="button" onClick={editAdminNotifications} aria-pressed={hash === FieldTypes.ADMIN_NOTIFICATIONS}
        className={"button button--secondary notification-settings" + (hash === FieldTypes.ADMIN_NOTIFICATIONS ? " active" : "")}
        data-icon="mail"
        title="Admin Notifications"
+       aria-label="Admin notifications"
     >
         Notifications
-    </a>
+    </button>
 
     {integrationCount ?
       (
-        <a onClick={editIntegrations}
+        <button type="button" onClick={editIntegrations} aria-pressed={hash === FieldTypes.INTEGRATION}
            className={"button button--secondary crm-settings" + (hash === FieldTypes.INTEGRATION ? " active" : "")}
            data-icon="crm"
            title="CRM"
+           aria-label="CRM integrations"
         >
             CRM
-        </a>
+        </button>
       )
       : ""}
   </div>

@@ -162,7 +162,7 @@ class PropertyEditor extends Component {
             {title}
 
             {showReset &&
-            <button
+            <button type="button"
               className={"button button--default button--small property-reset"}
               title={"Reset to default values"}
               onClick={this.resetField}
@@ -172,7 +172,7 @@ class PropertyEditor extends Component {
             }
           </h3>
           {props.label &&
-            <h4 dangerouslySetInnerHTML={{ __html: props.label }} />
+            <h4>{props.label}</h4>
           }
 
           <hr style={{ marginTop: 0, marginBottom: 15 }} />

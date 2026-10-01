@@ -100,7 +100,7 @@ class MatrixEditorProperty extends Component {
         </table>
         }
 
-        <button className={"btn add icon" + (!values.length ? " button button--primary button--small" : "")} onClick={this.addRow}>
+        <button type="button" className={"btn add icon" + (!values.length ? " button button--primary button--small" : "")} onClick={this.addRow}>
           {buttonLabel || "Add..."}
         </button>
       </div>

@@ -11,6 +11,8 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 
+let nextPropertyId = 0;
+
 export default class BasePropertyItem extends Component {
   static propTypes = {
     label: PropTypes.string.isRequired,
@@ -31,6 +33,9 @@ export default class BasePropertyItem extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.inputId = `freeform-property-${++nextPropertyId}`;
+    this.hintId = `${this.inputId}-hint`;
+    this.labelId = `${this.inputId}-label`;
     this.renderInput = this.renderInput.bind(this);
   }
 
@@ -40,9 +45,9 @@ export default class BasePropertyItem extends Component {
     return (
       <div className="composer-property-item">
         <div className="composer-property-heading">
-          <label className={required ? "required" : ""}>{label}</label>
+          <label id={this.labelId} htmlFor={this.inputId} className={required ? "required" : ""}>{label}</label>
           {instructions &&
-          <div className="composer-property-instructions">
+          <div id={this.hintId} className="composer-property-instructions">
             {instructions}
           </div>
           }

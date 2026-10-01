@@ -63,7 +63,7 @@ async function clean() {
       THEMES_DEST,
       "src/themes/freeform_next/javascript/composer",
       ROOT_THEMES,
-    ].map((dir) => rm(dir, { recursive: true, force: true }))
+    ].map((dir) => rm(dir, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 }))
   );
 }
 
@@ -206,7 +206,7 @@ function zipDirectory(sourceDir, outFile) {
 async function pack() {
   const version = readVersion();
   const buildDir = "dist/build";
-  await rm(buildDir, { recursive: true, force: true });
+  await rm(buildDir, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 });
   await mkdir(buildDir, { recursive: true });
 
   await cp("src/freeform_next", join(buildDir, "freeform_next"), { recursive: true });
@@ -225,7 +225,7 @@ async function pack() {
     `${buildDir}/freeform_next/vendor/**/{tests,Tests,test,doc}`,
     { onlyDirectories: true }
   );
-  await Promise.all(junkDirs.map((dir) => rm(dir, { recursive: true, force: true })));
+  await Promise.all(junkDirs.map((dir) => rm(dir, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 })));
 
   // Drop macOS cruft so it never ships in the addon.
   const dsStores = await glob(`${buildDir}/**/.DS_Store`, { dot: true });
@@ -234,7 +234,7 @@ async function pack() {
   await mkdir("dist", { recursive: true });
   const zipPath = `dist/EE-Freeform_${version}.zip`;
   await zipDirectory(buildDir, zipPath);
-  await rm(buildDir, { recursive: true, force: true });
+  await rm(buildDir, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 });
   return zipPath;
 }
 

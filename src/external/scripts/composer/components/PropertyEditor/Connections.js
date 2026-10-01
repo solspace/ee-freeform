@@ -54,7 +54,7 @@ class Connections extends BasePropertyEditor {
           {list.map((item, i) => <li key={i}>{item}</li>)}
         </ul>
 
-        <button className="btn add icon" onClick={this.props.addConnection}>
+        <button type="button" className="btn add icon" onClick={this.props.addConnection}>
           Add a connection
         </button>
       </div>

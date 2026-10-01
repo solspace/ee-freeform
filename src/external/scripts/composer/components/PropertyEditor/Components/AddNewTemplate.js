@@ -31,7 +31,7 @@ export default class AddNewTemplate extends Component {
     return (
       <div className={className}>
         {!showForm &&
-        <button className="button button--default button--small" onClick={this.toggleForm}>
+        <button type="button" className="button button--default button--small" onClick={this.toggleForm}>
           Create New Template
         </button>
         }

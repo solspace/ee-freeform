@@ -118,9 +118,9 @@ class Row extends Component {
       <div className="composer-row">
         <PlaceholderRow active={showRowPlaceholder} />
 
-        <ul className="composer-column-container">
+        <div className="composer-column-container">
           {columnList}
-        </ul>
+        </div>
       </div>,
     );
   }

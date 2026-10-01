@@ -109,7 +109,7 @@ class Integrations extends BasePropertyEditor {
           onChangeHandler={this.updateIntegration}
         />
 
-        <button
+        <button type="button"
           className="btn action refresh icon"
           onClick={fetchCrmIntegrations}
           disabled={isFetching}
