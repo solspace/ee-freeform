@@ -19,7 +19,7 @@
     border-collapse: separate;
     border-spacing: 0;
 
-    box-shadow: 0 1px 5px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: none;
 
     thead {
       tr {
@@ -53,7 +53,7 @@
             overflow: hidden;
 
             width: 100%;
-            padding: 7px 10px;
+            padding: 4px 8px;
             box-sizing: border-box;
 
             border: none !important;
@@ -79,7 +79,7 @@
             display: block;
             white-space: normal;
 
-            padding: 7px 10px;
+            padding: 4px 8px;
             box-sizing: border-box;
 
             &.required:after {

@@ -34,13 +34,11 @@ class FieldList extends Component {
     return (
       <AlwaysNearbyBox
         className="field-container"
-        stickyTop={
-          <SpecialFieldGroup
-            fields={specialFields}
-            onFieldClick={onFieldClick}
-          />
-        }
       >
+        <SpecialFieldGroup
+          fields={specialFields}
+          onFieldClick={onFieldClick}
+        />
         <FieldGroup
           fields={fields}
           usedFields={usedFields}

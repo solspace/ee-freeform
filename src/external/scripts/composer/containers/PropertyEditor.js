@@ -152,6 +152,7 @@ class PropertyEditor extends Component {
 
     return (
         <AlwaysNearbyBox
+          scrollKey={hash}
           stickyTop={
             <FormSettings
               editForm={editForm}

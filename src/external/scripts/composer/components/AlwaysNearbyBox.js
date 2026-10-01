@@ -1,19 +1,34 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { Component } from "react";
 
-// CSS sticky positioning keeps the sidebars nearby without scroll listeners,
-// measured widths, or delayed updates after adding fields.
-const AlwaysNearbyBox = ({ className = "", stickyTop, children }) => (
-  <div className={`composer-sidebar-content ${className}`}>
-    {stickyTop && <div className="sticky">{stickyTop}</div>}
-    <div>{children}</div>
-  </div>
-);
+// Keep the toolbar outside the scrolling body so it never shifts when a
+// different editor opens or the user reaches the end of a panel.
+export default class AlwaysNearbyBox extends Component {
+  static propTypes = {
+    className: PropTypes.string,
+    stickyTop: PropTypes.node,
+    children: PropTypes.node,
+    scrollKey: PropTypes.string,
+  };
 
-AlwaysNearbyBox.propTypes = {
-  className: PropTypes.string,
-  stickyTop: PropTypes.node,
-  children: PropTypes.node,
-};
+  componentDidUpdate(previousProps) {
+    if (previousProps.scrollKey !== this.props.scrollKey && this.body) {
+      this.body.scrollTop = 0;
+    }
+  }
 
-export default AlwaysNearbyBox;
+  setBody = (body) => {
+    this.body = body;
+  };
+
+  render() {
+    const { className = "", stickyTop, children } = this.props;
+
+    return (
+      <div className={`composer-sidebar-content ${className}`}>
+        {stickyTop && <div className="composer-sidebar-toolbar">{stickyTop}</div>}
+        <div className="composer-sidebar-body" ref={this.setBody}>{children}</div>
+      </div>
+    );
+  }
+}

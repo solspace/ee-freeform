@@ -29,7 +29,7 @@ export default class TextareaProperty extends BasePropertyItem {
         name={name}
         readOnly={readOnly}
         disabled={disabled}
-        rows={rows ? rows : 5}
+        rows={rows ? rows : 3}
         onChange={onChangeHandler}
         value={value}
         data-nullable={!!nullable}

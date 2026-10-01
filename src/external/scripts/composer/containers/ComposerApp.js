@@ -71,6 +71,42 @@ export default class ComposerApp extends Component {
     formPropCleanup: this.props.formPropCleanup,
   });
 
+  componentDidMount() {
+    this.updateWorkspaceHeight();
+    window.addEventListener("resize", this.updateWorkspaceHeight);
+
+    // EE can resize its heading after fonts load or the navigation changes.
+    // Measure only on layout changes, never while a panel is scrolling.
+    if (typeof ResizeObserver !== "undefined") {
+      this.resizeObserver = new ResizeObserver(this.updateWorkspaceHeight);
+      const heading = document.querySelector(".main-nav__title");
+      if (heading) {
+        this.resizeObserver.observe(heading);
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateWorkspaceHeight);
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+  }
+
+  setWorkspace = (workspace) => {
+    this.workspace = workspace;
+  };
+
+  updateWorkspaceHeight = () => {
+    if (!this.workspace) {
+      return;
+    }
+
+    const top = this.workspace.getBoundingClientRect().top + window.scrollY;
+    const height = Math.max(360, window.innerHeight - top - 24);
+    this.workspace.style.setProperty("--composer-workspace-height", `${height}px`);
+  };
+
   render() {
     const { saveUrl, formUrl, showTutorial, finishTutorialUrl } = this.props;
 
@@ -80,7 +116,7 @@ export default class ComposerApp extends Component {
       <div className="builder-interface">
         <SaveButton saveUrl={saveUrl} formUrl={formUrl} />
 
-        <div className="builder-blocks">
+        <div className="builder-blocks" ref={this.setWorkspace}>
           <div className="field-list" role="region" aria-label="Available fields">
             <FieldList />
           </div>

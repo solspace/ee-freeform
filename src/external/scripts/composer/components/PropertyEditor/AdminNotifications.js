@@ -75,7 +75,7 @@ class AdminNotifications extends BasePropertyEditor {
             label="Admin Recipients"
             instructions="Email address(es) to receive an email notification. Enter each on a new line."
             name="recipients"
-            rows={10}
+            rows={5}
             value={recipients}
             onChangeHandler={this.update}
           />

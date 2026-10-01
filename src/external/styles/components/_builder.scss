@@ -8,26 +8,39 @@
  * @license       https://docs.solspace.com/license-agreement/
  */
 
-$minRowHeight: 60px;
+$minRowHeight: 48px;
 
 .builder {
   position: relative;
   background: var(--ee-panel-bg, var(--ee-input-bg, #ffffff));
   flex: $builderFlex;
-  padding: 16px !important;
+  padding: 12px !important;
 
-  overflow: hidden;
+  overflow-y: auto;
+  overscroll-behavior: none;
+  overflow-anchor: none;
+  scrollbar-gutter: stable;
+  scroll-behavior: auto;
 
   > div {
-    height: 100%;
+    min-height: 100%;
   }
 
   .composer-canvas {
-    min-height: 600px;
+    min-height: 100%;
+  }
+
+  .tabs {
+    position: sticky;
+    top: 0;
+    margin: -12px -12px 0;
+    padding: 12px 12px 0;
+    z-index: 3;
+    background: var(--ee-panel-bg, var(--ee-input-bg, #ffffff));
   }
 
   .layout {
-    padding: 16px 0 0;
+    padding: 12px 0 0;
   }
 
   .composer-row-placeholder {
@@ -85,7 +98,7 @@ $minRowHeight: 60px;
       .composer-column {
         position: relative;
         flex: 0 1 100%;
-        padding: 12px 10px 4px;
+        padding: 8px 8px 2px;
         min-width: 0;
         border-radius: 6px;
 
@@ -96,7 +109,7 @@ $minRowHeight: 60px;
           border-color: var(--ee-input-focus-border, #5d63f1);
 
           .composer-submit-position-wrapper {
-            padding-bottom: 8px;
+            padding-bottom: 2px;
           }
         }
 
@@ -124,7 +137,7 @@ $minRowHeight: 60px;
         .composer-column-actions {
           left: auto;
           right: 8px;
-          top: 12px;
+          top: 6px;
           z-index: 2;
         }
 
@@ -164,8 +177,8 @@ $minRowHeight: 60px;
           background-image: none;
           display: block;
           width: 100%;
-          padding: 8px 10px;
-          font-size: 14px;
+          padding: 5px 8px;
+          font-size: 13px;
           line-height: 1.5;
           color: var(--ee-input-color);
           background-color: var(--ee-input-bg);
@@ -180,9 +193,9 @@ $minRowHeight: 60px;
           display: block;
           margin: 0;
           width: 100%;
-          font-size: 14px;
+          font-size: 13px;
           line-height: 1.5;
-          padding: 8px 10px;
+          padding: 5px 8px;
           color: var(--ee-input-color);
           background-color: var(--ee-input-bg);
           border: 1px solid var(--ee-input-border);
@@ -201,10 +214,10 @@ $minRowHeight: 60px;
           border: 1px solid var(--ee-input-border);
           border-radius: 5px;
           box-shadow: 0 1px 2px 0 var(--ee-shadow-input);
-          font-size: 14px;
+          font-size: 13px;
           line-height: 1.5;
           width: 100%;
-          padding: 8px 10px;
+          padding: 5px 8px;
           max-height: unset;
           min-height: unset;
           resize: unset;
@@ -295,13 +308,13 @@ $minRowHeight: 60px;
         .composer-ft-phone-wrapper,
         .composer-ft-radio-group-wrapper,
         .composer-ft-rating-wrapper {
-          gap: 5px;
+          gap: 3px;
           display: flex;
           flex-direction: column;
-          margin-bottom: 10px;
+          margin-bottom: 6px;
 
           .input-wrapper {
-            margin-top: 5px;
+            margin-top: 2px;
           }
         }
 
@@ -316,13 +329,13 @@ $minRowHeight: 60px;
             position: relative;
 
             &:after {
-              font-size: 17px;
+              font-size: 14px;
               font-family: "solspace-freeform", sans-serif;
               display: block;
 
               position: absolute;
               right: 8px;
-              top: 7px;
+              top: 5px;
 
               color: var(--ee-text-tertiary, #8082a5);
             }
@@ -436,8 +449,8 @@ $minRowHeight: 60px;
 
 .composer-property-item-lightswitch {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto auto;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto;
   row-gap: 6px;
   align-items: start;
 }
@@ -453,16 +466,16 @@ $minRowHeight: 60px;
 }
 
 .composer-property-item-lightswitch .composer-property-input {
-  grid-column: 1;
-  grid-row: 2;
+  grid-column: 2;
+  grid-row: 1;
   margin: 0;
   width: auto;
   justify-self: start;
 }
 
 .composer-property-item-lightswitch .composer-property-lightswitch {
-  --lightswitch-width: 48px;
-  --lightswitch-height: 26px;
+  --lightswitch-width: 36px;
+  --lightswitch-height: 20px;
   --lightswitch-pad: 2px;
   --lightswitch-on: var(--ee-input-toggle-active-bg);
   --lightswitch-off: var(--ee-input-toggle-bg);
@@ -500,7 +513,7 @@ $minRowHeight: 60px;
   width: 100%;
   height: 100%;
   background: var(--lightswitch-off);
-  border-radius: 13px;
+  border-radius: 10px;
   transition: all 100ms ease;
   position: relative;
 }
