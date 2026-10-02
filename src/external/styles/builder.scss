@@ -298,6 +298,9 @@
           margin-bottom: 0;
 
           .composer-add-page-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             height: 28px;
             min-height: 28px;
             box-sizing: border-box;
@@ -1032,7 +1035,9 @@
   }
 
   .composer-column .composer-submit-position-wrapper > .button {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: auto;
     min-width: 84px;
     max-width: 100%;
@@ -1041,7 +1046,7 @@
     box-sizing: border-box;
     padding: 4px 12px;
     font-size: 13px;
-    line-height: 20px;
+    line-height: 18px;
     color: var(--ee-button-secondary-color, #5d63f1);
     background-color: var(--ee-button-secondary-bg, #e0e2fc);
     border-color: var(--ee-button-secondary-border, #e0e2fc);
