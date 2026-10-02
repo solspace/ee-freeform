@@ -116,6 +116,102 @@
 
 }
 
+.freeform-export-filters {
+  width: 100%;
+  border: 0;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+  table-layout: fixed;
+
+  th, td {
+    border: 0;
+    background: transparent;
+    text-align: left;
+  }
+
+  th {
+    padding: 0 8px 2px;
+    color: var(--ee-text-primary);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  th.filter-field, th.filter-type { width: 25%; }
+  th:last-child { width: 36px; }
+
+  td {
+    padding: 0 8px;
+    vertical-align: middle;
+  }
+
+  select, input[type=text] {
+    display: block;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    height: 36px;
+    margin: 0 !important;
+    box-sizing: border-box;
+  }
+
+  .filter-action { padding: 0; text-align: center; }
+
+  .freeform-filter-delete {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ee-text-secondary);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 120ms ease, color 120ms ease;
+
+    &:hover, &:focus-visible { color: #b64949; }
+    &:focus-visible { outline: 2px solid var(--ee-brand-primary); outline-offset: -2px; }
+  }
+
+  tr:hover .freeform-filter-delete,
+  tr:focus-within .freeform-filter-delete { opacity: 1; }
+}
+
+.freeform-filter-add { margin: 4px 0 0 8px; }
+
+@media (hover: none) {
+  .freeform-export-filters .freeform-filter-delete { opacity: 1; }
+}
+
+@media (max-width: 600px) {
+  .freeform-export-filters {
+    display: block;
+
+    thead { display: none; }
+    tbody { display: block; }
+
+    tr {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 36px;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    td { display: block; padding: 0; }
+    td[data-label="Value"] { grid-column: span 2; }
+    td.filter-action { grid-column: 3; grid-row: 1 / span 2; align-self: end; }
+
+    td[data-label]:before {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      content: attr(data-label);
+    }
+  }
+}
+
 .freeform-export-fields {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

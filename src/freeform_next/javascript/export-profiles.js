@@ -31,7 +31,7 @@ $(() => {
   addFilterButton.on({
     click: () => {
       let clone = template.html();
-      const lastIterator = $('tbody > tr[data-iterator]:last').data('iterator');
+      const lastIterator = $('tbody > tr[data-iterator]:last', filterTable).data('iterator');
 
       let currentIterator = 0;
       if (lastIterator !== undefined) {
@@ -44,14 +44,8 @@ $(() => {
     }
   });
 
-  filterTable.on({
-    click: function() {
-      if (!confirm('Are you sure?')) {
-        return false;
-      }
-
-      $(this).parents('tr:first').remove();
-    }
-  }, 'li.delete a');
+  filterTable.on('click', '.freeform-filter-delete', function() {
+    $(this).closest('tr').remove();
+  });
 
 });
