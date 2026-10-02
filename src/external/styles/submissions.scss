@@ -103,6 +103,24 @@
   margin-top: 20px;
 }
 
+.panel-heading.freeform-submissions-filters {
+  background: var(--ee-bg-0);
+
+  .filter-bar {
+    row-gap: 10px;
+  }
+
+  .filter-bar__item {
+    margin-bottom: 0;
+  }
+}
+
+.freeform-status-tag {
+  background: var(--ee-bg-blank);
+  color: var(--freeform-status-color);
+  border-color: var(--freeform-status-color);
+}
+
 .color-indicator {
   $size: 10px;
 

@@ -350,7 +350,7 @@ class SubmissionController extends Controller
                     ];
                 } else if ($setting->getId() === 'statusName') {
                     $data[] = [
-                        'content' => '<span class="color-indicator" style="background: ' . $submission->statusColor . ';"></span>' . $submission->statusName,
+                        'content' => $this->renderStatusTag($submission),
                     ];
                 } else if ($setting->getId() === 'dateCreated') {
                     $data[] = ee()->localize->format_date($dateFormat, strtotime($submission->dateCreated));
@@ -866,7 +866,7 @@ class SubmissionController extends Controller
                     ];
                 } else if ($setting->getId() === 'statusName') {
                     $data[] = [
-                        'content' => '<span class="color-indicator" style="background: ' . $submission->statusColor . ';"></span>' . $submission->statusName,
+                        'content' => $this->renderStatusTag($submission),
                     ];
                 } else if ($setting->getId() === 'dateCreated') {
                     $data[] = ee()->localize->format_date($dateFormat, strtotime($submission->dateCreated));
@@ -1489,6 +1489,18 @@ class SubmissionController extends Controller
         }
 
         return new RedirectView($this->getLink('submissions/' . $form->getHandle()));
+    }
+
+    private function renderStatusTag(SubmissionModel $submission): string
+    {
+        $color = (string) $submission->statusColor;
+        $color = preg_match('/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/', $color)
+            ? $color
+            : 'var(--ee-text-secondary)';
+
+        return '<span class="status-tag freeform-status-tag" style="--freeform-status-color: ' . $color . '">'
+            . htmlspecialchars((string) $submission->statusName, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
+            . '</span>';
     }
 
     private function getFilterableFieldTypes(): array

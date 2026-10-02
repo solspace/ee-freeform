@@ -26,7 +26,7 @@ $this->extend('_layouts/table_form_wrapper');
 <?php if ($sessionToken): ?>
 <input type="hidden" name="S" value="<?= $sessionToken ?>">
 <?php endif; ?>
-<div class="panel-heading">
+<div class="panel-heading freeform-submissions-filters">
 	<div class="filter-bar filter-bar--collapsible" id="custom-filters">
         <div class="filter-bar__item">
             <button type="button" class="has-sub filter-bar__button js-dropdown-toggle button button--default button--small">
