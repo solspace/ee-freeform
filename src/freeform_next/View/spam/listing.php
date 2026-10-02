@@ -136,7 +136,9 @@ $this->extend('_layouts/table_form_wrapper');
 	</div>
 </div>
 
-<?php $this->embed('ee:_shared/table', $table); ?>
+<div class="freeform-submissions-table-scroll" role="region" aria-label="<?= htmlspecialchars(lang('spam'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" tabindex="0">
+    <?php $this->embed('ee:_shared/table', $table); ?>
+</div>
 
 
 <?php $this->startBlock('addonModals') ?>

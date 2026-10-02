@@ -144,13 +144,7 @@ class SubmissionController extends Controller
         }
 
         if ($canManageSubmissions) {
-            $columns = array_merge(
-                $columns,
-                [
-                    'manage' => ['type' => Table::COL_TOOLBAR],
-                    ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
-                ]
-            );
+            $columns[] = ['type' => Table::COL_CHECKBOX, 'name' => 'selection'];
         }
 
         $attributes = new SubmissionAttributes($form);
@@ -432,22 +426,7 @@ class SubmissionController extends Controller
                 }
             }
 
-            $toolbarItems = [];
-
             if ($canManageSubmissions) {
-                $toolbarItems = [
-                    'edit' => [
-                        'href'  => $this->getLink('submissions/' . $form->getHandle() . '/' . $submission->id),
-                        'title' => lang('edit'),
-                    ],
-                ];
-            }
-
-            if ($canManageSubmissions) {
-                $data[] = [
-                    'toolbar_items' => $toolbarItems,
-                ];
-
                 $data[] = [
                     'name'  => 'id_list[]',
                     'value' => $submission->id,
@@ -660,13 +639,7 @@ class SubmissionController extends Controller
         ];
 
         if ($canManageSubmissions) {
-            $columns = array_merge(
-                $columns,
-                [
-                    'manage' => ['type' => Table::COL_TOOLBAR],
-                    ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
-                ]
-            );
+            $columns[] = ['type' => Table::COL_CHECKBOX, 'name' => 'selection'];
         }
 
         $attributes = new SubmissionAttributes($form);
@@ -950,22 +923,7 @@ class SubmissionController extends Controller
 
             $data[] = $submission->spamReasonMessage;
 
-            $toolbarItems = [];
-
             if ($canManageSubmissions) {
-                $toolbarItems = [
-                    'edit' => [
-                        'href'  => $this->getLink('submissions/' . $form->getHandle() . '/' . $submission->id),
-                        'title' => lang('edit'),
-                    ],
-                ];
-            }
-
-            if ($canManageSubmissions) {
-                $data[] = [
-                    'toolbar_items' => $toolbarItems,
-                ];
-
                 $data[] = [
                     'name'  => 'id_list[]',
                     'value' => $submission->id,
