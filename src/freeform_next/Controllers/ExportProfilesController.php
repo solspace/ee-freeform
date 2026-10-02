@@ -40,7 +40,7 @@ class ExportProfilesController extends Controller
                 'Name'        => ['type' => Table::COL_TEXT],
                 'Form'        => ['type' => Table::COL_TEXT],
                 'Submissions' => ['type' => Table::COL_TEXT],
-                'manage'      => ['type' => Table::COL_TOOLBAR],
+                'Export'      => ['type' => Table::COL_TOOLBAR],
                 ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
             ]
         );
@@ -72,10 +72,6 @@ class ExportProfilesController extends Controller
                         'text' => [
                             'href'  => $this->getLink('export_profiles/text/' . $profile->id),
                             'content' => lang('Text'),
-                        ],
-                        'edit' => [
-                            'href'  => $this->getLink('export_profiles/' . $profile->id),
-                            'title' => lang('edit'),
                         ],
                     ],
                 ],
