@@ -10,6 +10,11 @@
 @import "variables";
 @import "extendable-classes";
 
+html.freeform-submissions-page .ee-wrapper {
+  position: relative;
+  overflow-x: clip;
+}
+
 @font-face {
   font-family: 'Solspace Font Awesome 6 Pro Solid';
   src: url('../font/fontawesome-pro-6.7.2-web/webfonts/fa-solid-900.svg?61199501');

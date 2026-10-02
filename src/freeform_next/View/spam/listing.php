@@ -18,6 +18,7 @@ $this->extend('_layouts/table_form_wrapper');
 ?>
 
 <script>
+  document.documentElement.classList.add('freeform-submissions-page');
   var layoutEditorSaveUrl = '<?php echo ee('CP/URL')->make('addons/settings/freeform_next/api/submission_layout') ?>';
   var layoutEditorFormId  = <?php echo (int) $form->getId() ?>;
 </script>
