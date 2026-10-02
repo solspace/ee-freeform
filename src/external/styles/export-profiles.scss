@@ -82,6 +82,14 @@
     font-size: 14px;
     text-align: center;
   }
+
+  summary .freeform-export-status-tag {
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    text-align: left;
+  }
 }
 
 .freeform-export-status-options {
