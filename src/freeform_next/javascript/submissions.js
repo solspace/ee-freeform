@@ -60,7 +60,7 @@
 
     $(function () {
         var $columnsMenu = $('.freeform-columns-dropdown');
-        $('ul.very-sortable', $columnsMenu).sortable({ cancel: 'input, button', tolerance: 'pointer' });
+        $('ul.very-sortable', $columnsMenu).sortable({ cancel: 'input, button', distance: 5, scroll: false, tolerance: 'pointer' });
         $columnsMenu.on('click', function (event) {
             event.stopPropagation();
         });
