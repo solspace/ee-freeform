@@ -50,9 +50,8 @@ export default class Table extends BasePropertyEditor {
         <hr />
 
         <LightSwitchProperty
-          label="This field is required?"
+          label="This field is required"
           name="required"
-          bold={true}
           checked={required}
           onChangeHandler={this.update}
         />
@@ -70,10 +69,9 @@ export default class Table extends BasePropertyEditor {
         <hr />
 
         <LightSwitchProperty
-          label="Use built in script?"
+          label="Use built in script"
           instructions="Check this to enable built in javascript for handling adding new rows."
           name="useScript"
-          bold={true}
           checked={!!useScript}
           onChangeHandler={this.update}
         />

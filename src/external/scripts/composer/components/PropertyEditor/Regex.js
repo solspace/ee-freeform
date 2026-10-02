@@ -47,7 +47,7 @@ export default class Regex extends BasePropertyEditor {
         <hr />
 
         <CheckboxProperty
-          label="This field is required?"
+          label="This field is required"
           name="required"
           checked={required}
           onChangeHandler={this.update}

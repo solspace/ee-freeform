@@ -49,9 +49,8 @@ export default class Checkbox extends BasePropertyEditor {
         <hr />
 
         <LightSwitchProperty
-          label="This field is Required?"
+          label="This field is required"
           name="required"
-          bold={true}
           checked={required}
           onChangeHandler={this.update}
         />
@@ -59,7 +58,6 @@ export default class Checkbox extends BasePropertyEditor {
         <LightSwitchProperty
           label="Checked by default"
           name="checked"
-          bold={true}
           checked={checked}
           onChangeHandler={this.update}
         />

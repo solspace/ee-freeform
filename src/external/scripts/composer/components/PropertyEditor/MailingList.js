@@ -170,7 +170,6 @@ class MailingList extends BasePropertyEditor {
           label="Hide field"
           instructions="Hide the mailing list checkbox from the form and make it always trigger a subscription"
           name="hidden"
-          bold={true}
           checked={hidden}
           onChangeHandler={this.update}
         />
@@ -179,7 +178,6 @@ class MailingList extends BasePropertyEditor {
         <LightSwitchProperty
           label="Checked by default"
           name="value"
-          bold={true}
           checked={value}
           onChangeHandler={this.update}
         />

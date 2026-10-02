@@ -74,9 +74,8 @@ export default class Number extends BasePropertyEditor {
         <hr />
 
         <LightSwitchProperty
-          label="This field is required?"
+          label="This field is required"
           name="required"
-          bold={true}
           checked={required}
           onChangeHandler={this.update}
         />
@@ -112,9 +111,8 @@ export default class Number extends BasePropertyEditor {
         <hr />
 
         <LightSwitchProperty
-          label="Allow negative numbers?"
+          label="Allow negative numbers"
           name="allowNegative"
-          bold={true}
           checked={allowNegative}
           onChangeHandler={this.update}
         />

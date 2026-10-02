@@ -16,20 +16,16 @@ export default class LightSwitchProperty extends BasePropertyItem {
     static propTypes = {
         ...BasePropertyItem.propTypes,
         checked: PropTypes.bool,
-        bold: PropTypes.bool,
     };
 
     render() {
-        const { label, instructions, name, readOnly, disabled, className, checked, bold, onChangeHandler } = this.props;
-
-        const style = { fontWeight: bold ? "bold" : "normal" };
+        const { label, instructions, name, readOnly, disabled, className, checked, onChangeHandler } = this.props;
 
         return (
             <div className="composer-property-item composer-property-item-lightswitch">
                 <div className="composer-property-heading">
                     <label
                         htmlFor={this.inputId}
-                        style={style}
                     >
                         {label}
                     </label>

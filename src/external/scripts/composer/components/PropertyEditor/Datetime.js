@@ -65,9 +65,8 @@ export default class Datetime extends BasePropertyEditor {
         <hr />
 
         <LightSwitchProperty
-          label="This field is required?"
+          label="This field is required"
           name="required"
-          bold={true}
           checked={required}
           onChangeHandler={this.update}
         />
@@ -106,17 +105,15 @@ export default class Datetime extends BasePropertyEditor {
         />
 
         <LightSwitchProperty
-          label="Use the Freeform datepicker for this field?"
+          label="Use the Freeform datepicker for this field"
           name="useDatepicker"
-          bold={true}
           checked={useDatepicker}
           onChangeHandler={this.update}
         />
 
         <LightSwitchProperty
-          label="Generate placeholder from your date format settings?"
+          label="Generate placeholder from your date format settings"
           name="generatePlaceholder"
-          bold={true}
           checked={generatePlaceholder}
           onChangeHandler={this.update}
         />
@@ -147,9 +144,8 @@ export default class Datetime extends BasePropertyEditor {
             />
 
             <LightSwitchProperty
-              label="Four digit year?"
+              label="Four digit year"
               name="date4DigitYear"
-              bold={true}
               checked={date4DigitYear}
               onChangeHandler={this.update}
             />
@@ -158,7 +154,6 @@ export default class Datetime extends BasePropertyEditor {
               label="Date leading zero"
               instructions="If enabled, a leading zero will be used for days and months."
               name="dateLeadingZero"
-              bold={true}
               checked={dateLeadingZero}
               onChangeHandler={this.update}
             />
@@ -183,9 +178,8 @@ export default class Datetime extends BasePropertyEditor {
         {showTime && (
           <div>
             <LightSwitchProperty
-              label="24h Clock?"
+              label="24h Clock"
               name="clock24h"
-              bold={true}
               checked={clock24h}
               onChangeHandler={this.update}
             />
@@ -207,9 +201,8 @@ export default class Datetime extends BasePropertyEditor {
 
             {!clock24h &&
             <LightSwitchProperty
-              label="Lowercase AM/PM?"
+              label="Lowercase AM/PM"
               name="lowercaseAMPM"
-              bold={true}
               checked={lowercaseAMPM}
               onChangeHandler={this.update}
             />
@@ -217,9 +210,8 @@ export default class Datetime extends BasePropertyEditor {
 
             {!clock24h &&
             <LightSwitchProperty
-              label="Separate AM/PM with a space?"
+              label="Separate AM/PM with a space"
               name="clockAMPMSeparate"
-              bold={true}
               checked={!!clockAMPMSeparate}
               onChangeHandler={this.update}
             />

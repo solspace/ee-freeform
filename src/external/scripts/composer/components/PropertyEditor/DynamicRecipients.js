@@ -91,9 +91,8 @@ class DynamicRecipients extends BasePropertyEditor {
         <hr />
 
         <LightSwitchProperty
-          label="This field is required?"
+          label="This field is required"
           name="required"
-          bold={true}
           checked={required}
           onChangeHandler={this.update}
         />
@@ -109,8 +108,9 @@ class DynamicRecipients extends BasePropertyEditor {
           onChangeHandler={this.update}
           emptyOption="--"
           optionGroups={PropertyHelper.getNotificationList(notifications)}
+          inlineAction={canManageNotifications}
         >
-          {canManageNotifications && <AddNewNotification />}
+          {canManageNotifications && <AddNewNotification buttonLabel="New" />}
         </SelectProperty>
 
         {notificationId ? (

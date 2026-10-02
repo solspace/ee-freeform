@@ -73,7 +73,6 @@ class Submit extends BasePropertyEditor {
         <LightSwitchProperty
           label="Disable the Previous button"
           name="disablePrev"
-          bold={true}
           checked={disablePrev}
           onChangeHandler={this.update}
         />
