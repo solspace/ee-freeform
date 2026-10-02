@@ -247,9 +247,9 @@ body:has(.freeform-submissions-table-scroll) .ee-main {
   border-radius: ($size / 2);
 }
 
-.featherlight.freeform-export-drawer {
+body .featherlight.freeform-export-drawer {
   text-align: left;
-  background: rgba(18, 20, 36, .55);
+  background: rgba(247, 247, 251, .9);
 
   &:before { display: none; }
 
@@ -320,19 +320,36 @@ body:has(.freeform-submissions-table-scroll) .ee-main {
   overflow: hidden;
   border: 1px solid var(--ee-border);
   border-radius: 6px;
-  background: var(--ee-bg-0);
+  background: var(--ee-bg-blank);
   box-shadow: 0 2px 5px rgba(0, 0, 0, .06);
 
   .dialog__header {
-    padding: 18px 22px;
-    font-size: 20px;
+    flex: none;
+    gap: 16px;
+    padding: 20px 28px;
+    border-bottom: 1px solid var(--ee-border);
+    background: var(--ee-bg-blank);
+
+    .title-bar__title {
+      flex: 1;
+      margin: 0;
+      font-size: 21px;
+      font-weight: 500;
+      text-align: left;
+    }
+
+    .button {
+      min-height: 44px;
+      padding: 10px 22px;
+      font-size: 14px;
+    }
   }
 
   .dialog__body {
     flex: 1;
     min-height: 0;
     overflow-y: auto;
-    padding: 16px 22px;
+    padding: 22px 28px;
   }
 
   .field {
@@ -378,14 +395,6 @@ body:has(.freeform-submissions-table-scroll) .ee-main {
     }
 
     .icon.move { cursor: grab; color: var(--ee-text-secondary); }
-  }
-
-  .dialog__actions {
-    padding: 12px 22px;
-    border-top: 1px solid var(--ee-border);
-    background: var(--ee-bg-0);
-
-    .cancel { background: var(--ee-bg-blank); color: var(--ee-text-normal); }
   }
 
   @media (max-width: 700px) {

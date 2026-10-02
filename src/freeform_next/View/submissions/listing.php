@@ -173,7 +173,10 @@ $this->extend('_layouts/table_form_wrapper');
 		<form id="export-csv-modal" method="post" action="<?php echo $exportLink ?>">
 			<input type="hidden" name="csrf_token" value="<?php echo CSRF_TOKEN ?>">
 
-			<h1 class="dialog__header">Export data</h1>
+			<div class="dialog__header title-bar">
+				<h3 class="title-bar__title">Export data</h3>
+				<button type="submit" class="btn submit button button--primary">Export</button>
+			</div>
 
 			<div class="dialog__body">
 				<div class="field">
@@ -263,15 +266,10 @@ $this->extend('_layouts/table_form_wrapper');
 				<?php endforeach; ?>
 
 			</div>
-			<div class="buttons dialog__actions">
-					<input type="button" class="btn button button--default button--small cancel" value="Cancel"/>
-					<input type="submit" class="btn button button--primary button--small submit" value="Export"/>
-					<div class="spinner" style="display: none;"></div>
-			</div>
 		</form>
 	</div>
 
 <?php $this->endBlock() ?>
 
-<link rel="stylesheet" href="<?php echo URL_THIRD_THEMES ?>freeform_next/css/submissions.css?v=4-export-drawer-1"/>
+<link rel="stylesheet" href="<?php echo URL_THIRD_THEMES ?>freeform_next/css/submissions.css?v=4-export-drawer-2"/>
 <link rel="stylesheet" href="<?php echo URL_THIRD_THEMES ?>freeform_next/lib/featherlight/featherlight.min.css"/>
