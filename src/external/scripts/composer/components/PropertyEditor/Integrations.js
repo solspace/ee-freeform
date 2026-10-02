@@ -111,7 +111,7 @@ class Integrations extends BasePropertyEditor {
         />
 
         <button type="button"
-          className="btn action refresh icon"
+          className="button button--default composer-refresh-integration"
           onClick={fetchCrmIntegrations}
           disabled={isFetching}
         >

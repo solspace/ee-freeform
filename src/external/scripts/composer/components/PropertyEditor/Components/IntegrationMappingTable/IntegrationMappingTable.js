@@ -45,7 +45,7 @@ export default class IntegrationMappingTable extends Component {
           <thead>
           <tr>
             <th>CRM Field</th>
-            <th>FF Field</th>
+            <th>Freeform Field</th>
           </tr>
           </thead>
 

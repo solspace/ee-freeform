@@ -1273,6 +1273,19 @@
     line-height: 1.4;
   }
 
+  .property-editor .composer-refresh-integration {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: auto;
+    height: 28px;
+    min-height: 28px;
+    padding: 4px 10px !important;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
   .property-editor .composer-crm-mapping-table {
     > table {
       table-layout: fixed;
@@ -1303,7 +1316,11 @@
           overflow-wrap: anywhere;
 
           label {
-            padding: 6px 8px;
+            display: flex;
+            align-items: center;
+            min-height: 32px;
+            margin: 0;
+            padding: 4px 8px;
             cursor: pointer;
           }
         }
