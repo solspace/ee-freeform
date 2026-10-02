@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 import { addColumnToNewRow, clearPlaceholders, removePage, switchHash, switchPage } from "../../actions/Actions";
 import { placeholderPage, swapPage } from "../../actions/PageDragDrop";
 import { COLUMN, PAGE } from "../../constants/DraggableTypes";
-import ConfirmPageRemoval from "./ConfirmPageRemoval";
+import ConfirmRemoval from "./ConfirmRemoval";
 
 const passablePageDragOffset = 15;
 
@@ -138,7 +138,7 @@ class Tab extends Component {
             </li>
           </ul>
           {this.state.confirmingRemoval &&
-            <ConfirmPageRemoval pageLabel={label || `Page ${index + 1}`}
+            <ConfirmRemoval label={label || `Page ${index + 1}`} kind="page"
                                 onCancel={this.cancelRemoval}
                                 onConfirm={this.confirmRemoval} />
           }

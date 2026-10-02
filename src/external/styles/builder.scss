@@ -314,7 +314,7 @@
   }
 }
 
-.composer-page-delete-dialog {
+.composer-delete-dialog {
   width: min(440px, calc(100vw - 32px));
   max-height: calc(100dvh - 32px);
   box-sizing: border-box;
@@ -963,7 +963,41 @@
     padding: 0;
     border: 0;
     box-shadow: none;
-    background: var(--ee-input-bg, #ffffff);
+    background: transparent;
+  }
+
+  // Field dialogs live inside the drag source; keep the dialog buttons out of
+  // the preview's full-width, non-interactive input styling.
+  .composer-column .composer-delete-dialog .panel-footer {
+    > .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: auto;
+      width: auto;
+      min-height: 34px;
+      padding: 6px 12px;
+      color: var(--ee-button-default-color, #0d0d19);
+      background: var(--ee-button-default-bg, #ffffff);
+      border: 1px solid var(--ee-button-default-border, #cbcbda);
+      box-shadow: none;
+
+      &:hover {
+        background: var(--ee-button-default-hover-bg, #f7f7fb);
+        border-color: var(--ee-button-default-hover-border, #cbcbda);
+      }
+    }
+
+    > .button--danger {
+      color: var(--ee-button-danger-color, #ffffff);
+      background: var(--ee-button-danger-bg, #fa5252);
+      border-color: var(--ee-button-danger-border, #fa5252);
+
+      &:hover {
+        background: var(--ee-button-danger-hover-bg, #f92020);
+        border-color: var(--ee-button-danger-hover-border, #f92020);
+      }
+    }
   }
 
   .composer-column-actions {
@@ -1061,7 +1095,7 @@
   .composer-column-submit .composer-submit-position-wrapper {
     gap: 4px;
     flex-wrap: wrap;
-    padding-right: 64px;
+    padding-right: 36px;
   }
 
   // EE's select padding is !important; match it to the compact control height.
@@ -1076,7 +1110,7 @@
   .composer-column label.composer-field-label {
     font-size: 13px;
     line-height: 18px;
-    padding-right: 64px;
+    padding-right: 36px;
     overflow-wrap: anywhere;
   }
 

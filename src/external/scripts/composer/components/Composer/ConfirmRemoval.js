@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 
-export default class ConfirmPageRemoval extends Component {
+export default class ConfirmRemoval extends Component {
   static propTypes = {
-    pageLabel: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    kind: PropTypes.oneOf(["page", "field"]).isRequired,
     onCancel: PropTypes.func.isRequired,
     onConfirm: PropTypes.func.isRequired,
   };
@@ -40,28 +41,34 @@ export default class ConfirmPageRemoval extends Component {
   };
 
   render() {
-    const { pageLabel, onCancel, onConfirm } = this.props;
+    const { label, kind, onCancel, onConfirm } = this.props;
+    const titleId = `freeform-delete-${kind}-title`;
+    const descriptionId = `freeform-delete-${kind}-description`;
+    const description = kind === "page"
+      ? "and all fields on this page will be removed"
+      : "will be removed from this page";
     return (
-      <dialog className="composer-page-delete-dialog panel"
+      <dialog className="composer-delete-dialog panel"
               ref={dialog => { this.dialog = dialog; }}
               onKeyDown={this.handleKeyDown}
+              onClick={event => event.stopPropagation()}
               onDragStart={event => { event.preventDefault(); event.stopPropagation(); }}
               role="alertdialog" aria-modal="true"
-              aria-labelledby="freeform-delete-page-title"
-              aria-describedby="freeform-delete-page-description">
+              aria-labelledby={titleId}
+              aria-describedby={descriptionId}>
         <div className="panel-heading">
-          <h2 id="freeform-delete-page-title">Delete page?</h2>
+          <h2 id={titleId}>Delete {kind}?</h2>
         </div>
         <div className="panel-body">
-          <p id="freeform-delete-page-description">
-            <strong>{pageLabel}</strong> and all fields on this page will be removed. This cannot be undone.
+          <p id={descriptionId}>
+            <strong>{label}</strong> {description}. This cannot be undone.
           </p>
         </div>
         <div className="panel-footer">
           <button type="button" className="button button--default"
                   ref={button => { this.cancelButton = button; }} onClick={onCancel}>Cancel</button>
           <button type="button" className="button button--danger"
-                  ref={button => { this.deleteButton = button; }} onClick={onConfirm}>Delete Page</button>
+                  ref={button => { this.deleteButton = button; }} onClick={onConfirm}>Delete {kind === "page" ? "Page" : "Field"}</button>
         </div>
       </dialog>
     );
