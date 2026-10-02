@@ -63,7 +63,7 @@ class MailingList extends BasePropertyEditor {
   }
 
   render() {
-    const { hash, properties: { value, label, integrationId, resourceId, emailFieldHash, mapping = {}, instructions, hidden } } = this.context;
+    const { hash, properties: { value, integrationId, resourceId, emailFieldHash, mapping = {}, instructions, hidden } } = this.context;
     const { composerProperties, mailingLists, fetchMailingLists, isFetching } = this.props;
 
     let selectedIntegration = null;
@@ -157,14 +157,6 @@ class MailingList extends BasePropertyEditor {
         />
 
         <hr />
-
-        <TextProperty
-          label="Label"
-          instructions="Field label used to describe the field."
-          name="label"
-          value={label}
-          onChangeHandler={this.update}
-        />
 
         <TextareaProperty
           label="Instructions"

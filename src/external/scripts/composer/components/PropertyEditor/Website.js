@@ -30,7 +30,7 @@ export default class Website extends BasePropertyEditor {
   };
 
   render() {
-    const { properties: { label, value, handle, placeholder, required, instructions } } = this.context;
+    const { properties: { value, handle, placeholder, required, instructions } } = this.context;
 
     return (
       <div>
@@ -53,14 +53,6 @@ export default class Website extends BasePropertyEditor {
         />
 
         <hr />
-
-        <TextProperty
-          label="Label"
-          instructions="Field label used to describe the field."
-          name="label"
-          value={label}
-          onChangeHandler={this.update}
-        />
 
         <TextareaProperty
           label="Instructions"

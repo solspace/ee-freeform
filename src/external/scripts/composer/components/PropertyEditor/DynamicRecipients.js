@@ -56,7 +56,7 @@ class DynamicRecipients extends BasePropertyEditor {
   render() {
     const { properties } = this.context;
     const {
-      required, label, handle, values, options,
+      required, handle, values, options,
       showAsRadio, showAsCheckboxes, notificationId, instructions, format
     } = properties;
 
@@ -125,14 +125,6 @@ class DynamicRecipients extends BasePropertyEditor {
           />
         ) : ""
         }
-
-        <TextProperty
-          label="Label"
-          instructions="Field label used to describe the field."
-          name="label"
-          value={label}
-          onChangeHandler={this.update}
-        />
 
         <TextareaProperty
           label="Instructions"

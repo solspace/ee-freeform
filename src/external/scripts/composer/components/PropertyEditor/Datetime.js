@@ -44,7 +44,7 @@ export default class Datetime extends BasePropertyEditor {
   };
 
   render() {
-    const { properties: { label, initialValue, handle, placeholder, required, instructions } } = this.context;
+    const { properties: { initialValue, handle, placeholder, required, instructions } } = this.context;
     const { properties: { dateTimeType, generatePlaceholder, useDatepicker } } = this.context;
     const { properties: { dateOrder, date4DigitYear, dateLeadingZero, dateSeparator } } = this.context;
     const { properties: { clock24h, lowercaseAMPM, clockSeparator, clockAMPMSeparate } } = this.context;
@@ -73,14 +73,6 @@ export default class Datetime extends BasePropertyEditor {
         />
 
         <hr />
-
-        <TextProperty
-          label="Label"
-          instructions="Field label used to describe the field."
-          name="label"
-          value={label}
-          onChangeHandler={this.update}
-        />
 
         <TextareaProperty
           label="Instructions"

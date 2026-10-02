@@ -35,7 +35,7 @@ export default class Select extends BasePropertyEditor {
   };
 
   render() {
-    const { label, handle, value, options, required, showCustomValues, instructions } = this.context.properties;
+    const { handle, value, options, required, showCustomValues, instructions } = this.context.properties;
     const { source, target, configuration } = this.context.properties;
 
     return (
@@ -59,14 +59,6 @@ export default class Select extends BasePropertyEditor {
         />
 
         <hr />
-
-        <TextProperty
-          label="Label"
-          instructions="Field label used to describe the field."
-          name="label"
-          value={label}
-          onChangeHandler={this.update}
-        />
 
         <TextareaProperty
           label="Instructions"

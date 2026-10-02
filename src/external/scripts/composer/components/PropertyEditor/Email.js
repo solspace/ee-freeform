@@ -47,7 +47,7 @@ class Email extends BasePropertyEditor {
   };
 
   render() {
-    const { properties: { label, handle, placeholder, required, notificationId, instructions, format } } = this.context;
+    const { properties: { handle, placeholder, required, notificationId, instructions, format } } = this.context;
 
     const { canManageNotifications } = this.context;
     const { notifications } = this.props;
@@ -107,14 +107,6 @@ class Email extends BasePropertyEditor {
           />
         ) : ""
         }
-
-        <TextProperty
-          label="Label"
-          instructions="Field label used to describe the field."
-          name="label"
-          value={label}
-          onChangeHandler={this.update}
-        />
 
         <TextareaProperty
           label="Instructions"

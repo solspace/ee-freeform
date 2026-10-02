@@ -53,7 +53,7 @@ class File extends BasePropertyEditor {
   render() {
     const { assetSources } = this.props;
 
-    const { properties: { type, label, handle, required, assetSourceId, fileKinds, maxFileSizeKB, fileCount, instructions } } = this.context;
+    const { properties: { type, handle, required, assetSourceId, fileKinds, maxFileSizeKB, fileCount, instructions } } = this.context;
 
     const assetSourceList = [];
     assetSources.map((source) => {
@@ -84,14 +84,6 @@ class File extends BasePropertyEditor {
         />
 
         <hr />
-
-        <TextProperty
-          label="Label"
-          instructions="Field label used to describe the field."
-          name="label"
-          value={label}
-          onChangeHandler={this.update}
-        />
 
         <TextareaProperty
           label="Instructions"

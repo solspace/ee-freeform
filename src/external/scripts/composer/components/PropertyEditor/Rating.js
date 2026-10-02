@@ -36,7 +36,7 @@ export default class Rating extends BasePropertyEditor {
   };
 
   render() {
-    const { properties: { label, value, handle, required, instructions, maxValue } } = this.context;
+    const { properties: { value, handle, required, instructions, maxValue } } = this.context;
     const { properties: { colorIdle, colorHover, colorSelected } } = this.context;
 
     let starOptions = [];
@@ -76,14 +76,6 @@ export default class Rating extends BasePropertyEditor {
         />
 
         <hr />
-
-        <TextProperty
-          label="Label"
-          instructions="Field label used to describe the field."
-          name="label"
-          value={label}
-          onChangeHandler={this.update}
-        />
 
         <TextareaProperty
           label="Instructions"

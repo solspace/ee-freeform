@@ -41,7 +41,18 @@ import Table from "../components/PropertyEditor/Table";
 import Text from "../components/PropertyEditor/Text";
 import Textarea from "../components/PropertyEditor/Textarea";
 import Website from "../components/PropertyEditor/Website";
+import TextProperty from "../components/PropertyEditor/PropertyItems/TextProperty";
 import * as FieldTypes from "../constants/FieldTypes";
+
+const editableLabelTypes = [
+  FieldTypes.CHECKBOX, FieldTypes.CHECKBOX_GROUP, FieldTypes.CONFIRMATION,
+  FieldTypes.DATETIME, FieldTypes.DYNAMIC_RECIPIENTS, FieldTypes.EMAIL,
+  FieldTypes.FILE, FieldTypes.MAILING_LIST, FieldTypes.NUMBER,
+  FieldTypes.PASSWORD, FieldTypes.PHONE, FieldTypes.RADIO_GROUP,
+  FieldTypes.RATING, FieldTypes.REGEX, FieldTypes.SELECT,
+  FieldTypes.MULTIPLE_SELECT, "table", FieldTypes.TEXT, FieldTypes.TEXTAREA,
+  FieldTypes.WEBSITE,
+];
 
 const propertyTypes = {
   admin_notifications: AdminNotifications,
@@ -150,6 +161,7 @@ class PropertyEditor extends Component {
       FieldTypes.CONFIRMATION,
     ].indexOf(props.type) === -1;
     const showHeading = [FieldTypes.FORM, FieldTypes.ADMIN_NOTIFICATIONS, FieldTypes.INTEGRATION].indexOf(props.type) === -1;
+    const showFieldLabel = editableLabelTypes.indexOf(props.type) !== -1;
 
     return (
         <AlwaysNearbyBox
@@ -178,8 +190,18 @@ class PropertyEditor extends Component {
                 </button>
               }
             </h3>
-            {props.label && <h4>{props.label}</h4>}
+            {!showFieldLabel && props.label && <h4>{props.label}</h4>}
           </div>}
+
+          {showFieldLabel &&
+            <TextProperty
+              label="Label"
+              instructions="Field label used to describe the field."
+              name="label"
+              value={props.label || ""}
+              onChangeHandler={event => this.updateField({ label: event.target.value })}
+            />
+          }
 
           {form ? form : <p>Please select an element</p>}
 

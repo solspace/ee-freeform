@@ -34,7 +34,7 @@ export default class Checkbox extends BasePropertyEditor {
   };
 
   render() {
-    const { properties: { label, handle, required, checked, value, instructions } } = this.context;
+    const { properties: { handle, required, checked, value, instructions } } = this.context;
 
     return (
       <div>
@@ -73,14 +73,6 @@ export default class Checkbox extends BasePropertyEditor {
         />
 
         <hr />
-
-        <TextProperty
-          label="Label"
-          instructions="Field label used to describe the field."
-          name="label"
-          value={label}
-          onChangeHandler={this.update}
-        />
 
         <TextareaProperty
           label="Instructions"
