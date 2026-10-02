@@ -247,6 +247,10 @@ body:has(.freeform-submissions-table-scroll) .ee-main {
   border-radius: ($size / 2);
 }
 
+.featherlight .featherlight-content:has(#export-csv-modal) {
+  width: min(800px, calc(100vw - 32px));
+}
+
 #export-csv-modal {
   .dialog__header {
     padding: 18px 22px;
@@ -283,7 +287,7 @@ body:has(.freeform-submissions-table-scroll) .ee-main {
 
   .checkbox-select {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 2px 12px;
 
     li {
@@ -310,6 +314,10 @@ body:has(.freeform-submissions-table-scroll) .ee-main {
     background: var(--ee-bg-0);
 
     .cancel { background: var(--ee-bg-blank); color: var(--ee-text-normal); }
+  }
+
+  @media (max-width: 700px) {
+    .checkbox-select { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
 
   @media (max-width: 520px) {
