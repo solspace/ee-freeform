@@ -458,16 +458,17 @@ $minRowHeight: 48px;
   column-gap: 10px;
   grid-template-rows: auto;
   row-gap: 6px;
-  align-items: start;
+  align-items: center;
 }
 
 .composer-property-item-lightswitch .composer-property-heading {
   grid-column: 2;
   grid-row: 1;
-  margin: 0;
+  margin: 0 !important;
 }
 
 .composer-property-item-lightswitch .composer-property-heading > label {
+  display: block;
   margin: 0;
 }
 
