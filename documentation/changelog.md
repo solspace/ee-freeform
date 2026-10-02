@@ -5,7 +5,8 @@
 - Updated bundled PHP dependencies and removed development dependencies from the bundled vendor directory.
 - Refreshed form builder styling with EE theme colours, compact inputs and spacing, cohesive toolbars, and responsive layouts.
 - Widened the field palette and settings sidebar, arranged palette fields in two columns with truncated names and hover tooltips, and removed mailing-list source labels from the palette. Matched palette headings to EE's Field Groups style and moved field creation to a compact New button beside Fields.
-- Refined compact select padding to prevent clipped values, styled page tabs with EE's native Add-ons tab classes, and added more space between field groups and between page tabs and the form layout. Increased vertical padding in the settings tabs.
+- Refined compact select padding to prevent clipped values, styled page tabs with EE's native tab classes and reserved space for delete controls, and added more space between field groups and between page tabs and the form layout. Increased vertical padding in the settings tabs and refined the Add Page button.
+- Added a styled confirmation modal for page deletion with Cancel/Escape controls, keyboard focus containment, and focus restoration.
 - Matched EE's Files page structure with native page-heading save controls, a separate field palette on the page background, and a framed form/settings panel. The page heading and browser title follow the current form name across all settings tabs, while preserving EE's license badge.
 - Stabilized builder scrolling with a viewport-sized workspace, independent scroll areas, and fixed sidebar toolbars; prevented scroll chaining onto the page.
 - Improved keyboard access, focus visibility, field selection, settings labels, and status announcements in the form builder.

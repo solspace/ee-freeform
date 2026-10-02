@@ -212,14 +212,14 @@
         display: flex;
         margin: 0;
         gap: 12px;
-        min-height: 40px;
+        min-height: 50px;
         flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
         border-bottom: 2px solid var(--ee-tab-bar-border, var(--ee-border, #dfe0ee));
 
         > ul {
-          column-gap: 20px;
+          column-gap: 8px;
           row-gap: 0;
           padding: 0;
           list-style: none;
@@ -238,7 +238,7 @@
             min-width: 0;
             max-width: 100%;
             margin: 0 0 -2px;
-            padding: 8px 0;
+            padding: 10px 0;
             border-bottom: 2px solid transparent;
             min-height: 40px;
             display: flex;
@@ -246,7 +246,7 @@
 
             box-sizing: border-box;
 
-            font-size: 14px;
+            font-size: 15px;
             color: var(--ee-text-secondary, #8f90b0);
             white-space: nowrap;
 
@@ -263,12 +263,15 @@
 
             .composer-page-actions {
               display: inline-flex;
-              flex: 0 0 auto;
+              flex: 0 0 28px;
+              width: 28px;
+              height: 28px;
               position: static;
               margin: 0 0 0 4px !important;
               padding: 0 !important;
 
               .composer-action-remove {
+                margin: 0;
                 font-size: 12px;
               }
             }
@@ -279,9 +282,64 @@
           display: flex;
           align-items: center;
           margin-bottom: 0;
+
+          .composer-add-page-button {
+            min-height: 34px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 20px;
+          }
         }
       }
     }
+  }
+}
+
+.composer-page-delete-dialog {
+  width: min(440px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  box-sizing: border-box;
+  padding: 0;
+  border: 1px solid var(--ee-border, #dfe0ee);
+  border-radius: 6px;
+  margin: auto;
+  background: var(--ee-panel-bg, #ffffff);
+  color: var(--ee-text-normal, #0d0d19);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+  white-space: normal;
+  cursor: default;
+
+  &:not([open]) { display: none; }
+
+  &::backdrop { background: rgba(0, 0, 0, 0.45); }
+
+  .panel-heading, .panel-body, .panel-footer {
+    padding: 16px 20px;
+    margin: 0;
+  }
+
+  .panel-heading h2 {
+    margin: 0;
+    font-size: 18px;
+    line-height: 24px;
+    color: inherit;
+  }
+
+  .panel-body p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 22px;
+    overflow-wrap: anywhere;
+  }
+
+  .panel-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+    border-top: 1px solid var(--ee-border, #dfe0ee);
+
+    .button { margin: 0; }
   }
 }
 

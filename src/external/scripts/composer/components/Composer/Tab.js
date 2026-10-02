@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 import { addColumnToNewRow, clearPlaceholders, removePage, switchHash, switchPage } from "../../actions/Actions";
 import { placeholderPage, swapPage } from "../../actions/PageDragDrop";
 import { COLUMN, PAGE } from "../../constants/DraggableTypes";
+import ConfirmPageRemoval from "./ConfirmPageRemoval";
 
 const passablePageDragOffset = 15;
 
@@ -96,6 +97,9 @@ class Tab extends Component {
 
     this.tabClickHandler = this.tabClickHandler.bind(this);
     this.removePageHandler = this.removePageHandler.bind(this);
+    this.cancelRemoval = this.cancelRemoval.bind(this);
+    this.confirmRemoval = this.confirmRemoval.bind(this);
+    this.state = { confirmingRemoval: false };
   }
 
   render() {
@@ -122,13 +126,21 @@ class Tab extends Component {
             {label || `Page ${index + 1}`}
           </button>
 
-          {isSelected && (pageCount > 1) ? (
-            <ul className="composer-actions composer-page-actions">
-              <li><button type="button" className="composer-action-remove"
+          <ul className="composer-actions composer-page-actions" aria-hidden={!isSelected || pageCount < 2}>
+            <li>
+              {isSelected && pageCount > 1 &&
+                <button type="button" className="composer-action-remove"
+                          ref={button => { this.removeButton = button; }}
                           aria-label={`Remove ${label || `Page ${index + 1}`}`}
-                          onClick={this.removePageHandler} /></li>
-            </ul>
-          ) : ""}
+                          onClick={this.removePageHandler} />
+              }
+            </li>
+          </ul>
+          {this.state.confirmingRemoval &&
+            <ConfirmPageRemoval pageLabel={label || `Page ${index + 1}`}
+                                onCancel={this.cancelRemoval}
+                                onConfirm={this.confirmRemoval} />
+          }
         </li>
       )
     );
@@ -139,15 +151,28 @@ class Tab extends Component {
   }
 
   removePageHandler(event) {
-    const { index, removePage } = this.props;
-
-    if (confirm("Are you sure you want to remove this page and all fields on it?")) {
-      removePage(index);
-    }
-
     event.preventDefault();
     event.stopPropagation();
-    return false;
+    this.setState({ confirmingRemoval: true });
+  }
+
+  cancelRemoval() {
+    this.setState({ confirmingRemoval: false }, () => {
+      if (this.removeButton) {
+        this.removeButton.focus();
+      }
+    });
+  }
+
+  confirmRemoval() {
+    this.setState({ confirmingRemoval: false });
+    this.props.removePage(this.props.index);
+    requestAnimationFrame(() => {
+      const selectedPage = document.querySelector('.composer-page-button[aria-current="page"]');
+      if (selectedPage) {
+        selectedPage.focus();
+      }
+    });
   }
 }
 
