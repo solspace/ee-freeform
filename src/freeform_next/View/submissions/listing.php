@@ -274,5 +274,5 @@ $this->extend('_layouts/table_form_wrapper');
 
 <?php $this->endBlock() ?>
 
-<link rel="stylesheet" href="<?php echo URL_THIRD_THEMES ?>freeform_next/css/submissions.css"/>
+<link rel="stylesheet" href="<?php echo URL_THIRD_THEMES ?>freeform_next/css/submissions.css?v=4-listing-scroll-2"/>
 <link rel="stylesheet" href="<?php echo URL_THIRD_THEMES ?>freeform_next/lib/featherlight/featherlight.min.css"/>
