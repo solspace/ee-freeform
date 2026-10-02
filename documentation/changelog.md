@@ -1,6 +1,7 @@
 # Changelog
 
 ### 4.0.0-alpha.1 (Unreleased)
+- Added compatible field type switching on the Fields edit page, preserving existing submissions and updating all saved forms that use the field.
 - Raised the minimum PHP requirement to 8.2 and addressed a PHP 8.4/8.5 nullable parameter deprecation.
 - Updated bundled PHP dependencies and removed development dependencies from the bundled vendor directory.
 - Refreshed form builder styling with EE theme colours, compact inputs and spacing, cohesive toolbars, and responsive layouts.

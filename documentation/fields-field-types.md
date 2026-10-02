@@ -46,7 +46,7 @@ Fields can be created and managed in the main field creation area (**Freeform > 
 Some important notes:
 
 * All field properties can be overwritten at form level inside Composer, including the field Handle.
-* Once a field is created, you cannot change the field type after.
+* In Freeform 4, you can change an existing field's **Field Type** on **Freeform → Fields → Edit** within these compatible groups: Text / Textarea / Phone / Website / Regex, Select / Radio Group, and Multiple Select / Checkbox Group. Pro types are available only when installed. The change applies to every saved form using the field, preserves existing submissions and form-specific settings, and resets incompatible phone/regex patterns. Review validation, custom templates, and integrations afterward; a Text field can retain stored line breaks but displays as a single-line input. Other field types cannot be converted.
 * Freeform will load fields of [Hidden](#fields-hidden) type at the beginning of the form, regardless of where they are placed in Composer layout.
 
 [![Fields](images/cp_fields-list.png)](images/cp_fields-list.png)

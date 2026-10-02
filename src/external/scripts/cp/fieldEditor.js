@@ -41,6 +41,8 @@ $(() => {
       }
     };
 
+    self.on('freeform:options-changed', () => self.checkValueCount());
+
     editor
     // REMOVE button click handler
       .on({
@@ -115,6 +117,44 @@ $(() => {
     self.showValues($('.value-toggler input:checked').val() === "1");
     self.showValues($('.value-toggler input:hidden').val() === "1");
     self.checkValueCount();
+  });
+
+  // Keep edits to shared settings when switching compatible types before Save.
+  $('[data-compatible-field-types]').each((i, select) => {
+    let previousType = $(select).val();
+    $(select).on('change', () => {
+      const nextType = $(select).val();
+      if (previousType === nextType) return;
+
+      const previousPrefix = `types[${previousType}]`;
+      const nextPrefix = `types[${nextType}]`;
+      ['value', 'placeholder'].forEach((property) => {
+        const source = $(`[name="${previousPrefix}[${property}]"]`);
+        const target = $(`[name="${nextPrefix}[${property}]"]`);
+        if (source.length && target.length) target.val(source.val());
+      });
+
+      const source = wrappers.has(`[name^="${previousPrefix}"]`);
+      const target = wrappers.has(`[name^="${nextPrefix}"]`);
+      if (source.length && target.length) {
+        const items = $('.option-editor .items', source).children().clone();
+        items.find('input[name]').each((index, input) => {
+          input.name = input.name.replace(previousPrefix, nextPrefix);
+        });
+        $('.option-editor .items', target).empty().append(items);
+        const customValues = $('.value-toggler input', source).val();
+        $('.value-toggler input', target).val(customValues);
+        target.toggleClass('show-values', customValues === '1');
+        $('.value-toggler button', target)
+          .toggleClass('on', customValues === '1')
+          .toggleClass('off', customValues !== '1')
+          .attr('data-state', customValues === '1' ? 'on' : 'off')
+          .attr('aria-checked', customValues === '1' ? 'true' : 'false');
+        target.trigger('freeform:options-changed');
+      }
+
+      previousType = nextType;
+    });
   });
 
   // $('select#dateTimeType')

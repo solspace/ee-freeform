@@ -14,6 +14,7 @@ use Solspace\Addons\FreeformNext\Library\Configuration\ExternalOptionsConfigurat
 use Solspace\Addons\FreeformNext\Library\Database\FieldHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Factories\PredefinedOptionsFactory;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
+use Solspace\Addons\FreeformNext\Library\Helpers\FieldTypeHelper;
 use Solspace\Addons\FreeformNext\Model\FieldModel;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Symfony\Component\Finder\Finder;
@@ -73,6 +74,31 @@ class FieldsService implements FieldHandlerInterface
         }
 
         return $fieldTypes;
+    }
+
+    public function getCompatibleFieldTypes(string $type): array
+    {
+        return array_intersect_key(
+            $this->getFieldTypes(),
+            array_flip(FieldTypeHelper::getCompatibleTypes($type))
+        );
+    }
+
+    /** Called inside the same transaction as the field update. */
+    public function changeFieldTypeInForms(FieldModel $field): void
+    {
+        $defaults = $field->jsonSerialize();
+        foreach (FormRepository::getInstance()->getAllForms() as $form) {
+            if (!$form->layoutJson) {
+                continue;
+            }
+
+            $json = FieldTypeHelper::convertLayout($form->layoutJson, (int) $field->id, $defaults);
+            if ($json !== null) {
+                $form->set(['layoutJson' => $json]);
+                $form->save();
+            }
+        }
     }
 
     /**

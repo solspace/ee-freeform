@@ -12,6 +12,7 @@
 namespace Solspace\Addons\FreeformNext\Controllers;
 
 use Exception;
+use Throwable;
 use EllisLab\ExpressionEngine\Library\CP\Table;
 use ExpressionEngine\Service\Validation\Result;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
@@ -129,7 +130,10 @@ class FieldController extends Controller
             throw new FieldException(sprintf('Field by ID "%d" not found', $id));
         }
 
-        $fieldTypes = $this->getFieldsService()->getFieldTypes();
+        $allFieldTypes = $this->getFieldsService()->getFieldTypes();
+        $fieldTypes = $model->id
+            ? $this->getFieldsService()->getCompatibleFieldTypes($model->type)
+            : $allFieldTypes;
 
         $sections = [
             [
@@ -178,18 +182,21 @@ class FieldController extends Controller
                     ],
                 ],
                 [
-                    'title'  => lang('Type'),
-                    'desc'   => lang('What type of field is this?'),
+                    'title'  => lang('Field Type'),
+                    'desc'   => $model->id
+                        ? lang('Only compatible field types are available. Changing the type updates every form using this field and preserves existing submissions. Review validation, custom templates, and integrations after changing it.')
+                        : lang('What type of field is this?'),
                     'fields' => [
                         'type' => [
-                            'disabled'     => (bool) $model->id,
+                            'disabled'     => (bool) $model->id && count($fieldTypes) < 2,
                             'type'         => 'select',
                             'value'        => $model->type,
                             'required'     => true,
                             'choices'      => $fieldTypes,
+                            'attrs'        => $model->id ? ' data-compatible-field-types' : '',
                             'group_toggle' => array_combine(
-                                array_keys($fieldTypes),
-                                array_keys($fieldTypes)
+                                array_keys($allFieldTypes),
+                                array_keys($allFieldTypes)
                             ),
                         ],
                     ],
@@ -240,9 +247,20 @@ class FieldController extends Controller
         }
 
         $isNew = !$field->id;
+        $originalType = $field->type;
 
         $post        = $_POST;
         $type        = $_POST['type'] ?? $field->type;
+        $fieldTypes = $isNew
+            ? $this->getFieldsService()->getFieldTypes()
+            : $this->getFieldsService()->getCompatibleFieldTypes($originalType);
+        if (!is_string($type) || !array_key_exists($type, $fieldTypes)) {
+            ee('CP/Alert')->makeInline('shared-form')->asIssue()
+                ->withTitle(lang('This field type conversion is not supported.'))->defer();
+
+            return $field;
+        }
+        $typeChanged = !$isNew && $type !== $originalType;
         $validValues = $additionalProperties = [];
         foreach ($post as $key => $value) {
             if (property_exists($field, $key)) {
@@ -343,9 +361,26 @@ class FieldController extends Controller
         }
 
         try {
+            if ($typeChanged) {
+                if (ee()->db->trans_begin() === false) {
+                    throw new Exception('Unable to begin the field type update.');
+                }
+            }
+
             $field->save();
 
+            if ($typeChanged) {
+                $this->getFieldsService()->changeFieldTypeInForms($field);
+                if (ee()->db->trans_status() === false) {
+                    throw new Exception('Unable to update the field type in all forms.');
+                }
+            }
+
             ExtensionHelper::call(ExtensionHelper::HOOK_FIELD_AFTER_SAVE, $field, $isNew);
+
+            if ($typeChanged && ee()->db->trans_commit() === false) {
+                throw new Exception('Unable to commit the field type update.');
+            }
 
             ee('CP/Alert')
                 ->makeInline('shared-form')
@@ -354,7 +389,10 @@ class FieldController extends Controller
                 ->defer();
 
             return $field;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
+            if ($typeChanged) {
+                ee()->db->trans_rollback();
+            }
             ee('CP/Alert')
                 ->makeInline('shared-form')
                 ->asIssue()
@@ -1028,7 +1066,7 @@ class FieldController extends Controller
                     'fields' => [
                         'pattern' => [
                             'type'  => 'text',
-                            'value' => $model->getAdditionalProperty('pattern'),
+                            'value' => $model->type === FieldInterface::TYPE_PHONE ? $model->getAdditionalProperty('pattern') : '',
                         ],
                     ],
                 ],
@@ -1060,7 +1098,7 @@ class FieldController extends Controller
                     'fields' => [
                         'pattern' => [
                             'type'  => 'text',
-                            'value' => $model->getAdditionalProperty('pattern'),
+                            'value' => $model->type === FieldInterface::TYPE_REGEX ? $model->getAdditionalProperty('pattern') : '',
                         ],
                     ],
                 ],
@@ -1070,7 +1108,7 @@ class FieldController extends Controller
                     'fields' => [
                         'message' => [
                             'type'  => 'text',
-                            'value' => $model->getAdditionalProperty('message'),
+                            'value' => $model->type === FieldInterface::TYPE_REGEX ? $model->getAdditionalProperty('message') : '',
                         ],
                     ],
                 ],
@@ -1114,7 +1152,7 @@ class FieldController extends Controller
      */
     private function getFieldHtml(FieldModel $model, string $template, string $type): string|bool
     {
-        $singleValue = $type !== FieldInterface::TYPE_CHECKBOX_GROUP;
+        $singleValue = !in_array($type, [FieldInterface::TYPE_CHECKBOX_GROUP, FieldInterface::TYPE_MULTIPLE_SELECT], true);
 
         ob_start();
         include PATH_THIRD . "freeform_next/Templates/fields/{$template}.php";

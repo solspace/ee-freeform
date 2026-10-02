@@ -74,7 +74,7 @@ class FieldModel extends Model implements JsonSerializable
     protected $dateUpdated;
     protected $additionalProperties;
 
-    protected static $_events = ['afterSave', 'afterDelete', 'beforeInsert', 'beforeUpdate', 'beforeSave'];
+    protected static $_events = ['afterInsert', 'afterDelete', 'beforeInsert', 'beforeUpdate', 'beforeSave'];
 
     protected static $_typed_columns = [
         'values'               => 'json',
@@ -191,7 +191,7 @@ class FieldModel extends Model implements JsonSerializable
 
         if (in_array($this->type, [FieldInterface::TYPE_RADIO_GROUP, FieldInterface::TYPE_SELECT], true)) {
             $returnArray['showCustomValues'] = $this->hasCustomOptionValues();
-            $returnArray['value']            = $this->value ?: '';
+            $returnArray['value']            = $this->value ?? '';
             $returnArray['options']          = $this->options ?: [];
         }
 
@@ -295,7 +295,7 @@ class FieldModel extends Model implements JsonSerializable
         foreach ($labels as $index => $label) {
             $value = $values[$index];
 
-            if (empty($label) && empty($value)) {
+            if (($label === '' || $label === null) && ($value === '' || $value === null)) {
                 continue;
             }
 
@@ -338,7 +338,7 @@ class FieldModel extends Model implements JsonSerializable
             [
                 'options' => !empty($savableOptions) ? $savableOptions : null,
                 'values'  => !empty($savableValues) ? $savableValues : null,
-                'value'   => !empty($savableValue) ? $savableValue : null,
+                'value'   => $savableValue,
             ]
         );
     }
@@ -443,7 +443,7 @@ class FieldModel extends Model implements JsonSerializable
     /**
      * Add a new column in the submissions table for this field
      */
-    public function onAfterSave(): void
+    public function onAfterInsert(): void
     {
         if (!$this->canStoreValues()) {
             return;
@@ -452,6 +452,7 @@ class FieldModel extends Model implements JsonSerializable
         $columnName = SubmissionModel::getFieldColumnName($this->id);
         $type       = $this->getColumnType();
 
+        // Only new fields need DDL; it must not implicitly commit a type change.
         try {
             ee()->db->query("ALTER TABLE exp_freeform_next_submissions ADD COLUMN $columnName $type NULL DEFAULT NULL");
         } catch (Exception) {
