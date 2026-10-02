@@ -133,6 +133,33 @@ $this->extend('_layouts/table_form_wrapper');
 		<div class="filter-bar__item">
 			<a href="<?= $mainUrl ?>" class="filter-bar__button filter-bar__button--clear button button--default button--small"><i class="fas fa-minus-circle fa-sm"></i> <?= lang('clear_filters') ?></a>
 		</div>
+		<div class="freeform-list-controls">
+			<div class="filter-bar__item freeform-columns-menu">
+				<button type="button" id="change-layout-trigger" class="has-sub filter-bar__button js-dropdown-toggle button button--default button--small" aria-label="<?= htmlspecialchars(lang('Edit Layout'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" title="<?= htmlspecialchars(lang('Edit Layout'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
+					<i class="far fa-columns" aria-hidden="true"></i>
+				</button>
+				<div class="dropdown freeform-columns-dropdown">
+					<div class="freeform-columns-heading"><?= lang('Edit Layout') ?></div>
+					<ul class="very-sortable">
+						<?php foreach ($layout as $setting): ?>
+							<li data-id="<?= htmlspecialchars((string) $setting->getId(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" data-handle="<?= htmlspecialchars((string) $setting->getHandle(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" data-label="<?= htmlspecialchars((string) $setting->getLabel(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
+								<span class="handle" aria-hidden="true"></span>
+								<label><input type="checkbox" <?= $setting->isChecked() ? 'checked' : '' ?>> <?= htmlspecialchars((string) $setting->getLabel(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></label>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+					<div class="freeform-columns-actions"><button type="button" class="button button--primary button--small" data-layout-save><?= lang('save') ?></button></div>
+				</div>
+			</div>
+			<div class="filter-bar__item freeform-per-page-menu">
+				<button type="button" class="has-sub filter-bar__button js-dropdown-toggle button button--default button--small">Show <span class="faded">(<?= (int) $perpage ?>)</span></button>
+				<div class="dropdown">
+					<?php foreach ([25, 50, 100] as $count): ?>
+						<a class="dropdown__link" href="<?= ee('CP/URL')->getCurrentUrl()->addQueryStringVariables(['perpage' => $count, 'page' => 1])->compile() ?>"><?= $count ?></a>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -142,31 +169,6 @@ $this->extend('_layouts/table_form_wrapper');
 
 
 <?php $this->startBlock('addonModals') ?>
-
-	<div class="choice-panel hidden">
-		<h1 class="dialog__header"><?php echo lang('Edit Layout') ?></h1>
-
-		<div class="dialog__body">
-			<ul class="very-sortable">
-				<?php foreach ($layout as $setting) : ?>
-					<li data-id="<?php echo $setting->getId() ?>"
-						data-handle="<?php echo $setting->getHandle() ?>"
-						data-label="<?php echo $setting->getLabel() ?>">
-						<label>
-							<span class="handle"></span>
-							<input type="checkbox"<?php echo $setting->isChecked() ? ' checked' : '' ?> />
-							<?php echo $setting->getLabel() ?>
-						</label>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-		</div>
-
-		<div class="buttons dialog__actions ">
-			<button class="btn action" data-layout-save>Save</button>
-			<button class="btn action" data-featherlight-close>Cancel</button>
-		</div>
-	</div>
 
 	<div id="quick-export-modal" class="hidden">
 		<form id="export-csv-modal" method="post" action="<?php echo $exportLink ?>">
@@ -263,8 +265,8 @@ $this->extend('_layouts/table_form_wrapper');
 
 			</div>
 			<div class="buttons dialog__actions">
-					<input type="button" class="btn cancel" value="Cancel"/>
-					<input type="submit" class="btn submit button--primary" value="Export"/>
+					<input type="button" class="btn button button--default button--small cancel" value="Cancel"/>
+					<input type="submit" class="btn button button--primary button--small submit" value="Export"/>
 					<div class="spinner" style="display: none;"></div>
 			</div>
 		</form>

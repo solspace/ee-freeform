@@ -450,13 +450,7 @@ class SubmissionController extends Controller
         $modal = new ConfirmRemoveModal($this->getLink('submissions/' . $form->getHandle() . '/delete'));
         $modal->setKind('Submissions');
 
-        $formRightLinks = [
-            [
-                'title' => lang('Edit Layout'),
-                'link'  => '#',
-                'attrs' => 'id="change-layout-trigger" class="btn action button--small"',
-            ],
-        ];
+        $formRightLinks = [];
 
         if (class_exists(ExportController::class)) {
             array_unshift($formRightLinks, [
@@ -487,6 +481,7 @@ class SubmissionController extends Controller
 			'form'             => $form,
 			'form_right_links' => $formRightLinks,
 			'pagination'       => $pagination,
+			'perpage'          => $perpage,
 			'exportLink'       => $this->getLink('export'),
             'formSwitches'     => $formSwitches,
 			'formStatuses'     => $formStatuses,
@@ -947,13 +942,7 @@ class SubmissionController extends Controller
         $modal = new ConfirmRemoveModal($this->getLink('submissions/' . $form->getHandle() . '/delete'));
         $modal->setKind('Submissions');
 
-        $formRightLinks = [
-            [
-                'title' => lang('Edit Layout'),
-                'link'  => '#',
-                'attrs' => 'id="change-layout-trigger" class="btn action button--small"',
-            ],
-        ];
+        $formRightLinks = [];
 
         if (class_exists(ExportController::class)) {
             array_unshift($formRightLinks, [
@@ -984,6 +973,7 @@ class SubmissionController extends Controller
             'form'             => $form,
             'form_right_links' => $formRightLinks,
             'pagination'       => $pagination,
+            'perpage'          => $perpage,
             'exportLink'       => $this->getLink('export'),
             'formSwitches'     => $formSwitches,
             'formStatuses'     => $formStatuses,
