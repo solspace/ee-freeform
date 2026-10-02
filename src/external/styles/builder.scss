@@ -667,13 +667,13 @@
 }
 
 .composer-add-new-field-wrapper, .composer-add-new-notification-wrapper, .composer-add-new-template-wrapper {
-  margin-top: $spacing;
+  margin-top: 8px;
 
   &.active {
-    padding: $spacing;
+    padding: 9px;
 
     background: var(--ee-input-bg, #ffffff);
-    border: 1px solid $color-field-border;
+    border: 1px solid var(--ee-border, #dfe0ee);
     border-radius: 5px;
   }
 
@@ -683,23 +683,23 @@
 }
 
 .composer-new-field-form {
-  .btn.cancel {
-    margin-right: $spacing / 5;
-  }
-
   .field {
-    margin: 0 0 10px;
+    margin: 0 0 8px;
 
     .heading {
+      margin: 0 0 4px;
+
       label {
         color: var(--ee-text-normal, #292929);
-        font-weight: bold;
+        font-size: 12px;
+        line-height: 18px;
+        font-weight: 500;
       }
     }
 
     .select {
       select {
-        margin-top: 5px;
+        margin-top: 0;
 
         width: 100%;
         box-sizing: border-box;
@@ -713,8 +713,25 @@
     }
   }
 
-  button {
-    padding: 5px 10px!important;
+  .composer-new-field-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 9px;
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      width: auto;
+      height: 28px;
+      min-height: 28px;
+      margin: 0;
+      padding: 4px 10px !important;
+      font-size: 12px;
+      line-height: 18px;
+    }
   }
 }
 
@@ -1111,7 +1128,7 @@
 
   .composer-add-new-field-wrapper.active {
     margin: 0 0 8px;
-    padding: 10px;
+    padding: 9px;
   }
 
   .composer-column input:not([type=checkbox]):not([type=radio]),

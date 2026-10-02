@@ -126,8 +126,10 @@ class FieldProperties extends Component {
         </div>
         }
 
-        <button type="button" className="btn action cancel button--small" onClick={toggleFieldForm}>Cancel</button>
-        <button type="button" className="btn action submit button--small" onClick={this.addField}>Save</button>
+        <div className="composer-new-field-actions">
+          <button type="button" className="button button--default button--small" onClick={toggleFieldForm}>Cancel</button>
+          <button type="button" className="button button--primary button--small" onClick={this.addField}>Save</button>
+        </div>
       </div>
     );
   }
