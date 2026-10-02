@@ -1,68 +1,24 @@
 <?php /** @var \Solspace\Addons\FreeformNext\Model\ExportProfileModel $profile */ ?>
-<table id="field-settings" class="data fullwidth collapsible">
-    <thead>
-    <th width="10"></th>
-    <th></th>
-    <th>Field Name</th>
-    </thead>
-    <tbody>
-    <?php foreach ($profile->getFieldSettings() as $fieldId => $fieldData) : ?>
-        <tr>
-            <td width="10">
-                <a class="handle" title="Reorder"></a>
-            </td>
-            <td width="10">
-                <input type="hidden"
-                       name="fieldSettings[<?php echo $fieldId ?>][checked]"
-                       value="0"
-                />
-                <input type="checkbox"
-                       name="fieldSettings[<?php echo $fieldId ?>][checked]"
-                       value="1"
-                       <?php echo $fieldData['checked'] ? 'checked' : '' ?>
-                />
-            </td>
-            <td>
-                <?php echo $fieldData['label']; ?>
-                <input type="hidden"
-                       name="fieldSettings[<?php echo $fieldId ?>][label]"
-                       value="<?php echo $fieldData['label']; ?>"
-                />
-            </td>
-        </tr>
+<ul id="field-settings" class="freeform-export-fields">
+    <?php foreach ($profile->getFieldSettings() as $fieldId => $fieldData): ?>
+        <?php $inputId = 'export-field-' . preg_replace('/[^a-zA-Z0-9_-]/', '-', (string) $fieldId); ?>
+        <li class="freeform-export-field">
+            <span class="handle" title="Drag to reorder" aria-hidden="true">≡</span>
+            <input type="hidden"
+                   name="fieldSettings[<?= htmlspecialchars((string) $fieldId, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>][checked]"
+                   value="0" />
+            <input type="checkbox"
+                   id="<?= htmlspecialchars($inputId, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"
+                   name="fieldSettings[<?= htmlspecialchars((string) $fieldId, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>][checked]"
+                   value="1"
+                   <?= $fieldData['checked'] ? 'checked' : '' ?> />
+            <label for="<?= htmlspecialchars($inputId, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"
+                   title="<?= htmlspecialchars((string) $fieldData['label'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
+                <?= htmlspecialchars((string) $fieldData['label'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
+            </label>
+            <input type="hidden"
+                   name="fieldSettings[<?= htmlspecialchars((string) $fieldId, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>][label]"
+                   value="<?= htmlspecialchars((string) $fieldData['label'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" />
+        </li>
     <?php endforeach; ?>
-    </tbody>
-</table>
-
-<style>
-    @font-face {
-        font-family: 'Solspace Font Awesome 6 Pro Solid';
-        src: url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-solid-900.svg?61199501');
-        src: url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-solid-900.eot?61199501#iefix') format('embedded-opentype'),
-        url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-solid-900.woff2?61199501') format('woff2'),
-        url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-solid-900.woff?61199501') format('woff'),
-        url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-solid-900.ttf?61199501') format('truetype'),
-        url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-solid-900.svg?61199501#solspace-freeform') format('svg');
-        font-weight: 900;
-        font-style: normal;
-    }
-
-    @font-face {
-        font-family: 'Solspace Font Awesome 6 Pro Regular';
-        src: url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-regular-400.svg?61199501');
-        src: url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-regular-400.eot?61199501#iefix') format('embedded-opentype'),
-        url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-regular-400.woff2?61199501') format('woff2'),
-        url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-regular-400.woff?61199501') format('woff'),
-        url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-regular-400.ttf?61199501') format('truetype'),
-        url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-regular-400.svg?61199501#solspace-freeform') format('svg');
-        font-weight: 400;
-        font-style: normal;
-    }
-
-    a.handle:before {
-        display: block;
-        content: "\f0c9";
-        font-family: 'Solspace Font Awesome 6 Pro Regular', 'Solspace Font Awesome 6 Pro Solid', sans-serif;
-        color: black;
-    }
-</style>
+</ul>

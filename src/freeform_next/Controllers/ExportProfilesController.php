@@ -141,7 +141,7 @@ class ExportProfilesController extends Controller
             $form = FormRepository::getInstance()->getFormByIdOrHandle($formHandle);
         }
 
-        $statuses = StatusRepository::getInstance()->getStatusNamesById();
+        $statuses = StatusRepository::getInstance()->getAllStatuses();
 
         if (!$form) {
             throw new FreeformException('Could not find form');
@@ -187,12 +187,11 @@ class ExportProfilesController extends Controller
                             ],
                             [
                                 'title'  => 'Statuses',
-                                'desc'   => 'Select which statuses to use',
+                                'desc'   => 'Select which statuses to use. Leave all unchecked to include every status.',
                                 'fields' => [
                                     'export-statuses' => [
-                                        'type'    => 'checkbox',
-                                        'choices' => $statuses,
-                                        'value'   => $profile->statuses,
+                                        'type'    => 'html',
+                                        'content' => $this->getStatusSelectorTemplate($profile, $statuses),
                                     ],
                                 ],
                             ],
@@ -362,6 +361,14 @@ class ExportProfilesController extends Controller
     {
         ob_start();
         include __DIR__ . '/../View/export_profiles/fieldSettings.php';
+
+        return ob_get_clean();
+    }
+
+    private function getStatusSelectorTemplate(ExportProfileModel $profile, array $statuses): string|bool
+    {
+        ob_start();
+        include __DIR__ . '/../View/export_profiles/statusSelector.php';
 
         return ob_get_clean();
     }

@@ -1,7 +1,16 @@
 $(() => {
-  const table = $('#field-settings');
+  $('#field-settings').sortable({ handle: '.handle', tolerance: 'pointer' });
 
-  $('tbody', table).sortable();
+  const statusSelector = $('.freeform-export-status-selector');
+  statusSelector.on('change', 'input[type=checkbox]', function() {
+    const checked = $('input[type=checkbox]:checked', statusSelector);
+    const selection = $('.freeform-export-status-selection', statusSelector).empty();
+    if (checked.length === 1) {
+      selection.append(checked.closest('label').find('.status-tag').clone());
+    } else {
+      selection.text(checked.length ? `${checked.length} selected` : 'All statuses');
+    }
+  });
 
   $('.tbl-search .dropdown-field > a').on({
     click: function(e) {

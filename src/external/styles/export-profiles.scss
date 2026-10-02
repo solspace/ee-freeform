@@ -39,3 +39,122 @@
     }
   }
 }
+
+.freeform-export-status-selector {
+  position: relative;
+  width: min(270px, 100%);
+  margin: 0;
+  padding: 0;
+
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 42px;
+    padding: 6px 14px;
+    border: 1px solid var(--ee-border);
+    border-radius: 5px;
+    background: var(--ee-bg-blank);
+    cursor: pointer;
+    list-style: none;
+
+    &:before { display: none; content: none; }
+    &::-webkit-details-marker { display: none; }
+    &:focus-visible { outline: 2px solid var(--ee-brand-primary); outline-offset: 2px; }
+  }
+
+  .freeform-export-status-chevron {
+    width: 8px;
+    height: 8px;
+    border-right: 1.5px solid var(--ee-text-secondary);
+    border-bottom: 1.5px solid var(--ee-text-secondary);
+    transform: rotate(45deg);
+  }
+
+  &[open] .freeform-export-status-chevron { transform: rotate(225deg); }
+
+  .freeform-export-status-tag {
+    min-width: 95px;
+    padding: 7px 16px;
+    border: 1px solid var(--freeform-status-color);
+    background: var(--ee-bg-blank);
+    color: var(--freeform-status-color);
+    font-size: 14px;
+    text-align: center;
+  }
+}
+
+.freeform-export-status-options {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 5px);
+  left: 0;
+  width: max(100%, 290px);
+  max-width: calc(100vw - 40px);
+  padding: 10px;
+  border: 1px solid var(--ee-border);
+  border-radius: 6px;
+  background: var(--ee-bg-blank);
+  box-shadow: 0 5px 15px var(--ee-shadow-modal);
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    padding: 5px;
+    cursor: pointer;
+  }
+
+}
+
+.freeform-export-fields {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  .freeform-export-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    padding: 6px 4px;
+    border-radius: 4px;
+
+    &:hover { background: var(--ee-bg-0); }
+
+    .handle {
+      flex: none;
+      color: var(--ee-text-secondary);
+      font-size: 20px;
+      line-height: 16px;
+      cursor: move;
+    }
+
+    input[type=checkbox] { flex: none; margin: 0; }
+
+    label {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin: 0;
+      cursor: pointer;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .freeform-export-fields { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 800px) {
+  .freeform-export-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 520px) {
+  .freeform-export-fields { grid-template-columns: minmax(0, 1fr); }
+}
