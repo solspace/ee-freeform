@@ -49,11 +49,11 @@ class HistoryButtons extends Component {
       <div className="composer-history-buttons" role="group" aria-label="Form history">
         <button type="button" className="button button--secondary composer-history-button"
                 aria-label="Undo" title="Undo (⌘Z / Ctrl+Z)" disabled={!canUndo} onClick={undo}>
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 7H5l4-4M5 7h9a6 6 0 0 1 0 12h-3" /></svg>
+          <svg viewBox="0 0 96 80" aria-hidden="true" focusable="false"><path d="M37 1 1 30l36 29V41h18c15 0 23 8 23 22 0 6-2 11-5 16 12-8 19-19 19-31 0-20-14-31-37-31H37V1Z" /></svg>
         </button>
         <button type="button" className="button button--secondary composer-history-button"
                 aria-label="Redo" title="Redo (⌘Shift+Z / Ctrl+Y)" disabled={!canRedo} onClick={redo}>
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 7h4l-4-4m4 4h-9a6 6 0 0 0 0 12h3" /></svg>
+          <svg viewBox="0 0 96 80" aria-hidden="true" focusable="false"><path transform="translate(96 0) scale(-1 1)" d="M37 1 1 30l36 29V41h18c15 0 23 8 23 22 0 6-2 11-5 16 12-8 19-19 19-31 0-20-14-31-37-31H37V1Z" /></svg>
         </button>
       </div>
     );

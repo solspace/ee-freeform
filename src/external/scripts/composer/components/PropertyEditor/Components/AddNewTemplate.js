@@ -9,9 +9,11 @@
  */
 
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import TemplateProperties from "./TemplateProperties";
 
 export default class AddNewTemplate extends Component {
+  static propTypes = { buttonLabel: PropTypes.string };
   static initialState = {
     showForm: false,
   };
@@ -31,8 +33,8 @@ export default class AddNewTemplate extends Component {
     return (
       <div className={className}>
         {!showForm &&
-        <button type="button" className="button button--default button--small" onClick={this.toggleForm}>
-          Create New Template
+        <button type="button" className="button button--default button--small" onClick={this.toggleForm} aria-label="Create new formatting template">
+          {this.props.buttonLabel || "Create New Template"}
         </button>
         }
 

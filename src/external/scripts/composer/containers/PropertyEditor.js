@@ -149,6 +149,7 @@ class PropertyEditor extends Component {
       FieldTypes.PASSWORD,
       FieldTypes.CONFIRMATION,
     ].indexOf(props.type) === -1;
+    const showHeading = [FieldTypes.FORM, FieldTypes.ADMIN_NOTIFICATIONS, FieldTypes.INTEGRATION].indexOf(props.type) === -1;
 
     return (
         <AlwaysNearbyBox
@@ -163,7 +164,7 @@ class PropertyEditor extends Component {
             />
           }
         >
-          <div className="composer-property-header">
+          {showHeading && <div className="composer-property-header">
             <h3>
               {title}
 
@@ -178,7 +179,7 @@ class PropertyEditor extends Component {
               }
             </h3>
             {props.label && <h4>{props.label}</h4>}
-          </div>
+          </div>}
 
           {form ? form : <p>Please select an element</p>}
 

@@ -15,6 +15,7 @@ import BasePropertyEditor from "./BasePropertyEditor";
 import AddNewTemplate from "./Components/AddNewTemplate";
 import LightSwitchProperty from "./PropertyItems/LightSwitchProperty";
 import SelectProperty from "./PropertyItems/SelectProperty";
+import StatusProperty from "./PropertyItems/StatusProperty";
 import TextareaProperty from "./PropertyItems/TextareaProperty";
 import TextProperty from "./PropertyItems/TextProperty";
 
@@ -82,14 +83,6 @@ class Form extends BasePropertyEditor {
       options: templateList,
     });
 
-    const statusOptions = [];
-    formStatuses.map((status) => {
-      statusOptions.push({
-        key: status.id,
-        value: status.name,
-      });
-    });
-
     return (
       <div>
         <TextProperty
@@ -121,7 +114,6 @@ class Form extends BasePropertyEditor {
 
         <LightSwitchProperty
           label="Store Submitted Data"
-          bold={true}
           instructions="Store submission data for this form in the database."
           name="storeData"
           checked={storeData}
@@ -136,19 +128,19 @@ class Form extends BasePropertyEditor {
           onChangeHandler={this.update}
           emptyOption="--"
           optionGroups={optionGroups}
+          inlineAction={canManageSettings}
         >
-          {canManageSettings && <AddNewTemplate />}
+          {canManageSettings && <AddNewTemplate buttonLabel="New" />}
         </SelectProperty>
 
-        <SelectProperty
+        <StatusProperty
           label="Default Status"
           instructions="The default status to be assigned to new submissions."
           name="defaultStatus"
           required={true}
           value={defaultStatus}
-          onChangeHandler={this.update}
-          isNumeric={true}
-          options={statusOptions}
+          onChangeHandler={value => this.updateKeyValue("defaultStatus", value)}
+          statuses={formStatuses}
         />
 
         <TextProperty

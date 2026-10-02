@@ -66,8 +66,9 @@ class AdminNotifications extends BasePropertyEditor {
           onChangeHandler={this.update}
           emptyOption="--"
           optionGroups={PropertyHelper.getNotificationList(notifications)}
+          inlineAction={canManageNotifications}
         >
-          {canManageNotifications && <AddNewNotification />}
+          {canManageNotifications && <AddNewNotification buttonLabel="New" />}
         </SelectProperty>
 
         {notificationId ? (

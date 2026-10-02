@@ -28,6 +28,7 @@ export default class BasePropertyItem extends Component {
     couldBeNumeric: PropTypes.bool,
     required: PropTypes.bool,
     nullable: PropTypes.bool,
+    inlineAction: PropTypes.bool,
   };
 
   constructor(props, context) {
@@ -52,10 +53,15 @@ export default class BasePropertyItem extends Component {
           </div>
           }
         </div>
-        <div className="composer-property-input">
-          {this.renderInput()}
-        </div>
-        {this.props.children}
+        {this.props.inlineAction ? (
+          <div className="composer-property-control-row">
+            <div className="composer-property-input">{this.renderInput()}</div>
+            {this.props.children}
+          </div>
+        ) : (
+          <div className="composer-property-input">{this.renderInput()}</div>
+        )}
+        {!this.props.inlineAction && this.props.children}
       </div>
     );
   }
