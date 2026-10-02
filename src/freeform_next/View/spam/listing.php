@@ -135,15 +135,14 @@ $this->extend('_layouts/table_form_wrapper');
 		</div>
 		<div class="freeform-list-controls">
 			<div class="filter-bar__item freeform-columns-menu">
-				<button type="button" id="change-layout-trigger" class="has-sub filter-bar__button js-dropdown-toggle button button--default button--small" aria-label="<?= htmlspecialchars(lang('Edit Layout'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" title="<?= htmlspecialchars(lang('Edit Layout'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
-					<i class="far fa-columns" aria-hidden="true"></i>
+				<button type="button" id="change-layout-trigger" class="has-sub filter-bar__button js-dropdown-toggle button button--default button--small" aria-label="Columns" title="Columns">
+					<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false"><rect x="2.5" y="3" width="15" height="14" rx="1.5"/><path d="M2.5 7.5h15M10 7.5V17"/></svg>
 				</button>
 				<div class="dropdown freeform-columns-dropdown">
-					<div class="freeform-columns-heading"><?= lang('Edit Layout') ?></div>
+					<div class="freeform-columns-heading">Columns</div>
 					<ul class="very-sortable">
 						<?php foreach ($layout as $setting): ?>
 							<li data-id="<?= htmlspecialchars((string) $setting->getId(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" data-handle="<?= htmlspecialchars((string) $setting->getHandle(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" data-label="<?= htmlspecialchars((string) $setting->getLabel(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
-								<span class="handle" aria-hidden="true"></span>
 								<label><input type="checkbox" <?= $setting->isChecked() ? 'checked' : '' ?>> <?= htmlspecialchars((string) $setting->getLabel(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></label>
 							</li>
 						<?php endforeach; ?>

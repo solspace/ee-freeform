@@ -129,6 +129,13 @@
 .freeform-columns-menu .filter-bar__button {
   min-width: 68px;
   text-align: left;
+
+  svg {
+    width: 17px;
+    height: 17px;
+    vertical-align: middle;
+    color: var(--ee-text-secondary);
+  }
 }
 
 .freeform-columns-dropdown {
@@ -137,7 +144,7 @@
   padding: 0;
 
   .freeform-columns-heading {
-    padding: 14px 16px 8px;
+    padding: 18px 20px 10px;
     color: var(--ee-text-secondary);
     font-size: 12px;
     font-weight: 600;
@@ -150,15 +157,15 @@
     overflow-y: auto;
     list-style: none;
     margin: 0;
-    padding: 0 8px;
+    padding: 0 10px;
 
     li {
       display: flex;
       align-items: center;
-      gap: 8px;
-      min-height: 34px;
-      padding: 4px 8px;
-      border-radius: 4px;
+      min-height: 44px;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: grab;
 
       &:hover { background: var(--ee-bg-0); }
     }
@@ -168,18 +175,9 @@
       align-items: center;
       gap: 8px;
       min-width: 0;
+      flex: 1;
       margin: 0;
       cursor: pointer;
-    }
-
-    .handle {
-      cursor: grab;
-      color: var(--ee-text-secondary);
-
-      &::before {
-        content: "\f0c9";
-        font-family: 'Solspace Font Awesome 6 Pro Regular', 'Solspace Font Awesome 6 Pro Solid', sans-serif;
-      }
     }
   }
 
