@@ -210,6 +210,7 @@ class Freeform_next_ext
 
         if($canManageForms)
         {
+          ee()->cp->add_js_script(['package' => 'freeform_next:main-nav']);
           $sub->addItem(
             lang('Forms'),
             ee('CP/URL', 'addons/settings/freeform_next/forms')

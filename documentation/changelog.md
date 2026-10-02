@@ -11,6 +11,7 @@
 - Improved keyboard access, focus visibility, field selection, settings labels, and status announcements in the form builder.
 - Replaced the custom colour picker with a native colour input.
 - Prevented duplicate saves while a save is in progress and rendered form titles and notifications as plain text.
+- Linked the Freeform main navigation item to the Forms list while retaining its native hover menu.
 
 ### 1.7.8 (January 30, 2019) <a href="#v1-7-8" id="v1-7-8" class="docs-anchor">#</a>
 - Fixed a bug where the 'Automatically Scroll to Form on Errors and Multipage forms?' setting was not working for multi-page form returns.
