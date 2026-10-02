@@ -61,7 +61,7 @@ export default class ConfirmRemoval extends Component {
         </div>
         <div className="panel-body">
           <p id={descriptionId}>
-            <strong>{label}</strong> {description}. This cannot be undone.
+            <strong>{label}</strong> {description}. You can restore it with Undo while editing.
           </p>
         </div>
         <div className="panel-footer">

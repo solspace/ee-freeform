@@ -176,6 +176,6 @@ export default connect(
   }),
   (dispatch) => ({
     updateFormId: (formId) => dispatch(updateFormId(formId)),
-    updateFormHandle: (newHandle) => dispatch(updateProperty(FORM, { handle: newHandle })),
+    updateFormHandle: (newHandle) => dispatch(updateProperty(FORM, { handle: newHandle }, { skipHistory: true })),
   }),
 )(SaveButton);

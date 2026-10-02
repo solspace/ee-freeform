@@ -114,12 +114,23 @@ export function removeColumn(hash, columnIndex, rowIndex, pageIndex) {
   };
 }
 
-export function updateProperty(hash, keyValueObject) {
+export function removeField(hash, columnIndex, rowIndex, pageIndex) {
+  return function (dispatch) {
+    dispatch({ type: ActionTypes.REMOVE_FIELD, hash, columnIndex, rowIndex, pageIndex });
+    dispatch(checkForDuplicateHandles());
+  };
+}
+
+export const undo = () => ({ type: ActionTypes.UNDO });
+export const redo = () => ({ type: ActionTypes.REDO });
+
+export function updateProperty(hash, keyValueObject, meta = {}) {
   return function (dispatch) {
     dispatch({
       type: ActionTypes.UPDATE_PROPERTY,
       hash,
       keyValueObject,
+      meta,
     });
 
     if (keyValueObject.hasOwnProperty("handle")) {

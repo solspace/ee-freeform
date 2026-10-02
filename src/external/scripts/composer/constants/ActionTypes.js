@@ -12,6 +12,7 @@
 export const ADD_FIELD_TO_NEW_ROW = "ADD_FIELD_TO_NEW_ROW";
 export const REPOSITION_COLUMN = "REPOSITION_COLUMN";
 export const REMOVE_COLUMN = "REMOVE_COLUMN";
+export const REMOVE_FIELD = "REMOVE_FIELD";
 export const FIELD_POSITION_CHANGED = "FIELD_POSITION_CHANGED";
 export const ADD_COLUMN_TO_ROW = "ADD_COLUMN_TO_ROW";
 export const ADD_COLUMN_TO_NEW_ROW = "ADD_COLUMN_TO_NEW_ROW";
@@ -89,3 +90,5 @@ export const CLEAR_PLACEHOLDERS = "CLEAR_PLACEHOLDERS";
 
 // Pages
 export const SWAP_PAGE = "SWAP_PAGE";
+export const UNDO = "UNDO";
+export const REDO = "REDO";

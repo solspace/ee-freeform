@@ -12,6 +12,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { connect } from "react-redux";
+import HistoryButtons from "./HistoryButtons";
 import SaveButton from "./SaveButton";
 
 class HeaderActions extends Component {
@@ -53,7 +54,7 @@ class HeaderActions extends Component {
   renderActions() {
     if (this.mount) {
       // React 15's portal API retains Redux, CSRF and notification context.
-      ReactDOM.unstable_renderSubtreeIntoContainer(this, <SaveButton {...this.props} />, this.mount);
+      ReactDOM.unstable_renderSubtreeIntoContainer(this, <div className="composer-header-buttons"><HistoryButtons /><SaveButton {...this.props} /></div>, this.mount);
     }
   }
 
@@ -75,6 +76,7 @@ class HeaderActions extends Component {
   render() {
     return this.toolbar ? null : (
       <div className="composer-header-fallback">
+        <HistoryButtons />
         <SaveButton {...this.props} />
       </div>
     );

@@ -30,9 +30,54 @@
 }
 
 .composer-header-actions,
-.composer-header-fallback {
+.composer-header-fallback,
+.composer-header-buttons {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.composer-history-buttons {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  > .composer-history-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 32px !important;
+    height: 32px;
+    min-width: 32px;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: var(--ee-button-secondary-color, #5965f2);
+    background: var(--ee-button-secondary-bg, #e0e2fc);
+    border: 1px solid var(--ee-button-secondary-border, #e0e2fc);
+    border-radius: 5px;
+
+    &:disabled {
+      opacity: .5;
+      cursor: default;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--ee-sidebar-text-active, #2c3fe4);
+      outline-offset: 2px;
+    }
+
+    svg {
+      width: 17px;
+      height: 17px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  }
 }
 
 .composer-header-fallback {

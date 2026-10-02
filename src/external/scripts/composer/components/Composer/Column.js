@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { DragSource } from "react-dnd";
 import { connect } from "react-redux";
-import { clearPlaceholders, removeColumn, removeProperty, switchHash } from "../../actions/Actions";
+import { clearPlaceholders, removeField, switchHash } from "../../actions/Actions";
 import { COLUMN } from "../../constants/DraggableTypes";
 import Field from "./Field";
 import ConfirmRemoval from "./ConfirmRemoval";
@@ -238,8 +238,7 @@ export default connect(
   (dispatch) => ({
     openFieldSettings: (hash) => dispatch(switchHash(hash)),
     removeColumn: (hash, index, rowIndex, pageIndex) => {
-      dispatch(removeColumn(hash, index, rowIndex, pageIndex));
-      dispatch(removeProperty(hash));
+      dispatch(removeField(hash, index, rowIndex, pageIndex));
     },
     openProperties: (hash) => dispatch(switchHash(hash)),
     clearPlaceholders: () => dispatch(clearPlaceholders()),
