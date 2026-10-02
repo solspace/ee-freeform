@@ -101,6 +101,8 @@
         });
 
         $('#quick-export-trigger').featherlight('#quick-export-modal', {
+            variant: 'freeform-export-drawer',
+            closeIcon: '&times; Close modal window <small>[esc]</small>',
             otherClose: '.btn.cancel',
             afterContent: function () {
                 $('.checkbox-select', this.$content).sortable();
