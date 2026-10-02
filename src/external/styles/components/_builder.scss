@@ -113,6 +113,10 @@ $minRowHeight: 48px;
           }
         }
 
+        &.composer-column-submit {
+          padding-top: 28px;
+        }
+
         &:hover:not(.composer-column-active) {
           background: var(--ee-bg-0, #f7f7fb);
           border-color: var(--ee-border, #dfe0ee);
