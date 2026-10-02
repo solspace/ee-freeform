@@ -81,6 +81,9 @@ class Column extends Component {
     const { connectDragSource, properties } = this.props;
 
     const className = ["composer-column"];
+    if (properties.type === "submit") {
+      className.push("composer-column-submit");
+    }
     if (currentHash === hash) {
       className.push("composer-column-active");
     }

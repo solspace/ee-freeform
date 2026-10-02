@@ -50,7 +50,7 @@ export default class TabList extends Component {
 
         {!formPropCleanup && tabCount < MAX_TABS && (
           <div className="tab-list-controls">
-            <button type="button" className="button button--default composer-add-page-button" onClick={() => onNewTab(layout.length)}>Add Page</button>
+            <button type="button" className="button button--secondary composer-add-page-button" onClick={() => onNewTab(layout.length)}>Add Page</button>
           </div>
         )}
       </nav>
