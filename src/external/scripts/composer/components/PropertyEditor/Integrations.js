@@ -86,6 +86,7 @@ class Integrations extends BasePropertyEditor {
           instructions="Map CRM fields to your Freeform fields."
           content={
             <IntegrationMappingTable
+              className="composer-crm-mapping-table"
               formFields={formFields}
               fields={fieldList}
               mapping={mapping}

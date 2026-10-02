@@ -28,17 +28,19 @@ export default class MappingRow extends Component {
 
   render() {
     const { handle, label, required, formFields, mappedFormField, onChangeHandler } = this.props;
+    const inputId = `composer-mapping-${handle}`;
+    const selectedField = formFields.find(field => field.handle === mappedFormField);
 
     return (
       <tr>
         <td className="read-only code">
-          <label className={required ? "required" : ""}>
+          <label htmlFor={inputId} className={required ? "required" : ""}>
             {label}
           </label>
         </td>
         <td>
           <div className="select">
-            <select name={handle} value={mappedFormField} onChange={onChangeHandler}>
+            <select id={inputId} name={handle} value={mappedFormField} title={selectedField && selectedField.label} onChange={onChangeHandler}>
               <option key="--" value="">--</option>
               {formFields.map((item, i) => (
                 <option key={item.handle} value={item.handle}>{item.label}</option>

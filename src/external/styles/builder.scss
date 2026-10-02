@@ -1273,6 +1273,77 @@
     line-height: 1.4;
   }
 
+  .property-editor .composer-crm-mapping-table {
+    > table {
+      table-layout: fixed;
+
+      th:first-child, td:first-child {
+        width: 56%;
+      }
+
+      th, td {
+        box-sizing: border-box;
+      }
+
+      thead th {
+        padding: 5px 8px !important;
+        font-size: 11px;
+        line-height: 16px;
+      }
+
+      tbody td {
+        height: 32px;
+
+        &.read-only {
+          max-width: none;
+          color: var(--ee-text-normal, #333);
+          font-family: inherit;
+          font-size: 12px;
+          line-height: 16px;
+          overflow-wrap: anywhere;
+
+          label {
+            padding: 6px 8px;
+            cursor: pointer;
+          }
+        }
+
+        .select {
+          width: 100%;
+          margin: 0 !important;
+
+          > select {
+            display: block;
+            box-sizing: border-box;
+            width: 100%;
+            min-width: 0;
+            height: 32px;
+            min-height: 32px;
+            padding: 5px 24px 5px 8px !important;
+            border: 1px solid transparent;
+            border-radius: 0;
+            background-color: transparent;
+            box-shadow: none;
+            color: var(--ee-input-color, #333);
+            font-family: inherit;
+            font-size: 12px;
+            line-height: 20px;
+
+            &:hover {
+              background-color: var(--ee-bg-0, #f7f7fb);
+            }
+
+            &:focus-visible {
+              border-color: var(--ee-input-focus-border, #5965f2);
+              outline: 2px solid var(--ee-accent-medium, #b8baff);
+              outline-offset: -2px;
+            }
+          }
+        }
+      }
+    }
+  }
+
   .property-editor .composer-sidebar-body hr {
     margin: 10px 0;
   }

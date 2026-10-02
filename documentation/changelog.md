@@ -10,6 +10,7 @@
 - Added a styled confirmation modal for page deletion with Cancel/Escape controls, keyboard focus containment, and focus restoration.
 - Simplified field action controls to a single unframed delete icon near the upper-right edge. Field removal now uses the same confirmation dialog as page removal; field settings remain available by clicking a field or focusing it and pressing Enter or Space.
 - Added compact Undo and Redo controls beside Save, with keyboard shortcuts, bounded builder history, grouped text edits, and restoration of field, page, layout, option, and form-setting changes. Field deletion restores in one step, and new edits clear the redo branch.
+- Refined CRM field mapping with a wider source-field column, compact table typography, full-cell borderless selects, visible keyboard focus, and full mapped field names on hover.
 - Matched EE's Files page structure with native page-heading save controls, a separate field palette on the page background, and a framed form/settings panel. The page heading and browser title follow the current form name across all settings tabs, while preserving EE's license badge.
 - Stabilized builder scrolling with a viewport-sized workspace, independent scroll areas, and fixed sidebar toolbars; prevented scroll chaining onto the page.
 - Improved keyboard access, focus visibility, field selection, settings labels, and status announcements in the form builder.
