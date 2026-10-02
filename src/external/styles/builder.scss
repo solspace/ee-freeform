@@ -219,7 +219,7 @@
         border-bottom: 2px solid var(--ee-tab-bar-border, var(--ee-border, #dfe0ee));
 
         > ul {
-          column-gap: 8px;
+          column-gap: 16px;
           row-gap: 0;
           padding: 0;
           list-style: none;
@@ -263,12 +263,26 @@
 
             .composer-page-actions {
               display: inline-flex;
-              flex: 0 0 28px;
-              width: 28px;
+              flex: 0 0 auto;
+              width: 0;
               height: 28px;
+              overflow: hidden;
               position: static;
-              margin: 0 0 0 4px !important;
+              margin: 0 !important;
               padding: 0 !important;
+              opacity: 0;
+              transition: width 180ms ease, margin-left 180ms ease, opacity 180ms ease;
+
+              &.is-visible {
+                width: 28px;
+                margin-left: 4px !important;
+                overflow: visible;
+                opacity: 1;
+              }
+
+              @media (prefers-reduced-motion: reduce) {
+                transition: none;
+              }
 
               .composer-action-remove {
                 margin: 0;
@@ -284,10 +298,12 @@
           margin-bottom: 0;
 
           .composer-add-page-button {
-            min-height: 34px;
-            padding: 6px 12px;
-            font-size: 14px;
-            line-height: 20px;
+            height: 28px;
+            min-height: 28px;
+            box-sizing: border-box;
+            padding: 4px 10px;
+            font-size: 12px;
+            line-height: 18px;
           }
         }
       }

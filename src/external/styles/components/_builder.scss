@@ -34,13 +34,13 @@ $minRowHeight: 48px;
     position: sticky;
     top: 0;
     margin: -12px -12px 0;
-    padding: 12px 12px 0;
+    padding: 4px 12px 0;
     z-index: 3;
     background: var(--ee-panel-bg, var(--ee-input-bg, #ffffff));
   }
 
   .layout {
-    padding: 20px 0 0;
+    padding: 28px 0 0;
   }
 
   .composer-row-placeholder {

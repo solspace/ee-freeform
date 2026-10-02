@@ -126,7 +126,8 @@ class Tab extends Component {
             {label || `Page ${index + 1}`}
           </button>
 
-          <ul className="composer-actions composer-page-actions" aria-hidden={!isSelected || pageCount < 2}>
+          <ul className={`composer-actions composer-page-actions${isSelected && pageCount > 1 ? " is-visible" : ""}`}
+              aria-hidden={!isSelected || pageCount < 2}>
             <li>
               {isSelected && pageCount > 1 &&
                 <button type="button" className="composer-action-remove"
