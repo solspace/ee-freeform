@@ -10,12 +10,12 @@
 @import "variables";
 @import "extendable-classes";
 
-html.freeform-submissions-page .ee-wrapper {
+body:has(.freeform-submissions-table-scroll) .ee-wrapper {
   position: relative;
   overflow-x: clip;
 }
 
-html.freeform-submissions-page .ee-main {
+body:has(.freeform-submissions-table-scroll) .ee-main {
   min-width: 0;
 }
 
