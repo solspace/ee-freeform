@@ -1,6 +1,7 @@
 # Changelog
 
 ### 4.0.0-alpha.1 (Unreleased)
+- Throttled cleanup of unfinished uploads and expired session data to once per hour across form requests.
 - Added compatible field type switching on the Fields edit page with a themed confirmation dialog, directional conversion rules, transactional updates to saved forms and submission value formats, and protection against invalid recipient selections.
 - Raised the minimum PHP requirement to 8.2 and addressed a PHP 8.4/8.5 nullable parameter deprecation.
 - Updated bundled PHP dependencies and removed development dependencies from the bundled vendor directory.

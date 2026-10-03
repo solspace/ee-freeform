@@ -8,8 +8,7 @@
  * @link          https://docs.solspace.com/expressionengine/freeform/v3/
  * @license       https://docs.solspace.com/license-agreement/
  */
-use Solspace\Addons\FreeformNext\Services\FilesService;
-use Solspace\Addons\FreeformNext\Services\SettingsService;
+use Solspace\Addons\FreeformNext\Services\CleanupService;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionAttributes;
 use Solspace\Addons\FreeformNext\Library\EETags\FormTagParamUtilities;
@@ -32,12 +31,7 @@ class Freeform_Next extends Plugin
 {
     public function __construct()
     {
-        // TODO: Prevent this from firing all the time
-        $fileService = new FilesService();
-        $fileService->cleanUpUnfinalizedAssets();
-
-        $settingsService = new SettingsService();
-        $settingsService->cleanUpDatabaseSessionData();
+        (new CleanupService())->runIfDue();
 
         $this->loadLanguageFiles();
     }
