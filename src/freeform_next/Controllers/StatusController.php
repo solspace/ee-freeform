@@ -32,7 +32,6 @@ class StatusController extends Controller
             'name'       => ['type' => Table::COL_TEXT, 'encode' => false],
             'handle'     => ['type' => Table::COL_TEXT],
             'is_default' => ['type' => Table::COL_TEXT],
-            'manage'     => ['type' => Table::COL_TOOLBAR],
             ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
         ];
 
@@ -59,14 +58,6 @@ class StatusController extends Controller
                 ],
                 $status->handle,
                 $status->isDefault ? 'Yes' : '',
-                [
-                    'toolbar_items' => [
-                        'edit' => [
-                            'href'  => $link,
-                            'title' => lang('edit'),
-                        ],
-                    ],
-                ],
                 $checkbox,
             ];
         }
