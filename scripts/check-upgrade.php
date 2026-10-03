@@ -118,6 +118,10 @@ namespace {
                 $this->columns[$match[1]][$match[2]] = true;
                 return true;
             }
+            if (preg_match('/^\s*ALTER TABLE `([^`]+)` ADD COLUMN `(turnstileTheme|turnstileSize|hcaptchaTheme|hcaptchaSize)`/i', $sql, $match)) {
+                $this->columns[$match[1]][$match[2]] = true;
+                return true;
+            }
             throw new \RuntimeException('Unexpected SQL: ' . substr($sql, 0, 100));
         }
     }
@@ -141,7 +145,7 @@ namespace {
     preg_match_all("/'version'\\s*=>\\s*'([^']+)'/", $setup, $setupVersions);
     check(count($setupVersions[1]) === 2 && count(array_filter($setupVersions[1], static fn ($version) => strlen($version) > 10)) === 0,
         'EE add-on and fieldtype versions fit extension and fieldtype columns');
-    check(version_compare($setupVersions[1][0], '4.0.0-alpha.3', '=='), 'short alpha version retains upgrade ordering');
+    check(version_compare($setupVersions[1][0], '4.0.0-alpha.4', '=='), 'short alpha version retains upgrade ordering');
 
     class TestFreeformUpdater extends \Freeform_next_upd
     {
@@ -150,7 +154,7 @@ namespace {
             return new class {
                 public function getModuleName(): string { return 'Freeform_next'; }
                 public function getLowerName(): string { return 'freeform_next'; }
-                public function getVersion(): string { return '4.0.0-a3'; }
+                public function getVersion(): string { return '4.0.0-a4'; }
             };
         }
     }
@@ -162,7 +166,8 @@ namespace {
     check(\count($db->tables) === 17 && isset($db->tables['exp_freeform_next_permissions'], $db->tables['exp_freeform_next_submissions']), 'fresh install creates expected tables');
     check(\count($GLOBALS['seededFields']) === 12 && \count($db->rows['freeform_next_statuses']) === 3, 'fresh install seeds fields and statuses');
     $settingsSql = implode("\n", array_filter($db->queries, static fn ($sql) => str_contains($sql, 'CREATE TABLE IF NOT EXISTS `exp_freeform_next_settings`')));
-    foreach (['captchaProvider', 'turnstileKey', 'turnstileSecret', 'hcaptchaKey', 'hcaptchaSecret'] as $column) {
+    foreach (['captchaProvider', 'turnstileKey', 'turnstileSecret', 'turnstileTheme', 'turnstileSize',
+        'hcaptchaKey', 'hcaptchaSecret', 'hcaptchaTheme', 'hcaptchaSize'] as $column) {
         check(str_contains($settingsSql, "`{$column}`"), "fresh install includes {$column}");
     }
     check(\count($db->rows['modules']) === 1 && \count($db->rows['actions']) === 1 && \count($db->rows['extensions']) === 12, 'fresh install registers module, action and hooks');
@@ -193,12 +198,13 @@ namespace {
         'freeform_next_integrations', 'freeform_next_mailing_lists', 'freeform_next_permissions',
     ]));
     check($updater->update('3.3.10'), '3.3.10 upgrades to 4');
-    check(\count($db->queries) === 5 && $content === array_intersect_key($db->rows, $content), '3.3.10 upgrade adds CAPTCHA settings without changing content');
-    check(\count(array_intersect(['captchaProvider', 'turnstileKey', 'turnstileSecret', 'hcaptchaKey', 'hcaptchaSecret'], array_keys($db->columns['exp_freeform_next_settings']))) === 5, 'upgrade creates all CAPTCHA provider columns');
+    check(\count($db->queries) === 9 && $content === array_intersect_key($db->rows, $content), '3.3.10 upgrade adds CAPTCHA settings without changing content');
+    check(\count(array_intersect(['captchaProvider', 'turnstileKey', 'turnstileSecret', 'turnstileTheme', 'turnstileSize',
+        'hcaptchaKey', 'hcaptchaSecret', 'hcaptchaTheme', 'hcaptchaSize'], array_keys($db->columns['exp_freeform_next_settings']))) === 9, 'upgrade creates all CAPTCHA provider columns');
     $hook = $db->rows['extensions'][0];
-    check($hook['enabled'] === 'n' && $hook['settings'] === 'custom' && $hook['priority'] === 13 && $hook['version'] === '4.0.0-a3', 'upgrade preserves disabled hook and its settings');
+    check($hook['enabled'] === 'n' && $hook['settings'] === 'custom' && $hook['priority'] === 13 && $hook['version'] === '4.0.0-a4', 'upgrade preserves disabled hook and its settings');
     check($db->rows['actions'][0]['csrf_exempt'] === false, 'upgrade enables EE CSRF validation for existing submission action');
-    check($updater->update('3.3.10') && \count($db->queries) === 5 && \count($db->rows['actions']) === 1 && \count($db->rows['extensions']) === 12, 'repeated upgrade does not duplicate registrations or columns');
+    check($updater->update('3.3.10') && \count($db->queries) === 9 && \count($db->rows['actions']) === 1 && \count($db->rows['extensions']) === 12, 'repeated upgrade does not duplicate registrations or columns');
 
     // Older 3.3.x sites still need the 3.3.5 spam-folder column migration.
     $db->columns['exp_freeform_next_settings'] = [];
@@ -224,11 +230,23 @@ namespace {
     $GLOBALS['ee']->config->siteId = 2;
     check($menuSettings->isSpamFolderEnabledForMenu(), 'CP menu uses the current site setting');
     $GLOBALS['ee']->config->siteId = 1;
-    check($updater->update('4.0.0-alpha.2'), 'alpha.2 upgrades to alpha.3');
-    check(count($db->queries) === 4, 'alpha.2 adds only its four missing CAPTCHA columns');
+    check($updater->update('4.0.0-alpha.2'), 'alpha.2 upgrades to alpha.4');
+    check(count($db->queries) === 8, 'alpha.2 adds its eight missing CAPTCHA columns');
     check(count(array_intersect(['captchaProvider', 'turnstileKey', 'turnstileSecret', 'hcaptchaKey', 'hcaptchaSecret'], array_keys($db->columns['exp_freeform_next_settings']))) === 5, 'alpha.2 receives the full CAPTCHA schema');
     check($db->rows['freeform_next_forms'] === [['id' => 31, 'name' => 'Contact']], 'alpha.2 upgrade preserves forms');
-    check($updater->update('4.0.0-alpha.2') && count($db->queries) === 4, 'alpha.2 migration is safe to retry');
+    check($updater->update('4.0.0-alpha.2') && count($db->queries) === 8, 'alpha.2 migration is safe to retry');
+
+    // An installed alpha.3 already has keys; add only appearance settings.
+    $db = new UpgradeDb();
+    $db->tables['exp_freeform_next_settings'] = true;
+    $db->columns['exp_freeform_next_settings'] = array_fill_keys(
+        ['captchaProvider', 'turnstileKey', 'turnstileSecret', 'hcaptchaKey', 'hcaptchaSecret'], true
+    );
+    $db->rows['exp_freeform_next_settings'] = [['siteId' => 1, 'captchaProvider' => 'turnstile', 'turnstileKey' => 'existing-key']];
+    $GLOBALS['ee']->db = $db;
+    check($updater->update('4.0.0-a3') && count($db->queries) === 4, 'alpha.3 adds only four appearance columns');
+    check($db->rows['exp_freeform_next_settings'][0]['turnstileKey'] === 'existing-key', 'appearance upgrade preserves saved keys');
+    check($updater->update('4.0.0-a3') && count($db->queries) === 4, 'appearance upgrade is safe to retry');
 
     class FailingUpdater extends TestFreeformUpdater
     {

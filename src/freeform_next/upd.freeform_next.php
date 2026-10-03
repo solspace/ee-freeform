@@ -633,6 +633,22 @@ class Freeform_next_upd extends AddonUpdater
             }
         }
 
+        if (version_compare($previousVersion, '4.0.0-a4', '<')) {
+            $settingsTable = ee()->db->dbprefix('freeform_next_settings');
+            if (ee()->db->table_exists($settingsTable)) {
+                foreach ([
+                    'turnstileTheme' => "VARCHAR(10) NOT NULL DEFAULT 'auto'",
+                    'turnstileSize' => "VARCHAR(10) NOT NULL DEFAULT 'normal'",
+                    'hcaptchaTheme' => "VARCHAR(10) NOT NULL DEFAULT 'light'",
+                    'hcaptchaSize' => "VARCHAR(10) NOT NULL DEFAULT 'normal'",
+                ] as $column => $definition) {
+                    if (!ee()->db->field_exists($column, $settingsTable)) {
+                        ee()->db->query("ALTER TABLE `{$settingsTable}` ADD COLUMN `{$column}` {$definition}");
+                    }
+                }
+            }
+        }
+
         return true;
     }
 

@@ -416,6 +416,24 @@ class SettingsController extends Controller
                 'fields' => ['turnstileSecret' => ['type' => 'text', 'value' => $settings->getTurnstileSecret()]],
             ],
             [
+                'title' => 'Turnstile Theme',
+                'group' => 'turnstileOptions',
+                'fields' => ['turnstileTheme' => [
+                    'type' => 'select',
+                    'value' => $settings->getTurnstileTheme(),
+                    'choices' => ['auto' => 'Auto', 'light' => 'Light', 'dark' => 'Dark'],
+                ]],
+            ],
+            [
+                'title' => 'Turnstile Size',
+                'group' => 'turnstileOptions',
+                'fields' => ['turnstileSize' => [
+                    'type' => 'select',
+                    'value' => $settings->getTurnstileSize(),
+                    'choices' => ['normal' => 'Normal', 'flexible' => 'Flexible', 'compact' => 'Compact'],
+                ]],
+            ],
+            [
                 'title' => 'hCaptcha Site Key',
                 'group' => 'hcaptchaOptions',
                 'fields' => ['hcaptchaKey' => ['type' => 'text', 'value' => $settings->getHcaptchaKey()]],
@@ -424,6 +442,24 @@ class SettingsController extends Controller
                 'title' => 'hCaptcha Secret Key',
                 'group' => 'hcaptchaOptions',
                 'fields' => ['hcaptchaSecret' => ['type' => 'text', 'value' => $settings->getHcaptchaSecret()]],
+            ],
+            [
+                'title' => 'hCaptcha Theme',
+                'group' => 'hcaptchaOptions',
+                'fields' => ['hcaptchaTheme' => [
+                    'type' => 'select',
+                    'value' => $settings->getHcaptchaTheme(),
+                    'choices' => ['light' => 'Light', 'dark' => 'Dark'],
+                ]],
+            ],
+            [
+                'title' => 'hCaptcha Size',
+                'group' => 'hcaptchaOptions',
+                'fields' => ['hcaptchaSize' => [
+                    'type' => 'select',
+                    'value' => $settings->getHcaptchaSize(),
+                    'choices' => ['normal' => 'Normal', 'compact' => 'Compact'],
+                ]],
             ],
         ];
 
@@ -764,6 +800,18 @@ class SettingsController extends Controller
                 true
             )) {
                 return false;
+            }
+            if ($type === self::TYPE_SPAM_PROTECTION) {
+                foreach ([
+                    'turnstileTheme' => ['auto', 'light', 'dark'],
+                    'turnstileSize' => ['normal', 'flexible', 'compact'],
+                    'hcaptchaTheme' => ['light', 'dark'],
+                    'hcaptchaSize' => ['normal', 'compact'],
+                ] as $key => $choices) {
+                    if (isset($_POST[$key]) && !in_array($_POST[$key], $choices, true)) {
+                        return false;
+                    }
+                }
             }
             $accessor = PropertyAccess::createPropertyAccessor();
 

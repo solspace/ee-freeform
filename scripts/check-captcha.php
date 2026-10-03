@@ -41,8 +41,16 @@ namespace {
     $turnstile = settings(['captchaProvider' => 'turnstile', 'turnstileKey' => 'public"><script>', 'turnstileSecret' => 'private']);
     $widget = (new CaptchaWidgetService())->render($turnstile);
     check(str_contains($widget, 'api.js?render=explicit') && !str_contains($widget, 'public"><script>') && str_contains($widget, 'public&quot;&gt;&lt;script&gt;'), 'Turnstile widget renders and escapes its site key');
+    check(str_contains($widget, 'theme="auto",size="normal"'), 'Turnstile uses its default theme and size on existing installations');
+    $styledTurnstile = settings(['captchaProvider' => 'turnstile', 'turnstileKey' => 'key', 'turnstileSecret' => 'private', 'turnstileTheme' => 'dark', 'turnstileSize' => 'flexible']);
+    check(str_contains((new CaptchaWidgetService())->render($styledTurnstile), 'theme="dark",size="flexible"'), 'Turnstile passes selected widget appearance');
     $hcaptcha = settings(['captchaProvider' => 'hcaptcha', 'hcaptchaKey' => 'site-key', 'hcaptchaSecret' => 'private']);
     check(str_contains((new CaptchaWidgetService())->render($hcaptcha), 'js.hcaptcha.com') && str_contains((new CaptchaWidgetService())->render($hcaptcha), 'api.js?render=explicit'), 'hCaptcha widget renders');
+    check(str_contains((new CaptchaWidgetService())->render($hcaptcha), 'theme="light",size="normal"'), 'hCaptcha uses its default theme and size on existing installations');
+    $styledHcaptcha = settings(['captchaProvider' => 'hcaptcha', 'hcaptchaKey' => 'key', 'hcaptchaSecret' => 'private', 'hcaptchaTheme' => 'dark', 'hcaptchaSize' => 'compact']);
+    check(str_contains((new CaptchaWidgetService())->render($styledHcaptcha), 'theme="dark",size="compact"'), 'hCaptcha passes selected widget appearance');
+    $invalid = settings(['captchaProvider' => 'turnstile', 'turnstileKey' => 'key', 'turnstileSecret' => 'private', 'turnstileTheme' => '<script>', 'turnstileSize' => 'invisible']);
+    check(str_contains((new CaptchaWidgetService())->render($invalid), 'theme="auto",size="normal"'), 'invalid stored widget options fall back to safe defaults');
     check((new CaptchaWidgetService())->render($none) === '', 'None renders no challenge');
 
     $history = [];

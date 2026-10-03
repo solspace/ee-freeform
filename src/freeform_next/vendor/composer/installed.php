@@ -1,8 +1,8 @@
 <?php return array(
     'root' => array(
         'name' => 'solspace/ee-freeform-next',
-        'pretty_version' => '4.0.0-alpha.3',
-        'version' => '4.0.0.0-alpha3',
+        'pretty_version' => '4.0.0-alpha.4',
+        'version' => '4.0.0.0-alpha4',
         'reference' => null,
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
@@ -152,8 +152,8 @@
             'dev_requirement' => false,
         ),
         'solspace/ee-freeform-next' => array(
-            'pretty_version' => '4.0.0-alpha.3',
-            'version' => '4.0.0.0-alpha3',
+            'pretty_version' => '4.0.0-alpha.4',
+            'version' => '4.0.0.0-alpha4',
             'reference' => null,
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',

@@ -42,8 +42,12 @@ use Symfony\Component\Finder\SplFileInfo;
  * @property string $captchaProvider
  * @property string $turnstileKey
  * @property string $turnstileSecret
+ * @property string $turnstileTheme
+ * @property string $turnstileSize
  * @property string $hcaptchaKey
  * @property string $hcaptchaSecret
+ * @property string $hcaptchaTheme
+ * @property string $hcaptchaSize
  */
 class SettingsModel extends Model
 {
@@ -109,8 +113,12 @@ class SettingsModel extends Model
     protected $captchaProvider;
     protected $turnstileKey;
     protected $turnstileSecret;
+    protected $turnstileTheme;
+    protected $turnstileSize;
     protected $hcaptchaKey;
     protected $hcaptchaSecret;
+    protected $hcaptchaTheme;
+    protected $hcaptchaSize;
     protected $autoScrollToErrors;
 
     /**
@@ -146,8 +154,12 @@ class SettingsModel extends Model
                 'captchaProvider'             => null,
                 'turnstileKey'                => null,
                 'turnstileSecret'             => null,
+                'turnstileTheme'              => 'auto',
+                'turnstileSize'               => 'normal',
                 'hcaptchaKey'                 => null,
                 'hcaptchaSecret'              => null,
+                'hcaptchaTheme'               => 'light',
+                'hcaptchaSize'                => 'normal',
                 'autoScrollToErrors'          => self::DEFAULT_AUTO_SCROLL_TO_ERRORS,
             ]
         );
@@ -433,8 +445,12 @@ class SettingsModel extends Model
 
     public function getTurnstileKey(): ?string { return $this->turnstileKey; }
     public function getTurnstileSecret(): ?string { return $this->turnstileSecret; }
+    public function getTurnstileTheme(): string { return in_array($this->turnstileTheme, ['auto', 'light', 'dark'], true) ? $this->turnstileTheme : 'auto'; }
+    public function getTurnstileSize(): string { return in_array($this->turnstileSize, ['normal', 'flexible', 'compact'], true) ? $this->turnstileSize : 'normal'; }
     public function getHcaptchaKey(): ?string { return $this->hcaptchaKey; }
     public function getHcaptchaSecret(): ?string { return $this->hcaptchaSecret; }
+    public function getHcaptchaTheme(): string { return in_array($this->hcaptchaTheme, ['light', 'dark'], true) ? $this->hcaptchaTheme : 'light'; }
+    public function getHcaptchaSize(): string { return in_array($this->hcaptchaSize, ['normal', 'compact'], true) ? $this->hcaptchaSize : 'normal'; }
 
     /**
      * @return mixed

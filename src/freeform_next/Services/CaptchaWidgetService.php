@@ -40,18 +40,23 @@ class CaptchaWidgetService
         $script = $provider === SettingsModel::CAPTCHA_TURNSTILE
             ? 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
             : 'https://js.hcaptcha.com/1/api.js?render=explicit';
+        $theme = $provider === SettingsModel::CAPTCHA_TURNSTILE
+            ? $settings->getTurnstileTheme() : $settings->getHcaptchaTheme();
+        $size = $provider === SettingsModel::CAPTCHA_TURNSTILE
+            ? $settings->getTurnstileSize() : $settings->getHcaptchaSize();
         $safeProvider = htmlspecialchars($provider, ENT_QUOTES, 'UTF-8');
 
         return '<div class="freeform-captcha" data-freeform-captcha="' . $safeProvider
             . '" data-sitekey="' . $safeKey . '"></div>'
             . '<script>(function(){'
-            . 'var provider=' . json_encode($provider) . ',url=' . json_encode($script) . ';'
+            . 'var provider=' . json_encode($provider) . ',url=' . json_encode($script)
+            . ',theme=' . json_encode($theme) . ',size=' . json_encode($size) . ';'
             . 'var state=window.freeformCaptchaWidgets=window.freeformCaptchaWidgets||{};'
             . 'if(state[provider]){state[provider].render();return;}'
             . 'function render(){var api=window[provider];if(!api||!api.render)return;'
             . 'document.querySelectorAll("[data-freeform-captcha=\""+provider+"\"]").forEach(function(el){'
             . 'if(el.dataset.freeformWidgetId)return;'
-            . 'el.dataset.freeformWidgetId=String(api.render(el,{sitekey:el.dataset.sitekey}));});}'
+            . 'el.dataset.freeformWidgetId=String(api.render(el,{sitekey:el.dataset.sitekey,theme:theme,size:size}));});}'
             . 'state[provider]={render:render};'
             . 'var loader=document.createElement("script");loader.src=url;loader.async=true;'
             . 'loader.onload=render;document.head.appendChild(loader);'
