@@ -39,6 +39,8 @@ use Symfony\Component\Finder\SplFileInfo;
  * @property bool   $recaptchaKey
  * @property bool   $recaptchaSecret
  * @property bool   $recaptchaScoreThreshold
+ * @property string $recaptchaTheme
+ * @property string $recaptchaSize
  * @property string $captchaProvider
  * @property string $turnstileKey
  * @property string $turnstileSecret
@@ -110,6 +112,8 @@ class SettingsModel extends Model
     protected $recaptchaKey;
     protected $recaptchaSecret;
     protected $recaptchaScoreThreshold;
+    protected $recaptchaTheme;
+    protected $recaptchaSize;
     protected $captchaProvider;
     protected $turnstileKey;
     protected $turnstileSecret;
@@ -151,6 +155,8 @@ class SettingsModel extends Model
                 'recaptchaKey'                => self::DEFAULT_RECAPTCHA_KEY,
                 'recaptchaSecret'             => self::DEFAULT_RECAPTCHA_SECRET,
                 'recaptchaScoreThreshold'     => self::DEFAULT_RECAPTCHA_SCORE_THRESHOLD,
+                'recaptchaTheme'              => 'light',
+                'recaptchaSize'               => 'normal',
                 'captchaProvider'             => null,
                 'turnstileKey'                => null,
                 'turnstileSecret'             => null,
@@ -422,6 +428,9 @@ class SettingsModel extends Model
         // An unset provider preserves the pre-v4 reCAPTCHA switch on upgrade.
         return $this->captchaProvider ?: ($this->recaptchaEnabled ? self::CAPTCHA_RECAPTCHA : self::CAPTCHA_NONE);
     }
+
+    public function getRecaptchaTheme(): string { return in_array($this->recaptchaTheme, ['light', 'dark'], true) ? $this->recaptchaTheme : 'light'; }
+    public function getRecaptchaSize(): string { return in_array($this->recaptchaSize, ['normal', 'compact'], true) ? $this->recaptchaSize : 'normal'; }
 
     public function getCaptchaSiteKey(): ?string
     {

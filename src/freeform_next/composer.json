@@ -1,7 +1,7 @@
 {
   "name": "solspace/ee-freeform-next",
   "description": "The most reliable, intuitive and powerful form builder for ExpressionEngine.",
-  "version": "4.0.0-alpha.4",
+  "version": "4.0.0-alpha.5",
   "type": "library",
   "require": {
     "php": "^8.2",

@@ -391,6 +391,26 @@ class SettingsController extends Controller
                 'fields' => ['recaptchaSecret' => ['type' => 'text', 'value' => $settings->getRecaptchaSecret()]],
             ],
             [
+                'title' => 'reCAPTCHA v2 Theme',
+                'desc' => 'Applies only to the checkbox widget (v2).',
+                'group' => 'recaptchaOptions',
+                'fields' => ['recaptchaTheme' => [
+                    'type' => 'select',
+                    'value' => $settings->getRecaptchaTheme(),
+                    'choices' => ['light' => 'Light', 'dark' => 'Dark'],
+                ]],
+            ],
+            [
+                'title' => 'reCAPTCHA v2 Size',
+                'desc' => 'Applies only to the checkbox widget (v2).',
+                'group' => 'recaptchaOptions',
+                'fields' => ['recaptchaSize' => [
+                    'type' => 'select',
+                    'value' => $settings->getRecaptchaSize(),
+                    'choices' => ['normal' => 'Normal', 'compact' => 'Compact'],
+                ]],
+            ],
+            [
                 'title' => 'reCAPTCHA Score Threshold',
                 'desc' => 'Used only with score based reCAPTCHA (v3).',
                 'group' => 'recaptchaOptions',
@@ -803,6 +823,8 @@ class SettingsController extends Controller
             }
             if ($type === self::TYPE_SPAM_PROTECTION) {
                 foreach ([
+                    'recaptchaTheme' => ['light', 'dark'],
+                    'recaptchaSize' => ['normal', 'compact'],
                     'turnstileTheme' => ['auto', 'light', 'dark'],
                     'turnstileSize' => ['normal', 'flexible', 'compact'],
                     'hcaptchaTheme' => ['light', 'dark'],

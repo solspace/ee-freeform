@@ -30,7 +30,9 @@ class CaptchaWidgetService
         $safeKey = htmlspecialchars($key, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         if ($provider === SettingsModel::CAPTCHA_RECAPTCHA) {
             return '<script src="https://www.google.com/recaptcha/api.js" async defer></script>'
-                . '<div class="g-recaptcha" data-sitekey="' . $safeKey . '"></div>';
+                . '<div class="g-recaptcha" data-sitekey="' . $safeKey
+                . '" data-theme="' . $settings->getRecaptchaTheme()
+                . '" data-size="' . $settings->getRecaptchaSize() . '"></div>';
         }
 
         if (!in_array($provider, [SettingsModel::CAPTCHA_TURNSTILE, SettingsModel::CAPTCHA_HCAPTCHA], true)) {

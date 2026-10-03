@@ -239,6 +239,8 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_settings` (
   `recaptchaKey`                VARCHAR(50)            NULL      DEFAULT NULL,
   `recaptchaSecret`             VARCHAR(50)            NULL      DEFAULT NULL,
   `recaptchaScoreThreshold`     VARCHAR(30)            NULL      DEFAULT NULL,
+  `recaptchaTheme`              VARCHAR(10)            NOT NULL  DEFAULT 'light',
+  `recaptchaSize`               VARCHAR(10)            NOT NULL  DEFAULT 'normal',
   `captchaProvider`             VARCHAR(20)            NULL      DEFAULT NULL,
   `turnstileKey`                VARCHAR(255)           NULL      DEFAULT NULL,
   `turnstileSecret`             VARCHAR(255)           NULL      DEFAULT NULL,
