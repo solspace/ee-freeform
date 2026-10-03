@@ -80,7 +80,7 @@ class Composer
     /**
      * @return array
      */
-    public function getComposerStateJSON()
+    public function getComposerStateJSON(int $flags = 0)
     {
         $jsonObject                       = new stdClass();
         $jsonObject->composer             = new stdClass();
@@ -88,7 +88,7 @@ class Composer
         $jsonObject->composer->properties = $this->properties;
         $jsonObject->context              = $this->context;
 
-        return json_encode($jsonObject);
+        return json_encode($jsonObject, $flags);
     }
 
     /**

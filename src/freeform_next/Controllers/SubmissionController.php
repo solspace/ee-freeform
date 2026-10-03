@@ -325,10 +325,10 @@ class SubmissionController extends Controller
             $link = $this->getLink('submissions/' . $form->getHandle() . '/' . $submission->id);
             $data = [];
 
-            $titleElement = '<p style="margin: 0">' . $submission->title . '</p>';
+            $titleElement = '<p style="margin: 0">' . htmlspecialchars((string) $submission->title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</p>';
 
             if ($canManageSubmissions) {
-                $titleElement = '<a href="' . $link . '">' . $submission->title . '</a>';
+                $titleElement = '<a href="' . htmlspecialchars((string) $link, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '">' . htmlspecialchars((string) $submission->title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</a>';
             }
 
             foreach ($layout as $setting) {
@@ -368,6 +368,7 @@ class SubmissionController extends Controller
                                 $content = '<div class="file-previews">';
 
                                 foreach ($assetIds as $assetId) {
+                                    $assetId = (int) $assetId;
                                     /** @var File $asset */
                                     $asset = ee('Model')
                                         ->get('File')
@@ -393,15 +394,15 @@ class SubmissionController extends Controller
                                     $content .= '        </style>';
 
                                     if ($asset->isImage()) {
-                                        $modal_vars = ['name' => 'asset_' . $assetId . '_modal', 'contents' => '<img src="' . $asset->getAbsoluteURL() . '" />'];
+                                        $modal_vars = ['name' => 'asset_' . $assetId . '_modal', 'contents' => '<img src="' . htmlspecialchars((string) $asset->getAbsoluteURL(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" />'];
 
                                         $modal_html = ee('View')->make('ee:_shared/modal')->render($modal_vars);
 
                                         ee('CP/Modal')->addModal('asset_' . $assetId . '_modal', $modal_html);
 
-                                        $content .= '        <a href="' . ee('CP/URL', 'files/file/view/' . $assetId)->compile() . '">' . $asset->file_name . '</a> (<a href="javascript:void(0);" class="m-link" rel="asset_' . $assetId . '_modal">Preview File</a>)';
+                                        $content .= '        <a href="' . ee('CP/URL', 'files/file/view/' . $assetId)->compile() . '">' . htmlspecialchars((string) $asset->file_name, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</a> (<a href="javascript:void(0);" class="m-link" rel="asset_' . $assetId . '_modal">Preview File</a>)';
                                     } else {
-                                        $content .= '        <a href="' . ee('CP/URL', 'files/file/view/' . $assetId)->compile() . '">' . $asset->file_name . '</a>';
+                                        $content .= '        <a href="' . ee('CP/URL', 'files/file/view/' . $assetId)->compile() . '">' . htmlspecialchars((string) $asset->file_name, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</a>';
                                     }
 
                                     $content .= '    </div>';
@@ -629,7 +630,7 @@ class SubmissionController extends Controller
         $columns[] = [
             'label'  => 'spamReason',
             'type'   => Table::COL_TEXT,
-            'encode' => false,
+            'encode' => true,
             'sort'   => true,
         ];
 
@@ -815,10 +816,10 @@ class SubmissionController extends Controller
             $link = $this->getLink('submissions/' . $form->getHandle() . '/' . $submission->id);
             $data = [];
 
-            $titleElement = '<p style="margin: 0">' . $submission->title . '</p>';
+            $titleElement = '<p style="margin: 0">' . htmlspecialchars((string) $submission->title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</p>';
 
             if ($canManageSubmissions) {
-                $titleElement = '<a href="' . $link . '">' . $submission->title . '</a>';
+                $titleElement = '<a href="' . htmlspecialchars((string) $link, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '">' . htmlspecialchars((string) $submission->title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</a>';
             }
 
             foreach ($layout as $setting) {
@@ -858,6 +859,7 @@ class SubmissionController extends Controller
                                 $content = '<div class="file-previews">';
 
                                 foreach ($assetIds as $assetId) {
+                                    $assetId = (int) $assetId;
                                     /** @var File $asset */
                                     $asset = ee('Model')
                                         ->get('File')
@@ -883,15 +885,15 @@ class SubmissionController extends Controller
                                     $content .= '        </style>';
 
                                     if ($asset->isImage()) {
-                                        $modal_vars = ['name' => 'asset_' . $assetId . '_modal', 'contents' => '<img src="' . $asset->getAbsoluteURL() . '" />'];
+                                        $modal_vars = ['name' => 'asset_' . $assetId . '_modal', 'contents' => '<img src="' . htmlspecialchars((string) $asset->getAbsoluteURL(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" />'];
 
                                         $modal_html = ee('View')->make('ee:_shared/modal')->render($modal_vars);
 
                                         ee('CP/Modal')->addModal('asset_' . $assetId . '_modal', $modal_html);
 
-                                        $content .= '        <a href="' . ee('CP/URL', 'files/file/view/' . $assetId)->compile() . '">' . $asset->file_name . '</a> (<a href="javascript:void(0);" class="m-link" rel="asset_' . $assetId . '_modal">Preview File</a>)';
+                                        $content .= '        <a href="' . ee('CP/URL', 'files/file/view/' . $assetId)->compile() . '">' . htmlspecialchars((string) $asset->file_name, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</a> (<a href="javascript:void(0);" class="m-link" rel="asset_' . $assetId . '_modal">Preview File</a>)';
                                     } else {
-                                        $content .= '        <a href="' . ee('CP/URL', 'files/file/view/' . $assetId)->compile() . '">' . $asset->file_name . '</a>';
+                                        $content .= '        <a href="' . ee('CP/URL', 'files/file/view/' . $assetId)->compile() . '">' . htmlspecialchars((string) $asset->file_name, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</a>';
                                     }
 
                                     $content .= '    </div>';
@@ -1174,6 +1176,7 @@ class SubmissionController extends Controller
                             $content .= '<div class="file-previews">';
 
                             foreach ($assetIds as $assetId) {
+                                $assetId = (int) $assetId;
                                 /** @var File $asset */
                                 $asset = ee('Model')
                                     ->get('File')
@@ -1185,7 +1188,7 @@ class SubmissionController extends Controller
                                 }
 
                                 $content .= '    <div>';
-                                $content .= '        <div style="margin: 5px 0;">' . $asset->file_name . '</div>';
+                                $content .= '        <div style="margin: 5px 0;">' . htmlspecialchars((string) $asset->file_name, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</div>';
                                 $content .= '        <div class="toolbar-wrap">';
                                 $content .= '            <div class="toolbar button-group">';
                                 $content .= '               <a class="button button--secondary button--small fa fa-pencil-alt" href="' . ee('CP/URL', 'files/file/view/' . $assetId)->compile() . '"></a>';
@@ -1207,14 +1210,14 @@ class SubmissionController extends Controller
                                     $content .= '        }';
                                     $content .= '        </style>';
 
-                                    $modal_vars = ['name' => 'asset_' . $assetId . '_modal', 'contents' => '<img src="' . $asset->getAbsoluteURL() . '" />'];
+                                    $modal_vars = ['name' => 'asset_' . $assetId . '_modal', 'contents' => '<img src="' . htmlspecialchars((string) $asset->getAbsoluteURL(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" />'];
 
                                     $modal_html = ee('View')->make('ee:_shared/modal')->render($modal_vars);
 
                                     ee('CP/Modal')->addModal('asset_' . $assetId . '_modal', $modal_html);
 
                                     $content .= '        <a href="javascript:void(0);" class="m-link" rel="asset_' . $assetId . '_modal">';
-                                    $content .= '           <img style="margin-top: 20px; border: 1px solid black; padding: 5px;" width="100" src="' . $asset->getAbsoluteURL() . '" />';
+                                    $content .= '           <img style="margin-top: 20px; border: 1px solid black; padding: 5px;" width="100" src="' . htmlspecialchars((string) $asset->getAbsoluteURL(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" />';
                                     $content .= '        </a>';
                                 }
 
@@ -1290,7 +1293,7 @@ class SubmissionController extends Controller
                     'fields' => [
                         'spamReasonType' => [
                             'type' => 'html',
-                            'content' => lang($submission->spamReasonType),
+                            'content' => htmlspecialchars((string) lang($submission->spamReasonType), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
                         ],
                     ],
                 ],
@@ -1299,7 +1302,7 @@ class SubmissionController extends Controller
                     'fields' => [
                         'spamReasonMessage' => [
                             'type' => 'html',
-                            'content' => $submission->spamReasonMessage,
+                            'content' => htmlspecialchars((string) $submission->spamReasonMessage, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
                         ],
                     ],
                 ],
@@ -1308,7 +1311,7 @@ class SubmissionController extends Controller
                     'fields' => [
                         'spamReasonValue' => [
                             'type' => 'html',
-                            'content' => $submission->spamReasonValue,
+                            'content' => htmlspecialchars((string) $submission->spamReasonValue, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
                         ],
                     ],
                 ],

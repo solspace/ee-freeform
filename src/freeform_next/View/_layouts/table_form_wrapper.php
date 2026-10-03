@@ -8,17 +8,16 @@
 			<div class="panel-heading">
 				<div class="title-bar">
 					<?php if (isset($cp_page_title)):?>
-						<h3 class="title-bar__title"><?=$cp_page_title?></h3>
+						<h3 class="title-bar__title"><?= htmlspecialchars((string) $cp_page_title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></h3>
 					<?php elseif (isset($wrapper_header)):?>
-						<h3 class="title-bar__title""><?=$wrapper_header?></h3>
+						<h3 class="title-bar__title"><?= htmlspecialchars((string) $wrapper_header, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></h3>
 					<?php endif;?>
 					<?php if ( ! empty($form_right_links)):?>
 						<fieldset class="tbl-search right title-bar__extra-tools">
 							<?php foreach ($form_right_links as $link_data):?>
-								<a <?php if (@$link_data['attrs'] && strpos(@$link_data['attrs'], 'class=') === false) : ?>class="btn tn action"<?php endif ?>
-								   <?php echo @$link_data['attrs'] ?>
-								   class="tn button button--primary" href="<?=$link_data['link']?>">
-									<?=$link_data['title']?>
+								<?php $attrs = $link_data['attrs'] ?? ''; ?>
+								<a <?= $attrs ?> <?= str_contains($attrs, 'class=') ? '' : 'class="tn button button--primary"' ?> href="<?= htmlspecialchars((string) $link_data['link'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
+									<?= htmlspecialchars((string) $link_data['title'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
 								</a>
 							<?php endforeach;?>
 						</fieldset>
@@ -29,13 +28,13 @@
 								<div class="dropdown-field">
 									<select name="form_handle" class="">
 										<?php foreach ($links as $link_data):?>
-											<option value="<?=$link_data['link']?>" <?php echo @$link_data['attrs'] ?>>
-												<?=$link_data['title']?>
+										<option value="<?= htmlspecialchars((string) $link_data['link'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" <?= $link_data['attrs'] ?? '' ?>>
+											<?= htmlspecialchars((string) $link_data['title'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
 											</option>
 										<?php endforeach;?>
 									</select>
 									<a class="btn action tn">
-										<?php echo $dropdownTitle ?>
+										<?php echo htmlspecialchars((string) $dropdownTitle, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
 									</a>
 								</div>
 							<?php endforeach;?>
@@ -60,7 +59,7 @@
                 <?php if ($footer['type'] == 'form'):?>
                     <fieldset class="form-ctrls">
                         <?php if (isset($footer['submit_lang'])):?>
-                            <input class="btn submit" type="submit" value="<?=$footer['submit_lang']?>" />
+                            <input class="btn submit" type="submit" value="<?= htmlspecialchars((string) $footer['submit_lang'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" />
                         <?php endif;?>
                     </fieldset>
                 <?php elseif ($footer['type'] == 'bulk_action_form'): ?>
@@ -68,8 +67,8 @@
 						<select name="bulk_action" class="select-popup button--small">
                             <?php if (isset($footer['bulk_actions'])):?>
                                 <?php foreach($footer['bulk_actions'] as $value => $label):?>
-                                    <option value="<?=$value?>" data-confirm-trigger="selected" rel="modal-confirm-<?=$value?>">
-                                        <?=$label?>
+                                    <option value="<?= htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" data-confirm-trigger="selected" rel="modal-confirm-<?= htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
+                                        <?= htmlspecialchars((string) $label, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
                                     </option>
                                 <?php endforeach;?>
                             <?php else: ?>
@@ -79,7 +78,7 @@
                             <?php endif;?>
                         </select>
                         <button class="btn button--primary button--small submit" data-conditional-modal="confirm-trigger">
-                            <?=$footer['submit_lang']?>
+                            <?= htmlspecialchars((string) $footer['submit_lang'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
                         </button>
                     </fieldset>
                 <?php else:?>

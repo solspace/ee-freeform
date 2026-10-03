@@ -13,7 +13,7 @@
 
             <label class="choice mr yes <?php echo $model->hasCustomOptionValues() ? 'chosen' : '' ?>">
                 <input type="radio"
-                       name="<?php echo sprintf('types[%s][custom_values]', $type) ?>"
+                       name="<?= htmlspecialchars(sprintf('types[%s][custom_values]', $type), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"
                        value="1"
                     <?php echo $model->hasCustomOptionValues() ? 'checked' : '' ?>
                 >
@@ -21,7 +21,7 @@
             </label>
             <label class="choice no <?php echo $model->hasCustomOptionValues() ? '' : 'chosen' ?>">
                 <input type="radio"
-                       name="<?php echo sprintf('types[%s][custom_values]', $type) ?>"
+                       name="<?= htmlspecialchars(sprintf('types[%s][custom_values]', $type), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"
                        value="0"
                     <?php echo $model->hasCustomOptionValues() ? '' : 'checked' ?>
                 >
@@ -31,7 +31,7 @@
         <?php else: ?>
 
             <button type="button" class="toggle-btn <?= $model->hasCustomOptionValues() ? 'on' : 'off' ?>" data-state="<?= $model->hasCustomOptionValues() ? 'on' : 'off' ?>" role="switch" aria-checked="<?= $model->hasCustomOptionValues() ? 'true' : 'false' ?>" alt="<?= $model->hasCustomOptionValues() ? 'on' : 'off' ?>">
-                <input type="hidden" name="<?php echo sprintf('types[%s][custom_values]', $type) ?>" value="<?= $model->hasCustomOptionValues() ? 1 : 0?>">
+                <input type="hidden" name="<?= htmlspecialchars(sprintf('types[%s][custom_values]', $type), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" value="<?= $model->hasCustomOptionValues() ? 1 : 0?>">
                 <span class="slider"></span>
                 <span class="option"></span>
             </button>
@@ -72,7 +72,7 @@
                         </li>
                         <li data-checked>
                             <input type="hidden"
-                                   name="<?php echo sprintf('types[%s][checked_by_default][]', $type) ?>"
+                                   name="<?= htmlspecialchars(sprintf('types[%s][checked_by_default][]', $type), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"
                                    value="<?php echo $checked ? '1' : '0' ?>"
                             >
                             <input type="checkbox"
@@ -83,14 +83,14 @@
                         </li>
                         <li data-label>
                             <input type="text"
-                                   name="<?php echo sprintf('types[%s][labels][]', $type) ?>"
-                                   value="<?php echo $option['label'] ?>"
+                                   name="<?= htmlspecialchars(sprintf('types[%s][labels][]', $type), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"
+                                   value="<?= htmlspecialchars((string) $option['label'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"
                             >
                         </li>
                         <li data-value>
                             <input type="text"
-                                   name="<?php echo sprintf('types[%s][values][]', $type) ?>"
-                                   value="<?php echo $option['value'] ?>"
+                                   name="<?= htmlspecialchars(sprintf('types[%s][values][]', $type), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"
+                                   value="<?= htmlspecialchars((string) $option['value'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"
                             >
                         </li>
                         <li data-action="remove">
@@ -107,14 +107,14 @@
                     <a href="javascript:;" title="reorder row"></a>
                 </li>
                 <li data-checked>
-                    <input type="hidden" name="<?php echo sprintf('types[%s][checked_by_default][]', $type) ?>" value="0">
+                    <input type="hidden" name="<?= htmlspecialchars(sprintf('types[%s][checked_by_default][]', $type), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" value="0">
                     <input type="checkbox" name="" class="toggle-checked">
                 </li>
                 <li data-label>
-                    <input type="text" name="<?php echo sprintf('types[%s][labels][]', $type) ?>">
+                    <input type="text" name="<?= htmlspecialchars(sprintf('types[%s][labels][]', $type), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
                 </li>
                 <li data-value>
-                    <input type="text" name="<?php echo sprintf('types[%s][values][]', $type) ?>">
+                    <input type="text" name="<?= htmlspecialchars(sprintf('types[%s][values][]', $type), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
                 </li>
                 <li data-action="remove">
                     <a href="javascript:;"></a>

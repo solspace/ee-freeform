@@ -41,7 +41,7 @@ class StatusController extends Controller
                 'name'  => 'id_list[]',
                 'value' => $status->id,
                 'data'  => [
-                    'confirm' => lang('status') . ': <b>' . htmlentities('test', ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8') . '</b>',
+                    'confirm' => lang('status') . ': <b>' . htmlspecialchars((string) $status->name, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</b>',
                 ],
             ];
 
@@ -50,11 +50,14 @@ class StatusController extends Controller
             }
 
             $link = $this->getLink('settings/statuses/' . $status->id);
+            $color = preg_match('/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/', (string) $status->color)
+                ? $status->color
+                : 'transparent';
 
             $tableData[] = [
                 $status->id,
                 [
-                    'content' => '<a href="' . $link . '"><span class="color-indicator" style="background: ' . $status->color . '"></span>' . $status->name . '</a>',
+                    'content' => '<a href="' . htmlspecialchars((string) $link, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '"><span class="color-indicator" style="background: ' . $color . '"></span>' . htmlspecialchars((string) $status->name, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</a>',
                 ],
                 $status->handle,
                 $status->isDefault ? 'Yes' : '',
@@ -109,6 +112,10 @@ class StatusController extends Controller
             throw new FreeformException(lang('Such status does not exist'));
         }
 
+        $color = preg_match('/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/', (string) $status->color)
+            ? $status->color
+            : 'transparent';
+
         $sectionData = [
             [
                 [
@@ -141,7 +148,7 @@ class StatusController extends Controller
                     'fields' => [
                         'color' => [
                             'type'     => 'text',
-                            'attrs'    => 'id="color-picker" style="background: ' . $status->color . ';"',
+                            'attrs'    => 'id="color-picker" style="background: ' . $color . ';"',
                             'value'    => $status->color,
                             'required' => true,
                         ],

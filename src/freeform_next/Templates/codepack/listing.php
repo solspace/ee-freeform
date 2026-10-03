@@ -4,13 +4,13 @@
 <table>
     <tr>
         <th data-prefix class="folder">
-            <?php echo $prefix ?>
+            <?= htmlspecialchars((string) $prefix, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
         </th>
     </tr>
     <?php foreach ($codepack->getTemplates()->getContents() as $file) : ?>
         <tr>
             <td>
-                <?= $file->getName() ?>
+                <?= htmlspecialchars((string) $file->getName(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
             </td>
         </tr>
     <?php endforeach; ?>

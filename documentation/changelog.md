@@ -1,6 +1,7 @@
 # Changelog
 
 ### 4.0.0-alpha.1 (Unreleased)
+- Escaped saved labels, filter values, links, and status colours in control panel listings and protected form builder state embedded in JavaScript.
 - Throttled cleanup of unfinished uploads and expired session data to once per hour across form requests.
 - Logged mailing list subscription failures with form and integration context and CRM integration lookup failures while allowing form submissions to complete.
 - Added compatible field type switching on the Fields edit page with a themed confirmation dialog, directional conversion rules, transactional updates to saved forms and submission value formats, and protection against invalid recipient selections.

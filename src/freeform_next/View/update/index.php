@@ -29,7 +29,7 @@
 			<section class="item-wrap" style="margin-bottom:25px;">
 				<div class="item">
 					<h3>
-						Freeform <b><?= $item->getVersion() ?></b>
+						Freeform <b><?= htmlspecialchars((string) $item->getVersion(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></b>
 						<i style="font-size:75%;font-style:italic;font-weight:normal;margin-left:5px;">
 							(released on
 							<?= ee()->localize->format_date($format, $item->getDate()->getTimestamp()) ?>)
@@ -39,17 +39,17 @@
 						<ul class="update-list">
 							<?php foreach ($item->getFeatures() as $note) : ?>
 								<li class="feature">
-									<?php echo $note ?>
+									<?php echo htmlspecialchars((string) $note, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
 								</li>
 							<?php endforeach; ?>
 							<?php foreach ($item->getNotes() as $note) : ?>
 								<li class="note">
-									<?php echo $note ?>
+									<?php echo htmlspecialchars((string) $note, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
 								</li>
 							<?php endforeach; ?>
 							<?php foreach ($item->getBugfixes() as $note) : ?>
 								<li class="bugfix">
-									<?php echo $note ?>
+									<?php echo htmlspecialchars((string) $note, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
 								</li>
 							<?php endforeach; ?>
 						</ul>

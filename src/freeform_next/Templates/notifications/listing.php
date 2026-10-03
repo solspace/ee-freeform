@@ -1,9 +1,9 @@
 <table>
     <tr>
         <th class="folder">
-            <?php echo $path ?>
+            <?= htmlspecialchars((string) $path, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
 
-            <a class="btn action add-template button--small" href="<?php echo $url ?>">
+            <a class="btn action add-template button--small" href="<?= htmlspecialchars((string) $url, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
                 Add sample template
             </a>
         </th>
@@ -11,7 +11,7 @@
     <?php foreach ($files as $file) : ?>
         <tr>
             <td>
-                <?= $file ?>
+                <?= htmlspecialchars((string) $file, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
             </td>
         </tr>
     <?php endforeach; ?>
