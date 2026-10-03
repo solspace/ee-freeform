@@ -10,6 +10,14 @@ namespace Solspace\Addons\FreeformNext\Repositories {
     }
 }
 
+namespace Solspace\Addons\FreeformNext\Utilities {
+    class ControlPanelView
+    {
+        protected function getLink(string $path): string { return $path; }
+        protected function renderView($view): array { return ['view' => $view]; }
+    }
+}
+
 namespace {
     error_reporting(E_ALL);
     set_error_handler(static function ($severity, $message, $file, $line) {
@@ -42,6 +50,7 @@ namespace {
     require dirname(__DIR__) . '/src/freeform_next/Utilities/ControlPanel/View.php';
     require dirname(__DIR__) . '/src/freeform_next/Utilities/ControlPanel/AjaxView.php';
     require dirname(__DIR__) . '/src/freeform_next/Controllers/ApiController.php';
+    require dirname(__DIR__) . '/src/freeform_next/mcp.freeform_next.php';
 
     use Solspace\Addons\FreeformNext\Repositories\PermissionsRepository;
     use Solspace\Addons\FreeformNext\Services\PermissionsService;
@@ -105,4 +114,12 @@ namespace {
     check($api->handle('fields')->hasErrors(), 'form editor cannot create fields without field permission');
     $_POST = [];
     check($api->handle('submission_export')->hasErrors(), 'export requires submission access too');
+
+    $GLOBALS['session'] = new FakeSession(new FakeMember([9]));
+    $cp = new \Freeform_next_mcp();
+    check($cp->fields()['view'] instanceof \Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView, 'CP fields route denies a role without field access');
+    check($cp->submissions()['view'] instanceof \Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView, 'CP submissions route denies before loading a form');
+    check($cp->spam()['view'] instanceof \Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView, 'CP spam route denies before loading a form');
+
+    check($cp->export_profiles()['view'] instanceof \Solspace\Addons\FreeformNext\Utilities\ControlPanel\RedirectView, 'CP export profile route denies a role without export access');
 }
