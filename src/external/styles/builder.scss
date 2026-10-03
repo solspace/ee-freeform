@@ -1500,6 +1500,23 @@
     cursor: pointer;
   }
 
+  @media (max-width: 1600px) and (min-width: 1101px) {
+    .builder-blocks {
+      grid-template-columns: clamp(200px, calc(20vw - 40px), 280px) minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    .builder-blocks .composer-editor-panel {
+      grid-template-columns: minmax(0, 1fr) clamp(270px, 22.5vw, 360px);
+    }
+  }
+
+  @media (max-width: 1450px) {
+    .field-list .field-container > div > div ul {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
   @media (max-width: 1100px) {
     .builder-blocks {
       grid-template-columns: 240px minmax(0, 1fr);
