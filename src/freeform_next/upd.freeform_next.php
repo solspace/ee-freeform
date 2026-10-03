@@ -627,7 +627,7 @@ class Freeform_next_upd extends AddonUpdater
     protected function getInstallableActions(): array
     {
         return [
-            new PluginAction('submitForm', 'Freeform_next', true),
+            new PluginAction('submitForm', 'Freeform_next', false),
         ];
     }
 

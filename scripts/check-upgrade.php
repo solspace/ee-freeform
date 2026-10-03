@@ -20,6 +20,9 @@ namespace Solspace\Addons\FreeformNext\Repositories {
 }
 
 namespace {
+    // EE's action dispatcher uses this marker to validate AJAX CSRF tokens.
+    interface Strict_XID {}
+
     error_reporting(E_ALL);
     set_error_handler(static function ($severity, $message, $file, $line) {
         throw new \ErrorException($message, 0, $severity, $file, $line);
@@ -131,6 +134,8 @@ namespace {
     check(\count($db->tables) === 17 && isset($db->tables['exp_freeform_next_permissions'], $db->tables['exp_freeform_next_submissions']), 'fresh install creates expected tables');
     check(\count($GLOBALS['seededFields']) === 12 && \count($db->rows['freeform_next_statuses']) === 3, 'fresh install seeds fields and statuses');
     check(\count($db->rows['modules']) === 1 && \count($db->rows['actions']) === 1 && \count($db->rows['extensions']) === 12, 'fresh install registers module, action and hooks');
+    check($db->rows['actions'][0]['csrf_exempt'] === false, 'submission action requires an EE CSRF token on fresh install');
+    check(\in_array(Strict_XID::class, class_implements(\Freeform_Next::class), true), 'submission action also validates AJAX CSRF tokens');
 
     // Seed an existing 3.3.10 site with content and an administrator-disabled hook.
     $db = new UpgradeDb();
@@ -143,7 +148,7 @@ namespace {
         'freeform_next_integrations' => [['id' => 9, 'name' => 'CRM']],
         'freeform_next_mailing_lists' => [['id' => 4, 'name' => 'Newsletter']],
         'freeform_next_permissions' => [['id' => 1, 'formsPermissions' => '[2,7]']],
-        'actions' => [['action_id' => 1, 'method' => 'submitForm', 'class' => 'Freeform_next', 'csrf_exempt' => false]],
+        'actions' => [['action_id' => 1, 'method' => 'submitForm', 'class' => 'Freeform_next', 'csrf_exempt' => true]],
         'extensions' => [[
             'extension_id' => 2, 'class' => 'Freeform_next_ext', 'method' => 'addCpCustomMenu',
             'hook' => 'cp_custom_menu', 'settings' => 'custom', 'priority' => 13,
@@ -159,6 +164,7 @@ namespace {
     check(!$db->queries && $content === array_intersect_key($db->rows, $content), '3.3.10 upgrade preserves content without schema writes');
     $hook = $db->rows['extensions'][0];
     check($hook['enabled'] === 'n' && $hook['settings'] === 'custom' && $hook['priority'] === 13 && $hook['version'] === '4.0.0-alpha.1', 'upgrade preserves disabled hook and its settings');
+    check($db->rows['actions'][0]['csrf_exempt'] === false, 'upgrade enables EE CSRF validation for existing submission action');
     check($updater->update('3.3.10') && \count($db->rows['actions']) === 1 && \count($db->rows['extensions']) === 12, 'repeated upgrade does not duplicate registrations');
 
     // Older 3.3.x sites still need the 3.3.5 spam-folder column migration.

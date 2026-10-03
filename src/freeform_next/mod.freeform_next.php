@@ -27,7 +27,7 @@ use Solspace\Addons\FreeformNext\Utilities\Plugin;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-class Freeform_Next extends Plugin
+class Freeform_Next extends Plugin implements Strict_XID
 {
     public function __construct()
     {
