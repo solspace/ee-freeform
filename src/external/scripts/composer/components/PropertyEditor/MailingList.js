@@ -196,7 +196,7 @@ class MailingList extends BasePropertyEditor {
         />
 
         <button type="button"
-          className="btn action download icon"
+          className="button button--default composer-refresh-mailing-lists"
           onClick={fetchMailingLists}
           disabled={isFetching}
         >
