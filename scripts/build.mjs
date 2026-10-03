@@ -93,6 +93,20 @@ async function buildScripts() {
   await cp(CP_SRC, CP_DEST, { recursive: true });
 }
 
+// Bundle the standalone notification HTML editor with its CodeMirror modules.
+async function buildHtmlEditor() {
+  await esbuild({
+    entryPoints: ["src/external/scripts/htmlEditor.js"],
+    outfile: `${CP_DEST}/htmlEditor.js`,
+    bundle: true,
+    format: "iife",
+    target: "es2018",
+    minify: true,
+    legalComments: "none",
+    logLevel: "warning",
+  });
+}
+
 // SCSS -> dart-sass (compile) -> Lightning CSS (autoprefix + minify).
 async function buildStyles() {
   const files = await glob(`${STYLES_SRC}/**/*.scss`, { ignore: ["**/_*.scss"] });
@@ -243,6 +257,7 @@ async function main() {
   console.log("Building Freeform for EE...");
 
   await step("clean", clean);
+  await mkdir(CP_DEST, { recursive: true });
   await Promise.all([
     step("react bundle", buildReact),
     step("cp scripts", buildScripts),
@@ -252,6 +267,7 @@ async function main() {
     step("themes", buildThemes),
     step("composer", async () => composer()),
   ]);
+  await step("html editor", buildHtmlEditor);
   await step("datepicker assets", buildDatepicker);
   let zipPath;
   await step("package zip", async () => {

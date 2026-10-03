@@ -10,16 +10,9 @@
 
 import PropTypes from "prop-types";
 import React from "react";
-import AceEditorModule from "react-ace";
+import { mountHtmlEditor } from "../../../shared/htmlEditor";
 import BasePropertyEditor from "./BasePropertyEditor";
 import TextProperty from "./PropertyItems/TextProperty";
-import "brace/mode/html";
-import "brace/theme/chrome";
-
-// react-ace ships a Babel-compiled CommonJS default export with no ESM build. esbuild
-// follows Node's ESM interop and does not auto-unwrap `__esModule` default exports the
-// way the old Browserify/Babel build did, so unwrap it here.
-const AceEditor = AceEditorModule.default || AceEditorModule;
 
 export default class Html extends BasePropertyEditor {
   static contextTypes = {
@@ -34,12 +27,28 @@ export default class Html extends BasePropertyEditor {
 
   constructor(props, context) {
     super(props, context);
-
     this.updateHtmlValue = this.updateHtmlValue.bind(this);
   }
 
+  componentDidMount() {
+    this.editor = mountHtmlEditor(this.editorHost, {
+      value: this.context.properties.value || "",
+      onChange: this.updateHtmlValue,
+      compact: true,
+      label: "HTML field content",
+    });
+  }
+
+  componentDidUpdate() {
+    this.editor.setValue(this.context.properties.value || "");
+  }
+
+  componentWillUnmount() {
+    this.editor.destroy();
+  }
+
   render() {
-    const { hash, properties: { value } } = this.context;
+    const { hash } = this.context;
 
     return (
       <div>
@@ -52,27 +61,13 @@ export default class Html extends BasePropertyEditor {
           readOnly={true}
         />
 
-        <hr />
-
-        <AceEditor
-          mode="html"
-          theme="chrome"
-          value={value}
-          onChange={this.updateHtmlValue}
-          enableLiveAutocompletion={true}
-          enableBasicAutocompletion={true}
-          highlightActiveLine={true}
-          showGutter={false}
-          fontSize={12}
-          width="250px"
-          editorProps={{ $blockScrolling: true }}
-        />
+        <div className="freeform-html-editor-host" ref={(node) => { this.editorHost = node; }} />
       </div>
     );
   }
 
   /**
-   * Custom value update handler for ACE editor
+   * Sync HTML source edits with the builder field properties.
    *
    * @param value
    */

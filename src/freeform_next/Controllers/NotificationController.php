@@ -172,6 +172,8 @@ class NotificationController extends Controller
             ->addBreadcrumb(new NavigationLink('Notifications', 'notifications'))
             ->addJavascript('notifications')
             ->addJavascript('handleGenerator')
+            ->addJavascript('htmlEditor')
+            ->addCss('html-editor')
             ->setTemplateVariables(
                 [
                     'errors'                => $validation,
