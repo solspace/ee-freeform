@@ -15,7 +15,7 @@ import PropertyHelper from "../../helpers/PropertyHelper";
 import BasePropertyEditor from "./BasePropertyEditor";
 import AddNewNotification from "./Components/AddNewNotification";
 import SelectProperty from "./PropertyItems/SelectProperty";
-import TextareaProperty from "./PropertyItems/TextareaProperty";
+import EmailRecipientsProperty from "./PropertyItems/EmailRecipientsProperty";
 
 class AdminNotifications extends BasePropertyEditor {
   static propTypes = {
@@ -72,11 +72,10 @@ class AdminNotifications extends BasePropertyEditor {
         </SelectProperty>
 
         {notificationId ? (
-          <TextareaProperty
+          <EmailRecipientsProperty
             label="Admin Recipients"
-            instructions="Email address(es) to receive an email notification. Enter each on a new line."
+            instructions="Enter an email address, then press Enter to add another recipient."
             name="recipients"
-            rows={5}
             value={recipients}
             onChangeHandler={this.update}
           />

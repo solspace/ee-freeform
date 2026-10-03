@@ -38,6 +38,7 @@ jobs:
           php scripts/check-permissions.php
           php scripts/check-upgrade.php
           php scripts/check-captcha.php
+          php scripts/check-admin-recipients.php
           php scripts/check-formatting-accessibility.php
 
   package:

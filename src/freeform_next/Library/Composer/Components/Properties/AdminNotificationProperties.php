@@ -58,7 +58,9 @@ class AdminNotificationProperties extends AbstractProperties
         $list = preg_split("/\r\n|\n|\r/", $recipients);
         $list = array_map('trim', $list);
         $list = array_unique($list);
-        $list = array_filter($list);
+        // Saved forms may predate the row editor or have been modified outside
+        // the builder. Never hand malformed addresses to the mail transport.
+        $list = array_filter($list, static fn ($email) => false !== filter_var($email, FILTER_VALIDATE_EMAIL));
 
         return $list;
     }
