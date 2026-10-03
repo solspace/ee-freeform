@@ -37,6 +37,7 @@ jobs:
           php scripts/check-cp-escaping.php
           php scripts/check-permissions.php
           php scripts/check-upgrade.php
+          php scripts/check-captcha.php
 
   package:
     name: Build release package

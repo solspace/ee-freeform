@@ -433,6 +433,7 @@ class ComposerStaticInit11a0e34e42eb381afb71149809ac945b
         'Solspace\\Addons\\FreeformNext\\Repositories\\SubmissionPreferencesRepository' => __DIR__ . '/../..' . '/Repositories/SubmissionPreferencesRepository.php',
         'Solspace\\Addons\\FreeformNext\\Repositories\\SubmissionRepository' => __DIR__ . '/../..' . '/Repositories/SubmissionRepository.php',
         'Solspace\\Addons\\FreeformNext\\Services\\AbstractIntegrationService' => __DIR__ . '/../..' . '/Services/AbstractIntegrationService.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\CaptchaWidgetService' => __DIR__ . '/../..' . '/Services/CaptchaWidgetService.php',
         'Solspace\\Addons\\FreeformNext\\Services\\CleanupService' => __DIR__ . '/../..' . '/Services/CleanupService.php',
         'Solspace\\Addons\\FreeformNext\\Services\\CrmService' => __DIR__ . '/../..' . '/Services/CrmService.php',
         'Solspace\\Addons\\FreeformNext\\Services\\ExportProfilesService' => __DIR__ . '/../..' . '/Services/ExportProfilesService.php',

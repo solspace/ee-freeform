@@ -50,6 +50,7 @@ $jsonFlags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_
     var canManageSettings = true;
     var isRecaptchaEnabled = <?php echo $isRecaptchaEnabled ? 'true' : 'false' ?>;
     var isRecaptchaV3 = <?php echo $isRecaptchaV3 ? 'true' : 'false' ?>;
+    var captchaProvider = <?php echo json_encode($captchaProvider ?? 'none', $jsonFlags) ?>;
 
     var isDbEmailTemplateStorage = <?php echo $isDbEmailTemplateStorage ? 'true' : 'false' ?>;
     var isWidgetsInstalled       = <?php echo $isWidgetsInstalled ? 'true' : 'false' ?>;

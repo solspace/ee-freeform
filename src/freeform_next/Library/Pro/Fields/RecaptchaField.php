@@ -8,6 +8,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\N
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\SingleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Traits\SingleValueTrait;
 use Solspace\Addons\FreeformNext\Services\SettingsService;
+use Solspace\Addons\FreeformNext\Services\CaptchaWidgetService;
 
 class RecaptchaField extends AbstractField implements NoStorageInterface, SingleValueInterface, InputOnlyInterface
 {
@@ -34,40 +35,9 @@ class RecaptchaField extends AbstractField implements NoStorageInterface, Single
      */
     protected function getInputHtml(): bool|string
     {
-        static $key;
+        $settings = (new SettingsService())->getSettingsModel();
+        $widget = (new CaptchaWidgetService())->render($settings);
 
-        $settingsService = new SettingsService();
-        $settingsModel = $settingsService->getSettingsModel();
-
-        $isRecaptchaEnabled = $settingsModel->isRecaptchaEnabled();
-        $isRecaptchaV3 = $settingsModel->getRecaptchaType() === 'v3';
-        $recaptchaKey = $settingsModel->getRecaptchaKey();
-        $recaptchaSecret = $settingsModel->getRecaptchaSecret();
-
-        if (!$isRecaptchaEnabled) {
-            return false;
-        }
-
-        if ($isRecaptchaV3) {
-            return false;
-        }
-
-        if (!$recaptchaKey) {
-            return false;
-        }
-
-        if (!$recaptchaSecret) {
-            return false;
-        }
-
-        if ($key === null) {
-            $key = $recaptchaKey;
-        }
-
-        $output = '<script src="https://www.google.com/recaptcha/api.js"></script>';
-        $output .= '<div class="g-recaptcha" data-sitekey="' . ($key ?: 'invalid') . '"></div>';
-        $output .= '<input type="hidden" name="' . $this->getHandle() . '" />';
-
-        return $output;
+        return $widget === '' ? false : $widget . '<input type="hidden" name="' . $this->getHandle() . '" />';
     }
 }

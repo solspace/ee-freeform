@@ -194,6 +194,7 @@
       }
 
       unlockSubmit(form);
+      document.dispatchEvent(new CustomEvent("freeform:captcha-reset", { detail: { form: form } }));
     };
 
     request.send(data);

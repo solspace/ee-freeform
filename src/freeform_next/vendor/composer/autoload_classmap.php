@@ -270,6 +270,7 @@ return array(
     'Solspace\\Addons\\FreeformNext\\Repositories\\SubmissionPreferencesRepository' => $baseDir . '/Repositories/SubmissionPreferencesRepository.php',
     'Solspace\\Addons\\FreeformNext\\Repositories\\SubmissionRepository' => $baseDir . '/Repositories/SubmissionRepository.php',
     'Solspace\\Addons\\FreeformNext\\Services\\AbstractIntegrationService' => $baseDir . '/Services/AbstractIntegrationService.php',
+    'Solspace\\Addons\\FreeformNext\\Services\\CaptchaWidgetService' => $baseDir . '/Services/CaptchaWidgetService.php',
     'Solspace\\Addons\\FreeformNext\\Services\\CleanupService' => $baseDir . '/Services/CleanupService.php',
     'Solspace\\Addons\\FreeformNext\\Services\\CrmService' => $baseDir . '/Services/CrmService.php',
     'Solspace\\Addons\\FreeformNext\\Services\\ExportProfilesService' => $baseDir . '/Services/ExportProfilesService.php',

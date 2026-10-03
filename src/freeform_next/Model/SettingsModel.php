@@ -39,6 +39,11 @@ use Symfony\Component\Finder\SplFileInfo;
  * @property bool   $recaptchaKey
  * @property bool   $recaptchaSecret
  * @property bool   $recaptchaScoreThreshold
+ * @property string $captchaProvider
+ * @property string $turnstileKey
+ * @property string $turnstileSecret
+ * @property string $hcaptchaKey
+ * @property string $hcaptchaSecret
  */
 class SettingsModel extends Model
 {
@@ -69,6 +74,10 @@ class SettingsModel extends Model
     public const DEFAULT_RECAPTCHA_KEY                   = null;
     public const DEFAULT_RECAPTCHA_SECRET                = null;
     public const DEFAULT_RECAPTCHA_SCORE_THRESHOLD       = '0.5';
+    public const CAPTCHA_NONE = 'none';
+    public const CAPTCHA_RECAPTCHA = 'recaptcha';
+    public const CAPTCHA_TURNSTILE = 'turnstile';
+    public const CAPTCHA_HCAPTCHA = 'hcaptcha';
 
     public const SESSION_STORAGE_SESSION  = 'session';
     public const SESSION_STORAGE_DATABASE = 'db';
@@ -97,6 +106,11 @@ class SettingsModel extends Model
     protected $recaptchaKey;
     protected $recaptchaSecret;
     protected $recaptchaScoreThreshold;
+    protected $captchaProvider;
+    protected $turnstileKey;
+    protected $turnstileSecret;
+    protected $hcaptchaKey;
+    protected $hcaptchaSecret;
     protected $autoScrollToErrors;
 
     /**
@@ -129,6 +143,11 @@ class SettingsModel extends Model
                 'recaptchaKey'                => self::DEFAULT_RECAPTCHA_KEY,
                 'recaptchaSecret'             => self::DEFAULT_RECAPTCHA_SECRET,
                 'recaptchaScoreThreshold'     => self::DEFAULT_RECAPTCHA_SCORE_THRESHOLD,
+                'captchaProvider'             => null,
+                'turnstileKey'                => null,
+                'turnstileSecret'             => null,
+                'hcaptchaKey'                 => null,
+                'hcaptchaSecret'              => null,
                 'autoScrollToErrors'          => self::DEFAULT_AUTO_SCROLL_TO_ERRORS,
             ]
         );
@@ -383,8 +402,39 @@ class SettingsModel extends Model
      */
     public function isRecaptchaEnabled(): bool
     {
-        return (bool) $this->recaptchaEnabled;
+        return $this->getCaptchaProvider() === self::CAPTCHA_RECAPTCHA;
     }
+
+    public function getCaptchaProvider(): string
+    {
+        // An unset provider preserves the pre-v4 reCAPTCHA switch on upgrade.
+        return $this->captchaProvider ?: ($this->recaptchaEnabled ? self::CAPTCHA_RECAPTCHA : self::CAPTCHA_NONE);
+    }
+
+    public function getCaptchaSiteKey(): ?string
+    {
+        return match ($this->getCaptchaProvider()) {
+            self::CAPTCHA_RECAPTCHA => $this->recaptchaKey,
+            self::CAPTCHA_TURNSTILE => $this->turnstileKey,
+            self::CAPTCHA_HCAPTCHA => $this->hcaptchaKey,
+            default => null,
+        };
+    }
+
+    public function getCaptchaSecret(): ?string
+    {
+        return match ($this->getCaptchaProvider()) {
+            self::CAPTCHA_RECAPTCHA => $this->recaptchaSecret,
+            self::CAPTCHA_TURNSTILE => $this->turnstileSecret,
+            self::CAPTCHA_HCAPTCHA => $this->hcaptchaSecret,
+            default => null,
+        };
+    }
+
+    public function getTurnstileKey(): ?string { return $this->turnstileKey; }
+    public function getTurnstileSecret(): ?string { return $this->turnstileSecret; }
+    public function getHcaptchaKey(): ?string { return $this->hcaptchaKey; }
+    public function getHcaptchaSecret(): ?string { return $this->hcaptchaSecret; }
 
     /**
      * @return mixed

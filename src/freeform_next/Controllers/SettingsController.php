@@ -61,6 +61,10 @@ class SettingsController extends Controller
             throw new FreeformException('Page does not exist');
         }
 
+        if ($type === self::TYPE_RECAPTCHA) {
+            return new RedirectView($this->getLink('settings/spam_protection'));
+        }
+
         if ($type !== 'statuses' && $this->handlePost($type)) {
             ee('CP/Alert')
                 ->makeInline('shared-form')
@@ -78,7 +82,6 @@ class SettingsController extends Controller
             self::TYPE_EMAIL_TEMPLATES => $this->emailTemplatesAction(),
             self::TYPE_DEMO_TEMPLATES => $this->demoTemplatesAction(),
             self::TYPE_PERMISSIONS => $this->permissionsAction(),
-            self::TYPE_RECAPTCHA => $this->recaptchaAction(),
             self::TYPE_SPAM_PROTECTION => $this->spamProtectionAction(),
             default => $this->generalAction(),
         };
@@ -340,6 +343,89 @@ class SettingsController extends Controller
                 ],
             ];
         }
+
+        $sections[] = [
+            [
+                'title' => 'CAPTCHA Provider',
+                'desc' => 'Choose one provider for visible CAPTCHA fields or automatic reCAPTCHA v3 protection. Add the CAPTCHA field to the final page of forms using a visible provider.',
+                'fields' => [
+                    'captchaProvider' => [
+                        'type' => 'select',
+                        'value' => $settings->getCaptchaProvider(),
+                        'choices' => [
+                            SettingsModel::CAPTCHA_NONE => 'None',
+                            SettingsModel::CAPTCHA_RECAPTCHA => 'reCAPTCHA',
+                            SettingsModel::CAPTCHA_TURNSTILE => 'Cloudflare Turnstile',
+                            SettingsModel::CAPTCHA_HCAPTCHA => 'hCaptcha',
+                        ],
+                        'group_toggle' => [
+                            SettingsModel::CAPTCHA_RECAPTCHA => 'recaptchaOptions',
+                            SettingsModel::CAPTCHA_TURNSTILE => 'turnstileOptions',
+                            SettingsModel::CAPTCHA_HCAPTCHA => 'hcaptchaOptions',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'title' => 'reCAPTCHA Type',
+                'group' => 'recaptchaOptions',
+                'fields' => [
+                    'recaptchaType' => [
+                        'type' => 'select',
+                        'value' => $settings->getRecaptchaType(),
+                        'choices' => [
+                            'v2-checkbox' => 'Challenge - Checkbox (v2)',
+                            'v3' => 'Score Based (v3)',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'title' => 'reCAPTCHA Site Key',
+                'group' => 'recaptchaOptions',
+                'fields' => ['recaptchaKey' => ['type' => 'text', 'value' => $settings->getRecaptchaKey()]],
+            ],
+            [
+                'title' => 'reCAPTCHA Secret Key',
+                'group' => 'recaptchaOptions',
+                'fields' => ['recaptchaSecret' => ['type' => 'text', 'value' => $settings->getRecaptchaSecret()]],
+            ],
+            [
+                'title' => 'reCAPTCHA Score Threshold',
+                'desc' => 'Used only with score based reCAPTCHA (v3).',
+                'group' => 'recaptchaOptions',
+                'fields' => [
+                    'recaptchaScoreThreshold' => [
+                        'type' => 'select',
+                        'value' => $settings->getRecaptchaScoreThreshold() ?: '0.5',
+                        'choices' => array_combine(
+                            array_map(static fn ($n) => sprintf('%.1f', $n / 10), range(0, 10)),
+                            array_map(static fn ($n) => sprintf('%.1f', $n / 10), range(0, 10))
+                        ),
+                    ],
+                ],
+            ],
+            [
+                'title' => 'Turnstile Site Key',
+                'group' => 'turnstileOptions',
+                'fields' => ['turnstileKey' => ['type' => 'text', 'value' => $settings->getTurnstileKey()]],
+            ],
+            [
+                'title' => 'Turnstile Secret Key',
+                'group' => 'turnstileOptions',
+                'fields' => ['turnstileSecret' => ['type' => 'text', 'value' => $settings->getTurnstileSecret()]],
+            ],
+            [
+                'title' => 'hCaptcha Site Key',
+                'group' => 'hcaptchaOptions',
+                'fields' => ['hcaptchaKey' => ['type' => 'text', 'value' => $settings->getHcaptchaKey()]],
+            ],
+            [
+                'title' => 'hCaptcha Secret Key',
+                'group' => 'hcaptchaOptions',
+                'fields' => ['hcaptchaSecret' => ['type' => 'text', 'value' => $settings->getHcaptchaSecret()]],
+            ],
+        ];
 
 		$view = new CpView('settings/common', []);
 		$view
@@ -656,101 +742,6 @@ class SettingsController extends Controller
     }
 
     /**
-     * @return View
-     */
-    private function recaptchaAction(): CpView
-    {
-        $settings = $this->getSettings();
-
-        $variables = [
-            'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),
-            'cp_page_title'         => lang('reCAPTCHA'),
-            'save_btn_text'         => 'btn_save_settings',
-            'save_btn_text_working' => 'btn_saving',
-            'sections'              => [
-                [
-                    [
-                        'title'  => 'reCAPTCHA Enabled?',
-                        'fields' => [
-                            'recaptchaEnabled' => [
-                                'type'        => 'yes_no',
-                                'value'       => $settings->isRecaptchaEnabled() ? 'y' : 'n',
-                            ],
-                        ],
-                    ],
-                    [
-                        'title'  => 'reCAPTCHA Type',
-                        'desc' => 'Choose the reCAPTCHA type to use. The options below are compatible with the Enterprise API and the Classic legacy keys.',
-                        'fields' => [
-                            'recaptchaType' => [
-                                'type' => 'select',
-                                'value' => $settings->getRecaptchaType(),
-                                'choices' => [
-                                    'v2-checkbox' => 'Challenge - Checkbox (v2)',
-                                    'v3' => 'Score Based (v3)',
-                                ],
-                                'group_toggle' => [
-                                    'v3' => 'recaptchaScoreThresholdOptions',
-                                ],
-                            ],
-                        ],
-                    ],
-                    [
-                        'title'  => 'reCAPTCHA Site Key',
-                        'fields' => [
-                            'recaptchaKey' => [
-                                'type'        => 'text',
-                                'value'       => $settings->getRecaptchaKey(),
-                            ],
-                        ],
-                    ],
-                    [
-                        'title'  => 'reCAPTCHA Secret Key',
-                        'fields' => [
-                            'recaptchaSecret' => [
-                                'type'        => 'text',
-                                'value'       => $settings->getRecaptchaSecret(),
-                            ],
-                        ],
-                    ],
-                    [
-                        'title' => 'reCAPTCHA Score Threshold',
-                        'desc' => 'The minimum score required for the Captcha to pass validation. The score is a number between 0 and 1. A score of 0.5 is generally recommended.',
-                        'group' => 'recaptchaScoreThresholdOptions',
-                        'fields' => [
-                            'recaptchaScoreThreshold' => [
-                                'type' => 'select',
-                                'value' => $settings->getRecaptchaScoreThreshold() ?: '0.5',
-                                'choices' => [
-                                    '0.0' => '0.0',
-                                    '0.1' => '0.1',
-                                    '0.2' => '0.2',
-                                    '0.3' => '0.3',
-                                    '0.4' => '0.4',
-                                    '0.5' => '0.5',
-                                    '0.6' => '0.6',
-                                    '0.7' => '0.7',
-                                    '0.8' => '0.8',
-                                    '0.9' => '0.9',
-                                    '1.0' => '1.0',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $view = new CpView('settings/common', $variables);
-        $view
-            ->setHeading(lang('reCAPTCHA'))
-            ->addBreadcrumb(new NavigationLink('Settings', 'settings/general'))
-            ->addJavascript('settings');
-
-        return $view;
-    }
-
-    /**
      * Handles a POST request and returns one of the following
      * TRUE  - if it was handled
      * FALSE - if there were errors
@@ -767,6 +758,13 @@ class SettingsController extends Controller
         }
 
         if (!empty($_POST) && !isset($_POST['prefix'])) {
+            if ($type === self::TYPE_SPAM_PROTECTION && isset($_POST['captchaProvider']) && !in_array(
+                $_POST['captchaProvider'],
+                [SettingsModel::CAPTCHA_NONE, SettingsModel::CAPTCHA_RECAPTCHA, SettingsModel::CAPTCHA_TURNSTILE, SettingsModel::CAPTCHA_HCAPTCHA],
+                true
+            )) {
+                return false;
+            }
             $accessor = PropertyAccess::createPropertyAccessor();
 
             foreach ($_POST as $key => $value) {

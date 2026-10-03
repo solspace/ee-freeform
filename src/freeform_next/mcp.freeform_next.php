@@ -609,7 +609,6 @@ class Freeform_next_mcp extends ControlPanelView
             $settings
                 ->addSubNavItem(new NavigationLink('General', 'settings/general'))
                 ->addSubNavItem(new NavigationLink('Spam Protection', 'settings/spam_protection'))
-                ->addSubNavItem(new NavigationLink('reCAPTCHA', 'settings/recaptcha'))
                 ->addSubNavItem(new NavigationLink('Formatting Templates', 'settings/formatting_templates'))
                 ->addSubNavItem(new NavigationLink('Email Templates', 'settings/email_templates'))
                 ->addSubNavItem(new NavigationLink('Statuses', 'settings/statuses'))

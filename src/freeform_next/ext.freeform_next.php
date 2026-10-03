@@ -1,6 +1,5 @@
 <?php
 
-use GuzzleHttp\Client;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\AbstractField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\SubmitField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
@@ -8,10 +7,10 @@ use Solspace\Addons\FreeformNext\Library\DataObjects\FormRenderObject;
 use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Library\Pro\Fields\RecaptchaField;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
-use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Services\HoneypotService;
 use Solspace\Addons\FreeformNext\Services\PermissionsService;
 use Solspace\Addons\FreeformNext\Services\RecaptchaService;
+use Solspace\Addons\FreeformNext\Services\CaptchaWidgetService;
 use Solspace\Addons\FreeformNext\Services\SettingsService;
 use Solspace\Addons\FreeformNext\Utilities\AddonInfo;
 
@@ -40,58 +39,14 @@ class Freeform_next_ext
 
     public function validateRecaptchaFields(AbstractField $field)
     {
-        $settingsModel = $this->getSettingsService()->getSettingsModel();
-
-        $isRecaptchaEnabled = $settingsModel->isRecaptchaEnabled();
-        $isRecaptchaV3 = $settingsModel->getRecaptchaType() === 'v3';
-        $recaptchaKey = $settingsModel->getRecaptchaKey();
-        $recaptchaSecret = $settingsModel->getRecaptchaSecret();
-
-        if (!$isRecaptchaEnabled) {
-            return false;
-        }
-
-        if ($isRecaptchaV3) {
-            return false;
-        }
-
-        if (!$recaptchaKey) {
-            return false;
-        }
-
-        if (!$recaptchaSecret) {
-            return false;
-        }
-
         if ($field instanceof RecaptchaField) {
-            $response = ee()->input->post('g-recaptcha-response');
-            if (!$response) {
-                $field->addError(lang('Please verify that you are not a robot.'));
-            } else {
-                $secret = SettingsRepository::getInstance()->getOrCreate()->getRecaptchaSecret();
-
-                $client  = new Client();
-				$postResponse = $client->post(
-                    'https://www.google.com/recaptcha/api/siteverify',
-					[
-						'headers' => [
-							'Content-Type' => 'application/x-www-form-urlencoded',
-						],
-						'form_params'         => [
-							'secret'   => $secret,
-							'response' => $response,
-						],
-					]
-				);
-
-
-                // $postResponse = $request->send();
-                $result       = json_decode((string) $postResponse->getBody(true), true);
-
-                if (!$result['success']) {
-                    $field->addError(lang('Please verify that you are not a robot.'));
-                }
-            }
+            $settings = $this->getSettingsService()->getSettingsModel();
+            $name = match ($settings->getCaptchaProvider()) {
+                \Solspace\Addons\FreeformNext\Model\SettingsModel::CAPTCHA_TURNSTILE => 'cf-turnstile-response',
+                \Solspace\Addons\FreeformNext\Model\SettingsModel::CAPTCHA_HCAPTCHA => 'h-captcha-response',
+                default => 'g-recaptcha-response',
+            };
+            (new CaptchaWidgetService())->validateField($field, $settings, ee()->input->post($name));
         }
     }
 

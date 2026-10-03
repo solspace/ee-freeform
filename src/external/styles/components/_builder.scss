@@ -556,3 +556,16 @@ $minRowHeight: 48px;
   opacity: .5;
   cursor: not-allowed;
 }
+.composer-recaptcha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(310px, 100%);
+  min-height: 52px;
+  padding: 10px 14px;
+  border: 1px solid #d6d9df;
+  border-radius: 4px;
+  background: #fafbfc;
+  color: #535964;
+  font-size: 13px;
+}

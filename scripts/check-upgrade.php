@@ -98,6 +98,10 @@ namespace {
                 $this->columns[$match[1]]['spamFolderEnabled'] = true;
                 return true;
             }
+            if (preg_match('/^\s*ALTER TABLE `([^`]+)` ADD COLUMN `(captchaProvider|turnstileKey|turnstileSecret|hcaptchaKey|hcaptchaSecret)`/i', $sql, $match)) {
+                $this->columns[$match[1]][$match[2]] = true;
+                return true;
+            }
             throw new \RuntimeException('Unexpected SQL: ' . substr($sql, 0, 100));
         }
     }
@@ -122,7 +126,7 @@ namespace {
             return new class {
                 public function getModuleName(): string { return 'Freeform_next'; }
                 public function getLowerName(): string { return 'freeform_next'; }
-                public function getVersion(): string { return '4.0.0-alpha.1'; }
+                public function getVersion(): string { return '4.0.0-alpha.2'; }
             };
         }
     }
@@ -161,11 +165,12 @@ namespace {
         'freeform_next_integrations', 'freeform_next_mailing_lists', 'freeform_next_permissions',
     ]));
     check($updater->update('3.3.10'), '3.3.10 upgrades to 4');
-    check(!$db->queries && $content === array_intersect_key($db->rows, $content), '3.3.10 upgrade preserves content without schema writes');
+    check(\count($db->queries) === 5 && $content === array_intersect_key($db->rows, $content), '3.3.10 upgrade adds CAPTCHA settings without changing content');
+    check(\count(array_intersect(['captchaProvider', 'turnstileKey', 'turnstileSecret', 'hcaptchaKey', 'hcaptchaSecret'], array_keys($db->columns['exp_freeform_next_settings']))) === 5, 'upgrade creates all CAPTCHA provider columns');
     $hook = $db->rows['extensions'][0];
-    check($hook['enabled'] === 'n' && $hook['settings'] === 'custom' && $hook['priority'] === 13 && $hook['version'] === '4.0.0-alpha.1', 'upgrade preserves disabled hook and its settings');
+    check($hook['enabled'] === 'n' && $hook['settings'] === 'custom' && $hook['priority'] === 13 && $hook['version'] === '4.0.0-alpha.2', 'upgrade preserves disabled hook and its settings');
     check($db->rows['actions'][0]['csrf_exempt'] === false, 'upgrade enables EE CSRF validation for existing submission action');
-    check($updater->update('3.3.10') && \count($db->rows['actions']) === 1 && \count($db->rows['extensions']) === 12, 'repeated upgrade does not duplicate registrations');
+    check($updater->update('3.3.10') && \count($db->queries) === 5 && \count($db->rows['actions']) === 1 && \count($db->rows['extensions']) === 12, 'repeated upgrade does not duplicate registrations or columns');
 
     // Older 3.3.x sites still need the 3.3.5 spam-folder column migration.
     $db->columns['exp_freeform_next_settings'] = [];

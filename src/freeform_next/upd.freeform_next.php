@@ -618,6 +618,19 @@ class Freeform_next_upd extends AddonUpdater
             }
         }
 
+        // Keep the legacy reCAPTCHA switch intact. NULL uses it until an admin
+        // explicitly selects a provider on the combined Spam Protection page.
+        if (version_compare($previousVersion, '4.0.0-alpha.2', '<')) {
+            $settingsTable = ee()->db->dbprefix('freeform_next_settings');
+            foreach (['captchaProvider' => 'VARCHAR(20)', 'turnstileKey' => 'VARCHAR(255)',
+                'turnstileSecret' => 'VARCHAR(255)', 'hcaptchaKey' => 'VARCHAR(255)',
+                'hcaptchaSecret' => 'VARCHAR(255)'] as $column => $type) {
+                if (ee()->db->table_exists($settingsTable) && !ee()->db->field_exists($column, $settingsTable)) {
+                    ee()->db->query("ALTER TABLE `{$settingsTable}` ADD COLUMN `{$column}` {$type} DEFAULT NULL");
+                }
+            }
+        }
+
         return true;
     }
 
