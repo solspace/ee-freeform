@@ -173,7 +173,6 @@ class NotificationController extends Controller
             ->addJavascript('notifications')
             ->addJavascript('handleGenerator')
             ->addJavascript('htmlEditor')
-            ->addCss('html-editor')
             ->setTemplateVariables(
                 [
                     'errors'                => $validation,
