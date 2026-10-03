@@ -38,8 +38,12 @@
   .ff-basic-floating-labels button[name=form_previous_page_button] { background: transparent; border-color: var(--ff-border); color: var(--ff-text); }
   .ff-basic-floating-labels button:hover { filter: brightness(.94); }
   .ff-basic-floating-labels input[type=file].ff-input { height: auto; }
-  .ff-basic-floating-labels table { max-width: 100%; border-collapse: collapse; }
-  .ff-basic-floating-labels table input, .ff-basic-floating-labels table select { max-width: 100%; }
+  .ff-basic-floating-labels .ff-col:has(.ff-table) { overflow-x: auto; }
+  .ff-basic-floating-labels .ff-table { width: 100%; border-collapse: collapse; }
+  .ff-basic-floating-labels .ff-table th, .ff-basic-floating-labels .ff-table td { padding: 7px; border-bottom: 1px solid var(--ff-border); text-align: left; }
+  .ff-basic-floating-labels .ff-table-control { max-width: 100%; min-width: 80px; padding: 6px; border: 1px solid var(--ff-border); border-radius: 5px; background: var(--ff-control); color: var(--ff-text); font: inherit; }
+  .ff-basic-floating-labels .ff-table-check { accent-color: var(--ff-accent); }
+  .ff-basic-floating-labels .ff-table-button { padding: 5px 9px; border: 1px solid var(--ff-border); border-radius: 5px; background: var(--ff-control); color: var(--ff-text); cursor: pointer; }
 .ff-basic-floating-labels .ff-floating { position: relative; }
   .ff-basic-floating-labels .ff-floating > .ff-input { padding-top: 17px !important; padding-bottom: 3px !important; min-height: 52px !important; }
   .ff-basic-floating-labels .ff-floating > textarea.ff-input { min-height: 104px !important; }
@@ -73,6 +77,9 @@
       {field:render_instructions instructions_class="ff-help"}
       {field:render_errors error_class="ff-errors"}
     {if:else}
+      {if field:type == 'table'}
+      {field:render class="ff-table" label_class="ff-label{if field:required} ff-required{/if}" instructions_class="ff-help" error_class="ff-errors" instructions_below_field="yes" table_text_input_class="ff-table-control" table_select_input_class="ff-table-control" table_checkbox_input_class="ff-table-check" add_button_class="ff-table-button" remove_button_class="ff-table-button"}
+    {if:else}
       {field:render
         class="ff-input"
         label_class="ff-label{if field:required} ff-required{/if}"
@@ -80,6 +87,7 @@
         error_class="ff-errors"
         instructions_below_field="yes"
       }
+    {/if}
     {/if}
     </div>
     {/fields}

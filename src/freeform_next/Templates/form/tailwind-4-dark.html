@@ -12,6 +12,7 @@
   .ff-tailwind .ff-right { justify-content:flex-end; } .ff-tailwind .ff-spread { justify-content:space-between; }
   .ff-tailwind button[name=form_previous_page_button] { background:transparent; color:inherit; border:1px solid currentColor; box-shadow:none; }
   .ff-tailwind label { cursor:default; }
+  .ff-tailwind .ff-table { display:block; max-width:100%; overflow-x:auto; }
 </style>
 <div class="ff-tailwind rounded-xl border border-slate-700 bg-slate-900 p-5 text-slate-100 sm:p-7">
 {if form:page_count > 1}
@@ -29,7 +30,9 @@
   <div class="flex flex-wrap gap-4 mb-4 {form:row_class}">
     {fields}
     <div class="min-w-0 w-full md:flex-1 {form:column_class}{if field:type == 'submit'} ff-submit ff-{field:position}{/if}">
-      {if field:type == 'submit'}
+      {if field:type == 'table'}
+      {field:render class="w-full text-sm ff-table" label_class="mb-1 block text-sm font-medium" instructions_class="mt-1 text-xs opacity-70" error_class="ff-errors" instructions_below_field="yes" table_text_input_class="w-full rounded border border-slate-400 bg-transparent px-2 py-1" table_select_input_class="w-full rounded border border-slate-400 bg-transparent px-2 py-1" table_checkbox_input_class="accent-indigo-600" add_button_class="rounded border px-2 py-1 text-sm" remove_button_class="rounded border px-2 py-1 text-sm"}
+    {if:elseif field:type == 'submit'}
       {field:render class="rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"}
     {if:elseif field:type == 'checkbox' OR field:type == 'mailing_list' OR field:type == 'checkbox_group' OR field:type == 'radio_group'}
       {field:render class="mr-2 size-4 accent-indigo-600" label_class="block text-sm font-medium" instructions_class="mt-1 text-xs opacity-70" error_class="ff-errors" instructions_below_field="yes"}

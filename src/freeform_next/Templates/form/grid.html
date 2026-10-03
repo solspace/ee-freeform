@@ -38,8 +38,12 @@
   .ff-grid button[name=form_previous_page_button] { background: transparent; border-color: var(--ff-border); color: var(--ff-text); }
   .ff-grid button:hover { filter: brightness(.94); }
   .ff-grid input[type=file].ff-input { height: auto; }
-  .ff-grid table { max-width: 100%; border-collapse: collapse; }
-  .ff-grid table input, .ff-grid table select { max-width: 100%; }
+  .ff-grid .ff-col:has(.ff-table) { overflow-x: auto; }
+  .ff-grid .ff-table { width: 100%; border-collapse: collapse; }
+  .ff-grid .ff-table th, .ff-grid .ff-table td { padding: 7px; border-bottom: 1px solid var(--ff-border); text-align: left; }
+  .ff-grid .ff-table-control { max-width: 100%; min-width: 80px; padding: 6px; border: 1px solid var(--ff-border); border-radius: 5px; background: var(--ff-control); color: var(--ff-text); font: inherit; }
+  .ff-grid .ff-table-check { accent-color: var(--ff-accent); }
+  .ff-grid .ff-table-button { padding: 5px 9px; border: 1px solid var(--ff-border); border-radius: 5px; background: var(--ff-control); color: var(--ff-text); cursor: pointer; }
   @media (max-width: 640px) { .ff-grid .ff-row { display: block; } .ff-grid .ff-col + .ff-col { margin-top: 18px; } }
 </style>
 <div class="ff-grid">
@@ -58,6 +62,9 @@
   <div class="ff-row {form:row_class}">
     {fields}
     <div class="ff-col {form:column_class}{if field:type == 'submit'} ff-submit ff-{field:position}{/if}">
+      {if field:type == 'table'}
+      {field:render class="ff-table" label_class="ff-label{if field:required} ff-required{/if}" instructions_class="ff-help" error_class="ff-errors" instructions_below_field="yes" table_text_input_class="ff-table-control" table_select_input_class="ff-table-control" table_checkbox_input_class="ff-table-check" add_button_class="ff-table-button" remove_button_class="ff-table-button"}
+    {if:else}
       {field:render
         class="ff-input"
         label_class="ff-label{if field:required} ff-required{/if}"
@@ -65,6 +72,7 @@
         error_class="ff-errors"
         instructions_below_field="yes"
       }
+    {/if}
     </div>
     {/fields}
   </div>

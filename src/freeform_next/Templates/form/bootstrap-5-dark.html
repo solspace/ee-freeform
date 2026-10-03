@@ -12,6 +12,7 @@
   .ff-bootstrap .ff-right { justify-content:flex-end; } .ff-bootstrap .ff-spread { justify-content:space-between; }
   .ff-bootstrap button[name=form_previous_page_button] { background:transparent; color:inherit; border:1px solid currentColor; box-shadow:none; }
   .ff-bootstrap label { cursor:default; }
+  .ff-bootstrap .ff-table { display:block; max-width:100%; overflow-x:auto; }
 </style>
 <div class="ff-bootstrap" data-bs-theme="dark">
 {if form:page_count > 1}
@@ -29,7 +30,9 @@
   <div class="row g-3 mb-3 {form:row_class}">
     {fields}
     <div class="col-12 col-md {form:column_class}{if field:type == 'submit'} ff-submit ff-{field:position}{/if}">
-      {if field:type == 'submit'}
+      {if field:type == 'table'}
+      {field:render class="table table-sm align-middle ff-table" label_class="form-label{if field:required} ff-required{/if}" instructions_class="form-text" error_class="ff-errors" instructions_below_field="yes" table_text_input_class="form-control form-control-sm" table_select_input_class="form-select form-select-sm" table_checkbox_input_class="form-check-input" add_button_class="btn btn-sm btn-outline-secondary" remove_button_class="btn btn-sm btn-outline-danger"}
+    {if:elseif field:type == 'submit'}
       {field:render class="btn btn-primary"}
     {if:elseif field:type == 'select' OR field:type == 'multiple_select'}
       {field:render class="form-select" label_class="form-label{if field:required} ff-required{/if}" instructions_class="form-text" error_class="ff-errors" instructions_below_field="yes"}
