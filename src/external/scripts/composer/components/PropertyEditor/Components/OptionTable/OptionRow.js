@@ -114,7 +114,11 @@ class OptionRow extends Component {
     const { hash, index } = this.props;
 
     const label = ReactDOM.findDOMNode(this.refs.label).value;
-    let value = label;
+    // A custom value should survive edits to its label. Newly added options
+    // still follow their label until the value has been customized.
+    let value = this.props.showCustomValues && this.props.value !== this.props.label
+      ? this.props.value
+      : label;
 
     const valueInput = ReactDOM.findDOMNode(this.refs.value);
     if (valueInput && event.target.dataset.type === "value") {

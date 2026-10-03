@@ -32,6 +32,7 @@ class PredefinedOptionRow extends Component {
         <td>
           <input
             type="text"
+            aria-label={`Option ${this.props.index + 1} label`}
             value={label}
             ref="label"
             data-type="label"
@@ -41,6 +42,7 @@ class PredefinedOptionRow extends Component {
         <td>
           <input
             type="text"
+            aria-label={`Option ${this.props.index + 1} value`}
             value={value}
             data-type="value"
             ref="value"
@@ -51,6 +53,7 @@ class PredefinedOptionRow extends Component {
         <td className="composer-option-row-checkbox">
           <input
             type="checkbox"
+            aria-label={`Select option ${this.props.index + 1} by default`}
             checked={isChecked}
             onChange={this.updateIsChecked}
           />
