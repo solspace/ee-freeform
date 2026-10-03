@@ -7,7 +7,6 @@ use EllisLab\ExpressionEngine\Library\CP\Table;
 use GuzzleHttp\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
-use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
 use Solspace\Addons\FreeformNext\Library\Integrations\MailingLists\MailingListOAuthConnector;
 use Solspace\Addons\FreeformNext\Library\Integrations\SettingBlueprint;
 use Solspace\Addons\FreeformNext\Library\Integrations\TokenRefreshInterface;
@@ -67,7 +66,6 @@ class MailingListsController extends Controller
                 "Name"             => ["type" => Table::COL_TEXT],
                 "Handle"           => ["type" => Table::COL_TEXT],
                 "Service Provider" => ["type" => Table::COL_TEXT],
-                "manage"           => ["type" => Table::COL_TOOLBAR],
                 ["type" => Table::COL_CHECKBOX, "name" => "selection"],
             ]
         );
@@ -84,14 +82,6 @@ class MailingListsController extends Controller
                 ],
                 $integration->handle,
                 $integration->getIntegrationObject()->getServiceProvider(),
-                [
-                    "toolbar_items" => [
-                        "edit" => [
-                            "href"  => UrlHelper::getLink("integrations/mailing_lists/" . $integration->id),
-                            "title" => lang("edit"),
-                        ],
-                    ],
-                ],
                 [
                     "name"  => "id_list[]",
                     "value" => $integration->id,
