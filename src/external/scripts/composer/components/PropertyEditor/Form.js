@@ -62,6 +62,19 @@ class Form extends BasePropertyEditor {
       });
     });
 
+    // Keep the selected value visible for forms using an older bundled sample.
+    const legacyTemplates = {
+      "bootstrap.html": "Bootstrap (Legacy)",
+      "foundation.html": "Foundation (Legacy)",
+      "materialize.html": "Materialize (Legacy)",
+    };
+    if (Object.prototype.hasOwnProperty.call(legacyTemplates, formTemplate)) {
+      solspaceTemplateList.push({
+        key: formTemplate,
+        value: legacyTemplates[formTemplate],
+      });
+    }
+
     const templateList = [];
     templates.map((item) => {
       templateList.push({
@@ -75,6 +88,11 @@ class Form extends BasePropertyEditor {
       optionGroups.push({
         label: "Solspace Templates",
         options: solspaceTemplateList,
+      });
+    } else if (Object.prototype.hasOwnProperty.call(legacyTemplates, formTemplate)) {
+      optionGroups.push({
+        label: "Legacy Template",
+        options: [{ key: formTemplate, value: legacyTemplates[formTemplate] }],
       });
     }
 

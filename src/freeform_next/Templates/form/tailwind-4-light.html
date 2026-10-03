@@ -1,0 +1,43 @@
+{!-- Compile Tailwind CSS v4 with this template included in your source scan. --}
+<style>
+  .ff-tailwind .ff-pages { display:flex; flex-wrap:wrap; gap:.5rem; margin:0 0 1.25rem; padding:0 0 .75rem; border-bottom:1px solid currentColor; list-style:none; }
+  .ff-tailwind .ff-pages li { opacity:.6; padding:.3rem .65rem; }
+  .ff-tailwind .ff-pages .ff-current { opacity:1; font-weight:700; border-bottom:2px solid currentColor; }
+  .ff-tailwind .ff-summary { padding:.75rem 1rem; margin-bottom:1.25rem; border:1px solid #ef4444; border-radius:.5rem; color:#dc2626; }
+  .ff-tailwind .ff-summary ul { margin:.25rem 0 0; padding-left:1.25rem; }
+  .ff-tailwind .ff-errors { margin:.25rem 0 0; padding-left:1.25rem; color:#dc2626; font-size:.85em; }
+  .ff-tailwind .ff-required::after { content:' *'; color:#dc2626; }
+  .ff-tailwind .ff-submit { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; }
+  .ff-tailwind .ff-left { justify-content:flex-start; } .ff-tailwind .ff-center { justify-content:center; }
+  .ff-tailwind .ff-right { justify-content:flex-end; } .ff-tailwind .ff-spread { justify-content:space-between; }
+  .ff-tailwind button[name=form_previous_page_button] { background:transparent; color:inherit; border:1px solid currentColor; box-shadow:none; }
+  .ff-tailwind label { cursor:default; }
+</style>
+<div class="ff-tailwind rounded-xl border border-slate-200 bg-white p-5 text-slate-900 sm:p-7">
+{if form:page_count > 1}
+  <ol class="ff-pages" aria-label="Form pages">
+    {pages}<li class="{if page:index == current_page:index}ff-current{/if}" {if page:index == current_page:index}aria-current="step"{/if}>{page:label}</li>{/pages}
+  </ol>
+{/if}
+{if form:has_errors}
+  <div class="ff-summary" role="alert">
+    <strong>Please correct the errors below.</strong>
+    <ul>{form:errors}<li>{error}</li>{/form:errors}</ul>
+  </div>
+{/if}
+{rows}
+  <div class="flex flex-wrap gap-4 mb-4 {form:row_class}">
+    {fields}
+    <div class="min-w-0 w-full md:flex-1 {form:column_class}{if field:type == 'submit'} ff-submit ff-{field:position}{/if}">
+      {if field:type == 'submit'}
+      {field:render class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"}
+    {if:elseif field:type == 'checkbox' OR field:type == 'mailing_list' OR field:type == 'checkbox_group' OR field:type == 'radio_group'}
+      {field:render class="mr-2 size-4 accent-indigo-600" label_class="block text-sm font-medium" instructions_class="mt-1 text-xs opacity-70" error_class="ff-errors" instructions_below_field="yes"}
+    {if:else}
+      {field:render class="block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20" label_class="mb-1 block text-sm font-medium" instructions_class="mt-1 text-xs opacity-70" error_class="ff-errors" instructions_below_field="yes"}
+    {/if}
+    </div>
+    {/fields}
+  </div>
+{/rows}
+</div>

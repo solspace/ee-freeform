@@ -28,7 +28,7 @@ class FormTemplate implements JsonSerializable
     public function __construct(private $filePath)
     {
         $this->fileName = pathinfo($filePath, PATHINFO_BASENAME);
-        $this->name     = StringHelper::camelize(StringHelper::humanize(pathinfo($filePath, PATHINFO_FILENAME)));
+        $this->name     = StringHelper::camelize(StringHelper::humanize(str_replace('-', ' ', pathinfo($filePath, PATHINFO_FILENAME))));
     }
 
     /**

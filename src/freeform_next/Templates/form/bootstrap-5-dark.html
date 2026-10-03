@@ -1,0 +1,45 @@
+{!-- Load Bootstrap 5 CSS on the front-end page. --}
+<style>
+  .ff-bootstrap .ff-pages { display:flex; flex-wrap:wrap; gap:.5rem; margin:0 0 1.25rem; padding:0 0 .75rem; border-bottom:1px solid currentColor; list-style:none; }
+  .ff-bootstrap .ff-pages li { opacity:.6; padding:.3rem .65rem; }
+  .ff-bootstrap .ff-pages .ff-current { opacity:1; font-weight:700; border-bottom:2px solid currentColor; }
+  .ff-bootstrap .ff-summary { padding:.75rem 1rem; margin-bottom:1.25rem; border:1px solid #ef4444; border-radius:.5rem; color:#dc2626; }
+  .ff-bootstrap .ff-summary ul { margin:.25rem 0 0; padding-left:1.25rem; }
+  .ff-bootstrap .ff-errors { margin:.25rem 0 0; padding-left:1.25rem; color:#dc2626; font-size:.85em; }
+  .ff-bootstrap .ff-required::after { content:' *'; color:#dc2626; }
+  .ff-bootstrap .ff-submit { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; }
+  .ff-bootstrap .ff-left { justify-content:flex-start; } .ff-bootstrap .ff-center { justify-content:center; }
+  .ff-bootstrap .ff-right { justify-content:flex-end; } .ff-bootstrap .ff-spread { justify-content:space-between; }
+  .ff-bootstrap button[name=form_previous_page_button] { background:transparent; color:inherit; border:1px solid currentColor; box-shadow:none; }
+  .ff-bootstrap label { cursor:default; }
+</style>
+<div class="ff-bootstrap" data-bs-theme="dark">
+{if form:page_count > 1}
+  <ol class="ff-pages" aria-label="Form pages">
+    {pages}<li class="{if page:index == current_page:index}ff-current{/if}" {if page:index == current_page:index}aria-current="step"{/if}>{page:label}</li>{/pages}
+  </ol>
+{/if}
+{if form:has_errors}
+  <div class="ff-summary" role="alert">
+    <strong>Please correct the errors below.</strong>
+    <ul>{form:errors}<li>{error}</li>{/form:errors}</ul>
+  </div>
+{/if}
+{rows}
+  <div class="row g-3 mb-3 {form:row_class}">
+    {fields}
+    <div class="col-12 col-md {form:column_class}{if field:type == 'submit'} ff-submit ff-{field:position}{/if}">
+      {if field:type == 'submit'}
+      {field:render class="btn btn-primary"}
+    {if:elseif field:type == 'select' OR field:type == 'multiple_select'}
+      {field:render class="form-select" label_class="form-label{if field:required} ff-required{/if}" instructions_class="form-text" error_class="ff-errors" instructions_below_field="yes"}
+    {if:elseif field:type == 'checkbox' OR field:type == 'mailing_list' OR field:type == 'checkbox_group' OR field:type == 'radio_group'}
+      {field:render class="form-check-input" label_class="form-label{if field:required} ff-required{/if}" instructions_class="form-text" error_class="ff-errors" instructions_below_field="yes"}
+    {if:else}
+      {field:render class="form-control" label_class="form-label{if field:required} ff-required{/if}" instructions_class="form-text" error_class="ff-errors" instructions_below_field="yes"}
+    {/if}
+    </div>
+    {/fields}
+  </div>
+{/rows}
+</div>
