@@ -15,6 +15,8 @@
   .ff-basic-floating-labels .ff-summary ul { margin: 6px 0 0; padding-left: 20px; }
   .ff-basic-floating-labels .ff-row { display: grid; gap: 18px; margin-bottom: 18px; grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; }
   .ff-basic-floating-labels .ff-col { min-width: 0;  }
+  .ff-basic-floating-labels .ff-fieldset { border:0; padding:0; margin:0; min-width:0; }
+  .ff-basic-floating-labels .ff-option { display:block; margin:0 0 6px; }
   .ff-basic-floating-labels .ff-label { display: block; margin-bottom: 5px; font-weight: 600; }
   .ff-basic-floating-labels .ff-required::after { content: ' *'; color: var(--ff-error); }
   .ff-basic-floating-labels .ff-input:not([type=checkbox]):not([type=radio]):not([type=hidden]),
@@ -23,9 +25,10 @@
     border: 1px solid var(--ff-border); border-radius: 7px;
     background: var(--ff-control); color: var(--ff-text); font: inherit;
   }
+  .ff-basic-floating-labels input[type=email] + input[type=email] { margin-top:8px; }
   .ff-basic-floating-labels textarea.ff-input { min-height: 100px; resize: vertical; }
   .ff-basic-floating-labels .ff-input:focus-visible, .ff-basic-floating-labels button:focus-visible { outline: 2px solid var(--ff-accent); outline-offset: 2px; }
-  .ff-basic-floating-labels .ff-input[type=checkbox], .ff-basic-floating-labels .ff-input[type=radio] { margin-right: 7px; accent-color: var(--ff-accent); }
+  .ff-basic-floating-labels .ff-option input[type=checkbox], .ff-basic-floating-labels .ff-option input[type=radio], .ff-basic-floating-labels .ff-input[type=checkbox], .ff-basic-floating-labels .ff-input[type=radio] { margin-right: 7px; accent-color: var(--ff-accent); }
   .ff-basic-floating-labels .ff-help { margin-top: 5px; color: var(--ff-muted); font-size: 12px; }
   .ff-basic-floating-labels .ff-errors { padding-left: 18px; margin: 5px 0 0; color: var(--ff-error); font-size: 12px; }
   .ff-basic-floating-labels .ff-col:has(.ff-errors) > .ff-input { border-color: var(--ff-error); }
@@ -44,20 +47,23 @@
   .ff-basic-floating-labels .ff-table-control { max-width: 100%; min-width: 80px; padding: 6px; border: 1px solid var(--ff-border); border-radius: 5px; background: var(--ff-control); color: var(--ff-text); font: inherit; }
   .ff-basic-floating-labels .ff-table-check { accent-color: var(--ff-accent); }
   .ff-basic-floating-labels .ff-table-button { padding: 5px 9px; border: 1px solid var(--ff-border); border-radius: 5px; background: var(--ff-control); color: var(--ff-text); cursor: pointer; }
-.ff-basic-floating-labels .ff-floating { position: relative; }
+  .ff-basic-floating-labels .ff-floating { position: relative; }
   .ff-basic-floating-labels .ff-floating > .ff-input { padding-top: 17px !important; padding-bottom: 3px !important; min-height: 52px !important; }
   .ff-basic-floating-labels .ff-floating > textarea.ff-input { min-height: 104px !important; }
   .ff-basic-floating-labels .ff-floating > .ff-label { position: absolute; top: 15px; left: 12px; margin: 0; color: var(--ff-muted); font-weight: 400; pointer-events: none; transform-origin: left top; transition: transform .15s ease, color .15s ease; }
   .ff-basic-floating-labels .ff-floating > .ff-input:focus + .ff-label,
   .ff-basic-floating-labels .ff-floating > .ff-input:not(:placeholder-shown) + .ff-label { transform: translateY(-10px) scale(.8); color: var(--ff-accent); }
   .ff-basic-floating-labels .ff-floating > .ff-input::placeholder { color: transparent; }
-  @media (prefers-reduced-motion: reduce) { .ff-basic-floating-labels .ff-floating > .ff-label { transition: none; } }  @media (max-width: 640px) { .ff-basic-floating-labels .ff-row { display: block; } .ff-basic-floating-labels .ff-col + .ff-col { margin-top: 18px; } }
+  @media (prefers-reduced-motion: reduce) { .ff-basic-floating-labels .ff-floating > .ff-label { transition: none; } }
+  @media (max-width: 640px) { .ff-basic-floating-labels .ff-row { display: block; } .ff-basic-floating-labels .ff-col + .ff-col { margin-top: 18px; } }
 </style>
 <div class="ff-basic-floating-labels">
 {if form:page_count > 1}
-  <ol class="ff-pages" aria-label="Form pages">
+  <nav aria-label="Form progress">
+    <ol class="ff-pages">
     {pages}<li class="{if page:index == current_page:index}ff-current{/if}" {if page:index == current_page:index}aria-current="step"{/if}>{page:label}</li>{/pages}
-  </ol>
+    </ol>
+  </nav>
 {/if}
 {if form:has_errors}
   <div class="ff-summary" role="alert">
@@ -69,7 +75,7 @@
   <div class="ff-row {form:row_class}">
     {fields}
     <div class="ff-col {form:column_class}{if field:type == 'submit'} ff-submit ff-{field:position}{/if}">
-      {if field:type == 'text' OR field:type == 'email' OR field:type == 'textarea' OR field:type == 'number' OR field:type == 'phone' OR field:type == 'website' OR field:type == 'password'}
+      {if field:type == 'text' OR field:type == 'textarea' OR field:type == 'number' OR field:type == 'phone' OR field:type == 'website' OR field:type == 'password'}
       <div class="ff-floating">
         {field:render_input class="ff-input" placeholder=" "}
         {field:render_label label_class="ff-label{if field:required} ff-required{/if}"}

@@ -116,7 +116,7 @@ class RatingField extends AbstractField implements SingleValueInterface
 
         $maxValue = $this->getMaxValue();
         for ($i = $maxValue; $i >= 1; $i--) {
-            $starId = $this->getHandle() . '_star_' . $i;
+            $starId = $this->getIdAttribute((string) $i);
 
             $output .= '<input';
             $output .= $this->getAttributeString('name', $this->getHandle());
@@ -133,7 +133,9 @@ class RatingField extends AbstractField implements SingleValueInterface
 
             $output .= '<label';
             $output .= $this->getAttributeString('for', $starId);
-            $output .= '></label>';
+            $output .= '><span class="ff-sr-only">'
+                . htmlentities($this->translate($i === 1 ? '1 star' : '{count} stars', ['count' => $i]), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8')
+                . '</span></label>';
         }
         $output .= '</span>';
         $output .= '<div style="clear: both;"></div>';

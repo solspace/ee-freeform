@@ -12,13 +12,22 @@
   .ff-bootstrap .ff-right { justify-content:flex-end; } .ff-bootstrap .ff-spread { justify-content:space-between; }
   .ff-bootstrap button[name=form_previous_page_button] { background:transparent; color:inherit; border:1px solid currentColor; box-shadow:none; }
   .ff-bootstrap label { cursor:default; }
+  .ff-bootstrap .ff-fieldset { border:0; padding:0; margin:0; min-width:0; }
+  .ff-bootstrap .ff-option { display:block; margin:0 0 .45rem; }
+  .ff-bootstrap[data-bs-theme="dark"] .ff-summary, .ff-bootstrap[data-bs-theme="dark"] .ff-errors { color:#ff9ba5; }
+  .ff-bootstrap[data-bs-theme="dark"] .ff-required::after { color:#ff9ba5; }
+  .ff-bootstrap :is(input, textarea, select, button):focus-visible { outline:2px solid #4f46e5; outline-offset:2px; }
+  .ff-bootstrap[data-bs-theme="dark"] :is(input, textarea, select, button):focus-visible { outline-color:#a5b4fc; }
+  .ff-bootstrap input[type=email] + input[type=email] { margin-top:.5rem; }
   .ff-bootstrap .ff-table { display:block; max-width:100%; overflow-x:auto; }
 </style>
 <div class="ff-bootstrap" data-bs-theme="light">
 {if form:page_count > 1}
-  <ol class="ff-pages" aria-label="Form pages">
+  <nav aria-label="Form progress">
+    <ol class="ff-pages">
     {pages}<li class="{if page:index == current_page:index}ff-current{/if}" {if page:index == current_page:index}aria-current="step"{/if}>{page:label}</li>{/pages}
-  </ol>
+    </ol>
+  </nav>
 {/if}
 {if form:has_errors}
   <div class="ff-summary" role="alert">
@@ -36,6 +45,14 @@
       {field:render class="btn btn-primary"}
     {if:elseif field:type == 'select' OR field:type == 'multiple_select'}
       {field:render class="form-select" label_class="form-label{if field:required} ff-required{/if}" instructions_class="form-text" error_class="ff-errors" instructions_below_field="yes"}
+    {if:elseif field:type == 'dynamic_recipients' AND field:show_as_radio}
+      {field:render class="form-check-input" label_class="form-label{if field:required} ff-required{/if}" instructions_class="form-text" error_class="ff-errors" instructions_below_field="yes"}
+    {if:elseif field:type == 'dynamic_recipients' AND field:show_as_checkboxes}
+      {field:render class="form-check-input" label_class="form-label{if field:required} ff-required{/if}" instructions_class="form-text" error_class="ff-errors" instructions_below_field="yes"}
+    {if:elseif field:type == 'dynamic_recipients'}
+      {field:render class="form-select" label_class="form-label{if field:required} ff-required{/if}" instructions_class="form-text" error_class="ff-errors" instructions_below_field="yes"}
+    {if:elseif field:type == 'rating'}
+      {field:render class="ff-rating-input" label_class="form-label{if field:required} ff-required{/if}" instructions_class="form-text" error_class="ff-errors" instructions_below_field="yes"}
     {if:elseif field:type == 'checkbox' OR field:type == 'mailing_list' OR field:type == 'checkbox_group' OR field:type == 'radio_group'}
       {field:render class="form-check-input" label_class="form-label{if field:required} ff-required{/if}" instructions_class="form-text" error_class="ff-errors" instructions_below_field="yes"}
     {if:else}

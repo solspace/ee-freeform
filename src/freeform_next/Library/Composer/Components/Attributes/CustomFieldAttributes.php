@@ -224,6 +224,19 @@ class CustomFieldAttributes extends AbstractAttributes
             $inputAttributes = [];
         }
 
+        if (!$this->field->usesGroupedChoiceMarkup()) {
+            $descriptionIds = $this->field->getDescriptionIds();
+            if ($descriptionIds) {
+                $inputAttributes['aria-describedby'] = trim($descriptionIds . ' ' . ($inputAttributes['aria-describedby'] ?? ''));
+            }
+            if ($this->field->isRequired()) {
+                $inputAttributes['aria-required'] = 'true';
+            }
+        }
+        if ($this->field->hasErrors()) {
+            $inputAttributes['aria-invalid'] = 'true';
+        }
+
         return $this->getAttributeStringFromArray($inputAttributes);
     }
 

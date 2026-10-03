@@ -53,11 +53,12 @@ class EmailField extends AbstractField implements RecipientInterface, MultipleVa
         }
 
         $output = '';
-        foreach ($values as $value) {
+        foreach (array_values($values) as $index => $value) {
             $output .= '<input '
                 . $this->getAttributeString('name', $this->getHandle())
                 . $this->getAttributeString('type', $this->getType())
-                . $this->getAttributeString('id', $this->getIdAttribute())
+                . $this->getAttributeString('id', $this->getIdAttribute($index ? (string) ($index + 1) : null))
+                . ($index ? $this->getAttributeString('aria-label', $this->getLabel() . ' ' . ($index + 1)) : '')
                 . $this->getAttributeString('class', $attributes->getClass())
                 . $this->getAttributeString(
                     'placeholder',

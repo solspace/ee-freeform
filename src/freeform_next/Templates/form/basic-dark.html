@@ -15,6 +15,8 @@
   .ff-basic-dark .ff-summary ul { margin: 6px 0 0; padding-left: 20px; }
   .ff-basic-dark .ff-row { display: grid; gap: 18px; margin-bottom: 18px; grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; }
   .ff-basic-dark .ff-col { min-width: 0;  }
+  .ff-basic-dark .ff-fieldset { border:0; padding:0; margin:0; min-width:0; }
+  .ff-basic-dark .ff-option { display:block; margin:0 0 6px; }
   .ff-basic-dark .ff-label { display: block; margin-bottom: 5px; font-weight: 600; }
   .ff-basic-dark .ff-required::after { content: ' *'; color: var(--ff-error); }
   .ff-basic-dark .ff-input:not([type=checkbox]):not([type=radio]):not([type=hidden]),
@@ -23,9 +25,10 @@
     border: 1px solid var(--ff-border); border-radius: 7px;
     background: var(--ff-control); color: var(--ff-text); font: inherit;
   }
+  .ff-basic-dark input[type=email] + input[type=email] { margin-top:8px; }
   .ff-basic-dark textarea.ff-input { min-height: 100px; resize: vertical; }
   .ff-basic-dark .ff-input:focus-visible, .ff-basic-dark button:focus-visible { outline: 2px solid var(--ff-accent); outline-offset: 2px; }
-  .ff-basic-dark .ff-input[type=checkbox], .ff-basic-dark .ff-input[type=radio] { margin-right: 7px; accent-color: var(--ff-accent); }
+  .ff-basic-dark .ff-option input[type=checkbox], .ff-basic-dark .ff-option input[type=radio], .ff-basic-dark .ff-input[type=checkbox], .ff-basic-dark .ff-input[type=radio] { margin-right: 7px; accent-color: var(--ff-accent); }
   .ff-basic-dark .ff-help { margin-top: 5px; color: var(--ff-muted); font-size: 12px; }
   .ff-basic-dark .ff-errors { padding-left: 18px; margin: 5px 0 0; color: var(--ff-error); font-size: 12px; }
   .ff-basic-dark .ff-col:has(.ff-errors) > .ff-input { border-color: var(--ff-error); }
@@ -48,9 +51,11 @@
 </style>
 <div class="ff-basic-dark">
 {if form:page_count > 1}
-  <ol class="ff-pages" aria-label="Form pages">
+  <nav aria-label="Form progress">
+    <ol class="ff-pages">
     {pages}<li class="{if page:index == current_page:index}ff-current{/if}" {if page:index == current_page:index}aria-current="step"{/if}>{page:label}</li>{/pages}
-  </ol>
+    </ol>
+  </nav>
 {/if}
 {if form:has_errors}
   <div class="ff-summary" role="alert">

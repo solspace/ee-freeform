@@ -4,8 +4,9 @@
   &:not(:checked) {
     > input {
       position: absolute;
-      top: -9999px;
-      clip: rect(0, 0, 0, 0);
+      width: 1px;
+      height: 1px;
+      opacity: 0;
     }
 
     > label {
@@ -46,6 +47,23 @@
   > input:checked ~ label:hover ~ label,
   > label:hover ~ input:checked ~ label {
     color: colorhover;
+  }
+
+  > input:focus-visible + label {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+
+  .ff-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   > label:active {

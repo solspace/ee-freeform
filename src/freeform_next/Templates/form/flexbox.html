@@ -15,6 +15,8 @@
   .ff-flexbox .ff-summary ul { margin: 6px 0 0; padding-left: 20px; }
   .ff-flexbox .ff-row { display: flex; gap: 18px; margin-bottom: 18px; flex-wrap: wrap; }
   .ff-flexbox .ff-col { min-width: 0; flex: 1 1 0; }
+  .ff-flexbox .ff-fieldset { border:0; padding:0; margin:0; min-width:0; }
+  .ff-flexbox .ff-option { display:block; margin:0 0 6px; }
   .ff-flexbox .ff-label { display: block; margin-bottom: 5px; font-weight: 600; }
   .ff-flexbox .ff-required::after { content: ' *'; color: var(--ff-error); }
   .ff-flexbox .ff-input:not([type=checkbox]):not([type=radio]):not([type=hidden]),
@@ -23,9 +25,10 @@
     border: 1px solid var(--ff-border); border-radius: 7px;
     background: var(--ff-control); color: var(--ff-text); font: inherit;
   }
+  .ff-flexbox input[type=email] + input[type=email] { margin-top:8px; }
   .ff-flexbox textarea.ff-input { min-height: 100px; resize: vertical; }
   .ff-flexbox .ff-input:focus-visible, .ff-flexbox button:focus-visible { outline: 2px solid var(--ff-accent); outline-offset: 2px; }
-  .ff-flexbox .ff-input[type=checkbox], .ff-flexbox .ff-input[type=radio] { margin-right: 7px; accent-color: var(--ff-accent); }
+  .ff-flexbox .ff-option input[type=checkbox], .ff-flexbox .ff-option input[type=radio], .ff-flexbox .ff-input[type=checkbox], .ff-flexbox .ff-input[type=radio] { margin-right: 7px; accent-color: var(--ff-accent); }
   .ff-flexbox .ff-help { margin-top: 5px; color: var(--ff-muted); font-size: 12px; }
   .ff-flexbox .ff-errors { padding-left: 18px; margin: 5px 0 0; color: var(--ff-error); font-size: 12px; }
   .ff-flexbox .ff-col:has(.ff-errors) > .ff-input { border-color: var(--ff-error); }
@@ -48,9 +51,11 @@
 </style>
 <div class="ff-flexbox">
 {if form:page_count > 1}
-  <ol class="ff-pages" aria-label="Form pages">
+  <nav aria-label="Form progress">
+    <ol class="ff-pages">
     {pages}<li class="{if page:index == current_page:index}ff-current{/if}" {if page:index == current_page:index}aria-current="step"{/if}>{page:label}</li>{/pages}
-  </ol>
+    </ol>
+  </nav>
 {/if}
 {if form:has_errors}
   <div class="ff-summary" role="alert">

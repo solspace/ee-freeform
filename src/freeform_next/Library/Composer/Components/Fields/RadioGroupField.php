@@ -44,7 +44,7 @@ class RadioGroupField extends AbstractExternalOptionsField implements SingleValu
         foreach ($this->options as $index => $option) {
             $isSelected = $option->getValue() == $this->getValue();
 
-            $output .= '<label>';
+            $output .= '<label class="ff-option">';
 
             $output .= '<input '
                 . $this->getAttributeString('name', $this->getHandle())
@@ -53,6 +53,7 @@ class RadioGroupField extends AbstractExternalOptionsField implements SingleValu
                 . $this->getAttributeString('id', $this->getIdAttribute($index + 1))
                 . $this->getAttributeString('value', $option->getValue(), true, true)
                 . $this->getParameterString('checked', $isSelected)
+                . ($index === 0 ? $this->getRequiredAttribute() : '')
                 . $attributes->getInputAttributesAsString()
                 . '/>';
             $output .= $this->translate($option->getLabel());
