@@ -36,6 +36,7 @@ jobs:
           php scripts/check-cleanup.php
           php scripts/check-cp-escaping.php
           php scripts/check-permissions.php
+          php scripts/check-upgrade.php
 
   package:
     name: Build release package
