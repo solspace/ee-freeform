@@ -65,6 +65,7 @@ namespace {
         public function row(): object|false { return $this->selected ? (object) $this->selected[0] : false; }
         public function insert(string $table, array $data): bool
         {
+            $this->checkVersionLength($table, $data);
             if ($table === 'actions' || $table === 'extensions') {
                 $column = $table === 'actions' ? 'action_id' : 'extension_id';
                 $ids = array_column($this->rows[$table] ?? [], $column);
@@ -75,6 +76,7 @@ namespace {
         }
         public function update(string $table, array $data): bool
         {
+            $this->checkVersionLength($table, $data);
             foreach ($this->rows[$table] as &$row) {
                 if ($this->matches($row)) {
                     $row = array_replace($row, $data);
@@ -82,6 +84,15 @@ namespace {
             }
             $this->criteria = [];
             return true;
+        }
+        private function checkVersionLength(string $table, array $data): void
+        {
+            $column = $table === 'modules' ? 'module_version' : 'version';
+            $limit = $table === 'extensions' ? 10 : 12;
+            if (in_array($table, ['extensions', 'modules', 'exp_fieldtypes'], true)
+                && isset($data[$column]) && strlen($data[$column]) > $limit) {
+                throw new \RuntimeException("{$table}.{$column} exceeds EE's {$limit}-character limit");
+            }
         }
         private function matches(array $row): bool
         {
@@ -124,6 +135,14 @@ namespace {
 
     require dirname(__DIR__) . '/src/freeform_next/vendor/autoload.php';
 
+    // EE7 stores extension versions in VARCHAR(10), and module and fieldtype
+    // versions in VARCHAR(12). Both add-on setup values must fit the schema.
+    $setup = file_get_contents(dirname(__DIR__) . '/src/freeform_next/addon.setup.php');
+    preg_match_all("/'version'\\s*=>\\s*'([^']+)'/", $setup, $setupVersions);
+    check(count($setupVersions[1]) === 2 && count(array_filter($setupVersions[1], static fn ($version) => strlen($version) > 10)) === 0,
+        'EE add-on and fieldtype versions fit extension and fieldtype columns');
+    check(version_compare($setupVersions[1][0], '4.0.0-alpha.3', '=='), 'short alpha version retains upgrade ordering');
+
     class TestFreeformUpdater extends \Freeform_next_upd
     {
         protected function getAddonInfo(): object
@@ -131,7 +150,7 @@ namespace {
             return new class {
                 public function getModuleName(): string { return 'Freeform_next'; }
                 public function getLowerName(): string { return 'freeform_next'; }
-                public function getVersion(): string { return '4.0.0-alpha.3'; }
+                public function getVersion(): string { return '4.0.0-a3'; }
             };
         }
     }
@@ -177,7 +196,7 @@ namespace {
     check(\count($db->queries) === 5 && $content === array_intersect_key($db->rows, $content), '3.3.10 upgrade adds CAPTCHA settings without changing content');
     check(\count(array_intersect(['captchaProvider', 'turnstileKey', 'turnstileSecret', 'hcaptchaKey', 'hcaptchaSecret'], array_keys($db->columns['exp_freeform_next_settings']))) === 5, 'upgrade creates all CAPTCHA provider columns');
     $hook = $db->rows['extensions'][0];
-    check($hook['enabled'] === 'n' && $hook['settings'] === 'custom' && $hook['priority'] === 13 && $hook['version'] === '4.0.0-alpha.3', 'upgrade preserves disabled hook and its settings');
+    check($hook['enabled'] === 'n' && $hook['settings'] === 'custom' && $hook['priority'] === 13 && $hook['version'] === '4.0.0-a3', 'upgrade preserves disabled hook and its settings');
     check($db->rows['actions'][0]['csrf_exempt'] === false, 'upgrade enables EE CSRF validation for existing submission action');
     check($updater->update('3.3.10') && \count($db->queries) === 5 && \count($db->rows['actions']) === 1 && \count($db->rows['extensions']) === 12, 'repeated upgrade does not duplicate registrations or columns');
 

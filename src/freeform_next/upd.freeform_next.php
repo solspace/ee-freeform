@@ -622,7 +622,7 @@ class Freeform_next_upd extends AddonUpdater
         // explicitly selects a provider on the combined Spam Protection page.
         // The columns were first shipped in alpha.2 without a version bump, so
         // sites already recorded as alpha.2 must also run this migration.
-        if (version_compare($previousVersion, '4.0.0-alpha.3', '<')) {
+        if (version_compare($previousVersion, '4.0.0-a3', '<')) {
             $settingsTable = ee()->db->dbprefix('freeform_next_settings');
             foreach (['captchaProvider' => 'VARCHAR(20)', 'turnstileKey' => 'VARCHAR(255)',
                 'turnstileSecret' => 'VARCHAR(255)', 'hcaptchaKey' => 'VARCHAR(255)',
