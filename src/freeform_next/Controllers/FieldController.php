@@ -50,7 +50,6 @@ class FieldController extends Controller
                 'label'  => ['type' => Table::COL_TEXT],
                 'handle' => ['type' => Table::COL_TEXT],
                 'type'   => ['type' => Table::COL_TEXT],
-                'manage' => ['type' => Table::COL_TOOLBAR],
                 ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
             ]
         );
@@ -67,14 +66,6 @@ class FieldController extends Controller
                 ],
                 $field->handle,
                 $field->type,
-                [
-                    'toolbar_items' => [
-                        'edit' => [
-                            'href'  => $this->getLink('fields/' . $field->id),
-                            'title' => lang('edit'),
-                        ],
-                    ],
-                ],
                 [
                     'name'  => 'id_list[]',
                     'value' => $field->id,

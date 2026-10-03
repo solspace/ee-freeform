@@ -43,7 +43,6 @@ class NotificationController extends Controller
                 'id'     => ['type' => Table::COL_ID],
                 'name'   => ['type' => Table::COL_TEXT],
                 'handle' => ['type' => Table::COL_TEXT],
-                'manage' => ['type' => Table::COL_TOOLBAR],
                 ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
             ]
         );
@@ -57,14 +56,6 @@ class NotificationController extends Controller
             }
 
             $link       = $this->getLink('notifications/' . $notification->id);
-            $editButton = [
-                'toolbar_items' => [
-                    'edit' => [
-                        'href'  => $link,
-                        'title' => lang('edit'),
-                    ],
-                ],
-            ];
             $checkboxes = [
                 'name'  => 'id_list[]',
                 'value' => $notification->id,
@@ -83,7 +74,6 @@ class NotificationController extends Controller
                     'href'    => $link,
                 ],
                 $notification->handle,
-                $editButton,
                 $checkboxes,
             ];
         }
