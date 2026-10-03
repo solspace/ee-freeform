@@ -35,6 +35,7 @@ jobs:
           php scripts/check-field-type-save.php
           php scripts/check-cleanup.php
           php scripts/check-cp-escaping.php
+          php scripts/check-permissions.php
 
   package:
     name: Build release package

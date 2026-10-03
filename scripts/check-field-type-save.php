@@ -79,7 +79,7 @@ namespace {
     }
     require dirname(__DIR__).'/src/freeform_next/vendor/autoload.php';
     $controller = new class extends \Solspace\Addons\FreeformNext\Controllers\FieldController {
-        protected function getPermissionsService() { return new class { public function canAccessFields($id): bool { return true; } }; }
+        protected function getPermissionsService() { return new class { public function canAccessFields(): bool { return true; } }; }
         protected function getFieldsService() { return $GLOBALS['fieldService'] ?? parent::getFieldsService(); }
         protected function getLink($target) { return '/'.$target; }
     };

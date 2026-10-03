@@ -29,7 +29,7 @@ class NotificationController extends Controller
      */
     public function index(): RedirectView|CpView
     {
-        $canAccessNotifications = $this->getPermissionsService()->canAccessNotifications(ee()->session->userdata('group_id'));
+        $canAccessNotifications = $this->getPermissionsService()->canAccessNotifications();
 
         if (!$canAccessNotifications) {
             return new RedirectView($this->getLink('denied'));
@@ -140,7 +140,7 @@ class NotificationController extends Controller
      */
     public function edit(string $notificationId, ?Result $validation = null): RedirectView|CpView
     {
-        $canAccessNotifications = $this->getPermissionsService()->canAccessNotifications(ee()->session->userdata('group_id'));
+        $canAccessNotifications = $this->getPermissionsService()->canAccessNotifications();
 
         if (!$canAccessNotifications) {
             return new RedirectView($this->getLink('denied'));
@@ -296,7 +296,7 @@ class NotificationController extends Controller
     {
         $notification = NotificationRepository::getInstance()->getOrCreateNotification($id);
 
-        $canAccessNotifications = $this->getPermissionsService()->canAccessNotifications(ee()->session->userdata('group_id'));
+        $canAccessNotifications = $this->getPermissionsService()->canAccessNotifications();
 
         if (!$canAccessNotifications) {
             return $notification;
@@ -340,7 +340,7 @@ class NotificationController extends Controller
      */
     public function batchDelete(): RedirectView
     {
-        $canAccessNotifications = $this->getPermissionsService()->canAccessNotifications(ee()->session->userdata('group_id'));
+        $canAccessNotifications = $this->getPermissionsService()->canAccessNotifications();
 
         if (!$canAccessNotifications) {
             return new RedirectView($this->getLink('denied'));

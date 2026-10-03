@@ -201,12 +201,12 @@ class Freeform_next_ext
 
 		$sub = $menu->addSubmenu(FreeformHelper::getEditionName());
 
-        $canManageForms = $permissionsService->canManageForms(ee()->session->userdata('group_id'));
-        $canAccessSubmissions = $permissionsService->canAccessSubmissions(ee()->session->userdata('group_id'));
-        $canAccessFields = $permissionsService->canAccessFields(ee()->session->userdata('group_id'));
-        $canAccessNotifications = $permissionsService->canAccessNotifications(ee()->session->userdata('group_id'));
-        $canAccessExports = $permissionsService->canAccessExport(ee()->session->userdata('group_id'));
-        $canAccessSettings = $permissionsService->canAccessSettings(ee()->session->userdata('group_id'));
+        $canManageForms = $permissionsService->canManageForms();
+        $canAccessSubmissions = $permissionsService->canAccessSubmissions();
+        $canAccessFields = $permissionsService->canAccessFields();
+        $canAccessNotifications = $permissionsService->canAccessNotifications();
+        $canAccessExports = $permissionsService->canAccessExport();
+        $canAccessSettings = $permissionsService->canAccessSettings();
 
         if($canManageForms)
         {

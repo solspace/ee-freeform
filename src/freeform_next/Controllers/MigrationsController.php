@@ -41,7 +41,7 @@ class MigrationsController extends Controller
      */
     public function index(): RedirectView|CpView
     {
-        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings();
 
         if (!$canAccessSettings) {
             return new RedirectView($this->getLink('denied'));
@@ -96,7 +96,7 @@ class MigrationsController extends Controller
      */
     public function run($id): RedirectView|AjaxView
     {
-        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings();
 
         if (!$canAccessSettings) {
             return new RedirectView($this->getLink('denied'));
@@ -148,7 +148,7 @@ class MigrationsController extends Controller
 
     private function buildHomepage(): RedirectView|CpView
     {
-        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings();
 
         if (!$canAccessSettings) {
             return new RedirectView($this->getLink('denied'));
@@ -187,7 +187,7 @@ class MigrationsController extends Controller
      */
     public function save(IntegrationModel $model)
     {
-        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings();
 
         if (!$canAccessSettings) {
             return false;
@@ -287,7 +287,7 @@ class MigrationsController extends Controller
      */
     public function batchDelete(): RedirectView
     {
-        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings();
 
         if (!$canAccessSettings) {
             return new RedirectView($this->getLink('denied'));

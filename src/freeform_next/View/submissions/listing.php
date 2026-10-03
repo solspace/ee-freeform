@@ -170,6 +170,7 @@ $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QU
 
 <?php $this->startBlock('addonModals') ?>
 
+	<?php if ($canAccessExport): ?>
 	<div id="quick-export-modal" class="hidden">
 		<form id="export-csv-modal" method="post" action="<?php echo $escape($exportLink) ?>">
 			<input type="hidden" name="csrf_token" value="<?php echo $escape(CSRF_TOKEN) ?>">
@@ -269,6 +270,7 @@ $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QU
 			</div>
 		</form>
 	</div>
+<?php endif; ?>
 
 <?php $this->endBlock() ?>
 

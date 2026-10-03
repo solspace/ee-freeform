@@ -51,7 +51,7 @@ class SettingsController extends Controller
      */
     public function index(string $type, $id)
     {
-        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings();
 
         if (!$canAccessSettings) {
             return new RedirectView($this->getLink('denied'));
@@ -92,7 +92,7 @@ class SettingsController extends Controller
      */
     public function statusesAction(null|string|int $id = null)
     {
-        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings();
 
         if (!$canAccessSettings) {
             return new RedirectView($this->getLink('denied'));
@@ -124,7 +124,7 @@ class SettingsController extends Controller
      */
     private function licenseAction(): RedirectView|CpView
     {
-        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings();
 
         if (!$canAccessSettings) {
             return new RedirectView($this->getLink('denied'));
@@ -386,21 +386,8 @@ class SettingsController extends Controller
 
         $sections = [
             [
-                'title'  => 'Default Permissions for New Member Groups',
-                'fields' => [
-                    'defaultPermissions' => [
-                        'type'    => 'radio',
-                        'value'   => $permissionsModel->defaultPermissions,
-                        'choices' => [
-                            'allow_all' => 'Allow All Access',
-                            'deny_all' => 'Deny All Access',
-                        ],
-                    ],
-                ],
-            ],
-            [
                 'title'  => 'Manage Forms',
-                'desc'   => 'Choose which member groups can manage Forms.',
+                'desc'   => 'Choose which roles can manage Forms.',
                 'fields' => [
                     'formsPermissions' => [
                         'type'    => 'checkbox',
@@ -411,7 +398,7 @@ class SettingsController extends Controller
             ],
             [
                 'title'  => 'Access Submissions',
-                'desc'   => 'Choose which member groups have access to Submissions.',
+                'desc'   => 'Choose which roles have access to Submissions.',
                 'fields' => [
                     'submissionsPermissions' => [
                         'type'    => 'checkbox',
@@ -422,7 +409,7 @@ class SettingsController extends Controller
             ],
             [
                 'title'  => 'Manage Submissions',
-                'desc'   => 'Choose which member groups can manage Submissions.',
+                'desc'   => 'Choose which roles can manage Submissions.',
                 'fields' => [
                     'manageSubmissionsPermissions' => [
                         'type'    => 'checkbox',
@@ -433,7 +420,7 @@ class SettingsController extends Controller
             ],
             [
                 'title'  => 'Access Fields',
-                'desc'   => 'Choose which member groups have access to the Field Manager.',
+                'desc'   => 'Choose which roles have access to the Field Manager.',
                 'fields' => [
                     'fieldsPermissions' => [
                         'type'    => 'checkbox',
@@ -444,7 +431,7 @@ class SettingsController extends Controller
             ],
             [
                 'title'  => 'Access Notifications',
-                'desc'   => 'Choose which member groups have access to Notifications.',
+                'desc'   => 'Choose which roles have access to Notifications.',
                 'fields' => [
                     'notificationsPermissions' => [
                         'type'    => 'checkbox',
@@ -458,7 +445,7 @@ class SettingsController extends Controller
         if ($version === 'pro') {
             $sections[] = [
                 'title'  => 'Access Export',
-                'desc'   => 'Choose which member groups have access to Export.',
+                'desc'   => 'Choose which roles have access to Export.',
                 'fields' => [
                     'exportPermissions' => [
                         'type'    => 'checkbox',
@@ -472,7 +459,7 @@ class SettingsController extends Controller
         $additionalSections = [
             [
                 'title'  => 'Access Settings',
-                'desc'   => 'Choose which member groups have access to Settings.',
+                'desc'   => 'Choose which roles have access to Settings.',
                 'fields' => [
                     'settingsPermissions' => [
                         'type'    => 'checkbox',
@@ -483,7 +470,7 @@ class SettingsController extends Controller
             ],
             [
                 'title'  => 'Access Integrations',
-                'desc'   => 'Choose which member groups have access to Integrations.',
+                'desc'   => 'Choose which roles have access to Integrations.',
                 'fields' => [
                     'integrationsPermissions' => [
                         'type'    => 'checkbox',
@@ -494,7 +481,7 @@ class SettingsController extends Controller
             ],
             [
                 'title'  => 'Access Logs',
-                'desc'   => 'Choose which member groups have access to Error logs.',
+                'desc'   => 'Choose which roles have access to Error logs.',
                 'fields' => [
                     'logsPermissions' => [
                         'type'    => 'checkbox',

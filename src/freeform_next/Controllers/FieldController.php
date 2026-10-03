@@ -35,7 +35,7 @@ class FieldController extends Controller
      */
     public function index(): RedirectView|CpView
     {
-        $canAccessFields = $this->getPermissionsService()->canAccessFields(ee()->session->userdata('group_id'));
+        $canAccessFields = $this->getPermissionsService()->canAccessFields();
 
         if (!$canAccessFields) {
             return new RedirectView($this->getLink('denied'));
@@ -105,7 +105,7 @@ class FieldController extends Controller
      */
     public function edit($id, ?Result $validation = null): RedirectView|CpView
     {
-        $canAccessFields = $this->getPermissionsService()->canAccessFields(ee()->session->userdata('group_id'));
+        $canAccessFields = $this->getPermissionsService()->canAccessFields();
 
         if (!$canAccessFields) {
             return new RedirectView($this->getLink('denied'));
@@ -231,7 +231,7 @@ class FieldController extends Controller
     {
         $field = FieldRepository::getInstance()->getOrCreateField($fieldId);
 
-        $canAccessFields = $this->getPermissionsService()->canAccessFields(ee()->session->userdata('group_id'));
+        $canAccessFields = $this->getPermissionsService()->canAccessFields();
 
         if (!$canAccessFields) {
             return $field;
@@ -418,7 +418,7 @@ class FieldController extends Controller
      */
     public function batchDelete(): RedirectView
     {
-        $canAccessFields = $this->getPermissionsService()->canAccessFields(ee()->session->userdata('group_id'));
+        $canAccessFields = $this->getPermissionsService()->canAccessFields();
 
         if (!$canAccessFields) {
             return new RedirectView($this->getLink('denied'));

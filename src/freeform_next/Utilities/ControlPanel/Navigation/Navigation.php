@@ -44,21 +44,20 @@ class Navigation
         $sidebar = ee('CP/Sidebar')->make();
 
         $permissionsService = $this->getPermissionsService();
-        $groupId = ee()->session->userdata('group_id');
 
         foreach ($this->stack as $item) {
 
             // Special case because resources do not have a method or sub-method
             if ($item->getTitle() == 'Resources') {
-                if (!$permissionsService->canUserSeeSectionInNavigation(PermissionsService::PERMISSION__ACCESS_RESOURCES, $groupId)) continue;
+                if (!$permissionsService->canUserSeeSectionInNavigation(PermissionsService::PERMISSION__ACCESS_RESOURCES)) continue;
             }
 
             if ($item->getTitle() == 'Migrations') {
-                if (!$permissionsService->canUserSeeSectionInNavigation(PermissionsService::PERMISSION__ACCESS_SETTINGS, $groupId)) continue;
+                if (!$permissionsService->canUserSeeSectionInNavigation(PermissionsService::PERMISSION__ACCESS_SETTINGS)) continue;
             }
 
             // Do not show the section in the menu if user does not have the permission to it
-            if (!$permissionsService->canUserSeeSectionInNavigation($item->getMethod(), $groupId)) continue;
+            if (!$permissionsService->canUserSeeSectionInNavigation($item->getMethod())) continue;
 
             $subNav = $item->getSubNav();
 
@@ -70,7 +69,7 @@ class Navigation
                     $subMethod = $subItem->getMethod();
                     $parentMethod = substr($subMethod, 0, strpos($subMethod, "/"));
 
-                    if (!$permissionsService->canUserSeeSectionInNavigation($parentMethod, $groupId)) {
+                    if (!$permissionsService->canUserSeeSectionInNavigation($parentMethod)) {
                         $showParentItem = false;
                     }
                 }
@@ -110,7 +109,7 @@ class Navigation
                 $canAddButton = true;
 
                 if ($item->getMethod() === PermissionsService::PERMISSION__MANAGE_FORMS) {
-                    $canAddButton = $permissionsService->canManageForms($groupId);
+                    $canAddButton = $permissionsService->canManageForms();
                 }
 
                 if ($canAddButton) {

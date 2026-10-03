@@ -92,6 +92,7 @@ $data = [
     'perpage' => 25,
     'table' => [],
     'exportLink' => '/cp/export',
+    'canAccessExport' => true,
 ];
 
 foreach (['submissions', 'spam'] as $section) {
@@ -99,6 +100,12 @@ foreach (['submissions', 'spam'] as $section) {
     check(!str_contains($html, '<img src=x') && !str_contains($html, 'onmouseover="alert(1)'), "$section values cannot create markup or attributes");
     check(str_contains($html, '&lt;img src=x onerror=alert(1)&gt;'), "$section labels remain visible as text");
     check(str_contains($html, 'name="keywords"') && str_contains($html, 'value="&quot;&lt;img'), "$section keyword remains in the input");
+
+    $noExport = $data;
+    $noExport['canAccessExport'] = false;
+    unset($noExport['forms'], $noExport['settings'], $noExport['selectedFormId'], $noExport['exportLink']);
+    $html = $view->render($root . "$section/listing.php", $noExport);
+    check(!str_contains($html, 'quick-export-modal'), "$section omits export controls without permission");
 }
 
 $html = $view->render($root . '_layouts/table_form_wrapper.php', [

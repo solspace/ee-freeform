@@ -58,7 +58,7 @@ class SubmissionController extends Controller
 
     public function submissionsIndex(Form $form): RedirectView|CpView
     {
-        $canAccessSubmissions = $this->getPermissionsService()->canAccessSubmissions(ee()->session->userdata('group_id'));
+        $canAccessSubmissions = $this->getPermissionsService()->canAccessSubmissions();
 
         if (!$canAccessSubmissions) {
             return new RedirectView($this->getLink('denied'));
@@ -67,7 +67,7 @@ class SubmissionController extends Controller
         $baseUrl = ee('CP/URL')->getCurrentUrl();//ee('CP/URL', 'addons/settings/freeform_next/submissions/' . $form->getHandle());
         $filters = ee('CP/Filter')->add('Date');
 
-        $canManageSubmissions = $this->getPermissionsService()->canManageSubmissions(ee()->session->userdata('group_id'));
+        $canManageSubmissions = $this->getPermissionsService()->canManageSubmissions();
 
         $columnLabels   = [];
         $visibleColumns = [];
@@ -452,14 +452,15 @@ class SubmissionController extends Controller
         $modal->setKind('Submissions');
 
         $formRightLinks = [];
+        $canAccessExport = $this->getPermissionsService()->canAccessExport();
 
-        if (class_exists(ExportController::class)) {
+        if ($canAccessExport && class_exists(ExportController::class)) {
             array_unshift($formRightLinks, [
                 'title' => lang('Quick Export'),
                 'link'  => '#',
                 'attrs' => 'id="quick-export-trigger" style="margin-right: 5px;"  class="btn action button--small"',
             ]);
-        } else {
+        } elseif ($canAccessExport) {
             array_unshift($formRightLinks, [
                 'title' => lang('Export CSV'),
                 'link'  => $this->getLink('api/submission_export/' . $form->getId()),
@@ -481,6 +482,7 @@ class SubmissionController extends Controller
 			'layout'           => $layout,
 			'form'             => $form,
 			'form_right_links' => $formRightLinks,
+            'canAccessExport' => $canAccessExport,
 			'pagination'       => $pagination,
 			'perpage'          => $perpage,
 			'exportLink'       => $this->getLink('export'),
@@ -519,7 +521,7 @@ class SubmissionController extends Controller
         $view = new CpView('submissions/listing', $template);
 
         $exportServiceClassName = ExportService::class;
-        if (class_exists($exportServiceClassName)) {
+        if ($canAccessExport && class_exists($exportServiceClassName)) {
             $exportService = new $exportServiceClassName();
             $view->addTemplateVariables($exportService->getExportDialogueTemplateVariables($form->getId()));
         }
@@ -540,7 +542,7 @@ class SubmissionController extends Controller
 
     public function spamIndex(Form $form): RedirectView|CpView
     {
-        $canAccessSubmissions = $this->getPermissionsService()->canAccessSubmissions(ee()->session->userdata('group_id'));
+        $canAccessSubmissions = $this->getPermissionsService()->canAccessSubmissions();
 
         if (!$canAccessSubmissions) {
             return new RedirectView($this->getLink('denied'));
@@ -549,7 +551,7 @@ class SubmissionController extends Controller
         $baseUrl = ee('CP/URL')->getCurrentUrl();//ee('CP/URL', 'addons/settings/freeform_next/submissions/' . $form->getHandle());
         $filters = ee('CP/Filter')->add('Date');
 
-        $canManageSubmissions = $this->getPermissionsService()->canManageSubmissions(ee()->session->userdata('group_id'));
+        $canManageSubmissions = $this->getPermissionsService()->canManageSubmissions();
 
         $columnLabels   = [];
         $visibleColumns = [];
@@ -945,14 +947,15 @@ class SubmissionController extends Controller
         $modal->setKind('Submissions');
 
         $formRightLinks = [];
+        $canAccessExport = $this->getPermissionsService()->canAccessExport();
 
-        if (class_exists(ExportController::class)) {
+        if ($canAccessExport && class_exists(ExportController::class)) {
             array_unshift($formRightLinks, [
                 'title' => lang('Quick Export'),
                 'link'  => '#',
                 'attrs' => 'id="quick-export-trigger" style="margin-right: 5px;"  class="btn action button--small"',
             ]);
-        } else {
+        } elseif ($canAccessExport) {
             array_unshift($formRightLinks, [
                 'title' => lang('Export CSV'),
                 'link'  => $this->getLink('api/submission_export/' . $form->getId()),
@@ -974,6 +977,7 @@ class SubmissionController extends Controller
             'layout'           => $layout,
             'form'             => $form,
             'form_right_links' => $formRightLinks,
+            'canAccessExport' => $canAccessExport,
             'pagination'       => $pagination,
             'perpage'          => $perpage,
             'exportLink'       => $this->getLink('export'),
@@ -1012,7 +1016,7 @@ class SubmissionController extends Controller
         $view = new CpView('spam/listing', $template);
 
         $exportServiceClassName = ExportService::class;
-        if (class_exists($exportServiceClassName)) {
+        if ($canAccessExport && class_exists($exportServiceClassName)) {
             $exportService = new $exportServiceClassName();
             $view->addTemplateVariables($exportService->getExportDialogueTemplateVariables($form->getId()));
         }
@@ -1037,7 +1041,7 @@ class SubmissionController extends Controller
      */
     public function edit(Form $form, SubmissionModel $submission): RedirectView|CpView
     {
-        $canManageSubmissions = $this->getPermissionsService()->canManageSubmissions(ee()->session->userdata('group_id'));
+        $canManageSubmissions = $this->getPermissionsService()->canManageSubmissions();
 
         if (!$canManageSubmissions) {
             return new RedirectView($this->getLink('denied'));
@@ -1346,7 +1350,7 @@ class SubmissionController extends Controller
      */
     public function save(Form $form, SubmissionModel $submission): bool
     {
-        $canManageSubmissions = $this->getPermissionsService()->canManageSubmissions(ee()->session->userdata('group_id'));
+        $canManageSubmissions = $this->getPermissionsService()->canManageSubmissions();
 
         if (!$canManageSubmissions) {
             return false;
@@ -1413,7 +1417,7 @@ class SubmissionController extends Controller
      */
     public function batchDelete(Form $form): RedirectView
     {
-        $canManageSubmissions = $this->getPermissionsService()->canManageSubmissions(ee()->session->userdata('group_id'));
+        $canManageSubmissions = $this->getPermissionsService()->canManageSubmissions();
 
         if (!$canManageSubmissions) {
             return new RedirectView($this->getLink('denied'));
