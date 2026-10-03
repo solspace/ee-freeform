@@ -36,12 +36,13 @@ namespace {
         public array $columns = [];
         public array $queries = [];
         private array $criteria = [];
+        private ?string $selectedColumn = null;
 
         public function dbprefix(string $name): string { return $this->dbprefix . $name; }
         public function platform(): string { return 'sqlite'; }
         public function table_exists(string $name): bool { return isset($this->tables[$name]); }
         public function field_exists(string $name, string $table): bool { return isset($this->columns[$table][$name]); }
-        public function select(string $field): self { return $this; }
+        public function select(string $field): self { $this->selectedColumn = $field; return $this; }
         public function where(array|string $key, mixed $value = null): self
         {
             $this->criteria = \is_array($key) ? $key : [$key => $value];
@@ -49,6 +50,10 @@ namespace {
         }
         public function get(string $table): self
         {
+            if ($table === 'exp_freeform_next_settings' && $this->selectedColumn !== null && !$this->field_exists($this->selectedColumn, $table)) {
+                throw new \RuntimeException("Missing column {$this->selectedColumn} in {$table}");
+            }
+            $this->selectedColumn = null;
             $this->selected = array_values(array_filter(
                 $this->rows[$table] ?? [],
                 fn ($row) => $this->matches($row)
@@ -184,9 +189,22 @@ namespace {
     // alpha.2 installations may have the new model but none of its CAPTCHA columns.
     $db = new UpgradeDb();
     $db->tables['exp_freeform_next_settings'] = true;
-    $db->columns['exp_freeform_next_settings'] = ['turnstileKey' => true];
+    $db->columns['exp_freeform_next_settings'] = ['spamFolderEnabled' => true, 'turnstileKey' => true];
+    $db->rows['exp_freeform_next_settings'] = [
+        ['siteId' => 1, 'spamFolderEnabled' => 0],
+        ['siteId' => 2, 'spamFolderEnabled' => 1],
+    ];
     $db->rows['freeform_next_forms'] = [['id' => 31, 'name' => 'Contact']];
     $GLOBALS['ee']->db = $db;
+    $GLOBALS['ee']->config = new class {
+        public int $siteId = 1;
+        public function item(string $key): int { return $this->siteId; }
+    };
+    $menuSettings = \Solspace\Addons\FreeformNext\Repositories\SettingsRepository::getInstance();
+    check(!$menuSettings->isSpamFolderEnabledForMenu(), 'CP menu reads an older site setting without the new model columns');
+    $GLOBALS['ee']->config->siteId = 2;
+    check($menuSettings->isSpamFolderEnabledForMenu(), 'CP menu uses the current site setting');
+    $GLOBALS['ee']->config->siteId = 1;
     check($updater->update('4.0.0-alpha.2'), 'alpha.2 upgrades to alpha.3');
     check(count($db->queries) === 4, 'alpha.2 adds only its four missing CAPTCHA columns');
     check(count(array_intersect(['captchaProvider', 'turnstileKey', 'turnstileSecret', 'hcaptchaKey', 'hcaptchaSecret'], array_keys($db->columns['exp_freeform_next_settings']))) === 5, 'alpha.2 receives the full CAPTCHA schema');

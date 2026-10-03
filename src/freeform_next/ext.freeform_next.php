@@ -7,6 +7,7 @@ use Solspace\Addons\FreeformNext\Library\DataObjects\FormRenderObject;
 use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Library\Pro\Fields\RecaptchaField;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
+use Solspace\Addons\FreeformNext\Repositories\SettingsRepository;
 use Solspace\Addons\FreeformNext\Services\HoneypotService;
 use Solspace\Addons\FreeformNext\Services\PermissionsService;
 use Solspace\Addons\FreeformNext\Services\RecaptchaService;
@@ -183,7 +184,7 @@ class Freeform_next_ext
                 );
 
                 if (FreeformHelper::isFreeformAtLeast('3.3.5')) {
-                    if ($this->getSettingsService()->isSpamFolderEnabled()) {
+                    if (SettingsRepository::getInstance()->isSpamFolderEnabledForMenu()) {
                         $sub->addItem(
                             lang('Spam'),
                             ee('CP/URL', "addons/settings/freeform_next/spam/{$formModel->handle}")
