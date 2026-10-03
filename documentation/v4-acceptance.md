@@ -5,7 +5,7 @@ This records checks for the `4.0.0-alpha.1` draft. Passing script checks do not 
 | Area | Current result | Evidence or next check |
 | --- | --- | --- |
 | PHP 8.5 dependency APIs, field conversions and transactional saves, cleanup throttle, CP output escaping | Passed locally on PHP 8.5.8 | `scripts/check-php.php`, `check-field-types.php`, `check-field-type-save.php`, `check-cleanup.php`, `check-cp-escaping.php` |
-| PHP 8.2 and 8.5 automated checks | Passed CI | [Freeform 4 checks, run 2](https://github.com/solspace/ee-freeform/actions/runs/37097776144): platform requirements, syntax, and all five PHP check scripts. PHP 8.3 and 8.4 are being added to the same matrix. |
+| PHP 8.2, 8.3, 8.4 and 8.5 automated checks | Passed CI | [Freeform 4 checks, run 4](https://github.com/solspace/ee-freeform/actions/runs/37097867622): platform requirements, syntax, and all five PHP check scripts on each version |
 | PHP syntax | Passed locally on PHP 8.5.8 for 349 add-on files | `php -l` over `src/freeform_next`, excluding bundled vendor |
 | Release package | Passed locally and in CI | `pnpm run build`; CI also installs Composer dependencies, verifies ZIP integrity and required files, and loads new classes from the archive |
 | EE 7 install and upgrade | Needs an EE 7 test site with a database | Install the ZIP on a clean site; upgrade a copy of a Freeform 3 site and verify its existing forms and submissions |
