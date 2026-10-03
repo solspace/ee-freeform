@@ -32,6 +32,8 @@ use Solspace\Addons\FreeformNext\Library\FileUploads\FileUploadHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
+use Solspace\Addons\FreeformNext\Library\Logging\EELogger;
+use Solspace\Addons\FreeformNext\Library\Logging\LoggerInterface;
 use Solspace\Addons\FreeformNext\Library\Mailing\MailHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
 use Solspace\Addons\FreeformNext\Library\Translations\TranslatorInterface;
@@ -914,7 +916,6 @@ class Form implements JsonSerializable, Iterator, ArrayAccess, Stringable
             try {
                 $emailField = $this->getLayout()->getFieldByHash($field->getEmailFieldHash());
 
-                // TODO: Log any errors that happen
                 $integration = $mailingListHandler->getIntegrationById($field->getIntegrationId());
                 $mailingList = $mailingListHandler->getListById($integration, $field->getResourceId());
 
@@ -948,7 +949,17 @@ class Form implements JsonSerializable, Iterator, ArrayAccess, Stringable
                     $mailingListHandler->flagMailingListIntegrationForUpdating($integration);
                 }
 
-            } catch (FreeformException) {
+            } catch (FreeformException $exception) {
+                (new EELogger())->log(
+                    LoggerInterface::LEVEL_ERROR,
+                    sprintf(
+                        'Mailing list subscription failed for form "%s" (integration ID %s, list ID %s): %s',
+                        $this->getHandle(),
+                        $field->getIntegrationId(),
+                        $field->getResourceId(),
+                        $exception->getMessage()
+                    )
+                );
                 continue;
             }
         }

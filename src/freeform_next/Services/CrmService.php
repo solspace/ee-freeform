@@ -221,13 +221,19 @@ class CrmService implements CRMHandlerInterface
      */
     public function pushObject(IntegrationProperties $properties, Layout $layout)
     {
+        $logger = new EELogger();
+
         try {
             $integration = $this->getIntegrationById($properties->getIntegrationId());
         } catch (Exception $e) {
+            $logger->log(
+                LoggerInterface::LEVEL_ERROR,
+                sprintf('CRM integration ID %s could not be loaded: %s', $properties->getIntegrationId(), $e->getMessage())
+            );
+
             return false;
         }
 
-        $logger     = new EELogger();
         $translator = new EETranslator();
 
         $mapping = $properties->getMapping();
