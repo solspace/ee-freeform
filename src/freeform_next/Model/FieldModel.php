@@ -18,6 +18,7 @@ use Exception;
 use EllisLab\ExpressionEngine\Service\Model\Model;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
+use Solspace\Addons\FreeformNext\Library\Helpers\FieldTypeHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
 use Solspace\Addons\FreeformNext\Services\FieldsService;
@@ -150,7 +151,7 @@ class FieldModel extends Model implements JsonSerializable
             ],
             true
         )) {
-            $returnArray['value']       = $this->value ?: '';
+            $returnArray['value']       = $this->value ?? '';
             $returnArray['placeholder'] = $this->placeholder ?: '';
         }
 
@@ -165,13 +166,13 @@ class FieldModel extends Model implements JsonSerializable
 
         if ($this->type === FieldInterface::TYPE_EMAIL) {
             $returnArray['notificationId'] = 0;
-            $returnArray['values']         = [];
+            $returnArray['values']         = $this->values ?? [];
             $returnArray['placeholder']    = $this->placeholder ?: '';
         }
 
         if ($this->type === FieldInterface::TYPE_DYNAMIC_RECIPIENTS) {
             $returnArray['notificationId'] = 0;
-            $returnArray['value']          = 0;
+            $returnArray['values']         = FieldTypeHelper::recipientIndexes($this->value, $this->options ?? [], false);
             $returnArray['options']        = $this->options ?: [];
             $returnArray['showAsRadio']    = false;
         }
@@ -196,7 +197,7 @@ class FieldModel extends Model implements JsonSerializable
         }
 
         if ($this->type === FieldInterface::TYPE_DATETIME) {
-            $returnArray['value']               = $this->value ?: '';
+            $returnArray['value']               = $this->value ?? '';
             $returnArray['placeholder']         = $this->placeholder ?: '';
             $returnArray['initialValue']        = $this->getAdditionalProperty('initialValue');
             $returnArray['dateTimeType']        = $this->getAdditionalProperty('dateTimeType', 'both');
@@ -219,7 +220,7 @@ class FieldModel extends Model implements JsonSerializable
         }
 
         if ($this->type === FieldInterface::TYPE_NUMBER) {
-            $returnArray['value']              = $this->value ?: '';
+            $returnArray['value']              = $this->value ?? '';
             $returnArray['placeholder']        = $this->placeholder ?: '';
             $returnArray['minLength']          = $this->getAdditionalProperty('minLength', '');
             $returnArray['maxLength']          = $this->getAdditionalProperty('maxLength', '');
@@ -240,7 +241,7 @@ class FieldModel extends Model implements JsonSerializable
         }
 
         if ($this->type === FieldInterface::TYPE_REGEX) {
-            $returnArray['value']       = $this->value ?: '';
+            $returnArray['value']       = $this->value ?? '';
             $returnArray['placeholder'] = $this->placeholder ?: '';
             $returnArray['pattern']     = $this->getAdditionalProperty('pattern', '');
             $returnArray['message']     = $this->getAdditionalProperty('message', '');
@@ -259,13 +260,13 @@ class FieldModel extends Model implements JsonSerializable
         }
 
         if ($this->type === FieldInterface::TYPE_PHONE) {
-            $returnArray['value']       = $this->value ?: '';
+            $returnArray['value']       = $this->value ?? '';
             $returnArray['placeholder'] = $this->placeholder ?: '';
             $returnArray['pattern']     = $this->getAdditionalProperty('pattern');
         }
 
         if ($this->type === FieldInterface::TYPE_WEBSITE) {
-            $returnArray['value']       = $this->value ?: '';
+            $returnArray['value']       = $this->value ?? '';
             $returnArray['placeholder'] = $this->placeholder ?: '';
         }
 

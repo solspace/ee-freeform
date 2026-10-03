@@ -62,7 +62,7 @@ trait MultipleValueTrait
             foreach ($this->options as $index => $option) {
                 if ($areIndexes && \in_array($index, $values, false)) {
                     $checkedIndexes[] = $index;
-                } else if (\in_array($option->getValue(), $values, true)) {
+                } else if (!$areIndexes && \in_array($option->getValue(), $values, true)) {
                     $checkedIndexes[] = $index;
                 }
             }

@@ -46,7 +46,21 @@ Fields can be created and managed in the main field creation area (**Freeform > 
 Some important notes:
 
 * All field properties can be overwritten at form level inside Composer, including the field Handle.
-* In Freeform 4, you can change an existing field's **Field Type** on **Freeform → Fields → Edit** within these compatible groups: Text / Textarea / Phone / Website / Regex, Select / Radio Group, and Multiple Select / Checkbox Group. Pro types are available only when installed. The change applies to every saved form using the field, preserves existing submissions and form-specific settings, and resets incompatible phone/regex patterns. Review validation, custom templates, and integrations afterward; a Text field can retain stored line breaks but displays as a single-line input. Other field types cannot be converted.
+* In Freeform 4, change an existing field's **Field Type** on **Freeform → Fields → Edit**. The picker offers these conversions (Pro types appear only when installed):
+
+| Current type | Available conversions |
+| --- | --- |
+| Text, Textarea, Email, Hidden, Regex, Date & Time, Number, Phone, Website | Any other type in this group |
+| Select, Radio Group | Each other, Checkbox Group, Multiple Select, Dynamic Recipients |
+| Multiple Select, Checkbox Group | Each other |
+| Dynamic Recipients, Checkbox, File, Table, Rating | No type change |
+
+A confirmation dialog names the old and new types and warns that existing data, validation, custom templates, and integrations may need attention. Cancel or Escape keeps the original type and unsaved settings; confirming changes the editor, and **Save** applies the change to every saved form using the field.
+
+The conversion keeps field IDs, instance hashes, common form-specific settings, and integration mappings. Type-specific validation, formatting, and recipient settings reset to the target's defaults. Existing text content is retained, including leading zeroes and line breaks; single-line controls may display multiline content differently. Email stores arrays, so conversion wraps scalar values in arrays or joins all email values with line breaks when leaving Email. Select/Radio conversions to multiple-choice fields wrap existing selections in arrays. Array-to-single-choice conversions are unavailable.
+
+For **Dynamic Recipients**, existing selections map to the indexes of their original form options. Options supplied by an EE or predefined data source become a fixed list. Notifications start disabled: review option email addresses and configure a notification template in each form before enabling them. If a historical selection no longer exists in the field's options, restore the missing option before converting. Invalid stored Email data or failed writes also stop the change and roll back the field, forms, and submissions together.
+
 * Freeform will load fields of [Hidden](#fields-hidden) type at the beginning of the form, regardless of where they are placed in Composer layout.
 
 [![Fields](images/cp_fields-list.png)](images/cp_fields-list.png)

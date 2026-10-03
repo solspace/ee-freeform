@@ -184,3 +184,53 @@
     }
   }
 }
+
+.freeform-field-type-dialog {
+  width: min(440px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  box-sizing: border-box;
+  padding: 0;
+  border: 1px solid var(--ee-border, #dfe0ee);
+  border-radius: 6px;
+  margin: auto;
+  background: var(--ee-panel-bg, #ffffff);
+  color: var(--ee-text-normal, #0d0d19);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+  white-space: normal;
+  cursor: default;
+
+  &:not([open]) { display: none; }
+
+  &::backdrop { background: rgba(0, 0, 0, 0.45); }
+
+  .panel-heading, .panel-body, .panel-footer {
+    padding: 16px 20px;
+    margin: 0;
+  }
+
+  .panel-heading h2 {
+    margin: 0;
+    font-size: 18px;
+    line-height: 24px;
+    color: inherit;
+  }
+
+  .panel-body p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 22px;
+    overflow-wrap: anywhere;
+  }
+
+  .panel-body p + p { margin-top: 12px; }
+
+  .panel-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+    border-top: 1px solid var(--ee-border, #dfe0ee);
+
+    .button { margin: 0; }
+  }
+}

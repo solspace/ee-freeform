@@ -184,7 +184,7 @@ class FieldController extends Controller
                 [
                     'title'  => lang('Field Type'),
                     'desc'   => $model->id
-                        ? lang('Only compatible field types are available. Changing the type updates every form using this field and preserves existing submissions. Review validation, custom templates, and integrations after changing it.')
+                        ? lang('Only compatible field types are available. Changing the type updates every form using this field. Existing data could behave differently; review validation, custom templates, and integrations afterward.')
                         : lang('What type of field is this?'),
                     'fields' => [
                         'type' => [
@@ -248,6 +248,7 @@ class FieldController extends Controller
 
         $isNew = !$field->id;
         $originalType = $field->type;
+        $originalDefaults = $field->jsonSerialize();
 
         $post        = $_POST;
         $type        = $_POST['type'] ?? $field->type;
@@ -356,6 +357,24 @@ class FieldController extends Controller
 
         $field->set($validValues);
 
+        if ($type === FieldInterface::TYPE_DATETIME && isset($post['types'][$type]['initialValue'])) {
+            $field->set(['value' => '']);
+        }
+
+        if ($type === FieldInterface::TYPE_EMAIL) {
+            $defaultValue = $post['types'][$type]['value'] ?? ($originalType === $type
+                ? implode("\n", $originalDefaults['values']) : ($originalDefaults['value'] ?? ''));
+            $field->set(['value' => null, 'values' => array_values(array_filter(
+                preg_split('/\r\n|\r|\n/', (string) $defaultValue), static fn ($value) => $value !== ''
+            ))]);
+        } elseif ($typeChanged && in_array($type, [FieldInterface::TYPE_MULTIPLE_SELECT, FieldInterface::TYPE_CHECKBOX_GROUP], true) && !isset($post['types'][$type]['values'])) {
+            $field->set(['values' => in_array($originalType, [FieldInterface::TYPE_SELECT, FieldInterface::TYPE_RADIO_GROUP], true)
+                ? (($originalDefaults['value'] ?? '') === '' ? [] : [$originalDefaults['value']])
+                : ($originalDefaults['values'] ?? []), 'value' => null]);
+        } elseif ($typeChanged && $originalType === FieldInterface::TYPE_EMAIL && !isset($post['types'][$type]['value'])) {
+            $field->set(['value' => implode("\n", $originalDefaults['values']), 'values' => null]);
+        }
+
         if (!ExtensionHelper::call(ExtensionHelper::HOOK_FIELD_BEFORE_SAVE, $field, $isNew)) {
             return $field;
         }
@@ -370,7 +389,7 @@ class FieldController extends Controller
             $field->save();
 
             if ($typeChanged) {
-                $this->getFieldsService()->changeFieldTypeInForms($field);
+                $this->getFieldsService()->changeFieldTypeInForms($field, $originalDefaults);
                 if (ee()->db->trans_status() === false) {
                     throw new Exception('Unable to update the field type in all forms.');
                 }
@@ -441,6 +460,11 @@ class FieldController extends Controller
      */
     private function getFieldSettingsByType(FieldModel $model)
     {
+        $defaultValue = $model->type === FieldInterface::TYPE_EMAIL
+            ? implode("\n", $model->values ?? []) : $model->value;
+        if ($model->type === FieldInterface::TYPE_DATETIME && ($defaultValue === '' || $defaultValue === null)) {
+            $defaultValue = $model->getAdditionalProperty('initialValue', '');
+        }
         $fileKinds         = [];
         $fileKindsOriginal = $this->getFileService()->getFileKinds();
 
@@ -456,7 +480,7 @@ class FieldController extends Controller
                     'fields' => [
                         'value' => [
                             'type'  => 'text',
-                            'value' => $model->value,
+                            'value' => $defaultValue,
                         ],
                     ],
                 ],
@@ -478,7 +502,7 @@ class FieldController extends Controller
                     'fields' => [
                         'value' => [
                             'type'  => 'text',
-                            'value' => $model->value,
+                            'value' => $defaultValue,
                         ],
                     ],
                 ],
@@ -505,6 +529,13 @@ class FieldController extends Controller
             ],
             FieldInterface::TYPE_EMAIL              => [
                 [
+                    'title' => 'Default Value',
+                    'desc' => 'The default email addresses for the field, one per line.',
+                    'fields' => [
+                        'value' => ['type' => 'textarea', 'value' => $defaultValue],
+                    ],
+                ],
+                [
                     'title'  => 'Placeholder',
                     'desc'   => 'The default text that will be shown if the field doesn’t have a value.',
                     'fields' => [
@@ -522,7 +553,7 @@ class FieldController extends Controller
                     'fields' => [
                         'value' => [
                             'type'  => 'text',
-                            'value' => $model->value,
+                            'value' => $defaultValue,
                         ],
                     ],
                 ],
@@ -550,7 +581,7 @@ class FieldController extends Controller
                     'fields' => [
                         'value' => [
                             'type'  => 'text',
-                            'value' => $model->value,
+                            'value' => $defaultValue,
                         ],
                     ],
                 ],
@@ -775,7 +806,8 @@ class FieldController extends Controller
                     'fields' => [
                         'initialValue' => [
                             'type'  => 'text',
-                            'value' => $model->getAdditionalProperty('initialValue'),
+                            'value' => $model->type === FieldInterface::TYPE_DATETIME
+                                ? $model->getAdditionalProperty('initialValue') : $defaultValue,
                             'attrs' => 'data-datetime-date-group',
                         ],
                     ],
@@ -913,7 +945,7 @@ class FieldController extends Controller
                     'fields' => [
                         'value' => [
                             'type'  => 'text',
-                            'value' => $model->value,
+                            'value' => $defaultValue,
                         ],
                     ],
                 ],
@@ -935,7 +967,7 @@ class FieldController extends Controller
                     'fields' => [
                         'value' => [
                             'type'  => 'text',
-                            'value' => $model->value,
+                            'value' => $defaultValue,
                         ],
                     ],
                 ],
@@ -1046,7 +1078,7 @@ class FieldController extends Controller
                     'fields' => [
                         'value' => [
                             'type'  => 'text',
-                            'value' => $model->value,
+                            'value' => $defaultValue,
                         ],
                     ],
                 ],
@@ -1078,7 +1110,7 @@ class FieldController extends Controller
                     'fields' => [
                         'value' => [
                             'type'  => 'text',
-                            'value' => $model->value,
+                            'value' => $defaultValue,
                         ],
                     ],
                 ],
