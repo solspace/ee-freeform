@@ -126,7 +126,7 @@ namespace {
             return new class {
                 public function getModuleName(): string { return 'Freeform_next'; }
                 public function getLowerName(): string { return 'freeform_next'; }
-                public function getVersion(): string { return '4.0.0-alpha.2'; }
+                public function getVersion(): string { return '4.0.0-alpha.3'; }
             };
         }
     }
@@ -137,6 +137,10 @@ namespace {
     check($updater->install(), 'fresh install completes');
     check(\count($db->tables) === 17 && isset($db->tables['exp_freeform_next_permissions'], $db->tables['exp_freeform_next_submissions']), 'fresh install creates expected tables');
     check(\count($GLOBALS['seededFields']) === 12 && \count($db->rows['freeform_next_statuses']) === 3, 'fresh install seeds fields and statuses');
+    $settingsSql = implode("\n", array_filter($db->queries, static fn ($sql) => str_contains($sql, 'CREATE TABLE IF NOT EXISTS `exp_freeform_next_settings`')));
+    foreach (['captchaProvider', 'turnstileKey', 'turnstileSecret', 'hcaptchaKey', 'hcaptchaSecret'] as $column) {
+        check(str_contains($settingsSql, "`{$column}`"), "fresh install includes {$column}");
+    }
     check(\count($db->rows['modules']) === 1 && \count($db->rows['actions']) === 1 && \count($db->rows['extensions']) === 12, 'fresh install registers module, action and hooks');
     check($db->rows['actions'][0]['csrf_exempt'] === false, 'submission action requires an EE CSRF token on fresh install');
     check(\in_array(Strict_XID::class, class_implements(\Freeform_Next::class), true), 'submission action also validates AJAX CSRF tokens');
@@ -168,7 +172,7 @@ namespace {
     check(\count($db->queries) === 5 && $content === array_intersect_key($db->rows, $content), '3.3.10 upgrade adds CAPTCHA settings without changing content');
     check(\count(array_intersect(['captchaProvider', 'turnstileKey', 'turnstileSecret', 'hcaptchaKey', 'hcaptchaSecret'], array_keys($db->columns['exp_freeform_next_settings']))) === 5, 'upgrade creates all CAPTCHA provider columns');
     $hook = $db->rows['extensions'][0];
-    check($hook['enabled'] === 'n' && $hook['settings'] === 'custom' && $hook['priority'] === 13 && $hook['version'] === '4.0.0-alpha.2', 'upgrade preserves disabled hook and its settings');
+    check($hook['enabled'] === 'n' && $hook['settings'] === 'custom' && $hook['priority'] === 13 && $hook['version'] === '4.0.0-alpha.3', 'upgrade preserves disabled hook and its settings');
     check($db->rows['actions'][0]['csrf_exempt'] === false, 'upgrade enables EE CSRF validation for existing submission action');
     check($updater->update('3.3.10') && \count($db->queries) === 5 && \count($db->rows['actions']) === 1 && \count($db->rows['extensions']) === 12, 'repeated upgrade does not duplicate registrations or columns');
 
@@ -176,6 +180,18 @@ namespace {
     $db->columns['exp_freeform_next_settings'] = [];
     check($updater->update('3.3.0') && $db->field_exists('spamFolderEnabled', 'exp_freeform_next_settings'), '3.3.0 receives missing spam-folder column');
     check($content === array_intersect_key($db->rows, $content), 'older 3.3.x upgrade also preserves content');
+
+    // alpha.2 installations may have the new model but none of its CAPTCHA columns.
+    $db = new UpgradeDb();
+    $db->tables['exp_freeform_next_settings'] = true;
+    $db->columns['exp_freeform_next_settings'] = ['turnstileKey' => true];
+    $db->rows['freeform_next_forms'] = [['id' => 31, 'name' => 'Contact']];
+    $GLOBALS['ee']->db = $db;
+    check($updater->update('4.0.0-alpha.2'), 'alpha.2 upgrades to alpha.3');
+    check(count($db->queries) === 4, 'alpha.2 adds only its four missing CAPTCHA columns');
+    check(count(array_intersect(['captchaProvider', 'turnstileKey', 'turnstileSecret', 'hcaptchaKey', 'hcaptchaSecret'], array_keys($db->columns['exp_freeform_next_settings']))) === 5, 'alpha.2 receives the full CAPTCHA schema');
+    check($db->rows['freeform_next_forms'] === [['id' => 31, 'name' => 'Contact']], 'alpha.2 upgrade preserves forms');
+    check($updater->update('4.0.0-alpha.2') && count($db->queries) === 4, 'alpha.2 migration is safe to retry');
 
     class FailingUpdater extends TestFreeformUpdater
     {
