@@ -1,6 +1,8 @@
 import { EditorView, basicSetup } from "codemirror";
 import { Compartment } from "@codemirror/state";
 import { html } from "@codemirror/lang-html";
+import { indentWithTab } from "@codemirror/commands";
+import { keymap } from "@codemirror/view";
 
 export function mountHtmlEditor(host, { value = "", onChange, compact = false, label = "HTML source" } = {}) {
   const shell = document.createElement("div");
@@ -14,7 +16,11 @@ export function mountHtmlEditor(host, { value = "", onChange, compact = false, l
   const wrapButton = document.createElement("button");
   wrapButton.type = "button";
   wrapButton.className = "freeform-html-editor__wrap is-active";
-  wrapButton.textContent = "Wrap lines";
+  const wrapCheck = document.createElement("span");
+  wrapCheck.className = "freeform-html-editor__wrap-check";
+  wrapCheck.textContent = "✓";
+  wrapCheck.setAttribute("aria-hidden", "true");
+  wrapButton.append(wrapCheck, document.createTextNode("Wrap lines"));
   wrapButton.setAttribute("aria-pressed", "true");
   toolbar.append(language, wrapButton);
 
@@ -39,6 +45,7 @@ export function mountHtmlEditor(host, { value = "", onChange, compact = false, l
     parent: body,
     extensions: [
       basicSetup,
+      keymap.of([indentWithTab]),
       html(),
       EditorView.contentAttributes.of({ "aria-label": label }),
       wrapping.of(EditorView.lineWrapping),

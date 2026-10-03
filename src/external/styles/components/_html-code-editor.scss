@@ -33,6 +33,9 @@
   }
 
   &__wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
     min-height: 24px;
     padding: 2px 7px;
     border: 0;
@@ -45,6 +48,15 @@
     &:hover, &.is-active { background: var(--ee-button-secondary-bg, #e8e9fb); color: var(--ee-button-secondary-color, #5d63f1); }
     &:focus-visible { outline: 2px solid var(--ee-input-focus-border, #5965f2); }
   }
+
+  &__wrap-check {
+    width: 11px;
+    font-size: 12px;
+    font-weight: 700;
+    visibility: hidden;
+  }
+
+  &__wrap.is-active &__wrap-check { visibility: visible; }
 
   &__body {
     height: clamp(280px, 42vh, 460px);

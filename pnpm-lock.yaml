@@ -8,12 +8,18 @@ importers:
 
   .:
     dependencies:
+      '@codemirror/commands':
+        specifier: ^6.11.1
+        version: 6.11.1
       '@codemirror/lang-html':
         specifier: ^6.4.12
         version: 6.4.12
       '@codemirror/state':
         specifier: ^6.7.6
         version: 6.7.6
+      '@codemirror/view':
+        specifier: ^6.43.13
+        version: 6.43.13
       codemirror:
         specifier: ^6.0.2
         version: 6.0.2
