@@ -20,4 +20,6 @@ interface RequestInterface
      * @return mixed
      */
     public function getPost($key, mixed $defaultValue = null);
+
+    public function getQuery($key, mixed $defaultValue = null);
 }

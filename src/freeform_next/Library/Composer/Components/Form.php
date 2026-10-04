@@ -60,6 +60,7 @@ class Form implements JsonSerializable, Iterator, ArrayAccess, Stringable
     /** @var string */
     private $returnUrl;
     private bool $storeData;
+    private bool $useAjax;
     private bool $ipCollectingEnabled;
     /** @var int */
     private $defaultStatus;
@@ -237,6 +238,11 @@ class Form implements JsonSerializable, Iterator, ArrayAccess, Stringable
     public function getReturnUrl()
     {
         return $this->returnUrl ?: '';
+    }
+
+    public function isUseAjax(): bool
+    {
+        return $this->useAjax;
     }
     /**
      * @return string
@@ -592,15 +598,24 @@ class Form implements JsonSerializable, Iterator, ArrayAccess, Stringable
             }
         }
 
+        $ajaxSubmitUrl = $this->useAjax ? $this->formHandler->getSubmitUrl() : null;
+        $ajaxAttributes = '';
+        if ($ajaxSubmitUrl) {
+            $ajaxAttributes = ' data-freeform-ajax-action="'
+                . htmlspecialchars($ajaxSubmitUrl, ENT_QUOTES, 'UTF-8')
+                . '"';
+        }
+
         $output = sprintf(
-                '<form %s%s%s%s%s%s%s>',
+                '<form %s%s%s%s%s%s%s%s>',
                 $idAttribute,
                 $nameAttribute,
                 $methodAttribute,
                 $encTypeAttribute,
                 $classAttribute,
                 $actionAttribute,
-                $customAttributes->getFormAttributesAsString()
+                $customAttributes->getFormAttributesAsString(),
+                $ajaxAttributes
             ) . PHP_EOL;
 
         if ($customAttributes->getReturnUrl()) {
@@ -654,6 +669,11 @@ class Form implements JsonSerializable, Iterator, ArrayAccess, Stringable
     {
         $output = $this->formHandler->onRenderClosingTag($this);
         $output .= '</form>';
+
+        if ($this->useAjax) {
+            $url = rtrim(URL_THIRD_THEMES, '/') . '/freeform_next/javascript/form-ajax.js';
+            $output .= '<script src="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '" defer></script>';
+        }
 
         return $output;
     }
@@ -770,6 +790,7 @@ class Form implements JsonSerializable, Iterator, ArrayAccess, Stringable
         $this->description           = $formProperties->getDescription();
         $this->returnUrl             = $formProperties->getReturnUrl();
         $this->storeData             = $formProperties->isStoreData();
+        $this->useAjax               = $formProperties->isUseAjax();
         $this->defaultStatus         = $formProperties->getDefaultStatus();
         $this->formTemplate          = $formProperties->getFormTemplate();
     }
@@ -992,6 +1013,7 @@ class Form implements JsonSerializable, Iterator, ArrayAccess, Stringable
             'description'   => $this->description,
             'returnUrl'     => $this->returnUrl,
             'storeData'     => (bool) $this->storeData,
+            'useAjax'       => $this->useAjax,
             'defaultStatus' => $this->defaultStatus,
             'formTemplate'  => $this->formTemplate,
         ];

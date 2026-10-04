@@ -34,6 +34,9 @@ class FormProperties extends AbstractProperties
     /** @var bool */
     protected $storeData;
 
+    /** @var bool */
+    protected $useAjax;
+
     /** @var int */
     protected $defaultStatus;
 
@@ -96,6 +99,11 @@ class FormProperties extends AbstractProperties
         return null !== $this->storeData ? (bool)$this->storeData : true;
     }
 
+    public function isUseAjax(): bool
+    {
+        return null !== $this->useAjax ? (bool) $this->useAjax : true;
+    }
+
     /**
      * @return int
      */
@@ -130,6 +138,7 @@ class FormProperties extends AbstractProperties
             'description'           => self::TYPE_STRING,
             'returnUrl'             => self::TYPE_STRING,
             'storeData'             => self::TYPE_BOOLEAN,
+            'useAjax'               => self::TYPE_BOOLEAN,
             'defaultStatus'         => self::TYPE_INTEGER,
             'formTemplate'          => self::TYPE_STRING,
         ];

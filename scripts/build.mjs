@@ -154,6 +154,7 @@ async function buildFonts() {
 
 async function buildThemes() {
   await cp(THEMES_SRC, THEMES_DEST, { recursive: true });
+  await cp("src/external/scripts/form-ajax.js", `${ROOT_THEMES}/javascript/form-ajax.js`);
 }
 
 // Copy the hand-maintained datepicker/flatpickr assets into the root themes dir.

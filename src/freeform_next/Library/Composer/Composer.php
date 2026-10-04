@@ -200,6 +200,7 @@ class Composer
                     'formTemplate'          => 'basic-light.html',
                     'returnUrl'             => '/',
                     'storeData'             => true,
+                    'useAjax'               => true,
                     'defaultStatus'         => $this->statusHandler->getDefaultStatusId(),
                 ],
                 Properties::INTEGRATION_HASH         => [
@@ -253,6 +254,7 @@ class Composer
                 'formTemplate'          => 'basic-light.html',
                 'returnUrl'             => '/',
                 'storeData'             => true,
+                'useAjax'               => true,
                 'defaultStatus'         => $this->customComposerState->defaultStatus->id,
             ],
             Properties::INTEGRATION_HASH         => [

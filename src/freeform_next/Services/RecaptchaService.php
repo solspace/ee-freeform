@@ -256,7 +256,23 @@ class RecaptchaService
     const target = ensureTarget(form);
 
     form.addEventListener('submit', event => {
+      if (form.dataset.recaptchaReady === 'true') {
+        delete form.dataset.recaptchaReady;
+        return;
+      }
+
       event.preventDefault();
+
+      const submitter = event.submitter;
+
+      const continueSubmission = () => {
+        if (form.hasAttribute('data-freeform-ajax-action')) {
+          form.dataset.recaptchaReady = 'true';
+          form.requestSubmit(submitter || undefined);
+        } else {
+          form.submit();
+        }
+      };
 
       const execute = () => {
         if (!window.grecaptcha || !grecaptcha.execute) {
@@ -270,9 +286,9 @@ class RecaptchaService
             .then(token => {
                 target.value = token;
 
-                form.submit();
+                continueSubmission();
             })
-            .catch(() => form.submit());
+            .catch(continueSubmission);
         });
       };
 

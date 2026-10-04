@@ -34,6 +34,7 @@ class Form extends BasePropertyEditor {
       submissionTitleFormat: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
       storeData: PropTypes.bool,
+      useAjax: PropTypes.bool,
       defaultStatus: PropTypes.number.isRequired,
       returnUrl: PropTypes.string.isRequired,
       formTemplate: PropTypes.string,
@@ -50,6 +51,8 @@ class Form extends BasePropertyEditor {
     if (storeData === undefined) {
       storeData = true;
     }
+
+    const useAjax = this.context.properties.useAjax !== false;
 
     const { formStatuses, solspaceTemplates, templates } = this.props;
     const { canManageSettings } = this.context;
@@ -135,6 +138,14 @@ class Form extends BasePropertyEditor {
           instructions="Store submission data for this form in the database."
           name="storeData"
           checked={storeData}
+          onChangeHandler={this.update}
+        />
+
+        <LightSwitchProperty
+          label="Use AJAX"
+          instructions="Submit via AJAX and display validation errors beside the fields. Page changes reload the form; successful submissions follow the Return URL."
+          name="useAjax"
+          checked={useAjax}
           onChangeHandler={this.update}
         />
 

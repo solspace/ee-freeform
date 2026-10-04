@@ -302,6 +302,7 @@ class Freeform_Next extends Plugin implements Strict_XID
                             'finished'     => true,
                             'returnUrl'    => $returnUrl,
                             'submissionId' => $submissionModel?->id,
+                            'csrfToken'    => CSRF_TOKEN,
                             'honeypot'     => [
                                 'name' => $honeypot->getName(),
                                 'hash' => $honeypot->getHash(),
@@ -314,8 +315,10 @@ class Freeform_Next extends Plugin implements Strict_XID
             } else if ($isAjaxRequest) {
                 $this->returnJson(
                     [
-                        'success'  => true,
-                        'finished' => false,
+                        'success'   => true,
+                        'finished'  => false,
+                        'formHash'  => $form->getHash(),
+                        'csrfToken' => CSRF_TOKEN,
                         'honeypot' => [
                             'name' => $honeypot->getName(),
                             'hash' => $honeypot->getHash(),
@@ -341,6 +344,7 @@ class Freeform_Next extends Plugin implements Strict_XID
                         'finished'   => false,
                         'formErrors' => $form->getErrors(),
                         'errors'     => $fieldErrors,
+                        'csrfToken'  => CSRF_TOKEN,
                         'honeypot'   => [
                             'name' => $honeypot->getName(),
                             'hash' => $honeypot->getHash(),

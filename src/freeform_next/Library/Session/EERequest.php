@@ -25,4 +25,11 @@ class EERequest implements RequestInterface
 
         return $post !== false ? $post : $defaultValue;
     }
+
+    public function getQuery($key, mixed $defaultValue = null)
+    {
+        $query = ee()->input->get($key);
+
+        return $query !== false ? $query : $defaultValue;
+    }
 }

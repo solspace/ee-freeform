@@ -42,6 +42,7 @@ const validProperties = [
   "name",
   "type",
   "storeData",
+  "useAjax",
   "dateTimeType",
   "generatePlaceholder",
   "dateOrder",
