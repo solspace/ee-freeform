@@ -50,7 +50,7 @@
     </details>
     and
     <details class="demo-menu">
-      <summary><span>{if embed:form}{embed:form}{if:else}Select a form{/if}</span></summary>
+      <summary><span>{if embed:form}{exp:freeform_next:forms form="{embed:form}"}{form:name}{if form:no_results}Select a form{/if}{/exp:freeform_next:forms}{if:else}Select a form{/if}</span></summary>
       <div class="demo-menu-panel">
         {exp:freeform_next:forms}
           {if embed:style}<a href="{path='%prefix%/forms/{embed:style}/{form:handle}'}"{if embed:form == form:handle} aria-current="page"{/if}>{form:name}</a>{/if}
@@ -64,7 +64,7 @@
   <div class="demo-context">
     Submission data for
     <details class="demo-menu">
-      <summary><span>{if embed:form}{embed:form}{if:else}Select a form{/if}</span></summary>
+      <summary><span>{if embed:form}{exp:freeform_next:forms form="{embed:form}"}{form:name}{if form:no_results}Select a form{/if}{/exp:freeform_next:forms}{if:else}Select a form{/if}</span></summary>
       <div class="demo-menu-panel">
         {exp:freeform_next:forms}
           <a href="{path='%prefix%/submissions/{form:handle}'}"{if embed:form == form:handle} aria-current="page"{/if}>{form:name}</a>
