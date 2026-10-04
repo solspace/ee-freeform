@@ -17,9 +17,9 @@ $sampleTemplates = [
     <p class="freeform-demo-install-note">Submission data is visible to Super Admins only. Installing into an existing group updates demo templates with matching names.</p>
 </div>
 <style>
-.freeform-demo-install { max-width: 760px; font-size: 13px; line-height: 1.5; }
+.freeform-demo-install { max-width: 1120px; font-size: 13px; line-height: 1.5; }
 .freeform-demo-install p { margin: 0 0 12px; }
-.freeform-demo-samples { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 7px 16px; margin: 0 0 14px; padding: 0; list-style: none; }
-.freeform-demo-samples li { padding: 7px 9px; border: 1px solid var(--ee-border, #dfe0ee); border-radius: 5px; background: var(--ee-input-bg, #fff); }
+.freeform-demo-samples { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 7px 16px; margin: 0 0 14px; padding: 0; list-style: none; }
+.freeform-demo-samples li { overflow: hidden; padding: 7px 9px; border: 1px solid var(--ee-border, #dfe0ee); border-radius: 5px; background: var(--ee-input-bg, #fff); text-overflow: ellipsis; white-space: nowrap; }
 .freeform-demo-install-note { color: var(--ee-text-secondary, #606477); }
 </style>
