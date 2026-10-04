@@ -13,6 +13,7 @@
   .ff-flexbox .ff-pages .ff-current { color: var(--ff-accent); background: var(--ff-ring); font-weight: 600; }
   .ff-flexbox .ff-summary { padding: 12px 14px; margin-bottom: 20px; border: 1px solid var(--ff-error); border-radius: 8px; color: var(--ff-error); }
   .ff-flexbox .ff-summary ul { margin: 6px 0 0; padding-left: 20px; }
+  .ff-flexbox .ff-summary ul:empty { display: none; }
   .ff-flexbox .ff-row { display: flex; gap: 18px; margin-bottom: 18px; flex-wrap: wrap; }
   .ff-flexbox .ff-col { min-width: 0; flex: 1 1 0; }
   .ff-flexbox .ff-fieldset { border:0; padding:0; margin:0; min-width:0; }
@@ -30,7 +31,7 @@
   .ff-flexbox .ff-input:focus-visible, .ff-flexbox button:focus-visible { outline: 2px solid var(--ff-accent); outline-offset: 2px; }
   .ff-flexbox .ff-option input[type=checkbox], .ff-flexbox .ff-option input[type=radio], .ff-flexbox .ff-input[type=checkbox], .ff-flexbox .ff-input[type=radio] { margin-right: 7px; accent-color: var(--ff-accent); }
   .ff-flexbox .ff-help { margin-top: 5px; color: var(--ff-muted); font-size: 12px; }
-  .ff-flexbox .ff-errors { padding-left: 18px; margin: 5px 0 0; color: var(--ff-error); font-size: 12px; }
+  .ff-flexbox .ff-errors { padding: 0; margin: 5px 0 0; color: var(--ff-error); font-size: 12px; list-style: none; }
   .ff-flexbox .ff-col:has(.ff-errors) > .ff-input { border-color: var(--ff-error); }
   .ff-flexbox .ff-col.ff-submit { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
   .ff-flexbox .ff-submit.ff-left { justify-content: flex-start; }

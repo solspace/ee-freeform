@@ -83,6 +83,7 @@ h1, h2, h3, p { margin-top: 0; }
 .demo-tile p { margin-bottom: 10px; color: var(--demo-muted); font-size: 13px; }
 .demo-tile small { color: var(--demo-muted); }
 .demo-notice { padding: 17px 20px; border: 1px solid var(--demo-border); border-radius: 8px; background: var(--demo-hover); }
+.demo-form-shell > .demo-notice { margin-bottom: 20px; }
 .demo-form-shell { max-width: 990px; margin: 0 auto; }
 .demo-form-shell .demo-heading { margin-bottom: 22px; }
 .demo-form-shell form { max-width: 100%; }

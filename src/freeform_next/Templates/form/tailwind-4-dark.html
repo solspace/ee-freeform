@@ -1,11 +1,12 @@
 {!-- Compile Tailwind CSS v4 with this template included in your source scan. --}
 <style>
-  .ff-tailwind .ff-pages { display:flex; flex-wrap:wrap; gap:.5rem; margin:0 0 1.25rem; padding:0 0 .75rem; border-bottom:1px solid currentColor; list-style:none; }
+  .ff-tailwind .ff-pages { display:flex; flex-wrap:wrap; gap:.5rem; margin:0 0 1.25rem; padding:0; list-style:none; }
   .ff-tailwind .ff-pages li { opacity:.6; padding:.3rem .65rem; }
   .ff-tailwind .ff-pages .ff-current { opacity:1; font-weight:700; border-bottom:2px solid currentColor; }
   .ff-tailwind .ff-summary { padding:.75rem 1rem; margin-bottom:1.25rem; border:1px solid #ef4444; border-radius:.5rem; color:#dc2626; }
   .ff-tailwind .ff-summary ul { margin:.25rem 0 0; padding-left:1.25rem; }
-  .ff-tailwind .ff-errors { margin:.25rem 0 0; padding-left:1.25rem; color:#dc2626; font-size:.85em; }
+  .ff-tailwind .ff-summary ul:empty { display:none; }
+  .ff-tailwind .ff-errors { margin:.25rem 0 0; padding:0; color:#dc2626; font-size:.85em; list-style:none; }
   .ff-tailwind .ff-required::after { content:' *'; color:#dc2626; }
   .ff-tailwind .ff-submit { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; }
   .ff-tailwind .ff-left { justify-content:flex-start; } .ff-tailwind .ff-center { justify-content:center; }
@@ -40,19 +41,19 @@
     {fields}
     <div class="min-w-0 w-full md:flex-1 {form:column_class}{if field:type == 'submit'} ff-submit ff-{field:position}{/if}">
       {if field:type == 'table'}
-      {field:render class="w-full text-sm ff-table" label_class="mb-1 block text-sm font-medium" instructions_class="mt-1 text-xs opacity-70" error_class="ff-errors" instructions_below_field="yes" table_text_input_class="w-full rounded border border-slate-400 bg-transparent px-2 py-1" table_select_input_class="w-full rounded border border-slate-400 bg-transparent px-2 py-1" table_checkbox_input_class="accent-indigo-600" add_button_class="rounded border px-2 py-1 text-sm" remove_button_class="rounded border px-2 py-1 text-sm"}
+      {field:render class="w-full text-sm ff-table" label_class="mb-1 block text-sm font-medium{if field:required} ff-required{/if}" instructions_class="mt-1 text-xs opacity-70" error_class="ff-errors" instructions_below_field="yes" table_text_input_class="w-full rounded border border-slate-400 bg-transparent px-2 py-1" table_select_input_class="w-full rounded border border-slate-400 bg-transparent px-2 py-1" table_checkbox_input_class="accent-indigo-600" add_button_class="rounded border px-2 py-1 text-sm" remove_button_class="rounded border px-2 py-1 text-sm"}
     {if:elseif field:type == 'submit'}
       {field:render class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"}
     {if:elseif field:type == 'dynamic_recipients' AND field:show_as_radio}
-      {field:render class="mr-2 size-4 accent-indigo-600" label_class="block text-sm font-medium" instructions_class="mt-1 text-xs opacity-70" error_class="ff-errors" instructions_below_field="yes"}
+      {field:render class="mr-2 size-4 accent-indigo-600" label_class="block text-sm font-medium{if field:required} ff-required{/if}" instructions_class="mt-1 text-xs opacity-70" error_class="ff-errors" instructions_below_field="yes"}
     {if:elseif field:type == 'dynamic_recipients' AND field:show_as_checkboxes}
-      {field:render class="mr-2 size-4 accent-indigo-600" label_class="block text-sm font-medium" instructions_class="mt-1 text-xs opacity-70" error_class="ff-errors" instructions_below_field="yes"}
+      {field:render class="mr-2 size-4 accent-indigo-600" label_class="block text-sm font-medium{if field:required} ff-required{/if}" instructions_class="mt-1 text-xs opacity-70" error_class="ff-errors" instructions_below_field="yes"}
     {if:elseif field:type == 'rating'}
-      {field:render class="ff-rating-input" label_class="mb-1 block text-sm font-medium" instructions_class="mt-1 text-xs opacity-70" error_class="ff-errors" instructions_below_field="yes"}
+      {field:render class="ff-rating-input" label_class="mb-1 block text-sm font-medium{if field:required} ff-required{/if}" instructions_class="mt-1 text-xs opacity-70" error_class="ff-errors" instructions_below_field="yes"}
     {if:elseif field:type == 'checkbox' OR field:type == 'mailing_list' OR field:type == 'checkbox_group' OR field:type == 'radio_group'}
-      {field:render class="mr-2 size-4 accent-indigo-600" label_class="block text-sm font-medium" instructions_class="mt-1 text-xs opacity-70" error_class="ff-errors" instructions_below_field="yes"}
+      {field:render class="mr-2 size-4 accent-indigo-600" label_class="block text-sm font-medium{if field:required} ff-required{/if}" instructions_class="mt-1 text-xs opacity-70" error_class="ff-errors" instructions_below_field="yes"}
     {if:else}
-      {field:render class="block w-full rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-slate-100 shadow-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20" label_class="mb-1 block text-sm font-medium" instructions_class="mt-1 text-xs opacity-70" error_class="ff-errors" instructions_below_field="yes"}
+      {field:render class="block w-full rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-slate-100 shadow-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20" label_class="mb-1 block text-sm font-medium{if field:required} ff-required{/if}" instructions_class="mt-1 text-xs opacity-70" error_class="ff-errors" instructions_below_field="yes"}
     {/if}
     </div>
     {/fields}
