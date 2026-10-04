@@ -104,7 +104,7 @@ class Composer extends Component {
     const shouldShowPlaceholder = type === ROW && rowIndex === -1;
 
     return connectDropTarget(
-      <div style={{ minHeight: 600 }}>
+      <div className="composer-canvas">
         <div className="tabs">
           <TabListContainer />
         </div>

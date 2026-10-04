@@ -11,7 +11,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { addFieldToNewRow } from "../actions/Actions";
+import { addFieldToNewRow, switchHash } from "../actions/Actions";
 import AlwaysNearbyBox from "../components/AlwaysNearbyBox";
 import FieldGroup from "../components/FieldList/FieldGroup";
 import MailingListFieldGroup from "../components/FieldList/MailingListFieldGroup";
@@ -34,13 +34,11 @@ class FieldList extends Component {
     return (
       <AlwaysNearbyBox
         className="field-container"
-        stickyTop={
-          <SpecialFieldGroup
-            fields={specialFields}
-            onFieldClick={onFieldClick}
-          />
-        }
       >
+        <SpecialFieldGroup
+          fields={specialFields}
+          onFieldClick={onFieldClick}
+        />
         <FieldGroup
           fields={fields}
           usedFields={usedFields}
@@ -87,6 +85,14 @@ export default connect(
   (dispatch) => ({
     onFieldClick: (hash, properties, pageIndex) => {
       dispatch(addFieldToNewRow(hash, properties, pageIndex));
+      dispatch(switchHash(hash));
+      requestAnimationFrame(() => {
+        const button = Array.from(document.querySelectorAll(".composer-action-settings"))
+          .find(element => element.getAttribute("data-field-hash") === hash);
+        if (button) {
+          button.focus();
+        }
+      });
     },
   }),
 )(FieldList);

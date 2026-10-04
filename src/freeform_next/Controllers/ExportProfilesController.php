@@ -40,7 +40,7 @@ class ExportProfilesController extends Controller
                 'Name'        => ['type' => Table::COL_TEXT],
                 'Form'        => ['type' => Table::COL_TEXT],
                 'Submissions' => ['type' => Table::COL_TEXT],
-                'manage'      => ['type' => Table::COL_TOOLBAR],
+                'Export'      => ['type' => Table::COL_TOOLBAR],
                 ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
             ]
         );
@@ -72,10 +72,6 @@ class ExportProfilesController extends Controller
                         'text' => [
                             'href'  => $this->getLink('export_profiles/text/' . $profile->id),
                             'content' => lang('Text'),
-                        ],
-                        'edit' => [
-                            'href'  => $this->getLink('export_profiles/' . $profile->id),
-                            'title' => lang('edit'),
                         ],
                     ],
                 ],
@@ -145,7 +141,7 @@ class ExportProfilesController extends Controller
             $form = FormRepository::getInstance()->getFormByIdOrHandle($formHandle);
         }
 
-        $statuses = StatusRepository::getInstance()->getStatusNamesById();
+        $statuses = StatusRepository::getInstance()->getAllStatuses();
 
         if (!$form) {
             throw new FreeformException('Could not find form');
@@ -191,12 +187,11 @@ class ExportProfilesController extends Controller
                             ],
                             [
                                 'title'  => 'Statuses',
-                                'desc'   => 'Select which statuses to use',
+                                'desc'   => 'Select which statuses to use. Leave all unchecked to include every status.',
                                 'fields' => [
                                     'export-statuses' => [
-                                        'type'    => 'checkbox',
-                                        'choices' => $statuses,
-                                        'value'   => $profile->statuses,
+                                        'type'    => 'html',
+                                        'content' => $this->getStatusSelectorTemplate($profile, $statuses),
                                     ],
                                 ],
                             ],
@@ -366,6 +361,14 @@ class ExportProfilesController extends Controller
     {
         ob_start();
         include __DIR__ . '/../View/export_profiles/fieldSettings.php';
+
+        return ob_get_clean();
+    }
+
+    private function getStatusSelectorTemplate(ExportProfileModel $profile, array $statuses): string|bool
+    {
+        ob_start();
+        include __DIR__ . '/../View/export_profiles/statusSelector.php';
 
         return ob_get_clean();
     }

@@ -1,42 +1,86 @@
-<style>.freeform-pages{display:-webkit-box;display:-ms-flexbox;display:flex;padding:0;margin:0 0 10px;list-style:none}.freeform-pages li{margin:0 10px 0 0}.freeform-row{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;margin:0 -15px}.freeform-row .freeform-column{-webkit-box-flex:1;-ms-flex:1 0 0;flex:1 0 0;padding:10px 0;margin:0 15px;box-sizing:border-box}.freeform-row .freeform-column label{display:block}.freeform-row .freeform-column .freeform-label{font-weight:bold}.freeform-row .freeform-column .freeform-label.freeform-required:after{content:"*";margin-left:5px;color:red}.freeform-row .freeform-column .freeform-input{width:100%;display:block;box-sizing:border-box}.freeform-row .freeform-column .freeform-input[type=checkbox],.freeform-row .freeform-column .freeform-input[type=radio]{width:auto;display:inline;margin-right:5px}.freeform-row .freeform-column .freeform-input-only-label{font-weight:normal}.freeform-row .freeform-column .freeform-input-only-label>.freeform-input{display:inline-block;width:auto;margin-right:5px}.freeform-row .freeform-column .freeform-errors{list-style:none;padding:0;margin:5px 0 0}.freeform-row .freeform-column .freeform-errors>li{color:red}.freeform-row .freeform-column .freeform-instructions{margin:0 0 5px;font-size:13px;color:#ABA7A7}.freeform-row .freeform-column.freeform-column-content-align-left{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start}.freeform-row .freeform-column.freeform-column-content-align-left>button:not(:first-of-type){margin-left:5px}.freeform-row .freeform-column.freeform-column-content-align-center{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.freeform-row .freeform-column.freeform-column-content-align-center>button:not(:first-of-type){margin-left:5px}.freeform-row .freeform-column.freeform-column-content-align-right{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end}.freeform-row .freeform-column.freeform-column-content-align-right>button:not(:first-of-type){margin-left:5px}.freeform-row .freeform-column.freeform-column-content-align-spread{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between}.freeform-row .freeform-column.freeform-column-content-align-spread>button:not(:first-of-type){margin-left:5px}.freeform-form-has-errors{color:red}</style>
-
+<style>
+  .ff-flexbox {
+    --ff-bg: #fff; --ff-text: #202436; --ff-muted: #626b7b;
+    --ff-border: #cbd2df; --ff-control: #fff; --ff-accent: #4f46e5;
+    --ff-ring: #eef0ff; --ff-error: #bc2945;
+    color: var(--ff-text); background: var(--ff-bg);
+    border: 1px solid var(--ff-border); border-radius: 12px;
+    padding: clamp(16px, 3vw, 28px); font: 400 14px/1.5 system-ui, sans-serif;
+  }
+  .ff-flexbox *, .ff-flexbox *::before, .ff-flexbox *::after { box-sizing: border-box; }
+  .ff-flexbox .ff-pages { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 0 16px; margin: 0 0 20px; border-bottom: 1px solid var(--ff-border); list-style: none; }
+  .ff-flexbox .ff-pages li { padding: 5px 10px; border-radius: 6px; color: var(--ff-muted); }
+  .ff-flexbox .ff-pages .ff-current { color: var(--ff-accent); background: var(--ff-ring); font-weight: 600; }
+  .ff-flexbox .ff-summary { padding: 12px 14px; margin-bottom: 20px; border: 1px solid var(--ff-error); border-radius: 8px; color: var(--ff-error); }
+  .ff-flexbox .ff-summary ul { margin: 6px 0 0; padding-left: 20px; }
+  .ff-flexbox .ff-summary ul:empty { display: none; }
+  .ff-flexbox .ff-row { display: flex; gap: 18px; margin-bottom: 18px; flex-wrap: wrap; }
+  .ff-flexbox .ff-col { min-width: 0; flex: 1 1 0; }
+  .ff-flexbox .ff-fieldset { border:0; padding:0; margin:0; min-width:0; }
+  .ff-flexbox .ff-option { display:block; margin:0 0 6px; }
+  .ff-flexbox .ff-label { display: block; margin-bottom: 5px; font-weight: 600; }
+  .ff-flexbox .ff-required::after { content: ' *'; color: var(--ff-error); }
+  .ff-flexbox .ff-input:not([type=checkbox]):not([type=radio]):not([type=hidden]),
+  .ff-flexbox select.ff-input, .ff-flexbox textarea.ff-input {
+    display: block; width: 100%; min-height: 40px; padding: 8px 11px;
+    border: 1px solid var(--ff-border); border-radius: 7px;
+    background: var(--ff-control); color: var(--ff-text); font: inherit;
+  }
+  .ff-flexbox input[type=email] + input[type=email] { margin-top:8px; }
+  .ff-flexbox textarea.ff-input { min-height: 100px; resize: vertical; }
+  .ff-flexbox .ff-input:focus-visible, .ff-flexbox button:focus-visible { outline: 2px solid var(--ff-accent); outline-offset: 2px; }
+  .ff-flexbox .ff-option input[type=checkbox], .ff-flexbox .ff-option input[type=radio], .ff-flexbox .ff-input[type=checkbox], .ff-flexbox .ff-input[type=radio] { margin-right: 7px; accent-color: var(--ff-accent); }
+  .ff-flexbox .ff-help { margin-top: 5px; color: var(--ff-muted); font-size: 12px; }
+  .ff-flexbox .ff-errors { padding: 0; margin: 5px 0 0; color: var(--ff-error); font-size: 12px; list-style: none; }
+  .ff-flexbox .ff-col:has(.ff-errors) > .ff-input { border-color: var(--ff-error); }
+  .ff-flexbox .ff-col.ff-submit { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
+  .ff-flexbox .ff-submit.ff-left { justify-content: flex-start; }
+  .ff-flexbox .ff-submit.ff-center { justify-content: center; }
+  .ff-flexbox .ff-submit.ff-right { justify-content: flex-end; }
+  .ff-flexbox .ff-submit.ff-spread { justify-content: space-between; }
+  .ff-flexbox button.ff-input { width: auto !important; min-height: 38px; padding: 8px 16px; border: 1px solid var(--ff-accent); border-radius: 7px; background: var(--ff-accent); color: #fff; font: 600 13px/1.3 system-ui, sans-serif; cursor: pointer; }
+  .ff-flexbox button[name=form_previous_page_button] { background: transparent; border-color: var(--ff-border); color: var(--ff-text); }
+  .ff-flexbox button:hover { filter: brightness(.94); }
+  .ff-flexbox input[type=file].ff-input { height: auto; }
+  .ff-flexbox .ff-col:has(.ff-table) { overflow-x: auto; }
+  .ff-flexbox .ff-table { width: 100%; border-collapse: collapse; }
+  .ff-flexbox .ff-table th, .ff-flexbox .ff-table td { padding: 7px; border-bottom: 1px solid var(--ff-border); text-align: left; }
+  .ff-flexbox .ff-table-control { max-width: 100%; min-width: 80px; padding: 6px; border: 1px solid var(--ff-border); border-radius: 5px; background: var(--ff-control); color: var(--ff-text); font: inherit; }
+  .ff-flexbox .ff-table-check { accent-color: var(--ff-accent); }
+  .ff-flexbox .ff-table-button { padding: 5px 9px; border: 1px solid var(--ff-border); border-radius: 5px; background: var(--ff-control); color: var(--ff-text); cursor: pointer; }
+  @media (max-width: 640px) { .ff-flexbox .ff-row { display: block; } .ff-flexbox .ff-col + .ff-col { margin-top: 18px; } }
+</style>
+<div class="ff-flexbox">
 {if form:page_count > 1}
-	<ul class="freeform-pages">
-	{pages}
-		<li>
-		{if page:index == current_page:index}
-			<a href="javascript:;">{page:label}</a>
-		{if:else}
-			{page:label}
-		{/if}
-		</li>
-	{/pages}
-	</ul>
+  <nav aria-label="Form progress">
+    <ol class="ff-pages">
+    {pages}<li class="{if page:index == current_page:index}ff-current{/if}" {if page:index == current_page:index}aria-current="step"{/if}>{page:label}</li>{/pages}
+    </ol>
+  </nav>
 {/if}
-
 {if form:has_errors}
-	<div class="freeform-form-has-errors">
-		There was an error submitting this form
-
-		<ul>
-			{form:errors}
-				<li>{error}</li>
-			{/form:errors}
-		</ul>
-	</div>
+  <div class="ff-summary" role="alert">
+    <strong>{form:error_message}</strong>
+    <ul>{form:errors}<li>{error}</li>{/form:errors}</ul>
+  </div>
 {/if}
-
 {rows}
-	<div class="freeform-row {form:row_class}">
-	{fields}
-		<div class="freeform-column {form:column_class}{if field:type == 'submit'} freeform-column-content-align-{field:position}{/if}">
-			{field:render
-				class="{if field:type != 'submit'}freeform-input{/if}"
-				label_class="freeform-label{if field:required} freeform-required{/if}{if field:input_only} freeform-input-only-label{/if}"
-				error_class="freeform-errors"
-				instructions_class="freeform-instructions"
-			}
-		</div>
-	{/fields}
-	</div>
+  <div class="ff-row {form:row_class}">
+    {fields}
+    <div class="ff-col {form:column_class}{if field:type == 'submit'} ff-submit ff-{field:position}{/if}">
+      {if field:type == 'table'}
+      {field:render class="ff-table" label_class="ff-label{if field:required} ff-required{/if}" instructions_class="ff-help" error_class="ff-errors" instructions_below_field="yes" table_text_input_class="ff-table-control" table_select_input_class="ff-table-control" table_checkbox_input_class="ff-table-check" add_button_class="ff-table-button" remove_button_class="ff-table-button"}
+    {if:else}
+      {field:render
+        class="ff-input"
+        label_class="ff-label{if field:required} ff-required{/if}"
+        instructions_class="ff-help"
+        error_class="ff-errors"
+        instructions_below_field="yes"
+      }
+    {/if}
+    </div>
+    {/fields}
+  </div>
 {/rows}
+</div>

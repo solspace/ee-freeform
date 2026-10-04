@@ -15,6 +15,9 @@ use Solspace\Addons\FreeformNext\Repositories\PermissionsRepository;
 
 class PermissionsService
 {
+    private ?array $currentRoleIds = null;
+    private bool $isSuperAdmin = false;
+
     public const PERMISSION__MANAGE_FORMS         = 'forms';
     public const PERMISSION__ACCESS_SUBMISSIONS   = 'submissions';
     public const PERMISSION__MANAGE_SUBMISSIONS   = 'manageSubmissions';
@@ -37,39 +40,47 @@ class PermissionsService
     /**
      * Check if user is allowed in the section
      *
-     * @param string  $method  - NavigationLink's method
-     * @param integer $groupId - EE Member group's id
+     * @param string $method NavigationLink's method
      *
      * @return bool
      */
-    public function canUserAccessSection(string $method, $groupId): bool
+    public function canUserAccessSection(string $method): bool
     {
-        if ((int) $groupId === 1) {
+        $roleIds = $this->getCurrentRoleIds();
+        if ($this->isSuperAdmin) {
             return true;
         }
 
+        if (!$roleIds) {
+            return false;
+        }
+
+        $method = $this->getMethodTransformation()[$method] ?? $method;
         $settings     = PermissionsRepository::getInstance()->getOrCreate();
         $propertyName = $method . 'Permissions';
 
         if (!property_exists($settings, $propertyName)) {
-            return true;
+            return false;
         }
 
-        $permissions = $settings->{$propertyName} ?: [];
+        $permissions = array_map('intval', $settings->{$propertyName} ?: []);
 
-        return in_array($groupId, $permissions, false);
+        return (bool) array_intersect($roleIds, $permissions);
     }
 
     /**
      * @param $method
-     * @param $groupId
-     *
      * @return bool
      */
-    public function canUserSeeSectionInNavigation($method, $groupId): bool
+    public function canUserSeeSectionInNavigation($method): bool
     {
-        if ((int) $groupId === 1) {
+        $roleIds = $this->getCurrentRoleIds();
+        if ($this->isSuperAdmin) {
             return true;
+        }
+
+        if (!$roleIds) {
+            return false;
         }
 
         // Some method names have to be translated
@@ -82,111 +93,117 @@ class PermissionsService
             return true;
         }
 
-        return $this->canUserAccessSection($method, $groupId);
+        return $this->canUserAccessSection($method);
     }
 
     /**
-     * @param int $groupId
-     *
      * @return bool
      */
-    public function canManageForms($groupId): bool
+    public function canManageForms(): bool
     {
-        return $this->canUserAccessSection(self::PERMISSION__MANAGE_FORMS, $groupId);
+        return $this->canUserAccessSection(self::PERMISSION__MANAGE_FORMS);
     }
 
     /**
-     * @param int $groupId
-     *
      * @return bool
      */
-    public function canAccessSubmissions($groupId): bool
+    public function canAccessSubmissions(): bool
     {
-        return $this->canUserAccessSection(self::PERMISSION__ACCESS_SUBMISSIONS, $groupId);
+        return $this->canUserAccessSection(self::PERMISSION__ACCESS_SUBMISSIONS);
     }
 
     /**
-     * @param int $groupId
-     *
      * @return bool
      */
-    public function canManageSubmissions($groupId): bool
+    public function canManageSubmissions(): bool
     {
-        if (!$this->canAccessSubmissions($groupId)) {
+        if (!$this->canAccessSubmissions()) {
             return false;
         }
 
-        return $this->canUserAccessSection(self::PERMISSION__MANAGE_SUBMISSIONS, $groupId);
+        return $this->canUserAccessSection(self::PERMISSION__MANAGE_SUBMISSIONS);
     }
 
     /**
-     * @param int $groupId
-     *
      * @return bool
      */
-    public function canAccessFields($groupId): bool
+    public function canAccessFields(): bool
     {
-        return $this->canUserAccessSection(self::PERMISSION__ACCESS_FIELDS, $groupId);
+        return $this->canUserAccessSection(self::PERMISSION__ACCESS_FIELDS);
     }
 
     /**
-     * @param int $groupId
-     *
      * @return bool
      */
-    public function canAccessExport($groupId): bool
+    public function canAccessExport(): bool
     {
-        return $this->canUserAccessSection(self::PERMISSION__ACCESS_EXPORT, $groupId);
+        return $this->canUserAccessSection(self::PERMISSION__ACCESS_EXPORT);
     }
 
     /**
-     * @param int $groupId
-     *
      * @return bool
      */
-    public function canAccessNotifications($groupId): bool
+    public function canAccessNotifications(): bool
     {
-        return $this->canUserAccessSection(self::PERMISSION__ACCESS_NOTIFICATIONS, $groupId);
+        return $this->canUserAccessSection(self::PERMISSION__ACCESS_NOTIFICATIONS);
     }
 
     /**
-     * @param int $groupId
-     *
      * @return bool
      */
-    public function canAccessSettings($groupId): bool
+    public function canAccessSettings(): bool
     {
-        return $this->canUserAccessSection(self::PERMISSION__ACCESS_SETTINGS, $groupId);
+        return $this->canUserAccessSection(self::PERMISSION__ACCESS_SETTINGS);
     }
 
     /**
-     * @param int $groupId
-     *
      * @return bool
      */
-    public function canAccessIntegrations($groupId): bool
+    public function canAccessIntegrations(): bool
     {
-        return $this->canUserAccessSection(self::PERMISSION__ACCESS_INTEGRATIONS, $groupId);
+        return $this->canUserAccessSection(self::PERMISSION__ACCESS_INTEGRATIONS);
     }
 
     /**
-     * @param int $groupId
-     *
      * @return bool
      */
-    public function canAccessResources($groupId): bool
+    public function canAccessResources(): bool
     {
-        return $this->canUserAccessSection(self::PERMISSION__ACCESS_RESOURCES, $groupId);
+        return $this->canUserAccessSection(self::PERMISSION__ACCESS_RESOURCES);
     }
 
     /**
-     * @param int $groupId
-     *
      * @return bool
      */
-    public function canAccessLogs($groupId): bool
+    public function canAccessLogs(): bool
     {
-        return $this->canUserAccessSection(self::PERMISSION__ACCESS_LOGS, $groupId);
+        return $this->canUserAccessSection(self::PERMISSION__ACCESS_LOGS);
+    }
+
+    /** @return int[] */
+    private function getCurrentRoleIds(): array
+    {
+        if ($this->currentRoleIds !== null) {
+            return $this->currentRoleIds;
+        }
+
+        $this->currentRoleIds = [];
+        $member = ee()->session->getMember();
+        if (!$member) {
+            return $this->currentRoleIds;
+        }
+
+        $this->isSuperAdmin = $member->isSuperAdmin();
+        foreach ($member->getAllRoles() as $role) {
+            $roleId = (int) $role->role_id;
+            if ($roleId > 0) {
+                $this->currentRoleIds[$roleId] = $roleId;
+            }
+        }
+
+        $this->currentRoleIds = array_values($this->currentRoleIds);
+
+        return $this->currentRoleIds;
     }
 
     /**

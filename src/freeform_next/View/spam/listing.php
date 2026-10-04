@@ -14,19 +14,20 @@ $this->extend('_layouts/table_form_wrapper');
 /**
  * @var \Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionPreferenceSetting[] $layout
  */
+$escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 
 ?>
 
 <script>
-  var layoutEditorSaveUrl = '<?php echo ee('CP/URL')->make('addons/settings/freeform_next/api/submission_layout') ?>';
+  var layoutEditorSaveUrl = <?php echo json_encode((string) ee('CP/URL')->make('addons/settings/freeform_next/api/submission_layout'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
   var layoutEditorFormId  = <?php echo (int) $form->getId() ?>;
 </script>
 
 
 <?php if ($sessionToken): ?>
-<input type="hidden" name="S" value="<?= $sessionToken ?>">
+<input type="hidden" name="S" value="<?= $escape($sessionToken) ?>">
 <?php endif; ?>
-<div class="panel-heading">
+<div class="panel-heading freeform-submissions-filters">
 	<div class="filter-bar filter-bar--collapsible" id="custom-filters">
         <div class="filter-bar__item">
             <button type="button" class="has-sub filter-bar__button js-dropdown-toggle button button--default button--small">
@@ -37,7 +38,7 @@ $this->extend('_layouts/table_form_wrapper');
             </button>
             <div class="dropdown">
                 <?php foreach ($formSwitches as $handle => $item): ?>
-                    <a href="<?= $item['url'] ?>" class="dropdown__link" data-prevent-trigger="1">
+                    <a href="<?= $escape($item['url']) ?>" class="dropdown__link" data-prevent-trigger="1">
                         <?= htmlspecialchars($item['label'], ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8') ?>
                     </a>
                 <?php endforeach; ?>
@@ -48,18 +49,18 @@ $this->extend('_layouts/table_form_wrapper');
 			<button type="button" class="has-sub filter-bar__button js-dropdown-toggle button button--default button--small" data-filter-label="status">
 				<?= lang('status') ?>
 				<span class="faded">
-				<?= $currentSearchStatus ? '(' . lang($currentSearchStatus) . ')' : '' ?>
+				<?= $currentSearchStatus ? '(' . $escape(lang($currentSearchStatus)) . ')' : '' ?>
 			</span>
 			</button>
 			<div class="dropdown">
 				<div data-target="search_status">
 					<?php foreach ($formStatuses as $status_id => $status): ?>
-						<a href="<?=$status['url']?>" class="dropdown__link" data-value="<?= $status_id ?>">
-							<?= $status['label'] ?>
+						<a href="<?= $escape($status['url']) ?>" class="dropdown__link" data-value="<?= (int) $status_id ?>">
+							<?= $escape($status['label']) ?>
 						</a>
 					<?php endforeach; ?>
 				</div>
-				<input type="hidden" data-filter="status" name="status" value="<?=$currentSearchStatusId?>">
+				<input type="hidden" data-filter="status" name="status" value="<?= $escape($currentSearchStatusId) ?>">
 			</div>
 		</div>
 
@@ -67,15 +68,15 @@ $this->extend('_layouts/table_form_wrapper');
 			<button type="button" class="has-sub filter-bar__button js-dropdown-toggle button button--default button--small" data-filter-label="date">
 				<?= lang('entry_date') ?>
 				<span class="faded">
-				<?= $currentDateRange ? '(' . lang($currentDateRange) . ')' : '' ?>
+				<?= $currentDateRange ? '(' . $escape(lang($currentDateRange)) . ')' : '' ?>
 			</span>
 			</button>
 			<div class="dropdown">
 				<?php foreach ($formDateRanges as $date_key => $date_range): ?>
-				<a href="<?=$date_range['url']?>" class="dropdown__link" data-value="today"><?=$date_range['label']?></a>
+				<a href="<?= $escape($date_range['url']) ?>" class="dropdown__link" data-value="today"><?= $escape($date_range['label']) ?></a>
 				<?php endforeach ?>
 				<a class="dropdown__link" data-target="date_range" data-prevent-trigger="1"><?= lang('choose_date_range') ?></a>
-				<input type="hidden" data-filter="date_range" name="date_range" value="<?=$currentDateRange?>">
+				<input type="hidden" data-filter="date_range" name="date_range" value="<?= $escape($currentDateRange) ?>">
 			</div>
 		</div>
 
@@ -85,7 +86,7 @@ $this->extend('_layouts/table_form_wrapper');
 				   class="datepicker input--small"
 				   rel="date-picker"
 				   data-timestamp="<?= $currentDateRangeStart ? strtotime($currentDateRangeStart) : time() ?>"
-				   value="<?= $currentDateRangeStart && $currentDateRange == 'date_range' ? $currentDateRangeStart : '' ?>"
+				   value="<?= $escape($currentDateRangeStart && $currentDateRange == 'date_range' ? $currentDateRangeStart : '') ?>"
 				   placeholder="<?= lang('start_date') ?>"
 				   style="width: 70px;"
 			/>
@@ -96,7 +97,7 @@ $this->extend('_layouts/table_form_wrapper');
 				   class="datepicker input--small"
 				   rel="date-picker"
 				   data-timestamp="<?= $currentDateRangeStart ? strtotime($currentDateRangeStart) : time() ?>"
-				   value="<?= $currentDateRangeEnd && $currentDateRange == 'date_range' ? $currentDateRangeEnd : '' ?>"
+				   value="<?= $escape($currentDateRangeEnd && $currentDateRange == 'date_range' ? $currentDateRangeEnd : '') ?>"
 				   placeholder="<?= lang('end_date') ?>"
 				   style="width: 70px;"
 			/>
@@ -108,7 +109,7 @@ $this->extend('_layouts/table_form_wrapper');
 				   name="keywords"
 				   placeholder="<?= lang('keywords') ?>"
 				   style="width: 90px;"
-				   value="<?= $currentKeyword ?>"
+				   value="<?= $escape($currentKeyword) ?>"
 				   class="search-input__input input--small"
 			/>
 		</div>
@@ -117,60 +118,67 @@ $this->extend('_layouts/table_form_wrapper');
 			<button type="button" class="has-sub filter-bar__button js-dropdown-toggle button button--default button--small" data-filter-label="search_on_field">
 				<?= lang('field') ?>
 				<span class="faded">
-				(<?= $currentSearchOnField ? $columnLabels[$currentSearchOnField] : lang('all_fields') ?>)
+				(<?= $escape($currentSearchOnField ? ($columnLabels[$currentSearchOnField] ?? '') : lang('all_fields')) ?>)
 				</span>
 			</button>
 			<div class="dropdown">
 				<div data-target="search_on_field">
 					<?php foreach ($visibleColumns as $column_name): ?>
-						<a class="dropdown__link" data-target="search_on_field" data-value="<?= $column_name ?>" data-prevent-trigger="1"><?= $columnLabels[$column_name] ?></a>
+						<a class="dropdown__link" data-target="search_on_field" data-value="<?= $escape($column_name) ?>" data-prevent-trigger="1"><?= $escape($columnLabels[$column_name] ?? '') ?></a>
 					<?php endforeach; ?>
 				</div>
-				<input type="hidden" data-filter="search_on_field" name="search_on_field" value="<?=$currentSearchOnField?>">
+				<input type="hidden" data-filter="search_on_field" name="search_on_field" value="<?= $escape($currentSearchOnField) ?>">
 			</div>
 		</div>
 
 		<div class="filter-bar__item">
-			<a href="<?= $mainUrl ?>" class="filter-bar__button filter-bar__button--clear button button--default button--small"><i class="fas fa-minus-circle fa-sm"></i> <?= lang('clear_filters') ?></a>
+			<a href="<?= $escape($mainUrl) ?>" class="filter-bar__button filter-bar__button--clear button button--default button--small"><i class="fas fa-minus-circle fa-sm"></i> <?= lang('clear_filters') ?></a>
+		</div>
+		<div class="freeform-list-controls">
+			<div class="filter-bar__item freeform-columns-menu">
+				<button type="button" id="change-layout-trigger" class="has-sub filter-bar__button js-dropdown-toggle button button--default button--small" aria-label="Columns" title="Columns">
+					<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false"><rect x="2.5" y="3" width="15" height="14" rx="1.5"/><path d="M2.5 7.5h15M10 7.5V17"/></svg>
+				</button>
+				<div class="dropdown freeform-columns-dropdown">
+					<div class="freeform-columns-heading">Columns</div>
+					<ul class="very-sortable">
+						<?php foreach ($layout as $setting): ?>
+							<li data-id="<?= htmlspecialchars((string) $setting->getId(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" data-handle="<?= htmlspecialchars((string) $setting->getHandle(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" data-label="<?= htmlspecialchars((string) $setting->getLabel(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
+								<label><input type="checkbox" <?= $setting->isChecked() ? 'checked' : '' ?>> <?= htmlspecialchars((string) $setting->getLabel(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></label>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+					<div class="freeform-columns-actions"><button type="button" class="button button--primary button--small" data-layout-save><?= lang('save') ?></button></div>
+				</div>
+			</div>
+			<div class="filter-bar__item freeform-per-page-menu">
+				<button type="button" class="has-sub filter-bar__button js-dropdown-toggle button button--default button--small">Show <span class="faded">(<?= (int) $perpage ?>)</span></button>
+				<div class="dropdown">
+					<?php foreach ([25, 50, 100] as $count): ?>
+						<a class="dropdown__link" href="<?= $escape(ee('CP/URL')->getCurrentUrl()->addQueryStringVariables(['perpage' => $count, 'page' => 1])->compile()) ?>"><?= $count ?></a>
+					<?php endforeach; ?>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 
-<?php $this->embed('ee:_shared/table', $table); ?>
+<div class="freeform-submissions-table-scroll" role="region" aria-label="<?= htmlspecialchars(lang('spam'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" tabindex="0">
+    <?php $this->embed('ee:_shared/table', $table); ?>
+</div>
 
 
 <?php $this->startBlock('addonModals') ?>
 
-	<div class="choice-panel hidden">
-		<h1 class="dialog__header"><?php echo lang('Edit Layout') ?></h1>
-
-		<div class="dialog__body">
-			<ul class="very-sortable">
-				<?php foreach ($layout as $setting) : ?>
-					<li data-id="<?php echo $setting->getId() ?>"
-						data-handle="<?php echo $setting->getHandle() ?>"
-						data-label="<?php echo $setting->getLabel() ?>">
-						<label>
-							<span class="handle"></span>
-							<input type="checkbox"<?php echo $setting->isChecked() ? ' checked' : '' ?> />
-							<?php echo $setting->getLabel() ?>
-						</label>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-		</div>
-
-		<div class="buttons dialog__actions ">
-			<button class="btn action" data-layout-save>Save</button>
-			<button class="btn action" data-featherlight-close>Cancel</button>
-		</div>
-	</div>
-
+	<?php if ($canAccessExport): ?>
 	<div id="quick-export-modal" class="hidden">
-		<form id="export-csv-modal" method="post" action="<?php echo $exportLink ?>">
-			<input type="hidden" name="csrf_token" value="<?php echo CSRF_TOKEN ?>">
+		<form id="export-csv-modal" method="post" action="<?php echo $escape($exportLink) ?>">
+			<input type="hidden" name="csrf_token" value="<?php echo $escape(CSRF_TOKEN) ?>">
 
-			<h1 class="dialog__header">Export data</h1>
+			<div class="dialog__header title-bar">
+				<h3 class="title-bar__title">Export data</h3>
+				<button type="submit" class="btn submit button button--primary">Export</button>
+			</div>
 
 			<div class="dialog__body">
 				<div class="field">
@@ -204,9 +212,9 @@ $this->extend('_layouts/table_form_wrapper');
 					<div class="select">
 						<select class="select" name="form_id">
 							<?php foreach ($forms as $form): ?>
-								<option value="<?php echo $form->getId() ?>"<?php echo $form->getId(
+								<option value="<?php echo (int) $form->getId() ?>"<?php echo $form->getId(
 								) == $selectedFormId ? ' selected' : '' ?>>
-									<?php echo $form->getName() ?>
+									<?php echo $escape($form->getName()) ?>
 								</option>
 							<?php endforeach; ?>
 						</select>
@@ -221,9 +229,9 @@ $this->extend('_layouts/table_form_wrapper');
 					?>
 
 					<div class="form-field-list field<?php echo $form->getId() != $selectedFormId ? ' hidden' : '' ?>"
-						 data-id="<?php echo $form->getId() ?>">
+						 data-id="<?php echo (int) $form->getId() ?>">
 						<div class="heading">
-							<label>Fields for <?php echo $form->getName() ?></label>
+							<label>Fields for <?php echo $escape($form->getName()) ?></label>
 						</div>
 						<ul class="checkbox-select">
 							<?php foreach ($fields as $fieldId => $fieldSetting): ?>
@@ -236,22 +244,22 @@ $this->extend('_layouts/table_form_wrapper');
 									<div class="icon move"></div>
 
 									<input type="hidden"
-										   name="export_fields[<?php echo $form->getId() ?>][<?php echo $fieldId ?>][label]"
-										   value="<?php echo $label ?>"
+										   name="export_fields[<?php echo (int) $form->getId() ?>][<?php echo $escape($fieldId) ?>][label]"
+										   value="<?php echo $escape($label) ?>"
 									/>
 
 									<input type="hidden"
-										   name="export_fields[<?php echo $form->getId() ?>][<?php echo $fieldId ?>][checked]"
+										   name="export_fields[<?php echo (int) $form->getId() ?>][<?php echo $escape($fieldId) ?>][checked]"
 										   value="0"
 									/>
 									<input type="checkbox"
 										   class="checkbox"
-										   name="export_fields[<?php echo $form->getId() ?>][<?php echo $fieldId ?>][checked]"
+										   name="export_fields[<?php echo (int) $form->getId() ?>][<?php echo $escape($fieldId) ?>][checked]"
 										   value="1"
 										   <?php echo $isChecked ? 'checked' : '' ?>
-										   id="<?php echo $form->getId() . '-' . $fieldId ?>"
+										   id="<?php echo $escape($form->getId() . '-' . $fieldId) ?>"
 									/>
-									<label for="<?php echo $form->getId() . '-' . $fieldId ?>"><?php echo $label ?></label>
+									<label for="<?php echo $escape($form->getId() . '-' . $fieldId) ?>"><?php echo $escape($label) ?></label>
 								</li>
 							<?php endforeach; ?>
 						</ul>
@@ -260,15 +268,11 @@ $this->extend('_layouts/table_form_wrapper');
 				<?php endforeach; ?>
 
 			</div>
-			<div class="buttons dialog__actions">
-					<input type="button" class="btn cancel" value="Cancel"/>
-					<input type="submit" class="btn submit button--primary" value="Export"/>
-					<div class="spinner" style="display: none;"></div>
-			</div>
 		</form>
 	</div>
+<?php endif; ?>
 
 <?php $this->endBlock() ?>
 
-<link rel="stylesheet" href="<?php echo URL_THIRD_THEMES ?>freeform_next/css/submissions.css"/>
+<link rel="stylesheet" href="<?php echo URL_THIRD_THEMES ?>freeform_next/css/submissions.css?v=4-export-drawer-2"/>
 <link rel="stylesheet" href="<?php echo URL_THIRD_THEMES ?>freeform_next/lib/featherlight/featherlight.min.css"/>

@@ -228,12 +228,14 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
 
         $output .= '<thead>';
         $output .= '<tr>';
-        foreach ($layout as $column) {
+        foreach ($layout as $index => $column) {
             $label = $column['label'] ?? '';
 
-            $output .= '<th>' . htmlentities($label, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8') . '</th>';
+            $output .= '<th scope="col"'
+                . $this->getAttributeString('id', $id . '-column-' . $index)
+                . '>' . htmlentities($label, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8') . '</th>';
         }
-        $output .= '<th>&nbsp;</th></tr>';
+        $output .= '<th scope="col">' . htmlentities($this->translate('Actions'), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8') . '</th></tr>';
         $output .= '</thead>';
 
         $output .= '<tbody>';
@@ -247,11 +249,13 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
                 $value        = htmlentities($value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8');
 
                 $output .= '<td>';
+                $headerAttribute = $this->getAttributeString('aria-labelledby', $id . '-column-' . $index);
 
                 switch ($type) {
                     case self::COLUMN_TYPE_CHECKBOX:
                         $value  = $row[$index];
                         $output .= '<input type="checkbox"'
+                            . $headerAttribute
                             . " name=\"{$handle}[$rowIndex][$index]\""
                             . ' class="' . $attributes->getTableCheckboxInputClass() . '"'
                             . " value=\"$defaultValue\""
@@ -263,8 +267,9 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
                     case self::COLUMN_TYPE_SELECT:
                         $options = explode(';', $defaultValue);
                         $output  .= '<select'
+                            . $headerAttribute
                             . " name=\"{$handle}[$rowIndex][$index]\""
-                            . 'class="' . $attributes->getTableSelectInputClass() . '"'
+                            . ' class="' . $attributes->getTableSelectInputClass() . '"'
                             . '>';
                         foreach ($options as $option) {
                             $selected = $option === $value ? ' selected' : '';
@@ -278,6 +283,7 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
                     default:
                         $output .= '<input'
                             . ' type="text"'
+                            . $headerAttribute
                             . ' class="' . $attributes->getTableTextInputClass() . '"'
                             . " name=\"{$handle}[$rowIndex][$index]\""
                             . " value=\"$value\""
@@ -294,7 +300,9 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
             if ($this->getRemoveButtonMarkup()) {
                 $output .= $this->getRemoveButtonMarkup();
             } else {
-                $output .= '<button class="form-table-remove-row ' . $attributes->getRemoveButtonClass() . '" type="button">' . $this->getRemoveButtonLabel() . '</button>';
+                $output .= '<button class="form-table-remove-row ' . $attributes->getRemoveButtonClass() . '" type="button"'
+                    . $this->getAttributeString('aria-label', $this->translate('Remove row'))
+                    . '>' . $this->getRemoveButtonLabel() . '</button>';
             }
             $output .= '</td>';
 
@@ -306,7 +314,9 @@ class TableField extends AbstractField implements MultipleValueInterface, MultiD
         if ($this->getAddButtonMarkup()) {
             $output .= $this->getAddButtonMarkup();
         } else {
-            $output .= '<button class="form-table-add-row ' . $attributes->getAddButtonClass() . '" data-target="' . $id . '" type="button">' . $this->getAddButtonLabel() . '</button>';
+            $output .= '<button class="form-table-add-row ' . $attributes->getAddButtonClass() . '" data-target="' . $id . '" type="button"'
+                . $this->getAttributeString('aria-label', $this->translate('Add row'))
+                . '>' . $this->getAddButtonLabel() . '</button>';
         }
 
         return $output;

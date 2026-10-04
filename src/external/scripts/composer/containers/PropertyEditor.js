@@ -41,7 +41,18 @@ import Table from "../components/PropertyEditor/Table";
 import Text from "../components/PropertyEditor/Text";
 import Textarea from "../components/PropertyEditor/Textarea";
 import Website from "../components/PropertyEditor/Website";
+import TextProperty from "../components/PropertyEditor/PropertyItems/TextProperty";
 import * as FieldTypes from "../constants/FieldTypes";
+
+const editableLabelTypes = [
+  FieldTypes.CHECKBOX, FieldTypes.CHECKBOX_GROUP, FieldTypes.CONFIRMATION,
+  FieldTypes.DATETIME, FieldTypes.DYNAMIC_RECIPIENTS, FieldTypes.EMAIL,
+  FieldTypes.FILE, FieldTypes.MAILING_LIST, FieldTypes.NUMBER,
+  FieldTypes.PASSWORD, FieldTypes.PHONE, FieldTypes.RADIO_GROUP,
+  FieldTypes.RATING, FieldTypes.REGEX, FieldTypes.SELECT,
+  FieldTypes.MULTIPLE_SELECT, "table", FieldTypes.TEXT, FieldTypes.TEXTAREA,
+  FieldTypes.WEBSITE,
+];
 
 const propertyTypes = {
   admin_notifications: AdminNotifications,
@@ -105,9 +116,13 @@ class PropertyEditor extends Component {
   render() {
     const { hash, properties, formStatuses, editForm, editAdminNotifications, editIntegrations, integrationCount } = this.props;
 
-    let title = "Field Property Editor";
+    let title = "Field settings";
 
     const props = (properties[hash] && properties[hash].type) ? properties[hash] : { type: null };
+
+    if (props.type === FieldTypes.PAGE) {
+      title = "Page settings";
+    }
 
     let form = null;
     switch (props.type) {
@@ -145,9 +160,12 @@ class PropertyEditor extends Component {
       FieldTypes.PASSWORD,
       FieldTypes.CONFIRMATION,
     ].indexOf(props.type) === -1;
+    const showHeading = [FieldTypes.FORM, FieldTypes.ADMIN_NOTIFICATIONS, FieldTypes.INTEGRATION].indexOf(props.type) === -1;
+    const showFieldLabel = editableLabelTypes.indexOf(props.type) !== -1;
 
     return (
         <AlwaysNearbyBox
+          scrollKey={hash}
           stickyTop={
             <FormSettings
               editForm={editForm}
@@ -158,24 +176,32 @@ class PropertyEditor extends Component {
             />
           }
         >
-          <h3>
-            {title}
+          {showHeading && <div className="composer-property-header">
+            <h3>
+              {title}
 
-            {showReset &&
-            <button
-              className={"button button--default button--small property-reset"}
-              title={"Reset to default values"}
-              onClick={this.resetField}
-            >
-              Reset
-            </button>
-            }
-          </h3>
-          {props.label &&
-            <h4 dangerouslySetInnerHTML={{ __html: props.label }} />
+              {showReset &&
+                <button type="button"
+                  className={"button button--default button--small property-reset"}
+                  title={"Reset to default values"}
+                  onClick={this.resetField}
+                >
+                  Reset
+                </button>
+              }
+            </h3>
+            {!showFieldLabel && props.label && <h4>{props.label}</h4>}
+          </div>}
+
+          {showFieldLabel &&
+            <TextProperty
+              label="Label"
+              instructions="Field label used to describe the field."
+              name="label"
+              value={props.label || ""}
+              onChangeHandler={event => this.updateField({ label: event.target.value })}
+            />
           }
-
-          <hr style={{ marginTop: 0, marginBottom: 15 }} />
 
           {form ? form : <p>Please select an element</p>}
 

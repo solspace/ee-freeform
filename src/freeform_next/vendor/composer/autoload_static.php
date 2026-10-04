@@ -4,32 +4,24 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit04bb4227aa0ea5b0410cf54756e339d9
+class ComposerStaticInit11a0e34e42eb381afb71149809ac945b
 {
     public static $files = array (
-        'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
-        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
-        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
-        'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
-        '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
-        '9b38cf48e83f5d8f60375221cd213eee' => __DIR__ . '/..' . '/phpstan/phpstan/bootstrap.php',
-        'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
+        'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
+        'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
+        'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
-        'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
-        '38143a9afc50997d55e4815db8489d1c' => __DIR__ . '/..' . '/rector/rector/bootstrap.php',
         '3d52f551daf8fb18ca65f91322628905' => __DIR__ . '/..' . '/statamic/stringy/src/Create.php',
     );
 
     public static $prefixLengthsPsr4 = array (
-        'T' => 
-        array (
-            'Test\\Markdownify\\' => 17,
-        ),
-        'S' => 
+        'S' =>
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
@@ -37,6 +29,7 @@ class ComposerStaticInit04bb4227aa0ea5b0410cf54756e339d9
             'Symfony\\Polyfill\\Intl\\Idn\\' => 26,
             'Symfony\\Polyfill\\Intl\\Grapheme\\' => 31,
             'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Symfony\\Component\\TypeInfo\\' => 27,
             'Symfony\\Component\\String\\' => 25,
             'Symfony\\Component\\PropertyInfo\\' => 31,
             'Symfony\\Component\\PropertyAccess\\' => 33,
@@ -45,143 +38,133 @@ class ComposerStaticInit04bb4227aa0ea5b0410cf54756e339d9
             'Stringy\\' => 8,
             'Solspace\\Addons\\FreeformNext\\' => 29,
         ),
-        'P' => 
+        'P' =>
         array (
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
-            'PhpParser\\' => 10,
+            'Psr\\Container\\' => 14,
         ),
-        'M' => 
+        'M' =>
         array (
             'Markdownify\\' => 12,
         ),
-        'H' => 
+        'H' =>
         array (
             'Hashids\\' => 8,
         ),
-        'G' => 
+        'G' =>
         array (
             'GuzzleHttp\\Psr7\\' => 16,
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
         ),
-        'E' => 
+        'E' =>
         array (
             'Egulias\\EmailValidator\\' => 23,
         ),
-        'D' => 
+        'D' =>
         array (
-            'Doctrine\\Instantiator\\' => 22,
             'Doctrine\\Common\\Lexer\\' => 22,
-            'DeepCopy\\' => 9,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Test\\Markdownify\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/pixel418/markdownify/test',
-        ),
-        'Symfony\\Polyfill\\Php80\\' => 
+        'Symfony\\Polyfill\\Php80\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
         ),
-        'Symfony\\Polyfill\\Mbstring\\' => 
+        'Symfony\\Polyfill\\Mbstring\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
-        'Symfony\\Polyfill\\Intl\\Normalizer\\' => 
+        'Symfony\\Polyfill\\Intl\\Normalizer\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer',
         ),
-        'Symfony\\Polyfill\\Intl\\Idn\\' => 
+        'Symfony\\Polyfill\\Intl\\Idn\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-intl-idn',
         ),
-        'Symfony\\Polyfill\\Intl\\Grapheme\\' => 
+        'Symfony\\Polyfill\\Intl\\Grapheme\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme',
         ),
-        'Symfony\\Polyfill\\Ctype\\' => 
+        'Symfony\\Polyfill\\Ctype\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
         ),
-        'Symfony\\Component\\String\\' => 
+        'Symfony\\Component\\TypeInfo\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/symfony/type-info',
+        ),
+        'Symfony\\Component\\String\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/string',
         ),
-        'Symfony\\Component\\PropertyInfo\\' => 
+        'Symfony\\Component\\PropertyInfo\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/property-info',
         ),
-        'Symfony\\Component\\PropertyAccess\\' => 
+        'Symfony\\Component\\PropertyAccess\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/property-access',
         ),
-        'Symfony\\Component\\Finder\\' => 
+        'Symfony\\Component\\Finder\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/finder',
         ),
-        'Symfony\\Component\\Filesystem\\' => 
+        'Symfony\\Component\\Filesystem\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/filesystem',
         ),
-        'Stringy\\' => 
+        'Stringy\\' =>
         array (
             0 => __DIR__ . '/..' . '/statamic/stringy/src',
         ),
-        'Solspace\\Addons\\FreeformNext\\' => 
+        'Solspace\\Addons\\FreeformNext\\' =>
         array (
             0 => __DIR__ . '/../..' . '/',
         ),
-        'Psr\\Http\\Message\\' => 
+        'Psr\\Http\\Message\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-factory/src',
             1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
-        'Psr\\Http\\Client\\' => 
+        'Psr\\Http\\Client\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-client/src',
         ),
-        'PhpParser\\' => 
+        'Psr\\Container\\' =>
         array (
-            0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
+            0 => __DIR__ . '/..' . '/psr/container/src',
         ),
-        'Markdownify\\' => 
+        'Markdownify\\' =>
         array (
             0 => __DIR__ . '/..' . '/pixel418/markdownify/src',
         ),
-        'Hashids\\' => 
+        'Hashids\\' =>
         array (
             0 => __DIR__ . '/..' . '/hashids/hashids/src',
         ),
-        'GuzzleHttp\\Psr7\\' => 
+        'GuzzleHttp\\Psr7\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
         ),
-        'GuzzleHttp\\Promise\\' => 
+        'GuzzleHttp\\Promise\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
         ),
-        'GuzzleHttp\\' => 
+        'GuzzleHttp\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
-        'Egulias\\EmailValidator\\' => 
+        'Egulias\\EmailValidator\\' =>
         array (
             0 => __DIR__ . '/..' . '/egulias/email-validator/src',
         ),
-        'Doctrine\\Instantiator\\' => 
+        'Doctrine\\Common\\Lexer\\' =>
         array (
-            0 => __DIR__ . '/..' . '/doctrine/instantiator/src/Doctrine/Instantiator',
-        ),
-        'Doctrine\\Common\\Lexer\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/doctrine/lexer/lib/Doctrine/Common/Lexer',
-        ),
-        'DeepCopy\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
+            0 => __DIR__ . '/..' . '/doctrine/lexer/src',
         ),
     );
 
@@ -193,14 +176,309 @@ class ComposerStaticInit04bb4227aa0ea5b0410cf54756e339d9
         'Freeform_next_jump' => __DIR__ . '/../..' . '/jump.freeform_next.php',
         'Freeform_next_mcp' => __DIR__ . '/../..' . '/mcp.freeform_next.php',
         'Freeform_next_upd' => __DIR__ . '/../..' . '/upd.freeform_next.php',
+        'Solspace\\Addons\\FreeformNext\\Controllers\\ApiController' => __DIR__ . '/../..' . '/Controllers/ApiController.php',
+        'Solspace\\Addons\\FreeformNext\\Controllers\\Controller' => __DIR__ . '/../..' . '/Controllers/Controller.php',
+        'Solspace\\Addons\\FreeformNext\\Controllers\\CrmController' => __DIR__ . '/../..' . '/Controllers/CrmController.php',
+        'Solspace\\Addons\\FreeformNext\\Controllers\\DemoTemplatesController' => __DIR__ . '/../..' . '/Controllers/DemoTemplatesController.php',
+        'Solspace\\Addons\\FreeformNext\\Controllers\\ExportController' => __DIR__ . '/../..' . '/Controllers/ExportController.php',
+        'Solspace\\Addons\\FreeformNext\\Controllers\\ExportProfilesController' => __DIR__ . '/../..' . '/Controllers/ExportProfilesController.php',
+        'Solspace\\Addons\\FreeformNext\\Controllers\\FieldController' => __DIR__ . '/../..' . '/Controllers/FieldController.php',
+        'Solspace\\Addons\\FreeformNext\\Controllers\\FormController' => __DIR__ . '/../..' . '/Controllers/FormController.php',
+        'Solspace\\Addons\\FreeformNext\\Controllers\\LogController' => __DIR__ . '/../..' . '/Controllers/LogController.php',
+        'Solspace\\Addons\\FreeformNext\\Controllers\\MailingListsController' => __DIR__ . '/../..' . '/Controllers/MailingListsController.php',
+        'Solspace\\Addons\\FreeformNext\\Controllers\\MigrationsController' => __DIR__ . '/../..' . '/Controllers/MigrationsController.php',
+        'Solspace\\Addons\\FreeformNext\\Controllers\\NotificationController' => __DIR__ . '/../..' . '/Controllers/NotificationController.php',
+        'Solspace\\Addons\\FreeformNext\\Controllers\\SettingsController' => __DIR__ . '/../..' . '/Controllers/SettingsController.php',
+        'Solspace\\Addons\\FreeformNext\\Controllers\\StatusController' => __DIR__ . '/../..' . '/Controllers/StatusController.php',
+        'Solspace\\Addons\\FreeformNext\\Controllers\\SubmissionController' => __DIR__ . '/../..' . '/Controllers/SubmissionController.php',
+        'Solspace\\Addons\\FreeformNext\\Controllers\\UpdateController' => __DIR__ . '/../..' . '/Controllers/UpdateController.php',
+        'Solspace\\Addons\\FreeformNext\\Integrations\\CRM\\HubSpot' => __DIR__ . '/../..' . '/Integrations/CRM/HubSpot.php',
+        'Solspace\\Addons\\FreeformNext\\Integrations\\CRM\\HubSpotV1' => __DIR__ . '/../..' . '/Integrations/CRM/HubSpotV1.php',
+        'Solspace\\Addons\\FreeformNext\\Integrations\\CRM\\Insightly' => __DIR__ . '/../..' . '/Integrations/CRM/Insightly.php',
+        'Solspace\\Addons\\FreeformNext\\Integrations\\CRM\\Pipedrive' => __DIR__ . '/../..' . '/Integrations/CRM/Pipedrive.php',
+        'Solspace\\Addons\\FreeformNext\\Integrations\\CRM\\SalesforceLead' => __DIR__ . '/../..' . '/Integrations/CRM/SalesforceLead.php',
+        'Solspace\\Addons\\FreeformNext\\Integrations\\CRM\\Salesforce\\AbstractSalesforceIntegration' => __DIR__ . '/../..' . '/Integrations/CRM/Salesforce/AbstractSalesforceIntegration.php',
+        'Solspace\\Addons\\FreeformNext\\Integrations\\CRM\\SharpSpring' => __DIR__ . '/../..' . '/Integrations/CRM/SharpSpring.php',
+        'Solspace\\Addons\\FreeformNext\\Integrations\\MailingLists\\CampaignMonitor' => __DIR__ . '/../..' . '/Integrations/MailingLists/CampaignMonitor.php',
+        'Solspace\\Addons\\FreeformNext\\Integrations\\MailingLists\\ConstantContact' => __DIR__ . '/../..' . '/Integrations/MailingLists/ConstantContact.php',
+        'Solspace\\Addons\\FreeformNext\\Integrations\\MailingLists\\ConstantContactV3' => __DIR__ . '/../..' . '/Integrations/MailingLists/ConstantContactV3.php',
+        'Solspace\\Addons\\FreeformNext\\Integrations\\MailingLists\\Dotmailer' => __DIR__ . '/../..' . '/Integrations/MailingLists/Dotmailer.php',
+        'Solspace\\Addons\\FreeformNext\\Integrations\\MailingLists\\MailChimp' => __DIR__ . '/../..' . '/Integrations/MailingLists/MailChimp.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Codepack\\Codepack' => __DIR__ . '/../..' . '/Library/Codepack/Codepack.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Codepack\\Components\\AbstractFileComponent' => __DIR__ . '/../..' . '/Library/Codepack/Components/AbstractFileComponent.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Codepack\\Components\\AbstractJsonComponent' => __DIR__ . '/../..' . '/Library/Codepack/Components/AbstractJsonComponent.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Codepack\\Components\\AssetsFileComponent' => __DIR__ . '/../..' . '/Library/Codepack/Components/AssetsFileComponent.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Codepack\\Components\\ComponentInterface' => __DIR__ . '/../..' . '/Library/Codepack/Components/ComponentInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Codepack\\Components\\FileObject\\File' => __DIR__ . '/../..' . '/Library/Codepack/Components/FileObject/File.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Codepack\\Components\\FileObject\\FileObject' => __DIR__ . '/../..' . '/Library/Codepack/Components/FileObject/FileObject.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Codepack\\Components\\FileObject\\Folder' => __DIR__ . '/../..' . '/Library/Codepack/Components/FileObject/Folder.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Codepack\\Components\\RoutesComponent' => __DIR__ . '/../..' . '/Library/Codepack/Components/RoutesComponent.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Codepack\\Components\\TemplatesFileComponent' => __DIR__ . '/../..' . '/Library/Codepack/Components/TemplatesFileComponent.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Codepack\\Exceptions\\CodepackException' => __DIR__ . '/../..' . '/Library/Codepack/Exceptions/CodepackException.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Codepack\\Exceptions\\FileObject\\FileNotFoundException' => __DIR__ . '/../..' . '/Library/Codepack/Exceptions/FileObject/FileNotFoundException.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Codepack\\Exceptions\\FileObject\\FileObjectException' => __DIR__ . '/../..' . '/Library/Codepack/Exceptions/FileObject/FileObjectException.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Codepack\\Exceptions\\Manifest\\ManifestException' => __DIR__ . '/../..' . '/Library/Codepack/Exceptions/Manifest/ManifestException.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Codepack\\Exceptions\\Manifest\\ManifestNotPresentException' => __DIR__ . '/../..' . '/Library/Codepack/Exceptions/Manifest/ManifestNotPresentException.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Codepack\\Manifest' => __DIR__ . '/../..' . '/Library/Codepack/Manifest.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Attributes\\FormAttributes' => __DIR__ . '/../..' . '/Library/Composer/Attributes/FormAttributes.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\AbstractField' => __DIR__ . '/../..' . '/Library/Composer/Components/AbstractField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Attributes\\AbstractAttributes' => __DIR__ . '/../..' . '/Library/Composer/Components/Attributes/AbstractAttributes.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Attributes\\CustomFieldAttributes' => __DIR__ . '/../..' . '/Library/Composer/Components/Attributes/CustomFieldAttributes.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Attributes\\CustomFormAttributes' => __DIR__ . '/../..' . '/Library/Composer/Components/Attributes/CustomFormAttributes.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Attributes\\DynamicNotificationAttributes' => __DIR__ . '/../..' . '/Library/Composer/Components/Attributes/DynamicNotificationAttributes.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Context' => __DIR__ . '/../..' . '/Library/Composer/Components/Context.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\FieldInterface' => __DIR__ . '/../..' . '/Library/Composer/Components/FieldInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\AbstractExternalOptionsField' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/AbstractExternalOptionsField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\CheckboxField' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/CheckboxField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\CheckboxGroupField' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/CheckboxGroupField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\ConfirmationField' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/ConfirmationField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\DataContainers\\Option' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/DataContainers/Option.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\DynamicRecipientField' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/DynamicRecipientField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\EmailField' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/EmailField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\FileUploadField' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/FileUploadField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\HiddenField' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/HiddenField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\HtmlField' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/HtmlField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Interfaces\\ExternalOptionsInterface' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Interfaces/ExternalOptionsInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Interfaces\\FileUploadInterface' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Interfaces/FileUploadInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Interfaces\\InitialValueInterface' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Interfaces/InitialValueInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Interfaces\\InputOnlyInterface' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Interfaces/InputOnlyInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Interfaces\\MailingListInterface' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Interfaces/MailingListInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Interfaces\\MultiDimensionalValueInterface' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Interfaces/MultiDimensionalValueInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Interfaces\\MultipleValueInterface' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Interfaces/MultipleValueInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Interfaces\\NoRenderInterface' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Interfaces/NoRenderInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Interfaces\\NoStorageInterface' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Interfaces/NoStorageInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Interfaces\\ObscureValueInterface' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Interfaces/ObscureValueInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Interfaces\\OptionsInterface' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Interfaces/OptionsInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Interfaces\\PlaceholderInterface' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Interfaces/PlaceholderInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Interfaces\\RecipientInterface' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Interfaces/RecipientInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Interfaces\\RememberPostedValueInterface' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Interfaces/RememberPostedValueInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Interfaces\\SingleValueInterface' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Interfaces/SingleValueInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Interfaces\\StaticValueInterface' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Interfaces/StaticValueInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\MailingListField' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/MailingListField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\MultipleSelectField' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/MultipleSelectField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\PasswordField' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/PasswordField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\RadioGroupField' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/RadioGroupField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\SelectField' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/SelectField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\SubmitField' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/SubmitField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\TextField' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/TextField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\TextareaField' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/TextareaField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Traits\\FileUploadTrait' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Traits/FileUploadTrait.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Traits\\HashAsHandleTrait' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Traits/HashAsHandleTrait.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Traits\\InitialValueTrait' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Traits/InitialValueTrait.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Traits\\MailingListTrait' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Traits/MailingListTrait.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Traits\\MultipleValueTrait' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Traits/MultipleValueTrait.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Traits\\OptionsKeyValuePairTrait' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Traits/OptionsKeyValuePairTrait.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Traits\\OptionsTrait' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Traits/OptionsTrait.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Traits\\PlaceholderTrait' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Traits/PlaceholderTrait.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Traits\\RecipientTrait' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Traits/RecipientTrait.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Traits\\SingleStaticValueTrait' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Traits/SingleStaticValueTrait.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Traits\\SingleValueTrait' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Traits/SingleValueTrait.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Fields\\Traits\\StaticValueTrait' => __DIR__ . '/../..' . '/Library/Composer/Components/Fields/Traits/StaticValueTrait.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Form' => __DIR__ . '/../..' . '/Library/Composer/Components/Form.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Layout' => __DIR__ . '/../..' . '/Library/Composer/Components/Layout.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Page' => __DIR__ . '/../..' . '/Library/Composer/Components/Page.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Properties' => __DIR__ . '/../..' . '/Library/Composer/Components/Properties.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Properties\\AbstractProperties' => __DIR__ . '/../..' . '/Library/Composer/Components/Properties/AbstractProperties.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Properties\\AdminNotificationProperties' => __DIR__ . '/../..' . '/Library/Composer/Components/Properties/AdminNotificationProperties.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Properties\\ConnectionProperties' => __DIR__ . '/../..' . '/Library/Composer/Components/Properties/ConnectionProperties.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Properties\\FieldProperties' => __DIR__ . '/../..' . '/Library/Composer/Components/Properties/FieldProperties.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Properties\\FormProperties' => __DIR__ . '/../..' . '/Library/Composer/Components/Properties/FormProperties.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Properties\\IntegrationProperties' => __DIR__ . '/../..' . '/Library/Composer/Components/Properties/IntegrationProperties.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Properties\\PageProperties' => __DIR__ . '/../..' . '/Library/Composer/Components/Properties/PageProperties.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Row' => __DIR__ . '/../..' . '/Library/Composer/Components/Row.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Validation\\Constraints\\ConstraintInterface' => __DIR__ . '/../..' . '/Library/Composer/Components/Validation/Constraints/ConstraintInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Validation\\Constraints\\DateTimeConstraint' => __DIR__ . '/../..' . '/Library/Composer/Components/Validation/Constraints/DateTimeConstraint.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Validation\\Constraints\\LengthConstraint' => __DIR__ . '/../..' . '/Library/Composer/Components/Validation/Constraints/LengthConstraint.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Validation\\Constraints\\NumericConstraint' => __DIR__ . '/../..' . '/Library/Composer/Components/Validation/Constraints/NumericConstraint.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Validation\\Constraints\\PhoneConstraint' => __DIR__ . '/../..' . '/Library/Composer/Components/Validation/Constraints/PhoneConstraint.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Validation\\Constraints\\RegexConstraint' => __DIR__ . '/../..' . '/Library/Composer/Components/Validation/Constraints/RegexConstraint.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Validation\\Constraints\\WebsiteConstraint' => __DIR__ . '/../..' . '/Library/Composer/Components/Validation/Constraints/WebsiteConstraint.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Validation\\Errors\\ConstraintViolationList' => __DIR__ . '/../..' . '/Library/Composer/Components/Validation/Errors/ConstraintViolationList.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Components\\Validation\\Validator' => __DIR__ . '/../..' . '/Library/Composer/Components/Validation/Validator.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Composer\\Composer' => __DIR__ . '/../..' . '/Library/Composer/Composer.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Configuration\\BaseConfiguration' => __DIR__ . '/../..' . '/Library/Configuration/BaseConfiguration.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Configuration\\ConfigurationInterface' => __DIR__ . '/../..' . '/Library/Configuration/ConfigurationInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Configuration\\EEPluginConfiguration' => __DIR__ . '/../..' . '/Library/Configuration/EEPluginConfiguration.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Configuration\\ExternalOptionsConfiguration' => __DIR__ . '/../..' . '/Library/Configuration/ExternalOptionsConfiguration.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Connections\\AbstractConnection' => __DIR__ . '/../..' . '/Library/Connections/AbstractConnection.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Connections\\ConnectionInterface' => __DIR__ . '/../..' . '/Library/Connections/ConnectionInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\DataExport\\ExportData' => __DIR__ . '/../..' . '/Library/DataExport/ExportData.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\DataExport\\ExportDataCSV' => __DIR__ . '/../..' . '/Library/DataExport/ExportDataCSV.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\DataObjects\\ConnectionResult' => __DIR__ . '/../..' . '/Library/DataObjects/ConnectionResult.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\DataObjects\\EmailTemplate' => __DIR__ . '/../..' . '/Library/DataObjects/EmailTemplate.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\DataObjects\\FormRenderObject' => __DIR__ . '/../..' . '/Library/DataObjects/FormRenderObject.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\DataObjects\\FormTemplate' => __DIR__ . '/../..' . '/Library/DataObjects/FormTemplate.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\DataObjects\\FreeformStatistics' => __DIR__ . '/../..' . '/Library/DataObjects/FreeformStatistics.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\DataObjects\\PluginUpdate' => __DIR__ . '/../..' . '/Library/DataObjects/PluginUpdate.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\DataObjects\\SubmissionAttributes' => __DIR__ . '/../..' . '/Library/DataObjects/SubmissionAttributes.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\DataObjects\\SubmissionPreferenceSetting' => __DIR__ . '/../..' . '/Library/DataObjects/SubmissionPreferenceSetting.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Database\\CRMHandlerInterface' => __DIR__ . '/../..' . '/Library/Database/CRMHandlerInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Database\\FieldHandlerInterface' => __DIR__ . '/../..' . '/Library/Database/FieldHandlerInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Database\\FormHandlerInterface' => __DIR__ . '/../..' . '/Library/Database/FormHandlerInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Database\\IntegrationHandlerInterface' => __DIR__ . '/../..' . '/Library/Database/IntegrationHandlerInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Database\\MailingListHandlerInterface' => __DIR__ . '/../..' . '/Library/Database/MailingListHandlerInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Database\\StatusHandlerInterface' => __DIR__ . '/../..' . '/Library/Database/StatusHandlerInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Database\\SubmissionHandlerInterface' => __DIR__ . '/../..' . '/Library/Database/SubmissionHandlerInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\EETags\\FormTagParamUtilities' => __DIR__ . '/../..' . '/Library/EETags/FormTagParamUtilities.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\EETags\\FormToTagDataTransformer' => __DIR__ . '/../..' . '/Library/EETags/FormToTagDataTransformer.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\EETags\\SubmissionToTagDataTransformer' => __DIR__ . '/../..' . '/Library/EETags/SubmissionToTagDataTransformer.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\EETags\\Transformers\\FieldTransformer' => __DIR__ . '/../..' . '/Library/EETags/Transformers/FieldTransformer.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\EETags\\Transformers\\FormTransformer' => __DIR__ . '/../..' . '/Library/EETags/Transformers/FormTransformer.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\EETags\\Transformers\\SubmissionTransformer' => __DIR__ . '/../..' . '/Library/EETags/Transformers/SubmissionTransformer.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\EETags\\Transformers\\Transformer' => __DIR__ . '/../..' . '/Library/EETags/Transformers/Transformer.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Exceptions\\Composer\\ComposerException' => __DIR__ . '/../..' . '/Library/Exceptions/Composer/ComposerException.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Exceptions\\Connections\\ConnectionException' => __DIR__ . '/../..' . '/Library/Exceptions/Connections/ConnectionException.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Exceptions\\DataObjects\\EmailTemplateException' => __DIR__ . '/../..' . '/Library/Exceptions/DataObjects/EmailTemplateException.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Exceptions\\FieldExceptions\\FieldException' => __DIR__ . '/../..' . '/Library/Exceptions/FieldExceptions/FieldException.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Exceptions\\FieldExceptions\\FileUploadException' => __DIR__ . '/../..' . '/Library/Exceptions/FieldExceptions/FileUploadException.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Exceptions\\FreeformException' => __DIR__ . '/../..' . '/Library/Exceptions/FreeformException.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Exceptions\\Integrations\\AccessDeniedException' => __DIR__ . '/../..' . '/Library/Exceptions/Integrations/AccessDeniedException.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Exceptions\\Integrations\\CRMIntegrationNotFoundException' => __DIR__ . '/../..' . '/Library/Exceptions/Integrations/CRMIntegrationNotFoundException.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Exceptions\\Integrations\\IntegrationException' => __DIR__ . '/../..' . '/Library/Exceptions/Integrations/IntegrationException.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Exceptions\\Integrations\\IntegrationNotFoundException' => __DIR__ . '/../..' . '/Library/Exceptions/Integrations/IntegrationNotFoundException.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Exceptions\\Integrations\\ListNotFoundException' => __DIR__ . '/../..' . '/Library/Exceptions/Integrations/ListNotFoundException.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Exceptions\\Integrations\\MailingListIntegrationNotFoundException' => __DIR__ . '/../..' . '/Library/Exceptions/Integrations/MailingListIntegrationNotFoundException.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Factories\\ComposerFieldFactory' => __DIR__ . '/../..' . '/Library/Factories/ComposerFieldFactory.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Factories\\PredefinedOptionsFactory' => __DIR__ . '/../..' . '/Library/Factories/PredefinedOptionsFactory.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\FileUploads\\FileUploadHandlerInterface' => __DIR__ . '/../..' . '/Library/FileUploads/FileUploadHandlerInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\FileUploads\\FileUploadResponse' => __DIR__ . '/../..' . '/Library/FileUploads/FileUploadResponse.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Helpers\\ColorHelper' => __DIR__ . '/../..' . '/Library/Helpers/ColorHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Helpers\\CryptoHelper' => __DIR__ . '/../..' . '/Library/Helpers/CryptoHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Helpers\\ExtensionHelper' => __DIR__ . '/../..' . '/Library/Helpers/ExtensionHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Helpers\\FieldTypeHelper' => __DIR__ . '/../..' . '/Library/Helpers/FieldTypeHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Helpers\\FreeformHelper' => __DIR__ . '/../..' . '/Library/Helpers/FreeformHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Helpers\\HashHelper' => __DIR__ . '/../..' . '/Library/Helpers/HashHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Helpers\\IpUtils' => __DIR__ . '/../..' . '/Library/Helpers/IpUtils.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Helpers\\PermissionsHelper' => __DIR__ . '/../..' . '/Library/Helpers/PermissionsHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Helpers\\StringHelper' => __DIR__ . '/../..' . '/Library/Helpers/StringHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Helpers\\TemplateHelper' => __DIR__ . '/../..' . '/Library/Helpers/TemplateHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Helpers\\UrlHelper' => __DIR__ . '/../..' . '/Library/Helpers/UrlHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Integrations\\AbstractIntegration' => __DIR__ . '/../..' . '/Library/Integrations/AbstractIntegration.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Integrations\\CRM\\AbstractCRMIntegration' => __DIR__ . '/../..' . '/Library/Integrations/CRM/AbstractCRMIntegration.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Integrations\\CRM\\CRMIntegrationInterface' => __DIR__ . '/../..' . '/Library/Integrations/CRM/CRMIntegrationInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Integrations\\CRM\\CRMOAuthConnector' => __DIR__ . '/../..' . '/Library/Integrations/CRM/CRMOAuthConnector.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Integrations\\DataObjects\\FieldObject' => __DIR__ . '/../..' . '/Library/Integrations/DataObjects/FieldObject.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Integrations\\IntegrationInterface' => __DIR__ . '/../..' . '/Library/Integrations/IntegrationInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Integrations\\IntegrationStorageInterface' => __DIR__ . '/../..' . '/Library/Integrations/IntegrationStorageInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Integrations\\MailingLists\\AbstractMailingListIntegration' => __DIR__ . '/../..' . '/Library/Integrations/MailingLists/AbstractMailingListIntegration.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Integrations\\MailingLists\\DataObjects\\ListObject' => __DIR__ . '/../..' . '/Library/Integrations/MailingLists/DataObjects/ListObject.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Integrations\\MailingLists\\MailingListIntegrationInterface' => __DIR__ . '/../..' . '/Library/Integrations/MailingLists/MailingListIntegrationInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Integrations\\MailingLists\\MailingListOAuthConnector' => __DIR__ . '/../..' . '/Library/Integrations/MailingLists/MailingListOAuthConnector.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Integrations\\SettingBlueprint' => __DIR__ . '/../..' . '/Library/Integrations/SettingBlueprint.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Integrations\\TokenRefreshInterface' => __DIR__ . '/../..' . '/Library/Integrations/TokenRefreshInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Logging\\EELogger' => __DIR__ . '/../..' . '/Library/Logging/EELogger.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Logging\\LoggerInterface' => __DIR__ . '/../..' . '/Library/Logging/LoggerInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Mailing\\MailHandlerInterface' => __DIR__ . '/../..' . '/Library/Mailing/MailHandlerInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Mailing\\NotificationInterface' => __DIR__ . '/../..' . '/Library/Mailing/NotificationInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Migrations\\Helpers\\ClassicFieldHelper' => __DIR__ . '/../..' . '/Library/Migrations/Helpers/ClassicFieldHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Migrations\\Helpers\\ClassicFormHelper' => __DIR__ . '/../..' . '/Library/Migrations/Helpers/ClassicFormHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Migrations\\Helpers\\ClassicFormNotificationsHelper' => __DIR__ . '/../..' . '/Library/Migrations/Helpers/ClassicFormNotificationsHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Migrations\\Helpers\\ClassicFormStatusHelper' => __DIR__ . '/../..' . '/Library/Migrations/Helpers/ClassicFormStatusHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Migrations\\Helpers\\ClassicSubmissionHelper' => __DIR__ . '/../..' . '/Library/Migrations/Helpers/ClassicSubmissionHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Migrations\\Helpers\\NextFieldHelper' => __DIR__ . '/../..' . '/Library/Migrations/Helpers/NextFieldHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Migrations\\Helpers\\NextFormHelper' => __DIR__ . '/../..' . '/Library/Migrations/Helpers/NextFormHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Migrations\\Helpers\\NextFormNotificationHelper' => __DIR__ . '/../..' . '/Library/Migrations/Helpers/NextFormNotificationHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Migrations\\Helpers\\NextFormStatusHelper' => __DIR__ . '/../..' . '/Library/Migrations/Helpers/NextFormStatusHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Migrations\\Helpers\\NextSubmissionHelper' => __DIR__ . '/../..' . '/Library/Migrations/Helpers/NextSubmissionHelper.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Migrations\\Objects\\ComposerState' => __DIR__ . '/../..' . '/Library/Migrations/Objects/ComposerState.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Migrations\\Objects\\MigrationResultObject' => __DIR__ . '/../..' . '/Library/Migrations/Objects/MigrationResultObject.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Migrations\\Objects\\NextLayout' => __DIR__ . '/../..' . '/Library/Migrations/Objects/NextLayout.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Pro\\Fields\\ConfirmationField' => __DIR__ . '/../..' . '/Library/Pro/Fields/ConfirmationField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Pro\\Fields\\DatetimeField' => __DIR__ . '/../..' . '/Library/Pro/Fields/DatetimeField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Pro\\Fields\\NumberField' => __DIR__ . '/../..' . '/Library/Pro/Fields/NumberField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Pro\\Fields\\PhoneField' => __DIR__ . '/../..' . '/Library/Pro/Fields/PhoneField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Pro\\Fields\\RatingField' => __DIR__ . '/../..' . '/Library/Pro/Fields/RatingField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Pro\\Fields\\RecaptchaField' => __DIR__ . '/../..' . '/Library/Pro/Fields/RecaptchaField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Pro\\Fields\\RegexField' => __DIR__ . '/../..' . '/Library/Pro/Fields/RegexField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Pro\\Fields\\TableField' => __DIR__ . '/../..' . '/Library/Pro/Fields/TableField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Pro\\Fields\\WebsiteField' => __DIR__ . '/../..' . '/Library/Pro/Fields/WebsiteField.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Session\\DbSession' => __DIR__ . '/../..' . '/Library/Session/DbSession.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Session\\EERequest' => __DIR__ . '/../..' . '/Library/Session/EERequest.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Session\\EESession' => __DIR__ . '/../..' . '/Library/Session/EESession.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Session\\FormValueContext' => __DIR__ . '/../..' . '/Library/Session/FormValueContext.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Session\\Honeypot' => __DIR__ . '/../..' . '/Library/Session/Honeypot.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Session\\RequestInterface' => __DIR__ . '/../..' . '/Library/Session/RequestInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Session\\SessionInterface' => __DIR__ . '/../..' . '/Library/Session/SessionInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Translations\\EETranslator' => __DIR__ . '/../..' . '/Library/Translations/EETranslator.php',
+        'Solspace\\Addons\\FreeformNext\\Library\\Translations\\TranslatorInterface' => __DIR__ . '/../..' . '/Library/Translations/TranslatorInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Model\\CrmFieldModel' => __DIR__ . '/../..' . '/Model/CrmFieldModel.php',
+        'Solspace\\Addons\\FreeformNext\\Model\\ExportProfileModel' => __DIR__ . '/../..' . '/Model/ExportProfileModel.php',
+        'Solspace\\Addons\\FreeformNext\\Model\\ExportSettingModel' => __DIR__ . '/../..' . '/Model/ExportSettingModel.php',
+        'Solspace\\Addons\\FreeformNext\\Model\\FieldModel' => __DIR__ . '/../..' . '/Model/FieldModel.php',
+        'Solspace\\Addons\\FreeformNext\\Model\\FormModel' => __DIR__ . '/../..' . '/Model/FormModel.php',
+        'Solspace\\Addons\\FreeformNext\\Model\\IntegrationModel' => __DIR__ . '/../..' . '/Model/IntegrationModel.php',
+        'Solspace\\Addons\\FreeformNext\\Model\\MailingListFieldModel' => __DIR__ . '/../..' . '/Model/MailingListFieldModel.php',
+        'Solspace\\Addons\\FreeformNext\\Model\\MailingListModel' => __DIR__ . '/../..' . '/Model/MailingListModel.php',
+        'Solspace\\Addons\\FreeformNext\\Model\\NotificationModel' => __DIR__ . '/../..' . '/Model/NotificationModel.php',
+        'Solspace\\Addons\\FreeformNext\\Model\\PermissionsModel' => __DIR__ . '/../..' . '/Model/PermissionsModel.php',
+        'Solspace\\Addons\\FreeformNext\\Model\\SettingsModel' => __DIR__ . '/../..' . '/Model/SettingsModel.php',
+        'Solspace\\Addons\\FreeformNext\\Model\\SpamReasonModel' => __DIR__ . '/../..' . '/Model/SpamReasonModel.php',
+        'Solspace\\Addons\\FreeformNext\\Model\\StatusModel' => __DIR__ . '/../..' . '/Model/StatusModel.php',
+        'Solspace\\Addons\\FreeformNext\\Model\\SubmissionModel' => __DIR__ . '/../..' . '/Model/SubmissionModel.php',
+        'Solspace\\Addons\\FreeformNext\\Model\\SubmissionPreferencesModel' => __DIR__ . '/../..' . '/Model/SubmissionPreferencesModel.php',
+        'Solspace\\Addons\\FreeformNext\\Model\\TimestampableTrait' => __DIR__ . '/../..' . '/Model/TimestampableTrait.php',
+        'Solspace\\Addons\\FreeformNext\\Repositories\\CrmRepository' => __DIR__ . '/../..' . '/Repositories/CrmRepository.php',
+        'Solspace\\Addons\\FreeformNext\\Repositories\\ExportProfilesRepository' => __DIR__ . '/../..' . '/Repositories/ExportProfilesRepository.php',
+        'Solspace\\Addons\\FreeformNext\\Repositories\\ExportSettingsRepository' => __DIR__ . '/../..' . '/Repositories/ExportSettingsRepository.php',
+        'Solspace\\Addons\\FreeformNext\\Repositories\\FieldRepository' => __DIR__ . '/../..' . '/Repositories/FieldRepository.php',
+        'Solspace\\Addons\\FreeformNext\\Repositories\\FileRepository' => __DIR__ . '/../..' . '/Repositories/FileRepository.php',
+        'Solspace\\Addons\\FreeformNext\\Repositories\\FormRepository' => __DIR__ . '/../..' . '/Repositories/FormRepository.php',
+        'Solspace\\Addons\\FreeformNext\\Repositories\\IntegrationRepository' => __DIR__ . '/../..' . '/Repositories/IntegrationRepository.php',
+        'Solspace\\Addons\\FreeformNext\\Repositories\\MailingListRepository' => __DIR__ . '/../..' . '/Repositories/MailingListRepository.php',
+        'Solspace\\Addons\\FreeformNext\\Repositories\\NotificationRepository' => __DIR__ . '/../..' . '/Repositories/NotificationRepository.php',
+        'Solspace\\Addons\\FreeformNext\\Repositories\\PermissionsRepository' => __DIR__ . '/../..' . '/Repositories/PermissionsRepository.php',
+        'Solspace\\Addons\\FreeformNext\\Repositories\\Repository' => __DIR__ . '/../..' . '/Repositories/Repository.php',
+        'Solspace\\Addons\\FreeformNext\\Repositories\\SettingsRepository' => __DIR__ . '/../..' . '/Repositories/SettingsRepository.php',
+        'Solspace\\Addons\\FreeformNext\\Repositories\\StatusRepository' => __DIR__ . '/../..' . '/Repositories/StatusRepository.php',
+        'Solspace\\Addons\\FreeformNext\\Repositories\\SubmissionPreferencesRepository' => __DIR__ . '/../..' . '/Repositories/SubmissionPreferencesRepository.php',
+        'Solspace\\Addons\\FreeformNext\\Repositories\\SubmissionRepository' => __DIR__ . '/../..' . '/Repositories/SubmissionRepository.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\AbstractIntegrationService' => __DIR__ . '/../..' . '/Services/AbstractIntegrationService.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\CaptchaWidgetService' => __DIR__ . '/../..' . '/Services/CaptchaWidgetService.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\CleanupService' => __DIR__ . '/../..' . '/Services/CleanupService.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\CrmService' => __DIR__ . '/../..' . '/Services/CrmService.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\ExportProfilesService' => __DIR__ . '/../..' . '/Services/ExportProfilesService.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\ExportService' => __DIR__ . '/../..' . '/Services/ExportService.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\FieldsService' => __DIR__ . '/../..' . '/Services/FieldsService.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\FilesService' => __DIR__ . '/../..' . '/Services/FilesService.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\FormsService' => __DIR__ . '/../..' . '/Services/FormsService.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\HoneypotService' => __DIR__ . '/../..' . '/Services/HoneypotService.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\MailerService' => __DIR__ . '/../..' . '/Services/MailerService.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\MailingListsService' => __DIR__ . '/../..' . '/Services/MailingListsService.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\MigrationsService' => __DIR__ . '/../..' . '/Services/MigrationsService.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\PermissionsService' => __DIR__ . '/../..' . '/Services/PermissionsService.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\RecaptchaService' => __DIR__ . '/../..' . '/Services/RecaptchaService.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\SettingsService' => __DIR__ . '/../..' . '/Services/SettingsService.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\StatusesService' => __DIR__ . '/../..' . '/Services/StatusesService.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\SubmissionsService' => __DIR__ . '/../..' . '/Services/SubmissionsService.php',
+        'Solspace\\Addons\\FreeformNext\\Services\\UpdateService' => __DIR__ . '/../..' . '/Services/UpdateService.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\AddonInfo' => __DIR__ . '/../..' . '/Utilities/AddonInfo.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\AddonUpdater' => __DIR__ . '/../..' . '/Utilities/AddonUpdater.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\AddonUpdater\\PluginAction' => __DIR__ . '/../..' . '/Utilities/AddonUpdater/PluginAction.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\AddonUpdater\\PluginExtension' => __DIR__ . '/../..' . '/Utilities/AddonUpdater/PluginExtension.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\ControlPanelView' => __DIR__ . '/../..' . '/Utilities/ControlPanelView.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\ControlPanel\\AjaxView' => __DIR__ . '/../..' . '/Utilities/ControlPanel/AjaxView.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\ControlPanel\\CpView' => __DIR__ . '/../..' . '/Utilities/ControlPanel/CpView.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\ControlPanel\\Extras\\ConfirmRemoveModal' => __DIR__ . '/../..' . '/Utilities/ControlPanel/Extras/ConfirmRemoveModal.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\ControlPanel\\Extras\\Modal' => __DIR__ . '/../..' . '/Utilities/ControlPanel/Extras/Modal.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\ControlPanel\\FileDownloadView' => __DIR__ . '/../..' . '/Utilities/ControlPanel/FileDownloadView.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\ControlPanel\\Navigation\\Navigation' => __DIR__ . '/../..' . '/Utilities/ControlPanel/Navigation/Navigation.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\ControlPanel\\Navigation\\NavigationLink' => __DIR__ . '/../..' . '/Utilities/ControlPanel/Navigation/NavigationLink.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\ControlPanel\\PlainView' => __DIR__ . '/../..' . '/Utilities/ControlPanel/PlainView.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\ControlPanel\\RedirectView' => __DIR__ . '/../..' . '/Utilities/ControlPanel/RedirectView.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\ControlPanel\\RenderlessViewInterface' => __DIR__ . '/../..' . '/Utilities/ControlPanel/RenderlessViewInterface.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\ControlPanel\\View' => __DIR__ . '/../..' . '/Utilities/ControlPanel/View.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\Extension' => __DIR__ . '/../..' . '/Utilities/Extension.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\Extension\\FreeformIntegrationExtension' => __DIR__ . '/../..' . '/Utilities/Extension/FreeformIntegrationExtension.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\Extension\\Hook' => __DIR__ . '/../..' . '/Utilities/Extension/Hook.php',
+        'Solspace\\Addons\\FreeformNext\\Utilities\\Plugin' => __DIR__ . '/../..' . '/Utilities/Plugin.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit04bb4227aa0ea5b0410cf54756e339d9::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit04bb4227aa0ea5b0410cf54756e339d9::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit04bb4227aa0ea5b0410cf54756e339d9::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit11a0e34e42eb381afb71149809ac945b::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit11a0e34e42eb381afb71149809ac945b::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit11a0e34e42eb381afb71149809ac945b::$classMap;
 
         }, null, ClassLoader::class);
     }

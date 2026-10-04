@@ -86,6 +86,7 @@ class Integrations extends BasePropertyEditor {
           instructions="Map CRM fields to your Freeform fields."
           content={
             <IntegrationMappingTable
+              className="composer-crm-mapping-table"
               formFields={formFields}
               fields={fieldList}
               mapping={mapping}
@@ -109,8 +110,8 @@ class Integrations extends BasePropertyEditor {
           onChangeHandler={this.updateIntegration}
         />
 
-        <button
-          className="btn action refresh icon"
+        <button type="button"
+          className="button button--default composer-refresh-integration"
           onClick={fetchCrmIntegrations}
           disabled={isFetching}
         >

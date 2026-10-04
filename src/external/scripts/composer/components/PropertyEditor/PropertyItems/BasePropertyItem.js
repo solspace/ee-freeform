@@ -11,6 +11,8 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 
+let nextPropertyId = 0;
+
 export default class BasePropertyItem extends Component {
   static propTypes = {
     label: PropTypes.string.isRequired,
@@ -26,11 +28,15 @@ export default class BasePropertyItem extends Component {
     couldBeNumeric: PropTypes.bool,
     required: PropTypes.bool,
     nullable: PropTypes.bool,
+    inlineAction: PropTypes.bool,
   };
 
   constructor(props, context) {
     super(props, context);
 
+    this.inputId = `freeform-property-${++nextPropertyId}`;
+    this.hintId = `${this.inputId}-hint`;
+    this.labelId = `${this.inputId}-label`;
     this.renderInput = this.renderInput.bind(this);
   }
 
@@ -40,17 +46,22 @@ export default class BasePropertyItem extends Component {
     return (
       <div className="composer-property-item">
         <div className="composer-property-heading">
-          <label className={required ? "required" : ""}>{label}</label>
+          <label id={this.labelId} htmlFor={this.inputId} className={required ? "required" : ""}>{label}</label>
           {instructions &&
-          <div className="composer-property-instructions">
+          <div id={this.hintId} className="composer-property-instructions">
             {instructions}
           </div>
           }
         </div>
-        <div className="composer-property-input">
-          {this.renderInput()}
-        </div>
-        {this.props.children}
+        {this.props.inlineAction ? (
+          <div className="composer-property-control-row">
+            <div className="composer-property-input">{this.renderInput()}</div>
+            {this.props.children}
+          </div>
+        ) : (
+          <div className="composer-property-input">{this.renderInput()}</div>
+        )}
+        {!this.props.inlineAction && this.props.children}
       </div>
     );
   }

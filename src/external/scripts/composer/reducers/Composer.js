@@ -297,6 +297,17 @@ export function composer(state = [], action) {
 
       return state;
 
+    case ActionTypes.REMOVE_FIELD:
+      idx = action.pageIndex;
+      if (!state.layout[idx] || !state.properties[action.hash]) {
+        return state;
+      }
+      return {
+        ...state,
+        layout: removeColumn(state.layout, action),
+        properties: properties(state.properties, { type: ActionTypes.REMOVE_PROPERTY, hash: action.hash }),
+      };
+
     case ActionTypes.UPDATE_PROPERTY:
     case ActionTypes.REMOVE_PROPERTY:
     case ActionTypes.RESET_PROPERTIES:

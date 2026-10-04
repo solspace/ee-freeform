@@ -31,6 +31,15 @@ export default class File extends HtmlInput {
     return FILE;
   }
 
+  renderInput() {
+    return (
+      <div className="composer-ft-file-preview">
+        <span className="composer-ft-file-preview-button">Choose File</span>
+        <span className="composer-ft-file-preview-name">No file chosen</span>
+      </div>
+    );
+  }
+
   getBadges() {
     const badges = super.getBadges();
     const { properties: { assetSourceId } } = this.props;

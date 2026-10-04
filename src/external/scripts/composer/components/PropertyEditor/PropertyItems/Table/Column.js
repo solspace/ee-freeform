@@ -21,6 +21,7 @@ const renderInput = (props) => {
 
       return (
         <select
+          aria-label={`${props.label}, row ${rowIndex + 1}`}
 		  className="button--small"
           name={handle}
           value={value}
@@ -41,6 +42,7 @@ const renderInput = (props) => {
     default:
       return (
         <input
+          aria-label={`${props.label}, row ${rowIndex + 1}`}
           type="text"
           name={handle}
           value={value}

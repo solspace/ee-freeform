@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let form = anchor.parentElement;
     if (form) {
       form.addEventListener('submit', () => {
+        if (form.hasAttribute('data-freeform-ajax-action') && window.__freeformAjaxBound) return;
+
         const submitButtonList = form.querySelectorAll('[type=submit]:not([name={{PREV_BUTTON_NAME}}])');
         for (const submit of submitButtonList) {
           submit.disabled = true;

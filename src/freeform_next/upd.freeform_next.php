@@ -618,6 +618,51 @@ class Freeform_next_upd extends AddonUpdater
             }
         }
 
+        // Keep the legacy reCAPTCHA switch intact. NULL uses it until an admin
+        // explicitly selects a provider on the combined Spam Protection page.
+        // The columns were first shipped in alpha.2 without a version bump, so
+        // sites already recorded as alpha.2 must also run this migration.
+        if (version_compare($previousVersion, '4.0.0-a3', '<')) {
+            $settingsTable = ee()->db->dbprefix('freeform_next_settings');
+            foreach (['captchaProvider' => 'VARCHAR(20)', 'turnstileKey' => 'VARCHAR(255)',
+                'turnstileSecret' => 'VARCHAR(255)', 'hcaptchaKey' => 'VARCHAR(255)',
+                'hcaptchaSecret' => 'VARCHAR(255)'] as $column => $type) {
+                if (ee()->db->table_exists($settingsTable) && !ee()->db->field_exists($column, $settingsTable)) {
+                    ee()->db->query("ALTER TABLE `{$settingsTable}` ADD COLUMN `{$column}` {$type} DEFAULT NULL");
+                }
+            }
+        }
+
+        if (version_compare($previousVersion, '4.0.0-a4', '<')) {
+            $settingsTable = ee()->db->dbprefix('freeform_next_settings');
+            if (ee()->db->table_exists($settingsTable)) {
+                foreach ([
+                    'turnstileTheme' => "VARCHAR(10) NOT NULL DEFAULT 'auto'",
+                    'turnstileSize' => "VARCHAR(10) NOT NULL DEFAULT 'normal'",
+                    'hcaptchaTheme' => "VARCHAR(10) NOT NULL DEFAULT 'light'",
+                    'hcaptchaSize' => "VARCHAR(10) NOT NULL DEFAULT 'normal'",
+                ] as $column => $definition) {
+                    if (!ee()->db->field_exists($column, $settingsTable)) {
+                        ee()->db->query("ALTER TABLE `{$settingsTable}` ADD COLUMN `{$column}` {$definition}");
+                    }
+                }
+            }
+        }
+
+        if (version_compare($previousVersion, '4.0.0-a5', '<')) {
+            $settingsTable = ee()->db->dbprefix('freeform_next_settings');
+            if (ee()->db->table_exists($settingsTable)) {
+                foreach ([
+                    'recaptchaTheme' => "VARCHAR(10) NOT NULL DEFAULT 'light'",
+                    'recaptchaSize' => "VARCHAR(10) NOT NULL DEFAULT 'normal'",
+                ] as $column => $definition) {
+                    if (!ee()->db->field_exists($column, $settingsTable)) {
+                        ee()->db->query("ALTER TABLE `{$settingsTable}` ADD COLUMN `{$column}` {$definition}");
+                    }
+                }
+            }
+        }
+
         return true;
     }
 
@@ -627,7 +672,7 @@ class Freeform_next_upd extends AddonUpdater
     protected function getInstallableActions(): array
     {
         return [
-            new PluginAction('submitForm', 'Freeform_next', true),
+            new PluginAction('submitForm', 'Freeform_next', false),
         ];
     }
 

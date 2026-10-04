@@ -1,0 +1,91 @@
+.freeform-html-editor {
+  overflow: hidden;
+  min-width: 0;
+  border: 1px solid var(--ee-input-border, #d8d9e5);
+  border-radius: 6px;
+  background: var(--ee-input-bg, #fff);
+  box-shadow: 0 1px 2px rgba(31, 35, 60, .04);
+
+  &:focus-within {
+    border-color: var(--ee-input-focus-border, #5965f2);
+    box-shadow: 0 0 0 2px rgba(93, 99, 241, .12);
+  }
+
+  &__toolbar, &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--ee-bg-0, #f7f7fb);
+    color: var(--ee-text-secondary, #757994);
+    font-size: 11px;
+  }
+
+  &__toolbar {
+    min-height: 34px;
+    padding: 0 10px 0 13px;
+    border-bottom: 1px solid var(--ee-border, #e3e5ed);
+  }
+
+  &__language {
+    color: var(--ee-text-primary, #34364b);
+    font-weight: 700;
+    letter-spacing: .03em;
+  }
+
+  &__wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 24px;
+    padding: 2px 7px;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+
+    &:hover, &.is-active { background: var(--ee-button-secondary-bg, #e8e9fb); color: var(--ee-button-secondary-color, #5d63f1); }
+    &:focus-visible { outline: 2px solid var(--ee-input-focus-border, #5965f2); }
+  }
+
+  &__wrap-check {
+    width: 11px;
+    font-size: 12px;
+    font-weight: 700;
+    visibility: hidden;
+  }
+
+  &__wrap.is-active &__wrap-check { visibility: visible; }
+
+  &__body {
+    height: clamp(280px, 42vh, 460px);
+    min-width: 0;
+  }
+
+  &__footer {
+    min-height: 24px;
+    padding: 0 12px;
+    border-top: 1px solid var(--ee-border, #e3e5ed);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cm-editor { height: 100%; font-size: 13px; background: var(--ee-input-bg, #fff); color: var(--ee-input-color, #282a39); }
+  .cm-editor.cm-focused { outline: none; }
+  .cm-scroller { overflow: auto; overscroll-behavior: contain; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; line-height: 1.55; }
+  .cm-content { padding: 10px 0; caret-color: var(--ee-input-color, #282a39); }
+  .cm-line { padding: 0 14px; }
+  .cm-gutters { border-right: 1px solid var(--ee-border, #e3e5ed); background: var(--ee-bg-0, #f7f7fb); color: var(--ee-text-tertiary, #999cb0); }
+  .cm-gutterElement { padding: 0 8px 0 6px; }
+  .cm-activeLine, .cm-activeLineGutter { background: rgba(93, 99, 241, .055); }
+  .cm-selectionBackground { background: rgba(93, 99, 241, .2) !important; }
+
+  &--compact {
+    .freeform-html-editor__body { height: 230px; }
+    .cm-editor { font-size: 12px; }
+    .cm-line { padding: 0 9px; }
+    .cm-gutterElement { padding-right: 5px; }
+  }
+}
+
+textarea[hidden]#bodyHtml { display: none !important; }

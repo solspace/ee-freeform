@@ -44,7 +44,7 @@ class CheckboxGroupField extends AbstractExternalOptionsField implements Multipl
         foreach ($this->options as $index => $option) {
             $isSelected = in_array($option->getValue(), $this->getValue(), false);
 
-            $output .= '<label>';
+            $output .= '<label class="ff-option">';
 
             $output .= '<input '
                 . $this->getAttributeString("name", $this->getHandle() . "[]")

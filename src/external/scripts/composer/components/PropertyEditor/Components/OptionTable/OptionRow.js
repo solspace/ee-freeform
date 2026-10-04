@@ -67,6 +67,7 @@ class OptionRow extends Component {
           <td>
             <input
               type="text"
+              aria-label={`Option ${this.props.index + 1} label`}
               value={label}
               ref="label"
               data-type="label"
@@ -78,6 +79,7 @@ class OptionRow extends Component {
             <td>
               <input
                 type="text"
+                aria-label={`Option ${this.props.index + 1} value`}
                 value={value}
                 data-type="value"
                 ref="value"
@@ -90,17 +92,18 @@ class OptionRow extends Component {
           <td className="composer-option-row-checkbox">
             <input
               type="checkbox"
+              aria-label={`Select option ${this.props.index + 1} by default`}
               checked={isChecked}
               onChange={this.updateIsChecked}
             />
           </td>
           <td className="action">
             {connectDragSource(
-              <a className="move" title="Reorder"></a>,
+              <span className="move" title="Drag to reorder" aria-hidden="true" />,
             )}
           </td>
           <td className="action">
-            <a className="delete" title="Remove" onClick={this.removeValueSetHandler}></a>
+            <button type="button" className="delete" aria-label={`Remove option ${this.props.index + 1}`} onClick={this.removeValueSetHandler} />
           </td>
         </tr>,
       ),
@@ -111,7 +114,11 @@ class OptionRow extends Component {
     const { hash, index } = this.props;
 
     const label = ReactDOM.findDOMNode(this.refs.label).value;
-    let value = label;
+    // A custom value should survive edits to its label. Newly added options
+    // still follow their label until the value has been customized.
+    let value = this.props.showCustomValues && this.props.value !== this.props.label
+      ? this.props.value
+      : label;
 
     const valueInput = ReactDOM.findDOMNode(this.refs.value);
     if (valueInput && event.target.dataset.type === "value") {

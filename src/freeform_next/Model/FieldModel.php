@@ -18,6 +18,7 @@ use Exception;
 use EllisLab\ExpressionEngine\Service\Model\Model;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\FieldInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
+use Solspace\Addons\FreeformNext\Library\Helpers\FieldTypeHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\FreeformHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\HashHelper;
 use Solspace\Addons\FreeformNext\Services\FieldsService;
@@ -74,7 +75,7 @@ class FieldModel extends Model implements JsonSerializable
     protected $dateUpdated;
     protected $additionalProperties;
 
-    protected static $_events = ['afterSave', 'afterDelete', 'beforeInsert', 'beforeUpdate', 'beforeSave'];
+    protected static $_events = ['afterInsert', 'afterDelete', 'beforeInsert', 'beforeUpdate', 'beforeSave'];
 
     protected static $_typed_columns = [
         'values'               => 'json',
@@ -150,7 +151,7 @@ class FieldModel extends Model implements JsonSerializable
             ],
             true
         )) {
-            $returnArray['value']       = $this->value ?: '';
+            $returnArray['value']       = $this->value ?? '';
             $returnArray['placeholder'] = $this->placeholder ?: '';
         }
 
@@ -165,13 +166,13 @@ class FieldModel extends Model implements JsonSerializable
 
         if ($this->type === FieldInterface::TYPE_EMAIL) {
             $returnArray['notificationId'] = 0;
-            $returnArray['values']         = [];
+            $returnArray['values']         = $this->values ?? [];
             $returnArray['placeholder']    = $this->placeholder ?: '';
         }
 
         if ($this->type === FieldInterface::TYPE_DYNAMIC_RECIPIENTS) {
             $returnArray['notificationId'] = 0;
-            $returnArray['value']          = 0;
+            $returnArray['values']         = FieldTypeHelper::recipientIndexes($this->value, $this->options ?? [], false);
             $returnArray['options']        = $this->options ?: [];
             $returnArray['showAsRadio']    = false;
         }
@@ -191,12 +192,12 @@ class FieldModel extends Model implements JsonSerializable
 
         if (in_array($this->type, [FieldInterface::TYPE_RADIO_GROUP, FieldInterface::TYPE_SELECT], true)) {
             $returnArray['showCustomValues'] = $this->hasCustomOptionValues();
-            $returnArray['value']            = $this->value ?: '';
+            $returnArray['value']            = $this->value ?? '';
             $returnArray['options']          = $this->options ?: [];
         }
 
         if ($this->type === FieldInterface::TYPE_DATETIME) {
-            $returnArray['value']               = $this->value ?: '';
+            $returnArray['value']               = $this->value ?? '';
             $returnArray['placeholder']         = $this->placeholder ?: '';
             $returnArray['initialValue']        = $this->getAdditionalProperty('initialValue');
             $returnArray['dateTimeType']        = $this->getAdditionalProperty('dateTimeType', 'both');
@@ -219,7 +220,7 @@ class FieldModel extends Model implements JsonSerializable
         }
 
         if ($this->type === FieldInterface::TYPE_NUMBER) {
-            $returnArray['value']              = $this->value ?: '';
+            $returnArray['value']              = $this->value ?? '';
             $returnArray['placeholder']        = $this->placeholder ?: '';
             $returnArray['minLength']          = $this->getAdditionalProperty('minLength', '');
             $returnArray['maxLength']          = $this->getAdditionalProperty('maxLength', '');
@@ -240,7 +241,7 @@ class FieldModel extends Model implements JsonSerializable
         }
 
         if ($this->type === FieldInterface::TYPE_REGEX) {
-            $returnArray['value']       = $this->value ?: '';
+            $returnArray['value']       = $this->value ?? '';
             $returnArray['placeholder'] = $this->placeholder ?: '';
             $returnArray['pattern']     = $this->getAdditionalProperty('pattern', '');
             $returnArray['message']     = $this->getAdditionalProperty('message', '');
@@ -259,13 +260,13 @@ class FieldModel extends Model implements JsonSerializable
         }
 
         if ($this->type === FieldInterface::TYPE_PHONE) {
-            $returnArray['value']       = $this->value ?: '';
+            $returnArray['value']       = $this->value ?? '';
             $returnArray['placeholder'] = $this->placeholder ?: '';
             $returnArray['pattern']     = $this->getAdditionalProperty('pattern');
         }
 
         if ($this->type === FieldInterface::TYPE_WEBSITE) {
-            $returnArray['value']       = $this->value ?: '';
+            $returnArray['value']       = $this->value ?? '';
             $returnArray['placeholder'] = $this->placeholder ?: '';
         }
 
@@ -295,7 +296,7 @@ class FieldModel extends Model implements JsonSerializable
         foreach ($labels as $index => $label) {
             $value = $values[$index];
 
-            if (empty($label) && empty($value)) {
+            if (($label === '' || $label === null) && ($value === '' || $value === null)) {
                 continue;
             }
 
@@ -338,7 +339,7 @@ class FieldModel extends Model implements JsonSerializable
             [
                 'options' => !empty($savableOptions) ? $savableOptions : null,
                 'values'  => !empty($savableValues) ? $savableValues : null,
-                'value'   => !empty($savableValue) ? $savableValue : null,
+                'value'   => $savableValue,
             ]
         );
     }
@@ -443,7 +444,7 @@ class FieldModel extends Model implements JsonSerializable
     /**
      * Add a new column in the submissions table for this field
      */
-    public function onAfterSave(): void
+    public function onAfterInsert(): void
     {
         if (!$this->canStoreValues()) {
             return;
@@ -452,6 +453,7 @@ class FieldModel extends Model implements JsonSerializable
         $columnName = SubmissionModel::getFieldColumnName($this->id);
         $type       = $this->getColumnType();
 
+        // Only new fields need DDL; it must not implicitly commit a type change.
         try {
             ee()->db->query("ALTER TABLE exp_freeform_next_submissions ADD COLUMN $columnName $type NULL DEFAULT NULL");
         } catch (Exception) {

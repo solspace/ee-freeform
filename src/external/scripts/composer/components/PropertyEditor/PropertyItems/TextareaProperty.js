@@ -22,11 +22,14 @@ export default class TextareaProperty extends BasePropertyItem {
 
     return (
       <textarea
+        id={this.inputId}
+        aria-describedby={this.props.instructions ? this.hintId : undefined}
+        aria-required={!!this.props.required}
         className={classes.join(" ")}
         name={name}
         readOnly={readOnly}
         disabled={disabled}
-        rows={rows ? rows : 5}
+        rows={rows ? rows : 3}
         onChange={onChangeHandler}
         value={value}
         data-nullable={!!nullable}

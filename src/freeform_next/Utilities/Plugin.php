@@ -38,6 +38,7 @@ class Plugin
 
     public function returnJson(mixed $object): void
     {
+        header('Content-Type: application/json; charset=UTF-8');
         echo json_encode($object);
         die();
     }

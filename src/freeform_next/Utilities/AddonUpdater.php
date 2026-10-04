@@ -61,7 +61,9 @@ abstract class AddonUpdater
      */
     final public function update(?string $previousVersion = null): bool
     {
-        $this->runMigrations($previousVersion);
+        if (!$this->runMigrations($previousVersion)) {
+            return false;
+        }
         $this->checkAndInstallActions();
         $this->checkAndInstallExtensions();
 
@@ -261,7 +263,8 @@ abstract class AddonUpdater
                 ->row();
 
             if ($existing) {
-                unset($data['settings'], $data['priority']);
+                // Keep administrator choices when an existing hook is refreshed.
+                unset($data['settings'], $data['priority'], $data['enabled']);
 
                 ee()->db
                     ->where('extension_id', $existing->extension_id)

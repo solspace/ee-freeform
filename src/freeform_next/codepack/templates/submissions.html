@@ -1,0 +1,34 @@
+{embed="%prefix%/inc_header" title="Submissions" form="{segment_3}"}
+{if logged_in_group_id == "1"}
+  {if segment_3 == ""}
+    <div class="demo-heading">
+      <h1>Submission data</h1>
+      <p>Select a form to explore its submissions and spam folder.</p>
+    </div>
+    <div class="demo-tiles">
+      {exp:freeform_next:forms}
+        <a class="demo-tile" href="{path='%prefix%/submissions/{form:handle}'}">
+          <h2>{form:name}</h2>
+          <p>{form:description}</p>
+          <small>{form:submission_count} submissions · {form:spam_count} spam</small>
+        </a>
+        {if form:no_results}<div class="demo-notice">No forms exist for this site yet.</div>{/if}
+      {/exp:freeform_next:forms}
+    </div>
+  {if:elseif segment_4 == "spam"}
+    {if segment_5}
+      {embed="%prefix%/spam_submission" form="{segment_3}" submission_id="{segment_5}"}
+    {if:else}
+      {embed="%prefix%/spam_list" form="{segment_3}"}
+    {/if}
+  {if:elseif segment_4}
+    {embed="%prefix%/submission" form="{segment_3}" submission_id="{segment_4}"}
+  {if:else}
+    {embed="%prefix%/submissions_list" form="{segment_3}"}
+  {/if}
+{if:else}
+  <div class="demo-notice" role="alert">
+    Submission data is available to Super Admins only. Sign in with an admin account to view this demo section.
+  </div>
+{/if}
+{embed="%prefix%/inc_footer"}

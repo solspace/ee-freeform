@@ -63,7 +63,7 @@ class MailingList extends BasePropertyEditor {
   }
 
   render() {
-    const { hash, properties: { value, label, integrationId, resourceId, emailFieldHash, mapping = {}, instructions, hidden } } = this.context;
+    const { hash, properties: { value, integrationId, resourceId, emailFieldHash, mapping = {}, instructions, hidden } } = this.context;
     const { composerProperties, mailingLists, fetchMailingLists, isFetching } = this.props;
 
     let selectedIntegration = null;
@@ -158,14 +158,6 @@ class MailingList extends BasePropertyEditor {
 
         <hr />
 
-        <TextProperty
-          label="Label"
-          instructions="Field label used to describe the field."
-          name="label"
-          value={label}
-          onChangeHandler={this.update}
-        />
-
         <TextareaProperty
           label="Instructions"
           instructions="Field specific user instructions."
@@ -178,7 +170,6 @@ class MailingList extends BasePropertyEditor {
           label="Hide field"
           instructions="Hide the mailing list checkbox from the form and make it always trigger a subscription"
           name="hidden"
-          bold={true}
           checked={hidden}
           onChangeHandler={this.update}
         />
@@ -187,7 +178,6 @@ class MailingList extends BasePropertyEditor {
         <LightSwitchProperty
           label="Checked by default"
           name="value"
-          bold={true}
           checked={value}
           onChangeHandler={this.update}
         />
@@ -205,8 +195,8 @@ class MailingList extends BasePropertyEditor {
           options={lists}
         />
 
-        <button
-          className="btn action download icon"
+        <button type="button"
+          className="button button--default composer-refresh-mailing-lists"
           onClick={fetchMailingLists}
           disabled={isFetching}
         >

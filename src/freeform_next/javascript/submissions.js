@@ -59,15 +59,15 @@
     });
 
     $(function () {
-        $('#change-layout-trigger').featherlight('.choice-panel', {
-            otherClose: 'button[data-featherlight-close]',
-            afterContent: function () {
-                $('ul.very-sortable', this.$content).sortable();
-            }
+        var $columnsMenu = $('.freeform-columns-dropdown');
+        $('ul.very-sortable', $columnsMenu).sortable({ cancel: 'input, button', distance: 5, scroll: false, tolerance: 'pointer' });
+        $columnsMenu.on('click', function (event) {
+            event.stopPropagation();
         });
 
         $('button[data-layout-save]').on('click', function () {
-            var $content = $('.featherlight-content');
+            var $content = $(this).closest('.freeform-columns-dropdown');
+            var $button = $(this);
             var formId = layoutEditorFormId;
             var pushData = [];
 
@@ -80,6 +80,7 @@
                 pushData.push({ id: id, handle: handle, label: label, checked: checked ? 1 : 0 });
             });
 
+            $button.prop('disabled', true);
             $.ajax({
                 url: layoutEditorSaveUrl,
                 type: 'post',
@@ -87,6 +88,9 @@
                 data: { formId: formId, data: pushData },
                 success: function (response) {
                     if (response && response.success) window.location.reload(false);
+                },
+                complete: function () {
+                    $button.prop('disabled', false);
                 }
             });
         });
@@ -97,6 +101,8 @@
         });
 
         $('#quick-export-trigger').featherlight('#quick-export-modal', {
+            variant: 'freeform-export-drawer',
+            closeIcon: '&times; Close modal window <small>[esc]</small>',
             otherClose: '.btn.cancel',
             afterContent: function () {
                 $('.checkbox-select', this.$content).sortable();
@@ -104,4 +110,3 @@
         });
     });
 })(jQuery);
-

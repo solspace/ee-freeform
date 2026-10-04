@@ -37,15 +37,15 @@ class MailingListFieldGroup extends Component {
 
     return (
       <div className="composer-mailing-list-fields">
-        <h3>Mailing Lists</h3>
-        <hr style={{ marginTop: 0, marginBottom: 15 }} />
+        <div className="composer-palette-heading sidebar__section-title">
+          <h3>Mailing Lists</h3>
+        </div>
         <ul>
           {fields.map((field, index) =>
             <Field
               key={index}
               {...field}
               label={field.name}
-              badge={field.source}
               type="mailing_list"
               isUsed={usedFields.indexOf(field.id) !== -1}
               onClick={() => onFieldClick(FieldHelper.hashField(field), field, currentPage)}

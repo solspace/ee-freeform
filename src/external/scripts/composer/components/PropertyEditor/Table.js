@@ -34,7 +34,7 @@ export default class Table extends BasePropertyEditor {
 
   render() {
     const { properties } = this.context;
-    const { hash, label, handle, required, instructions } = properties;
+    const { hash, handle, required, instructions } = properties;
     const { useScript, layout } = properties;
 
     return (
@@ -50,22 +50,13 @@ export default class Table extends BasePropertyEditor {
         <hr />
 
         <LightSwitchProperty
-          label="This field is required?"
+          label="This field is required"
           name="required"
-          bold={true}
           checked={required}
           onChangeHandler={this.update}
         />
 
         <hr />
-
-        <TextProperty
-          label="Label"
-          instructions="Field label used to describe the field."
-          name="label"
-          value={label}
-          onChangeHandler={this.update}
-        />
 
         <TextareaProperty
           label="Instructions"
@@ -78,10 +69,9 @@ export default class Table extends BasePropertyEditor {
         <hr />
 
         <LightSwitchProperty
-          label="Use built in script?"
+          label="Use built in script"
           instructions="Check this to enable built in javascript for handling adding new rows."
           name="useScript"
-          bold={true}
           checked={!!useScript}
           onChangeHandler={this.update}
         />

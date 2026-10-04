@@ -14,13 +14,14 @@ import { composer, context, formId } from "./Composer";
 import { assetSources, fields, fileKinds, formStatuses, specialFields } from "./Fields";
 import { templates } from "./FormTemplates";
 import { generatedOptionLists } from "./GeneratedOptionLists";
+import withHistory from "./History";
 import { integrations } from "./Integrations";
 import { mailingLists } from "./MailingLists";
 import { notifications } from "./Notifications";
 import { placeholders } from "./Placeholders";
 import { sourceTargets } from "./SourceTargets";
 
-export default combineReducers({
+export default withHistory(combineReducers({
   csrfToken: (state = {}) => state,
   formId,
   fields,
@@ -41,4 +42,4 @@ export default combineReducers({
   channelFields: (state = []) => state,
   categoryFields: (state = []) => state,
   memberFields: (state = []) => state,
-});
+}));

@@ -32,7 +32,7 @@ export default class Regex extends BasePropertyEditor {
   };
 
   render() {
-    const { properties: { label, value, handle, placeholder, required, instructions, pattern, message } } = this.context;
+    const { properties: { value, handle, placeholder, required, instructions, pattern, message } } = this.context;
 
     return (
       <div>
@@ -47,21 +47,13 @@ export default class Regex extends BasePropertyEditor {
         <hr />
 
         <CheckboxProperty
-          label="This field is required?"
+          label="This field is required"
           name="required"
           checked={required}
           onChangeHandler={this.update}
         />
 
         <hr />
-
-        <TextProperty
-          label="Label"
-          instructions="Field label used to describe the field."
-          name="label"
-          value={label}
-          onChangeHandler={this.update}
-        />
 
         <TextareaProperty
           label="Instructions"

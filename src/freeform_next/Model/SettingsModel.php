@@ -39,6 +39,17 @@ use Symfony\Component\Finder\SplFileInfo;
  * @property bool   $recaptchaKey
  * @property bool   $recaptchaSecret
  * @property bool   $recaptchaScoreThreshold
+ * @property string $recaptchaTheme
+ * @property string $recaptchaSize
+ * @property string $captchaProvider
+ * @property string $turnstileKey
+ * @property string $turnstileSecret
+ * @property string $turnstileTheme
+ * @property string $turnstileSize
+ * @property string $hcaptchaKey
+ * @property string $hcaptchaSecret
+ * @property string $hcaptchaTheme
+ * @property string $hcaptchaSize
  */
 class SettingsModel extends Model
 {
@@ -69,6 +80,10 @@ class SettingsModel extends Model
     public const DEFAULT_RECAPTCHA_KEY                   = null;
     public const DEFAULT_RECAPTCHA_SECRET                = null;
     public const DEFAULT_RECAPTCHA_SCORE_THRESHOLD       = '0.5';
+    public const CAPTCHA_NONE = 'none';
+    public const CAPTCHA_RECAPTCHA = 'recaptcha';
+    public const CAPTCHA_TURNSTILE = 'turnstile';
+    public const CAPTCHA_HCAPTCHA = 'hcaptcha';
 
     public const SESSION_STORAGE_SESSION  = 'session';
     public const SESSION_STORAGE_DATABASE = 'db';
@@ -97,6 +112,17 @@ class SettingsModel extends Model
     protected $recaptchaKey;
     protected $recaptchaSecret;
     protected $recaptchaScoreThreshold;
+    protected $recaptchaTheme;
+    protected $recaptchaSize;
+    protected $captchaProvider;
+    protected $turnstileKey;
+    protected $turnstileSecret;
+    protected $turnstileTheme;
+    protected $turnstileSize;
+    protected $hcaptchaKey;
+    protected $hcaptchaSecret;
+    protected $hcaptchaTheme;
+    protected $hcaptchaSize;
     protected $autoScrollToErrors;
 
     /**
@@ -129,6 +155,17 @@ class SettingsModel extends Model
                 'recaptchaKey'                => self::DEFAULT_RECAPTCHA_KEY,
                 'recaptchaSecret'             => self::DEFAULT_RECAPTCHA_SECRET,
                 'recaptchaScoreThreshold'     => self::DEFAULT_RECAPTCHA_SCORE_THRESHOLD,
+                'recaptchaTheme'              => 'light',
+                'recaptchaSize'               => 'normal',
+                'captchaProvider'             => null,
+                'turnstileKey'                => null,
+                'turnstileSecret'             => null,
+                'turnstileTheme'              => 'auto',
+                'turnstileSize'               => 'normal',
+                'hcaptchaKey'                 => null,
+                'hcaptchaSecret'              => null,
+                'hcaptchaTheme'               => 'light',
+                'hcaptchaSize'                => 'normal',
                 'autoScrollToErrors'          => self::DEFAULT_AUTO_SCROLL_TO_ERRORS,
             ]
         );
@@ -383,8 +420,46 @@ class SettingsModel extends Model
      */
     public function isRecaptchaEnabled(): bool
     {
-        return (bool) $this->recaptchaEnabled;
+        return $this->getCaptchaProvider() === self::CAPTCHA_RECAPTCHA;
     }
+
+    public function getCaptchaProvider(): string
+    {
+        // An unset provider preserves the pre-v4 reCAPTCHA switch on upgrade.
+        return $this->captchaProvider ?: ($this->recaptchaEnabled ? self::CAPTCHA_RECAPTCHA : self::CAPTCHA_NONE);
+    }
+
+    public function getRecaptchaTheme(): string { return in_array($this->recaptchaTheme, ['light', 'dark'], true) ? $this->recaptchaTheme : 'light'; }
+    public function getRecaptchaSize(): string { return in_array($this->recaptchaSize, ['normal', 'compact'], true) ? $this->recaptchaSize : 'normal'; }
+
+    public function getCaptchaSiteKey(): ?string
+    {
+        return match ($this->getCaptchaProvider()) {
+            self::CAPTCHA_RECAPTCHA => $this->recaptchaKey,
+            self::CAPTCHA_TURNSTILE => $this->turnstileKey,
+            self::CAPTCHA_HCAPTCHA => $this->hcaptchaKey,
+            default => null,
+        };
+    }
+
+    public function getCaptchaSecret(): ?string
+    {
+        return match ($this->getCaptchaProvider()) {
+            self::CAPTCHA_RECAPTCHA => $this->recaptchaSecret,
+            self::CAPTCHA_TURNSTILE => $this->turnstileSecret,
+            self::CAPTCHA_HCAPTCHA => $this->hcaptchaSecret,
+            default => null,
+        };
+    }
+
+    public function getTurnstileKey(): ?string { return $this->turnstileKey; }
+    public function getTurnstileSecret(): ?string { return $this->turnstileSecret; }
+    public function getTurnstileTheme(): string { return in_array($this->turnstileTheme, ['auto', 'light', 'dark'], true) ? $this->turnstileTheme : 'auto'; }
+    public function getTurnstileSize(): string { return in_array($this->turnstileSize, ['normal', 'flexible', 'compact'], true) ? $this->turnstileSize : 'normal'; }
+    public function getHcaptchaKey(): ?string { return $this->hcaptchaKey; }
+    public function getHcaptchaSecret(): ?string { return $this->hcaptchaSecret; }
+    public function getHcaptchaTheme(): string { return in_array($this->hcaptchaTheme, ['light', 'dark'], true) ? $this->hcaptchaTheme : 'light'; }
+    public function getHcaptchaSize(): string { return in_array($this->hcaptchaSize, ['normal', 'compact'], true) ? $this->hcaptchaSize : 'normal'; }
 
     /**
      * @return mixed

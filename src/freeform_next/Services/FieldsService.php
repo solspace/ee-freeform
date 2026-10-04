@@ -14,7 +14,9 @@ use Solspace\Addons\FreeformNext\Library\Configuration\ExternalOptionsConfigurat
 use Solspace\Addons\FreeformNext\Library\Database\FieldHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Factories\PredefinedOptionsFactory;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
+use Solspace\Addons\FreeformNext\Library\Helpers\FieldTypeHelper;
 use Solspace\Addons\FreeformNext\Model\FieldModel;
+use Solspace\Addons\FreeformNext\Model\SubmissionModel;
 use Solspace\Addons\FreeformNext\Repositories\FormRepository;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -73,6 +75,80 @@ class FieldsService implements FieldHandlerInterface
         }
 
         return $fieldTypes;
+    }
+
+    public function getCompatibleFieldTypes(string $type): array
+    {
+        return array_intersect_key(
+            $this->getFieldTypes(),
+            array_flip(FieldTypeHelper::getCompatibleTypes($type))
+        );
+    }
+
+    /** Called inside the same transaction as the field update. */
+    public function changeFieldTypeInForms(FieldModel $field, array $originalDefaults): void
+    {
+        $defaults = $field->jsonSerialize();
+        $recipientOptions = [];
+        foreach (FormRepository::getInstance()->getAllForms() as $form) {
+            if (!$form->layoutJson) {
+                continue;
+            }
+
+            $prepare = function (array $properties) use ($defaults, $form, &$recipientOptions): array {
+                if ($defaults['type'] === FieldInterface::TYPE_DYNAMIC_RECIPIENTS) {
+                    if (($properties['source'] ?? 'custom') !== 'custom') {
+                        $properties['options'] = $this->getOptionsFromSource(
+                            $properties['source'], $properties['target'] ?? null,
+                            (array) ($properties['configuration'] ?? []), $properties['value'] ?? ''
+                        );
+                    }
+                    $options = FieldTypeHelper::normalizeOptions($properties['options'] ?? []);
+                    if (isset($recipientOptions[$form->id]) && $recipientOptions[$form->id] !== $options) {
+                        throw new Exception('This field has different options in the same form. Make its options consistent before changing to Dynamic Recipients.');
+                    }
+                    $recipientOptions[$form->id] = $options;
+                }
+
+                return $properties;
+            };
+            $json = FieldTypeHelper::convertLayout($form->layoutJson, (int) $field->id, $defaults, $prepare);
+            if ($json !== null) {
+                $form->set(['layoutJson' => $json]);
+                $form->save();
+            }
+        }
+
+        $source = $originalDefaults['type'];
+        $target = $defaults['type'];
+        if (FieldTypeHelper::isArrayType($source) === FieldTypeHelper::isArrayType($target)) {
+            return;
+        }
+
+        // Raw DB values avoid decoding old values with the newly changed field
+        // type. Bounded batches retain submission timestamps and other columns.
+        $column = SubmissionModel::getFieldColumnName($field->id);
+        $lastId = 0;
+        do {
+            $query = ee()->db->select('id, formId, ' . $column)
+                ->from(SubmissionModel::TABLE)->where('id >', $lastId)
+                ->order_by('id', 'asc')->limit(500)->get();
+            if ($query === false) {
+                throw new Exception('Unable to read existing submissions for the field type update.');
+            }
+            $rows = $query->result_array();
+            foreach ($rows as $row) {
+                $value = FieldTypeHelper::convertStoredValue(
+                    $row[$column], $source, $target,
+                    $recipientOptions[$row['formId']] ?? ($originalDefaults['options'] ?? [])
+                );
+                if ($value !== $row[$column] && ee()->db->where('id', $row['id'])
+                    ->update(SubmissionModel::TABLE, [$column => $value]) === false) {
+                    throw new Exception('Unable to convert existing submissions. The field type change was rolled back.');
+                }
+                $lastId = (int) $row['id'];
+            }
+        } while (count($rows) === 500);
     }
 
     /**

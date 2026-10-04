@@ -93,7 +93,7 @@ export default class HtmlInput extends Component {
     }
     return (
       <div className={this.prepareWrapperClass()}>
-        <Label htmlFor={this.htmlFor} label={this.getLabel()} type={type} isRequired={required}>{this.getBadges()}</Label>
+        <Label label={this.getLabel()} type={type} isRequired={required}>{this.getBadges()}</Label>
         <Instructions instructions={instructions} />
         <div className="input-wrapper">
           {this.renderInput()}

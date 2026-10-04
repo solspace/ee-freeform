@@ -1,7 +1,16 @@
 $(() => {
-  const table = $('#field-settings');
+  $('#field-settings').sortable({ handle: '.handle', tolerance: 'pointer' });
 
-  $('tbody', table).sortable();
+  const statusSelector = $('.freeform-export-status-selector');
+  statusSelector.on('change', 'input[type=checkbox]', function() {
+    const checked = $('input[type=checkbox]:checked', statusSelector);
+    const selection = $('.freeform-export-status-selection', statusSelector).empty();
+    if (checked.length === 1) {
+      selection.append(checked.closest('label').find('.status-tag').clone());
+    } else {
+      selection.text(checked.length ? `${checked.length} selected` : 'All statuses');
+    }
+  });
 
   $('.tbl-search .dropdown-field > a').on({
     click: function(e) {
@@ -22,7 +31,7 @@ $(() => {
   addFilterButton.on({
     click: () => {
       let clone = template.html();
-      const lastIterator = $('tbody > tr[data-iterator]:last').data('iterator');
+      const lastIterator = $('tbody > tr[data-iterator]:last', filterTable).data('iterator');
 
       let currentIterator = 0;
       if (lastIterator !== undefined) {
@@ -35,14 +44,8 @@ $(() => {
     }
   });
 
-  filterTable.on({
-    click: function() {
-      if (!confirm('Are you sure?')) {
-        return false;
-      }
-
-      $(this).parents('tr:first').remove();
-    }
-  }, 'li.delete a');
+  filterTable.on('click', '.freeform-filter-delete', function() {
+    $(this).closest('tr').remove();
+  });
 
 });

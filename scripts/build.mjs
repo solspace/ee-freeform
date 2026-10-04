@@ -63,7 +63,7 @@ async function clean() {
       THEMES_DEST,
       "src/themes/freeform_next/javascript/composer",
       ROOT_THEMES,
-    ].map((dir) => rm(dir, { recursive: true, force: true }))
+    ].map((dir) => rm(dir, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 }))
   );
 }
 
@@ -91,6 +91,20 @@ async function buildReact() {
 // output stays readable and editable. Only the React app bundle gets minified.
 async function buildScripts() {
   await cp(CP_SRC, CP_DEST, { recursive: true });
+}
+
+// Bundle the standalone notification HTML editor with its CodeMirror modules.
+async function buildHtmlEditor() {
+  await esbuild({
+    entryPoints: ["src/external/scripts/htmlEditor.js"],
+    outfile: `${CP_DEST}/htmlEditor.js`,
+    bundle: true,
+    format: "iife",
+    target: "es2018",
+    minify: true,
+    legalComments: "none",
+    logLevel: "warning",
+  });
 }
 
 // SCSS -> dart-sass (compile) -> Lightning CSS (autoprefix + minify).
@@ -140,6 +154,7 @@ async function buildFonts() {
 
 async function buildThemes() {
   await cp(THEMES_SRC, THEMES_DEST, { recursive: true });
+  await cp("src/external/scripts/form-ajax.js", `${ROOT_THEMES}/javascript/form-ajax.js`);
 }
 
 // Copy the hand-maintained datepicker/flatpickr assets into the root themes dir.
@@ -158,6 +173,10 @@ async function buildDatepicker() {
   await cp(
     `${STYLES_DEST}/fields/datepicker.css`,
     `${ROOT_THEMES}/css/fields/datepicker.css`
+  );
+  await cp(
+    `${STYLES_DEST}/form-feedback.css`,
+    `${ROOT_THEMES}/css/form-feedback.css`
   );
 }
 
@@ -206,7 +225,7 @@ function zipDirectory(sourceDir, outFile) {
 async function pack() {
   const version = readVersion();
   const buildDir = "dist/build";
-  await rm(buildDir, { recursive: true, force: true });
+  await rm(buildDir, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 });
   await mkdir(buildDir, { recursive: true });
 
   await cp("src/freeform_next", join(buildDir, "freeform_next"), { recursive: true });
@@ -225,7 +244,7 @@ async function pack() {
     `${buildDir}/freeform_next/vendor/**/{tests,Tests,test,doc}`,
     { onlyDirectories: true }
   );
-  await Promise.all(junkDirs.map((dir) => rm(dir, { recursive: true, force: true })));
+  await Promise.all(junkDirs.map((dir) => rm(dir, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 })));
 
   // Drop macOS cruft so it never ships in the addon.
   const dsStores = await glob(`${buildDir}/**/.DS_Store`, { dot: true });
@@ -234,7 +253,7 @@ async function pack() {
   await mkdir("dist", { recursive: true });
   const zipPath = `dist/EE-Freeform_${version}.zip`;
   await zipDirectory(buildDir, zipPath);
-  await rm(buildDir, { recursive: true, force: true });
+  await rm(buildDir, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 });
   return zipPath;
 }
 
@@ -243,6 +262,7 @@ async function main() {
   console.log("Building Freeform for EE...");
 
   await step("clean", clean);
+  await mkdir(CP_DEST, { recursive: true });
   await Promise.all([
     step("react bundle", buildReact),
     step("cp scripts", buildScripts),
@@ -252,6 +272,7 @@ async function main() {
     step("themes", buildThemes),
     step("composer", async () => composer()),
   ]);
+  await step("html editor", buildHtmlEditor);
   await step("datepicker assets", buildDatepicker);
   let zipPath;
   await step("package zip", async () => {

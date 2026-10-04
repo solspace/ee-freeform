@@ -53,8 +53,9 @@ const specialFields = [
   },
 ];
 
-if (isRecaptchaEnabled && !isRecaptchaV3) {
-  specialFields.push({ type: FieldTypes.RECAPTCHA, label: "reCAPTCHA" });
+if (captchaProvider !== "none" && !(captchaProvider === "recaptcha" && isRecaptchaV3)) {
+  const providerLabels = { recaptcha: "reCAPTCHA", turnstile: "Turnstile", hcaptcha: "hCaptcha" };
+  specialFields.push({ type: FieldTypes.RECAPTCHA, label: providerLabels[captchaProvider] || "CAPTCHA" });
 }
 
 let store = createStore(

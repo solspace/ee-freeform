@@ -26,7 +26,7 @@ export default class CheckboxProperty extends BasePropertyItem {
       <div className="composer-property-item">
         {instructions &&
         <div className="composer-property-heading">
-          <div className="composer-property-instructions">
+          <div id={this.hintId} className="composer-property-instructions">
             <p>{instructions}</p>
           </div>
         </div>
@@ -41,29 +41,27 @@ export default class CheckboxProperty extends BasePropertyItem {
   renderInput() {
     const { label, name, readOnly, disabled, onChangeHandler, className, checked, bold } = this.props;
 
-    const randId = Math.random().toString(36).substring(2, 9);
-
     let style = { fontWeight: "normal" };
 
     if (!!bold) {
       style.fontWeight = "bold";
-      style.color = "#576574";
     }
 
     return (
       <div className="composer-property-checkbox">
         <input
-          id={randId}
+          id={this.inputId}
+          aria-describedby={this.props.instructions ? this.hintId : undefined}
           type="checkbox"
           className={className}
           name={name}
           readOnly={readOnly}
-          disabled={disabled}
+          disabled={disabled || readOnly}
           checked={!!checked}
           onChange={onChangeHandler}
           value={true}
         />
-        <label htmlFor={randId} style={style}>
+        <label htmlFor={this.inputId} style={style}>
           {label}
         </label>
       </div>

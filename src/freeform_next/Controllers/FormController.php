@@ -56,8 +56,8 @@ class FormController extends Controller
      */
     public function index(): CpView
     {
-        $canManageForms = $this->getPermissionsService()->canManageForms(ee()->session->userdata('group_id'));
-        $canAccessSubmissions = $this->getPermissionsService()->canAccessSubmissions(ee()->session->userdata('group_id'));
+        $canManageForms = $this->getPermissionsService()->canManageForms();
+        $canAccessSubmissions = $this->getPermissionsService()->canAccessSubmissions();
         $settingsService = new SettingsService();
         $spamFolderEnabled = $settingsService->getSettingsModel()->isSpamFolderEnabled();
 
@@ -175,7 +175,7 @@ class FormController extends Controller
      */
     public function edit(FormModel $form): RedirectView|CpView
     {
-        if (!($this->getPermissionsService()->canManageForms(ee()->session->userdata('role_id')))) {
+        if (!($this->getPermissionsService()->canManageForms())) {
             return new RedirectView($this->getLink('denied'));
         }
 
@@ -214,6 +214,7 @@ class FormController extends Controller
                     'memberFields'             => $this->getMemberFields(),
                     'isRecaptchaEnabled'       => $settingsService->getSettingsModel()->isRecaptchaEnabled(),
                     'isRecaptchaV3'            => $settingsService->getSettingsModel()->getRecaptchaType() === 'v3',
+                    'captchaProvider'          => $settingsService->getSettingsModel()->getCaptchaProvider(),
                 ]
             );
 
@@ -228,7 +229,7 @@ class FormController extends Controller
     {
         $view = new AjaxView();
 
-        if (!($this->getPermissionsService()->canManageForms(ee()->session->userdata('group_id')))) {
+        if (!($this->getPermissionsService()->canManageForms())) {
             return $view->addError('No access');
         }
 
@@ -321,7 +322,7 @@ class FormController extends Controller
      */
     public function batchDelete(): RedirectView
     {
-        if (!($this->getPermissionsService()->canManageForms(ee()->session->userdata('group_id')))) {
+        if (!($this->getPermissionsService()->canManageForms())) {
             return new RedirectView($this->getLink('denied'));
         }
 

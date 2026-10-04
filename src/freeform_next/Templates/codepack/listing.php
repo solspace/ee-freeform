@@ -1,56 +1,25 @@
 <?php
 /** @var \Solspace\Addons\FreeformNext\Library\Codepack\Codepack $codepack */
+$sampleTemplates = [
+    'Tailwind 4 Light', 'Tailwind 4 Dark',
+    'Bootstrap 5 Light', 'Bootstrap 5 Dark', 'Bootstrap 5 Floating Labels',
+    'Flexbox', 'Grid',
+    'Basic Light', 'Basic Dark', 'Basic Floating Labels',
+];
 ?>
-<table>
-    <tr>
-        <th data-prefix class="folder">
-            <?php echo $prefix ?>
-        </th>
-    </tr>
-    <?php foreach ($codepack->getTemplates()->getContents() as $file) : ?>
-        <tr>
-            <td>
-                <?= $file->getName() ?>
-            </td>
-        </tr>
-    <?php endforeach; ?>
-</table>
-
+<div class="freeform-demo-install">
+    <p>The demo creates a small ExpressionEngine template group with a form simulator, submissions area, and spam viewer. Switch between these ten included formatting templates without changing a form's saved settings.</p>
+    <ul class="freeform-demo-samples">
+        <?php foreach ($sampleTemplates as $name): ?>
+            <li><?= htmlspecialchars($name, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></li>
+        <?php endforeach; ?>
+    </ul>
+    <p class="freeform-demo-install-note">Submission data is visible to Super Admins only. Installing into an existing group updates demo templates with matching names.</p>
+</div>
 <style>
-    @font-face {
-        font-family: 'Solspace Font Awesome 6 Pro Solid';
-        src: url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-solid-900.svg?61199501');
-        src: url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-solid-900.eot?61199501#iefix') format('embedded-opentype'),
-        url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-solid-900.woff2?61199501') format('woff2'),
-        url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-solid-900.woff?61199501') format('woff'),
-        url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-solid-900.ttf?61199501') format('truetype'),
-        url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-solid-900.svg?61199501#solspace-freeform') format('svg');
-        font-weight: 900;
-        font-style: normal;
-    }
-
-    @font-face {
-        font-family: 'Solspace Font Awesome 6 Pro Regular';
-        src: url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-regular-400.svg?61199501');
-        src: url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-regular-400.eot?61199501#iefix') format('embedded-opentype'),
-        url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-regular-400.woff2?61199501') format('woff2'),
-        url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-regular-400.woff?61199501') format('woff'),
-        url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-regular-400.ttf?61199501') format('truetype'),
-        url('<?php echo URL_THIRD_THEMES ?>/freeform_next/font/fontawesome-pro-6.7.2-web/webfonts/fa-regular-400.svg?61199501#solspace-freeform') format('svg');
-        font-style: normal;
-        font-weight: 400;
-    }
-
-    .folder:before {
-        content: '\f07c';
-        font-family: 'Solspace Font Awesome 6 Pro Regular', 'Solspace Font Awesome 6 Pro Solid', sans-serif;
-        color: #77bce6;
-        font-weight: normal;
-        margin-right: 5px;
-    }
+.freeform-demo-install { max-width: 1120px; font-size: 13px; line-height: 1.5; }
+.freeform-demo-install p { margin: 0 0 12px; }
+.freeform-demo-samples { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 7px 16px; margin: 0 0 14px; padding: 0; list-style: none; }
+.freeform-demo-samples li { overflow: hidden; padding: 7px 9px; border: 1px solid var(--ee-border, #dfe0ee); border-radius: 5px; background: var(--ee-input-bg, #fff); text-overflow: ellipsis; white-space: nowrap; }
+.freeform-demo-install-note { color: var(--ee-text-secondary, #606477); }
 </style>
-
-
-<script>
-
-</script>

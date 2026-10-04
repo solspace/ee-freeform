@@ -231,7 +231,6 @@ class DynamicRecipientField extends AbstractField implements RecipientInterface,
 
         $output = '<select '
             . $this->getAttributeString('name', $this->getHandle())
-            . $this->getAttributeString('type', $this->getType())
             . $this->getAttributeString('id', $this->getIdAttribute())
             . $this->getAttributeString('class', $attributes->getClass())
             . $this->getRequiredAttribute()
@@ -258,7 +257,7 @@ class DynamicRecipientField extends AbstractField implements RecipientInterface,
         $output     = '';
 
         foreach ($this->getOptions() as $index => $option) {
-            $output .= '<label>';
+            $output .= '<label class="ff-option">';
 
             $output .= '<input '
                 . $this->getAttributeString('name', $this->getHandle())
@@ -267,6 +266,7 @@ class DynamicRecipientField extends AbstractField implements RecipientInterface,
                 . $this->getAttributeString('class', $attributes->getClass())
                 . $this->getAttributeString('value', $index)
                 . $this->getParameterString('checked', $option->isChecked())
+                . ($index === 0 ? $this->getRequiredAttribute() : '')
                 . $attributes->getInputAttributesAsString()
                 . '/>';
             $output .= $this->translate($option->getLabel());
@@ -285,7 +285,7 @@ class DynamicRecipientField extends AbstractField implements RecipientInterface,
         $output     = '';
 
         foreach ($this->options as $index => $option) {
-            $output .= '<label>';
+            $output .= '<label class="ff-option">';
 
             $output .= '<input '
                 . $this->getAttributeString('name', $this->getHandle() . '[]')

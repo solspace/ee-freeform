@@ -14,10 +14,10 @@ return static function (RectorConfig $config): void {
 
     $config->paths([__DIR__]);
 
-    $config->phpVersion(PhpVersion::PHP_80);
+    $config->phpVersion(PhpVersion::PHP_82);
 
     $config->sets([
-        LevelSetList::UP_TO_PHP_80,
+        LevelSetList::UP_TO_PHP_82,
         SetList::TYPE_DECLARATION,
     ]);
 

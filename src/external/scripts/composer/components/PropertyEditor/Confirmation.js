@@ -39,7 +39,7 @@ class Confirmation extends BasePropertyEditor {
   render() {
     const { composerProperties } = this.props;
 
-    const { properties: { label, value, handle, placeholder, required, instructions, targetFieldHash } } = this.context;
+    const { properties: { value, handle, placeholder, required, instructions, targetFieldHash } } = this.context;
 
     let allowedFields = [];
     for (let key in composerProperties) {
@@ -71,22 +71,13 @@ class Confirmation extends BasePropertyEditor {
         <hr />
 
         <LightSwitchProperty
-          label="This field is required?"
+          label="This field is required"
           name="required"
-          bold={true}
           checked={required}
           onChangeHandler={this.update}
         />
 
         <hr />
-
-        <TextProperty
-          label="Label"
-          instructions="Field label used to describe the field."
-          name="label"
-          value={label}
-          onChangeHandler={this.update}
-        />
 
         <TextareaProperty
           label="Instructions"

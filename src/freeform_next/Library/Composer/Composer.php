@@ -16,6 +16,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Attributes\FormAttributes;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Context;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Properties;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Properties\FormProperties;
 use Solspace\Addons\FreeformNext\Library\Database\CRMHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Database\FieldHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Database\FormHandlerInterface;
@@ -80,7 +81,7 @@ class Composer
     /**
      * @return array
      */
-    public function getComposerStateJSON()
+    public function getComposerStateJSON(int $flags = 0)
     {
         $jsonObject                       = new stdClass();
         $jsonObject->composer             = new stdClass();
@@ -88,7 +89,7 @@ class Composer
         $jsonObject->composer->properties = $this->properties;
         $jsonObject->context              = $this->context;
 
-        return json_encode($jsonObject);
+        return json_encode($jsonObject, $flags);
     }
 
     /**
@@ -197,9 +198,13 @@ class Composer
                     'handle'                => 'composer_form',
                     'submissionTitleFormat' => '{current_time format="%D, %F %d, %Y - %g:%i:%s"}',
                     'description'           => '',
-                    'formTemplate'          => 'flexbox.html',
+                    'formTemplate'          => 'basic-light.html',
                     'returnUrl'             => '/',
+                    'successBehavior'       => FormProperties::SUCCESS_BEHAVIOR_RETURN_URL,
+                    'successMessage'        => FormProperties::DEFAULT_SUCCESS_MESSAGE,
+                    'errorMessage'          => FormProperties::DEFAULT_ERROR_MESSAGE,
                     'storeData'             => true,
+                    'useAjax'               => true,
                     'defaultStatus'         => $this->statusHandler->getDefaultStatusId(),
                 ],
                 Properties::INTEGRATION_HASH         => [
@@ -250,9 +255,13 @@ class Composer
                 'handle'                => $this->customComposerState->handle,
                 'submissionTitleFormat' => '{current_time format="%D, %F %d, %Y - %g:%i:%s"}',
                 'description'           => $this->customComposerState->description,
-                'formTemplate'          => 'flexbox.html',
+                'formTemplate'          => 'basic-light.html',
                 'returnUrl'             => '/',
+                'successBehavior'       => FormProperties::SUCCESS_BEHAVIOR_RETURN_URL,
+                'successMessage'        => FormProperties::DEFAULT_SUCCESS_MESSAGE,
+                'errorMessage'          => FormProperties::DEFAULT_ERROR_MESSAGE,
                 'storeData'             => true,
+                'useAjax'               => true,
                 'defaultStatus'         => $this->customComposerState->defaultStatus->id,
             ],
             Properties::INTEGRATION_HASH         => [

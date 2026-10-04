@@ -8,22 +8,39 @@
  * @license       https://docs.solspace.com/license-agreement/
  */
 
-$minRowHeight: 60px;
+$minRowHeight: 48px;
 
 .builder {
   position: relative;
-  background: $color-cp-bg-white;
+  background: var(--ee-panel-bg, var(--ee-input-bg, #ffffff));
   flex: $builderFlex;
-  padding: 10px !important;
+  padding: 4px 12px 12px !important;
 
-  overflow: hidden;
+  overflow-y: auto;
+  overscroll-behavior: none;
+  overflow-anchor: none;
+  scrollbar-gutter: stable;
+  scroll-behavior: auto;
 
   > div {
-    height: 100%;
+    min-height: 100%;
+  }
+
+  .composer-canvas {
+    min-height: 100%;
+  }
+
+  .tabs {
+    position: sticky;
+    top: 0;
+    margin: -4px -12px 0;
+    padding: 0 12px;
+    z-index: 3;
+    background: var(--ee-panel-bg, var(--ee-input-bg, #ffffff));
   }
 
   .layout {
-    padding: 20px 0 0;
+    padding: 28px 0 0;
   }
 
   .composer-row-placeholder {
@@ -56,7 +73,7 @@ $minRowHeight: 60px;
     min-height: $minRowHeight;
     padding: 0;
 
-    background: $color-white;
+    background: transparent;
 
     .composer-row-placeholder {
       position: absolute;
@@ -74,26 +91,35 @@ $minRowHeight: 60px;
       justify-content: space-around;
       align-items: stretch;
 
-      padding: 0 10px;
+      padding: 0;
+      gap: 6px;
+      margin-bottom: 2px;
 
       .composer-column {
         position: relative;
         flex: 0 1 100%;
-        padding: 8px 8px 0 8px;
+        padding: 6px 8px 2px;
+        min-width: 0;
+        border-radius: 6px;
 
-        border: 2px dashed transparent;
+        border: 1px solid transparent;
 
         &.composer-column-active {
-          background: rgba($color-placeholder, 0.4);
-          border-color: rgba($color-placeholder-border, 0.2);
+          background: var(--ee-accent-light, #eaebfd);
+          border-color: var(--ee-input-focus-border, #5d63f1);
 
           .composer-submit-position-wrapper {
-            padding-bottom: 8px;
+            padding-bottom: 2px;
           }
         }
 
-        &:hover {
-          background: rgba($color-placeholder, 0.4);
+        &.composer-column-submit {
+          padding-top: 28px;
+        }
+
+        &:hover:not(.composer-column-active) {
+          background: var(--ee-bg-0, #f7f7fb);
+          border-color: var(--ee-border, #dfe0ee);
         }
 
         transition: background $anim-speed $anim-ease;
@@ -114,8 +140,8 @@ $minRowHeight: 60px;
 
         .composer-column-actions {
           left: auto;
-          right: 8px;
-          top: 12px;
+          right: -2px;
+          top: 0;
           z-index: 2;
         }
 
@@ -155,9 +181,9 @@ $minRowHeight: 60px;
           background-image: none;
           display: block;
           width: 100%;
-          padding: 8px 15px;
-          font-size: 1rem;
-          line-height: 1.6;
+          padding: 5px 8px;
+          font-size: 13px;
+          line-height: 1.5;
           color: var(--ee-input-color);
           background-color: var(--ee-input-bg);
           transition: border-color 200ms ease, box-shadow 200ms ease;
@@ -171,9 +197,9 @@ $minRowHeight: 60px;
           display: block;
           margin: 0;
           width: 100%;
-          font-size: 1rem;
-          line-height: 1.6;
-          padding: 8px 15px;
+          font-size: 13px;
+          line-height: 1.5;
+          padding: 5px 8px;
           color: var(--ee-input-color);
           background-color: var(--ee-input-bg);
           border: 1px solid var(--ee-input-border);
@@ -192,10 +218,10 @@ $minRowHeight: 60px;
           border: 1px solid var(--ee-input-border);
           border-radius: 5px;
           box-shadow: 0 1px 2px 0 var(--ee-shadow-input);
-          font-size: 1rem;
-          line-height: 1.6;
+          font-size: 13px;
+          line-height: 1.5;
           width: 100%;
-          padding: 8px 15px;
+          padding: 5px 8px;
           max-height: unset;
           min-height: unset;
           resize: unset;
@@ -231,13 +257,14 @@ $minRowHeight: 60px;
           position: relative;
           margin: 0 !important;
           line-height: 1.4;
-          color: var(--ee-text-secondary);
+          color: var(--ee-text-tertiary, var(--ee-text-secondary, #5a5b7f));
           display: block;
           font-size: 0.8rem;
           font-style: normal;
         }
 
-        label {
+        label,
+        .composer-field-label {
           display: flex;
           align-items: center;
           justify-content: flex-start;
@@ -286,13 +313,13 @@ $minRowHeight: 60px;
         .composer-ft-phone-wrapper,
         .composer-ft-radio-group-wrapper,
         .composer-ft-rating-wrapper {
-          gap: 5px;
+          gap: 2px;
           display: flex;
           flex-direction: column;
-          margin-bottom: 10px;
+          margin-bottom: 4px;
 
           .input-wrapper {
-            margin-top: 5px;
+            margin-top: 1px;
           }
         }
 
@@ -307,15 +334,15 @@ $minRowHeight: 60px;
             position: relative;
 
             &:after {
-              font-size: 17px;
+              font-size: 14px;
               font-family: "solspace-freeform", sans-serif;
               display: block;
 
               position: absolute;
               right: 8px;
-              top: 7px;
+              top: 5px;
 
-              color: #CCC;
+              color: var(--ee-text-tertiary, #8082a5);
             }
           }
         }
@@ -376,7 +403,7 @@ $minRowHeight: 60px;
   padding: 0 7px;
   margin: 0 0 0 5px;
 
-  color: #BBBDBE;
+  color: var(--ee-text-secondary, #576574);
 
   border-radius: 4px;
 
@@ -427,33 +454,35 @@ $minRowHeight: 60px;
 
 .composer-property-item-lightswitch {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto auto;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 10px;
+  grid-template-rows: auto;
   row-gap: 6px;
-  align-items: start;
+  align-items: center;
 }
 
 .composer-property-item-lightswitch .composer-property-heading {
-  grid-column: 1;
+  grid-column: 2;
   grid-row: 1;
-  margin: 0;
+  margin: 0 !important;
 }
 
 .composer-property-item-lightswitch .composer-property-heading > label {
+  display: block;
   margin: 0;
 }
 
 .composer-property-item-lightswitch .composer-property-input {
   grid-column: 1;
-  grid-row: 2;
+  grid-row: 1;
   margin: 0;
   width: auto;
   justify-self: start;
 }
 
 .composer-property-item-lightswitch .composer-property-lightswitch {
-  --lightswitch-width: 48px;
-  --lightswitch-height: 26px;
+  --lightswitch-width: 36px;
+  --lightswitch-height: 20px;
   --lightswitch-pad: 2px;
   --lightswitch-on: var(--ee-input-toggle-active-bg);
   --lightswitch-off: var(--ee-input-toggle-bg);
@@ -481,8 +510,9 @@ $minRowHeight: 60px;
 .composer-property-item-lightswitch .lightswitch-input {
   position: absolute;
   opacity: 0;
-  width: 0;
-  height: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
 }
 
 .composer-property-item-lightswitch .lightswitch-visual {
@@ -490,7 +520,7 @@ $minRowHeight: 60px;
   width: 100%;
   height: 100%;
   background: var(--lightswitch-off);
-  border-radius: 13px;
+  border-radius: 10px;
   transition: all 100ms ease;
   position: relative;
 }
@@ -518,11 +548,24 @@ $minRowHeight: 60px;
 }
 
 .composer-property-item-lightswitch .lightswitch-input:focus-visible + .lightswitch-visual {
-  outline: 2px solid #94a3b8;
+  outline: 2px solid var(--ee-input-focus-border, #5d63f1);
   outline-offset: 2px;
 }
 
-.composer-property-item-lightswitch .lightswitch-input:disabled + å.lightswitch-visual {
+.composer-property-item-lightswitch .lightswitch-input:disabled + .lightswitch-visual {
   opacity: .5;
   cursor: not-allowed;
+}
+.composer-recaptcha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(310px, 100%);
+  min-height: 52px;
+  padding: 10px 14px;
+  border: 1px solid #d6d9df;
+  border-radius: 4px;
+  background: #fafbfc;
+  color: #535964;
+  font-size: 13px;
 }

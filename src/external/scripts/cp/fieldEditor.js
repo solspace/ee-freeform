@@ -41,6 +41,8 @@ $(() => {
       }
     };
 
+    self.on('freeform:options-changed', () => self.checkValueCount());
+
     editor
     // REMOVE button click handler
       .on({
@@ -115,6 +117,95 @@ $(() => {
     self.showValues($('.value-toggler input:checked').val() === "1");
     self.showValues($('.value-toggler input:hidden').val() === "1");
     self.checkValueCount();
+  });
+
+  // Confirm before carrying unsaved settings into the selected type.
+  $('[data-compatible-field-types]').each((i, select) => {
+    let previousType = $(select).val();
+    const toggleGroups = () => EE.cp.form_group_toggle(select);
+    $(select).on('change', () => {
+      const nextType = $(select).val();
+      if (previousType === nextType) return;
+      const label = type => $(select).find('option').filter((index, option) => option.value === type).text();
+      // Native EE's inline change handler ran first. Keep the current editor
+      // intact until confirmation; Cancel and Escape leave it untouched.
+      $(select).val(previousType);
+      toggleGroups();
+      const dialog = $(`<dialog class="freeform-field-type-dialog panel" role="alertdialog" aria-modal="true"
+        aria-labelledby="freeform-type-title-${i}" aria-describedby="freeform-type-description-${i}">
+        <div class="panel-heading"><h2 id="freeform-type-title-${i}">Change field type?</h2></div>
+        <div class="panel-body" id="freeform-type-description-${i}">
+          <p data-conversion></p>
+          <p>This change applies to every form using this field when you save. Existing data could behave differently, and validation, custom templates, or integrations may need updates. Type-specific settings will be reset.</p>
+          <p data-recipient-warning>Dynamic Recipients requires email addresses for its option values. Review these in each form and configure a notification template before enabling recipient emails. Options from a data source become a fixed list.</p>
+        </div>
+        <div class="panel-footer">
+          <button type="button" class="button button--default" data-cancel>Cancel</button>
+          <button type="button" class="button button--primary" data-confirm>Change Type</button>
+        </div>
+      </dialog>`).appendTo(document.body);
+      $('[data-conversion]', dialog).text(`Change from ${label(previousType)} to ${label(nextType)}?`);
+      $('[data-recipient-warning]', dialog).toggle(nextType === 'dynamic_recipients');
+      const cancel = $('[data-cancel]', dialog)[0];
+      const confirm = $('[data-confirm]', dialog)[0];
+      const close = () => {
+        dialog[0].close();
+        dialog.remove();
+        select.focus();
+      };
+      cancel.addEventListener('click', close);
+      dialog[0].addEventListener('cancel', event => { event.preventDefault(); close(); });
+      dialog[0].addEventListener('keydown', event => {
+        if (event.key !== 'Tab') return;
+        if (event.shiftKey && document.activeElement === cancel) {
+          event.preventDefault(); confirm.focus();
+        } else if (!event.shiftKey && document.activeElement === confirm) {
+          event.preventDefault(); cancel.focus();
+        }
+      });
+      confirm.addEventListener('click', () => {
+        const previousPrefix = `types[${previousType}]`;
+        const nextPrefix = `types[${nextType}]`;
+        ['value', 'placeholder'].forEach(property => {
+          const sourceProperty = property === 'value' && previousType === 'datetime' ? 'initialValue' : property;
+          const targetProperty = property === 'value' && nextType === 'datetime' ? 'initialValue' : property;
+          const source = $(`[name="${previousPrefix}[${sourceProperty}]"]`);
+          const target = $(`[name="${nextPrefix}[${targetProperty}]"]`);
+          if (source.length && target.length) target.val(source.val());
+        });
+
+        const source = wrappers.has(`[name^="${previousPrefix}"]`);
+        const target = wrappers.has(`[name^="${nextPrefix}"]`);
+        if (source.length && target.length) {
+          const items = $('.option-editor .items', source).children().clone();
+          items.find('input[name]').each((index, input) => {
+            input.name = input.name.replace(previousPrefix, nextPrefix);
+          });
+          // An intermediate type can have multiple default choices before Save.
+          if ($('.option-editor', target).is('[data-single-value]')) {
+            items.find('input[type=checkbox]:checked').slice(1).each((index, input) => {
+              $(input).prop('checked', false).prev().val(0);
+            });
+          }
+          $('.option-editor .items', target).empty().append(items);
+          const customValues = $('.value-toggler input', source).val();
+          $('.value-toggler input', target).val(customValues);
+          target.toggleClass('show-values', customValues === '1');
+          $('.value-toggler button', target)
+            .toggleClass('on', customValues === '1')
+            .toggleClass('off', customValues !== '1')
+            .attr('data-state', customValues === '1' ? 'on' : 'off')
+            .attr('aria-checked', customValues === '1' ? 'true' : 'false');
+          target.trigger('freeform:options-changed');
+        }
+        previousType = nextType;
+        $(select).val(nextType);
+        toggleGroups();
+        close();
+      });
+      dialog[0].showModal();
+      cancel.focus();
+    });
   });
 
   // $('select#dateTimeType')

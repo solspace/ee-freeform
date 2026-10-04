@@ -13,9 +13,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import FieldHelper from "../../helpers/FieldHelper";
 import Field from "./Field";
+import AddNewField from "./Components/AddNewField";
 
 class FieldGroup extends Component {
   static propTypes = {
+    fieldCount: PropTypes.number.isRequired,
     fields: PropTypes.arrayOf(
       PropTypes.shape({
         type: PropTypes.string.isRequired,
@@ -30,16 +32,17 @@ class FieldGroup extends Component {
 
   static contextTypes = {
     canManageFields: PropTypes.bool.isRequired,
-    canManageNotifications: PropTypes.bool.isRequired,
+    formPropCleanup: PropTypes.bool.isRequired,
   };
 
   render() {
-    const { title, fields, currentPage, usedFields, onFieldClick } = this.props;
+    const { fieldCount, fields, currentPage, usedFields, onFieldClick } = this.props;
+    const { canManageFields, formPropCleanup } = this.context;
+    const canCreate = canManageFields && (!formPropCleanup || fieldCount < 15);
 
     return (
       <div className="composer-fields">
-        <h3>Fields</h3>
-        <hr style={{ marginTop: 0, marginBottom: 15 }} />
+        <AddNewField canCreate={canCreate} />
         <ul>
           {fields.map((field, index) =>
             <Field
@@ -58,4 +61,5 @@ class FieldGroup extends Component {
 
 export default connect(state => ({
   currentPage: state.context.page,
+  fieldCount: state.fields.fields.length,
 }))(FieldGroup);

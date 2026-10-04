@@ -45,6 +45,9 @@ export default class SelectProperty extends BasePropertyItem {
     return (
       <div className="select">
         <select
+          id={this.inputId}
+          aria-describedby={this.props.instructions ? this.hintId : undefined}
+          aria-required={!!this.props.required}
           className={className}
           name={name}
           value={value ? value : ""}

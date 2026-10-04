@@ -63,7 +63,7 @@ class OptionTable extends Component {
     }
 
     return (
-      <div className="composer-option-table">
+      <div className={`composer-option-table ${showCustomValues ? "has-values" : ""} ${valueTitle === "Email" ? "has-email-values" : ""}`}>
         {showCustomValueToggler && (
           <LightSwitchProperty
             label="Use custom values"
@@ -74,6 +74,13 @@ class OptionTable extends Component {
         )}
 
         <table>
+          <colgroup>
+            <col className="option-label-column" />
+            {showCustomValues && <col className="option-value-column" />}
+            <col className="option-control-column" />
+            <col className="option-control-column" />
+            <col className="option-control-column" />
+          </colgroup>
           <thead>
           <tr>
             <th>{labelTitle ? labelTitle : "Label"}</th>
@@ -86,7 +93,7 @@ class OptionTable extends Component {
           {this.renderRows()}
           </tbody>
         </table>
-        <button className="btn action add icon" onClick={this.addNewValues}>
+        <button type="button" className="composer-option-add" onClick={this.addNewValues}>
           Add an option
         </button>
       </div>

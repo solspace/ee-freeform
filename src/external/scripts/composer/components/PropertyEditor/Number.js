@@ -40,7 +40,7 @@ export default class Number extends BasePropertyEditor {
   };
 
   render() {
-    const { properties: { label, value, handle, placeholder, required, instructions } } = this.context;
+    const { properties: { value, handle, placeholder, required, instructions } } = this.context;
     const { properties: { minLength, maxLength, minValue, maxValue } } = this.context;
     const { properties: { decimalCount, decimalSeparator, thousandsSeparator, allowNegative } } = this.context;
 
@@ -74,22 +74,13 @@ export default class Number extends BasePropertyEditor {
         <hr />
 
         <LightSwitchProperty
-          label="This field is required?"
+          label="This field is required"
           name="required"
-          bold={true}
           checked={required}
           onChangeHandler={this.update}
         />
 
         <hr />
-
-        <TextProperty
-          label="Label"
-          instructions="Field label used to describe the field."
-          name="label"
-          value={label}
-          onChangeHandler={this.update}
-        />
 
         <TextareaProperty
           label="Instructions"
@@ -120,9 +111,8 @@ export default class Number extends BasePropertyEditor {
         <hr />
 
         <LightSwitchProperty
-          label="Allow negative numbers?"
+          label="Allow negative numbers"
           name="allowNegative"
-          bold={true}
           checked={allowNegative}
           onChangeHandler={this.update}
         />
@@ -168,7 +158,6 @@ export default class Number extends BasePropertyEditor {
             />
           </div>
         </CustomProperty>
-
 
         <TextProperty
           label="Decimal Count"

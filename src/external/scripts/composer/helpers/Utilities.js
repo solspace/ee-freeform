@@ -91,13 +91,17 @@ export function showNotification(text, type) {
 
   let notification = document.createElement("div");
   notification.className = "composer-alert alert alert--" + type + " " + type;
-  notification.innerHTML = text;
+  notification.textContent = String(text);
+  notification.setAttribute("role", type === "issue" ? "alert" : "status");
+  notification.setAttribute("aria-atomic", "true");
 
-  const block = document.querySelectorAll(".ee-main__content")[0];
+  const block = document.querySelector(".ee-main__content") || document.getElementById("freeform-builder");
 
   block.appendChild(notification);
 
   setTimeout(() => {
-    block.removeChild(notification);
-  }, 3000);
+    if (notification.parentNode === block) {
+      block.removeChild(notification);
+    }
+  }, type === "issue" ? 10000 : 5000);
 }

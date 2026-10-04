@@ -13,6 +13,11 @@ namespace Solspace\Addons\FreeformNext\Library\Composer\Components\Properties;
 
 class FormProperties extends AbstractProperties
 {
+    public const SUCCESS_BEHAVIOR_RETURN_URL = 'returnUrl';
+    public const SUCCESS_BEHAVIOR_MESSAGE = 'message';
+    public const DEFAULT_SUCCESS_MESSAGE = 'Thank you! Your submission has been received.';
+    public const DEFAULT_ERROR_MESSAGE = 'Please correct the errors below.';
+
     /** @var string */
     protected $name;
 
@@ -31,8 +36,17 @@ class FormProperties extends AbstractProperties
     /** @var string */
     protected $returnUrl;
 
+    protected $successBehavior;
+
+    protected $successMessage;
+
+    protected $errorMessage;
+
     /** @var bool */
     protected $storeData;
+
+    /** @var bool */
+    protected $useAjax;
 
     /** @var int */
     protected $defaultStatus;
@@ -88,12 +102,34 @@ class FormProperties extends AbstractProperties
         return $this->returnUrl;
     }
 
+    public function getSuccessBehavior(): string
+    {
+        return $this->successBehavior === self::SUCCESS_BEHAVIOR_MESSAGE
+            ? self::SUCCESS_BEHAVIOR_MESSAGE
+            : self::SUCCESS_BEHAVIOR_RETURN_URL;
+    }
+
+    public function getSuccessMessage(): string
+    {
+        return trim((string) $this->successMessage) ?: self::DEFAULT_SUCCESS_MESSAGE;
+    }
+
+    public function getErrorMessage(): string
+    {
+        return trim((string) $this->errorMessage) ?: self::DEFAULT_ERROR_MESSAGE;
+    }
+
     /**
      * @return boolean
      */
     public function isStoreData(): bool
     {
         return null !== $this->storeData ? (bool)$this->storeData : true;
+    }
+
+    public function isUseAjax(): bool
+    {
+        return null !== $this->useAjax ? (bool) $this->useAjax : true;
     }
 
     /**
@@ -129,7 +165,11 @@ class FormProperties extends AbstractProperties
             'submissionTitleFormat' => self::TYPE_STRING,
             'description'           => self::TYPE_STRING,
             'returnUrl'             => self::TYPE_STRING,
+            'successBehavior'       => self::TYPE_STRING,
+            'successMessage'        => self::TYPE_STRING,
+            'errorMessage'          => self::TYPE_STRING,
             'storeData'             => self::TYPE_BOOLEAN,
+            'useAjax'               => self::TYPE_BOOLEAN,
             'defaultStatus'         => self::TYPE_INTEGER,
             'formTemplate'          => self::TYPE_STRING,
         ];

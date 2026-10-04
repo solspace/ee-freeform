@@ -1,0 +1,76 @@
+name: Freeform 4 checks
+
+on:
+  push:
+    branches: [feature/v4-builder-refresh]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  php:
+    name: PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4', '8.5']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, gd, mbstring, mysqli, zip
+          tools: composer
+          coverage: none
+      - name: Check platform requirements
+        run: composer check-platform-reqs --no-dev --working-dir=src/freeform_next
+      - name: Lint add-on PHP
+        run: find src/freeform_next -type f -name '*.php' -not -path '*/vendor/*' -print0 | xargs -0 -n 1 php -l > /tmp/freeform-php-lint.log
+      - name: Exercise PHP flows
+        run: |
+          php scripts/check-php.php
+          php scripts/check-field-types.php
+          php scripts/check-field-type-save.php
+          php scripts/check-cleanup.php
+          php scripts/check-cp-escaping.php
+          php scripts/check-permissions.php
+          php scripts/check-upgrade.php
+          php scripts/check-captcha.php
+          php scripts/check-admin-recipients.php
+          php scripts/check-formatting-accessibility.php
+          php scripts/check-success-behavior.php
+
+  package:
+    name: Build release package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+          coverage: none
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.3.0
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: composer install --working-dir=src/freeform_next --optimize-autoloader --no-dev --no-interaction
+      - run: pnpm run build
+      - name: Verify release archive
+        run: |
+          archive=$(find dist -maxdepth 1 -name 'EE-Freeform_*.zip' -print -quit)
+          test -n "$archive"
+          unzip -t "$archive" | tail -1 | grep -F 'No errors detected'
+          unzip -Z1 "$archive" | grep -Fx 'freeform_next/addon.setup.php'
+          unzip -Z1 "$archive" | grep -Fx 'freeform_next/vendor/autoload.php'
+          unzip -Z1 "$archive" | grep -Fx 'themes/freeform_next/javascript/composer/app.js'
+          mkdir -p /tmp/freeform-release
+          unzip -q "$archive" -d /tmp/freeform-release
+          php -r 'require "/tmp/freeform-release/freeform_next/vendor/autoload.php"; exit(class_exists("Solspace\\Addons\\FreeformNext\\Services\\CleanupService") && class_exists("Solspace\\Addons\\FreeformNext\\Library\\Helpers\\FieldTypeHelper") ? 0 : 1);'

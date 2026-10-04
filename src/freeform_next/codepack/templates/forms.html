@@ -1,0 +1,38 @@
+{embed="%prefix%/inc_header" title="Form Simulator" style="{segment_3}" form="{segment_4}"}
+{if segment_4}
+<div class="demo-form-shell">
+  <div class="demo-heading">
+    <h1>Form Simulator</h1>
+    <p>Previewing the selected form with a sample formatting template. Change either selection above to compare.</p>
+  </div>
+  {if segment_5 == "success"}
+  <div class="demo-notice" role="status"><strong>Form submitted successfully.</strong></div>
+  {/if}
+  {if segment_3 == "tailwind-4-light" OR segment_3 == "tailwind-4-dark" OR segment_3 == "bootstrap-5-light" OR segment_3 == "bootstrap-5-dark" OR segment_3 == "bootstrap-5-floating-labels" OR segment_3 == "flexbox" OR segment_3 == "grid" OR segment_3 == "basic-light" OR segment_3 == "basic-dark" OR segment_3 == "basic-floating-labels"}
+    {exp:freeform_next:render
+      form="{segment_4}"
+      formatting_template="{segment_3}.html"
+      return_url="{path='%prefix%/forms/{segment_3}/{segment_4}/success'}"
+    }
+  {if:else}
+  <div class="demo-notice" role="alert">Choose one of the included formatting templates from the menu above.</div>
+  {/if}
+</div>
+{if:else}
+<div class="demo-heading">
+  <h1>Select a form</h1>
+  <p>Choose a form to preview. Use the formatting template menu to compare the included styles.</p>
+</div>
+<div class="demo-tiles">
+  {exp:freeform_next:forms}
+    {if segment_3}<a class="demo-tile" href="{path='%prefix%/forms/{segment_3}/{form:handle}'}">{/if}
+    {if segment_3 == ""}<a class="demo-tile" href="{path='%prefix%/forms/basic-light/{form:handle}'}">{/if}
+      <h2>{form:name}</h2>
+      <p>{form:description}</p>
+      <small>{form:submission_count} submissions</small>
+    </a>
+    {if form:no_results}<div class="demo-notice">No forms exist for this site yet. Create a form in the control panel to preview it here.</div>{/if}
+  {/exp:freeform_next:forms}
+</div>
+{/if}
+{embed="%prefix%/inc_footer"}

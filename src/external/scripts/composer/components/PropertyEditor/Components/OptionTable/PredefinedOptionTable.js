@@ -31,8 +31,14 @@ class PredefinedOptionTable extends Component {
 
   render() {
     return (
-      <div className="composer-option-table">
+      <div className="composer-option-table composer-option-table-generated">
         <table>
+          <colgroup>
+            <col className="option-label-column" />
+            <col className="option-value-column" />
+            <col className="option-control-column" />
+            <col className="option-control-column" />
+          </colgroup>
           <thead>
           <tr>
             <th>Label</th>

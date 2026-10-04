@@ -57,10 +57,10 @@ class Submit extends HtmlInput {
     return (
       <div className={wrapperClass.join(" ")}>
         {showPrev &&
-        <input type="button" className="button button--default" value={labelPrev} />
+        <button type="button" className="button button--secondary">{labelPrev}</button>
         }
 
-        <input type="submit" className="button button--default" value={labelNext} />
+        <button type="submit" className="button button--secondary">{labelNext}</button>
       </div>
     );
   }

@@ -108,7 +108,7 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function fields(null|string|int $id = null): array
     {
-        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
+        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__))) {
             return $this->renderView(new RedirectView($this->getLink('denied')));
         }
 
@@ -145,7 +145,7 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function notifications(null|string|int $notificationId = null): array
     {
-        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
+        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__))) {
             return $this->renderView(new RedirectView($this->getLink('denied')));
         }
 
@@ -182,7 +182,7 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function export_profiles(null|string|int $seg1 = null, null|string|int $seg2 = null)
     {
-        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
+        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__))) {
             return $this->renderView(new RedirectView($this->getLink('denied')));
         }
 
@@ -221,7 +221,7 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function export(null|string|int $id = null): array
     {
-        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
+        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__))) {
             return $this->renderView(new RedirectView($this->getLink('denied')));
         }
 
@@ -242,6 +242,10 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function submissions(null|string|int $formHandle = null, null|string|int $submissionId = null): array
     {
+        if (!$this->getPermissionsService()->canAccessSubmissions()) {
+            return $this->renderView(new RedirectView($this->getLink('denied')));
+        }
+
         $form = NULL;
         if ($formHandle) {
             $formModel = FormRepository::getInstance()->getFormByIdOrHandle($formHandle);
@@ -296,6 +300,10 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function spam(null|string|int $formHandle = null, null|string|int $submissionId = null): array
     {
+        if (!$this->getPermissionsService()->canAccessSubmissions()) {
+            return $this->renderView(new RedirectView($this->getLink('denied')));
+        }
+
         $form = FALSE;
         if ($formHandle) {
             $formModel = FormRepository::getInstance()->getFormByIdOrHandle($formHandle);
@@ -351,6 +359,10 @@ class Freeform_next_mcp extends ControlPanelView
     public function templates(): array
     {
         $ajaxView = new AjaxView();
+        if (!$this->getPermissionsService()->canManageForms() && !$this->getPermissionsService()->canAccessSettings()) {
+            return $this->renderView($ajaxView->addError('No access'));
+        }
+
         $ajaxView->addVariable('success', true);
 
         if (isset($_POST['templateName'])) {
@@ -392,6 +404,10 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function formTemplates(): array
     {
+        if (!$this->getPermissionsService()->canManageForms() && !$this->getPermissionsService()->canAccessSettings()) {
+            return $this->renderView((new AjaxView())->addError('No access'));
+        }
+
         $settings = new SettingsService();
         $ajaxView = new AjaxView();
         $ajaxView->setVariables($settings->getCustomFormTemplates());
@@ -404,6 +420,10 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function optionsFromSource(): array
     {
+        if (!$this->getPermissionsService()->canManageForms() && !$this->getPermissionsService()->canAccessFields()) {
+            return $this->renderView((new AjaxView())->addError('No access'));
+        }
+
         $source        = ee()->input->post('source');
         $target        = ee()->input->post('target');
         $configuration = ee()->input->post('configuration');
@@ -426,6 +446,10 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function finish_tutorial(): array
     {
+        if (!$this->getPermissionsService()->canManageForms() && !$this->getPermissionsService()->canAccessSettings()) {
+            return $this->renderView((new AjaxView())->addError('No access'));
+        }
+
         $service = new SettingsService();
         $service->finishTutorial();
 
@@ -449,6 +473,10 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function updates(): array
     {
+        if (!$this->getPermissionsService()->canAccessSettings()) {
+            return $this->renderView(new RedirectView($this->getLink('denied')));
+        }
+
         $updateController = new UpdateController();
 
         return $this->renderView($updateController->index());
@@ -462,7 +490,7 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function integrations($type, null|string|int $id = null): ?array
     {
-        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
+        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__))) {
             return $this->renderView(new RedirectView($this->getLink('denied')));
         }
         return match (strtolower($type)) {
@@ -492,7 +520,7 @@ class Freeform_next_mcp extends ControlPanelView
      */
     public function logs(string $logName, ?string $action = null): array
     {
-        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__, ee()->session->userdata('group_id')))) {
+        if (!($this->getPermissionsService()->canUserAccessSection(__FUNCTION__))) {
             return $this->renderView(new RedirectView($this->getLink('denied')));
         }
 
@@ -513,12 +541,12 @@ class Freeform_next_mcp extends ControlPanelView
     {
         $allForms = FormRepository::getInstance()->getAllForms();
 
-        $canManageForms = $this->getPermissionsService()->canManageForms(ee()->session->userdata('group_id'));
-        $canAccessSubmissions = $this->getPermissionsService()->canAccessSubmissions(ee()->session->userdata('group_id'));
-        $canAccessFields = $this->getPermissionsService()->canAccessFields(ee()->session->userdata('group_id'));
-        $canAccessNotifications = $this->getPermissionsService()->canAccessNotifications(ee()->session->userdata('group_id'));
-        $canAccessExports = $this->getPermissionsService()->canAccessExport(ee()->session->userdata('group_id'));
-        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+        $canManageForms = $this->getPermissionsService()->canManageForms();
+        $canAccessSubmissions = $this->getPermissionsService()->canAccessSubmissions();
+        $canAccessFields = $this->getPermissionsService()->canAccessFields();
+        $canAccessNotifications = $this->getPermissionsService()->canAccessNotifications();
+        $canAccessExports = $this->getPermissionsService()->canAccessExport();
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings();
 
         if ($canManageForms) {
             $forms = new NavigationLink('Forms', 'forms');
@@ -581,7 +609,6 @@ class Freeform_next_mcp extends ControlPanelView
             $settings
                 ->addSubNavItem(new NavigationLink('General', 'settings/general'))
                 ->addSubNavItem(new NavigationLink('Spam Protection', 'settings/spam_protection'))
-                ->addSubNavItem(new NavigationLink('reCAPTCHA', 'settings/recaptcha'))
                 ->addSubNavItem(new NavigationLink('Formatting Templates', 'settings/formatting_templates'))
                 ->addSubNavItem(new NavigationLink('Email Templates', 'settings/email_templates'))
                 ->addSubNavItem(new NavigationLink('Statuses', 'settings/statuses'))

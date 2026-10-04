@@ -25,6 +25,7 @@ export default class IntegrationMappingTable extends Component {
       PropTypes.array,
       PropTypes.object,
     ]),
+    className: PropTypes.string,
   };
 
   static contextTypes = {
@@ -39,12 +40,12 @@ export default class IntegrationMappingTable extends Component {
 
   render() {
     return (
-      <div className="composer-option-table">
+      <div className={`composer-option-table ${this.props.className || ""}`}>
         <table>
           <thead>
           <tr>
             <th>CRM Field</th>
-            <th>FF Field</th>
+            <th>Freeform Field</th>
           </tr>
           </thead>
 

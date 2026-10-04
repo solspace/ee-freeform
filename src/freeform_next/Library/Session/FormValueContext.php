@@ -22,6 +22,7 @@ class FormValueContext implements JsonSerializable
 {
     public const FORM_HASH_DELIMITER = '_';
     public const FORM_HASH_KEY       = 'formHash';
+    public const AJAX_PAGE_HASH_KEY  = 'freeform_ajax_page';
     public const HASH_PATTERN        = '/^(?P<formId>[a-zA-Z0-9]+)_(?P<pageIndex>[a-zA-Z0-9]+)_(?P<payload>.*)$/';
 
     public const FORM_SESSION_TTL    = 10800; // 3 hours
@@ -163,6 +164,12 @@ class FormValueContext implements JsonSerializable
             if (isset($this->storedValues[$fieldName])) {
                 return $this->storedValues[$fieldName];
             }
+        } else if ($this->getAjaxPageHash() && isset($this->storedValues[$fieldName])) {
+            if ($field instanceof CheckboxField) {
+                $field->setIsCheckedByPost((bool) $this->storedValues[$fieldName]);
+            }
+
+            return $this->storedValues[$fieldName];
         }
 
         if ($field instanceof CheckboxField) {
@@ -365,7 +372,7 @@ class FormValueContext implements JsonSerializable
     private function getSessionHash(?string $hash = null): ?string
     {
         if (null === $hash) {
-            $hash = $this->getPostedHash();
+            $hash = $this->getPostedHash() ?: $this->getAjaxPageHash();
         }
 
         [$formIdHash, $_, $payload] = self::getHashParts($hash);
@@ -389,14 +396,15 @@ class FormValueContext implements JsonSerializable
      */
     private function regenerateHash(): string
     {
-        // Attempt to fetch hashes from POST data
-        [$formIdHash, $_, $payload] = self::getHashParts($this->getPostedHash());
+        // An AJAX page change renders on a subsequent GET. Its hash only selects
+        // the existing session state; it never counts as a posted form.
+        $requestHash = $this->getPostedHash() ?: $this->getAjaxPageHash();
+        [$formIdHash, $_, $payload] = self::getHashParts($requestHash);
 
-        $formId           = self::getFormIdFromHash($this->getPostedHash());
+        $formId           = self::getFormIdFromHash($requestHash);
         $isFormIdMatching = (int) $formId === (int) $this->formId;
 
-        // Only generate a new hash if the content indexes don' match with the posted hash
-        // Or if there is no posted hash
+        // Generate a new hash when the request does not belong to this form.
         $generateNew = !$isFormIdMatching || !($formIdHash && $payload);
 
         if ($generateNew) {
@@ -420,6 +428,13 @@ class FormValueContext implements JsonSerializable
         $hash = htmlentities($hash, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8');
 
         return $hash;
+    }
+
+    private function getAjaxPageHash(): ?string
+    {
+        $hash = $this->request->getQuery(self::AJAX_PAGE_HASH_KEY);
+
+        return is_string($hash) ? $hash : null;
     }
 
     /**

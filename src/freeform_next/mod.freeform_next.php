@@ -8,9 +8,9 @@
  * @link          https://docs.solspace.com/expressionengine/freeform/v3/
  * @license       https://docs.solspace.com/license-agreement/
  */
-use Solspace\Addons\FreeformNext\Services\FilesService;
-use Solspace\Addons\FreeformNext\Services\SettingsService;
+use Solspace\Addons\FreeformNext\Services\CleanupService;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Properties\FormProperties;
 use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionAttributes;
 use Solspace\Addons\FreeformNext\Library\EETags\FormTagParamUtilities;
 use Solspace\Addons\FreeformNext\Library\EETags\FormToTagDataTransformer;
@@ -28,16 +28,11 @@ use Solspace\Addons\FreeformNext\Utilities\Plugin;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-class Freeform_Next extends Plugin
+class Freeform_Next extends Plugin implements Strict_XID
 {
     public function __construct()
     {
-        // TODO: Prevent this from firing all the time
-        $fileService = new FilesService();
-        $fileService->cleanUpUnfinalizedAssets();
-
-        $settingsService = new SettingsService();
-        $settingsService->cleanUpDatabaseSessionData();
+        (new CleanupService())->runIfDue();
 
         $this->loadLanguageFiles();
     }
@@ -54,7 +49,9 @@ class Freeform_Next extends Plugin
             return $this->returnNoResults();
         }
 
-        return $form->render();
+        // Allow the demo simulator (and templates using this tag) to preview a
+        // formatting template without changing the form's saved configuration.
+        return $form->render(null, $this->getParam('formatting_template'));
     }
 
     /**
@@ -296,30 +293,50 @@ class Freeform_Next extends Plugin
 
                 } else {
                     $returnUrl = str_replace('SUBMISSION_ID', '', $returnUrl);
-                    $returnUrl = rtrim($returnUrl, '/');
+                    $returnUrl = rtrim($returnUrl, '/') ?: '/';
                 }
 
                 if ($isAjaxRequest) {
                     $this->returnJson(
                         [
-                            'success'      => true,
-                            'finished'     => true,
-                            'returnUrl'    => $returnUrl,
-                            'submissionId' => $submissionModel?->id,
-                            'honeypot'     => [
+                            'success'         => true,
+                            'finished'        => true,
+                            'returnUrl'       => $returnUrl,
+                            'successBehavior' => $form->getSuccessBehavior(),
+                            'successMessage'  => $form->getSuccessMessage(),
+                            'submissionId'    => $submissionModel?->id,
+                            'csrfToken'       => CSRF_TOKEN,
+                            'honeypot'        => [
                                 'name' => $honeypot->getName(),
                                 'hash' => $honeypot->getHash(),
                             ],
                         ]
                     );
                 } else {
+                    if ($form->getSuccessBehavior() === FormProperties::SUCCESS_BEHAVIOR_MESSAGE) {
+                        $siteUrl = (string) ee()->config->item('base_url') . (string) ee()->config->item('site_index');
+                        $backUrl = (string) ee()->input->server('HTTP_REFERER');
+                        if (!$backUrl || parse_url($backUrl, PHP_URL_HOST) !== parse_url($siteUrl, PHP_URL_HOST)) {
+                            $requestUri = (string) ee()->input->server('REQUEST_URI');
+                            $backUrl = (int) ee()->input->get('ACT') === 0
+                                && str_starts_with($requestUri, '/')
+                                && !str_starts_with($requestUri, '//')
+                                    ? $requestUri
+                                    : $siteUrl;
+                        }
+
+                        $this->redirect($backUrl);
+                    }
+
                     $this->redirect($returnUrl);
                 }
             } else if ($isAjaxRequest) {
                 $this->returnJson(
                     [
-                        'success'  => true,
-                        'finished' => false,
+                        'success'   => true,
+                        'finished'  => false,
+                        'formHash'  => $form->getHash(),
+                        'csrfToken' => CSRF_TOKEN,
                         'honeypot' => [
                             'name' => $honeypot->getName(),
                             'hash' => $honeypot->getHash(),
@@ -341,11 +358,13 @@ class Freeform_Next extends Plugin
 
                 $this->returnJson(
                     [
-                        'success'    => false,
-                        'finished'   => false,
-                        'formErrors' => $form->getErrors(),
-                        'errors'     => $fieldErrors,
-                        'honeypot'   => [
+                        'success'      => false,
+                        'finished'     => false,
+                        'formErrors'   => $form->getErrors(),
+                        'errorMessage' => $form->getErrorMessage(),
+                        'errors'       => $fieldErrors,
+                        'csrfToken'    => CSRF_TOKEN,
+                        'honeypot'     => [
                             'name' => $honeypot->getName(),
                             'hash' => $honeypot->getHash(),
                         ],

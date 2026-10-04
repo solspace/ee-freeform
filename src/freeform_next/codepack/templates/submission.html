@@ -1,0 +1,30 @@
+{if logged_in_group_id == "1"}
+<div class="demo-heading">
+  <h1>Submission</h1>
+  <p><a href="{path='%prefix%/submissions/{embed:form}'}">Back to submissions</a></p>
+</div>
+{exp:freeform_next:submissions form="{embed:form}" submission_id="{embed:submission_id}"}
+  <h2>{submission:title_html}</h2>
+  <div class="demo-table-wrap">
+    <table class="demo-table">
+      <tbody>
+        <tr><th scope="row">ID</th><td>{submission:id}</td></tr>
+        <tr><th scope="row">Date</th><td>{submission:date format="%Y-%m-%d %g:%i %a"}</td></tr>
+        <tr><th scope="row">Status</th><td>{submission:status}</td></tr>
+        {submission:fields}
+          {if field:can_store_values}
+          <tr><th scope="row">{field:label}</th><td>
+            {if field:type == "file"}
+              {if field:value}
+                {exp:file:entries file_id="{field:value}" dynamic="no"}<a href="{file_url}">{title}</a>{/exp:file:entries}
+              {if:else}No files uploaded{/if}
+            {if:else}{field:value}{/if}
+          </td></tr>
+          {/if}
+        {/submission:fields}
+      </tbody>
+    </table>
+  </div>
+  {if submission:no_results}<div class="demo-notice">No submission was found.</div>{/if}
+{/exp:freeform_next:submissions}
+{if:else}<div class="demo-notice" role="alert">Submission data is available to Super Admins only.</div>{/if}

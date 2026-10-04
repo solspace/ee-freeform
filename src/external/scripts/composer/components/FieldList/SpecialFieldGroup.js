@@ -12,12 +12,10 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import FieldHelper from "../../helpers/FieldHelper";
-import AddNewField from "./Components/AddNewField";
 import Field from "./Field";
 
 class SpecialFieldGroup extends Component {
   static propTypes = {
-    fieldCount: PropTypes.number.isRequired,
     fields: PropTypes.arrayOf(
       PropTypes.shape({
         type: PropTypes.string.isRequired,
@@ -28,24 +26,14 @@ class SpecialFieldGroup extends Component {
     currentPage: PropTypes.number.isRequired,
   };
 
-  static contextTypes = {
-    canManageFields: PropTypes.bool.isRequired,
-    canManageNotifications: PropTypes.bool.isRequired,
-    formPropCleanup: PropTypes.bool.isRequired,
-  };
-
   render() {
-    const { fieldCount, fields, currentPage, onFieldClick } = this.props;
-    let { canManageFields, formPropCleanup } = this.context;
-
-    if (canManageFields) {
-      canManageFields = !formPropCleanup || fieldCount < 15;
-    }
+    const { fields, currentPage, onFieldClick } = this.props;
 
     return (
       <div className="composer-special-fields">
-        <h3>Special Fields</h3>
-        <hr style={{ marginTop: 0, marginBottom: 15 }} />
+        <div className="composer-palette-heading sidebar__section-title">
+          <h3>Special Fields</h3>
+        </div>
         <ul>
           {fields.map((field, index) =>
             <Field
@@ -56,8 +44,6 @@ class SpecialFieldGroup extends Component {
             />,
           )}
         </ul>
-
-        {canManageFields && <AddNewField />}
       </div>
     );
   }
@@ -65,5 +51,4 @@ class SpecialFieldGroup extends Component {
 
 export default connect(state => ({
   currentPage: state.context.page,
-  fieldCount: state.fields.fields.length,
 }))(SpecialFieldGroup);

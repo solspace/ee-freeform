@@ -1,149 +1,33 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import AddNewField from "./FieldList/Components/AddNewField";
 
+// Keep the toolbar outside the scrolling body so it never shifts when a
+// different editor opens or the user reaches the end of a panel.
 export default class AlwaysNearbyBox extends Component {
-  static headerOffsetTop = 0;
-  static viewableAreaSize = 0;
-  static pageHeight = 0;
-  static boxMaxHeight = 0;
-  static footerSize = 0;
-  static padding = 10;
-
-  static domEventsSubscribed = false;
-
   static propTypes = {
     className: PropTypes.string,
     stickyTop: PropTypes.node,
+    children: PropTypes.node,
+    scrollKey: PropTypes.string,
   };
 
-  parentWidth = 0;
-  parentPaddingX = 25;
-
-  constructor(props, context) {
-    super(props, context);
-
-    this.handleScroll = this.handleScroll.bind(this);
-    this.handleWindowResize = this.handleWindowResize.bind(this);
-    this.updateOffsetDimensions = this.updateOffsetDimensions.bind(this);
-  }
-
-  componentDidMount() {
-    const { wrapper, stickyTop, children } = this.refs;
-
-    wrapper.style.position = "fixed";
-    wrapper.style.top = "0px";
-    wrapper.style.overflowY = "auto";
-    wrapper.style.width = "0px";
-
-    children.style.position = "relative";
-    stickyTop.style.position = "fixed";
-    stickyTop.style.width = "0px";
-
-    window.addEventListener("scroll", this.handleScroll);
-    window.addEventListener("resize", this.handleWindowResize);
-    window.addEventListener(AddNewField.EVENT_AFTER_UPDATE, this.handleScroll);
-
-    this.updateOffsetDimensions();
-    this.handleScroll();
-
-    setTimeout(this.handleWindowResize, 200);
-  }
-
-  componentDidUpdate() {
-    this.updateOffsetDimensions();
-    this.handleScroll();
-  }
-
-  componentWillUnmount() {
-    const { wrapper, stickyTop, children } = this.refs;
-
-    wrapper.style.position = "";
-    wrapper.style.top = "";
-    wrapper.style.overflowY = "";
-    wrapper.style.width = "";
-
-    children.style.position = "";
-    stickyTop.style.position = "";
-    stickyTop.style.width = "";
-
-    window.removeEventListener("scroll", this.handleScroll);
-    window.removeEventListener("resize", this.handleWindowResize);
-    window.removeEventListener(AddNewField.EVENT_AFTER_UPDATE, this.handleScroll);
-  }
-
-  updateOffsetDimensions() {
-    const body = document.body,
-      html = document.documentElement,
-      builder = document.getElementById("freeform-builder"),
-      parentNode = ReactDOM.findDOMNode(this).parentNode;
-
-    let offset = 0;
-    let elem = builder;
-
-    do {
-      if (!isNaN(elem.offsetTop)) {
-        offset += elem.offsetTop;
-      }
-    } while (elem = elem.offsetParent);
-
-    AlwaysNearbyBox.headerOffsetTop = offset;
-    AlwaysNearbyBox.viewableAreaSize = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-    AlwaysNearbyBox.pageHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-    AlwaysNearbyBox.footerSize = AlwaysNearbyBox.pageHeight - builder.clientHeight - AlwaysNearbyBox.headerOffsetTop;
-    AlwaysNearbyBox.boxMaxHeight = parentNode.clientHeight;
-    this.parentWidth = parentNode.clientWidth;
-  }
-
-  handleWindowResize() {
-    this.updateOffsetDimensions();
-    this.handleScroll();
-  }
-
-  handleScroll() {
-    const { wrapper, stickyTop, children } = this.refs;
-
-    let offsetY = AlwaysNearbyBox.padding,
-      height = AlwaysNearbyBox.viewableAreaSize - (AlwaysNearbyBox.padding * 2);
-
-    const offsetFromHeader = window.scrollY - AlwaysNearbyBox.headerOffsetTop,
-      offsetFromFooter = AlwaysNearbyBox.pageHeight - (window.scrollY + AlwaysNearbyBox.viewableAreaSize),
-      doublePaddingY = AlwaysNearbyBox.padding * 2;
-
-    if (offsetFromHeader < 0) {
-      offsetY = Math.abs(offsetFromHeader) + AlwaysNearbyBox.padding;
-      height -= offsetY;
+  componentDidUpdate(previousProps) {
+    if (previousProps.scrollKey !== this.props.scrollKey && this.body) {
+      this.body.scrollTop = 0;
     }
-
-    if (offsetFromFooter < AlwaysNearbyBox.footerSize) {
-      height -= AlwaysNearbyBox.footerSize - offsetFromFooter;
-    }
-
-    if (height > AlwaysNearbyBox.boxMaxHeight - doublePaddingY) {
-      height = AlwaysNearbyBox.boxMaxHeight - doublePaddingY;
-    }
-
-    if (stickyTop) {
-      stickyTop.style.width = (this.parentWidth - (this.parentPaddingX * 2)) + "px";
-
-      children.style.top = stickyTop.clientHeight + "px";
-    }
-
-    wrapper.style.top = offsetY + "px";
-    wrapper.style.height = height + "px";
-    wrapper.style.width = (this.parentWidth - (this.parentPaddingX * 2)) + "px";
   }
+
+  setBody = (body) => {
+    this.body = body;
+  };
 
   render() {
+    const { className = "", stickyTop, children } = this.props;
+
     return (
-      <div className={this.props.className} ref='wrapper'>
-        <div ref="stickyTop" className="sticky">
-          {this.props.stickyTop}
-        </div>
-        <div ref="children">
-          {this.props.children}
-        </div>
+      <div className={`composer-sidebar-content ${className}`}>
+        {stickyTop && <div className="composer-sidebar-toolbar">{stickyTop}</div>}
+        <div className="composer-sidebar-body" ref={this.setBody}>{children}</div>
       </div>
     );
   }

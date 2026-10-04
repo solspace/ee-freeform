@@ -51,7 +51,7 @@ class SettingsController extends Controller
      */
     public function index(string $type, $id)
     {
-        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings();
 
         if (!$canAccessSettings) {
             return new RedirectView($this->getLink('denied'));
@@ -59,6 +59,10 @@ class SettingsController extends Controller
 
         if (!in_array($type, self::$allowedTypes, true)) {
             throw new FreeformException('Page does not exist');
+        }
+
+        if ($type === self::TYPE_RECAPTCHA) {
+            return new RedirectView($this->getLink('settings/spam_protection'));
         }
 
         if ($type !== 'statuses' && $this->handlePost($type)) {
@@ -78,7 +82,6 @@ class SettingsController extends Controller
             self::TYPE_EMAIL_TEMPLATES => $this->emailTemplatesAction(),
             self::TYPE_DEMO_TEMPLATES => $this->demoTemplatesAction(),
             self::TYPE_PERMISSIONS => $this->permissionsAction(),
-            self::TYPE_RECAPTCHA => $this->recaptchaAction(),
             self::TYPE_SPAM_PROTECTION => $this->spamProtectionAction(),
             default => $this->generalAction(),
         };
@@ -92,7 +95,7 @@ class SettingsController extends Controller
      */
     public function statusesAction(null|string|int $id = null)
     {
-        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings();
 
         if (!$canAccessSettings) {
             return new RedirectView($this->getLink('denied'));
@@ -124,7 +127,7 @@ class SettingsController extends Controller
      */
     private function licenseAction(): RedirectView|CpView
     {
-        $canAccessSettings = $this->getPermissionsService()->canAccessSettings(ee()->session->userdata('group_id'));
+        $canAccessSettings = $this->getPermissionsService()->canAccessSettings();
 
         if (!$canAccessSettings) {
             return new RedirectView($this->getLink('denied'));
@@ -341,6 +344,145 @@ class SettingsController extends Controller
             ];
         }
 
+        $sections[] = [
+            [
+                'title' => 'CAPTCHA Provider',
+                'desc' => 'Choose one provider for visible CAPTCHA fields or automatic reCAPTCHA v3 protection. Add the CAPTCHA field to the final page of forms using a visible provider.',
+                'fields' => [
+                    'captchaProvider' => [
+                        'type' => 'select',
+                        'value' => $settings->getCaptchaProvider(),
+                        'choices' => [
+                            SettingsModel::CAPTCHA_NONE => 'None',
+                            SettingsModel::CAPTCHA_RECAPTCHA => 'reCAPTCHA',
+                            SettingsModel::CAPTCHA_TURNSTILE => 'Cloudflare Turnstile',
+                            SettingsModel::CAPTCHA_HCAPTCHA => 'hCaptcha',
+                        ],
+                        'group_toggle' => [
+                            SettingsModel::CAPTCHA_RECAPTCHA => 'recaptchaOptions',
+                            SettingsModel::CAPTCHA_TURNSTILE => 'turnstileOptions',
+                            SettingsModel::CAPTCHA_HCAPTCHA => 'hcaptchaOptions',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'title' => 'reCAPTCHA Type',
+                'group' => 'recaptchaOptions',
+                'fields' => [
+                    'recaptchaType' => [
+                        'type' => 'select',
+                        'value' => $settings->getRecaptchaType(),
+                        'choices' => [
+                            'v2-checkbox' => 'Challenge - Checkbox (v2)',
+                            'v3' => 'Score Based (v3)',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'title' => 'reCAPTCHA Site Key',
+                'group' => 'recaptchaOptions',
+                'fields' => ['recaptchaKey' => ['type' => 'text', 'value' => $settings->getRecaptchaKey()]],
+            ],
+            [
+                'title' => 'reCAPTCHA Secret Key',
+                'group' => 'recaptchaOptions',
+                'fields' => ['recaptchaSecret' => ['type' => 'text', 'value' => $settings->getRecaptchaSecret()]],
+            ],
+            [
+                'title' => 'reCAPTCHA v2 Theme',
+                'desc' => 'Applies only to the checkbox widget (v2).',
+                'group' => 'recaptchaOptions',
+                'fields' => ['recaptchaTheme' => [
+                    'type' => 'select',
+                    'value' => $settings->getRecaptchaTheme(),
+                    'choices' => ['light' => 'Light', 'dark' => 'Dark'],
+                ]],
+            ],
+            [
+                'title' => 'reCAPTCHA v2 Size',
+                'desc' => 'Applies only to the checkbox widget (v2).',
+                'group' => 'recaptchaOptions',
+                'fields' => ['recaptchaSize' => [
+                    'type' => 'select',
+                    'value' => $settings->getRecaptchaSize(),
+                    'choices' => ['normal' => 'Normal', 'compact' => 'Compact'],
+                ]],
+            ],
+            [
+                'title' => 'reCAPTCHA Score Threshold',
+                'desc' => 'Used only with score based reCAPTCHA (v3).',
+                'group' => 'recaptchaOptions',
+                'fields' => [
+                    'recaptchaScoreThreshold' => [
+                        'type' => 'select',
+                        'value' => $settings->getRecaptchaScoreThreshold() ?: '0.5',
+                        'choices' => array_combine(
+                            array_map(static fn ($n) => sprintf('%.1f', $n / 10), range(0, 10)),
+                            array_map(static fn ($n) => sprintf('%.1f', $n / 10), range(0, 10))
+                        ),
+                    ],
+                ],
+            ],
+            [
+                'title' => 'Turnstile Site Key',
+                'group' => 'turnstileOptions',
+                'fields' => ['turnstileKey' => ['type' => 'text', 'value' => $settings->getTurnstileKey()]],
+            ],
+            [
+                'title' => 'Turnstile Secret Key',
+                'group' => 'turnstileOptions',
+                'fields' => ['turnstileSecret' => ['type' => 'text', 'value' => $settings->getTurnstileSecret()]],
+            ],
+            [
+                'title' => 'Turnstile Theme',
+                'group' => 'turnstileOptions',
+                'fields' => ['turnstileTheme' => [
+                    'type' => 'select',
+                    'value' => $settings->getTurnstileTheme(),
+                    'choices' => ['auto' => 'Auto', 'light' => 'Light', 'dark' => 'Dark'],
+                ]],
+            ],
+            [
+                'title' => 'Turnstile Size',
+                'group' => 'turnstileOptions',
+                'fields' => ['turnstileSize' => [
+                    'type' => 'select',
+                    'value' => $settings->getTurnstileSize(),
+                    'choices' => ['normal' => 'Normal', 'flexible' => 'Flexible', 'compact' => 'Compact'],
+                ]],
+            ],
+            [
+                'title' => 'hCaptcha Site Key',
+                'group' => 'hcaptchaOptions',
+                'fields' => ['hcaptchaKey' => ['type' => 'text', 'value' => $settings->getHcaptchaKey()]],
+            ],
+            [
+                'title' => 'hCaptcha Secret Key',
+                'group' => 'hcaptchaOptions',
+                'fields' => ['hcaptchaSecret' => ['type' => 'text', 'value' => $settings->getHcaptchaSecret()]],
+            ],
+            [
+                'title' => 'hCaptcha Theme',
+                'group' => 'hcaptchaOptions',
+                'fields' => ['hcaptchaTheme' => [
+                    'type' => 'select',
+                    'value' => $settings->getHcaptchaTheme(),
+                    'choices' => ['light' => 'Light', 'dark' => 'Dark'],
+                ]],
+            ],
+            [
+                'title' => 'hCaptcha Size',
+                'group' => 'hcaptchaOptions',
+                'fields' => ['hcaptchaSize' => [
+                    'type' => 'select',
+                    'value' => $settings->getHcaptchaSize(),
+                    'choices' => ['normal' => 'Normal', 'compact' => 'Compact'],
+                ]],
+            ],
+        ];
+
 		$view = new CpView('settings/common', []);
 		$view
 			->setHeading(lang('Spam Protection'))
@@ -386,21 +528,8 @@ class SettingsController extends Controller
 
         $sections = [
             [
-                'title'  => 'Default Permissions for New Member Groups',
-                'fields' => [
-                    'defaultPermissions' => [
-                        'type'    => 'radio',
-                        'value'   => $permissionsModel->defaultPermissions,
-                        'choices' => [
-                            'allow_all' => 'Allow All Access',
-                            'deny_all' => 'Deny All Access',
-                        ],
-                    ],
-                ],
-            ],
-            [
                 'title'  => 'Manage Forms',
-                'desc'   => 'Choose which member groups can manage Forms.',
+                'desc'   => 'Choose which roles can manage Forms.',
                 'fields' => [
                     'formsPermissions' => [
                         'type'    => 'checkbox',
@@ -411,7 +540,7 @@ class SettingsController extends Controller
             ],
             [
                 'title'  => 'Access Submissions',
-                'desc'   => 'Choose which member groups have access to Submissions.',
+                'desc'   => 'Choose which roles have access to Submissions.',
                 'fields' => [
                     'submissionsPermissions' => [
                         'type'    => 'checkbox',
@@ -422,7 +551,7 @@ class SettingsController extends Controller
             ],
             [
                 'title'  => 'Manage Submissions',
-                'desc'   => 'Choose which member groups can manage Submissions.',
+                'desc'   => 'Choose which roles can manage Submissions.',
                 'fields' => [
                     'manageSubmissionsPermissions' => [
                         'type'    => 'checkbox',
@@ -433,7 +562,7 @@ class SettingsController extends Controller
             ],
             [
                 'title'  => 'Access Fields',
-                'desc'   => 'Choose which member groups have access to the Field Manager.',
+                'desc'   => 'Choose which roles have access to the Field Manager.',
                 'fields' => [
                     'fieldsPermissions' => [
                         'type'    => 'checkbox',
@@ -444,7 +573,7 @@ class SettingsController extends Controller
             ],
             [
                 'title'  => 'Access Notifications',
-                'desc'   => 'Choose which member groups have access to Notifications.',
+                'desc'   => 'Choose which roles have access to Notifications.',
                 'fields' => [
                     'notificationsPermissions' => [
                         'type'    => 'checkbox',
@@ -458,7 +587,7 @@ class SettingsController extends Controller
         if ($version === 'pro') {
             $sections[] = [
                 'title'  => 'Access Export',
-                'desc'   => 'Choose which member groups have access to Export.',
+                'desc'   => 'Choose which roles have access to Export.',
                 'fields' => [
                     'exportPermissions' => [
                         'type'    => 'checkbox',
@@ -472,7 +601,7 @@ class SettingsController extends Controller
         $additionalSections = [
             [
                 'title'  => 'Access Settings',
-                'desc'   => 'Choose which member groups have access to Settings.',
+                'desc'   => 'Choose which roles have access to Settings.',
                 'fields' => [
                     'settingsPermissions' => [
                         'type'    => 'checkbox',
@@ -483,7 +612,7 @@ class SettingsController extends Controller
             ],
             [
                 'title'  => 'Access Integrations',
-                'desc'   => 'Choose which member groups have access to Integrations.',
+                'desc'   => 'Choose which roles have access to Integrations.',
                 'fields' => [
                     'integrationsPermissions' => [
                         'type'    => 'checkbox',
@@ -494,7 +623,7 @@ class SettingsController extends Controller
             ],
             [
                 'title'  => 'Access Logs',
-                'desc'   => 'Choose which member groups have access to Error logs.',
+                'desc'   => 'Choose which roles have access to Error logs.',
                 'fields' => [
                     'logsPermissions' => [
                         'type'    => 'checkbox',
@@ -669,101 +798,6 @@ class SettingsController extends Controller
     }
 
     /**
-     * @return View
-     */
-    private function recaptchaAction(): CpView
-    {
-        $settings = $this->getSettings();
-
-        $variables = [
-            'base_url'              => ee('CP/URL', $this->getActionUrl(__FUNCTION__)),
-            'cp_page_title'         => lang('reCAPTCHA'),
-            'save_btn_text'         => 'btn_save_settings',
-            'save_btn_text_working' => 'btn_saving',
-            'sections'              => [
-                [
-                    [
-                        'title'  => 'reCAPTCHA Enabled?',
-                        'fields' => [
-                            'recaptchaEnabled' => [
-                                'type'        => 'yes_no',
-                                'value'       => $settings->isRecaptchaEnabled() ? 'y' : 'n',
-                            ],
-                        ],
-                    ],
-                    [
-                        'title'  => 'reCAPTCHA Type',
-                        'desc' => 'Choose the reCAPTCHA type to use. The options below are compatible with the Enterprise API and the Classic legacy keys.',
-                        'fields' => [
-                            'recaptchaType' => [
-                                'type' => 'select',
-                                'value' => $settings->getRecaptchaType(),
-                                'choices' => [
-                                    'v2-checkbox' => 'Challenge - Checkbox (v2)',
-                                    'v3' => 'Score Based (v3)',
-                                ],
-                                'group_toggle' => [
-                                    'v3' => 'recaptchaScoreThresholdOptions',
-                                ],
-                            ],
-                        ],
-                    ],
-                    [
-                        'title'  => 'reCAPTCHA Site Key',
-                        'fields' => [
-                            'recaptchaKey' => [
-                                'type'        => 'text',
-                                'value'       => $settings->getRecaptchaKey(),
-                            ],
-                        ],
-                    ],
-                    [
-                        'title'  => 'reCAPTCHA Secret Key',
-                        'fields' => [
-                            'recaptchaSecret' => [
-                                'type'        => 'text',
-                                'value'       => $settings->getRecaptchaSecret(),
-                            ],
-                        ],
-                    ],
-                    [
-                        'title' => 'reCAPTCHA Score Threshold',
-                        'desc' => 'The minimum score required for the Captcha to pass validation. The score is a number between 0 and 1. A score of 0.5 is generally recommended.',
-                        'group' => 'recaptchaScoreThresholdOptions',
-                        'fields' => [
-                            'recaptchaScoreThreshold' => [
-                                'type' => 'select',
-                                'value' => $settings->getRecaptchaScoreThreshold() ?: '0.5',
-                                'choices' => [
-                                    '0.0' => '0.0',
-                                    '0.1' => '0.1',
-                                    '0.2' => '0.2',
-                                    '0.3' => '0.3',
-                                    '0.4' => '0.4',
-                                    '0.5' => '0.5',
-                                    '0.6' => '0.6',
-                                    '0.7' => '0.7',
-                                    '0.8' => '0.8',
-                                    '0.9' => '0.9',
-                                    '1.0' => '1.0',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $view = new CpView('settings/common', $variables);
-        $view
-            ->setHeading(lang('reCAPTCHA'))
-            ->addBreadcrumb(new NavigationLink('Settings', 'settings/general'))
-            ->addJavascript('settings');
-
-        return $view;
-    }
-
-    /**
      * Handles a POST request and returns one of the following
      * TRUE  - if it was handled
      * FALSE - if there were errors
@@ -780,6 +814,27 @@ class SettingsController extends Controller
         }
 
         if (!empty($_POST) && !isset($_POST['prefix'])) {
+            if ($type === self::TYPE_SPAM_PROTECTION && isset($_POST['captchaProvider']) && !in_array(
+                $_POST['captchaProvider'],
+                [SettingsModel::CAPTCHA_NONE, SettingsModel::CAPTCHA_RECAPTCHA, SettingsModel::CAPTCHA_TURNSTILE, SettingsModel::CAPTCHA_HCAPTCHA],
+                true
+            )) {
+                return false;
+            }
+            if ($type === self::TYPE_SPAM_PROTECTION) {
+                foreach ([
+                    'recaptchaTheme' => ['light', 'dark'],
+                    'recaptchaSize' => ['normal', 'compact'],
+                    'turnstileTheme' => ['auto', 'light', 'dark'],
+                    'turnstileSize' => ['normal', 'flexible', 'compact'],
+                    'hcaptchaTheme' => ['light', 'dark'],
+                    'hcaptchaSize' => ['normal', 'compact'],
+                ] as $key => $choices) {
+                    if (isset($_POST[$key]) && !in_array($_POST[$key], $choices, true)) {
+                        return false;
+                    }
+                }
+            }
             $accessor = PropertyAccess::createPropertyAccessor();
 
             foreach ($_POST as $key => $value) {

@@ -7,7 +7,6 @@ use EllisLab\ExpressionEngine\Library\CP\Table;
 use GuzzleHttp\Exception\BadResponseException;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
-use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
 use Solspace\Addons\FreeformNext\Library\Integrations\CRM\CRMOAuthConnector;
 use Solspace\Addons\FreeformNext\Library\Integrations\SettingBlueprint;
 use Solspace\Addons\FreeformNext\Library\Integrations\TokenRefreshInterface;
@@ -63,7 +62,6 @@ class CrmController extends Controller
                 'Name'             => ['type' => Table::COL_TEXT],
                 'Handle'           => ['type' => Table::COL_TEXT],
                 'Service Provider' => ['type' => Table::COL_TEXT],
-                'manage'           => ['type' => Table::COL_TOOLBAR],
                 ['type' => Table::COL_CHECKBOX, 'name' => 'selection'],
             ]
         );
@@ -80,14 +78,6 @@ class CrmController extends Controller
                 ],
                 $integration->handle,
                 $integration->getIntegrationObject()->getServiceProvider(),
-                [
-                    'toolbar_items' => [
-                        'edit' => [
-                            'href'  => UrlHelper::getLink('integrations/crm/' . $integration->id),
-                            'title' => lang('edit'),
-                        ],
-                    ],
-                ],
                 [
                     'name'  => 'id_list[]',
                     'value' => $integration->id,

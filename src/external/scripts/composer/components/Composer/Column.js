@@ -12,9 +12,10 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { DragSource } from "react-dnd";
 import { connect } from "react-redux";
-import { clearPlaceholders, removeColumn, removeProperty, switchHash } from "../../actions/Actions";
+import { clearPlaceholders, removeField, switchHash } from "../../actions/Actions";
 import { COLUMN } from "../../constants/DraggableTypes";
 import Field from "./Field";
+import ConfirmRemoval from "./ConfirmRemoval";
 
 const columnSource = {
   beginDrag(props) {
@@ -55,14 +56,29 @@ class Column extends Component {
     super(props, context);
 
     this.openPropertiesHandler = this.openPropertiesHandler.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
     this.removeColumnHandler = this.removeColumnHandler.bind(this);
+    this.cancelRemoval = this.cancelRemoval.bind(this);
+    this.confirmRemoval = this.confirmRemoval.bind(this);
     this.buildPreview = this.buildPreview.bind(this);
+    this.state = { confirmingRemoval: false };
   }
 
   componentDidMount() {
     const { connectDragPreview } = this.props;
 
     connectDragPreview(this.buildPreview());
+    this.disablePreviewInputs();
+  }
+
+  componentDidUpdate() {
+    this.disablePreviewInputs();
+  }
+
+  disablePreviewInputs() {
+    // Preview fields illustrate the form; keyboard users edit them through settings.
+    this.refs.preview.querySelectorAll("input, textarea, select, button, a, [tabindex], [contenteditable]")
+      .forEach(element => element.setAttribute("tabindex", "-1"));
   }
 
   render() {
@@ -70,16 +86,25 @@ class Column extends Component {
     const { connectDragSource, properties } = this.props;
 
     const className = ["composer-column"];
+    if (properties.type === "submit") {
+      className.push("composer-column-submit");
+    }
     if (currentHash === hash) {
       className.push("composer-column-active");
     }
 
     return connectDragSource(
-      <div className={className.join(" ")} onClick={this.openPropertiesHandler}>
+      <div className={className.join(" ")} tabIndex={0} role="group"
+           aria-label={`${properties.label || properties.type} field. Press Enter for settings`}
+           onKeyDown={this.handleKeyDown} onClick={this.openPropertiesHandler}>
         <ul className="composer-actions composer-column-actions">
-          <li className="composer-action-remove" onClick={this.removeColumnHandler}></li>
+          <li><button type="button" className="composer-action-remove"
+                      ref={button => { this.removeButton = button; }}
+                      aria-label={`Remove ${properties.label || properties.type}`}
+                      onClick={this.removeColumnHandler} /></li>
         </ul>
 
+        <div ref="preview" aria-hidden="true">
         <Field
           type={properties.type}
           properties={properties}
@@ -88,6 +113,11 @@ class Column extends Component {
           rowIndex={rowIndex}
           duplicateHandles={duplicateHandles}
         />
+        </div>
+        {this.state.confirmingRemoval &&
+          <ConfirmRemoval kind="field" label={properties.label || properties.type}
+                          onCancel={this.cancelRemoval} onConfirm={this.confirmRemoval} />
+        }
       </div>,
     );
   }
@@ -101,18 +131,44 @@ class Column extends Component {
     openProperties(hash);
   }
 
+  handleKeyDown(event) {
+    if (event.target !== event.currentTarget || (event.key !== "Enter" && event.key !== " ")) {
+      return;
+    }
+    event.preventDefault();
+    this.openPropertiesHandler();
+  }
+
   /**
    * Removes the column
    *
    * @param event
    */
   removeColumnHandler(event) {
-    const { removeColumn, pageIndex, hash, index, rowIndex } = this.props;
-
-    removeColumn(hash, index, rowIndex, pageIndex);
-
     event.stopPropagation();
     event.preventDefault();
+    this.setState({ confirmingRemoval: true });
+  }
+
+  cancelRemoval() {
+    this.setState({ confirmingRemoval: false }, () => {
+      if (this.removeButton) {
+        this.removeButton.focus();
+      }
+    });
+  }
+
+  confirmRemoval() {
+    const { removeColumn, pageIndex, hash, index, rowIndex } = this.props;
+    this.setState({ confirmingRemoval: false });
+    removeColumn(hash, index, rowIndex, pageIndex);
+    this.props.openProperties("form");
+    requestAnimationFrame(() => {
+      const button = document.querySelector(".composer-form-settings .form-settings");
+      if (button) {
+        button.focus();
+      }
+    });
   }
 
   /**
@@ -182,8 +238,7 @@ export default connect(
   (dispatch) => ({
     openFieldSettings: (hash) => dispatch(switchHash(hash)),
     removeColumn: (hash, index, rowIndex, pageIndex) => {
-      dispatch(removeColumn(hash, index, rowIndex, pageIndex));
-      dispatch(removeProperty(hash));
+      dispatch(removeField(hash, index, rowIndex, pageIndex));
     },
     openProperties: (hash) => dispatch(switchHash(hash)),
     clearPlaceholders: () => dispatch(clearPlaceholders()),

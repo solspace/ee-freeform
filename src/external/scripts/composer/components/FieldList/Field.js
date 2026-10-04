@@ -16,7 +16,6 @@ import { clearPlaceholders } from "../../actions/Actions";
 import { FIELD } from "../../constants/DraggableTypes";
 import FieldHelper from "../../helpers/FieldHelper";
 import PropertyHelper from "../../helpers/PropertyHelper";
-import Badge from "../Composer/FieldTypes/Components/Badge";
 
 const fieldSource = {
   canDrag(props, monitor) {
@@ -48,14 +47,13 @@ class Field extends Component {
     type: PropTypes.string.isRequired,
     isUsed: PropTypes.bool.isRequired,
     label: PropTypes.string.isRequired,
-    badge: PropTypes.string,
     connectDragSource: PropTypes.func.isRequired,
     clearPlaceholders: PropTypes.func.isRequired,
     isDragging: PropTypes.bool.isRequired,
   };
 
   render() {
-    const { type, isUsed, label, onClick, connectDragSource, isDragging, badge } = this.props;
+    const { type, isUsed, label, onClick, connectDragSource, isDragging } = this.props;
 
     if (isUsed) {
       return null;
@@ -67,11 +65,15 @@ class Field extends Component {
     }
 
     return connectDragSource(
-      <li className={classList.join(" ")}
-          disabled={isUsed}
-          onClick={!isUsed ? onClick : null}>
-        {label}
-        {badge && <Badge label={badge} />}
+      <li>
+        <button type="button" className={classList.join(" ")}
+                aria-label={`Add ${label} to the current page`}
+                title={label}
+                onClick={onClick}>
+          <span className="composer-palette-label">
+            {label}
+          </span>
+        </button>
       </li>,
     );
   }

@@ -15,6 +15,7 @@ import BasePropertyEditor from "./BasePropertyEditor";
 import AddNewTemplate from "./Components/AddNewTemplate";
 import LightSwitchProperty from "./PropertyItems/LightSwitchProperty";
 import SelectProperty from "./PropertyItems/SelectProperty";
+import StatusProperty from "./PropertyItems/StatusProperty";
 import TextareaProperty from "./PropertyItems/TextareaProperty";
 import TextProperty from "./PropertyItems/TextProperty";
 
@@ -33,28 +34,29 @@ class Form extends BasePropertyEditor {
       submissionTitleFormat: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
       storeData: PropTypes.bool,
+      useAjax: PropTypes.bool,
       defaultStatus: PropTypes.number.isRequired,
       returnUrl: PropTypes.string.isRequired,
+      successBehavior: PropTypes.string,
+      successMessage: PropTypes.string,
+      errorMessage: PropTypes.string,
       formTemplate: PropTypes.string,
     }).isRequired,
     canManageSettings: PropTypes.bool.isRequired,
     isDefaultTemplates: PropTypes.bool.isRequired,
   };
 
-  constructor(props, context) {
-      super(props, context);
-
-      this.handleTitleUpdate = this.handleTitleUpdate.bind(this);
-  }
-
   render() {
     const { isDefaultTemplates } = this.context;
-    const { properties: { name, handle, submissionTitleFormat, defaultStatus, returnUrl, description, formTemplate } } = this.context;
+    const { properties: { name, handle, submissionTitleFormat, defaultStatus, returnUrl, description, formTemplate, successMessage, errorMessage } } = this.context;
 
     let storeData = this.context.properties.storeData;
     if (storeData === undefined) {
       storeData = true;
     }
+
+    const useAjax = this.context.properties.useAjax !== false;
+    const successBehavior = this.context.properties.successBehavior || "returnUrl";
 
     const { formStatuses, solspaceTemplates, templates } = this.props;
     const { canManageSettings } = this.context;
@@ -66,6 +68,19 @@ class Form extends BasePropertyEditor {
         value: item.name,
       });
     });
+
+    // Keep the selected value visible for forms using an older bundled sample.
+    const legacyTemplates = {
+      "bootstrap.html": "Bootstrap (Legacy)",
+      "foundation.html": "Foundation (Legacy)",
+      "materialize.html": "Materialize (Legacy)",
+    };
+    if (Object.prototype.hasOwnProperty.call(legacyTemplates, formTemplate)) {
+      solspaceTemplateList.push({
+        key: formTemplate,
+        value: legacyTemplates[formTemplate],
+      });
+    }
 
     const templateList = [];
     templates.map((item) => {
@@ -81,23 +96,17 @@ class Form extends BasePropertyEditor {
         label: "Solspace Templates",
         options: solspaceTemplateList,
       });
+    } else if (Object.prototype.hasOwnProperty.call(legacyTemplates, formTemplate)) {
+      optionGroups.push({
+        label: "Legacy Template",
+        options: [{ key: formTemplate, value: legacyTemplates[formTemplate] }],
+      });
     }
 
     optionGroups.push({
       label: "Custom Templates",
       options: templateList,
     });
-
-    const statusOptions = [];
-    formStatuses.map((status) => {
-      statusOptions.push({
-        key: status.id,
-        value: status.name,
-      });
-    });
-
-    // Updating the EE .main-nav__title h1 on load.
-    document.getElementsByClassName("main-nav__title")[0].querySelector('h1').innerHTML = name;
 
     return (
       <div>
@@ -107,7 +116,7 @@ class Form extends BasePropertyEditor {
           name="name"
           required={true}
           value={name}
-          onChangeHandler={this.handleTitleUpdate}
+          onChangeHandler={this.update}
         />
 
         <TextProperty
@@ -130,10 +139,17 @@ class Form extends BasePropertyEditor {
 
         <LightSwitchProperty
           label="Store Submitted Data"
-          bold={true}
           instructions="Store submission data for this form in the database."
           name="storeData"
           checked={storeData}
+          onChangeHandler={this.update}
+        />
+
+        <LightSwitchProperty
+          label="Use AJAX"
+          instructions="Submit without a full page reload. Page changes reload the form."
+          name="useAjax"
+          checked={useAjax}
           onChangeHandler={this.update}
         />
 
@@ -145,26 +161,56 @@ class Form extends BasePropertyEditor {
           onChangeHandler={this.update}
           emptyOption="--"
           optionGroups={optionGroups}
+          inlineAction={canManageSettings}
         >
-          {canManageSettings && <AddNewTemplate />}
+          {canManageSettings && <AddNewTemplate buttonLabel="New" />}
         </SelectProperty>
 
-        <SelectProperty
+        <StatusProperty
           label="Default Status"
           instructions="The default status to be assigned to new submissions."
           name="defaultStatus"
           required={true}
           value={defaultStatus}
-          onChangeHandler={this.update}
-          isNumeric={true}
-          options={statusOptions}
+          onChangeHandler={value => this.updateKeyValue("defaultStatus", value)}
+          statuses={formStatuses}
         />
 
-        <TextProperty
-          label="Return URL"
-          instructions="The URL the form will redirect to after successful submit."
-          name="returnUrl"
-          value={returnUrl}
+        <SelectProperty
+          label="Success Behavior"
+          instructions="Choose what visitors see after submitting the form."
+          name="successBehavior"
+          value={successBehavior}
+          onChangeHandler={this.update}
+          options={[
+            { key: "returnUrl", value: "Return URL" },
+            { key: "message", value: "Success Banner" },
+          ]}
+        />
+
+        {successBehavior === "returnUrl" ? (
+          <TextProperty
+            label="Return URL"
+            instructions="The URL to visit after a successful submission."
+            name="returnUrl"
+            value={returnUrl}
+            onChangeHandler={this.update}
+          />
+        ) : (
+          <TextareaProperty
+            label="Success Message"
+            instructions="Shown in place of the form after a successful submission."
+            name="successMessage"
+            value={successMessage === undefined ? "Thank you! Your submission has been received." : successMessage}
+            onChangeHandler={this.update}
+          />
+        )}
+
+        <TextareaProperty
+          label="Error Banner Message"
+          instructions="Shown above the form when a submission has errors."
+          name="errorMessage"
+          value={errorMessage === undefined ? "Please correct the errors below." : errorMessage}
           onChangeHandler={this.update}
         />
 
@@ -179,15 +225,6 @@ class Form extends BasePropertyEditor {
     );
   }
 
-  handleTitleUpdate(event) {
-      const { value } = event.target;
-
-      document.getElementsByClassName("main-nav__title")[0].querySelector('h1').innerHTML = value;
-
-      document.title = value + " | ExpressionEngine";
-
-      this.update(event);
-  }
 }
 
 export default connect(

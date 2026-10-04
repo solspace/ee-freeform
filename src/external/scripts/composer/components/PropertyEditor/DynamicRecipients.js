@@ -56,7 +56,7 @@ class DynamicRecipients extends BasePropertyEditor {
   render() {
     const { properties } = this.context;
     const {
-      required, label, handle, values, options,
+      required, handle, values, options,
       showAsRadio, showAsCheckboxes, notificationId, instructions, format
     } = properties;
 
@@ -91,9 +91,8 @@ class DynamicRecipients extends BasePropertyEditor {
         <hr />
 
         <LightSwitchProperty
-          label="This field is required?"
+          label="This field is required"
           name="required"
-          bold={true}
           checked={required}
           onChangeHandler={this.update}
         />
@@ -109,8 +108,9 @@ class DynamicRecipients extends BasePropertyEditor {
           onChangeHandler={this.update}
           emptyOption="--"
           optionGroups={PropertyHelper.getNotificationList(notifications)}
+          inlineAction={canManageNotifications}
         >
-          {canManageNotifications && <AddNewNotification />}
+          {canManageNotifications && <AddNewNotification buttonLabel="New" />}
         </SelectProperty>
 
         {notificationId ? (
@@ -125,14 +125,6 @@ class DynamicRecipients extends BasePropertyEditor {
           />
         ) : ""
         }
-
-        <TextProperty
-          label="Label"
-          instructions="Field label used to describe the field."
-          name="label"
-          value={label}
-          onChangeHandler={this.update}
-        />
 
         <TextareaProperty
           label="Instructions"

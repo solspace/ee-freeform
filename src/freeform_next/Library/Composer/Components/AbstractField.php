@@ -17,7 +17,10 @@ use ReflectionClass;
 use ReturnTypeWillChange;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Attributes\CustomFieldAttributes;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\CheckboxGroupField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\DynamicRecipientField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\FileUploadField;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\RadioGroupField;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\InputOnlyInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\MultipleValueInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Fields\Interfaces\NoRenderInterface;
@@ -28,6 +31,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Components\Properties\FieldPro
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Validation\Constraints\ConstraintInterface;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Validation\Validator;
 use Solspace\Addons\FreeformNext\Library\Helpers\StringHelper;
+use Solspace\Addons\FreeformNext\Library\Pro\Fields\RatingField;
 use Solspace\Addons\FreeformNext\Library\Session\FormValueContext;
 use Stringy\Stringy;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
@@ -168,9 +172,14 @@ abstract class AbstractField implements FieldInterface, JsonSerializable, String
     {
         $this->setCustomAttributes($customAttributes);
 
-        $output = '';
+        $grouped = $this->usesGroupedChoiceMarkup();
+        $output = $grouped ? '<fieldset class="ff-fieldset"'
+            . $this->getAttributeString('aria-describedby', $this->getDescriptionIds())
+            . $this->getAttributeString('aria-invalid', $this->hasErrors() ? 'true' : null)
+            . $this->getAttributeString('aria-required', $this->isRequired() ? 'true' : null)
+            . '>' : '';
         if (!$this instanceof InputOnlyInterface) {
-            $output .= $this->getLabelHtml();
+            $output .= $grouped ? $this->getLegendHtml() : $this->getLabelHtml();
         }
 
         // Show instructions above by default
@@ -189,6 +198,10 @@ abstract class AbstractField implements FieldInterface, JsonSerializable, String
 
         if ($this->getErrors()) {
             $output .= $this->renderErrors();
+        }
+
+        if ($grouped) {
+            $output .= '</fieldset>';
         }
 
         return $this->renderRaw($output);
@@ -435,6 +448,27 @@ abstract class AbstractField implements FieldInterface, JsonSerializable, String
 
         return $attribute;
     }
+
+    public function usesGroupedChoiceMarkup(): bool
+    {
+        return $this instanceof CheckboxGroupField
+            || $this instanceof RadioGroupField
+            || $this instanceof RatingField
+            || ($this instanceof DynamicRecipientField && ($this->isShowAsRadio() || $this->isShowAsCheckboxes()));
+    }
+
+    public function getDescriptionIds(): string
+    {
+        $ids = [];
+        if ($this->getInstructions()) {
+            $ids[] = $this->getIdAttribute() . '-instructions';
+        }
+        if ($this->hasErrors()) {
+            $ids[] = $this->getIdAttribute() . '-errors';
+        }
+
+        return implode(' ', $ids);
+    }
     /**
      * Gets the overriden value if any present
      *
@@ -497,6 +531,13 @@ abstract class AbstractField implements FieldInterface, JsonSerializable, String
 
         return $output;
     }
+
+    protected function getLegendHtml(): string
+    {
+        return '<legend'
+            . $this->getAttributeString('class', $this->getCustomAttributes()->getLabelClass())
+            . '>' . $this->getLabel() . '</legend>' . PHP_EOL;
+    }
     /**
      * Assemble the Instructions HTML string
      *
@@ -511,7 +552,7 @@ abstract class AbstractField implements FieldInterface, JsonSerializable, String
         $classAttribute = $this->getCustomAttributes()->getInstructionsClass();
         $classAttribute = $classAttribute ? ' class="' . $classAttribute . '"' : '';
 
-        $output = '<div' . $classAttribute . '>';
+        $output = '<div' . $this->getAttributeString('id', $this->getIdAttribute() . '-instructions') . $classAttribute . '>';
         $output .= $this->getInstructions();
         $output .= '</div>';
         $output .= PHP_EOL;
@@ -533,7 +574,8 @@ abstract class AbstractField implements FieldInterface, JsonSerializable, String
         $class = 'errors ';
         $class .= $this->getCustomAttributes()->getErrorClass();
 
-        $output = '<ul class="' . $class . '">';
+        $output = '<ul' . $this->getAttributeString('id', $this->getIdAttribute() . '-errors')
+            . $this->getAttributeString('class', $class) . '>';
 
         foreach ($errors as $error) {
             $output .= '<li>' . htmlentities($error, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8') . '</li>';

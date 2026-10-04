@@ -63,13 +63,18 @@ class FormsService implements FormHandlerInterface
             }
         }
 
+        // Existing forms may still reference samples removed from the template chooser.
+        if (!$templatePath && in_array($templateName, ['bootstrap.html', 'foundation.html', 'materialize.html'], true)) {
+            $templatePath = $settings->getSolspaceFormTemplateDirectory() . '/legacy/' . $templateName;
+        }
+
         if (null === $templatePath || !file_exists($templatePath)) {
             $translator = new EETranslator();
             throw new FreeformException($translator->translate("Form template '{name}' not found", ['name' => $templateName]));
         }
 
         $content     = file_get_contents($templatePath);
-        $transformer = new FormToTagDataTransformer($form, $content);
+        $transformer = new FormToTagDataTransformer($form, $content, false, true, $templateName);
 
         return $transformer->getOutput();
     }

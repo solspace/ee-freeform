@@ -239,6 +239,17 @@ CREATE TABLE IF NOT EXISTS `exp_freeform_next_settings` (
   `recaptchaKey`                VARCHAR(50)            NULL      DEFAULT NULL,
   `recaptchaSecret`             VARCHAR(50)            NULL      DEFAULT NULL,
   `recaptchaScoreThreshold`     VARCHAR(30)            NULL      DEFAULT NULL,
+  `recaptchaTheme`              VARCHAR(10)            NOT NULL  DEFAULT 'light',
+  `recaptchaSize`               VARCHAR(10)            NOT NULL  DEFAULT 'normal',
+  `captchaProvider`             VARCHAR(20)            NULL      DEFAULT NULL,
+  `turnstileKey`                VARCHAR(255)           NULL      DEFAULT NULL,
+  `turnstileSecret`             VARCHAR(255)           NULL      DEFAULT NULL,
+  `turnstileTheme`              VARCHAR(10)            NOT NULL  DEFAULT 'auto',
+  `turnstileSize`               VARCHAR(10)            NOT NULL  DEFAULT 'normal',
+  `hcaptchaKey`                 VARCHAR(255)           NULL      DEFAULT NULL,
+  `hcaptchaSecret`              VARCHAR(255)           NULL      DEFAULT NULL,
+  `hcaptchaTheme`               VARCHAR(10)            NOT NULL  DEFAULT 'light',
+  `hcaptchaSize`                VARCHAR(10)            NOT NULL  DEFAULT 'normal',
   `autoScrollToErrors`          TINYINT(1)             NOT NULL  DEFAULT 1,
   PRIMARY KEY (`id`)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;

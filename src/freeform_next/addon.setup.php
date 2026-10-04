@@ -20,13 +20,15 @@ if (!defined('FREEFORM_EXPRESS')) {
     define('FREEFORM_PRO', 'pro');
 }
 
+// EE stores extension versions in VARCHAR(10); keep the EE-facing prerelease
+// version short in both this add-on definition and the fieldtype registration.
 $cacheDir = PATH_CACHE . '/freeform_next';
 if (FreeformHelper::getVersion() !== FREEFORM_EXPRESS && !file_exists($cacheDir . '/ft_check')) {
     $ftExists = ee()->db->where(['name' => 'freeform_next'])->get('exp_fieldtypes')->num_rows();
     if (!$ftExists) {
         ee()->db->insert('exp_fieldtypes', [
             'name'                => 'freeform_next',
-            'version'             => '3.3.10',
+            'version'             => '4.0.0-a5',
             'settings'            => 'YTowOnt9',
             'has_global_settings' => 'n',
         ]);
@@ -49,9 +51,12 @@ return [
     'name'           => 'Freeform',
     'module_name'    => 'Freeform_next',
     'description'    => 'Powerful form builder',
-    'version'        => '3.3.10',
+    'version'        => '4.0.0-a5',
     'namespace'      => 'Solspace\Addons\FreeformNext',
     'settings_exist' => true,
+    'requires'       => [
+        'php' => '8.2',
+    ],
     'models'         => [
         'FormModel'                  => 'Model\FormModel',
         'FieldModel'                 => 'Model\FieldModel',

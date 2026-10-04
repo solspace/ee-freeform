@@ -122,6 +122,7 @@ class SubmitField extends AbstractField implements SingleValueInterface, InputOn
                 . $this->getAttributeString("type", "submit")
                 . $this->getAttributeString("class", $submitClass)
                 . $this->getAttributeString("name", self::PREVIOUS_PAGE_INPUT_NAME)
+                . ' formnovalidate'
                 . $attributes->getInputAttributesAsString()
                 . '>'
                 . $this->getLabelPrev()

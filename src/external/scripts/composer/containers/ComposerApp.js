@@ -10,7 +10,7 @@
 
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import SaveButton from "../components/SaveButton";
+import HeaderActions from "../components/HeaderActions";
 import Composer from "../containers/Composer";
 import FieldList from "../containers/FieldList";
 import PropertyEditor from "../containers/PropertyEditor";
@@ -71,6 +71,44 @@ export default class ComposerApp extends Component {
     formPropCleanup: this.props.formPropCleanup,
   });
 
+  componentDidMount() {
+    document.documentElement.classList.add("freeform-builder-page");
+    this.updateWorkspaceHeight();
+    window.addEventListener("resize", this.updateWorkspaceHeight);
+
+    // EE can resize its heading after fonts load or the navigation changes.
+    // Measure only on layout changes, never while a panel is scrolling.
+    if (typeof ResizeObserver !== "undefined") {
+      this.resizeObserver = new ResizeObserver(this.updateWorkspaceHeight);
+      const heading = document.querySelector(".main-nav") || document.querySelector(".main-nav__title");
+      if (heading) {
+        this.resizeObserver.observe(heading);
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    document.documentElement.classList.remove("freeform-builder-page");
+    window.removeEventListener("resize", this.updateWorkspaceHeight);
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+  }
+
+  setWorkspace = (workspace) => {
+    this.workspace = workspace;
+  };
+
+  updateWorkspaceHeight = () => {
+    if (!this.workspace) {
+      return;
+    }
+
+    const top = this.workspace.getBoundingClientRect().top + window.scrollY;
+    const height = Math.max(360, window.innerHeight - top - 24);
+    this.workspace.style.setProperty("--composer-workspace-height", `${height}px`);
+  };
+
   render() {
     const { saveUrl, formUrl, showTutorial, finishTutorialUrl } = this.props;
 
@@ -78,17 +116,19 @@ export default class ComposerApp extends Component {
 
     return (
       <div className="builder-interface">
-        <SaveButton saveUrl={saveUrl} formUrl={formUrl} />
+        <HeaderActions saveUrl={saveUrl} formUrl={formUrl} />
 
-        <div className="builder-blocks">
-          <div className="field-list">
+        <div className="builder-blocks" ref={this.setWorkspace}>
+          <div className="field-list" role="region" aria-label="Available fields">
             <FieldList />
           </div>
-          <div className="builder">
-            <Composer />
-          </div>
-          <div className="property-editor">
-            <PropertyEditor />
+          <div className="composer-editor-panel panel">
+            <div className="builder" role="region" aria-label="Form layout">
+              <Composer />
+            </div>
+            <div className="property-editor" role="region" aria-label="Element settings">
+              <PropertyEditor />
+            </div>
           </div>
         </div>
       </div>

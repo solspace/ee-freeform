@@ -12,15 +12,15 @@
 <link rel="stylesheet" href="<?php echo URL_THIRD_THEMES ?>freeform_next/css/migrations.css"/>
 
 <script>
-    window.runUrl = "<?=$migrate_url?>";
-    window.firstStage =<?php echo json_encode($first_stage );?>;
-    window.finishedRedirectUrl = "<?=$finished_redirect_url?>";
+    window.runUrl = <?= json_encode((string) $migrate_url, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_INVALID_UTF8_SUBSTITUTE) ?>;
+    window.firstStage = <?= json_encode($first_stage, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_INVALID_UTF8_SUBSTITUTE) ?>;
+    window.finishedRedirectUrl = <?= json_encode((string) $finished_redirect_url, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_INVALID_UTF8_SUBSTITUTE) ?>;
 </script>
 
 
 <div class="form-standard <?php echo version_compare(APP_VER, '4.0.0', '<') ? 'box' : '' ?>">
     <div class="form-btns form-btns-top">
-        <h1><?= $cp_page_title ?></h1>
+        <h1><?= htmlspecialchars((string) $cp_page_title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></h1>
     </div>
 
     <div id="ready-wrapper" class="migration-info-block">

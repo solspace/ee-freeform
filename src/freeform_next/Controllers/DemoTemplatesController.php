@@ -15,6 +15,7 @@ use Solspace\Addons\FreeformNext\Utilities\ControlPanel\View;
 class DemoTemplatesController extends Controller
 {
     public const FLASH_VAR_KEY = 'codepack_prefix';
+    private const DEFAULT_GROUP = 'freeform-demo';
 
     /**
      * Show CodePack contents
@@ -45,8 +46,6 @@ class DemoTemplatesController extends Controller
             return $view;
         }
 
-        $prefix = 'freeform_next_demo';
-
         ob_start();
         include(PATH_THIRD . 'freeform_next/Templates/codepack/listing.php');
         $content = ob_get_clean();
@@ -60,23 +59,23 @@ class DemoTemplatesController extends Controller
                 'save_btn_text_working' => 'Installing...',
                 'form_url'              => $this->getLink('settings/demo_templates/install'),
                 'codepack'              => $codepack,
-                'prefix'                => $prefix,
+                'prefix'                => $postInstallPrefix ?: self::DEFAULT_GROUP,
                 'sections'              => [
                     [
                         [
                             'title'  => 'Template Group Name',
-                            'desc'   => 'A new template group will be created with this name. Be sure to name this something unique to prevent a naming collision.',
+                            'desc'   => 'Choose a unique ExpressionEngine template group name for the demo. Installing again into the same group updates templates with matching names.',
                             'fields' => [
                                 'prefix' => [
                                     'type'     => 'text',
-                                    'value'    => $postInstallPrefix ?: 'freeform_next_demo',
+                                    'value'    => $postInstallPrefix ?: self::DEFAULT_GROUP,
                                     'required' => true,
                                 ],
                             ],
                         ],
                         [
-                            'title'  => 'Templates to be Installed',
-                            'desc'   => 'These templates will be installed into your ExpressionEngine site.',
+                            'title'  => 'Explore the Demo',
+                            'desc'   => 'The installed demo includes a home page, a form simulator, and a submissions area.',
                             'fields' => [
                                 'test' => [
                                     'type'    => 'html',
@@ -108,7 +107,8 @@ class DemoTemplatesController extends Controller
         $codepack = $this->getCodepack();
         $prefix   = ee()->input->post('prefix');
 
-        $prefix = trim(preg_replace('/[^a-zA-Z_0-9\/]/', '', $prefix));
+        // Keep URL-safe group names, including dashes, but discard path separators.
+        $prefix = trim(preg_replace('/[^a-zA-Z_0-9-]/', '', (string) $prefix), '-');
 
         if (empty($prefix)) {
             return new RedirectView($this->getLink('settings/demo_templates/'));

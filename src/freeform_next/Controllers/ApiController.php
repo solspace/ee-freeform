@@ -40,6 +40,24 @@ class ApiController extends Controller
      */
     public function handle($type, array $args = [])
     {
+        $permissions = $this->getPermissionsService();
+        $allowed = match ($type) {
+            self::TYPE_FIELDS => !empty($_POST)
+                ? $permissions->canAccessFields()
+                : ($permissions->canAccessFields() || $permissions->canManageForms()),
+            self::TYPE_NOTIFICATIONS => ($args[1] ?? null) === 'create'
+                ? $permissions->canAccessNotifications()
+                : ($permissions->canAccessNotifications() || $permissions->canManageForms()),
+            self::TYPE_RESET_SPAM, self::TYPE_DUPLICATE => $permissions->canManageForms(),
+            self::TYPE_SUBMISSION_LAYOUT => $permissions->canAccessSubmissions(),
+            self::TYPE_SUBMISSION_EXPORT => $permissions->canAccessSubmissions() && $permissions->canAccessExport(),
+            default => false,
+        };
+
+        if (!$allowed) {
+            return (new AjaxView())->addError('No access');
+        }
+
         return match ($type) {
             self::TYPE_FIELDS => $this->fields(),
             self::TYPE_NOTIFICATIONS => $this->notifications($args),

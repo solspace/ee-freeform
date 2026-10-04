@@ -1,0 +1,40 @@
+.freeform-success-banner {
+  box-sizing: border-box;
+  margin: 0 0 1.25rem;
+  padding: .9rem 1rem;
+  border: 1px solid #9ed9b6;
+  border-radius: .5rem;
+  background: #edf9f1;
+  color: #205a3b;
+  font: inherit;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.freeform-success-banner--dark {
+  border-color: #326c4c;
+  background: #132b1d;
+  color: #c5efd3;
+}
+
+.freeform-ajax-summary {
+  box-sizing: border-box;
+  padding: .75rem 1rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid #ef4444;
+  border-radius: .5rem;
+  background: #fff7f7;
+  color: #b4232b;
+}
+
+[data-freeform-feedback-theme="dark"] .freeform-ajax-summary {
+  background: #331b20;
+  color: #ffb9be;
+}
+
+.ff-dark .freeform-ajax-summary,
+.ff-basic-dark .freeform-ajax-summary,
+.ff-bootstrap[data-bs-theme="dark"] .freeform-ajax-summary {
+  background: #331b20;
+  color: #ffb9be;
+}

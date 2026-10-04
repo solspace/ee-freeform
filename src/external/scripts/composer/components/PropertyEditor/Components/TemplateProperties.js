@@ -62,11 +62,11 @@ class NotificationProperties extends Component {
       <div className="composer-new-field-form">
         <div className="field">
           <div className="heading">
-            <label>Template Name</label>
+            <label htmlFor="freeform-new-template-name">Template Name</label>
           </div>
           <div className="input">
             <input type="text"
-                   name="name"
+                   id="freeform-new-template-name" name="name"
                    ref="name"
                    className="text fullwidth input--small"
                    value={name}
@@ -77,11 +77,11 @@ class NotificationProperties extends Component {
         </div>
         <div className="field">
           <div className="heading">
-            <label>File Name</label>
+            <label htmlFor="freeform-new-template-fileName">File Name</label>
           </div>
           <div className="input">
             <input type="text"
-                   name="fileName"
+                   id="freeform-new-template-fileName" name="fileName"
                    ref="fileName"
                    className="text fullwidth code input--small"
                    readOnly={true}
@@ -92,13 +92,15 @@ class NotificationProperties extends Component {
         </div>
 
         {errors.length > 0 &&
-        <div className="errors">
+        <div className="errors" role="alert">
           {errors.map((message, index) => (<div key={index}>{message}</div>))}
         </div>
         }
 
-        <button className="btn action cancel button--small" onClick={toggleForm}>Cancel</button>
-        <button className="btn action submit button--small" onClick={this.addTemplate}>Save</button>
+        <div className="composer-new-field-actions">
+          <button type="button" className="button button--default button--small" onClick={toggleForm}>Cancel</button>
+          <button type="button" className="button button--primary button--small" onClick={this.addTemplate}>Save</button>
+        </div>
       </div>
     );
   }

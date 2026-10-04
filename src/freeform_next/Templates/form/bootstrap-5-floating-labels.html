@@ -1,0 +1,87 @@
+{!-- Load Bootstrap 5 CSS on the front-end page. --}
+<style>
+  .ff-bootstrap .ff-pages { display:flex; flex-wrap:wrap; gap:.5rem; margin:0 0 1.25rem; padding:0; list-style:none; }
+  .ff-bootstrap .ff-pages li { opacity:.6; padding:.3rem .65rem; }
+  .ff-bootstrap .ff-pages .ff-current { opacity:1; font-weight:700; border-bottom:2px solid currentColor; }
+  .ff-bootstrap .ff-summary { padding:.75rem 1rem; margin-bottom:1.25rem; border:1px solid #ef4444; border-radius:.5rem; color:#dc2626; }
+  .ff-bootstrap .ff-summary ul { margin:.25rem 0 0; padding-left:1.25rem; }
+  .ff-bootstrap .ff-summary ul:empty { display:none; }
+  .ff-bootstrap .ff-errors { margin:.25rem 0 0; padding:0; color:#dc2626; font-size:.85em; list-style:none; }
+  .ff-bootstrap .ff-required::after { content:' *'; color:#dc2626; }
+  .ff-bootstrap .ff-submit { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; }
+  .ff-bootstrap .ff-left { justify-content:flex-start; } .ff-bootstrap .ff-center { justify-content:center; }
+  .ff-bootstrap .ff-right { justify-content:flex-end; } .ff-bootstrap .ff-spread { justify-content:space-between; }
+  .ff-bootstrap button[name=form_previous_page_button] { background:transparent; color:inherit; border:1px solid currentColor; box-shadow:none; }
+  .ff-bootstrap label { cursor:default; }
+  .ff-bootstrap .ff-fieldset { border:0; padding:0; margin:0; min-width:0; }
+  .ff-bootstrap .ff-option { display:block; margin:0 0 .45rem; }
+  .ff-bootstrap[data-bs-theme="dark"] .ff-summary, .ff-bootstrap[data-bs-theme="dark"] .ff-errors { color:#ff9ba5; }
+  .ff-bootstrap[data-bs-theme="dark"] .ff-required::after { color:#ff9ba5; }
+  .ff-bootstrap :is(input, textarea, select, button):focus-visible { outline:2px solid #4f46e5; outline-offset:2px; }
+  .ff-bootstrap[data-bs-theme="dark"] :is(input, textarea, select, button):focus-visible { outline-color:#a5b4fc; }
+  .ff-bootstrap input[type=email] + input[type=email] { margin-top:.5rem; }
+  .ff-bootstrap .ff-table { display:block; max-width:100%; overflow-x:auto; }
+</style>
+<div class="ff-bootstrap" data-bs-theme="light">
+{if form:page_count > 1}
+  <nav aria-label="Form progress">
+    <ol class="ff-pages">
+    {pages}<li class="{if page:index == current_page:index}ff-current{/if}" {if page:index == current_page:index}aria-current="step"{/if}>{page:label}</li>{/pages}
+    </ol>
+  </nav>
+{/if}
+{if form:has_errors}
+  <div class="ff-summary" role="alert">
+    <strong>{form:error_message}</strong>
+    <ul>{form:errors}<li>{error}</li>{/form:errors}</ul>
+  </div>
+{/if}
+{rows}
+  <div class="row g-3 mb-3 {form:row_class}">
+    {fields}
+    <div class="col-12 col-md {form:column_class}{if field:type == 'submit'} ff-submit ff-{field:position}{/if}">
+      {if field:type == 'text' OR field:type == 'textarea' OR field:type == 'number' OR field:type == 'phone' OR field:type == 'website' OR field:type == 'password' OR field:type == 'email' OR field:type == 'confirmation'}
+      <div class="form-floating">
+        {field:render_input class="form-control" placeholder=" "}
+        {field:render_label label_class="{if field:required}ff-required{/if}"}
+      </div>
+      {field:render_instructions instructions_class="form-text"}
+      {field:render_errors error_class="ff-errors"}
+    {if:elseif field:type == 'select'}
+      <div class="form-floating">
+        {field:render_input class="form-select"}
+        {field:render_label label_class="{if field:required}ff-required{/if}"}
+      </div>
+      {field:render_instructions instructions_class="form-text"}
+      {field:render_errors error_class="ff-errors"}
+    {if:elseif field:type == 'dynamic_recipients'}
+      {if field:show_as_radio OR field:show_as_checkboxes}
+        {field:render class="form-check-input" label_class="form-label{if field:required} ff-required{/if}" instructions_class="form-text" error_class="ff-errors" instructions_below_field="yes"}
+      {if:else}
+        <div class="form-floating">
+          {field:render_input class="form-select"}
+          {field:render_label label_class="{if field:required}ff-required{/if}"}
+        </div>
+        {field:render_instructions instructions_class="form-text"}
+        {field:render_errors error_class="ff-errors"}
+      {/if}
+    {if:else}
+      {if field:type == 'table'}
+      {field:render class="table table-sm align-middle ff-table" label_class="form-label{if field:required} ff-required{/if}" instructions_class="form-text" error_class="ff-errors" instructions_below_field="yes" table_text_input_class="form-control form-control-sm" table_select_input_class="form-select form-select-sm" table_checkbox_input_class="form-check-input" add_button_class="btn btn-sm btn-outline-secondary" remove_button_class="btn btn-sm btn-outline-danger"}
+    {if:elseif field:type == 'submit'}
+      {field:render class="btn btn-primary"}
+    {if:elseif field:type == 'multiple_select'}
+      {field:render class="form-select" label_class="form-label{if field:required} ff-required{/if}" instructions_class="form-text" error_class="ff-errors" instructions_below_field="yes"}
+    {if:elseif field:type == 'rating'}
+      {field:render class="ff-rating-input" label_class="form-label{if field:required} ff-required{/if}" instructions_class="form-text" error_class="ff-errors" instructions_below_field="yes"}
+    {if:elseif field:type == 'checkbox' OR field:type == 'mailing_list' OR field:type == 'checkbox_group' OR field:type == 'radio_group'}
+      {field:render class="form-check-input" label_class="form-label{if field:required} ff-required{/if}" instructions_class="form-text" error_class="ff-errors" instructions_below_field="yes"}
+    {if:else}
+      {field:render class="form-control" label_class="form-label{if field:required} ff-required{/if}" instructions_class="form-text" error_class="ff-errors" instructions_below_field="yes"}
+    {/if}
+    {/if}
+    </div>
+    {/fields}
+  </div>
+{/rows}
+</div>
