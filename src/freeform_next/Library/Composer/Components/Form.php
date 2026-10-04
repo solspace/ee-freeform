@@ -551,11 +551,11 @@ class Form implements JsonSerializable, Iterator, ArrayAccess, Stringable
      * @return string
      * @throws FreeformException
      */
-    public function render(?array $customFormAttributes = null)
+    public function render(?array $customFormAttributes = null, ?string $formattingTemplate = null)
     {
         $this->setAttributes($customFormAttributes);
 
-        return $this->formHandler->renderFormTemplate($this, $this->formTemplate);
+        return $this->formHandler->renderFormTemplate($this, $formattingTemplate ?: $this->formTemplate);
     }
     /**
      *

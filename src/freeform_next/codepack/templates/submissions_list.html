@@ -1,0 +1,29 @@
+{if logged_in_group_id == "1"}
+<div class="demo-heading">
+  <h1>Submissions</h1>
+  <p>Recent submissions for {embed:form}.</p>
+</div>
+<div class="demo-section-actions">
+  <a class="demo-button" href="{path='%prefix%/submissions/{embed:form}/spam'}">Spam folder</a>
+  <a class="demo-button" href="{path='%prefix%/forms/basic-light/{embed:form}'}">Preview form</a>
+</div>
+<div class="demo-table-wrap">
+  <table class="demo-table">
+    <thead><tr><th scope="col">Title</th><th scope="col">Date</th><th scope="col">Status</th><th scope="col">Files</th></tr></thead>
+    <tbody>
+      {exp:freeform_next:submissions form="{embed:form}" limit="20" orderby="date" sort="desc" paginate="bottom"}
+        <tr>
+          <td><a href="{path='%prefix%/submissions/{embed:form}/{submission:id}'}">{submission:title_html}</a></td>
+          <td>{submission:date format="%Y-%m-%d %g:%i %a"}</td>
+          <td><span class="demo-status">{submission:status}</span></td>
+          <td>{submission:attachment_count}</td>
+        </tr>
+        {if submission:no_results}<tr><td colspan="4">No submissions have been received for this form.</td></tr>{/if}
+        {submission:paginate}
+          <tr><td colspan="4"><nav aria-label="Submission pages"><div class="demo-pagination">{pagination_links}{page}<a href="{pagination_url}"{if current_page} aria-current="page"{/if}>{pagination_page_number}</a>{/page}{/pagination_links}</div></nav></td></tr>
+        {/submission:paginate}
+      {/exp:freeform_next:submissions}
+    </tbody>
+  </table>
+</div>
+{if:else}<div class="demo-notice" role="alert">Submission data is available to Super Admins only.</div>{/if}

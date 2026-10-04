@@ -48,7 +48,9 @@ class Freeform_Next extends Plugin implements Strict_XID
             return $this->returnNoResults();
         }
 
-        return $form->render();
+        // Allow the demo simulator (and templates using this tag) to preview a
+        // formatting template without changing the form's saved configuration.
+        return $form->render(null, $this->getParam('formatting_template'));
     }
 
     /**

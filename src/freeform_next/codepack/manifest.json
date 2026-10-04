@@ -1,7 +1,7 @@
 {
   "package_name": "Solspace Freeform Demo Templates",
-  "package_desc": "This package includes a set of sample templates that help demonstrate Freeform's abilities and get you better acquainted with it.",
-  "package_version": "1.0.0",
+  "package_desc": "A form simulator and submission viewer for Freeform's current formatting templates.",
+  "package_version": "4.0.0-a5",
   "vendor": "Solspace",
   "vendor_url": "https://docs.solspace.com/expressionengine/freeform/v3/",
   "docs_url": "https://docs.solspace.com/expressionengine/freeform/v3/"
