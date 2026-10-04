@@ -45,7 +45,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
   backdrop-filter: blur(12px);
 }
 .demo-brand { display: inline-flex; align-items: center; gap: 10px; flex: 0 0 auto; color: var(--demo-text); font-size: 17px; font-weight: 700; text-decoration: none; }
-.demo-brand-mark { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: #4d59da; color: #fff; font-weight: 800; }
+.demo-brand-mark { display: block; flex: none; width: 34px; height: 34px; }
 .demo-context { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; color: var(--demo-muted); font-size: 13px; }
 .demo-links { display: flex; gap: 4px; margin-left: auto; }
 .demo-links a { display: inline-flex; align-items: center; min-height: 35px; padding: 5px 11px; border-radius: 7px; color: var(--demo-text); text-decoration: none; font-size: 13px; font-weight: 600; }
