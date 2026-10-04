@@ -59,6 +59,9 @@ class Form implements JsonSerializable, Iterator, ArrayAccess, Stringable
     private $description;
     /** @var string */
     private $returnUrl;
+    private string $successBehavior;
+    private string $successMessage;
+    private string $errorMessage;
     private bool $storeData;
     private bool $useAjax;
     private bool $ipCollectingEnabled;
@@ -238,6 +241,27 @@ class Form implements JsonSerializable, Iterator, ArrayAccess, Stringable
     public function getReturnUrl()
     {
         return $this->returnUrl ?: '';
+    }
+
+    public function getSuccessBehavior(): string
+    {
+        return $this->successBehavior;
+    }
+
+    public function getSuccessMessage(): string
+    {
+        return $this->successMessage;
+    }
+
+    public function getErrorMessage(): string
+    {
+        return $this->errorMessage;
+    }
+
+    public function shouldDisplaySuccessMessage(): bool
+    {
+        return $this->successBehavior === FormProperties::SUCCESS_BEHAVIOR_MESSAGE
+            && $this->isSubmittedSuccessfully();
     }
 
     public function isUseAjax(): bool
@@ -604,6 +628,12 @@ class Form implements JsonSerializable, Iterator, ArrayAccess, Stringable
             $ajaxAttributes = ' data-freeform-ajax-action="'
                 . htmlspecialchars($ajaxSubmitUrl, ENT_QUOTES, 'UTF-8')
                 . '"';
+            $ajaxAttributes .= ' data-freeform-error-message="'
+                . htmlspecialchars($this->errorMessage, ENT_QUOTES, 'UTF-8')
+                . '"';
+            if (str_contains((string) $this->formTemplate, '-dark')) {
+                $ajaxAttributes .= ' data-freeform-feedback-theme="dark"';
+            }
         }
 
         $output = sprintf(
@@ -672,10 +702,28 @@ class Form implements JsonSerializable, Iterator, ArrayAccess, Stringable
 
         if ($this->useAjax) {
             $url = rtrim(URL_THIRD_THEMES, '/') . '/freeform_next/javascript/form-ajax.js';
+            $output .= $this->renderFeedbackStylesheet();
             $output .= '<script src="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '" defer></script>';
         }
 
         return $output;
+    }
+
+    public function renderSuccessBanner(): string
+    {
+        $themeClass = str_contains((string) $this->formTemplate, '-dark') ? ' freeform-success-banner--dark' : '';
+
+        return $this->renderFeedbackStylesheet()
+            . '<div class="freeform-success-banner' . $themeClass . '" role="status" tabindex="-1">'
+            . htmlspecialchars($this->successMessage, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
+            . '</div>';
+    }
+
+    private function renderFeedbackStylesheet(): string
+    {
+        $url = rtrim(URL_THIRD_THEMES, '/') . '/freeform_next/css/form-feedback.css';
+
+        return '<link rel="stylesheet" href="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '">';
     }
     /**
      * @return FieldHandlerInterface
@@ -789,6 +837,9 @@ class Form implements JsonSerializable, Iterator, ArrayAccess, Stringable
         $this->submissionTitleFormat = $formProperties->getSubmissionTitleFormat();
         $this->description           = $formProperties->getDescription();
         $this->returnUrl             = $formProperties->getReturnUrl();
+        $this->successBehavior       = $formProperties->getSuccessBehavior();
+        $this->successMessage        = $formProperties->getSuccessMessage();
+        $this->errorMessage          = $formProperties->getErrorMessage();
         $this->storeData             = $formProperties->isStoreData();
         $this->useAjax               = $formProperties->isUseAjax();
         $this->defaultStatus         = $formProperties->getDefaultStatus();
@@ -1007,15 +1058,18 @@ class Form implements JsonSerializable, Iterator, ArrayAccess, Stringable
     public function jsonSerialize(): array
 	{
         return [
-            'name'          => $this->name,
-            'handle'        => $this->handle,
-            'color'         => $this->color,
-            'description'   => $this->description,
-            'returnUrl'     => $this->returnUrl,
-            'storeData'     => (bool) $this->storeData,
-            'useAjax'       => $this->useAjax,
-            'defaultStatus' => $this->defaultStatus,
-            'formTemplate'  => $this->formTemplate,
+            'name'            => $this->name,
+            'handle'          => $this->handle,
+            'color'           => $this->color,
+            'description'     => $this->description,
+            'returnUrl'       => $this->returnUrl,
+            'successBehavior' => $this->successBehavior,
+            'successMessage'  => $this->successMessage,
+            'errorMessage'    => $this->errorMessage,
+            'storeData'       => (bool) $this->storeData,
+            'useAjax'         => $this->useAjax,
+            'defaultStatus'   => $this->defaultStatus,
+            'formTemplate'    => $this->formTemplate,
         ];
     }
     /**

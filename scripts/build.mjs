@@ -174,6 +174,10 @@ async function buildDatepicker() {
     `${STYLES_DEST}/fields/datepicker.css`,
     `${ROOT_THEMES}/css/fields/datepicker.css`
   );
+  await cp(
+    `${STYLES_DEST}/form-feedback.css`,
+    `${ROOT_THEMES}/css/form-feedback.css`
+  );
 }
 
 // Install PHP dependencies if composer is available; otherwise package the

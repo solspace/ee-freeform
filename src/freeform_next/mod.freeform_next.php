@@ -10,6 +10,7 @@
  */
 use Solspace\Addons\FreeformNext\Services\CleanupService;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Properties\FormProperties;
 use Solspace\Addons\FreeformNext\Library\DataObjects\SubmissionAttributes;
 use Solspace\Addons\FreeformNext\Library\EETags\FormTagParamUtilities;
 use Solspace\Addons\FreeformNext\Library\EETags\FormToTagDataTransformer;
@@ -292,24 +293,41 @@ class Freeform_Next extends Plugin implements Strict_XID
 
                 } else {
                     $returnUrl = str_replace('SUBMISSION_ID', '', $returnUrl);
-                    $returnUrl = rtrim($returnUrl, '/');
+                    $returnUrl = rtrim($returnUrl, '/') ?: '/';
                 }
 
                 if ($isAjaxRequest) {
                     $this->returnJson(
                         [
-                            'success'      => true,
-                            'finished'     => true,
-                            'returnUrl'    => $returnUrl,
-                            'submissionId' => $submissionModel?->id,
-                            'csrfToken'    => CSRF_TOKEN,
-                            'honeypot'     => [
+                            'success'         => true,
+                            'finished'        => true,
+                            'returnUrl'       => $returnUrl,
+                            'successBehavior' => $form->getSuccessBehavior(),
+                            'successMessage'  => $form->getSuccessMessage(),
+                            'submissionId'    => $submissionModel?->id,
+                            'csrfToken'       => CSRF_TOKEN,
+                            'honeypot'        => [
                                 'name' => $honeypot->getName(),
                                 'hash' => $honeypot->getHash(),
                             ],
                         ]
                     );
                 } else {
+                    if ($form->getSuccessBehavior() === FormProperties::SUCCESS_BEHAVIOR_MESSAGE) {
+                        $siteUrl = (string) ee()->config->item('base_url') . (string) ee()->config->item('site_index');
+                        $backUrl = (string) ee()->input->server('HTTP_REFERER');
+                        if (!$backUrl || parse_url($backUrl, PHP_URL_HOST) !== parse_url($siteUrl, PHP_URL_HOST)) {
+                            $requestUri = (string) ee()->input->server('REQUEST_URI');
+                            $backUrl = (int) ee()->input->get('ACT') === 0
+                                && str_starts_with($requestUri, '/')
+                                && !str_starts_with($requestUri, '//')
+                                    ? $requestUri
+                                    : $siteUrl;
+                        }
+
+                        $this->redirect($backUrl);
+                    }
+
                     $this->redirect($returnUrl);
                 }
             } else if ($isAjaxRequest) {
@@ -340,12 +358,13 @@ class Freeform_Next extends Plugin implements Strict_XID
 
                 $this->returnJson(
                     [
-                        'success'    => false,
-                        'finished'   => false,
-                        'formErrors' => $form->getErrors(),
-                        'errors'     => $fieldErrors,
-                        'csrfToken'  => CSRF_TOKEN,
-                        'honeypot'   => [
+                        'success'      => false,
+                        'finished'     => false,
+                        'formErrors'   => $form->getErrors(),
+                        'errorMessage' => $form->getErrorMessage(),
+                        'errors'       => $fieldErrors,
+                        'csrfToken'    => CSRF_TOKEN,
+                        'honeypot'     => [
                             'name' => $honeypot->getName(),
                             'hash' => $honeypot->getHash(),
                         ],

@@ -40,6 +40,7 @@ jobs:
           php scripts/check-captcha.php
           php scripts/check-admin-recipients.php
           php scripts/check-formatting-accessibility.php
+          php scripts/check-success-behavior.php
 
   package:
     name: Build release package

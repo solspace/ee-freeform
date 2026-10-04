@@ -37,6 +37,10 @@ class FormToTagDataTransformer
      */
     public function getOutput(): string
     {
+        if ($this->form->shouldDisplaySuccessMessage()) {
+            return $this->form->renderSuccessBanner();
+        }
+
         $output = $this->form->renderTag()
             . $this->getOutputWithoutWrappingFormTags()
             . $this->form->renderClosingTag();
@@ -49,6 +53,10 @@ class FormToTagDataTransformer
      */
     public function getOutputWithoutWrappingFormTags(): string|array|null
     {
+        if ($this->form->shouldDisplaySuccessMessage()) {
+            return $this->form->renderSuccessBanner();
+        }
+
         $output = $this->content;
 
         $output = $this->markFieldTags($output);

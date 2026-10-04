@@ -16,6 +16,7 @@ use Solspace\Addons\FreeformNext\Library\Composer\Attributes\FormAttributes;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Context;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Form;
 use Solspace\Addons\FreeformNext\Library\Composer\Components\Properties;
+use Solspace\Addons\FreeformNext\Library\Composer\Components\Properties\FormProperties;
 use Solspace\Addons\FreeformNext\Library\Database\CRMHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Database\FieldHandlerInterface;
 use Solspace\Addons\FreeformNext\Library\Database\FormHandlerInterface;
@@ -199,6 +200,9 @@ class Composer
                     'description'           => '',
                     'formTemplate'          => 'basic-light.html',
                     'returnUrl'             => '/',
+                    'successBehavior'       => FormProperties::SUCCESS_BEHAVIOR_RETURN_URL,
+                    'successMessage'        => FormProperties::DEFAULT_SUCCESS_MESSAGE,
+                    'errorMessage'          => FormProperties::DEFAULT_ERROR_MESSAGE,
                     'storeData'             => true,
                     'useAjax'               => true,
                     'defaultStatus'         => $this->statusHandler->getDefaultStatusId(),
@@ -253,6 +257,9 @@ class Composer
                 'description'           => $this->customComposerState->description,
                 'formTemplate'          => 'basic-light.html',
                 'returnUrl'             => '/',
+                'successBehavior'       => FormProperties::SUCCESS_BEHAVIOR_RETURN_URL,
+                'successMessage'        => FormProperties::DEFAULT_SUCCESS_MESSAGE,
+                'errorMessage'          => FormProperties::DEFAULT_ERROR_MESSAGE,
                 'storeData'             => true,
                 'useAjax'               => true,
                 'defaultStatus'         => $this->customComposerState->defaultStatus->id,

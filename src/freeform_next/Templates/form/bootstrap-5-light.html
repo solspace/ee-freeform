@@ -32,7 +32,7 @@
 {/if}
 {if form:has_errors}
   <div class="ff-summary" role="alert">
-    <strong>Please correct the errors below.</strong>
+    <strong>{form:error_message}</strong>
     <ul>{form:errors}<li>{error}</li>{/form:errors}</ul>
   </div>
 {/if}

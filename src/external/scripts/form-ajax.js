@@ -17,7 +17,7 @@
     });
   }
 
-  function showSummary(form, messages) {
+  function showSummary(form, messages, heading) {
     const container = form.querySelector('.ff-tailwind, .ff-bootstrap, .ff-basic-light, .ff-basic-dark, .ff-basic-floating-labels, .ff-flexbox, .ff-grid') || form;
     const summary = document.createElement('div');
     summary.className = 'ff-summary freeform-ajax-summary';
@@ -26,7 +26,7 @@
     summary.setAttribute('tabindex', '-1');
 
     const title = document.createElement('strong');
-    title.textContent = messages.length ? 'Please correct the errors below.' : 'Please check the fields below.';
+    title.textContent = heading || form.dataset.freeformErrorMessage || 'Please correct the errors below.';
     summary.appendChild(title);
     if (messages.length) {
       const list = document.createElement('ul');
@@ -76,7 +76,7 @@
       if (!firstControl && control.type !== 'hidden') firstControl = control;
     });
 
-    const summary = showSummary(form, [...formErrors, ...unmatchedErrors]);
+    const summary = showSummary(form, [...formErrors, ...unmatchedErrors], response.errorMessage);
     const focusTarget = firstControl || summary;
     focusTarget.focus({ preventScroll: true });
     focusTarget.scrollIntoView({ block: 'center', behavior: 'smooth' });
@@ -109,7 +109,7 @@
 
   function finish(form, response) {
     form.dispatchEvent(new CustomEvent('freeform:success', { bubbles: true, detail: response }));
-    if (response.returnUrl) {
+    if (response.successBehavior !== 'message' && response.returnUrl) {
       const destination = new URL(response.returnUrl, window.location.href);
       if (destination.protocol === 'http:' || destination.protocol === 'https:') {
         window.location.assign(destination.href);
@@ -118,9 +118,13 @@
     }
 
     const status = document.createElement('div');
+    status.className = 'freeform-success-banner';
+    if (form.dataset.freeformFeedbackTheme === 'dark' || form.querySelector('.ff-dark, .ff-basic-dark, [data-bs-theme="dark"]')) {
+      status.classList.add('freeform-success-banner--dark');
+    }
     status.setAttribute('role', 'status');
     status.setAttribute('tabindex', '-1');
-    status.textContent = 'Form submitted successfully.';
+    status.textContent = response.successMessage || 'Thank you! Your submission has been received.';
     form.insertAdjacentElement('afterend', status);
     form.hidden = true;
     status.focus();
