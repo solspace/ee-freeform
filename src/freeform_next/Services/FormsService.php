@@ -74,7 +74,7 @@ class FormsService implements FormHandlerInterface
         }
 
         $content     = file_get_contents($templatePath);
-        $transformer = new FormToTagDataTransformer($form, $content);
+        $transformer = new FormToTagDataTransformer($form, $content, false, true, $templateName);
 
         return $transformer->getOutput();
     }

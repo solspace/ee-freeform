@@ -527,6 +527,7 @@ class Form implements JsonSerializable, Iterator, ArrayAccess, Stringable
             $this->formSaved = true;
 
             if (FreeformHelper::isFreeformAtLeast('3.3.5') && !$this->formHandler->isSpamFolderEnabled()) {
+                $this->getSubmissionHandler()->markFormAsSubmitted($this);
                 return null;
             }
         }
@@ -709,9 +710,11 @@ class Form implements JsonSerializable, Iterator, ArrayAccess, Stringable
         return $output;
     }
 
-    public function renderSuccessBanner(): string
+    public function renderSuccessBanner(?string $formattingTemplate = null): string
     {
-        $themeClass = str_contains((string) $this->formTemplate, '-dark') ? ' freeform-success-banner--dark' : '';
+        $themeClass = str_contains((string) ($formattingTemplate ?: $this->formTemplate), '-dark')
+            ? ' freeform-success-banner--dark'
+            : '';
 
         return $this->renderFeedbackStylesheet()
             . '<div class="freeform-success-banner' . $themeClass . '" role="status" tabindex="-1">'

@@ -70,7 +70,7 @@ class TemplateHelper
             $string = self::renderString($string, $replaceValues);
         }
 
-        $dataTransformer = new FormToTagDataTransformer($form, $string, $skipHelperFields);
+        $dataTransformer = new FormToTagDataTransformer($form, $string, $skipHelperFields, false);
         $string          = $dataTransformer->getOutputWithoutWrappingFormTags();
 
         self::loadTemplateLib();

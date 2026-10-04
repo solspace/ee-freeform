@@ -41,6 +41,24 @@ class SuccessFormFixture extends Form
     {
         return true;
     }
+
+    public function renderTag(?array $attributes = null): string
+    {
+        return '<form>';
+    }
+
+    public function renderClosingTag(): string
+    {
+        return '</form>';
+    }
+}
+
+class SuccessTransformerFixture extends FormToTagDataTransformer
+{
+    protected function parseContent(): string|array|null
+    {
+        return '<input value="">';
+    }
 }
 
 $form = (new ReflectionClass(SuccessFormFixture::class))->newInstanceWithoutConstructor();
@@ -49,7 +67,10 @@ $form = (new ReflectionClass(SuccessFormFixture::class))->newInstanceWithoutCons
 $banner = $form->renderSuccessBanner();
 checkSuccess(str_contains($banner, 'freeform-success-banner--dark') && str_contains($banner, 'form-feedback.css'), 'dark success banner loads its styles');
 checkSuccess(str_contains($banner, '&lt;script&gt;') && !str_contains($banner, '<script>'), 'configured success message is escaped');
+checkSuccess(str_contains($form->renderSuccessBanner('basic-light.html'), 'class="freeform-success-banner"'), 'preview template determines banner theme');
 
-$transformer = new FormToTagDataTransformer($form, '{rows}');
-checkSuccess($transformer->getOutput() === $banner, 'success banner replaces the form on a normal render');
-checkSuccess($transformer->getOutputWithoutWrappingFormTags() === $banner, 'success banner works without generated form tags');
+$transformer = new SuccessTransformerFixture($form, '{rows}');
+checkSuccess($transformer->getOutput() === $banner . '<form><input value=""></form>', 'success banner precedes a fresh form');
+checkSuccess($transformer->getOutputWithoutWrappingFormTags() === $banner . '<input value="">', 'success banner works without generated form tags');
+$returnUrlTransformer = new SuccessTransformerFixture($form, '/thank-you', false, false);
+checkSuccess($returnUrlTransformer->getOutputWithoutWrappingFormTags() === '<input value="">', 'return URL interpolation never includes a feedback banner');

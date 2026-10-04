@@ -109,6 +109,14 @@
 
   function finish(form, response) {
     form.dispatchEvent(new CustomEvent('freeform:success', { bubbles: true, detail: response }));
+    if (response.successBehavior === 'message') {
+      const pageUrl = new URL(window.location.href);
+      pageUrl.searchParams.delete('freeform_ajax_page');
+      if (pageUrl.href === window.location.href) window.location.reload();
+      else window.location.replace(pageUrl.href);
+      return;
+    }
+
     if (response.successBehavior !== 'message' && response.returnUrl) {
       const destination = new URL(response.returnUrl, window.location.href);
       if (destination.protocol === 'http:' || destination.protocol === 'https:') {

@@ -28,7 +28,13 @@ class FormToTagDataTransformer
      * @param string $content
      * @param bool   $skipHelperFields
      */
-    public function __construct(private Form $form, private $content, private $skipHelperFields = false)
+    public function __construct(
+        private Form $form,
+        private $content,
+        private $skipHelperFields = false,
+        private bool $renderFeedback = true,
+        private ?string $formattingTemplate = null
+    )
     {
     }
 
@@ -37,15 +43,13 @@ class FormToTagDataTransformer
      */
     public function getOutput(): string
     {
-        if ($this->form->shouldDisplaySuccessMessage()) {
-            return $this->form->renderSuccessBanner();
-        }
-
         $output = $this->form->renderTag()
-            . $this->getOutputWithoutWrappingFormTags()
+            . $this->parseContent()
             . $this->form->renderClosingTag();
 
-        return $output;
+        return ($this->renderFeedback && $this->form->shouldDisplaySuccessMessage()
+            ? $this->form->renderSuccessBanner($this->formattingTemplate)
+            : '') . $output;
     }
 
     /**
@@ -53,10 +57,18 @@ class FormToTagDataTransformer
      */
     public function getOutputWithoutWrappingFormTags(): string|array|null
     {
-        if ($this->form->shouldDisplaySuccessMessage()) {
-            return $this->form->renderSuccessBanner();
+        $output = $this->parseContent();
+
+        if (!$this->renderFeedback || !$this->form->shouldDisplaySuccessMessage()) {
+            return $output;
         }
 
+        return $this->form->renderSuccessBanner($this->formattingTemplate)
+            . (is_array($output) ? implode('', $output) : $output);
+    }
+
+    protected function parseContent(): string|array|null
+    {
         $output = $this->content;
 
         $output = $this->markFieldTags($output);
