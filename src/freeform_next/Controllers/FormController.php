@@ -187,7 +187,6 @@ class FormController extends Controller
 
         $view
             ->setHeading(lang('Forms'))
-            ->addCss('forms')
             ->addJavascript('formIndex')
             ->addModal((new ConfirmRemoveModal($this->getLink('forms/delete')))->setKind('Forms'));
 

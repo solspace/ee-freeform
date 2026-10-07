@@ -11,6 +11,8 @@
 
 $this->extend('_layouts/table_form_wrapper')?>
 
+<link rel="stylesheet" href="<?= URL_THIRD_THEMES ?>freeform_next/css/forms.css?v=4-cards-1" />
+
 <?php
 $escape = static fn ($value) => htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 ?>
