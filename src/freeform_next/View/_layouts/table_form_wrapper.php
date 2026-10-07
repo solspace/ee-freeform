@@ -12,6 +12,16 @@
 					<?php elseif (isset($wrapper_header)):?>
 						<h3 class="title-bar__title"><?= htmlspecialchars((string) $wrapper_header, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></h3>
 					<?php endif;?>
+					<?php if (!empty($form_view_switch)): ?>
+						<div class="freeform-forms-view-switch" role="group" aria-label="Form view">
+							<button type="button" class="freeform-forms-view-button" data-forms-view="list" aria-pressed="false" title="List view" aria-label="List view">
+								<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3 4h3v3H3zm5 0h9v3H8zM3 9h3v3H3zm5 0h9v3H8zM3 14h3v3H3zm5 0h9v3H8z"/></svg>
+							</button>
+							<button type="button" class="freeform-forms-view-button is-active" data-forms-view="cards" aria-pressed="true" title="Card view" aria-label="Card view">
+								<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M2 3h7v6H2zm9 0h7v6h-7zM2 11h7v6H2zm9 0h7v6h-7z"/></svg>
+							</button>
+						</div>
+					<?php endif; ?>
 					<?php if ( ! empty($form_right_links)):?>
 						<fieldset class="tbl-search right title-bar__extra-tools">
 							<?php foreach ($form_right_links as $link_data):?>

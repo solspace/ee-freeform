@@ -84,6 +84,7 @@ class FormController extends Controller
         $spamTotals = SubmissionRepository::getInstance()->getSpamTotalsPerForm();
 
         $tableData = [];
+        $formCards = [];
         foreach ($forms as $form) {
 
             $toolbarItems = [];
@@ -145,12 +146,34 @@ class FormController extends Controller
             }
 
             $tableData[] = $data;
+
+            $color = $form->getForm()->getColor();
+            $formCards[] = [
+                'id' => $form->id,
+                'name' => $form->name,
+                'handle' => $form->handle,
+                'description' => $form->description,
+                'color' => is_string($color) && preg_match('/^#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?$/', $color)
+                    ? $color
+                    : '#7865a8',
+                'submissions' => $submissionTotals[$form->id] ?? 0,
+                'spam' => $spamTotals[$form->id] ?? 0,
+                'editUrl' => $canManageForms ? $this->getLink('forms/' . $form->id) : null,
+                'submissionsUrl' => $canAccessSubmissions ? $this->getLink('submissions/' . $form->handle) : null,
+                'spamUrl' => $canAccessSubmissions && $spamFolderEnabled
+                    ? $this->getLink('spam/' . $form->handle)
+                    : null,
+            ];
         }
         $table->setData($tableData);
         $table->setNoResultsText('No results');
 
         $template = [
             'table'            => $table->viewData(),
+            'form_cards'       => $formCards,
+            'form_view_switch' => true,
+            'can_manage_forms' => $canManageForms,
+            'duplicate_url'    => $canManageForms ? $this->getLink('api/duplicate') : null,
             'cp_page_title'    => lang('Forms'),
         ];
 
@@ -164,6 +187,7 @@ class FormController extends Controller
 
         $view
             ->setHeading(lang('Forms'))
+            ->addCss('forms')
             ->addJavascript('formIndex')
             ->addModal((new ConfirmRemoveModal($this->getLink('forms/delete')))->setKind('Forms'));
 

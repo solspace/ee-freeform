@@ -1,0 +1,115 @@
+.freeform-forms-view-switch {
+  display: inline-flex;
+  align-self: center;
+  margin-left: auto;
+  margin-right: 12px;
+  border: 1px solid #d8dce5;
+  border-radius: 5px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.freeform-forms-view-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 33px;
+  height: 31px;
+  padding: 7px;
+  border: 0;
+  background: transparent;
+  color: #777e8e;
+  cursor: pointer;
+
+  & + & { border-left: 1px solid #d8dce5; }
+  &:hover, &:focus-visible { color: #5d4d89; background: #f5f2fa; }
+  &.is-active { color: #675294; background: #ede8f5; }
+  svg { display: block; width: 17px; height: 17px; fill: currentColor; }
+}
+
+[data-forms-panel][hidden] { display: none !important; }
+.freeform-forms-card-mode .bulk-action-bar { display: none !important; }
+
+.freeform-forms-cards {
+  padding: 21px;
+  background: #f7f8fa;
+}
+
+.freeform-forms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr));
+  gap: 17px;
+}
+
+.freeform-form-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 172px;
+  border: 1px solid #e1e3e8;
+  border-bottom: 3px solid var(--freeform-card-color);
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(30, 35, 55, .035);
+  overflow: hidden;
+  transition: border-color .15s ease, box-shadow .15s ease;
+
+  &:hover { box-shadow: 0 3px 12px rgba(30, 35, 55, .09); }
+}
+
+.freeform-form-card__body { flex: 1; min-width: 0; padding: 17px 18px 12px; }
+.freeform-form-card__heading { display: flex; align-items: flex-start; gap: 8px; }
+.freeform-form-card__title {
+  flex: 1;
+  min-width: 0;
+  color: #303645;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+a.freeform-form-card__title:hover { color: #675294; }
+.freeform-form-card__handle { margin-top: 5px; color: #8a909d; font-size: 11px; overflow-wrap: anywhere; }
+.freeform-form-card__description {
+  margin: 13px 0 0;
+  color: #656d79;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.freeform-form-card__duplicate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #8d93a1;
+  cursor: pointer;
+
+  &:hover, &:focus-visible { background: #f0ecf6; color: #675294; }
+  svg { width: 15px; height: 15px; fill: currentColor; }
+}
+.freeform-form-card__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 17px;
+  padding: 11px 18px;
+  border-top: 1px solid #f0f0f2;
+  color: #747b89;
+  font-size: 11px;
+
+  a, span { color: inherit; }
+  a:hover { color: #675294; }
+  strong { color: #3d4451; font-weight: 600; }
+}
+.freeform-forms-empty { padding: 35px 20px; text-align: center; color: #727a86; }
+
+@media (max-width: 700px) {
+  .freeform-forms-cards { padding: 14px; }
+  .freeform-forms-view-switch { margin-right: 8px; }
+}
