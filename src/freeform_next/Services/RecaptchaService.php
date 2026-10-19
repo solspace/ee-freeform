@@ -254,23 +254,34 @@ class RecaptchaService
     form.dataset.recaptchaBound = 'true';
 
     const target = ensureTarget(form);
+    let pending = false;
+    let resuming = false;
 
+    // Hold submission before ordinary submit listeners can serialize an empty token.
     form.addEventListener('submit', event => {
-      if (form.dataset.recaptchaReady === 'true') {
-        delete form.dataset.recaptchaReady;
+      if (resuming) {
+        resuming = false;
         return;
       }
 
       event.preventDefault();
+      event.stopImmediatePropagation();
+      if (pending || form.dataset.freeformAjaxSubmitting) {
+        return;
+      }
 
+      pending = true;
+      target.value = '';
       const submitter = event.submitter;
 
       const continueSubmission = () => {
-        if (form.hasAttribute('data-freeform-ajax-action')) {
-          form.dataset.recaptchaReady = 'true';
-          form.requestSubmit(submitter || undefined);
-        } else {
-          form.submit();
+        pending = false;
+        resuming = true;
+        try {
+          // Re-enter normal submission so AJAX listeners and the submitter are retained.
+          HTMLFormElement.prototype.requestSubmit.call(form, submitter?.form === form ? submitter : undefined);
+        } finally {
+          resuming = false;
         }
       };
 
@@ -287,13 +298,12 @@ class RecaptchaService
                 target.value = token;
 
                 continueSubmission();
-            })
-            .catch(continueSubmission);
+            }, continueSubmission);
         });
       };
 
       execute();
-    }, { passive: false });
+    }, { capture: true, passive: false });
   }
 
   function bindAllForms() {
@@ -305,11 +315,16 @@ class RecaptchaService
     });
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  function initialize() {
     loadRecaptchaOnce();
-
     bindAllForms();
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initialize);
+  } else {
+    initialize();
+  }
 
   // Bind dynamically-added forms too
   new MutationObserver(bindAllForms).observe(document.documentElement, { childList: true, subtree: true });
