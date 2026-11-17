@@ -9,6 +9,25 @@
  */
 
 $(() => {
+  // A provider change reveals all of that provider's settings. Reapply the
+  // Salesforce method group so a newly selected provider shows only its active fields.
+  const salesforceMethods = $("input[name$='-salesforce_client_credentials']:radio");
+  // EE restores cached radio states when revealing a provider. Keep both
+  // options in sync, since the browser only fires change on the selected radio.
+  salesforceMethods.on("change", () => {
+    salesforceMethods.each((index, input) => {
+      $(input).data("el_checked", input.checked);
+    });
+  });
+  function updateSalesforceFields() {
+    const selected = salesforceMethods.filter(":checked");
+    if (selected.length && selected.closest("fieldset").is(":visible")) {
+      EE.cp.form_group_toggle(selected[0]);
+    }
+  }
+  $("select[name='class']").on("change", updateSalesforceFields);
+  updateSalesforceFields();
+
   const csrfToken          = $("*[data-csrf-token]").data("csrf-token");
   const authChecker        = $("#auth-checker");
 

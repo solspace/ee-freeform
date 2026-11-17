@@ -10,9 +10,14 @@ abstract class AbstractSalesforceIntegration extends AbstractCRMIntegration
 {
     abstract protected function getAuthorizationCheckUrl(): string;
 
+    protected function createClient(array $config = []): Client
+    {
+        return new Client($config);
+    }
+
     protected function generateAuthorizedClient(bool $refreshTokenIfExpired = true): Client
     {
-        $client = new Client([
+        $client = $this->createClient([
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->getAccessToken(),
                 'Content-Type' => 'application/json',
@@ -25,7 +30,7 @@ abstract class AbstractSalesforceIntegration extends AbstractCRMIntegration
                 $client->get($endpoint);
             } catch (RequestException $e) {
                 if (401 === $e->getCode()) {
-                    $client = new Client([
+                    $client = $this->createClient([
                         'headers' => [
                             'Authorization' => 'Bearer ' . $this->fetchAccessToken(),
                             'Content-Type' => 'application/json',

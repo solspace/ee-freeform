@@ -1,5 +1,10 @@
 # Solspace: Freeform (ExpressionEngine)
 
+## Documentation
+
+- [Official documentation](https://docs.solspace.com/expressionengine/freeform/v3/)
+- [Changelog](CHANGELOG.md)
+
 ## Requirements
 
 - **PHP 8.2 or newer** (PHP 8.x, including 8.5).
@@ -19,6 +24,12 @@ Install dependencies once, then build:
 ```sh
 pnpm install
 pnpm run build
+```
+
+Salesforce authentication regression checks run without live credentials:
+
+```sh
+php scripts/check-salesforce.php
 ```
 
 `pnpm run build` does everything in one pass:

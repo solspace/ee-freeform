@@ -18,6 +18,9 @@ class SettingBlueprint
     public const TYPE_TEXT     = 'text';
     public const TYPE_PASSWORD = 'password';
     public const TYPE_BOOL     = 'bool';
+    public const TYPE_RADIO = 'radio';
+    public const TYPE_CONFIG_TEXT = 'config_text';
+    public const TYPE_CONFIG_PASSWORD = 'config_password';
 
     private bool $required;
 
@@ -30,6 +33,9 @@ class SettingBlueprint
             self::TYPE_TEXT,
             self::TYPE_PASSWORD,
             self::TYPE_BOOL,
+            self::TYPE_RADIO,
+            self::TYPE_CONFIG_TEXT,
+            self::TYPE_CONFIG_PASSWORD,
         ];
     }
 
@@ -51,7 +57,11 @@ class SettingBlueprint
         private $instructions,
         $required = false,
         private $attributes = "",
-        private $value = ""
+        private $value = "",
+        private ?string $group = null,
+        private array $groupToggle = [],
+        private array $choices = [],
+        private $existingValue = null
     ) {
         $this->required     = (bool)$required;
     }
@@ -107,14 +117,43 @@ class SettingBlueprint
     /**
      * @return mixed
      */
-    public function getValue()
+    public function getValue(bool $isNew = true)
     {
-        return $this->value;
+        return !$isNew && $this->existingValue !== null ? $this->existingValue : $this->value;
     }
 
     /**
      * @return bool
      */
+    public function isSecret(): bool
+    {
+        return in_array($this->type, [self::TYPE_PASSWORD, self::TYPE_CONFIG_PASSWORD], true);
+    }
+
+    public function getInputType(): string
+    {
+        if ($this->type === self::TYPE_RADIO) {
+            return 'inline_radio';
+        }
+
+        return $this->type === self::TYPE_BOOL ? 'yes_no' : ($this->isSecret() ? 'password' : 'text');
+    }
+
+    public function getChoices(): array
+    {
+        return $this->choices;
+    }
+
+    public function getGroup(): ?string
+    {
+        return $this->group;
+    }
+
+    public function getGroupToggle(): array
+    {
+        return $this->groupToggle;
+    }
+
     public function isEditable(): bool
     {
         return in_array($this->getType(), self::getEditableTypes(), true);
