@@ -1,7 +1,7 @@
 * ### Setup
 	* [Installation](installation.md)
 	* [Updates](updates.md)
-	* [Changelog](changelog.md)
+	* [Changelog](../CHANGELOG.md)
 	* [Settings](settings.md)
 	* [Permissions](permissions.md)
 	* [Demo Templates](demo-templates.md)
