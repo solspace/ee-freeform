@@ -1,5 +1,10 @@
 # Solspace: Freeform (ExpressionEngine)
 
+## Documentation
+
+- [Official documentation](https://docs.solspace.com/expressionengine/freeform/v3/)
+- [Changelog](CHANGELOG.md)
+
 ## Requirements
 
 - **Node 24** (Node 22 also works). If you use `nvm`: `nvm use` (reads `.nvmrc`).

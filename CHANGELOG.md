@@ -10,6 +10,11 @@
 - Fixed Salesforce authentication failures reporting an old access token as successfully renewed.
 - Fixed new Salesforce integration setup showing credentials for both authentication methods when selecting the provider.
 
+## 3.3.10 - 2026-08-21
+
+### Fixed
+- Fixed invalid HTML markup in honeypot field.
+
 ## 3.3.9 - 2026-08-13
 
 ### Changed
