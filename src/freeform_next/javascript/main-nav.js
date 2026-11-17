@@ -1,23 +1,30 @@
-// EE's custom submenu parents use href="#". Reuse the permitted Forms link
-// as Freeform's destination, retaining EE's native hover/touch dropdown.
+// Mark Freeform's native custom submenu using its destinations rather than its
+// editable label. EE can move hover dropdowns into the document body.
 $(() => {
-  document.querySelectorAll('.nav-custom .ee-sidebar__item.js-dropdown-hover[href="#"]').forEach(item => {
-    if (!/^Freeform(?: Lite| Express)?$/.test(item.title)) {
-      return;
-    }
+  const isFreeformUrl = href => {
+    const url = new URL(href, document.baseURI);
+    return /(?:^|\/)addons\/settings\/freeform_next(?:\/|[?&]|$)/.test(url.pathname + url.search);
+  };
 
-    // EE moves hover dropdowns into the document body during initialization.
+  document.querySelectorAll('.nav-custom .ee-sidebar__item.js-dropdown-hover').forEach(item => {
     const dropdown = item._dropdown || item.nextElementSibling;
     if (!dropdown || !dropdown.classList.contains('dropdown')) {
       return;
     }
 
-    const forms = Array.from(dropdown.querySelectorAll('a.dropdown__link')).find(link => {
+    const links = Array.from(dropdown.querySelectorAll('a.dropdown__link'));
+    // A user-created dropdown may also contain unrelated links.
+    if (!links.length || !links.every(link => isFreeformUrl(link.href))) {
+      return;
+    }
+    item.classList.add('freeform-nav-item');
+
+    // Keep EE's hover/touch dropdown, and use the permitted Forms destination
+    // for a normal click when the member has access to Forms.
+    const forms = links.find(link => {
       const url = new URL(link.href);
-      // EE can put the CP route in the query string (admin.php?/cp/...).
       return /(?:^|\/)addons\/settings\/freeform_next\/forms\/?(?:[?&]|$)/.test(url.pathname + url.search);
     });
-
     if (forms) {
       item.href = forms.href;
     }

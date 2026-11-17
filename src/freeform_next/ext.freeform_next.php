@@ -146,16 +146,43 @@ class Freeform_next_ext
         }
     }
 
-	/**
-	 * Add the Freeform Menu
-	 *
-	 * @param object $menu ExpressionEngine\Service\CustomMenu\Menu
-	 */
+    /** Styles only Freeform's icon in the main control-panel navigation. */
+    public function addCpNavigationCss(): string
+    {
+        // Preserve styles supplied by other extensions using the same hook.
+        $css = ee()->extensions->last_call ?: '';
+        $mask = rawurlencode(file_get_contents(__DIR__ . '/icon-mask.svg'));
+
+        return $css . <<<CSS
+\n.nav-custom .freeform-nav-item,
+.nav-custom a[href*="addons/settings/freeform_next/"],
+.nav-custom a[href$="addons/settings/freeform_next"] {
+    display: flex;
+    align-items: center;
+}
+.nav-custom .freeform-nav-item .ee-sidebar__item-custom-icon,
+.nav-custom a[href*="addons/settings/freeform_next/"] .ee-sidebar__item-custom-icon,
+.nav-custom a[href$="addons/settings/freeform_next"] .ee-sidebar__item-custom-icon {
+    flex: 0 0 1.25rem;
+    height: 1.25rem;
+    top: 0;
+    border: 0;
+    border-radius: 0;
+    background-color: currentColor;
+    font-size: 0;
+    -webkit-mask: url("data:image/svg+xml,{$mask}") center / contain no-repeat;
+    mask: url("data:image/svg+xml,{$mask}") center / contain no-repeat;
+}
+CSS;
+    }
+
+    /** @param object $menu ExpressionEngine\Service\CustomMenu\Menu */
     public function addCpCustomMenu($menu): void
 	{
 		$permissionsService = new PermissionsService;
 
 		$sub = $menu->addSubmenu(FreeformHelper::getEditionName());
+        ee()->cp->add_js_script(['package' => 'freeform_next:main-nav']);
 
         $canManageForms = $permissionsService->canManageForms();
         $canAccessSubmissions = $permissionsService->canAccessSubmissions();
@@ -166,7 +193,6 @@ class Freeform_next_ext
 
         if($canManageForms)
         {
-          ee()->cp->add_js_script(['package' => 'freeform_next:main-nav']);
           $sub->addItem(
             lang('Forms'),
             ee('CP/URL', 'addons/settings/freeform_next/forms')

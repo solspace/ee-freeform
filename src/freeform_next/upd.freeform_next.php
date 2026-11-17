@@ -17,6 +17,7 @@ use Solspace\Addons\FreeformNext\Repositories\FieldRepository;
 use Solspace\Addons\FreeformNext\Utilities\AddonUpdater;
 use Solspace\Addons\FreeformNext\Utilities\AddonUpdater\PluginAction;
 use Solspace\Addons\FreeformNext\Utilities\AddonUpdater\PluginExtension;
+use Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation\NavigationInstaller;
 
 class Freeform_next_upd extends AddonUpdater
 {
@@ -698,6 +699,7 @@ class Freeform_next_upd extends AddonUpdater
             new PluginExtension('addRecaptchaJavascriptToForm', ExtensionHelper::HOOK_FORM_RENDER_CLOSING_TAG, [], 10),
 
             new PluginExtension('addCpCustomMenu', 'cp_custom_menu', [], 5),
+            new PluginExtension('addCpNavigationCss', 'cp_css_end', [], 5),
         ];
     }
 
@@ -706,6 +708,8 @@ class Freeform_next_upd extends AddonUpdater
      */
     protected function onAfterInstall()
     {
+        (new NavigationInstaller())->install();
+
         $fieldRepository = FieldRepository::getInstance();
 
         $field         = $fieldRepository->getOrCreateField();

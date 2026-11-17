@@ -3,12 +3,11 @@
 ## Unreleased
 
 ### Added
-- Added Salesforce Client Credentials authentication, now the default for new integrations. Existing connections retain their authentication method.
-- Added control-panel inputs for Salesforce credentials.
+- Fresh installs now add Freeform to the administrator navigation automatically.
+- Added Freeform’s monochrome icon to the control-panel navigation.
 
 ### Fixed
-- Fixed Salesforce token renewal incorrectly reporting success after authentication failures.
-- Fixed reCAPTCHA v3 submission handling so custom submit handlers wait for a fresh token, repeated clicks do not start overlapping token requests, and forms loaded after page initialization initialize correctly.
+- Fixed reCAPTCHA v3 token handling for custom submit handlers, repeated clicks, and dynamically loaded forms.
 
 ## 3.3.11 - 2026-11-17
 

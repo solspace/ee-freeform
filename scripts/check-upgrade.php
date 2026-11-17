@@ -19,6 +19,13 @@ namespace Solspace\Addons\FreeformNext\Repositories {
     }
 }
 
+namespace Solspace\Addons\FreeformNext\Utilities\ControlPanel\Navigation {
+    class NavigationInstaller
+    {
+        public function install(): void { $GLOBALS['menuInstallCalls']++; }
+    }
+}
+
 namespace {
     // EE's action dispatcher uses this marker to validate AJAX CSRF tokens.
     interface Strict_XID {}
@@ -132,6 +139,7 @@ namespace {
 
     $GLOBALS['ee'] = (object) ['db' => new UpgradeDb()];
     $GLOBALS['seededFields'] = [];
+    $GLOBALS['menuInstallCalls'] = 0;
     function ee(): object { return $GLOBALS['ee']; }
     function check(bool $condition, string $label): void
     {
@@ -167,6 +175,7 @@ namespace {
     $updater = new TestFreeformUpdater();
     $db = $GLOBALS['ee']->db;
     check($updater->install(), 'fresh install completes');
+    check($GLOBALS['menuInstallCalls'] === 1, 'fresh install adds the default navigation');
     check(\count($db->tables) === 17 && isset($db->tables['exp_freeform_next_permissions'], $db->tables['exp_freeform_next_submissions']), 'fresh install creates expected tables');
     check(\count($GLOBALS['seededFields']) === 12 && \count($db->rows['freeform_next_statuses']) === 3, 'fresh install seeds fields and statuses');
     $settingsSql = implode("\n", array_filter($db->queries, static fn ($sql) => str_contains($sql, 'CREATE TABLE IF NOT EXISTS `exp_freeform_next_settings`')));
@@ -174,7 +183,7 @@ namespace {
         'hcaptchaKey', 'hcaptchaSecret', 'hcaptchaTheme', 'hcaptchaSize'] as $column) {
         check(str_contains($settingsSql, "`{$column}`"), "fresh install includes {$column}");
     }
-    check(\count($db->rows['modules']) === 1 && \count($db->rows['actions']) === 1 && \count($db->rows['extensions']) === 12, 'fresh install registers module, action and hooks');
+    check(\count($db->rows['modules']) === 1 && \count($db->rows['actions']) === 1 && \count($db->rows['extensions']) === 13, 'fresh install registers module, action and hooks');
     check($db->rows['actions'][0]['csrf_exempt'] === false, 'submission action requires an EE CSRF token on fresh install');
     check(\in_array(Strict_XID::class, class_implements(\Freeform_Next::class), true), 'submission action also validates AJAX CSRF tokens');
 
@@ -208,7 +217,9 @@ namespace {
     $hook = $db->rows['extensions'][0];
     check($hook['enabled'] === 'n' && $hook['settings'] === 'custom' && $hook['priority'] === 13 && $hook['version'] === '4.0.0-a5', 'upgrade preserves disabled hook and its settings');
     check($db->rows['actions'][0]['csrf_exempt'] === false, 'upgrade enables EE CSRF validation for existing submission action');
-    check($updater->update('3.3.10') && \count($db->queries) === 11 && \count($db->rows['actions']) === 1 && \count($db->rows['extensions']) === 12, 'repeated upgrade does not duplicate registrations or columns');
+    check($updater->update('3.3.10') && \count($db->queries) === 11 && \count($db->rows['actions']) === 1 && \count($db->rows['extensions']) === 13, 'repeated upgrade does not duplicate registrations or columns');
+
+    check($GLOBALS['menuInstallCalls'] === 1, 'upgrades leave existing menu placement unchanged');
 
     // Older 3.3.x sites still need the 3.3.5 spam-folder column migration.
     $db->columns['exp_freeform_next_settings'] = [];
