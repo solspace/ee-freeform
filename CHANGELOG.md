@@ -1,14 +1,13 @@
 # Solspace Freeform Changelog
 
-## Unreleased
+## 3.3.11 - 2026-11-17
 
 ### Added
-- Added Salesforce Client Credentials authentication for External Client Apps, selected by default for new integrations. Existing integrations retain Username-Password authentication.
-- Added authentication method radios and conditional credential fields, including masked, encrypted secrets and a separate legacy security token. Existing config.php credentials remain supported.
+- Added Salesforce Client Credentials authentication, now the default for new integrations. Existing connections retain their authentication method.
+- Added control-panel inputs for Salesforce credentials.
 
 ### Fixed
-- Fixed Salesforce authentication failures reporting an old access token as successfully renewed.
-- Fixed new Salesforce integration setup showing credentials for both authentication methods when selecting the provider.
+- Fixed Salesforce token renewal incorrectly reporting success after authentication failures.
 
 ## 3.3.10 - 2026-08-21
 
