@@ -10,6 +10,7 @@ use Solspace\Addons\FreeformNext\Library\Helpers\ExtensionHelper;
 use Solspace\Addons\FreeformNext\Library\Helpers\UrlHelper;
 use Solspace\Addons\FreeformNext\Library\Integrations\CRM\CRMOAuthConnector;
 use Solspace\Addons\FreeformNext\Library\Integrations\SettingBlueprint;
+use Solspace\Addons\FreeformNext\Library\Integrations\IntegrationSecret;
 use Solspace\Addons\FreeformNext\Library\Integrations\TokenRefreshInterface;
 use Solspace\Addons\FreeformNext\Model\IntegrationModel;
 use Solspace\Addons\FreeformNext\Repositories\CrmRepository;
@@ -166,9 +167,21 @@ class CrmController extends Controller
 
         $errors = null;
         if (isset($_POST['class'])) {
-            $errors = $this->save($model);
+            $originalSettings = $model->settings;
+            $saveFailed = false;
+            try {
+                $errors = $this->save($model);
+            } catch (IntegrationException $e) {
+                $model->settings = $originalSettings;
+                $saveFailed = true;
+                ee('CP/Alert')->makeInline('shared-form')
+                    ->asIssue()
+                    ->withTitle('Could not save the integration')
+                    ->addToBody($e->getMessage())
+                    ->now();
+            }
 
-            if (empty($errors)) {
+            if (!$saveFailed && empty($errors)) {
                 $view = new RedirectView($this->getLink('integrations/crm/'));
 
                 return $view;
@@ -200,17 +213,46 @@ class CrmController extends Controller
 
                 $hash = md5($className);
 
+                // Only populate values saved on this integration. Config.php secrets
+                // remain server-side and are resolved only when authenticating.
+                $value = $settings[$item->getHandle()] ?? null;
+                $unreadableSecret = false;
+                if ($item->getType() === SettingBlueprint::TYPE_CONFIG_PASSWORD && $value) {
+                    try {
+                        $value = IntegrationSecret::decrypt($value);
+                    } catch (IntegrationException $e) {
+                        $value = '';
+                        $unreadableSecret = true;
+                    }
+                }
+                $field = [
+                    'type' => $item->getInputType(),
+                    'required' => $item->isRequired(),
+                    'value' => $value,
+                    'attrs' => $item->getAttributes(),
+                ];
+                if ($item->getChoices()) {
+                    $field['choices'] = $item->getChoices();
+                    $savedValue = $settings[$item->getHandle()] ?? $item->getValue(!$model->id);
+                    $field['value'] = is_bool($savedValue) ? ($savedValue ? 'y' : 'n') : $savedValue;
+                }
+                if ($item->isSecret()) {
+                    $field['placeholder'] = $unreadableSecret
+                        ? 'Saved value could not be decrypted — enter a replacement'
+                        : 'Enter a value, or leave blank for config.php';
+                }
+                if ($item->getGroupToggle()) {
+                    $field['group_toggle'] = array_map(
+                        static fn($group) => $hash . '-' . $group,
+                        $item->getGroupToggle()
+                    );
+                }
+
                 $settingGroups[] = [
-                    'title'  => $item->getLabel(),
-                    'desc'   => $item->getInstructions(),
-                    'group'  => $hash,
-                    'fields' => [
-                        $hash . '-' . $item->getHandle() => [
-                            'type'     => $item->getType() === SettingBlueprint::TYPE_BOOL ? 'yes_no' : 'text',
-                            'required' => $item->isRequired(),
-                            'value'    => $settings[$item->getHandle()] ?? null,
-                        ],
-                    ],
+                    'title' => $item->getLabel(),
+                    'desc' => $item->getInstructions(),
+                    'group' => $item->getGroup() ? [$hash, $hash . '-' . $item->getGroup()] : $hash,
+                    'fields' => [$hash . '-' . $item->getHandle() => $field],
                 ];
             }
         }
@@ -347,8 +389,28 @@ class CrmController extends Controller
             }
 
             $blueprintHandle = $blueprint->getHandle();
-            $value           = $postedSettings[$blueprintHandle];
+            if (in_array($blueprint->getType(), [SettingBlueprint::TYPE_CONFIG_TEXT, SettingBlueprint::TYPE_CONFIG_PASSWORD], true)
+                && !array_key_exists($blueprintHandle, $postedSettings)) {
+                continue;
+            }
+            $value = $postedSettings[$blueprintHandle] ?? '';
+            if (in_array($blueprint->getType(), [SettingBlueprint::TYPE_CONFIG_TEXT, SettingBlueprint::TYPE_CONFIG_PASSWORD, SettingBlueprint::TYPE_RADIO], true) && !is_string($value)) {
+                unset($_POST[$hash . '-' . $blueprintHandle]);
+                throw new IntegrationException('Enter a valid value for ' . $blueprint->getLabel() . '.');
+            }
+            if ($blueprint->isSecret()) {
+                if ($value === '') {
+                    unset($settings[$blueprintHandle]);
+                    continue;
+                }
+                if ($blueprint->getType() === SettingBlueprint::TYPE_CONFIG_PASSWORD) {
+                    $value = IntegrationSecret::encrypt($value);
+                }
+            }
 
+            if ($blueprint->getChoices() && !array_key_exists($value, $blueprint->getChoices())) {
+                throw new IntegrationException('Choose a valid ' . $blueprint->getLabel() . '.');
+            }
             if ($blueprint->getType() === SettingBlueprint::TYPE_BOOL) {
                 $value = $value === 'y';
             }

@@ -14,6 +14,12 @@ pnpm install
 pnpm run build
 ```
 
+Salesforce authentication regression checks run without live credentials:
+
+```sh
+php scripts/check-salesforce.php
+```
+
 `pnpm run build` does everything in one pass:
 
 - Bundles the React form builder with **esbuild** → `src/themes/freeform_next/javascript/composer/app.js`

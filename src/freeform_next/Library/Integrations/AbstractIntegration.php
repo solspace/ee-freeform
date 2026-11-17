@@ -261,6 +261,15 @@ abstract class AbstractIntegration implements IntegrationInterface
             return $this->configuration->get($blueprint->getHandle());
         }
 
+        if (in_array($blueprint->getType(), [SettingBlueprint::TYPE_CONFIG_TEXT, SettingBlueprint::TYPE_CONFIG_PASSWORD], true)) {
+            $value = $this->settings[$handle] ?? null;
+            if ($value === null || $value === '') {
+                return $this->configuration->get($handle);
+            }
+
+            return $blueprint->isSecret() ? IntegrationSecret::decrypt($value) : $value;
+        }
+
         if (isset($this->settings[$handle])) {
             if ($blueprint->getType() === SettingBlueprint::TYPE_BOOL) {
                 if (is_bool($this->settings[$handle])) {

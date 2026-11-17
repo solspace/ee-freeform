@@ -1,5 +1,11 @@
 # Changelog
 
+### Unreleased (Freeform 3.x)
+- Added Salesforce Client Credentials authentication for External Client Apps, selected by default for new integrations. Existing integrations retain Username-Password authentication.
+- Added authentication method radios and conditional credential fields, including masked, encrypted secrets and a separate legacy security token. Existing config.php credentials remain supported.
+- Fixed Salesforce authentication failures reporting an old access token as successfully renewed.
+- Fixed new Salesforce integration setup showing credentials for both authentication methods when selecting the provider.
+
 ### 1.7.8 (January 30, 2019) <a href="#v1-7-8" id="v1-7-8" class="docs-anchor">#</a>
 - Fixed a bug where the 'Automatically Scroll to Form on Errors and Multipage forms?' setting was not working for multi-page form returns.
 - Fixed a bug where the Freeform channel entry fieldtype could prematurely trigger submit logic in certain scenarios.
