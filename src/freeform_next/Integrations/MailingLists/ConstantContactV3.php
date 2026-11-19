@@ -14,16 +14,40 @@ namespace Solspace\Addons\FreeformNext\Integrations\MailingLists;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\GuzzleException;
+use Psr\Http\Message\ResponseInterface;
 use Solspace\Addons\FreeformNext\Library\Exceptions\Integrations\IntegrationException;
 use Solspace\Addons\FreeformNext\Library\Integrations\DataObjects\FieldObject;
 use Solspace\Addons\FreeformNext\Library\Integrations\MailingLists\DataObjects\ListObject;
 use Solspace\Addons\FreeformNext\Library\Integrations\MailingLists\MailingListOAuthConnector;
+use Solspace\Addons\FreeformNext\Library\Integrations\IntegrationSecret;
+use Solspace\Addons\FreeformNext\Library\Integrations\SettingBlueprint;
 use Solspace\Addons\FreeformNext\Library\Integrations\TokenRefreshInterface;
+use Solspace\Addons\FreeformNext\Model\IntegrationModel;
+use Solspace\Addons\FreeformNext\Repositories\MailingListRepository;
+use stdClass;
 
 class ConstantContactV3 extends MailingListOAuthConnector implements TokenRefreshInterface
 {
     public const TITLE = "Constant Contact (v3)";
     public const LOG_CATEGORY = "ConstantContact_v3";
+
+    private const SETTING_REFRESH_TOKEN = 'refresh_token';
+
+    public static function getSettingBlueprints(): array
+    {
+        return array_merge(parent::getSettingBlueprints(), [
+            new SettingBlueprint(SettingBlueprint::TYPE_INTERNAL, self::SETTING_REFRESH_TOKEN, '', ''),
+        ]);
+    }
+
+    protected function onAfterFetchAccessToken(stdClass $responseData): void
+    {
+        $token = $responseData->refresh_token ?? null;
+        $this->setSetting(
+            self::SETTING_REFRESH_TOKEN,
+            is_string($token) && $token !== '' ? IntegrationSecret::encrypt($token) : null
+        );
+    }
 
     /**
      * @return string
@@ -40,16 +64,7 @@ class ConstantContactV3 extends MailingListOAuthConnector implements TokenRefres
     public function checkConnection(): bool
     {
         try {
-            $client = new Client();
-
-            $endpoint = $this->getEndpoint("/contact_lists");
-
-            $response = $client->get($endpoint, [
-				"headers" => [
-					"Authorization" => "Bearer " . $this->getAccessToken(),
-                    "Content-Type" => "application/json"
-				]
-			]);
+            $response = $this->requestApi('GET', "/contact_lists");
         } catch (BadResponseException $e) {
             $responseBody = $e->getResponse()->getBody();
 
@@ -57,6 +72,8 @@ class ConstantContactV3 extends MailingListOAuthConnector implements TokenRefres
 
             $this->getLogger()->error($errorMessage, self::LOG_CATEGORY);
 
+            return false;
+        } catch (IntegrationException $e) {
             return false;
         }
 
@@ -97,7 +114,127 @@ class ConstantContactV3 extends MailingListOAuthConnector implements TokenRefres
      */
     public function refreshToken(): bool
     {
-        return (bool) $this->fetchAccessToken();
+        $db = ee()->db;
+        $id = (int) $this->getId();
+        // Constant Contact rotates refresh tokens. Read and replace them under one lock.
+        $lock = 'ff:cc:' . sha1($db->database . ':' . $db->dbprefix . ':' . $id);
+        $result = $db->query('SELECT GET_LOCK(?, 15) AS acquired', [$lock]);
+        if (!$result || (int) ($result->row()->acquired ?? 0) !== 1) {
+            throw new IntegrationException('Could not acquire the Constant Contact token renewal lock.');
+        }
+
+        try {
+            $model = MailingListRepository::getInstance()->getIntegrationById($id);
+            if (!$model || $model->class !== self::class) {
+                return false;
+            }
+
+            $settings = json_decode($model->settings ?: '{}', true) ?: [];
+            $storedToken = $settings[self::SETTING_REFRESH_TOKEN] ?? null;
+            if ($model->accessToken && $model->accessToken !== $this->getAccessToken()) {
+                // A concurrent request already renewed this connection.
+                $this->setAccessToken($model->accessToken);
+                $this->setSetting(self::SETTING_REFRESH_TOKEN, $storedToken);
+                return true;
+            }
+            if (!$storedToken) {
+                return false;
+            }
+
+            $response = $this->requestRenewal($settings, IntegrationSecret::decrypt($storedToken));
+            $accessToken = $response->access_token;
+            $refreshToken = $response->refresh_token ?? null;
+            if (is_string($refreshToken) && $refreshToken !== '') {
+                $settings[self::SETTING_REFRESH_TOKEN] = IntegrationSecret::encrypt($refreshToken);
+            }
+
+            // A new authorization from the control panel can supersede this renewal.
+            $saved = $db->where([
+                'id' => $id,
+                'accessToken' => $model->accessToken,
+                'settings' => $model->settings,
+            ])->update(IntegrationModel::TABLE, [
+                'accessToken' => $accessToken,
+                'settings' => json_encode($settings, JSON_THROW_ON_ERROR),
+            ]);
+            if (!$saved || $db->affected_rows() !== 1) {
+                throw new IntegrationException('Could not save the renewed Constant Contact credentials.');
+            }
+
+            $this->setAccessToken($accessToken);
+            $this->setSetting(self::SETTING_REFRESH_TOKEN, $settings[self::SETTING_REFRESH_TOKEN]);
+
+            return true;
+        } finally {
+            $db->query('SELECT RELEASE_LOCK(?)', [$lock]);
+        }
+    }
+
+    private function requestRenewal(array $settings, string $refreshToken): stdClass
+    {
+        try {
+            $response = $this->createClient()->post($this->getAccessTokenUrl(), [
+                'auth' => [
+                    $settings[self::SETTING_CLIENT_ID] ?? '',
+                    $settings[self::SETTING_CLIENT_SECRET] ?? '',
+                ],
+                'headers' => ['Accept' => 'application/json'],
+                'form_params' => ['grant_type' => 'refresh_token', 'refresh_token' => $refreshToken],
+                'http_errors' => false,
+                'allow_redirects' => false,
+                'timeout' => 10,
+            ]);
+        } catch (GuzzleException $e) {
+            throw new IntegrationException('Could not reach Constant Contact to renew authorization.');
+        }
+
+        $data = json_decode((string) $response->getBody());
+        if (($data->error ?? null) === 'invalid_grant') {
+            throw new IntegrationException('Constant Contact rejected the refresh token. Reauthorize the integration in Freeform.');
+        }
+        if ($response->getStatusCode() !== 200) {
+            throw new IntegrationException('Constant Contact token renewal failed (HTTP ' . $response->getStatusCode() . ').');
+        }
+        if (!is_string($data->access_token ?? null) || $data->access_token === '') {
+            throw new IntegrationException('Constant Contact did not return an access token.');
+        }
+
+        return $data;
+    }
+
+    protected function createClient(): Client
+    {
+        return new Client();
+    }
+
+    private function requestApi(string $method, string $endpoint, array $options = []): ResponseInterface
+    {
+        $client = $this->createClient();
+        $url = $this->getEndpoint($endpoint);
+        $options['headers'] = [
+            'Authorization' => 'Bearer ' . $this->getAccessToken(),
+            'Content-Type' => 'application/json',
+        ];
+
+        try {
+            return $client->request($method, $url, $options);
+        } catch (BadResponseException $e) {
+            if ($e->getResponse()->getStatusCode() !== 401) {
+                throw $e;
+            }
+            try {
+                if (!$this->refreshToken()) {
+                    throw new IntegrationException('Reauthorize the Constant Contact integration in Freeform to enable automatic renewal.');
+                }
+            } catch (IntegrationException $renewalError) {
+                $this->getLogger()->error($renewalError->getMessage(), self::LOG_CATEGORY);
+                throw $renewalError;
+            }
+        }
+
+        $options['headers']['Authorization'] = 'Bearer ' . $this->getAccessToken();
+
+        return $client->request($method, $url, $options);
     }
 
     /**
@@ -149,17 +286,7 @@ class ConstantContactV3 extends MailingListOAuthConnector implements TokenRefres
                 $data
             );
 
-            $client = new Client();
-
-            $endpoint = $this->getEndpoint("/contacts/sign_up_form");
-
-			$response = $client->post($endpoint, [
-				"headers" => [
-					"Authorization" => "Bearer " . $this->getAccessToken(),
-					"Content-Type" => "application/json"
-				],
-				"body" => json_encode($data)
-			]);
+            $response = $this->requestApi('POST', "/contacts/sign_up_form", ['body' => json_encode($data)]);
         } catch (BadResponseException $e) {
             $responseBody = $e->getResponse()->getBody();
 
@@ -171,7 +298,7 @@ class ConstantContactV3 extends MailingListOAuthConnector implements TokenRefres
         }
 
         $status = $response->getStatusCode();
-        if ($status !== 200) {
+        if (!in_array($status, [200, 201], true)) {
             $errorMessage = "Could not add contacts to ConstantContact list";
 
             $this->getLogger()->error($errorMessage, self::LOG_CATEGORY);
@@ -189,16 +316,7 @@ class ConstantContactV3 extends MailingListOAuthConnector implements TokenRefres
     public function fetchLists(): array
     {
         try {
-            $client = new Client();
-
-            $endpoint = $this->getEndpoint("/contact_lists");
-
-			$response = $client->get($endpoint, [
-				"headers" => [
-					"Authorization" => "Bearer " . $this->getAccessToken(),
-                    "Content-Type" => "application/json"
-				]
-			]);
+            $response = $this->requestApi('GET', "/contact_lists");
         } catch (BadResponseException $e) {
             $responseBody = $e->getResponse()->getBody();
 
@@ -246,16 +364,7 @@ class ConstantContactV3 extends MailingListOAuthConnector implements TokenRefres
     public function fetchFields($listId)
     {
         try {
-            $client = new Client();
-
-            $endpoint = $this->getEndpoint("/contact_custom_fields?limit=100");
-
-            $response = $client->get($endpoint, [
-                "headers" => [
-                    "Authorization" => "Bearer " . $this->getAccessToken(),
-                    "Content-Type" => "application/json"
-                ]
-            ]);
+            $response = $this->requestApi('GET', "/contact_custom_fields?limit=100");
         } catch (BadResponseException $e) {
             $responseBody = $e->getResponse()->getBody();
 
