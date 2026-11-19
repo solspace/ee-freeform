@@ -1,5 +1,10 @@
 # Solspace Freeform Changelog
 
+## 3.3.12 - 2026-11-19
+
+### Fixed
+- Fixed automatic token renewal for Constant Contact (v3) and signup handling for newly created contacts. Existing connections need to be reauthorized once.
+
 ## 3.3.11 - 2026-11-17
 
 ### Added
